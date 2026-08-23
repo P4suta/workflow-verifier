@@ -5,7 +5,7 @@ use std::sync::atomic::{AtomicU64, Ordering};
 
 use workflow_verifier_helper_runtime::{
     ClosureSandbox, MapSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest,
-    ProcessObservation, execute_native, source_snapshot,
+    NativeStorageParents, ProcessObservation, execute_native, source_snapshot,
 };
 use workflow_verifier_runner_protocol::{
     Control, Descriptor, Limits, Outcome, PlanStatus, Step, ValidatedPlan,
@@ -154,23 +154,27 @@ fn native_execution_emits_common_process_secret_and_artifact_evidence() {
 }
 
 struct LocatedSandbox {
-    storage_root: PathBuf,
+    source_storage: PathBuf,
+    scratch_storage: PathBuf,
     prepared: bool,
 }
 
 impl NativeSandbox for LocatedSandbox {
-    fn storage_root(&mut self) -> Result<Option<PathBuf>, String> {
-        Ok(Some(self.storage_root.clone()))
+    fn storage_parents(&mut self) -> Result<NativeStorageParents, String> {
+        Ok(NativeStorageParents {
+            source_parent: Some(self.source_storage.clone()),
+            scratch_parent: Some(self.scratch_storage.clone()),
+        })
     }
 
     fn prepare(&mut self, request: &NativeSandboxRequest<'_>) -> Result<(), String> {
         assert_eq!(
             request.source_root.parent(),
-            Some(self.storage_root.as_path())
+            Some(self.source_storage.as_path())
         );
         assert_eq!(
             request.scratch_root.parent(),
-            Some(self.storage_root.as_path())
+            Some(self.scratch_storage.as_path())
         );
         self.prepared = true;
         Ok(())
@@ -188,15 +192,17 @@ impl NativeSandbox for LocatedSandbox {
 }
 
 #[test]
-fn native_execution_uses_and_cleans_backend_storage_root() {
+fn native_execution_uses_and_cleans_split_backend_storage() {
     let root = temporary_source();
     let digest = source_snapshot(&root)
         .expect("source snapshot")
         .manifest
         .digest;
-    let storage_root = temporary_directory("native-storage");
+    let source_storage = temporary_directory("native-source-storage");
+    let scratch_storage = temporary_directory("native-scratch-storage");
     let mut sandbox = LocatedSandbox {
-        storage_root: storage_root.clone(),
+        source_storage: source_storage.clone(),
+        scratch_storage: scratch_storage.clone(),
         prepared: false,
     };
 
@@ -211,12 +217,20 @@ fn native_execution_uses_and_cleans_backend_storage_root() {
 
     assert_eq!(result.outcome, Outcome::Completed);
     assert!(
-        std::fs::read_dir(&storage_root)
-            .expect("read backend storage")
+        std::fs::read_dir(&source_storage)
+            .expect("read source storage")
             .next()
             .is_none(),
-        "private source and scratch trees must be removed"
+        "private source tree must be removed"
+    );
+    assert!(
+        std::fs::read_dir(&scratch_storage)
+            .expect("read scratch storage")
+            .next()
+            .is_none(),
+        "private scratch tree must be removed"
     );
     std::fs::remove_dir_all(root).expect("remove test source");
-    std::fs::remove_dir_all(storage_root).expect("remove backend storage");
+    std::fs::remove_dir_all(source_storage).expect("remove source storage");
+    std::fs::remove_dir_all(scratch_storage).expect("remove scratch storage");
 }

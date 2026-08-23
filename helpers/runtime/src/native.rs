@@ -57,17 +57,29 @@ pub struct NativeSandboxRequest<'a> {
     pub scratch_root: &'a Path,
 }
 
+/// Optional backend-owned parents for the runtime's two private filesystem
+/// views. Keeping the choices independent prevents writable-scratch grants
+/// from leaking into the read-only source view through inheritance.
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct NativeStorageParents {
+    /// Parent for the immutable private source copy.
+    pub source_parent: Option<PathBuf>,
+    /// Parent for the mutable private scratch copy.
+    pub scratch_parent: Option<PathBuf>,
+}
+
 /// Operating-system containment boundary used by the common evidence runner.
 pub trait NativeSandbox {
-    /// Selects a backend-owned parent for private source and scratch trees.
-    /// The default keeps both trees below the controller's temporary directory.
+    /// Selects backend-owned parents for the private source and scratch trees.
+    /// Each omitted parent defaults independently to the controller's temporary
+    /// directory.
     ///
     /// # Errors
     ///
     /// Returns a fail-closed error when the backend cannot obtain its isolated
-    /// storage root.
-    fn storage_root(&mut self) -> Result<Option<PathBuf>, String> {
-        Ok(None)
+    /// storage parents.
+    fn storage_parents(&mut self) -> Result<NativeStorageParents, String> {
+        Ok(NativeStorageParents::default())
     }
 
     /// Installs every advertised control for the private source and scratch roots.
@@ -241,13 +253,14 @@ where
         )));
     }
     let secret_values = secret_values(plan, secrets);
-    let storage_root = sandbox
-        .storage_root()
-        .map_err(|error| LaunchError::Infrastructure(redact_text(&error, &secret_values)))?
-        .unwrap_or_else(std::env::temp_dir);
-    let source_view = PrivateSourceTree::prepare_in(&source_root, &baseline, &storage_root)
+    let storage = sandbox
+        .storage_parents()
+        .map_err(|error| LaunchError::Infrastructure(redact_text(&error, &secret_values)))?;
+    let source_storage = storage.source_parent.unwrap_or_else(std::env::temp_dir);
+    let scratch_storage = storage.scratch_parent.unwrap_or_else(std::env::temp_dir);
+    let source_view = PrivateSourceTree::prepare_in(&source_root, &baseline, &source_storage)
         .map_err(LaunchError::Infrastructure)?;
-    let scratch = ScratchTree::prepare_in(&source_root, baseline, &storage_root)
+    let scratch = ScratchTree::prepare_in(&source_root, baseline, &scratch_storage)
         .map_err(LaunchError::Infrastructure)?;
     sandbox
         .prepare(&NativeSandboxRequest {

@@ -54,7 +54,7 @@ use windows_sys::Win32::System::WindowsProgramming::PROCESS_CREATION_CHILD_PROCE
 
 use workflow_verifier_helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
-    execute_native, reserve_temp_directory, reserve_temp_file,
+    NativeStorageParents, execute_native, reserve_temp_directory, reserve_temp_file,
 };
 use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, ValidatedPlan};
 
@@ -1051,15 +1051,19 @@ impl WindowsSandbox {
 }
 
 impl NativeSandbox for WindowsSandbox {
-    fn storage_root(&mut self) -> Result<Option<PathBuf>, String> {
+    fn storage_parents(&mut self) -> Result<NativeStorageParents, String> {
         if self.sid.is_none() {
             self.sid = Some(AppContainerSid::create_or_open()?);
         }
-        self.sid
+        let scratch = self
+            .sid
             .as_ref()
             .ok_or_else(|| "AppContainer SID was not initialized".to_owned())?
-            .storage_root()
-            .map(Some)
+            .storage_root()?;
+        Ok(NativeStorageParents {
+            source_parent: None,
+            scratch_parent: Some(scratch),
+        })
     }
 
     fn prepare(&mut self, request: &NativeSandboxRequest<'_>) -> Result<(), String> {

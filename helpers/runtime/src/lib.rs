@@ -4,7 +4,7 @@ mod native;
 
 pub use native::{
     ClosureSandbox, EnvironmentSecrets, MapSecrets, NativeSandbox, NativeSandboxRequest,
-    NativeStepRequest, SecretProvider, execute_native,
+    NativeStepRequest, NativeStorageParents, SecretProvider, execute_native,
 };
 
 use std::collections::{BTreeMap, BTreeSet};
