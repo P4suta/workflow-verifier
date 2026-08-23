@@ -13,6 +13,8 @@ from scripts.verify_mutation_campaign import (
     verify_shard,
 )
 
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+
 
 def mutation(identifier: str, path: str) -> dict[str, object]:
     full_id = identifier * 64
@@ -133,6 +135,7 @@ operators = ["boolean-literal"]
             json.dumps(
                 {
                     "schema": "mutation-shards-v1",
+                    "max_mutants_per_shard": 128,
                     "shards": [
                         {
                             "name": f"hex-{prefix}",
@@ -165,6 +168,26 @@ operators = ["boolean-literal"]
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def write_grouped_two_nibble_manifest(self) -> dict[str, object]:
+        alphabet = "0123456789abcdef"
+        shards = []
+        for first in alphabet:
+            for start in range(0, len(alphabet), 4):
+                prefixes = [first + second for second in alphabet[start : start + 4]]
+                shards.append(
+                    {
+                        "name": f"hex-{prefixes[0]}-{prefixes[-1]}",
+                        "prefixes": prefixes,
+                    }
+                )
+        document: dict[str, object] = {
+            "schema": "mutation-shards-v1",
+            "max_mutants_per_shard": 96,
+            "shards": shards,
+        }
+        self.manifest.write_text(json.dumps(document), encoding="utf-8")
+        return document
 
     def write_report(self, name: str, mutants: list[dict[str, object]]) -> Path:
         path = self.root / f"mutation-report-{name}.json"
@@ -237,6 +260,90 @@ operators = ["boolean-literal"]
         self.manifest.write_text(json.dumps(document), encoding="utf-8")
         with self.assertRaisesRegex(CampaignError, "has no shard"):
             load_plan(self.manifest, self.config, self.root)
+
+    def test_grouped_two_nibble_partition_is_complete(self) -> None:
+        self.write_grouped_two_nibble_manifest()
+        plan = load_plan(self.manifest, self.config, self.root)
+        self.assertEqual(len(plan.shards), 64)
+        self.assertEqual(plan.assignment("00" + "0" * 62).name, "hex-00-03")
+        self.assertEqual(plan.assignment("03" + "f" * 62).name, "hex-00-03")
+        self.assertEqual(plan.assignment("04" + "0" * 62).name, "hex-04-07")
+        self.assertEqual(plan.assignment("ff" + "f" * 62).name, "hex-fc-ff")
+
+    def test_repository_manifest_uses_complete_64_shard_partition(self) -> None:
+        plan = load_plan(
+            REPOSITORY_ROOT / "scripts/mutation-shards-v1.json",
+            REPOSITORY_ROOT / ".ocaml-mutants.toml",
+            REPOSITORY_ROOT,
+        )
+        self.assertEqual(len(plan.shards), 64)
+        self.assertEqual(plan.names[0], "hex-00-03")
+        self.assertEqual(plan.names[-1], "hex-fc-ff")
+        self.assertEqual(plan.max_mutants_per_shard, 96)
+        self.assertEqual(sum(len(shard.prefixes) for shard in plan.shards), 256)
+
+    def test_catalog_partition_cannot_exceed_declared_worker_bound(self) -> None:
+        document = json.loads(self.manifest.read_text(encoding="utf-8"))
+        document["max_mutants_per_shard"] = 1
+        self.manifest.write_text(json.dumps(document), encoding="utf-8")
+        second = mutation("1", "lib/domain/condition.ml")
+        second["full_id"] = "10" + "0" * 62
+        second["id"] = second["full_id"][:20]
+        self.catalog.write_text(
+            json.dumps(
+                {
+                    "document_type": "ocaml-mutants.catalog-v1",
+                    "schema_version": 1,
+                    "workspace": {"digest": "b" * 64, "toolchain": "OCaml 5.5.0"},
+                    "profile": "balanced",
+                    "selection": "all",
+                    "mutants": [
+                        catalog_mutant(self.domain),
+                        catalog_mutant(second),
+                    ],
+                    "skips": [],
+                }
+            ),
+            encoding="utf-8",
+        )
+        plan = load_plan(self.manifest, self.config, self.root)
+        with self.assertRaisesRegex(CampaignError, "exceeds declared maximum"):
+            load_catalog(plan, self.catalog)
+
+    def test_two_nibble_partition_rejects_a_gap(self) -> None:
+        document = self.write_grouped_two_nibble_manifest()
+        document["shards"][0]["prefixes"].remove("03")
+        self.manifest.write_text(json.dumps(document), encoding="utf-8")
+        with self.assertRaisesRegex(CampaignError, "prefix 03 has no shard"):
+            load_plan(self.manifest, self.config, self.root)
+
+    def test_two_nibble_partition_rejects_an_overlap(self) -> None:
+        document = self.write_grouped_two_nibble_manifest()
+        document["shards"][1]["prefixes"].append("03")
+        self.manifest.write_text(json.dumps(document), encoding="utf-8")
+        with self.assertRaisesRegex(CampaignError, "prefix 03 is assigned more than once"):
+            load_plan(self.manifest, self.config, self.root)
+
+    def test_prefix_partition_rejects_parent_child_overlap(self) -> None:
+        document = self.write_grouped_two_nibble_manifest()
+        document["shards"].append({"name": "hex-parent-0", "prefixes": ["0"]})
+        self.manifest.write_text(json.dumps(document), encoding="utf-8")
+        with self.assertRaisesRegex(CampaignError, "prefix 00 is assigned more than once"):
+            load_plan(self.manifest, self.config, self.root)
+
+    def test_prefixes_are_bounded_lowercase_hexadecimal(self) -> None:
+        cases = (
+            ("A0", "lowercase hexadecimal"),
+            ("", "nonempty strings"),
+            ("0" * 65, "lowercase hexadecimal"),
+        )
+        for invalid, message in cases:
+            with self.subTest(invalid=invalid):
+                document = self.write_grouped_two_nibble_manifest()
+                document["shards"][0]["prefixes"][0] = invalid
+                self.manifest.write_text(json.dumps(document), encoding="utf-8")
+                with self.assertRaisesRegex(CampaignError, message):
+                    load_plan(self.manifest, self.config, self.root)
 
     def test_report_metadata_must_match_catalog(self) -> None:
         plan = load_plan(self.manifest, self.config, self.root)

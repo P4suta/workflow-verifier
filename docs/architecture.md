@@ -104,6 +104,11 @@ sets of its immutable full IDs, and the campaign verifier checks each result's
 workspace, toolchain, profile, selection, and complete mutant metadata before
 proving that the report union is exactly the original catalog. Parallelism can
 change wall-clock order but cannot change the selected semantic surface. The
+manifest verifier builds a hexadecimal prefix trie, rejects overlapping owners,
+and proves that every 64-digit mutant identity is covered. The hosted manifest
+uses 64 short-lived partitions under four-worker backpressure and refuses a
+catalog with more than 96 mutants in one worker, so runner lifetime does not
+become an unrecorded mutation outcome. The
 runner's canonical exit record, raw report, and reconciled gate are uploaded on
 both success and failure, so the strongest debugging evidence is retained at
 the point where the quality boundary rejects a shard. Fast semantic

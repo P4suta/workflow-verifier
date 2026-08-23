@@ -28,7 +28,10 @@ then executes disjoint full-ID-prefix partitions in parallel. Each report
 is reconciled byte-for-byte with its assigned catalog entries before an
 aggregate gate proves that the report union equals the original catalog with no
 missing or duplicate mutant. Sharding changes wall-clock scheduling only; it
-cannot reduce the selected mutation surface. Every shard uploads its runner
+cannot reduce the selected mutation surface. A verified hexadecimal prefix trie
+owns the 64 short-lived partitions, and the hosted matrix runs at most four at a
+time; catalog planning fails if any worker would receive more than 96 mutants.
+Every shard uploads its runner
 exit record, raw report, and reconciled gate even when a survivor makes the job
 fail; the aggregate likewise preserves a complete failed campaign without
 turning it into release-eligible evidence.

@@ -40,7 +40,7 @@ PROFILE_FAMILIES = {
     "strong": frozenset(STRONG_FAMILIES),
     "all": frozenset(ALL_FAMILIES),
 }
-MANIFEST_FIELDS = {"schema", "shards"}
+MANIFEST_FIELDS = {"schema", "max_mutants_per_shard", "shards"}
 SHARD_FIELDS = {"name", "prefixes"}
 CATALOG_FIELDS = {
     "document_type",
@@ -74,6 +74,8 @@ RANGE_FIELDS = {
 }
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 HEX20 = re.compile(r"^[0-9a-f]{20}$")
+HEX_PREFIX = re.compile(r"^[0-9a-f]{1,64}$")
+HEX_ALPHABET = "0123456789abcdef"
 RULE = re.compile(r"^[a-z0-9-]+@[1-9][0-9]*$")
 SHARD_NAME = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
@@ -98,6 +100,7 @@ class Plan:
     profile: str
     configured_paths: tuple[str, ...]
     configured_families: tuple[str, ...]
+    max_mutants_per_shard: int
     shards: tuple[Shard, ...]
 
     @property
@@ -129,6 +132,55 @@ class Catalog:
     @property
     def active_names(self) -> tuple[str, ...]:
         return tuple(name for name in sorted(self.partitions) if self.partitions[name])
+
+
+def _validate_shard_partition(shards: list[Shard]) -> None:
+    owner_key = "$owner"
+    trie: dict[str, Any] = {}
+    entries = sorted(
+        (prefix, shard.name) for shard in shards for prefix in shard.prefixes
+    )
+    for prefix, shard_name in entries:
+        node = trie
+        for character in prefix:
+            existing = node.get(owner_key)
+            if existing is not None:
+                _, existing_name = existing
+                raise CampaignError(
+                    f"mutation ID prefix {prefix} is assigned more than once: "
+                    f"{existing_name}, {shard_name}"
+                )
+            child = node.get(character)
+            if child is None:
+                child = {}
+                node[character] = child
+            if not isinstance(child, dict):
+                raise CampaignError("mutation prefix trie has an invalid node")
+            node = child
+        existing = node.get(owner_key)
+        if existing is not None:
+            _, existing_name = existing
+            raise CampaignError(
+                f"mutation ID prefix {prefix} is assigned more than once: "
+                f"{existing_name}, {shard_name}"
+            )
+        node[owner_key] = (prefix, shard_name)
+
+    def first_gap(node: dict[str, Any], prefix: str) -> str | None:
+        if owner_key in node:
+            return None
+        for character in HEX_ALPHABET:
+            child = node.get(character)
+            if not isinstance(child, dict):
+                return prefix + character
+            gap = first_gap(child, prefix + character)
+            if gap is not None:
+                return gap
+        return None
+
+    gap = first_gap(trie, "")
+    if gap is not None:
+        raise CampaignError(f"mutation ID prefix {gap} has no shard")
 
 
 def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -277,6 +329,11 @@ def load_plan(manifest_path: Path, config_path: Path, workspace: Path) -> Plan:
     _exact_fields(document, MANIFEST_FIELDS, "mutation shard manifest")
     if document["schema"] != "mutation-shards-v1":
         raise CampaignError("mutation shard manifest has an unknown schema")
+    max_mutants_per_shard = document["max_mutants_per_shard"]
+    if type(max_mutants_per_shard) is not int or max_mutants_per_shard < 1:
+        raise CampaignError(
+            "mutation shard manifest max_mutants_per_shard must be a positive integer"
+        )
     rows = document["shards"]
     if not isinstance(rows, list) or not rows:
         raise CampaignError("mutation shard manifest must contain shards")
@@ -290,27 +347,23 @@ def load_plan(manifest_path: Path, config_path: Path, workspace: Path) -> Plan:
         if not isinstance(name, str) or not SHARD_NAME.fullmatch(name):
             raise CampaignError(f"{label}.name is invalid")
         prefixes = tuple(sorted(_string_array(row["prefixes"], f"{label}.prefixes")))
-        if any(not re.fullmatch(r"[0-9a-f]", prefix) for prefix in prefixes):
-            raise CampaignError(f"{label}.prefixes must contain lowercase hexadecimal nibbles")
+        if any(not HEX_PREFIX.fullmatch(prefix) for prefix in prefixes):
+            raise CampaignError(
+                f"{label}.prefixes must contain lowercase hexadecimal prefixes"
+            )
         shards.append(Shard(name=name, prefixes=prefixes))
     shards.sort(key=lambda shard: shard.name)
     if len({shard.name for shard in shards}) != len(shards):
         raise CampaignError("mutation shard names must be unique")
+    _validate_shard_partition(shards)
     profile, configured_paths, configured_families = _load_config(config_path, workspace)
-    for prefix in "0123456789abcdef":
-        owners = [shard.name for shard in shards if shard.selects(prefix + "0" * 63)]
-        if not owners:
-            raise CampaignError(f"mutation ID prefix {prefix} has no shard")
-        if len(owners) > 1:
-            raise CampaignError(
-                f"mutation ID prefix {prefix} is assigned more than once: {', '.join(owners)}"
-            )
     return Plan(
         manifest_path=manifest_path,
         manifest_digest=manifest_digest,
         profile=profile,
         configured_paths=configured_paths,
         configured_families=configured_families,
+        max_mutants_per_shard=max_mutants_per_shard,
         shards=tuple(shards),
     )
 
@@ -410,6 +463,12 @@ def load_catalog(plan: Plan, catalog_path: Path) -> Catalog:
         shard = plan.assignment(full_id)
         mutants[full_id] = mutant
         partitions[shard.name][full_id] = mutant
+    for shard_name, partition in sorted(partitions.items()):
+        if len(partition) > plan.max_mutants_per_shard:
+            raise CampaignError(
+                f"mutation shard {shard_name} has {len(partition)} mutants and exceeds "
+                f"declared maximum {plan.max_mutants_per_shard}"
+            )
     return Catalog(document=document, digest=digest, mutants=mutants, partitions=partitions)
 
 
