@@ -265,8 +265,7 @@ let classify_block_header raw =
           | _ -> valid := false)
       token;
     let bad_suffix =
-      !cursor < String.length fragment
-      && (fragment.[!cursor] = '#' || not (separation fragment.[!cursor]))
+      !cursor < String.length fragment && not (separation fragment.[!cursor])
     in
     let trailer =
       String.sub fragment !cursor (String.length fragment - !cursor)

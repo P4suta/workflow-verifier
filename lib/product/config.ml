@@ -187,11 +187,12 @@ let parse source =
   and parse_bool key default fields =
     match lookup key fields with
     | None -> default
-    | Some "true" -> true
-    | Some "false" -> false
-    | Some _ ->
-        errors := (key ^ " must be true or false") :: !errors;
-        default
+    | Some value -> (
+        match bool_of_string_opt value with
+        | Some value -> value
+        | None ->
+            errors := (key ^ " must be true or false") :: !errors;
+            default)
   in
   let known_root = [ "version"; "persona"; "frontends"; "offline" ] in
   let root_keys = List.map fst !root_fields in

@@ -106,7 +106,13 @@ capability, and verifier surfaces before the complete contract suite. Their
 inputs are readable fixtures while canonical-output digests make any behavioral
 change an explicit review event. The externally acquired YAML oracle stays
 under the caller's ignored build root and is passed through one explicit
-environment capability; it never enters the analyzed workspace snapshot.
+environment capability; it never enters the analyzed workspace snapshot. Its
+typed TOML pin is the sole authority for repository, revision, case count, file
+count, and canonical export digest. Export walks immutable Git entries rather
+than the checkout filesystem, so symlink aliases cannot multiply or redirect
+the conformance corpus. Runner-managed Dune stages use isolated build roots;
+subprocess output crosses a strict UTF-8 evidence boundary that preserves the
+raw-byte digest and records every replacement.
 
 ## Runner boundary
 

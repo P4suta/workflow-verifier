@@ -671,6 +671,536 @@ let semantic_oracle () =
   |> fingerprint "semantic-core"
        "8c013588d3dc61c0f9169463aa6c6bcbd45a207f11f8771958610a583606bff8"
 
+let abstract_string value =
+  {
+    Abstract_value.value_type = String_type;
+    value = String value;
+    trust = Trusted;
+    secrecy = Public;
+    provenance = [];
+  }
+
+let abstract_edge_evidence () =
+  let prefix =
+    Abstract_value.join
+      (abstract_string (Affix { prefix = Some "identical"; suffix = None }))
+      (abstract_string (Constants [ "identical" ]))
+  and suffix =
+    Abstract_value.join
+      (abstract_string (Affix { prefix = None; suffix = Some "same-ending" }))
+      (abstract_string (Constants [ "same-ending" ]))
+  and list_value =
+    {
+      Abstract_value.value_type = List_type;
+      value = List None;
+      trust = Trusted;
+      secrecy = Public;
+      provenance = [];
+    }
+  in
+  Json.Object
+    [
+      ("identical_prefix", Abstract_value.to_json prefix);
+      ("identical_suffix", Abstract_value.to_json suffix);
+      ("list_type", Abstract_value.to_json list_value);
+    ]
+
+let policy_edge_evidence () =
+  let calls =
+    [
+      node ~kind:Ir.Call 100 ("registry/image@sha256:" ^ String.make 64 'a');
+      node ~kind:Ir.Call 101 ("owner/action@" ^ String.make 40 'b');
+      node ~kind:Ir.Call 102 "owner/action@v1";
+      node ~kind:Ir.Call 103 "./local/action";
+      node ~kind:Ir.Call 104 "dynamic-call";
+      node ~kind:Ir.Command 105 ("owner/action@" ^ String.make 40 'c');
+    ]
+  in
+  let graph = graph calls [] [] in
+  let predicates =
+    [
+      ("immutable", Policy.Dependency_mutability Frontend_intf.Immutable);
+      ("mutable", Policy.Dependency_mutability Frontend_intf.Mutable);
+      ("local", Policy.Dependency_mutability Frontend_intf.Local);
+      ("unknown", Policy.Dependency_mutability Frontend_intf.Unknown_mutability);
+    ]
+  in
+  Json.Array
+    (List.map
+       (fun (label, predicate) ->
+         let rule =
+           {
+             Policy.id = "EDGE-" ^ String.uppercase_ascii label;
+             kind = Forbid;
+             selector = All [ predicate ];
+             message = label;
+             severity = Diagnostic.Warning;
+           }
+         in
+         Json.Object
+           [
+             ("label", Json.String label);
+             ( "diagnostics",
+               Json.Array
+                 (List.map Diagnostic.to_json (Policy.evaluate [ rule ] graph))
+             );
+           ])
+       predicates)
+
+let verifier_result graph = Verifier.verify ~persona:Verifier.Audit graph
+
+let permission_edge_graph () =
+  let entry = node ~kind:Ir.Workflow ~phase:Ir.Compile 110 "grant workflow"
+  and holder =
+    node ~kind:Ir.Command ~capabilities:[ Ir.Repository_write ] 111
+      "grant-only command"
+  in
+  graph [ entry; holder ] [ edge ~kind:Ir.Grant entry holder ] [ entry ]
+
+let safe_checkout_graph () =
+  let entry =
+    node ~kind:Ir.Workflow ~phase:Ir.Compile 120 "safe checkout workflow"
+  and source =
+    node ~kind:Ir.Resource
+      ~attributes:
+        [ ("value", value ~trust:Abstract_value.Untrusted 121 "head ref") ]
+      121 "event:head"
+  and checkout =
+    node ~kind:Ir.Call 122 ("actions/checkout@" ^ String.make 40 'd')
+  and sink =
+    node ~kind:Ir.Effect ~capabilities:[ Ir.Repository_write ]
+      ~effects:[ Ir.Repository_change ] 123 "publish"
+  in
+  graph
+    [ entry; source; checkout; sink ]
+    [
+      edge entry checkout;
+      edge checkout sink;
+      edge ~kind:Ir.Data source checkout;
+    ]
+    [ entry ]
+
+let mechanism_gate_graph () =
+  let entry = node ~kind:Ir.Workflow ~phase:Ir.Compile 130 "manual workflow"
+  and gate =
+    node ~kind:Ir.Gate ~phase:Ir.Plan
+      ~attributes:[ ("mechanism", value 131 "manual") ]
+      131 "custom human review"
+  and sink =
+    node ~kind:Ir.Effect ~capabilities:[ Ir.Deployment ]
+      ~effects:[ Ir.Deployment_change ] 132 "deploy"
+  in
+  graph [ entry; gate; sink ] [ edge entry gate; edge gate sink ] [ entry ]
+
+let non_authorizing_mechanism_graph () =
+  let entry = node ~kind:Ir.Workflow ~phase:Ir.Compile 135 "review workflow"
+  and gate =
+    node ~kind:Ir.Gate ~phase:Ir.Plan
+      ~attributes:[ ("mechanism", value 136 "review") ]
+      136 "custom review label"
+  and sink =
+    node ~kind:Ir.Effect ~capabilities:[ Ir.Deployment ]
+      ~effects:[ Ir.Deployment_change ] 137 "deploy after weak label"
+  in
+  graph [ entry; gate; sink ] [ edge entry gate; edge gate sink ] [ entry ]
+
+let misleading_environment_graph () =
+  let entry =
+    node ~kind:Ir.Workflow ~phase:Ir.Compile 140 "environment workflow"
+  and disconnected_environment =
+    node ~kind:Ir.Resource 141 "environment:production"
+  and connected_resource = node ~kind:Ir.Resource 142 "resource:unprotected"
+  and sink =
+    node ~kind:Ir.Effect ~capabilities:[ Ir.Deployment ]
+      ~effects:[ Ir.Deployment_change ] 143 "deploy without gate"
+  in
+  graph
+    [ entry; disconnected_environment; connected_resource; sink ]
+    [ edge entry sink; edge ~kind:Ir.Grant connected_resource sink ]
+    [ entry ]
+
+let marker_only_agent_graph () =
+  let entry = node ~kind:Ir.Workflow ~phase:Ir.Compile 150 "agent workflow"
+  and source =
+    node ~kind:Ir.Resource
+      ~attributes:
+        [ ("value", value ~trust:Abstract_value.Untrusted 151 "issue body") ]
+      151 "event:issue"
+  and agent =
+    node ~kind:Ir.Call ~capabilities:[ Ir.Network ] 152 "claude-code bridge"
+  in
+  graph [ entry; source; agent ]
+    [ edge entry agent; edge ~kind:Ir.Data source agent ]
+    [ entry ]
+
+let synthetic_should_fail_evidence () =
+  let diagnostic severity confidence =
+    Diagnostic.make ~rule_id:"EDGE-GATE" ~severity ~confidence ~message:"edge"
+      ~span:Span.none ()
+  and unknown_property =
+    {
+      Property.id = "EDGE-UNKNOWN";
+      state = Unknown [ Unknown.External_state "fixture" ];
+      subject = None;
+      explanation = "fixture";
+    }
+  in
+  let result diagnostics properties : Verifier.result =
+    {
+      diagnostics;
+      properties;
+      complete = false;
+      analyzed_nodes = 0;
+      analyzed_edges = 0;
+    }
+  in
+  let candidates =
+    [
+      ("high-warning", result [ diagnostic Warning High ] []);
+      ("medium-critical", result [ diagnostic Critical Medium ] []);
+      ("high-error", result [ diagnostic Error High ] []);
+      ("unknown-only", result [] [ unknown_property ]);
+    ]
+  in
+  Json.Array
+    (List.map
+       (fun (label, candidate) ->
+         Json.Object
+           [
+             ("label", Json.String label);
+             ("gate", Json.Bool (Verifier.should_fail Gate candidate));
+             ("audit", Json.Bool (Verifier.should_fail Audit candidate));
+             ("paranoid", Json.Bool (Verifier.should_fail Paranoid candidate));
+           ])
+       candidates)
+
+let semantic_edge_oracle () =
+  let append_redirect =
+    Script_adapter.analyze Bash "printf '%s' \"$TOKEN\" >> private.log"
+  in
+  let graphs =
+    [
+      ("permission", permission_edge_graph ());
+      ("safe-checkout", safe_checkout_graph ());
+      ("mechanism-gate", mechanism_gate_graph ());
+      ("non-authorizing-mechanism", non_authorizing_mechanism_graph ());
+      ("misleading-environment", misleading_environment_graph ());
+      ("marker-only-agent", marker_only_agent_graph ());
+    ]
+  in
+  Json.Object
+    [
+      ("abstract", abstract_edge_evidence ());
+      ("append_redirect", script_summary_json append_redirect);
+      ("policy_mutability", policy_edge_evidence ());
+      ( "graphs",
+        Json.Array
+          (List.map
+             (fun (label, candidate) ->
+               Json.Object
+                 [
+                   ("label", Json.String label);
+                   ("graph", Ir.to_json candidate);
+                   ("result", Verifier.to_json (verifier_result candidate));
+                 ])
+             graphs) );
+      ("should_fail", synthetic_should_fail_evidence ());
+    ]
+  |> fingerprint "semantic-edges"
+       "4a0f64e9bb6a11efea8694efb350a2207cc0f0001362b9a793275445be81a2b6"
+
+let config_edge_oracle () =
+  Json.Array
+    (List.map config_result_json
+       [
+         "[sandbox]\nbackend = bare\n";
+         "[sandbox]\nimage = bare\n";
+         "[sandbox]\nnetwork = bare\n";
+       ])
+  |> fingerprint "config-edges"
+       "4a271faebb8983022bbb8a30f76a3726e5a32e23827ac615a8a5938145243bce"
+
+let yaml_newline_name = function
+  | `Lf -> "lf"
+  | `CrLf -> "crlf"
+  | `Cr -> "cr"
+  | `None -> "none"
+
+let yaml_trivia_name = function
+  | Yaml_cst.Comment -> "comment"
+  | Blank -> "blank"
+  | Directive -> "directive"
+  | Document_start -> "document-start"
+  | Document_end -> "document-end"
+
+let yaml_problem_json (problem : Yaml_cst.problem) =
+  Json.Object
+    [
+      ("code", Json.String problem.code);
+      ("message", Json.String problem.message);
+      ("span", Span.to_json problem.span);
+    ]
+
+let yaml_issue_json (issue : Yaml_validation.issue) =
+  Json.Object
+    [
+      ("code", Json.String issue.code);
+      ("message", Json.String issue.message);
+      ("span", Span.to_json issue.span);
+    ]
+
+let rec yaml_layout_evidence = function
+  | Yaml_cst.Scalar scalar ->
+      Json.Object
+        [
+          ("kind", Json.String "scalar");
+          ("raw", Json.String scalar.raw);
+          ("span", Span.to_json scalar.span);
+        ]
+  | Alias alias ->
+      Json.Object
+        [
+          ("kind", Json.String "alias");
+          ("raw", Json.String alias.raw);
+          ("span", Span.to_json alias.span);
+        ]
+  | Sequence (items, span) ->
+      Json.Object
+        [
+          ("kind", Json.String "sequence");
+          ("span", Span.to_json span);
+          ( "items",
+            Json.Array
+              (List.map
+                 (fun (item : Yaml_cst.sequence_item) ->
+                   Json.Object
+                     [
+                       ("dash", Span.to_json item.dash_span);
+                       ("span", Span.to_json item.span);
+                       ("value", yaml_layout_evidence item.value);
+                     ])
+                 items) );
+        ]
+  | Mapping (entries, span) | Flow_mapping (entries, span) ->
+      Json.Object
+        [
+          ("kind", Json.String "mapping");
+          ("span", Span.to_json span);
+          ( "entries",
+            Json.Array
+              (List.map
+                 (fun (entry : Yaml_cst.mapping_entry) ->
+                   Json.Object
+                     [
+                       ("colon", Span.to_json entry.colon_span);
+                       ("span", Span.to_json entry.span);
+                       ("merge", Json.Bool entry.merge);
+                       ("duplicate", Json.Bool entry.duplicate);
+                       ("key", yaml_layout_evidence entry.key_node);
+                       ("value", yaml_layout_evidence entry.value);
+                     ])
+                 entries) );
+        ]
+  | Flow_sequence (items, span) ->
+      Json.Object
+        [
+          ("kind", Json.String "flow-sequence");
+          ("span", Span.to_json span);
+          ("items", Json.Array (List.map yaml_layout_evidence items));
+        ]
+  | Decorated decorated ->
+      Json.Object
+        [
+          ("kind", Json.String "decorated");
+          ("span", Span.to_json decorated.span);
+          ("value", yaml_layout_evidence decorated.value);
+        ]
+  | Invalid invalid ->
+      Json.Object
+        [ ("kind", Json.String "invalid"); ("span", Span.to_json invalid.span) ]
+
+let yaml_tree_evidence (label, source) =
+  let file = "yaml-edge-" ^ label ^ ".yml" in
+  let tree = Yaml_cst.parse ~file source in
+  Json.Object
+    [
+      ("label", Json.String label);
+      ("source_sha256", Json.String (Sha256.digest_string source));
+      ("print_sha256", Json.String (Sha256.digest_string (Yaml_cst.print tree)));
+      ("bom", Json.Bool tree.bom);
+      ("newline", Json.String (yaml_newline_name tree.newline));
+      ( "documents",
+        Json.Array
+          (List.map
+             (fun (document : Yaml_cst.document) ->
+               Json.Object
+                 [
+                   ("span", Span.to_json document.span);
+                   ( "root",
+                     Option.fold ~none:Json.Null ~some:Yaml_cst.node_to_json
+                       document.root );
+                   ( "layout",
+                     Option.fold ~none:Json.Null ~some:yaml_layout_evidence
+                       document.root );
+                   ( "directives",
+                     Json.Array
+                       (List.map
+                          (fun (trivia : Yaml_cst.trivia) ->
+                            Json.Object
+                              [
+                                ("raw", Json.String trivia.raw);
+                                ("span", Span.to_json trivia.span);
+                              ])
+                          document.directives) );
+                 ])
+             tree.documents) );
+      ( "trivia",
+        Json.Array
+          (List.map
+             (fun (trivia : Yaml_cst.trivia) ->
+               Json.Object
+                 [
+                   ("kind", Json.String (yaml_trivia_name trivia.kind));
+                   ("raw", Json.String trivia.raw);
+                   ("span", Span.to_json trivia.span);
+                 ])
+             tree.trivia) );
+      ( "anchors",
+        Json.Array
+          (List.map
+             (fun (name, anchored) ->
+               Json.Object
+                 [
+                   ("name", Json.String name);
+                   ("node", Yaml_cst.node_to_json anchored);
+                 ])
+             tree.anchors) );
+      ("problems", Json.Array (List.map yaml_problem_json tree.problems));
+      ( "validation",
+        Json.Array
+          (List.map yaml_issue_json (Yaml_validation.validate ~file source)) );
+      ("events", Json.String (Yaml_event.of_cst tree |> Yaml_event.to_string));
+    ]
+
+let invalid_tree raw reason =
+  let node = Yaml_cst.Invalid { raw; reason; span = Span.none } in
+  {
+    Yaml_cst.file = "manual-invalid.yml";
+    source = raw;
+    bom = false;
+    newline = `None;
+    documents = [ { root = Some node; directives = []; span = Span.none } ];
+    trivia = [];
+    anchors = [];
+    problems = [];
+  }
+
+let yaml_structural_evidence () =
+  let parsed source = Yaml_cst.parse ~file:"structural.yml" source in
+  let root_path = parsed "root:\n  child: value\n" in
+  let path_value =
+    match Yaml_cst.root root_path with
+    | None -> Json.Null
+    | Some root -> (
+        match Yaml_cst.get_path root [ "root"; "child" ] with
+        | None -> Json.Null
+        | Some value -> Yaml_cst.node_to_json value)
+  in
+  let anchor_tree = parsed "root: [&x value, *x]\n" in
+  Json.Object
+    [
+      ("path", path_value);
+      ( "anchor",
+        Option.fold ~none:Json.Null ~some:Yaml_cst.node_to_json
+          (Yaml_cst.resolve_alias anchor_tree "x") );
+      ( "equal-identical",
+        Json.Bool
+          (Yaml_cst.structural_equal (parsed "a: one\n") (parsed "a: one\n")) );
+      ( "different-value",
+        Json.Bool
+          (Yaml_cst.structural_equal (parsed "a: one\n") (parsed "a: two\n")) );
+      ( "different-key",
+        Json.Bool
+          (Yaml_cst.structural_equal (parsed "a: one\n") (parsed "b: one\n")) );
+      ( "different-kind",
+        Json.Bool (Yaml_cst.structural_equal (parsed "a\n") (parsed "- a\n")) );
+      ( "invalid-reason",
+        Json.Bool
+          (Yaml_cst.structural_equal
+             (invalid_tree "raw" "left")
+             (invalid_tree "raw" "right")) );
+      ( "invalid-identical",
+        Json.Bool
+          (Yaml_cst.structural_equal
+             (invalid_tree "raw" "reason")
+             (invalid_tree "raw" "reason")) );
+      ( "invalid-raw",
+        Json.Bool
+          (Yaml_cst.structural_equal
+             (invalid_tree "left" "reason")
+             (invalid_tree "right" "reason")) );
+    ]
+
+let yaml_edge_oracle () =
+  let sources =
+    [
+      ("crlf", "root:\r\n  child: value\r\n");
+      ("bom-only", "\239\187\191");
+      ("partial-bom-first", "\239ab: value\n");
+      ("partial-bom-second", "a\187c: value\n");
+      ("partial-bom-indicator", "\239XY---\nvalue\n");
+      ("escaped-mapping-key", "\"a\\\\\\\"b\": value\n");
+      ("empty-quoted-key", "\"\": value\n");
+      ("unicode-boundary", "value: \"\\u07FF\"\n");
+      ("empty-folded", "value: >+\n  \n  \n");
+      ("unterminated-quote", "value: \"\n  continued\n");
+      ("flow-spans", "root: [&x value, *x]\n");
+      ("blank-block", "value: |+\n  \n  \n");
+      ("alias-colon", "&x value\n*x:\n");
+      ("alias-colon-only", "*x:\n");
+      ("sequence-indent", "root:\n  - item\n");
+      ("explicit-empty", "? key\n:\n");
+      ("explicit-colon-only", ":\n");
+      ("explicit-no-value", "? key\n");
+      ("explicit-followed-implicit", "? key\nnext: value\n");
+      ("merge-key", "base: &base {a: b}\nmerged:\n  <<: *base\n");
+      ("empty-at-eof", "key:\n");
+      ("empty-at-eof-no-newline", "key:");
+      ("empty-quoted", "value: \"\"\n");
+      ("bom-document", "\239\187\191---\nkey: value\n");
+      ( "document-boundaries",
+        "# lead\n%YAML 1.2\n---\na: b\n...\n# between\n---\nc: d\n" );
+      ("vertical-tab", "value: \"\\v\"\n");
+      ("invalid-percent-tag", "%TAG !e! tag:%GG:\n---\nvalue: !e!thing data\n");
+      ("escaped-quotes", "value: \"escaped \\\\\\\" # still value\"\n");
+      ("single-doubled", "value: 'it''s: fine' # comment\n");
+      ("property-quoted", "value: &a 'x:y'\n");
+      ("bad-block-suffix", "value: |x\n  data\n");
+      ("same-indent-block-end", "value: |\nnext: value\n");
+      ("zero-version", "%YAML 0.1\n---\nvalue\n");
+      ("flow-escape", "value: [\"a\\\\\\\"b\", c]\n");
+      ("block-comment-indent", "value: |\n# same indent\nnext: value\n");
+      ("block-leading-space", "value: |\n   \n  content\n");
+    ]
+  in
+  Json.Object
+    [
+      ("trees", Json.Array (List.map yaml_tree_evidence sources));
+      ("structural", yaml_structural_evidence ());
+      ( "manual_vertical_tab",
+        Json.String
+          (Yaml_event.to_line
+             (Yaml_event.Scalar
+                {
+                  value = "\011";
+                  style = Yaml_cst.Double_quoted;
+                  anchor = None;
+                  tag = None;
+                })) );
+    ]
+  |> fingerprint "yaml-edges"
+       "5ee0e7411ad2db69da5d6812d328db52cd3faa5c6786b978d92e33a2ba9cf4fc"
+
 let () =
   Printexc.record_backtrace true;
   (try script_oracle ()
@@ -682,6 +1212,15 @@ let () =
   (try semantic_oracle ()
    with error ->
      record_failure "semantic oracle raised: %s" (Printexc.to_string error));
+  (try semantic_edge_oracle ()
+   with error ->
+     record_failure "semantic edge oracle raised: %s" (Printexc.to_string error));
+  (try config_edge_oracle ()
+   with error ->
+     record_failure "config edge oracle raised: %s" (Printexc.to_string error));
+  (try yaml_edge_oracle ()
+   with error ->
+     record_failure "YAML edge oracle raised: %s" (Printexc.to_string error));
   match List.rev !failures with
   | [] -> Printf.printf "mutation semantic oracles passed\n%!"
   | messages ->

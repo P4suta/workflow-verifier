@@ -43,7 +43,7 @@ let solve graph =
     (fun (node : Ir.node) ->
       Hashtbl.replace table node.id (initial node);
       Queue.add node.id queue;
-      Hashtbl.replace queued node.id true)
+      Hashtbl.replace queued node.id ())
     nodes;
   graph.edges
   |> List.filter (fun edge -> flows edge.Ir.kind && feasible graph edge)
@@ -59,7 +59,7 @@ let solve graph =
   in
   while (not (Queue.is_empty queue)) && !updates < limit do
     let source = Queue.take queue in
-    Hashtbl.replace queued source false;
+    Hashtbl.remove queued source;
     let source_value =
       Option.value ~default:Abstract_value.bottom
         (Hashtbl.find_opt table source)
@@ -74,11 +74,9 @@ let solve graph =
         if before <> after then (
           incr updates;
           Hashtbl.replace table edge.to_ after;
-          if
-            not (Option.value ~default:false (Hashtbl.find_opt queued edge.to_))
-          then (
+          if not (Hashtbl.mem queued edge.to_) then (
             Queue.add edge.to_ queue;
-            Hashtbl.replace queued edge.to_ true)))
+            Hashtbl.replace queued edge.to_ ())))
   done;
   let complete = Queue.is_empty queue in
   let values =

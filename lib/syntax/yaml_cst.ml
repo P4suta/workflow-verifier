@@ -660,13 +660,13 @@ let fold_quoted ~double value =
           for _ = 1 to !blank_lines - 1 do
             Buffer.add_char buffer '\n'
           done;
-      (if Buffer.length buffer = 0 && List.length lines > 1 then
-         let breaks = List.length lines - 1 in
-         if breaks = 1 then Buffer.add_char buffer ' '
-         else
-           for _ = 1 to breaks - 1 do
-             Buffer.add_char buffer '\n'
-           done);
+      (match (Buffer.length buffer, List.length lines) with
+      | 0, 2 -> Buffer.add_char buffer ' '
+      | 0, count when count > 2 ->
+          for _ = 1 to count - 2 do
+            Buffer.add_char buffer '\n'
+          done
+      | _ -> ());
       Buffer.contents buffer
 
 let normalize_tag tag = tag
@@ -1011,13 +1011,14 @@ let parse ?(file = "<memory>") source =
     else if Option.is_some line.comment_byte then (node, next_index)
     else extend_plain_scalar limit parent_indent next_index node
   in
-  let nested_mapping_value parent_indent child_index =
-    child_index < line_count
-    && (lines.(child_index).indent > parent_indent
-       ||
-       let content = String.trim lines.(child_index).content in
-       lines.(child_index).indent = parent_indent
-       && indicator_with_separation '-' content)
+  let line_before limit index =
+    if index < limit then Some lines.(index) else None
+  in
+  let nested_mapping_value parent_indent (child : line) =
+    child.indent > parent_indent
+    ||
+    let content = String.trim child.content in
+    child.indent = parent_indent && indicator_with_separation '-' content
   in
   let block_header raw =
     let anchor, tag, prefix_length = parse_prefixes raw in
@@ -1220,91 +1221,73 @@ let parse ?(file = "<memory>") source =
             },
           !cursor )
   in
-  let rec parse_block limit index minimum_indent =
-    let index = next_significant lines limit index in
-    if index >= limit then (None, index)
-    else
-      let line = lines.(index) in
-      if line.indent < minimum_indent then (None, index)
+  let rec parse_block_at limit index =
+    let line = lines.(index) in
+    let content = String.trim line.content in
+    let anchor, tag, prefix_length = parse_prefixes content in
+    let prefix_body =
+      if prefix_length = 0 then content
       else
-        let content = String.trim line.content in
-        let anchor, tag, prefix_length = parse_prefixes content in
-        let prefix_body =
-          if prefix_length = 0 then content
-          else
-            String.sub content prefix_length
-              (String.length content - prefix_length)
-            |> String.trim
-        in
-        if Option.is_some (block_header content) then
-          let node, next =
-            parse_block_scalar limit (line.indent - 1) (index + 1) line
-              (line.indent + 1) line.content_byte content
-          in
-          (Some (register_anchors node), next)
-        else if prefix_length > 0 && prefix_body = "" then
-          let child_index = next_significant lines limit (index + 1) in
-          if child_index < limit then
-            match parse_block limit child_index lines.(child_index).indent with
-            | Some child, next ->
-                let prefix =
-                  parse_inline ~file ~line:line.number ~column:(line.indent + 1)
-                    ~byte:line.content_byte content
-                in
-                let decorated =
-                  Decorated
-                    {
-                      value = child;
-                      anchor;
-                      tag;
-                      span = Span.merge (node_span prefix) (node_span child);
-                    }
-                in
-                (Some (register_anchors decorated), next)
-            | None, next ->
-                ( Some
-                    (register_anchors
-                       (parse_inline ~file ~line:line.number
-                          ~column:(line.indent + 1) ~byte:line.content_byte
-                          content)),
-                  next )
-          else
-            ( Some
-                (register_anchors
-                   (parse_inline ~file ~line:line.number
-                      ~column:(line.indent + 1) ~byte:line.content_byte content)),
-              index + 1 )
-        else if indicator_with_separation '-' content then
-          let node, next = parse_sequence limit index line.indent None in
-          (Some node, next)
-        else if indicator_with_separation '?' content then
-          let node, next = parse_explicit_mapping limit index line.indent in
-          (Some node, next)
-        else if
-          String.length content > 1
-          && content.[0] = '*'
-          && content.[String.length content - 1] = ':'
-        then
-          let node =
+        String.sub content prefix_length (String.length content - prefix_length)
+        |> String.trim
+    in
+    if Option.is_some (block_header content) then
+      let node, next =
+        parse_block_scalar limit (line.indent - 1) (index + 1) line
+          (line.indent + 1) line.content_byte content
+      in
+      (register_anchors node, next)
+    else if prefix_length > 0 && prefix_body = "" then
+      let child_index = next_significant lines limit (index + 1) in
+      match line_before limit child_index with
+      | Some _ ->
+          let child, next = parse_block_at limit child_index in
+          let prefix =
             parse_inline ~file ~line:line.number ~column:(line.indent + 1)
               ~byte:line.content_byte content
           in
-          (Some (register_anchors node), index + 1)
-        else
-          match find_mapping_colon content with
-          | Some _ ->
-              let node, next = parse_mapping limit index line.indent None in
-              (Some node, next)
-          | None ->
-              let scalar_source =
-                if inline_needs_continuation line.content then line.content
-                else content
-              in
-              let node, next =
-                parse_inline_value limit (line.indent - 1) (index + 1) line
-                  (line.indent + 1) line.content_byte scalar_source
-              in
-              (Some (register_anchors node), next)
+          let decorated =
+            Decorated
+              {
+                value = child;
+                anchor;
+                tag;
+                span = Span.merge (node_span prefix) (node_span child);
+              }
+          in
+          (register_anchors decorated, next)
+      | None ->
+          ( register_anchors
+              (parse_inline ~file ~line:line.number ~column:(line.indent + 1)
+                 ~byte:line.content_byte content),
+            index + 1 )
+    else if indicator_with_separation '-' content then
+      parse_sequence limit index line.indent None
+    else if indicator_with_separation '?' content then
+      parse_explicit_mapping limit index line.indent
+    else if
+      String.length content > 1
+      && content.[0] = '*'
+      && content.[String.length content - 1] = ':'
+    then
+      let node =
+        parse_inline ~file ~line:line.number ~column:(line.indent + 1)
+          ~byte:line.content_byte content
+      in
+      (register_anchors node, index + 1)
+    else
+      match find_mapping_colon content with
+      | Some _ -> parse_mapping limit index line.indent None
+      | None ->
+          let scalar_source =
+            if inline_needs_continuation line.content then line.content
+            else content
+          in
+          let node, next =
+            parse_inline_value limit (line.indent - 1) (index + 1) line
+              (line.indent + 1) line.content_byte scalar_source
+          in
+          (register_anchors node, next)
   and parse_sequence limit index indent first_item =
     let items = ref []
     and cursor = ref index
@@ -1378,19 +1361,13 @@ let parse ?(file = "<memory>") source =
                 next_significant lines limit
                   (if synthetic then !cursor else significant + 1)
               in
-              if child_index < limit && lines.(child_index).indent > indent then
-                match
-                  parse_block limit child_index lines.(child_index).indent
-                with
-                | Some child, next -> (child, next)
-                | None, next ->
-                    ( parse_inline ~file ~line:line.number ~column:(indent + 2)
-                        ~byte:(dash_byte + 1) "",
-                      next )
-              else
-                ( parse_inline ~file ~line:line.number ~column:(indent + 2)
-                    ~byte:(dash_byte + 1) "",
-                  if synthetic then !cursor else significant + 1 )
+              match line_before limit child_index with
+              | Some child_line when child_line.indent > indent ->
+                  parse_block_at limit child_index
+              | _ ->
+                  ( parse_inline ~file ~line:line.number ~column:(indent + 2)
+                      ~byte:(dash_byte + 1) "",
+                    if synthetic then !cursor else significant + 1 )
             else
               let prefix_anchor, prefix_tag, prefix_length =
                 parse_prefixes rest
@@ -1411,33 +1388,25 @@ let parse ?(file = "<memory>") source =
                   next_significant lines limit
                     (if synthetic then !cursor else significant + 1)
                 in
-                if child_index < limit && lines.(child_index).indent > indent
-                then
-                  match
-                    parse_block limit child_index lines.(child_index).indent
-                  with
-                  | Some child, next ->
-                      let prefix =
-                        parse_inline ~file ~line:line.number ~column:rest_column
-                          ~byte:rest_byte rest
-                      in
-                      ( Decorated
-                          {
-                            value = child;
-                            anchor = prefix_anchor;
-                            tag = prefix_tag;
-                            span =
-                              Span.merge (node_span prefix) (node_span child);
-                          },
-                        next )
-                  | None, next ->
-                      ( parse_inline ~file ~line:line.number ~column:rest_column
-                          ~byte:rest_byte rest,
-                        next )
-                else
-                  ( parse_inline ~file ~line:line.number ~column:rest_column
-                      ~byte:rest_byte rest,
-                    if synthetic then !cursor else significant + 1 )
+                match line_before limit child_index with
+                | Some child_line when child_line.indent > indent ->
+                    let child, next = parse_block_at limit child_index in
+                    let prefix =
+                      parse_inline ~file ~line:line.number ~column:rest_column
+                        ~byte:rest_byte rest
+                    in
+                    ( Decorated
+                        {
+                          value = child;
+                          anchor = prefix_anchor;
+                          tag = prefix_tag;
+                          span = Span.merge (node_span prefix) (node_span child);
+                        },
+                      next )
+                | _ ->
+                    ( parse_inline ~file ~line:line.number ~column:rest_column
+                        ~byte:rest_byte rest,
+                      if synthetic then !cursor else significant + 1 )
               else if indicator_with_separation '?' rest then
                 let body =
                   if String.length rest = 1 then ""
@@ -1586,17 +1555,13 @@ let parse ?(file = "<memory>") source =
                 (indent + 3) (colon_byte + 2) rest
             else
               let child = next_significant lines limit (significant + 1) in
-              if child < limit && nested_mapping_value indent child then
-                match parse_block limit child lines.(child).indent with
-                | Some value, next -> (value, next)
-                | None, next ->
-                    ( parse_inline ~file ~line:line.number ~column:(indent + 2)
-                        ~byte:(colon_byte + 1) "",
-                      next )
-              else
-                ( parse_inline ~file ~line:line.number ~column:(indent + 2)
-                    ~byte:(colon_byte + 1) "",
-                  significant + 1 )
+              match line_before limit child with
+              | Some child_line when nested_mapping_value indent child_line ->
+                  parse_block_at limit child
+              | _ ->
+                  ( parse_inline ~file ~line:line.number ~column:(indent + 2)
+                      ~byte:(colon_byte + 1) "",
+                    significant + 1 )
           in
           let key_node =
             parse_inline ~file ~line:line.number ~column:(indent + 1)
@@ -1639,17 +1604,13 @@ let parse ?(file = "<memory>") source =
                 key_raw
             else
               let child = next_significant lines limit (significant + 1) in
-              if child < limit && nested_mapping_value indent child then
-                match parse_block limit child lines.(child).indent with
-                | Some value, next -> (value, next)
-                | None, next ->
-                    ( parse_inline ~file ~line:line.number
-                        ~column:(line.indent + 2) ~byte:(question_byte + 1) "",
-                      next )
-              else
-                ( parse_inline ~file ~line:line.number ~column:(line.indent + 2)
-                    ~byte:(question_byte + 1) "",
-                  significant + 1 )
+              match line_before limit child with
+              | Some child_line when nested_mapping_value indent child_line ->
+                  parse_block_at limit child
+              | _ ->
+                  ( parse_inline ~file ~line:line.number
+                      ~column:(line.indent + 2) ~byte:(question_byte + 1) "",
+                    significant + 1 )
           in
           let value_line = next_significant lines limit after_key in
           let key_node =
@@ -1695,19 +1656,16 @@ let parse ?(file = "<memory>") source =
                   (value, next, colon_span)
                 else
                   let child = next_significant lines limit (value_line + 1) in
-                  if child < limit && nested_mapping_value indent child then
-                    match parse_block limit child lines.(child).indent with
-                    | Some value, next -> (value, next, colon_span)
-                    | None, next ->
-                        ( parse_inline ~file ~line:candidate.number
-                            ~column:(indent + 2) ~byte:(colon_byte + 1) "",
-                          next,
-                          colon_span )
-                  else
-                    ( parse_inline ~file ~line:candidate.number
-                        ~column:(indent + 2) ~byte:(colon_byte + 1) "",
-                      value_line + 1,
-                      colon_span )
+                  match line_before limit child with
+                  | Some child_line when nested_mapping_value indent child_line
+                    ->
+                      let value, next = parse_block_at limit child in
+                      (value, next, colon_span)
+                  | _ ->
+                      ( parse_inline ~file ~line:candidate.number
+                          ~column:(indent + 2) ~byte:(colon_byte + 1) "",
+                        value_line + 1,
+                        colon_span )
               else
                 ( parse_inline ~file ~line:line.number
                     ~column:(String.length line.raw + 1)
@@ -1868,24 +1826,14 @@ let parse ?(file = "<memory>") source =
                     next_significant lines limit
                       (if synthetic then !cursor else !cursor + 1)
                   in
-                  if
-                    child_index < limit
-                    && nested_mapping_value indent child_index
-                  then
-                    match
-                      parse_block limit child_index lines.(child_index).indent
-                    with
-                    | Some child, next -> (child, next)
-                    | None, next ->
-                        ( parse_inline ~file ~line:line.number
-                            ~column:(indent + colon + 2)
-                            ~byte:(colon_byte + 1) "",
-                          next )
-                  else
-                    ( parse_inline ~file ~line:line.number
-                        ~column:(indent + colon + 2)
-                        ~byte:(colon_byte + 1) "",
-                      if synthetic then !cursor else !cursor + 1 )
+                  match line_before limit child_index with
+                  | Some child_line when nested_mapping_value indent child_line
+                    -> parse_block_at limit child_index
+                  | _ ->
+                      ( parse_inline ~file ~line:line.number
+                          ~column:(indent + colon + 2)
+                          ~byte:(colon_byte + 1) "",
+                        if synthetic then !cursor else !cursor + 1 )
                 else
                   let prefix_anchor, prefix_tag, prefix_length =
                     parse_prefixes rest
@@ -1906,36 +1854,27 @@ let parse ?(file = "<memory>") source =
                       next_significant lines limit
                         (if synthetic then !cursor else !cursor + 1)
                     in
-                    if
-                      child_index < limit
-                      && nested_mapping_value indent child_index
-                    then
-                      match
-                        parse_block limit child_index lines.(child_index).indent
-                      with
-                      | Some child, next ->
-                          let prefix =
-                            parse_inline ~file ~line:line.number
-                              ~column:value_column ~byte:value_byte rest
-                          in
-                          ( Decorated
-                              {
-                                value = child;
-                                anchor = prefix_anchor;
-                                tag = prefix_tag;
-                                span =
-                                  Span.merge (node_span prefix)
-                                    (node_span child);
-                              },
-                            next )
-                      | None, next ->
-                          ( parse_inline ~file ~line:line.number
-                              ~column:value_column ~byte:value_byte rest,
-                            next )
-                    else
-                      ( parse_inline ~file ~line:line.number
-                          ~column:value_column ~byte:value_byte rest,
-                        if synthetic then !cursor else !cursor + 1 )
+                    match line_before limit child_index with
+                    | Some child_line
+                      when nested_mapping_value indent child_line ->
+                        let child, next = parse_block_at limit child_index in
+                        let prefix =
+                          parse_inline ~file ~line:line.number
+                            ~column:value_column ~byte:value_byte rest
+                        in
+                        ( Decorated
+                            {
+                              value = child;
+                              anchor = prefix_anchor;
+                              tag = prefix_tag;
+                              span =
+                                Span.merge (node_span prefix) (node_span child);
+                            },
+                          next )
+                    | _ ->
+                        ( parse_inline ~file ~line:line.number
+                            ~column:value_column ~byte:value_byte rest,
+                          if synthetic then !cursor else !cursor + 1 )
                   else
                     let next_index =
                       if synthetic then !cursor else !cursor + 1
@@ -2061,7 +2000,8 @@ let parse ?(file = "<memory>") source =
         let body_start = next_significant lines stop start in
         let root, parsed_until =
           if body_start < stop then
-            parse_block stop body_start lines.(body_start).indent
+            let root, next = parse_block_at stop body_start in
+            (Some root, next)
           else
             ( Option.map
                 (fun line ->

@@ -33,9 +33,14 @@ after the first compatibility release.
 - Bind each mutation shard's canonical runner exit to its report, retain raw and
   reconciled evidence on every outcome, and aggregate complete failing campaigns
   without confusing evidence generation with publication success.
-- Run the pinned 402-case yaml-test-suite as a private-build mutation stage,
-  acquiring the immutable oracle once and distributing identical bytes to every
-  catalog shard without copying external fixtures into the analyzed snapshot.
+- Preserve mutation subprocess evidence as valid UTF-8 even when a mutant emits
+  hostile bytes, recording the retained raw SHA-256 and encoding-error count;
+  give every managed Dune command its own private build directory so concurrent
+  workers cannot turn lock contention into false mutant kills.
+- Export the pinned 402-case yaml-test-suite directly from immutable Git blobs
+  into 1,887 regular files, excluding symlink aliases and non-case content. Pin
+  and reauthenticate the canonical manifest tree SHA-256 before every worker
+  uses the oracle outside the analyzed snapshot.
 - Add reviewed semantic fingerprints over config, policy, shell adapters,
   graph/dataflow/capability analysis, and the whole verifier so broad behavioral
   regressions fail early in the mutation stage.

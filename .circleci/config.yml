@@ -17,7 +17,7 @@ jobs:
           command: python -B scripts/fetch_yaml_test_suite.py --allow-network
       - run:
           name: YAML conformance (402 cases)
-          command: opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-data-2022-01-17
+          command: opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-canonical-data-2022-01-17
       - run:
           name: Tooling contracts
           command: python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v && python -B scripts/verify_architecture.py

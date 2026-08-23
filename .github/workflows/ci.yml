@@ -38,7 +38,7 @@ jobs:
       - name: Fetch pinned yaml-test-suite
         run: python -B scripts/fetch_yaml_test_suite.py --allow-network
       - name: YAML conformance (402 cases)
-        run: opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-data-2022-01-17
+        run: opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-canonical-data-2022-01-17
       - name: Tooling contracts
         run: python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
       - name: License integrity

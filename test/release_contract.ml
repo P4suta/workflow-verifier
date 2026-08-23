@@ -9,6 +9,7 @@ let required =
     "../scripts/package_release.py";
     "../scripts/verify_release_version.py";
     "../scripts/verify_release_evidence.py";
+    "../scripts/fetch_yaml_test_suite.py";
     "../scripts/corpus_gate.py";
     "../scripts/prepare_corpus.py";
     "../scripts/measure_performance.py";
@@ -23,6 +24,7 @@ let required =
     "../scripts/dogfood_gate.py";
     "../.gitattributes";
     "../.ocaml-mutants.toml";
+    "../test/upstream/yaml-test-suite.toml";
     "../.github/workflows/ci.yml";
     "../.github/workflows/mutation.yml";
     "../.github/workflows/release.yml";
@@ -104,6 +106,7 @@ let () =
       "unittest discover";
       "verify_architecture.py";
       "fetch_yaml_test_suite.py --allow-network";
+      "yaml-test-suite-canonical-data-2022-01-17";
       "yaml_conformance.exe";
       "cargo fmt --manifest-path helpers/Cargo.toml --all -- --check";
       "cargo clippy --manifest-path helpers/Cargo.toml --workspace \
@@ -128,6 +131,30 @@ let () =
   then fail "macOS shim build must use an explicit POSIX shell";
   if Util.contains ~needle:"rust:1.85-bookworm sh" github then
     fail "Linux containment image must be pinned by digest";
+  let yaml_pin = read_required "test/upstream/yaml-test-suite.toml" in
+  List.iter
+    (fun evidence ->
+      if not (Util.contains ~needle:evidence yaml_pin) then
+        fail "yaml-test-suite pin omits immutable export evidence: %s" evidence)
+    [
+      "cases = 402";
+      "export_schema = 1";
+      "export_files = 1887";
+      "export_tree_sha256 = \
+       \"7d4d407d90a557f337770260d31f7e518551921e73aa56681b4516d947587158\"";
+    ];
+  let yaml_fetch = read_required "scripts/fetch_yaml_test_suite.py" in
+  List.iter
+    (fun contract ->
+      if not (Util.contains ~needle:contract yaml_fetch) then
+        fail "yaml-test-suite fetcher omits pin contract: %s" contract)
+    [
+      "PIN = load_pin(PIN_PATH)";
+      "expected_files=PIN.export_files";
+      "expected_tree_sha256=PIN.export_tree_sha256";
+    ];
+  if Util.contains ~needle:"6e6c296ae9c9d2d5c4134b4b64d01b29ac19ff6f" yaml_fetch
+  then fail "yaml-test-suite fetcher duplicates the commit pin authority";
   List.iter
     (fun (relative, required) ->
       let source = read_required relative in
@@ -155,7 +182,11 @@ let () =
         (fun command ->
           if not (Util.contains ~needle:command source) then
             fail "%s omits required YAML gate: %s" relative command)
-        [ "fetch_yaml_test_suite.py --allow-network"; "yaml_conformance.exe" ])
+        [
+          "fetch_yaml_test_suite.py --allow-network";
+          "yaml-test-suite-canonical-data-2022-01-17";
+          "yaml_conformance.exe";
+        ])
     [ ".gitlab-ci.yml"; "azure-pipelines.yml"; ".circleci/config.yml" ];
   let ci = read_required ".github/workflows/ci.yml" in
   if not (Util.contains ~needle:"workflow_call:" ci) then
@@ -180,13 +211,16 @@ let () =
       if not (Util.contains ~needle:required_surface mutation) then
         fail "mutation workflow omits required surface: %s" required_surface)
     [
-      "15d857152f91bc3bf960f9a6d8297ecfd5800f10";
+      "ff665225c110f8b71a40356bf69574b5c9a67413";
       "mkdir -p _build";
       "ocaml-mutants list --json";
       "ocaml-mutants run --fresh --json";
       "--destination _build/upstream/yaml-test-suite-data-2022-01-17";
+      "--export-destination";
+      "_build/upstream/yaml-test-suite-canonical-data-2022-01-17";
+      "--verify-export-only";
       "WORKFLOW_VERIFIER_YAML_SUITE: ${{ github.workspace \
-       }}/_build/upstream/yaml-test-suite-data-2022-01-17";
+       }}/_build/upstream/yaml-test-suite-canonical-data-2022-01-17";
       "verify_mutation_campaign.py";
       "mutation-shards-v1.json";
       "fromJSON(needs.catalog.outputs.matrix)";

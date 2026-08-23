@@ -21,7 +21,11 @@ every production change follows red/green/refactor.
 
 - The lossless YAML CST retains spans, comments, scalar style, anchors, aliases,
   merge keys, duplicate keys, malformed regions, and exact source bytes. The
-  pinned MIT `yaml-test-suite` release is exercised across all 402 cases.
+  typed upstream pin projects the immutable MIT `yaml-test-suite` Git tree into
+  402 real case directories and 1,887 regular files. Symlink aliases and
+  non-case files are never followed; every worker authenticates the canonical
+  manifest and its independently pinned tree SHA-256 before exercising all
+  cases.
 - Four provider compilers produce common trigger, parameter, workflow, stage,
   job, step, call, command, gate, resource, effect, and opaque nodes. Referenced
   local actions, reusable workflows, includes, child pipelines, and templates
