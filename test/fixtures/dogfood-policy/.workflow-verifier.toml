@@ -1,0 +1,10 @@
+version = 1
+persona = "audit"
+frontends = ["github"]
+offline = true
+
+[[rules]]
+id = "DOGFOOD-NET"
+kind = "forbid"
+selector.effect = "network"
+message = "dogfood policy denies network effects"

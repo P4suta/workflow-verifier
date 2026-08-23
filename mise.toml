@@ -101,3 +101,11 @@ run = "python -B scripts/generate_sbom.py --version ${WV_RELEASE_VERSION} --outp
 [tasks.check]
 description = "Run the local release-readiness sequence"
 depends = ["build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "install-check"]
+
+[tasks.dogfood]
+description = "Analyze workflow-verifier with its own audit persona"
+run = "opam exec -- dune exec workflow-verifier -- check --persona audit ."
+
+[tasks.dogfood-gate]
+description = "Verify complete static CLI and live OCI dogfood evidence"
+run = "python -B scripts/dogfood_gate.py verify --root _dogfood --output _build/dogfood-v1.json"

@@ -15,6 +15,7 @@ let required =
     "../scripts/verify_mutation_report.py";
     "../scripts/determinism_probe.py";
     "../scripts/compare_determinism.py";
+    "../scripts/dogfood_gate.py";
     "../.ocaml-mutants.toml";
     "../.github/workflows/ci.yml";
     "../.github/workflows/mutation.yml";
@@ -27,6 +28,7 @@ let required =
     "../docs/evaluation.md";
     "../corpus/README.md";
     "../performance/README.md";
+    "../schema/dogfood-v1.schema.json";
   ]
 
 let fail format =
@@ -93,6 +95,11 @@ let () =
       "--profile afl";
       "determinism_probe.py";
       "compare_determinism.py";
+      "dogfood_gate.py verify";
+      "dogfood_gate.py extract-evidence";
+      "sandbox run --backend oci:docker";
+      "WORKFLOW_VERIFIER_OCI_HELPER";
+      "rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4";
     ];
   if not (Util.contains ~needle:"run: sh helpers/macos/build-shim.sh" github)
   then fail "macOS shim build must use an explicit POSIX shell";
@@ -184,6 +191,7 @@ let () =
       "verify_mutation_report.py";
       "determinism_probe.py";
       "compare_determinism.py";
+      "dogfood_gate.py";
       "verify_release_version.py --allow-development";
     ];
   let readme =

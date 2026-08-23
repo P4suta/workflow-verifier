@@ -96,6 +96,69 @@ jobs:
                 -p workflow-verifier-linux-helper --all-targets -- --test-threads=1
             '
 
+  live-dogfood:
+    name: Live CLI and OCI dogfood
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+      - name: Build analyzer and isolated OCI adapter
+        run: |
+          opam install . --deps-only --with-test --yes
+          opam exec -- dune build bin/main.exe
+          cargo build --locked --manifest-path helpers/Cargo.toml \
+            -p workflow-verifier-oci-helper
+      - name: Prepare immutable OCI fixture
+        shell: bash
+        run: |
+          mkdir -p _dogfood _build/dogfood
+          cp -R test/fixtures/sandbox-live _build/dogfood/sandbox
+          image='rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4'
+          docker pull "$image"
+          image_id=$(docker image inspect "$image" --format '{{.Id}}')
+          python -B scripts/dogfood_gate.py prepare-image \
+            --config _build/dogfood/sandbox/.workflow-verifier.toml \
+            --image "$image_id"
+      - name: Exercise every public CLI surface and live Docker containment
+        shell: bash
+        env:
+          WORKFLOW_VERIFIER_OCI_HELPER: ${{ github.workspace }}/helpers/target/debug/workflow-verifier-oci-helper
+        run: |
+          analyzer='_build/default/bin/main.exe'
+          "$analyzer" check --persona audit --format json --output _dogfood/report.json .
+          "$analyzer" check --persona audit --format sarif --output _dogfood/report.sarif.json .
+          "$analyzer" explain WV-SUPPLY-001 test/fixtures/determinism > _dogfood/explain.txt
+          "$analyzer" graph --kind all --format json test/fixtures/determinism > _dogfood/graph.json
+          "$analyzer" graph --kind dataflow --format dot test/fixtures/determinism > _dogfood/graph.dot
+          "$analyzer" diff test/fixtures/determinism test/fixtures/sandbox-live > _dogfood/diff.json
+          "$analyzer" fix test/fixtures/determinism > _dogfood/fix.patch
+          "$analyzer" policy test test/fixtures/dogfood-policy > _dogfood/policy.json
+          "$analyzer" resolve test/fixtures/determinism > _dogfood/lock.json
+          "$analyzer" doctor --format json > _dogfood/doctor.json
+          "$analyzer" sandbox plan --backend oci:docker _build/dogfood/sandbox > _dogfood/plan.json
+          "$analyzer" sandbox run --backend oci:docker _build/dogfood/sandbox > _dogfood/run.json
+          python -B scripts/dogfood_gate.py extract-evidence \
+            --run _dogfood/run.json --output _dogfood/evidence.json
+          "$analyzer" sandbox replay _dogfood/evidence.json > _dogfood/replay.json
+          "$analyzer" sandbox audit _dogfood/plan.json _dogfood/evidence.json \
+            _build/dogfood/sandbox > _dogfood/audit.json
+          python -B scripts/dogfood_gate.py verify \
+            --root _dogfood --output _build/dogfood-v1.json
+      - name: Upload content-addressed dogfood evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dogfood-evidence
+          path: |
+            _dogfood/*
+            _build/dogfood-v1.json
+          if-no-files-found: warn
+
   coverage-guided-yaml-fuzz:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -191,6 +254,7 @@ jobs:
       - ocaml
       - native-helpers
       - linux-native-containment
+      - live-dogfood
       - coverage-guided-yaml-fuzz
       - determinism-probe
       - determinism-compare

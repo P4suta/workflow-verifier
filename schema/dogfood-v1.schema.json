@@ -1,0 +1,28 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/dogfood-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "name": { "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$", "type": "string" },
+          "size": { "minimum": 1, "type": "integer" }
+        },
+        "required": ["digest", "name", "size"],
+        "type": "object"
+      },
+      "maxItems": 14,
+      "minItems": 14,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "passed": { "const": true },
+    "schema": { "const": "dogfood-v1" }
+  },
+  "required": ["artifacts", "passed", "schema"],
+  "title": "workflow-verifier end-to-end dogfood result v1",
+  "type": "object"
+}

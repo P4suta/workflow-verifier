@@ -67,3 +67,6 @@ check: build test yaml-conformance tooling architecture helpers purity install-c
 
 dogfood:
     opam exec -- dune exec workflow-verifier -- check --persona audit .
+
+dogfood-gate root="_dogfood" output="_build/dogfood-v1.json":
+    python -B scripts/dogfood_gate.py verify --root {{root}} --output {{output}}

@@ -45,6 +45,8 @@ let schemas =
       "https://workflow-verifier.dev/schema/determinism-v1.json" );
     ( "determinism-comparison-v1.schema.json",
       "https://workflow-verifier.dev/schema/determinism-comparison-v1.json" );
+    ( "dogfood-v1.schema.json",
+      "https://workflow-verifier.dev/schema/dogfood-v1.json" );
   ]
 
 let schema_root =
