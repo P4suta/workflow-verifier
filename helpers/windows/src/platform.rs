@@ -1,17 +1,17 @@
 use std::collections::BTreeMap;
 use std::ffi::c_void;
-use std::fs::{File, OpenOptions};
+use std::fs::File;
 use std::io::{Read as _, Seek as _, SeekFrom};
 use std::os::windows::ffi::OsStrExt as _;
+use std::os::windows::io::AsRawHandle as _;
 use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
 use std::ptr::{null, null_mut};
 use std::sync::OnceLock;
 use std::time::{Duration, Instant};
 
 use windows_sys::Win32::Foundation::{
-    CloseHandle, ERROR_ALREADY_EXISTS, HANDLE, INVALID_HANDLE_VALUE, LocalFree, WAIT_OBJECT_0,
-    WAIT_TIMEOUT,
+    CloseHandle, ERROR_ALREADY_EXISTS, HANDLE, HANDLE_FLAG_INHERIT, INVALID_HANDLE_VALUE, LocalFree,
+    SetHandleInformation, WAIT_OBJECT_0, WAIT_TIMEOUT,
 };
 use windows_sys::Win32::Security::Authorization::{
     ConvertStringSecurityDescriptorToSecurityDescriptorW, EXPLICIT_ACCESS_W, GRANT_ACCESS,
@@ -41,8 +41,9 @@ use windows_sys::Win32::System::Threading::{
     CREATE_SUSPENDED, CREATE_UNICODE_ENVIRONMENT, CreateProcessAsUserW,
     DeleteProcThreadAttributeList, EXTENDED_STARTUPINFO_PRESENT, GetCurrentProcess,
     GetExitCodeProcess, InitializeProcThreadAttributeList, OpenProcessToken,
-    PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY, PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES,
-    PROCESS_INFORMATION, ResumeThread, STARTUPINFOEXW, TerminateProcess, UpdateProcThreadAttribute,
+    PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY, PROC_THREAD_ATTRIBUTE_HANDLE_LIST,
+    PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES, PROCESS_INFORMATION, ResumeThread,
+    STARTF_USESTDHANDLES, STARTUPINFOEXW, TerminateProcess, UpdateProcThreadAttribute,
     WaitForSingleObject,
 };
 use windows_sys::Win32::System::WindowsProgramming::PROCESS_CREATION_CHILD_PROCESS_OVERRIDE;
@@ -57,9 +58,6 @@ const PROFILE_NAME: &str = "OpenAI.workflow-verifier.sandbox.v1";
 const PROFILE_LABEL: &str = "workflow-verifier sandbox";
 const PROFILE_DESCRIPTION: &str = "Network-denied native workflow verification";
 const ERROR_ALREADY_EXISTS_HRESULT: i32 = 0x8007_00B7_u32.cast_signed();
-const BROKER_MODE: &str = "--workflow-verifier-appcontainer-broker-v1";
-const BROKER_OUTPUT: &str = "WORKFLOW_VERIFIER_BROKER_OUTPUT";
-const BROKER_WORKING_DIRECTORY: &str = "WORKFLOW_VERIFIER_BROKER_WORKING_DIRECTORY";
 
 static PROFILE_INITIALIZED: OnceLock<Result<(), String>> = OnceLock::new();
 
@@ -410,7 +408,7 @@ fn create_job(plan: &ValidatedPlan) -> Result<OwnedHandle, String> {
         | JOB_OBJECT_LIMIT_PROCESS_MEMORY
         | JOB_OBJECT_LIMIT_PROCESS_TIME;
     limits.BasicLimitInformation.ActiveProcessLimit =
-        u32::try_from(plan.limits.processes.saturating_add(1)).unwrap_or(u32::MAX);
+        u32::try_from(plan.limits.processes).unwrap_or(u32::MAX);
     limits.BasicLimitInformation.PerProcessUserTimeLimit =
         i64::try_from(plan.limits.cpu_seconds.saturating_mul(10_000_000)).unwrap_or(i64::MAX);
     limits.ProcessMemoryLimit =
@@ -436,14 +434,18 @@ struct AttributeList {
     initialized: bool,
     capabilities: Box<SECURITY_CAPABILITIES>,
     child_process_policy: Box<u32>,
+    inherited_handles: Vec<HANDLE>,
 }
 
 impl AttributeList {
-    fn new(sid: PSID) -> Result<Self, String> {
+    fn new(sid: PSID, inherited_handles: Vec<HANDLE>) -> Result<Self, String> {
+        if inherited_handles.is_empty() {
+            return Err("AppContainer standard handle list cannot be empty".to_owned());
+        }
         let mut bytes = 0;
         // SAFETY: the documented sizing call accepts a null list.
         unsafe {
-            InitializeProcThreadAttributeList(null_mut(), 2, 0, &raw mut bytes);
+            InitializeProcThreadAttributeList(null_mut(), 3, 0, &raw mut bytes);
         }
         if bytes == 0 {
             return Err(windows_error("InitializeProcThreadAttributeList sizing"));
@@ -459,9 +461,10 @@ impl AttributeList {
                 Reserved: 0,
             }),
             child_process_policy: Box::new(PROCESS_CREATION_CHILD_PROCESS_OVERRIDE),
+            inherited_handles,
         };
         // SAFETY: storage is suitably aligned and at least the requested size.
-        if unsafe { InitializeProcThreadAttributeList(value.raw(), 2, 0, &raw mut bytes) } == 0 {
+        if unsafe { InitializeProcThreadAttributeList(value.raw(), 3, 0, &raw mut bytes) } == 0 {
             return Err(windows_error("InitializeProcThreadAttributeList"));
         }
         value.initialized = true;
@@ -497,6 +500,22 @@ impl AttributeList {
         } == 0
         {
             return Err(windows_error("child-process policy attribute"));
+        }
+        // SAFETY: the vector is not resized after this call, so its handle array
+        // remains live and stable through the process-creation transaction.
+        if unsafe {
+            UpdateProcThreadAttribute(
+                value.raw(),
+                0,
+                PROC_THREAD_ATTRIBUTE_HANDLE_LIST as usize,
+                value.inherited_handles.as_ptr().cast(),
+                std::mem::size_of_val(value.inherited_handles.as_slice()),
+                null_mut(),
+                null(),
+            )
+        } == 0
+        {
+            return Err(windows_error("standard handle-list attribute"));
         }
         Ok(value)
     }
@@ -551,10 +570,7 @@ fn command_line(arguments: &[String]) -> Result<Vec<u16>, String> {
     )
 }
 
-fn environment_block(
-    request: &NativeStepRequest<'_>,
-    output_path: &Path,
-) -> Result<Vec<u16>, String> {
+fn environment_block(request: &NativeStepRequest<'_>) -> Result<Vec<u16>, String> {
     let mut environment = BTreeMap::<String, String>::new();
     for name in [
         "ALLUSERSPROFILE",
@@ -599,20 +615,42 @@ fn environment_block(
         "TMP".to_owned(),
         request.scratch_root.to_string_lossy().into_owned(),
     );
-    environment.insert(
-        BROKER_OUTPUT.to_owned(),
-        output_path.to_string_lossy().into_owned(),
-    );
-    environment.insert(
-        BROKER_WORKING_DIRECTORY.to_owned(),
-        request.working_directory.to_string_lossy().into_owned(),
-    );
     let mut block = Vec::new();
     for (name, value) in environment {
         block.extend(wide(format!("{name}={value}"))?);
     }
     block.push(0);
     Ok(block)
+}
+
+struct InheritGuard(HANDLE);
+
+impl InheritGuard {
+    fn new(file: &File) -> Result<Self, String> {
+        let handle: HANDLE = file.as_raw_handle().cast();
+        // SAFETY: the file owns a live kernel handle. The handle list on the
+        // matching process creation prevents unrelated inheritable handles from
+        // crossing the sandbox boundary.
+        if unsafe { SetHandleInformation(handle, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT) } == 0 {
+            Err(windows_error("mark standard handle inheritable"))
+        } else {
+            Ok(Self(handle))
+        }
+    }
+
+    fn raw(&self) -> HANDLE {
+        self.0
+    }
+}
+
+impl Drop for InheritGuard {
+    fn drop(&mut self) {
+        // SAFETY: the original file still owns this handle. Clearing inheritance
+        // narrows the capability immediately after CreateProcessAsUserW returns.
+        unsafe {
+            SetHandleInformation(self.0, HANDLE_FLAG_INHERIT, 0);
+        }
+    }
 }
 
 struct OutputFile {
@@ -638,6 +676,12 @@ impl OutputFile {
             .map_err(|error| error.to_string())
     }
 
+    fn file(&self) -> &File {
+        self.file
+            .as_ref()
+            .expect("output file is open while owned")
+    }
+
     fn read(&mut self, limit: u64) -> Result<Vec<u8>, String> {
         let file = self.file.as_mut().expect("output file is open while owned");
         file.seek(SeekFrom::Start(0))
@@ -653,66 +697,6 @@ impl OutputFile {
 impl Drop for OutputFile {
     fn drop(&mut self) {
         drop(self.file.take());
-        let _ = std::fs::remove_file(&self.path);
-    }
-}
-
-struct BrokerExecutable {
-    path: PathBuf,
-}
-
-impl BrokerExecutable {
-    fn create(app_container_sid: PSID) -> Result<Self, String> {
-        let executable = broker_source()?;
-        let (path, mut destination) = reserve_temp_file("broker", ".exe")?;
-        let copy_result = File::open(executable)
-            .map_err(|error| error.to_string())
-            .and_then(|mut source| {
-                std::io::copy(&mut source, &mut destination)
-                    .map(|_| ())
-                    .map_err(|error| error.to_string())
-            })
-            .and_then(|()| destination.sync_all().map_err(|error| error.to_string()));
-        drop(destination);
-        if let Err(error) = copy_result {
-            let _ = std::fs::remove_file(&path);
-            return Err(error);
-        }
-        if let Err(error) = grant_path(
-            &path,
-            app_container_sid,
-            FILE_GENERIC_READ | FILE_GENERIC_EXECUTE,
-        ) {
-            let _ = std::fs::remove_file(&path);
-            return Err(error);
-        }
-        Ok(Self { path })
-    }
-}
-
-fn broker_source() -> Result<PathBuf, String> {
-    let current = std::env::current_exe().map_err(|error| error.to_string())?;
-    let expected = "workflow-verifier-windows-helper.exe";
-    if current.file_name().and_then(std::ffi::OsStr::to_str) == Some(expected) {
-        return Ok(current);
-    }
-    if cfg!(debug_assertions) {
-        let mut candidates = Vec::new();
-        if let Some(parent) = current.parent() {
-            candidates.push(parent.join(expected));
-            if let Some(grandparent) = parent.parent() {
-                candidates.push(grandparent.join(expected));
-            }
-        }
-        if let Some(candidate) = candidates.into_iter().find(|path| path.is_file()) {
-            return Ok(candidate);
-        }
-    }
-    Err("the signed workflow-verifier Windows helper cannot locate its broker image".to_owned())
-}
-
-impl Drop for BrokerExecutable {
-    fn drop(&mut self) {
         let _ = std::fs::remove_file(&self.path);
     }
 }
@@ -789,39 +773,40 @@ fn verify_restricted_appcontainer(process: HANDLE) -> Result<(), String> {
 fn run_process(
     app_container_sid: PSID,
     token: HANDLE,
-    broker: &Path,
     request: &NativeStepRequest<'_>,
 ) -> Result<ProcessObservation, String> {
     let job = create_job(request.plan)?;
     let mut output = OutputFile::create()?;
-    set_low_integrity_label(&output.path, false)?;
-    grant_path(&output.path, app_container_sid, FILE_ALL_ACCESS)?;
-    let mut attributes = AttributeList::new(app_container_sid)?;
+    let input = File::open("NUL").map_err(|error| format!("open null standard input: {error}"))?;
+    let output_inherit = InheritGuard::new(output.file())?;
+    let input_inherit = InheritGuard::new(&input)?;
+    let mut attributes = AttributeList::new(
+        app_container_sid,
+        vec![input_inherit.raw(), output_inherit.raw()],
+    )?;
     let mut startup = STARTUPINFOEXW::default();
     startup.StartupInfo.cb =
         u32::try_from(std::mem::size_of::<STARTUPINFOEXW>()).expect("startup info fits u32");
+    startup.StartupInfo.dwFlags = STARTF_USESTDHANDLES;
+    startup.StartupInfo.hStdInput = input_inherit.raw();
+    startup.StartupInfo.hStdOutput = output_inherit.raw();
+    startup.StartupInfo.hStdError = output_inherit.raw();
     startup.lpAttributeList = attributes.raw();
     let mut process = PROCESS_INFORMATION::default();
-    let executable = wide(broker.as_os_str())?;
-    let broker_arguments = std::iter::once(broker.to_string_lossy().into_owned())
-        .chain(std::iter::once(BROKER_MODE.to_owned()))
-        .chain(std::iter::once("--".to_owned()))
-        .chain(request.step.argv.iter().cloned())
-        .collect::<Vec<_>>();
-    let mut command_line = command_line(&broker_arguments)?;
-    let environment = environment_block(request, &output.path)?;
+    let mut command_line = command_line(&request.step.argv)?;
+    let environment = environment_block(request)?;
     let working_directory = wide(request.working_directory.as_os_str())?;
     // SAFETY: all pointers refer to live mutable buffers for the duration of
-    // CreateProcessAsUserW. The broker opens its ACL-scoped evidence file itself;
-    // no host handle crosses the AppContainer boundary.
+    // CreateProcessAsUserW. Only null input and the bounded evidence handle
+    // named in PROC_THREAD_ATTRIBUTE_HANDLE_LIST cross the boundary.
     let created = unsafe {
         CreateProcessAsUserW(
             token,
-            executable.as_ptr(),
+            null(),
             command_line.as_mut_ptr(),
             null(),
             null(),
-            0,
+            1,
             CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT | EXTENDED_STARTUPINFO_PRESENT,
             environment.as_ptr().cast(),
             working_directory.as_ptr(),
@@ -829,8 +814,15 @@ fn run_process(
             &raw mut process,
         )
     };
-    if created == 0 {
-        return Err(windows_error("CreateProcessAsUserW"));
+    let creation_error = if created == 0 {
+        Some(windows_error("CreateProcessAsUserW"))
+    } else {
+        None
+    };
+    drop(input_inherit);
+    drop(output_inherit);
+    if let Some(error) = creation_error {
+        return Err(error);
     }
     let process_handle = OwnedHandle::new(process.hProcess, "process handle")?;
     let thread_handle = OwnedHandle::new(process.hThread, "thread handle")?;
@@ -902,7 +894,6 @@ fn run_process(
 struct WindowsSandbox {
     sid: Option<AppContainerSid>,
     token: Option<OwnedHandle>,
-    broker: Option<BrokerExecutable>,
 }
 
 impl WindowsSandbox {
@@ -910,7 +901,6 @@ impl WindowsSandbox {
         Self {
             sid: None,
             token: None,
-            broker: None,
         }
     }
 }
@@ -927,12 +917,10 @@ impl NativeSandbox for WindowsSandbox {
         )?;
         label_writable_tree(request.scratch_root)?;
         grant_tree(request.scratch_root, sid.raw(), FILE_ALL_ACCESS)?;
-        let broker = BrokerExecutable::create(sid.raw())?;
         // Prove Job Object limits can be committed before emitting attestations.
         drop(create_job(request.plan)?);
         self.sid = Some(sid);
         self.token = Some(token);
-        self.broker = Some(broker);
         Ok(())
     }
 
@@ -941,67 +929,12 @@ impl NativeSandbox for WindowsSandbox {
             .sid
             .as_ref()
             .ok_or_else(|| "Windows sandbox was not prepared".to_owned())?;
-        let broker = self
-            .broker
-            .as_ref()
-            .ok_or_else(|| "Windows sandbox was not prepared".to_owned())?;
         let token = self
             .token
             .as_ref()
             .ok_or_else(|| "Windows sandbox was not prepared".to_owned())?;
-        run_process(sid.raw(), token.raw(), &broker.path, request)
+        run_process(sid.raw(), token.raw(), request)
     }
-}
-
-fn run_broker(arguments: &[String]) -> Result<i32, String> {
-    verify_restricted_appcontainer(unsafe { GetCurrentProcess() })?;
-    let [mode, separator, command @ ..] = arguments else {
-        return Err("invalid AppContainer broker arguments".to_owned());
-    };
-    if mode != BROKER_MODE || separator != "--" || command.is_empty() {
-        return Err("invalid AppContainer broker arguments".to_owned());
-    }
-    let output_path = std::env::var_os(BROKER_OUTPUT)
-        .map(PathBuf::from)
-        .ok_or_else(|| "AppContainer broker output path is missing".to_owned())?;
-    let working_directory = std::env::var_os(BROKER_WORKING_DIRECTORY)
-        .map(PathBuf::from)
-        .ok_or_else(|| "AppContainer broker working directory is missing".to_owned())?;
-    let output = OpenOptions::new()
-        .write(true)
-        .truncate(true)
-        .open(output_path)
-        .map_err(|error| format!("open broker output: {error}"))?;
-    let error_output = output
-        .try_clone()
-        .map_err(|error| format!("clone broker output: {error}"))?;
-    let (program, child_arguments) = command
-        .split_first()
-        .ok_or_else(|| "AppContainer broker command is empty".to_owned())?;
-    let status = Command::new(program)
-        .args(child_arguments)
-        .current_dir(working_directory)
-        .env_remove(BROKER_OUTPUT)
-        .env_remove(BROKER_WORKING_DIRECTORY)
-        .stdin(Stdio::null())
-        .stdout(Stdio::from(output))
-        .stderr(Stdio::from(error_output))
-        .status()
-        .map_err(|error| format!("launch contained workload: {error}"))?;
-    Ok(status.code().unwrap_or(1))
-}
-
-pub(super) fn broker_main(arguments: &[String]) -> Option<i32> {
-    if arguments.first().map(String::as_str) != Some(BROKER_MODE) {
-        return None;
-    }
-    Some(match run_broker(arguments) {
-        Ok(code) => code,
-        Err(error) => {
-            eprintln!("AppContainer broker failure: {error}");
-            126
-        }
-    })
 }
 
 pub(super) fn probe() -> Vec<String> {

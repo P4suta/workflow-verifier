@@ -154,7 +154,7 @@ fn hex_encode(value: &[u8]) -> String {
 }
 
 fn hex_decode(value: &str) -> Result<Vec<u8>, String> {
-    if value.len() % 2 != 0 {
+    if value.len() & 1 != 0 {
         return Err("output_hex must contain complete bytes".to_owned());
     }
     let bytes = value.as_bytes();

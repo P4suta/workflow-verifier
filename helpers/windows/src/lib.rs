@@ -59,24 +59,6 @@ pub fn launch(plan: &ValidatedPlan, source_root: &str) -> Result<RunResult, Laun
     platform_launch(plan, Path::new(source_root), &descriptor)
 }
 
-/// Handles the private broker mode only when Windows confirms the process is
-/// already running under the expected restricted AppContainer token.
-#[doc(hidden)]
-#[must_use]
-pub fn broker_main(arguments: &[String]) -> Option<i32> {
-    platform_broker_main(arguments)
-}
-
-#[cfg(target_os = "windows")]
-fn platform_broker_main(arguments: &[String]) -> Option<i32> {
-    platform::broker_main(arguments)
-}
-
-#[cfg(not(target_os = "windows"))]
-fn platform_broker_main(_arguments: &[String]) -> Option<i32> {
-    None
-}
-
 #[cfg(target_os = "windows")]
 fn platform_launch(
     plan: &ValidatedPlan,
