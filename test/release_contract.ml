@@ -8,8 +8,10 @@ let required =
     "../scripts/generate_sbom.py";
     "../scripts/package_release.py";
     "../scripts/verify_release_version.py";
+    "../scripts/verify_release_evidence.py";
     "../scripts/corpus_gate.py";
     "../scripts/measure_performance.py";
+    "../scripts/measure_performance_pair.py";
     "../scripts/performance_gate.py";
     "../scripts/run_afl_fuzz.py";
     "../scripts/verify_mutation_report.py";
@@ -30,6 +32,8 @@ let required =
     "../performance/README.md";
     "../performance/suite-v1.json";
     "../schema/dogfood-v1.schema.json";
+    "../schema/release-evidence-v1.schema.json";
+    "../release-evidence/README.md";
   ]
 
 let fail format =
@@ -102,6 +106,8 @@ let () =
       "WORKFLOW_VERIFIER_OCI_HELPER";
       "rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4";
       "Performance ${{ matrix.platform }}";
+      "measure_performance_pair.py";
+      "A-B-B-A-A-B";
       "--samples 21";
       "performance_gate.py";
       "- performance-regression";
@@ -179,7 +185,10 @@ let () =
       "artifact-metadata: write";
       "uses: ./.github/workflows/ci.yml";
       "uses: ./.github/workflows/mutation.yml";
-      "needs: [build, mutation, quality]";
+      "verify_release_evidence.py";
+      "release-evidence/release-evidence-v1.json";
+      "cosign verify-blob";
+      "needs: [build, mutation, quality, release_evidence]";
     ];
   let just = read_required "justfile" and mise = read_required "mise.toml" in
   List.iter
@@ -191,6 +200,7 @@ let () =
     [
       "corpus_gate.py";
       "measure_performance.py";
+      "measure_performance_pair.py";
       "performance_gate.py";
       "run_afl_fuzz.py";
       "verify_mutation_report.py";
@@ -198,6 +208,7 @@ let () =
       "compare_determinism.py";
       "dogfood_gate.py";
       "verify_release_version.py --allow-development";
+      "verify_release_evidence.py";
     ];
   let readme =
     match Util.read_file (Filename.concat source_root "README.md") with

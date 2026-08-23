@@ -14,10 +14,13 @@ Sigstore identity, creates GitHub build-provenance and SBOM attestations, and
 then creates the immutable GitHub release.
 
 The publish job depends on the complete platform build matrix, the reusable
-mutation workflow, and the reusable ordinary CI workflow. The latter exercises
-both OCaml versions, all native helpers, delegated Linux attack fixtures, a
-bounded AFL campaign, and byte-identical determinism probes on four release
-platforms. A tag therefore cannot bypass the ordinary quality gates.
+mutation workflow, the reusable ordinary CI workflow, and the external-evidence
+job. The latter verifies the digest-bound corpus and four-platform performance
+reports and cryptographically verifies the independent reviewer's report before
+publication is eligible. Ordinary CI exercises both OCaml versions, all native
+helpers, delegated Linux attack fixtures, a bounded AFL campaign, and
+byte-identical determinism probes on four release platforms. A tag therefore
+cannot bypass either live quality gates or reviewed evidence.
 Every third-party action and container image is pinned by immutable digest.
 
 Before tagging:
@@ -32,10 +35,13 @@ Before tagging:
 5. Complete the independent review record in
    [security-review.md](security-review.md), update the changelog, and remove
    the development status notice only after every publication gate closes.
-6. Verify the exact tag identity:
+6. Compose `release-evidence/release-evidence-v1.json`, include every referenced
+   report and Sigstore bundle below that directory, and verify the exact
+   candidate identity:
 
 ```text
 python -B scripts/verify_release_version.py --tag vX.Y.Z
+just release-evidence COMMIT_SHA vX.Y.Z
 ```
 
 The evidence formats and local commands are specified in

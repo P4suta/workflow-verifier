@@ -45,7 +45,9 @@ automated gates are present, but publication additionally requires reviewed
 external evidence: the license-clear 400-repository corpus, an approved
 platform performance baseline, a completed independent security review, and
 successful mutation/native-containment runs on release infrastructure. Missing
-evidence is never represented as a passing result.
+evidence is never represented as a passing result. The protected tag workflow
+requires a commit- and tag-bound `release-evidence-v1` bundle and verifies the
+external review's Sigstore signature before its publish job can run.
 
 ## Quick start
 

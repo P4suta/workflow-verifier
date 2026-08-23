@@ -16,3 +16,9 @@ downloaded by `check`. Place reviewed snapshots under `evaluation/corpus`, their
 reports under `evaluation/reports`, and the signed-off manifest at
 `evaluation/corpus-v1.json`; then run `just corpus`. Network acquisition and
 license approval remain explicit release-preparation steps.
+
+Copy the resulting passing `corpus-report-v1.json` into the candidate's
+`release-evidence/` directory and bind its exact SHA-256 digest and review URL
+in `release-evidence-v1.json`. The protected tag workflow independently checks
+all provider counts, precision, recall, known-vulnerability coverage, nested
+diagnostic results, and the digest before publication.

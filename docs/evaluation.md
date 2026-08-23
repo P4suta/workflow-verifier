@@ -25,6 +25,14 @@ The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,
 and partial source coverage. They write outputs atomically.
 
+The externally reviewed publication inputs are composed by
+`release-evidence-v1`. Its manifest binds the release tag and exact commit to
+the corpus report, four platform performance comparisons, and the independent
+review report and Sigstore bundle. `scripts/verify_release_evidence.py` verifies
+the nested proof states, recomputes every digest, rejects a performance
+self-comparison, and exposes only validated paths and certificate identities to
+the release workflow. Pinned Cosign then verifies the review signature.
+
 ## Deliberately external inputs
 
 The public repository does not manufacture a 400-repository result or a
@@ -35,5 +43,7 @@ an `Unknown` converted into success.
 
 Local entry points are exposed by `just corpus`, `just performance-measure`,
 `just performance-gate`, `just mutation-gate`, `just determinism-probe`, and
-`just determinism-compare`. Equivalent `mise` tasks use the conventional
-`evaluation/`, `performance/`, and `_build/` paths.
+`just determinism-compare`. `just release-evidence REVISION TAG` closes the
+external-evidence composition gate. Equivalent `mise` tasks use the
+conventional `evaluation/`, `performance/`, `_build/`, and `release-evidence/`
+paths.

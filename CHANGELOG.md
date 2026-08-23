@@ -27,6 +27,9 @@ after the first compatibility release.
   400-repository precision/recall tooling, performance regression tooling,
   four-platform byte comparison, deterministic packages, SPDX SBOM/checksums,
   signing, and provenance attestations.
+- Counterbalance baseline and candidate performance batches to remove hosted
+  runner order bias, and require a commit-bound external evidence manifest plus
+  a verified independent-review Sigstore identity before publication.
 - Make subcommand help side-effect free, make tag publication depend on the full
   reusable CI and mutation gates, and eliminate parallel Windows AppContainer
   temporary-resource collisions with atomic runtime reservations.

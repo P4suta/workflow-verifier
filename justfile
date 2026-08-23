@@ -37,6 +37,9 @@ corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" repo
 performance-measure suite="performance/suite-v1.json" revision output="_build/performance-current.json" samples="7":
     python -B scripts/measure_performance.py --suite {{suite}} --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
 
+performance-pair baseline_workspace baseline_revision current_revision suite="performance/suite-v1.json" output_dir="_build/performance-pair" samples="21":
+    python -B scripts/measure_performance_pair.py --suite {{suite}} --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
+
 performance-gate baseline current="_build/performance-current.json" output="_build/performance-comparison-v1.json":
     python -B scripts/performance_gate.py --baseline {{baseline}} --current {{current}} --output {{output}}
 
@@ -49,6 +52,9 @@ determinism-compare linux windows macos_arm64 macos_x86_64 output="_build/determ
 
 version:
     python -B scripts/verify_release_version.py --allow-development
+
+release-evidence revision tag manifest="release-evidence/release-evidence-v1.json":
+    python -B scripts/verify_release_evidence.py --manifest {{manifest}} --revision {{revision}} --tag {{tag}}
 
 architecture:
     python -B scripts/verify_architecture.py

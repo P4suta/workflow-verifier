@@ -20,6 +20,8 @@ naming refactor while the same test remains green.
 | Robustness | AFL seed smoke and malformed corpus | Nonempty executions, no crash or hang | Harness contains no production fallback |
 | Mutation | Incomplete or vacuous report is accepted | Every configured core prefix was actually mutated | Reviewed equivalents are explicit evidence |
 | Evaluation | Bad precision/recall/performance fixture passes | 95%/100% and 10% gates reject it | Inputs are immutable and machine-readable |
+| Performance experiment | Sequential runner drift looks like a code regression | A-B-B-A-A-B batches retain 21 samples per revision | Measurement order is owned by the pair orchestrator; the comparison gate is unchanged |
+| Publication evidence | Missing or self-asserted review permits a tag publish | Candidate-bound corpus, four platforms, and external Sigstore identity pass | Evidence composition is separate from build and publish authority |
 | Determinism | Platform artifacts differ by newline/path/order | Exact report, lock, and fix bytes match | Canonicalization stays at ownership boundary |
 | Native temporary resources | Parallel AppContainer tests collide on a clock-derived path | Atomic reservations and parallel probes pass | Allocation lives in helper runtime, containment stays backend-owned |
 | Block scalar isolation | Markdown link text in a folded action description is misread as a flow collection | The production-shaped metadata has only its genuine binary-implementation `Unknown` | One block-header classifier owns both validation and payload boundaries |

@@ -200,22 +200,20 @@ jobs:
         run: |
           mkdir -p _performance-base/scripts
           cp scripts/benchmark_fixture.py _performance-base/scripts/benchmark_fixture.py
-      - name: Measure identical cold, warm, and incremental workloads
+      - name: Counterbalance identical workloads (A-B-B-A-A-B)
         shell: bash
         run: |
           base_revision=$(git -C _performance-base rev-parse HEAD)
           head_revision=$(git rev-parse HEAD)
           mkdir -p "_performance-evidence/${{ matrix.platform }}"
-          python -B scripts/measure_performance.py \
+          python -B scripts/measure_performance_pair.py \
             --suite performance/suite-v1.json \
-            --workspace _performance-base \
-            --revision "$base_revision" --samples 21 \
-            --output "_performance-evidence/${{ matrix.platform }}/baseline.json"
-          python -B scripts/measure_performance.py \
-            --suite performance/suite-v1.json \
-            --workspace . \
-            --revision "$head_revision" --samples 21 \
-            --output "_performance-evidence/${{ matrix.platform }}/current.json"
+            --baseline-workspace _performance-base \
+            --baseline-revision "$base_revision" \
+            --current-workspace . \
+            --current-revision "$head_revision" \
+            --samples 21 \
+            --output-dir "_performance-evidence/${{ matrix.platform }}"
           python -B scripts/performance_gate.py \
             --baseline "_performance-evidence/${{ matrix.platform }}/baseline.json" \
             --current "_performance-evidence/${{ matrix.platform }}/current.json" \
