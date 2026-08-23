@@ -20,8 +20,7 @@ use windows_sys::Win32::Security::Authorization::{
     TRUSTEE_W,
 };
 use windows_sys::Win32::Security::Isolation::{
-    CreateAppContainerProfile, DeriveAppContainerSidFromAppContainerName,
-    GetAppContainerFolderPath,
+    CreateAppContainerProfile, DeriveAppContainerSidFromAppContainerName, GetAppContainerFolderPath,
 };
 use windows_sys::Win32::Security::{
     ACL, CONTAINER_INHERIT_ACE, CreateRestrictedToken, DACL_SECURITY_INFORMATION,
@@ -302,12 +301,7 @@ fn restricted_token() -> Result<OwnedHandle, String> {
     }
 }
 
-fn update_path_acl(
-    path: &Path,
-    sid: PSID,
-    permissions: u32,
-    deny: bool,
-) -> Result<(), String> {
+fn update_path_acl(path: &Path, sid: PSID, permissions: u32, deny: bool) -> Result<(), String> {
     let path = wide(path.as_os_str())?;
     let mut old_acl: *mut ACL = null_mut();
     let mut descriptor: PSECURITY_DESCRIPTOR = null_mut();
@@ -374,12 +368,7 @@ fn deny_path(path: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
     update_path_acl(path, sid, permissions, true)
 }
 
-fn update_tree_acl(
-    root: &Path,
-    sid: PSID,
-    permissions: u32,
-    deny: bool,
-) -> Result<(), String> {
+fn update_tree_acl(root: &Path, sid: PSID, permissions: u32, deny: bool) -> Result<(), String> {
     let metadata = std::fs::symlink_metadata(root).map_err(|error| error.to_string())?;
     if metadata.file_type().is_symlink() {
         return Err(format!(
@@ -637,6 +626,13 @@ impl Drop for AttributeList {
 }
 
 fn quote_argument(argument: &str) -> String {
+    if !argument.is_empty()
+        && !argument
+            .chars()
+            .any(|character| matches!(character, ' ' | '\t' | '"'))
+    {
+        return argument.to_owned();
+    }
     let mut quoted = String::from("\"");
     let mut backslashes = 0;
     for character in argument.chars() {
@@ -1129,11 +1125,28 @@ mod tests {
 
     #[test]
     fn windows_command_line_quotes_spaces_quotes_and_trailing_slashes() {
-        assert_eq!(quote_argument("plain"), "\"plain\"");
+        assert_eq!(quote_argument("plain"), "plain");
+        assert_eq!(quote_argument(""), "\"\"");
         assert_eq!(quote_argument("two words"), "\"two words\"");
         assert_eq!(quote_argument("a\\\"b"), "\"a\\\\\\\"b\"");
-        assert_eq!(quote_argument("tail\\"), "\"tail\\\\\"");
+        assert_eq!(quote_argument("tail\\"), "tail\\");
         assert!(command_line(&[]).is_err());
+    }
+
+    #[test]
+    fn cmd_command_line_keeps_switches_unquoted() {
+        let encoded = command_line(&[
+            "cmd.exe".to_owned(),
+            "/D".to_owned(),
+            "/S".to_owned(),
+            "/C".to_owned(),
+            "echo artifact>artifact.txt".to_owned(),
+        ])
+        .expect("encode command line");
+        assert_eq!(
+            String::from_utf16(&encoded[..encoded.len() - 1]).expect("UTF-16 command line"),
+            "cmd.exe /D /S /C \"echo artifact>artifact.txt\""
+        );
     }
 
     #[test]

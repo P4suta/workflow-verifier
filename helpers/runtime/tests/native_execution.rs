@@ -164,7 +164,10 @@ impl NativeSandbox for LocatedSandbox {
     }
 
     fn prepare(&mut self, request: &NativeSandboxRequest<'_>) -> Result<(), String> {
-        assert_eq!(request.source_root.parent(), Some(self.storage_root.as_path()));
+        assert_eq!(
+            request.source_root.parent(),
+            Some(self.storage_root.as_path())
+        );
         assert_eq!(
             request.scratch_root.parent(),
             Some(self.storage_root.as_path())
