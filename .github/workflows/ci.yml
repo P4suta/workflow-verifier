@@ -132,7 +132,7 @@ jobs:
           analyzer='_build/default/bin/main.exe'
           "$analyzer" check --persona audit --format json --output _dogfood/report.json .
           "$analyzer" check --persona audit --format sarif --output _dogfood/report.sarif.json .
-          "$analyzer" explain WV-SUPPLY-001 test/fixtures/determinism > _dogfood/explain.txt
+          "$analyzer" explain WV-SUPPLY-001 test/fixtures/github/workflow.yml > _dogfood/explain.txt
           "$analyzer" graph --kind all --format json test/fixtures/determinism > _dogfood/graph.json
           "$analyzer" graph --kind dataflow --format dot test/fixtures/determinism > _dogfood/graph.dot
           "$analyzer" diff test/fixtures/determinism test/fixtures/sandbox-live > _dogfood/diff.json
