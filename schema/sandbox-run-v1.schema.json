@@ -1,0 +1,41 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/sandbox-run-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence": { "$ref": "evidence-v1.json" },
+    "outcome": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": { "state": { "const": "completed" } },
+          "required": ["state"],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "code": { "type": ["integer", "null"] },
+            "state": { "const": "step_failed" },
+            "step": { "minLength": 1, "type": "string" }
+          },
+          "required": ["code", "state", "step"],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "state": { "enum": ["timed_out", "output_limit_exceeded"] },
+            "step": { "minLength": 1, "type": "string" }
+          },
+          "required": ["state", "step"],
+          "type": "object"
+        }
+      ]
+    },
+    "schema": { "const": "sandbox-run-v1" }
+  },
+  "required": ["evidence", "outcome", "schema"],
+  "title": "workflow-verifier sandbox run result v1",
+  "type": "object"
+}

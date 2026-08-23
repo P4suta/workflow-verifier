@@ -1,0 +1,19 @@
+[package]
+name = "workflow-verifier-macos-helper"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "workflow-verifier-macos-helper"
+path = "src/main.rs"
+
+[dependencies]
+workflow-verifier-helper-runtime = { path = "../runtime" }
+workflow-verifier-runner-protocol = { path = "../protocol" }
+
+[lints]
+workspace = true

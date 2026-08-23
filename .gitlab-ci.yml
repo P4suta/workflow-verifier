@@ -1,0 +1,19 @@
+stages: [verify]
+
+variables:
+  OPAMYES: "true"
+
+workflow-verifier:
+  stage: verify
+  script:
+    - opam install . --deps-only --with-test
+    - opam exec -- dune build @all
+    - opam exec -- dune runtest --force
+    - python -B scripts/fetch_yaml_test_suite.py --allow-network
+    - opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-data-2022-01-17
+    - python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
+    - python -B scripts/verify_architecture.py
+    - cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
+    - cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
+    - cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
+    - python -B scripts/verify_pure_ocaml.py

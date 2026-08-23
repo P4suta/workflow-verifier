@@ -1,0 +1,17 @@
+(library
+ (name wv_application)
+ (wrapped false)
+ (modules
+  helper_client
+  process_transport
+  curl_transport
+  resolver_transport
+  cli)
+ (libraries
+  wv_foundation
+  wv_syntax
+  wv_domain
+  wv_frontend
+  wv_verifier
+  wv_product
+  wv_sandbox))

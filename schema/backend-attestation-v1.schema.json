@@ -1,0 +1,23 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/backend-attestation-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "available": { "type": "boolean" },
+    "controls": {
+      "items": {
+        "enum": ["source_read_only", "scratch_overlay", "network_deny", "process_isolation", "resource_limits", "secret_redaction", "namespace", "seccomp", "landlock", "cgroup_v2", "app_container", "restricted_token", "job_object", "app_sandbox", "virtual_machine"]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "id": { "minLength": 1, "type": "string" },
+    "platform": { "minLength": 1, "type": "string" },
+    "reasons": { "items": { "minLength": 1, "type": "string" }, "type": "array", "uniqueItems": true },
+    "schema": { "const": "backend-attestation-v1" },
+    "version": { "minLength": 1, "type": "string" }
+  },
+  "required": ["available", "controls", "id", "platform", "reasons", "schema", "version"],
+  "title": "workflow-verifier sandbox backend attestation v1",
+  "type": "object"
+}

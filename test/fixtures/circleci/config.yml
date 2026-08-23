@@ -1,0 +1,23 @@
+version: 2.1
+orbs:
+  node: circleci/node@5
+commands:
+  greet:
+    parameters:
+      subject:
+        type: string
+    steps:
+      - run: echo "hello << parameters.subject >>"
+jobs:
+  build:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - run:
+          name: compile
+          command: echo "<< pipeline.parameters.branch >> $CIRCLE_TOKEN"
+workflows:
+  main:
+    jobs:
+      - build

@@ -1,0 +1,7 @@
+name: sandbox-live
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: printf 'sandbox-ok\n' > sandbox-result.txt

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://workflow-verifier.dev/schema/vm-shim-request-v1.json",
+  "additionalProperties": false,
+  "properties": {
+    "argv": { "items": { "type": "string" }, "minItems": 1, "type": "array" },
+    "control_root": { "$ref": "#/$defs/absolutePath" },
+    "cpu_count": { "minimum": 1, "type": "integer" },
+    "environment": { "additionalProperties": { "type": "string" }, "propertyNames": { "minLength": 1, "pattern": "^[^=\\u0000]+$" }, "type": "object" },
+    "image": {
+      "additionalProperties": false,
+      "properties": {
+        "architecture": { "enum": ["arm64", "x86_64"] },
+        "initrd_digest": { "$ref": "#/$defs/digest" },
+        "initrd_path": { "$ref": "#/$defs/absolutePath" },
+        "kernel_digest": { "$ref": "#/$defs/digest" },
+        "kernel_path": { "$ref": "#/$defs/absolutePath" },
+        "manifest_digest": { "$ref": "#/$defs/digest" },
+        "rootfs_digest": { "$ref": "#/$defs/digest" },
+        "rootfs_path": { "$ref": "#/$defs/absolutePath" }
+      },
+      "required": ["architecture", "initrd_digest", "initrd_path", "kernel_digest", "kernel_path", "manifest_digest", "rootfs_digest", "rootfs_path"],
+      "type": "object"
+    },
+    "memory_mb": { "minimum": 1, "type": "integer" },
+    "network": { "const": false },
+    "output_bytes": { "minimum": 1, "type": "integer" },
+    "plan_digest": { "$ref": "#/$defs/digest" },
+    "processes": { "minimum": 1, "type": "integer" },
+    "schema": { "const": "vm-shim-request-v1" },
+    "scratch_root": { "$ref": "#/$defs/absolutePath" },
+    "source_root": { "$ref": "#/$defs/absolutePath" },
+    "timeout_seconds": { "minimum": 1, "type": "integer" },
+    "working_directory": { "pattern": "^/workspace(?:/[^./][^/]*)*$", "type": "string" }
+  },
+  "required": ["argv", "control_root", "cpu_count", "environment", "image", "memory_mb", "network", "output_bytes", "plan_digest", "processes", "schema", "scratch_root", "source_root", "timeout_seconds", "working_directory"],
+  "type": "object",
+  "$defs": {
+    "absolutePath": { "pattern": "^/(?:[^./][^/]*/)*[^./][^/]*$", "type": "string" },
+    "digest": { "pattern": "^sha256:[0-9a-fA-F]{64}$", "type": "string" }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/performance-suite-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "argv": {
+      "items": { "maxLength": 16384, "minLength": 1, "type": "string" },
+      "maxItems": 128,
+      "minItems": 1,
+      "type": "array"
+    },
+    "mode": {
+      "additionalProperties": false,
+      "properties": {
+        "before_each": {
+          "items": { "$ref": "#/$defs/argv" },
+          "maxItems": 64,
+          "type": "array"
+        },
+        "command": { "$ref": "#/$defs/argv" },
+        "setup": {
+          "items": { "$ref": "#/$defs/argv" },
+          "maxItems": 64,
+          "type": "array"
+        },
+        "timeout_seconds": { "maximum": 3600, "minimum": 1, "type": "integer" }
+      },
+      "required": ["setup", "before_each", "command", "timeout_seconds"],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "environment": {
+      "additionalProperties": { "minLength": 1, "type": "string" },
+      "minProperties": 1,
+      "type": "object"
+    },
+    "scenarios": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "cwd": {
+            "minLength": 1,
+            "not": { "pattern": "(?:^|/)(?:\\.\\.?)(?:/|$)|\\\\" },
+            "type": "string"
+          },
+          "id": { "pattern": "^[a-z0-9][a-z0-9._-]*$", "type": "string" },
+          "modes": {
+            "additionalProperties": false,
+            "properties": {
+              "cold": { "$ref": "#/$defs/mode" },
+              "incremental": { "$ref": "#/$defs/mode" },
+              "warm": { "$ref": "#/$defs/mode" }
+            },
+            "required": ["cold", "incremental", "warm"],
+            "type": "object"
+          }
+        },
+        "required": ["id", "cwd", "modes"],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema": { "const": "performance-suite-v1" }
+  },
+  "required": ["schema", "environment", "scenarios"],
+  "title": "workflow-verifier shell-free performance suite v1",
+  "type": "object"
+}

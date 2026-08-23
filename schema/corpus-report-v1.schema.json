@@ -1,0 +1,73 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/corpus-report-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "repository": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "items": { "type": "string" }, "type": "array" },
+        "expected": { "items": { "type": "string" }, "type": "array" },
+        "id": { "type": "string" },
+        "missing": { "items": { "type": "string" }, "type": "array" },
+        "provider": { "enum": ["github", "gitlab", "azure", "circleci"] },
+        "report_digest": { "$ref": "#/$defs/digest" },
+        "revision": { "pattern": "^[0-9a-f]{40}$", "type": "string" },
+        "source_digest": { "$ref": "#/$defs/digest" },
+        "unexpected": { "items": { "type": "string" }, "type": "array" },
+        "url": { "type": "string" }
+      },
+      "required": [
+        "allowed",
+        "expected",
+        "id",
+        "missing",
+        "provider",
+        "report_digest",
+        "revision",
+        "source_digest",
+        "unexpected",
+        "url"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "failures": { "items": { "type": "string" }, "type": "array" },
+    "manifest_digest": { "$ref": "#/$defs/digest" },
+    "metrics": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "minimum": 0, "type": "integer" },
+        "false_negative": { "minimum": 0, "type": "integer" },
+        "false_positive": { "minimum": 0, "type": "integer" },
+        "precision": { "pattern": "^(?:0|1)\\.[0-9]{6}$", "type": "string" },
+        "recall": { "pattern": "^(?:0|1)\\.[0-9]{6}$", "type": "string" },
+        "true_positive": { "minimum": 0, "type": "integer" }
+      },
+      "required": ["allowed", "false_negative", "false_positive", "precision", "recall", "true_positive"],
+      "type": "object"
+    },
+    "passed": { "type": "boolean" },
+    "providers": {
+      "additionalProperties": false,
+      "properties": {
+        "azure": { "minimum": 0, "type": "integer" },
+        "circleci": { "minimum": 0, "type": "integer" },
+        "github": { "minimum": 0, "type": "integer" },
+        "gitlab": { "minimum": 0, "type": "integer" }
+      },
+      "required": ["azure", "circleci", "github", "gitlab"],
+      "type": "object"
+    },
+    "repositories": { "items": { "$ref": "#/$defs/repository" }, "type": "array" },
+    "schema": { "const": "corpus-report-v1" }
+  },
+  "required": ["failures", "manifest_digest", "metrics", "passed", "providers", "repositories", "schema"],
+  "title": "workflow-verifier corpus evaluation report v1",
+  "type": "object"
+}

@@ -1,0 +1,30 @@
+[package]
+name = "workflow-verifier-windows-helper"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "workflow-verifier-windows-helper"
+path = "src/main.rs"
+
+[dependencies]
+workflow-verifier-helper-runtime = { path = "../runtime" }
+workflow-verifier-runner-protocol = { path = "../protocol" }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61.2", features = [
+  "Win32_Foundation",
+  "Win32_Security",
+  "Win32_Security_Authorization",
+  "Win32_Security_Isolation",
+  "Win32_Storage_FileSystem",
+  "Win32_System_JobObjects",
+  "Win32_System_Threading",
+] }
+
+[lints]
+workspace = true

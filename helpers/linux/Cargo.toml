@@ -1,0 +1,22 @@
+[package]
+name = "workflow-verifier-linux-helper"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "workflow-verifier-linux-helper"
+path = "src/main.rs"
+
+[dependencies]
+workflow-verifier-helper-runtime = { path = "../runtime" }
+workflow-verifier-runner-protocol = { path = "../protocol" }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2.189"
+
+[lints]
+workspace = true

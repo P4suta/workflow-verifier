@@ -1,0 +1,844 @@
+type issue = { code : string; message : string; span : Span.t }
+
+type line = {
+  number : int;
+  start_byte : int;
+  stop_byte : int;
+  raw : string;
+  indent : int;
+}
+
+let lines source =
+  let length = String.length source in
+  let rec loop number start accumulator =
+    if start >= length then List.rev accumulator
+    else
+      let stop = ref start in
+      while
+        !stop < length && source.[!stop] <> '\n' && source.[!stop] <> '\r'
+      do
+        incr stop
+      done;
+      let next = ref !stop in
+      if !next < length then
+        if
+          source.[!next] = '\r'
+          && !next + 1 < length
+          && source.[!next + 1] = '\n'
+        then next := !next + 2
+        else incr next;
+      let raw = String.sub source start (!stop - start) in
+      let indent = ref 0 in
+      while !indent < String.length raw && raw.[!indent] = ' ' do
+        incr indent
+      done;
+      loop (number + 1) !next
+        ({
+           number;
+           start_byte = start;
+           stop_byte = !stop;
+           raw;
+           indent = !indent;
+         }
+        :: accumulator)
+  in
+  loop 1 0 [] |> Array.of_list
+
+let span file line column length =
+  let start_byte = line.start_byte + column in
+  Span.make ~file
+    { Span.byte = start_byte; line = line.number; column = column + 1 }
+    {
+      Span.byte = min line.stop_byte (start_byte + max 1 length);
+      line = line.number;
+      column = column + max 1 length + 1;
+    }
+
+let issue file line column length message =
+  { code = "YAML-SYNTAX"; message; span = span file line column length }
+
+let separation = function
+  | ' ' | '\t' | '\r' | '\n' -> true
+  | _ -> false
+
+let indicator indicator value =
+  String.length value > 0
+  && value.[0] = indicator
+  && (String.length value = 1 || separation value.[1])
+
+let trim_left value =
+  let index = ref 0 in
+  while !index < String.length value && separation value.[!index] do
+    incr index
+  done;
+  String.sub value !index (String.length value - !index)
+
+let words value =
+  value |> String.to_seq
+  |> Seq.map (function
+    | '\t' -> ' '
+    | character -> character)
+  |> String.of_seq |> String.split_on_char ' '
+  |> List.filter (( <> ) "")
+
+let has_separated_comment value =
+  let found = ref false in
+  String.iteri
+    (fun index character ->
+      if character = '#' && (index = 0 || separation value.[index - 1]) then
+        found := true)
+    value;
+  !found
+
+let find_mapping_colons value =
+  let quote = ref None and escaped = ref false and depth = ref 0 in
+  let answer = ref [] in
+  String.iteri
+    (fun index character ->
+      match !quote with
+      | Some '"' ->
+          if !escaped then escaped := false
+          else if character = '\\' then escaped := true
+          else if character = '"' then quote := None
+      | Some '\'' -> if character = '\'' then quote := None
+      | Some _ -> assert false
+      | None -> (
+          match character with
+          | '"' | '\'' -> quote := Some character
+          | '[' | '{' -> incr depth
+          | ']' | '}' -> depth := max 0 (!depth - 1)
+          | ':'
+            when !depth = 0
+                 && (index + 1 = String.length value
+                    || separation value.[index + 1]) ->
+              answer := index :: !answer
+          | _ -> ()))
+    value;
+  List.rev !answer
+
+let strip_properties value =
+  let value = trim_left value in
+  let cursor = ref 0 and scanning = ref true in
+  while !cursor < String.length value && !scanning do
+    match value.[!cursor] with
+    | '!'
+      when !cursor + 1 < String.length value
+           && (value.[!cursor + 1] = '"' || value.[!cursor + 1] = '\'') ->
+        scanning := false
+    | '&' | '!' ->
+        while
+          !cursor < String.length value && not (separation value.[!cursor])
+        do
+          incr cursor
+        done;
+        while !cursor < String.length value && separation value.[!cursor] do
+          incr cursor
+        done
+    | _ -> scanning := false
+  done;
+  String.sub value !cursor (String.length value - !cursor)
+
+let node_fragment raw =
+  let value = String.trim raw in
+  let value =
+    if String.length value >= 3 && String.sub value 0 3 = "---" then
+      String.sub value 3 (String.length value - 3) |> trim_left
+    else if indicator '-' value || indicator '?' value then
+      String.sub value 1 (String.length value - 1) |> trim_left
+    else
+      match find_mapping_colons value with
+      | colon :: _ ->
+          String.sub value (colon + 1) (String.length value - colon - 1)
+          |> trim_left
+      | [] -> value
+  in
+  strip_properties value
+
+type block_header = Not_block | Valid_block | Invalid_block of int
+
+let classify_block_header raw =
+  let fragment = node_fragment raw in
+  if fragment = "" || (fragment.[0] <> '|' && fragment.[0] <> '>') then
+    Not_block
+  else
+    let cursor = ref 1 in
+    while
+      !cursor < String.length fragment
+      && (not (separation fragment.[!cursor]))
+      && fragment.[!cursor] <> '#'
+    do
+      incr cursor
+    done;
+    let token = String.sub fragment 0 !cursor in
+    let digit = ref false and chomp = ref false and valid = ref true in
+    String.iteri
+      (fun index character ->
+        if index > 0 then
+          match character with
+          | '1' .. '9' when not !digit -> digit := true
+          | ('+' | '-') when not !chomp -> chomp := true
+          | _ -> valid := false)
+      token;
+    let bad_suffix =
+      !cursor < String.length fragment
+      && (fragment.[!cursor] = '#' || not (separation fragment.[!cursor]))
+    in
+    let trailer =
+      String.sub fragment !cursor (String.length fragment - !cursor)
+      |> trim_left
+    in
+    let bad_trailer =
+      trailer <> "" && not (Util.starts_with ~prefix:"#" trailer)
+    in
+    if !valid && (not bad_suffix) && not bad_trailer then Valid_block
+    else Invalid_block (String.length token)
+
+let validate_block_headers file source_lines =
+  source_lines |> Array.to_list
+  |> List.filter_map (fun line ->
+      match classify_block_header line.raw with
+      | Not_block | Valid_block -> None
+      | Invalid_block token_length ->
+          Some
+            (issue file line line.indent token_length
+               "invalid block scalar header"))
+
+let is_hex = function
+  | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
+  | _ -> false
+
+let validate_double_escapes file source source_lines =
+  let problems = ref [] and quote = ref None and index = ref 0 in
+  let line_index = ref 0 in
+  while !index < String.length source do
+    while
+      !line_index + 1 < Array.length source_lines
+      && !index > source_lines.(!line_index).stop_byte
+    do
+      incr line_index
+    done;
+    let character = source.[!index] in
+    (match !quote with
+    | None ->
+        let line = source_lines.(!line_index) in
+        let column = !index - line.start_byte in
+        if column >= 0 && column < String.length line.raw then
+          let starts_node =
+            let previous = ref (column - 1) in
+            while !previous >= 0 && separation line.raw.[!previous] do
+              decr previous
+            done;
+            !previous < 0 || String.contains ":,-?[{" line.raw.[!previous]
+          in
+          if character = '"' && starts_node then quote := Some '"'
+          else if character = '\'' && starts_node then quote := Some '\''
+    | Some '\'' -> if character = '\'' then quote := None
+    | Some '"' ->
+        if character = '"' then quote := None
+        else if character = '\\' then
+          if !index + 1 < String.length source then
+            let escaped = source.[!index + 1] in
+            let digits =
+              match escaped with
+              | 'x' -> 2
+              | 'u' -> 4
+              | 'U' -> 8
+              | _ -> 0
+            in
+            let simple =
+              String.contains "0abtnvfre \"/\\N_LP" escaped
+              || escaped = '\n' || escaped = '\r' || escaped = '\t'
+            in
+            let valid_hex =
+              digits > 0
+              && !index + 2 + digits <= String.length source
+              &&
+              let valid = ref true in
+              for offset = 0 to digits - 1 do
+                if not (is_hex source.[!index + 2 + offset]) then valid := false
+              done;
+              !valid
+            in
+            if simple then incr index
+            else if valid_hex then index := !index + digits + 1
+            else
+              problems :=
+                issue file source_lines.(!line_index)
+                  (!index - source_lines.(!line_index).start_byte)
+                  2 "invalid escape in a double-quoted scalar"
+                :: !problems
+    | Some _ -> assert false);
+    incr index
+  done;
+  List.rev !problems
+
+let validate_directives file source_lines =
+  let problems = ref []
+  and in_document = ref false
+  and pending = ref false
+  and yaml_seen = ref false
+  and pending_handles = ref []
+  and active_handles = ref [ "!!" ] in
+  let add line message =
+    problems :=
+      issue file line line.indent (String.length line.raw) message :: !problems
+  in
+  Array.iter
+    (fun line ->
+      let content = String.trim line.raw in
+      if content = "" || Util.starts_with ~prefix:"#" content then ()
+      else if
+        line.indent = 0
+        &&
+        match words content with
+        | ("%YAML" | "%TAG") :: _ -> true
+        | _ -> false
+      then (
+        let previous_plain =
+          !in_document && line.number > 1
+          &&
+          let previous = source_lines.(line.number - 2).raw |> String.trim in
+          previous <> ""
+          && find_mapping_colons previous = []
+          && (not (has_separated_comment previous))
+          && (not (String.contains "!&'\"[{|>" previous.[0]))
+          && (not (Util.starts_with ~prefix:"---" previous))
+          && not (Util.starts_with ~prefix:"..." previous)
+        in
+        if not previous_plain then (
+          if !in_document then add line "directive appears before document end";
+          pending := true;
+          let directive =
+            match String.index_opt content '#' with
+            | Some index when index > 0 && separation content.[index - 1] ->
+                String.sub content 0 index |> String.trim
+            | _ -> content
+          in
+          match words directive with
+          | [ "%YAML"; version ]
+            when String.length version = 3
+                 && version.[0] >= '0'
+                 && version.[0] <= '9'
+                 && version.[1] = '.'
+                 && version.[2] >= '0'
+                 && version.[2] <= '9' ->
+              if !yaml_seen then add line "duplicate YAML directive";
+              yaml_seen := true
+          | "%YAML" :: _ -> add line "invalid YAML directive"
+          | [ "%TAG"; handle; _ ] ->
+              if List.mem handle !pending_handles then
+                add line "duplicate TAG directive";
+              pending_handles := handle :: !pending_handles
+          | _ -> add line "invalid directive"))
+      else if String.length content >= 3 && String.sub content 0 3 = "---" then (
+        active_handles := "!!" :: !pending_handles;
+        pending_handles := [];
+        yaml_seen := false;
+        pending := false;
+        in_document := true)
+      else if String.length content >= 3 && String.sub content 0 3 = "..." then
+        in_document := false
+      else (
+        if !pending then
+          add line "directives require an explicit document start";
+        in_document := true);
+      if not (Util.starts_with ~prefix:"%" content) then
+        let length = String.length content in
+        let cursor = ref 0 in
+        while !cursor < length do
+          if content.[!cursor] = '!' then (
+            let stop = ref (!cursor + 1) in
+            while
+              !stop < length
+              && (not (separation content.[!stop]))
+              && not (String.contains "[]{}," content.[!stop])
+            do
+              incr stop
+            done;
+            let tag = String.sub content !cursor (!stop - !cursor) in
+            (match
+               if Util.starts_with ~prefix:"!<" tag then None
+               else String.index_from_opt tag 1 '!'
+             with
+            | Some ending ->
+                let handle = String.sub tag 0 (ending + 1) in
+                if not (List.mem handle !active_handles) then
+                  add line "undefined tag handle"
+            | None -> ());
+            cursor := !stop)
+          else incr cursor
+        done)
+    source_lines;
+  if !pending && Array.length source_lines > 0 then
+    add
+      source_lines.(Array.length source_lines - 1)
+      "directive is not followed by a document";
+  List.rev !problems
+
+let validate_inline_forms file source_lines =
+  let problems = ref [] in
+  let add line message =
+    problems :=
+      issue file line line.indent (String.length line.raw) message :: !problems
+  in
+  Array.iter
+    (fun line ->
+      let content = String.trim line.raw in
+      let structural_content = strip_properties content in
+      let colons = find_mapping_colons structural_content in
+      (match colons with
+      | _ :: _ :: _
+        when not
+               (indicator ':' content || indicator '?' content
+               || Util.starts_with ~prefix:"- ?" content
+               || Util.starts_with ~prefix:"{" content
+               || Util.starts_with ~prefix:"[" content
+               || Util.contains ~needle:"," content) ->
+          add line "multiple mapping separators in a plain scalar"
+      | _ :: _ :: _ -> ()
+      | [ colon ] ->
+          let value =
+            String.sub structural_content (colon + 1)
+              (String.length structural_content - colon - 1)
+            |> trim_left
+          in
+          if
+            indicator '-' value
+            && not (indicator ':' content || indicator '?' content)
+          then add line "block sequence cannot start on a mapping line"
+      | [] -> ());
+      if
+        Util.starts_with ~prefix:"---" content
+        &&
+        let rest =
+          String.sub content 3 (String.length content - 3) |> trim_left
+        in
+        (Util.starts_with ~prefix:"&" rest || Util.starts_with ~prefix:"!" rest)
+        && find_mapping_colons rest <> []
+      then
+        add line
+          "collection properties cannot prefix a compact document mapping";
+      if
+        (Util.starts_with ~prefix:"&" content
+        || Util.starts_with ~prefix:"!" content)
+        &&
+        let rest = strip_properties content in
+        indicator '-' rest
+      then add line "node property cannot prefix a block sequence indicator";
+      let rec adjacent_anchor_alias = function
+        | anchor :: alias :: _
+          when Util.starts_with ~prefix:"&" anchor
+               && Util.starts_with ~prefix:"*" alias -> true
+        | _ :: rest -> adjacent_anchor_alias rest
+        | [] -> false
+      in
+      if adjacent_anchor_alias (words content) then
+        add line "an alias cannot carry node properties";
+      if
+        line.indent = 0
+        && words content
+           |> List.exists (fun token ->
+               Util.starts_with ~prefix:"!" token
+               && (Util.contains ~needle:"{" token
+                  || Util.contains ~needle:"}" token))
+      then add line "invalid tag token";
+      if
+        Util.starts_with ~prefix:"- !!" content
+        &&
+        match words content with
+        | _ :: tag :: _ -> tag.[String.length tag - 1] = ','
+        | _ -> false
+      then add line "tag cannot contain a block-context comma")
+    source_lines;
+  List.rev !problems
+
+type flow_frame = {
+  opener : char;
+  opened_line : int;
+  base_indent : int;
+  block_prefixed : bool;
+  mutable pair_colon_seen : bool;
+}
+
+let validate_flow file source_lines =
+  let problems = ref []
+  and stack = ref []
+  and quote = ref None
+  and escaped = ref false
+  and last_token = ref `None
+  and comment_interrupted = ref false
+  and block_scalar_indent = ref None in
+  let add line column message =
+    problems := issue file line column 1 message :: !problems
+  in
+  let top () =
+    match !stack with
+    | frame :: _ -> Some frame
+    | [] -> None
+  in
+  let opener_allowed line index =
+    !stack <> []
+    ||
+    let prefix = String.sub line.raw 0 index in
+    node_fragment prefix = ""
+  in
+  let mapping_separator line index =
+    index + 1 = String.length line.raw
+    || separation line.raw.[index + 1]
+    || String.contains ",]}" line.raw.[index + 1]
+  in
+  Array.iter
+    (fun line ->
+      let block_payload =
+        match !block_scalar_indent with
+        | None -> false
+        | Some base_indent ->
+            if String.trim line.raw = "" || line.indent > base_indent then true
+            else (
+              block_scalar_indent := None;
+              false)
+      in
+      if not block_payload then (
+        let trimmed = String.trim line.raw in
+        (match top () with
+        | Some frame when line.number > frame.opened_line && trimmed <> "" ->
+            let begins_close =
+              match trimmed.[0] with
+              | ']' | '}' -> true
+              | _ -> false
+            in
+            if
+              frame.block_prefixed && (not begins_close)
+              && line.indent <= frame.base_indent
+            then add line line.indent "flow continuation is not indented";
+            if !comment_interrupted && (not begins_close) && trimmed.[0] <> ':'
+            then
+              add line line.indent
+                "comment terminates a flow scalar before a comma";
+            comment_interrupted := false;
+            if frame.opener = '[' && trimmed.[0] = ':' && !last_token = `Other
+            then
+              add line line.indent "implicit flow key crosses a line boundary"
+        | _ -> ());
+        let index = ref 0 and stop_line = ref false in
+        while !index < String.length line.raw && not !stop_line do
+          let character = line.raw.[!index] in
+          (match !quote with
+          | Some '"' ->
+              if !escaped then escaped := false
+              else if character = '\\' then escaped := true
+              else if character = '"' then (
+                quote := None;
+                last_token := `Other)
+          | Some '\'' ->
+              if character = '\'' then (
+                quote := None;
+                last_token := `Other)
+          | Some _ -> assert false
+          | None -> (
+              if !stack <> [] && (character = '"' || character = '\'') then
+                quote := Some character
+              else if
+                !stack <> [] && character = '#' && !index > 0
+                && separation line.raw.[!index - 1]
+              then (
+                if !last_token = `Other then comment_interrupted := true;
+                stop_line := true)
+              else
+                match character with
+                | ('[' | '{') when opener_allowed line !index ->
+                    let prefix = String.sub line.raw 0 !index in
+                    let block_prefixed =
+                      find_mapping_colons prefix <> []
+                      || indicator '-' (String.trim prefix)
+                    in
+                    stack :=
+                      {
+                        opener = character;
+                        opened_line = line.number;
+                        base_indent = line.indent;
+                        block_prefixed;
+                        pair_colon_seen = false;
+                      }
+                      :: !stack;
+                    last_token := `Open
+                | ',' when !stack <> [] ->
+                    if !last_token = `Open || !last_token = `Comma then
+                      add line !index "empty flow entry";
+                    (match top () with
+                    | Some frame when frame.opener = '{' ->
+                        frame.pair_colon_seen <- false
+                    | _ -> ());
+                    last_token := `Comma
+                | ':' when !stack <> [] && mapping_separator line !index ->
+                    (match top () with
+                    | Some frame when frame.opener = '{' ->
+                        if frame.pair_colon_seen then
+                          add line !index "flow mapping entries require a comma";
+                        frame.pair_colon_seen <- true
+                    | _ -> ());
+                    last_token := `Other
+                | (']' | '}') as closer -> (
+                    let expected = if closer = ']' then '[' else '{' in
+                    match !stack with
+                    | frame :: rest when frame.opener = expected ->
+                        let opened_line = frame.opened_line in
+                        stack := rest;
+                        last_token := `Other;
+                        if rest = [] then (
+                          let cursor = ref (!index + 1) in
+                          while
+                            !cursor < String.length line.raw
+                            && separation line.raw.[!cursor]
+                          do
+                            incr cursor
+                          done;
+                          if !cursor < String.length line.raw then
+                            match line.raw.[!cursor] with
+                            | '#' when !cursor > !index + 1 -> ()
+                            | ':' when opened_line = line.number -> ()
+                            | _ ->
+                                add line !cursor
+                                  "content follows a completed flow collection")
+                    | _ when !stack <> [] ->
+                        add line !index "unmatched flow closing indicator"
+                    | _ -> ())
+                | '-' when !stack <> [] ->
+                    let previous_allows_node =
+                      !last_token = `Open || !last_token = `Comma
+                    in
+                    let cursor = ref (!index + 1) in
+                    while
+                      !cursor < String.length line.raw
+                      && separation line.raw.[!cursor]
+                    do
+                      incr cursor
+                    done;
+                    if
+                      previous_allows_node
+                      && (!cursor = String.length line.raw
+                         || line.raw.[!cursor] = ','
+                         || line.raw.[!cursor] = ']')
+                    then add line !index "bare dash is not a flow scalar"
+                    else last_token := `Other
+                | character when !stack <> [] && not (separation character) ->
+                    last_token := `Other
+                | _ -> ()));
+          incr index
+        done;
+        if
+          Util.contains ~needle:"]#" line.raw
+          || Util.contains ~needle:"}#" line.raw
+        then add line line.indent "flow comment requires separation";
+        if Util.contains ~needle:",#" line.raw then
+          add line line.indent "comment after comma requires separation";
+        if !stack = [] && classify_block_header line.raw = Valid_block then
+          block_scalar_indent := Some line.indent))
+    source_lines;
+  List.rev !problems
+
+let validate_layout file source_lines =
+  let problems = ref [] and quoted_mapping = ref None in
+  let add line column message =
+    problems := issue file line column 1 message :: !problems
+  in
+  let closes_double value =
+    let escaped = ref false and closed = ref false in
+    String.iteri
+      (fun index character ->
+        if index > 0 && not !closed then
+          if !escaped then escaped := false
+          else if character = '\\' then escaped := true
+          else if character = '"' then closed := true)
+      value;
+    !closed
+  in
+  Array.iter
+    (fun line ->
+      let content = String.trim line.raw in
+      (match !quoted_mapping with
+      | Some parent_indent ->
+          if content <> "" && line.indent <= parent_indent then
+            add line line.indent
+              "quoted mapping value continuation is not indented";
+          if String.contains content '"' then quoted_mapping := None
+      | None -> ());
+      (match find_mapping_colons content with
+      | colon :: _ ->
+          let value =
+            String.sub content (colon + 1) (String.length content - colon - 1)
+            |> trim_left
+          in
+          if String.length value > 0 && value.[0] = '"' then
+            if closes_double value then (
+              let escaped = ref false and closing = ref None in
+              let index = ref 1 in
+              while !index < String.length value && !closing = None do
+                if !escaped then escaped := false
+                else if value.[!index] = '\\' then escaped := true
+                else if value.[!index] = '"' then closing := Some !index;
+                incr index
+              done;
+              Option.iter
+                (fun closing ->
+                  let tail =
+                    String.sub value (closing + 1)
+                      (String.length value - closing - 1)
+                  in
+                  let trimmed_tail = String.trim tail in
+                  if
+                    trimmed_tail <> ""
+                    && (not (Util.starts_with ~prefix:"#" trimmed_tail))
+                    && not (String.contains ",]}" trimmed_tail.[0])
+                  then
+                    add line
+                      (line.indent + colon + closing + 2)
+                      "content follows a quoted scalar"
+                  else if
+                    Util.starts_with ~prefix:"#" trimmed_tail
+                    && String.length tail > 0
+                    && tail.[0] = '#'
+                  then
+                    add line
+                      (line.indent + colon + closing + 2)
+                      "comment requires separation after a quoted scalar")
+                !closing)
+            else quoted_mapping := Some line.indent
+      | [] -> ());
+      let first_non_space = ref 0 in
+      while
+        !first_non_space < String.length line.raw
+        && line.raw.[!first_non_space] = ' '
+      do
+        incr first_non_space
+      done;
+      (if
+         !first_non_space < String.length line.raw
+         && line.raw.[!first_non_space] = '\t'
+       then
+         let remainder =
+           String.sub line.raw (!first_non_space + 1)
+             (String.length line.raw - !first_non_space - 1)
+           |> String.trim
+         in
+         if find_mapping_colons remainder <> [] then
+           add line !first_non_space "tab cannot indent a block mapping");
+      if String.length content > 1 then
+        match content.[0] with
+        | '-' | '?' | ':' ->
+            let cursor = ref 1 and saw_tab = ref false in
+            while
+              !cursor < String.length content && separation content.[!cursor]
+            do
+              if content.[!cursor] = '\t' then saw_tab := true;
+              incr cursor
+            done;
+            if !saw_tab && !cursor < String.length content then
+              let remainder =
+                String.sub content !cursor (String.length content - !cursor)
+              in
+              if
+                String.length remainder > 0
+                && (indicator '-' remainder || indicator '?' remainder
+                  || indicator ':' remainder
+                   || find_mapping_colons remainder <> [])
+              then add line line.indent "tab cannot indent a nested block node"
+        | _ -> ())
+    source_lines;
+  List.rev !problems
+
+let validate_block_indentation file source_lines =
+  let problems = ref [] in
+  let add line message =
+    problems :=
+      issue file line line.indent (String.length line.raw) message :: !problems
+  in
+  Array.iteri
+    (fun index line ->
+      let fragment = node_fragment line.raw in
+      if fragment <> "" && (fragment.[0] = '|' || fragment.[0] = '>') then (
+        let cursor = ref (index + 1)
+        and leading = ref []
+        and reference = ref None
+        and scanning = ref true in
+        while !cursor < Array.length source_lines && !scanning do
+          let candidate = source_lines.(!cursor) in
+          let content = String.trim candidate.raw in
+          if content = "" then (
+            leading := candidate :: !leading;
+            incr cursor)
+          else if Util.starts_with ~prefix:"#" content then (
+            if candidate.indent > line.indent && !reference = None then
+              reference := Some candidate.indent;
+            incr cursor)
+          else if candidate.indent > line.indent then (
+            reference := Some candidate.indent;
+            scanning := false)
+          else scanning := false
+        done;
+        match !reference with
+        | Some reference ->
+            List.iter
+              (fun leading ->
+                if leading.indent > reference then
+                  add leading
+                    "leading block-scalar whitespace exceeds content \
+                     indentation";
+                if String.length leading.raw > 0 && leading.raw.[0] = '\t' then
+                  add leading "tab cannot provide block scalar indentation")
+              !leading
+        | None ->
+            List.iter
+              (fun leading ->
+                if String.length leading.raw > 0 && leading.raw.[0] = '\t' then
+                  add leading "tab cannot provide block scalar indentation")
+              !leading))
+    source_lines;
+  List.rev !problems
+
+let validate_property_chains file source_lines =
+  let problems = ref [] in
+  Array.iteri
+    (fun index line ->
+      let content = String.trim line.raw in
+      match find_mapping_colons content with
+      | [ colon ] ->
+          let value =
+            String.sub content (colon + 1) (String.length content - colon - 1)
+            |> String.trim
+          in
+          if Util.starts_with ~prefix:"&" value then
+            let body = strip_properties value in
+            if body = "" then (
+              let next = ref (index + 1) in
+              while
+                !next < Array.length source_lines
+                && String.trim source_lines.(!next).raw = ""
+              do
+                incr next
+              done;
+              if !next < Array.length source_lines then
+                let following = String.trim source_lines.(!next).raw in
+                if
+                  Util.starts_with ~prefix:"&" following
+                  && find_mapping_colons (strip_properties following) = []
+                then
+                  problems :=
+                    issue file source_lines.(!next) source_lines.(!next).indent
+                      (String.length source_lines.(!next).raw)
+                      "a node cannot have two anchors"
+                    :: !problems)
+      | _ -> ())
+    source_lines;
+  List.rev !problems
+
+let validate ~file source =
+  let source_lines = lines source in
+  validate_block_headers file source_lines
+  @ validate_double_escapes file source source_lines
+  @ validate_directives file source_lines
+  @ validate_inline_forms file source_lines
+  @ validate_flow file source_lines
+  @ validate_layout file source_lines
+  @ validate_block_indentation file source_lines
+  @ validate_property_chains file source_lines

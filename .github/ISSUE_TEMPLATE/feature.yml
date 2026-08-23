@@ -1,0 +1,42 @@
+name: Feature request
+description: Propose a semantic capability or provider behavior.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and user outcome
+      description: Explain the semantic gap without prescribing an implementation.
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider or layer
+      options:
+        - Shared semantic model
+        - GitHub Actions
+        - GitLab CI
+        - Azure Pipelines
+        - CircleCI
+        - Policy, resolver, diff, or fix
+        - Sandbox or native containment
+        - Release and evaluation tooling
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Authoritative semantics and fixtures
+      description: Link provider documentation and describe positive, negative, and Unknown cases.
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Architectural and compatibility boundary
+      description: Identify affected IR, protocol, schema, CLI, or proof-state contracts.
+    validations:
+      required: true

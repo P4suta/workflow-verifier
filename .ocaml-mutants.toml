@@ -1,0 +1,33 @@
+version = 1
+
+[mutation]
+profile = "balanced"
+include = [
+  "lib/foundation/json.ml",
+  "lib/foundation/sha256.ml",
+  "lib/syntax/**/*.ml",
+  "lib/domain/abstract_value.ml",
+  "lib/domain/condition.ml",
+  "lib/verifier/**/*.ml",
+  "lib/product/config.ml",
+  "lib/product/policy.ml",
+]
+exclude = ["**/_build/**", "**/test/**", "**/tests/**"]
+
+[test]
+baseline_runs = 3
+parallel_safe = true
+
+[[test.stages]]
+name = "algebraic-properties"
+command = ["dune", "exec", "test/property_contract.exe"]
+
+[[test.stages]]
+name = "full-contracts"
+command = ["dune", "runtest", "--force"]
+
+[execution]
+jobs = 4
+
+[cache]
+mode = "off"

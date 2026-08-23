@@ -1,0 +1,100 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/lock-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "summary": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": { "complete": { "const": true } },
+            "required": ["complete"]
+          },
+          "then": { "properties": { "reasons": { "maxItems": 0 } } },
+          "else": { "properties": { "reasons": { "minItems": 1 } } }
+        }
+      ],
+      "properties": {
+        "capabilities": {
+          "items": {
+            "enum": [
+              "repository_read",
+              "repository_write",
+              "token_read",
+              "token_write",
+              "oidc",
+              "cloud_credential",
+              "secret_access",
+              "network",
+              "filesystem_read",
+              "filesystem_write",
+              "shell",
+              "artifact_read",
+              "artifact_write",
+              "cache_read",
+              "cache_write",
+              "deployment",
+              "self_hosted_persistence",
+              "ai_tool"
+            ],
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "complete": { "type": "boolean" },
+        "effects": {
+          "items": {
+            "enum": [
+              "repository_change",
+              "network_request",
+              "file_read",
+              "file_write",
+              "command_execution",
+              "artifact_publish",
+              "cache_publish",
+              "deployment_change",
+              "credential_use",
+              "workflow_change",
+              "ai_agent_execution"
+            ],
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "reasons": {
+          "items": { "minLength": 1, "type": "string" },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": ["complete", "reasons", "capabilities", "effects"],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "entries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "provider": { "enum": ["github", "gitlab", "azure", "circleci"] },
+          "reference": { "minLength": 1, "type": "string" },
+          "revision": { "minLength": 1, "type": "string" },
+          "source": { "minLength": 1, "type": "string" },
+          "summary": { "$ref": "#/$defs/summary" }
+        },
+        "required": ["provider", "reference", "revision", "digest", "source"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "integrity": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "schema": { "const": "lock-v2" }
+  },
+  "required": ["schema", "integrity", "entries"],
+  "title": "workflow-verifier dependency lock v2",
+  "type": "object"
+}

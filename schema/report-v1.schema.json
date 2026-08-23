@@ -1,0 +1,95 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/report-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "diagnostics": {
+      "items": { "$ref": "#/$defs/diagnostic" },
+      "type": "array"
+    },
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "graphs": { "items": { "type": "object" }, "type": "array" },
+    "inputs": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "type": "string" },
+          "path": { "type": "string" }
+        },
+        "required": ["digest", "path"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "persona": { "enum": ["gate", "audit", "paranoid"] },
+    "properties": {
+      "items": { "$ref": "#/$defs/property" },
+      "type": "array"
+    },
+    "schema": { "const": "report-v1" },
+    "summary": { "type": "object" },
+    "tool": {
+      "additionalProperties": false,
+      "properties": {
+        "name": { "const": "workflow-verifier" },
+        "version": { "type": "string" }
+      },
+      "required": ["name", "version"],
+      "type": "object"
+    }
+  },
+  "required": ["schema", "digest", "tool", "persona", "inputs", "graphs", "properties", "diagnostics", "summary"],
+  "title": "workflow-verifier report v1",
+  "type": "object",
+  "$defs": {
+    "diagnostic": {
+      "additionalProperties": false,
+      "properties": {
+        "capabilities": { "items": { "type": "string" }, "type": "array" },
+        "confidence": { "enum": ["high", "medium", "low"] },
+        "evidence": { "items": { "type": "string" }, "type": "array" },
+        "fix": { "type": ["object", "null"] },
+        "id": { "type": "string" },
+        "message": { "type": "string" },
+        "rule_id": { "type": "string" },
+        "severity": { "enum": ["critical", "error", "warning", "note"] },
+        "span": { "$ref": "#/$defs/span" },
+        "trace": { "items": { "type": "object" }, "type": "array" }
+      },
+      "required": ["id", "rule_id", "severity", "confidence", "message", "span", "trace", "capabilities", "evidence", "fix"],
+      "type": "object"
+    },
+    "position": {
+      "additionalProperties": false,
+      "properties": {
+        "byte": { "minimum": 0, "type": "integer" },
+        "column": { "minimum": 1, "type": "integer" },
+        "line": { "minimum": 1, "type": "integer" }
+      },
+      "required": ["byte", "column", "line"],
+      "type": "object"
+    },
+    "property": {
+      "additionalProperties": false,
+      "properties": {
+        "explanation": { "type": "string" },
+        "id": { "type": "string" },
+        "reasons": { "items": { "type": "object" }, "type": "array" },
+        "state": { "enum": ["Proved", "Violated", "Unknown", "NotApplicable"] },
+        "subject": { "type": ["string", "null"] }
+      },
+      "required": ["id", "state", "subject", "explanation", "reasons"],
+      "type": "object"
+    },
+    "span": {
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "start": { "$ref": "#/$defs/position" },
+        "stop": { "$ref": "#/$defs/position" }
+      },
+      "required": ["file", "start", "stop"],
+      "type": "object"
+    }
+  }
+}

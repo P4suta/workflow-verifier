@@ -1,0 +1,10 @@
+include:
+  - remote: https://example.invalid/common.yml
+stages: [build]
+build:
+  stage: build
+  parallel:
+    matrix:
+      - TARGET: [linux, windows]
+  script:
+    - echo "$CI_MERGE_REQUEST_TITLE $CI_JOB_TOKEN"

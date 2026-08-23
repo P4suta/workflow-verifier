@@ -1,0 +1,54 @@
+name: Mutation quality
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * 0'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mutation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  analyzer-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+      - name: Install analyzer dependencies
+        run: opam install . --deps-only --with-test --yes
+      - name: Install immutable mutation runner
+        run: >-
+          opam pin add ocaml-mutants.dev
+          git+https://github.com/P4suta/ocaml-mutants.git#15d857152f91bc3bf960f9a6d8297ecfd5800f10
+          --yes
+      - name: Run all configured analyzer-core mutants
+        run: opam exec -- ocaml-mutants run --fresh --json . > _build/mutation-report.json
+      - name: Verify complete non-vacuous mutation evidence
+        run: >-
+          python -B scripts/verify_mutation_report.py
+          --report _build/mutation-report.json
+          --output _build/mutation-gate-v1.json
+          --require-prefix lib/foundation/
+          --require-prefix lib/syntax/
+          --require-prefix lib/domain/
+          --require-prefix lib/verifier/
+          --require-prefix lib/product/
+      - name: Upload mutation evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mutation-evidence
+          path: |
+            _build/mutation-report.json
+            _build/mutation-gate-v1.json
+          if-no-files-found: error
+          archive: false

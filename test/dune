@@ -1,0 +1,128 @@
+(test
+ (name test_main)
+ (libraries wv_foundation wv_syntax))
+
+(test
+ (name domain_contract)
+ (libraries wv_foundation wv_domain))
+
+(test
+ (name frontend_contract)
+ (libraries wv_foundation wv_syntax wv_domain wv_frontend)
+ (deps
+  (source_tree fixtures)))
+
+(test
+ (name frontend_semantics_contract)
+ (libraries wv_foundation wv_syntax wv_domain wv_frontend))
+
+(test
+ (name expression_semantics_contract)
+ (libraries wv_foundation wv_domain wv_frontend))
+
+(test
+ (name verifier_contract)
+ (libraries wv_foundation wv_syntax wv_domain wv_frontend wv_verifier)
+ (deps
+  (source_tree fixtures)))
+
+(test
+ (name whole_program_contract)
+ (libraries wv_foundation wv_domain wv_verifier))
+
+(test
+ (name product_contract)
+ (libraries
+  wv_foundation
+  wv_syntax
+  wv_domain
+  wv_frontend
+  wv_verifier
+  wv_product)
+ (deps
+  (source_tree fixtures)))
+
+(test
+ (name product_advanced_contract)
+ (libraries
+  wv_foundation
+  wv_syntax
+  wv_domain
+  wv_frontend
+  wv_verifier
+  wv_product))
+
+(test
+ (name dependency_summary_contract)
+ (libraries
+  wv_foundation
+  wv_syntax
+  wv_domain
+  wv_frontend
+  wv_verifier
+  wv_product))
+
+(test
+ (name sandbox_contract)
+ (libraries wv_foundation wv_domain wv_verifier wv_sandbox)
+ (deps
+  (source_tree fixtures)))
+
+(test
+ (name cli_contract)
+ (libraries
+  wv_foundation
+  wv_syntax
+  wv_domain
+  wv_frontend
+  wv_verifier
+  wv_product
+  wv_sandbox
+  wv_application))
+
+(test
+ (name helper_client_contract)
+ (libraries wv_foundation wv_domain wv_sandbox wv_application))
+
+(test
+ (name process_transport_contract)
+ (libraries wv_foundation wv_domain wv_sandbox wv_application))
+
+(test
+ (name resolver_transport_contract)
+ (libraries wv_foundation wv_domain wv_frontend wv_product wv_application))
+
+(test
+ (name curl_transport_contract)
+ (libraries wv_foundation wv_application))
+
+(test
+ (name schema_contract)
+ (libraries wv_foundation)
+ (deps
+  (source_tree ../schema)))
+
+(test
+ (name release_contract)
+ (libraries wv_foundation))
+
+(test
+ (name property_contract)
+ (libraries
+  wv_foundation
+  wv_syntax
+  wv_domain
+  wv_frontend
+  wv_verifier
+  wv_product))
+
+(executable
+ (name yaml_fuzz)
+ (modules yaml_fuzz)
+ (modes native)
+ (libraries wv_foundation wv_syntax))
+
+(executable
+ (name yaml_conformance)
+ (modules yaml_conformance)
+ (libraries wv_foundation wv_syntax))

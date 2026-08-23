@@ -1,0 +1,76 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/runner-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "backend": { "pattern": "^(oci:[A-Za-z0-9_.-]+|linux-native|windows-native|macos-vm)$", "type": "string" },
+    "controls": { "items": { "type": "string" }, "type": "array", "uniqueItems": true },
+    "dependencies": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "available": { "type": "boolean" },
+          "digest": { "type": ["string", "null"] },
+          "reference": { "type": "string" }
+        },
+        "required": ["reference", "digest", "available"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "limits": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_seconds": { "minimum": 1, "type": "integer" },
+        "memory_mb": { "minimum": 1, "type": "integer" },
+        "output_bytes": { "minimum": 1, "type": "integer" },
+        "processes": { "minimum": 1, "type": "integer" }
+      },
+      "required": ["cpu_seconds", "memory_mb", "processes", "output_bytes"],
+      "type": "object"
+    },
+    "lock_digest": { "type": "string" },
+    "schema": { "const": "runner-v1" },
+    "secret_names": { "items": { "pattern": "^[A-Za-z_][A-Za-z0-9_]*$", "type": "string" }, "type": "array", "uniqueItems": true },
+    "source_digest": { "type": "string" },
+    "status": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": { "state": { "const": "complete" } },
+          "required": ["state"],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "reasons": { "items": { "type": "string" }, "minItems": 1, "type": "array" },
+            "state": { "const": "incomplete" }
+          },
+          "required": ["state", "reasons"],
+          "type": "object"
+        }
+      ]
+    },
+    "steps": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "argv": { "items": { "type": "string" }, "minItems": 1, "type": "array" },
+          "environment": { "additionalProperties": { "type": "string" }, "type": "object" },
+          "id": { "type": "string" },
+          "image": { "type": "string" },
+          "supported": { "type": "boolean" },
+          "working_directory": { "type": "string" }
+        },
+        "required": ["id", "image", "argv", "environment", "working_directory", "supported"],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": ["schema", "digest", "backend", "source_digest", "lock_digest", "controls", "limits", "secret_names", "dependencies", "steps", "status"],
+  "title": "workflow-verifier runner plan v1",
+  "type": "object"
+}

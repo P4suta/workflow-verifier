@@ -1,0 +1,65 @@
+name: Bug report
+description: Report an incorrect result, crash, or deterministic-output problem.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets, private workflow source, or unredacted runner evidence.
+  - type: input
+    id: version
+    attributes:
+      label: workflow-verifier version
+      placeholder: 0.1.0-dev or commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      options:
+        - GitHub Actions
+        - GitLab CI
+        - Azure Pipelines
+        - CircleCI
+        - Sandbox or runner protocol
+        - Provider-independent
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      placeholder: OS, architecture, OCaml version, and sandbox backend if relevant
+    validations:
+      required: true
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Minimal public reproducer
+      description: Reduce the workflow and redact all credentials and private identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected proof state or behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include exit code, rule ID, and a redacted diagnostic or report excerpt.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety checks
+      options:
+        - label: I removed secrets, private source, and sensitive runner evidence.
+          required: true
+        - label: I searched existing issues and reproduced this on the latest development revision.
+          required: true

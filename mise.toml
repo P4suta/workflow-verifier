@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+[tools]
+python = "3.13.7"
+rust = "1.98.0"
+
+[tools.opam]
+version = "2.5.2"
+
+[tools.opam.platforms]
+windows-x64 = { asset_pattern = "opam-2.5.2-x86_64-windows.exe", bin = "opam.exe" }
+linux-x64 = { asset_pattern = "opam-2.5.2-x86_64-linux", bin = "opam" }
+linux-arm64 = { asset_pattern = "opam-2.5.2-arm64-linux", bin = "opam" }
+macos-x64 = { asset_pattern = "opam-2.5.2-x86_64-macos", bin = "opam" }
+macos-arm64 = { asset_pattern = "opam-2.5.2-arm64-macos", bin = "opam" }
+
+[tasks.bootstrap]
+description = "Create the project-local OCaml 5.5 switch"
+run = "opam init --bare --no-setup --yes && opam switch create . ocaml-base-compiler.5.5.0 --yes && opam install . --deps-only --with-test --yes"
+
+[tasks.build]
+description = "Build every OCaml target"
+run = "opam exec -- dune build @all"
+
+[tasks.test]
+description = "Run executable contracts"
+run = "opam exec -- dune runtest --force"
+
+[tasks.property]
+description = "Run deterministic property contracts"
+run = "opam exec -- dune exec test/property_contract.exe"
+
+[tasks.yaml-conformance]
+description = "Run all cases from the explicitly fetched, immutable yaml-test-suite release"
+run = "python -B scripts/fetch_yaml_test_suite.py && opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-data-2022-01-17"
+
+[tasks.fetch-yaml-suite]
+description = "Explicitly fetch the pinned MIT yaml-test-suite release"
+run = "python -B scripts/fetch_yaml_test_suite.py --allow-network"
+
+[tasks.helpers]
+description = "Run native backend conformance"
+run = "cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets"
+
+[tasks.helpers-lint]
+description = "Enforce native helper formatting and warning-free Clippy"
+run = "cargo fmt --manifest-path helpers/Cargo.toml --all -- --check && cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings"
+
+[tasks.tooling]
+description = "Run release-tool regression tests"
+run = "python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v"
+
+[tasks.fuzz]
+description = "Build the AFL-instrumented YAML harness and run a bounded campaign"
+run = "opam exec -- dune build --profile afl test/yaml_fuzz.exe && python -B scripts/run_afl_fuzz.py --seeds fuzz/corpus/yaml --output _build/afl-results --target _build/default/test/yaml_fuzz.exe --seconds 60 --memory-mb 1024"
+
+[tasks.mutation-gate]
+description = "Verify complete mutation evidence for every analyzer-core layer"
+run = "python -B scripts/verify_mutation_report.py --report _build/mutation-report.json --output _build/mutation-gate-v1.json --require-prefix lib/foundation/ --require-prefix lib/syntax/ --require-prefix lib/domain/ --require-prefix lib/verifier/ --require-prefix lib/product/"
+
+[tasks.corpus]
+description = "Enforce the 400-repository release precision and recall gate"
+run = "python -B scripts/corpus_gate.py --manifest evaluation/corpus-v1.json --corpus-root evaluation/corpus --reports-root evaluation/reports --output _build/corpus-report-v1.json --release"
+
+[tasks.performance-measure]
+description = "Measure cold, warm, and incremental scenarios for WV_REVISION"
+run = "python -B scripts/measure_performance.py --suite performance/suite-v1.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-current.json"
+
+[tasks.performance-gate]
+description = "Reject unexplained performance regressions above ten percent"
+run = "python -B scripts/performance_gate.py --baseline performance/baseline.json --current _build/performance-current.json --output _build/performance-comparison-v1.json"
+
+[tasks.determinism-probe]
+description = "Generate exact report lockfile and fix artifacts for this platform"
+run = "opam exec -- dune build bin/main.exe && python -B scripts/determinism_probe.py --analyzer _build/default/bin/main.exe --fixture test/fixtures/determinism --output _build/determinism/local"
+
+[tasks.determinism-compare]
+description = "Compare exact artifacts from all four release platforms"
+run = "python -B scripts/compare_determinism.py --output _build/determinism/comparison.json _build/determinism/linux-x86_64 _build/determinism/windows-x86_64 _build/determinism/macos-arm64 _build/determinism/macos-x86_64"
+
+[tasks.version]
+description = "Verify every development version surface"
+run = "python -B scripts/verify_release_version.py --allow-development"
+
+[tasks.architecture]
+description = "Enforce the one-way OCaml layer graph"
+run = "python -B scripts/verify_architecture.py"
+
+[tasks.purity]
+description = "Prove the analyzer dependency and source boundary"
+run = "python -B scripts/verify_pure_ocaml.py"
+
+[tasks.install-check]
+description = "Verify the intentionally narrow install surface"
+run = "opam exec -- dune build @install && python -B scripts/verify_install_layout.py _build/install/default"
+
+[tasks.sbom]
+description = "Generate a deterministic SPDX SBOM and checksum manifest"
+run = "python -B scripts/generate_sbom.py --version ${WV_RELEASE_VERSION} --output dist/workflow-verifier.spdx.json --checksums dist/SHA256SUMS ${WV_RELEASE_ARTIFACTS}"
+
+[tasks.check]
+description = "Run the local release-readiness sequence"
+depends = ["build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "install-check"]

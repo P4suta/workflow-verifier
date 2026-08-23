@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://workflow-verifier.dev/schema/vm-observation-v1.json",
+  "additionalProperties": false,
+  "properties": {
+    "code": { "anyOf": [{ "maximum": 2147483647, "minimum": -2147483648, "type": "integer" }, { "type": "null" }] },
+    "output_exceeded": { "type": "boolean" },
+    "output_hex": { "pattern": "^(?:[0-9a-f]{2})*$", "type": "string" },
+    "schema": { "const": "vm-observation-v1" },
+    "timed_out": { "type": "boolean" }
+  },
+  "required": ["code", "output_exceeded", "output_hex", "schema", "timed_out"],
+  "type": "object"
+}

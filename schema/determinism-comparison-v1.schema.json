@@ -1,0 +1,32 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/determinism-comparison-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "name": { "type": "string" },
+          "size": { "minimum": 1, "type": "integer" }
+        },
+        "required": ["digest", "name", "size"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "failures": { "items": { "type": "string" }, "type": "array" },
+    "passed": { "type": "boolean" },
+    "platforms": {
+      "items": { "pattern": "^[a-z0-9][a-z0-9._-]*$", "type": "string" },
+      "minItems": 2,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema": { "const": "determinism-comparison-v1" }
+  },
+  "required": ["artifacts", "failures", "passed", "platforms", "schema"],
+  "title": "workflow-verifier cross-platform determinism comparison v1",
+  "type": "object"
+}

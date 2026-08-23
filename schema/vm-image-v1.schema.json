@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://workflow-verifier.dev/schema/vm-image-v1.json",
+  "additionalProperties": false,
+  "properties": {
+    "agent_digest": { "$ref": "#/$defs/digest" },
+    "architecture": { "enum": ["arm64", "x86_64"] },
+    "initrd_digest": { "$ref": "#/$defs/digest" },
+    "kernel_digest": { "$ref": "#/$defs/digest" },
+    "rootfs_digest": { "$ref": "#/$defs/digest" },
+    "schema": { "const": "vm-image-v1" },
+    "version": { "minLength": 1, "type": "string" }
+  },
+  "required": ["agent_digest", "architecture", "initrd_digest", "kernel_digest", "rootfs_digest", "schema", "version"],
+  "type": "object",
+  "$defs": {
+    "digest": { "pattern": "^sha256:[0-9a-fA-F]{64}$", "type": "string" }
+  }
+}

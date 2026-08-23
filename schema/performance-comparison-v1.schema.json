@@ -1,0 +1,58 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/performance-comparison-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "identity": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+        "revision": { "pattern": "^[0-9a-f]{40}$", "type": "string" }
+      },
+      "required": ["digest", "revision"],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "baseline": { "$ref": "#/$defs/identity" },
+    "comparisons": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "baseline_median_ns": { "pattern": "^[0-9]+(?:/[1-9][0-9]*)?$", "type": "string" },
+          "change_percent": { "pattern": "^-?[0-9]+\\.[0-9]{3}$", "type": "string" },
+          "current_median_ns": { "pattern": "^[0-9]+(?:/[1-9][0-9]*)?$", "type": "string" },
+          "explanation": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": { "type": "string" },
+                  "review": { "type": "string" }
+                },
+                "required": ["reason", "review"],
+                "type": "object"
+              }
+            ]
+          },
+          "mode": { "enum": ["cold", "incremental", "warm"] },
+          "scenario": { "type": "string" },
+          "status": { "enum": ["within-limit", "regression", "explained-regression"] }
+        },
+        "required": ["baseline_median_ns", "change_percent", "current_median_ns", "explanation", "mode", "scenario", "status"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "current": { "$ref": "#/$defs/identity" },
+    "environment": { "additionalProperties": { "type": "string" }, "type": "object" },
+    "failures": { "items": { "type": "string" }, "type": "array" },
+    "passed": { "type": "boolean" },
+    "schema": { "const": "performance-comparison-v1" },
+    "threshold_percent": { "const": "10.000" }
+  },
+  "required": ["baseline", "comparisons", "current", "environment", "failures", "passed", "schema", "threshold_percent"],
+  "title": "workflow-verifier performance comparison v1",
+  "type": "object"
+}

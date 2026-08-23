@@ -1,0 +1,35 @@
+trigger:
+  - main
+
+pr:
+  - main
+
+stages:
+  - stage: Verify
+    jobs:
+      - job: linux
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+            persistCredentials: false
+          - script: opam install . --deps-only --with-test --yes
+            displayName: Install dependencies
+          - script: opam exec -- dune build @all
+            displayName: Build
+          - script: opam exec -- dune runtest --force
+            displayName: Contract tests
+          - script: python -B scripts/fetch_yaml_test_suite.py --allow-network
+            displayName: Fetch pinned yaml-test-suite
+          - script: opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-data-2022-01-17
+            displayName: YAML conformance (402 cases)
+          - script: python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
+            displayName: Tooling contracts
+          - script: python -B scripts/verify_architecture.py
+            displayName: Architecture boundary
+          - script: cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
+            displayName: Native backend conformance
+          - script: cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
+            displayName: Rust format
+          - script: cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
+            displayName: Rust lint

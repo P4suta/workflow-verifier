@@ -1,0 +1,36 @@
+version = 1
+persona = "gate"
+frontends = ["github", "gitlab", "azure", "circleci"]
+offline = true
+
+[resolver]
+require_immutable = true
+allowed_sources = ["https://github.com/", "https://gitlab.com/"]
+
+[sandbox]
+backend = "oci:docker"
+image = "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+network = "deny"
+cpu_seconds = 900
+memory_mb = 2048
+processes = 128
+output_bytes = 10000000
+
+[[allowlist]]
+kind = "network_host"
+value = "artifacts.example.invalid"
+reason = "Reviewed internal artifact service"
+
+[[rules]]
+id = "ORG-UNTRUSTED-NETWORK"
+kind = "forbid_path"
+selector.mode = "all"
+selector.effect = "network_request"
+selector.trust = "untrusted"
+message = "Untrusted input must not reach a network effect"
+severity = "error"
+
+[[suppressions]]
+rule = "WV-SUPPLY-001"
+path = ".github/workflows/example.yml"
+reason = "Example only; production workflows use an immutable digest"

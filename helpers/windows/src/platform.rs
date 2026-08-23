@@ -1,0 +1,1006 @@
+use std::collections::BTreeMap;
+use std::ffi::c_void;
+use std::fs::{File, OpenOptions};
+use std::io::{Read as _, Seek as _, SeekFrom};
+use std::os::windows::ffi::OsStrExt as _;
+use std::path::{Path, PathBuf};
+use std::process::{Command, Stdio};
+use std::ptr::{null, null_mut};
+use std::sync::OnceLock;
+use std::time::{Duration, Instant};
+
+use windows_sys::Win32::Foundation::{
+    CloseHandle, ERROR_ALREADY_EXISTS, HANDLE, INVALID_HANDLE_VALUE, LocalFree, WAIT_OBJECT_0,
+    WAIT_TIMEOUT,
+};
+use windows_sys::Win32::Security::Authorization::{
+    EXPLICIT_ACCESS_W, GRANT_ACCESS, GetNamedSecurityInfoW, NO_MULTIPLE_TRUSTEE, SE_FILE_OBJECT,
+    SetEntriesInAclW, SetNamedSecurityInfoW, TRUSTEE_IS_GROUP, TRUSTEE_IS_SID, TRUSTEE_W,
+};
+use windows_sys::Win32::Security::Isolation::{
+    CreateAppContainerProfile, DeriveAppContainerSidFromAppContainerName,
+};
+use windows_sys::Win32::Security::{
+    ACL, CONTAINER_INHERIT_ACE, CreateRestrictedToken, DACL_SECURITY_INFORMATION,
+    DISABLE_MAX_PRIVILEGE, FreeSid, GetTokenInformation, OBJECT_INHERIT_ACE, PSECURITY_DESCRIPTOR,
+    PSID, SECURITY_CAPABILITIES, TOKEN_ASSIGN_PRIMARY, TOKEN_DUPLICATE, TOKEN_QUERY,
+    TokenIsAppContainer, TokenPrivileges,
+};
+use windows_sys::Win32::Storage::FileSystem::{
+    FILE_ALL_ACCESS, FILE_GENERIC_EXECUTE, FILE_GENERIC_READ,
+};
+use windows_sys::Win32::System::JobObjects::{
+    AssignProcessToJobObject, CreateJobObjectW, JOB_OBJECT_LIMIT_ACTIVE_PROCESS,
+    JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, JOB_OBJECT_LIMIT_PROCESS_MEMORY,
+    JOB_OBJECT_LIMIT_PROCESS_TIME, JOBOBJECT_EXTENDED_LIMIT_INFORMATION,
+    JobObjectExtendedLimitInformation, SetInformationJobObject, TerminateJobObject,
+};
+use windows_sys::Win32::System::Threading::{
+    CREATE_SUSPENDED, CREATE_UNICODE_ENVIRONMENT, CreateProcessAsUserW,
+    DeleteProcThreadAttributeList, EXTENDED_STARTUPINFO_PRESENT, GetCurrentProcess,
+    GetExitCodeProcess, InitializeProcThreadAttributeList, OpenProcessToken,
+    PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES, PROCESS_INFORMATION, ResumeThread, STARTUPINFOEXW,
+    TerminateProcess, UpdateProcThreadAttribute, WaitForSingleObject,
+};
+
+use workflow_verifier_helper_runtime::{
+    EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
+    execute_native, reserve_temp_directory, reserve_temp_file,
+};
+use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, ValidatedPlan};
+
+const PROFILE_NAME: &str = "OpenAI.workflow-verifier.sandbox.v1";
+const PROFILE_LABEL: &str = "workflow-verifier sandbox";
+const PROFILE_DESCRIPTION: &str = "Network-denied native workflow verification";
+const ERROR_ALREADY_EXISTS_HRESULT: i32 = 0x8007_00B7_u32.cast_signed();
+const BROKER_MODE: &str = "--workflow-verifier-appcontainer-broker-v1";
+const BROKER_OUTPUT: &str = "WORKFLOW_VERIFIER_BROKER_OUTPUT";
+const BROKER_WORKING_DIRECTORY: &str = "WORKFLOW_VERIFIER_BROKER_WORKING_DIRECTORY";
+
+static PROFILE_INITIALIZED: OnceLock<Result<(), String>> = OnceLock::new();
+
+fn wide(value: impl AsRef<std::ffi::OsStr>) -> Result<Vec<u16>, String> {
+    let mut encoded = value.as_ref().encode_wide().collect::<Vec<_>>();
+    if encoded.contains(&0) {
+        return Err("Windows string contains NUL".to_owned());
+    }
+    encoded.push(0);
+    Ok(encoded)
+}
+
+fn windows_error(context: &str) -> String {
+    format!("{context}: {}", std::io::Error::last_os_error())
+}
+
+struct OwnedHandle(HANDLE);
+
+impl OwnedHandle {
+    fn new(handle: HANDLE, context: &str) -> Result<Self, String> {
+        if handle.is_null() || handle == INVALID_HANDLE_VALUE {
+            Err(windows_error(context))
+        } else {
+            Ok(Self(handle))
+        }
+    }
+
+    fn raw(&self) -> HANDLE {
+        self.0
+    }
+}
+
+struct SecurityDescriptor(PSECURITY_DESCRIPTOR);
+
+impl Drop for SecurityDescriptor {
+    fn drop(&mut self) {
+        // SAFETY: GetNamedSecurityInfoW allocated this descriptor with LocalAlloc.
+        unsafe {
+            LocalFree(self.0.cast());
+        }
+    }
+}
+
+struct LocalAcl(*mut ACL);
+
+impl Drop for LocalAcl {
+    fn drop(&mut self) {
+        // SAFETY: SetEntriesInAclW allocated this ACL with LocalAlloc.
+        unsafe {
+            LocalFree(self.0.cast());
+        }
+    }
+}
+
+impl Drop for OwnedHandle {
+    fn drop(&mut self) {
+        // SAFETY: this wrapper exclusively owns a non-null Win32 handle.
+        unsafe {
+            CloseHandle(self.0);
+        }
+    }
+}
+
+struct AppContainerSid(PSID);
+
+impl AppContainerSid {
+    fn derive() -> Result<Self, String> {
+        let name = wide(PROFILE_NAME)?;
+        let mut sid = null_mut();
+        // SAFETY: name is NUL-terminated and sid is a valid output pointer.
+        let result =
+            unsafe { DeriveAppContainerSidFromAppContainerName(name.as_ptr(), &raw mut sid) };
+        if result < 0 || sid.is_null() {
+            Err(format!(
+                "DeriveAppContainerSidFromAppContainerName failed: HRESULT 0x{:08x}",
+                result.cast_unsigned()
+            ))
+        } else {
+            Ok(Self(sid))
+        }
+    }
+
+    fn create_or_open() -> Result<Self, String> {
+        PROFILE_INITIALIZED
+            .get_or_init(initialize_profile)
+            .clone()?;
+        Self::derive()
+    }
+
+    fn raw(&self) -> PSID {
+        self.0
+    }
+}
+
+fn initialize_profile() -> Result<(), String> {
+    let name = wide(PROFILE_NAME)?;
+    let label = wide(PROFILE_LABEL)?;
+    let description = wide(PROFILE_DESCRIPTION)?;
+    let mut sid = null_mut();
+    // SAFETY: all strings are NUL-terminated, no capabilities are requested,
+    // and sid is a valid output pointer.
+    let result = unsafe {
+        CreateAppContainerProfile(
+            name.as_ptr(),
+            label.as_ptr(),
+            description.as_ptr(),
+            null(),
+            0,
+            &raw mut sid,
+        )
+    };
+    if result == ERROR_ALREADY_EXISTS_HRESULT || result.cast_unsigned() == ERROR_ALREADY_EXISTS {
+        Ok(())
+    } else if result < 0 || sid.is_null() {
+        Err(format!(
+            "CreateAppContainerProfile failed: HRESULT 0x{:08x}",
+            result.cast_unsigned()
+        ))
+    } else {
+        // SAFETY: a successful profile creation transfers this SID to us;
+        // callers derive independently owned SID values after initialization.
+        unsafe {
+            FreeSid(sid);
+        }
+        Ok(())
+    }
+}
+
+impl Drop for AppContainerSid {
+    fn drop(&mut self) {
+        // SAFETY: userenv returned this SID and transfers ownership to the caller.
+        unsafe {
+            FreeSid(self.0);
+        }
+    }
+}
+
+fn restricted_token() -> Result<OwnedHandle, String> {
+    let mut process_token = null_mut();
+    // SAFETY: the pseudo process handle is valid and process_token is writable.
+    let opened = unsafe {
+        OpenProcessToken(
+            GetCurrentProcess(),
+            TOKEN_ASSIGN_PRIMARY | TOKEN_DUPLICATE | TOKEN_QUERY,
+            &raw mut process_token,
+        )
+    };
+    if opened == 0 {
+        return Err(windows_error("OpenProcessToken"));
+    }
+    let process_token = OwnedHandle::new(process_token, "OpenProcessToken")?;
+    let mut restricted = null_mut();
+    // SAFETY: the source token is live and every optional SID/privilege array
+    // is null with a matching zero count.
+    let created = unsafe {
+        CreateRestrictedToken(
+            process_token.raw(),
+            DISABLE_MAX_PRIVILEGE,
+            0,
+            null(),
+            0,
+            null(),
+            0,
+            null(),
+            &raw mut restricted,
+        )
+    };
+    if created == 0 {
+        Err(windows_error("CreateRestrictedToken"))
+    } else {
+        OwnedHandle::new(restricted, "CreateRestrictedToken")
+    }
+}
+
+fn grant_path(path: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+    let path = wide(path.as_os_str())?;
+    let mut old_acl: *mut ACL = null_mut();
+    let mut descriptor: PSECURITY_DESCRIPTOR = null_mut();
+    // SAFETY: output pointers are valid and the path is NUL-terminated.
+    let result = unsafe {
+        GetNamedSecurityInfoW(
+            path.as_ptr(),
+            SE_FILE_OBJECT,
+            DACL_SECURITY_INFORMATION,
+            null_mut(),
+            null_mut(),
+            &raw mut old_acl,
+            null_mut(),
+            &raw mut descriptor,
+        )
+    };
+    if result != 0 {
+        return Err(format!("GetNamedSecurityInfoW failed with {result}"));
+    }
+    let _descriptor = SecurityDescriptor(descriptor);
+    let entry = EXPLICIT_ACCESS_W {
+        grfAccessPermissions: permissions,
+        grfAccessMode: GRANT_ACCESS,
+        grfInheritance: CONTAINER_INHERIT_ACE | OBJECT_INHERIT_ACE,
+        Trustee: TRUSTEE_W {
+            pMultipleTrustee: null_mut(),
+            MultipleTrusteeOperation: NO_MULTIPLE_TRUSTEE,
+            TrusteeForm: TRUSTEE_IS_SID,
+            TrusteeType: TRUSTEE_IS_GROUP,
+            ptstrName: sid.cast(),
+        },
+    };
+    let mut new_acl: *mut ACL = null_mut();
+    // SAFETY: entry and old ACL remain live through the call; new_acl is writable.
+    let result = unsafe { SetEntriesInAclW(1, &raw const entry, old_acl, &raw mut new_acl) };
+    if result != 0 || new_acl.is_null() {
+        return Err(format!("SetEntriesInAclW failed with {result}"));
+    }
+    let new_acl = LocalAcl(new_acl);
+    // SAFETY: the path and ACL remain valid through this synchronous call.
+    let result = unsafe {
+        SetNamedSecurityInfoW(
+            path.as_ptr(),
+            SE_FILE_OBJECT,
+            DACL_SECURITY_INFORMATION,
+            null_mut(),
+            null_mut(),
+            new_acl.0,
+            null_mut(),
+        )
+    };
+    if result == 0 {
+        Ok(())
+    } else {
+        Err(format!("SetNamedSecurityInfoW failed with {result}"))
+    }
+}
+
+fn grant_tree(root: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+    let metadata = std::fs::symlink_metadata(root).map_err(|error| error.to_string())?;
+    if metadata.file_type().is_symlink() {
+        return Err(format!(
+            "refusing ACL grant through symlink: {}",
+            root.display()
+        ));
+    }
+    grant_path(root, sid, permissions)?;
+    if metadata.is_dir() {
+        let mut entries = std::fs::read_dir(root)
+            .map_err(|error| error.to_string())?
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|error| error.to_string())?;
+        entries.sort_by_key(std::fs::DirEntry::file_name);
+        for entry in entries {
+            grant_tree(&entry.path(), sid, permissions)?;
+        }
+    }
+    Ok(())
+}
+
+fn create_job(plan: &ValidatedPlan) -> Result<OwnedHandle, String> {
+    // SAFETY: null security attributes and name request an unnamed private job.
+    let job = OwnedHandle::new(
+        unsafe { CreateJobObjectW(null(), null()) },
+        "CreateJobObjectW",
+    )?;
+    let mut limits = JOBOBJECT_EXTENDED_LIMIT_INFORMATION::default();
+    limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+        | JOB_OBJECT_LIMIT_ACTIVE_PROCESS
+        | JOB_OBJECT_LIMIT_PROCESS_MEMORY
+        | JOB_OBJECT_LIMIT_PROCESS_TIME;
+    limits.BasicLimitInformation.ActiveProcessLimit =
+        u32::try_from(plan.limits.processes.saturating_add(1)).unwrap_or(u32::MAX);
+    limits.BasicLimitInformation.PerProcessUserTimeLimit =
+        i64::try_from(plan.limits.cpu_seconds.saturating_mul(10_000_000)).unwrap_or(i64::MAX);
+    limits.ProcessMemoryLimit =
+        usize::try_from(plan.limits.memory_mb.saturating_mul(1024 * 1024)).unwrap_or(usize::MAX);
+    // SAFETY: limits has the exact ABI required by JobObjectExtendedLimitInformation.
+    let configured = unsafe {
+        SetInformationJobObject(
+            job.raw(),
+            JobObjectExtendedLimitInformation,
+            (&raw const limits).cast(),
+            u32::try_from(std::mem::size_of_val(&limits)).expect("job limits fit u32"),
+        )
+    };
+    if configured == 0 {
+        Err(windows_error("SetInformationJobObject"))
+    } else {
+        Ok(job)
+    }
+}
+
+struct AttributeList {
+    storage: Vec<usize>,
+    initialized: bool,
+    capabilities: Box<SECURITY_CAPABILITIES>,
+}
+
+impl AttributeList {
+    fn new(sid: PSID) -> Result<Self, String> {
+        let mut bytes = 0;
+        // SAFETY: the documented sizing call accepts a null list.
+        unsafe {
+            InitializeProcThreadAttributeList(null_mut(), 1, 0, &raw mut bytes);
+        }
+        if bytes == 0 {
+            return Err(windows_error("InitializeProcThreadAttributeList sizing"));
+        }
+        let words = bytes.div_ceil(std::mem::size_of::<usize>());
+        let mut value = Self {
+            storage: vec![0; words],
+            initialized: false,
+            capabilities: Box::new(SECURITY_CAPABILITIES {
+                AppContainerSid: sid,
+                Capabilities: null_mut(),
+                CapabilityCount: 0,
+                Reserved: 0,
+            }),
+        };
+        // SAFETY: storage is suitably aligned and at least the requested size.
+        if unsafe { InitializeProcThreadAttributeList(value.raw(), 1, 0, &raw mut bytes) } == 0 {
+            return Err(windows_error("InitializeProcThreadAttributeList"));
+        }
+        value.initialized = true;
+        // SAFETY: the boxed capabilities and SID remain live and at stable
+        // addresses for the complete process-creation transaction.
+        if unsafe {
+            UpdateProcThreadAttribute(
+                value.raw(),
+                0,
+                PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES as usize,
+                (&raw const *value.capabilities).cast(),
+                std::mem::size_of::<SECURITY_CAPABILITIES>(),
+                null_mut(),
+                null(),
+            )
+        } == 0
+        {
+            return Err(windows_error("security-capabilities attribute"));
+        }
+        Ok(value)
+    }
+
+    fn raw(&mut self) -> *mut c_void {
+        self.storage.as_mut_ptr().cast()
+    }
+}
+
+impl Drop for AttributeList {
+    fn drop(&mut self) {
+        if self.initialized {
+            // SAFETY: the list was initialized and storage remains live.
+            unsafe {
+                DeleteProcThreadAttributeList(self.raw());
+            }
+        }
+    }
+}
+
+fn quote_argument(argument: &str) -> String {
+    let mut quoted = String::from("\"");
+    let mut backslashes = 0;
+    for character in argument.chars() {
+        if character == '\\' {
+            backslashes += 1;
+        } else {
+            if character == '"' {
+                quoted.push_str(&"\\".repeat(backslashes * 2 + 1));
+            } else {
+                quoted.push_str(&"\\".repeat(backslashes));
+            }
+            backslashes = 0;
+            quoted.push(character);
+        }
+    }
+    quoted.push_str(&"\\".repeat(backslashes * 2));
+    quoted.push('"');
+    quoted
+}
+
+fn command_line(arguments: &[String]) -> Result<Vec<u16>, String> {
+    if arguments.is_empty() {
+        return Err("step argv cannot be empty".to_owned());
+    }
+    wide(
+        arguments
+            .iter()
+            .map(|value| quote_argument(value))
+            .collect::<Vec<_>>()
+            .join(" "),
+    )
+}
+
+fn environment_block(
+    request: &NativeStepRequest<'_>,
+    output_path: &Path,
+) -> Result<Vec<u16>, String> {
+    let mut environment = BTreeMap::<String, String>::new();
+    for name in [
+        "ALLUSERSPROFILE",
+        "APPDATA",
+        "COMSPEC",
+        "HOMEDRIVE",
+        "HOMEPATH",
+        "LOCALAPPDATA",
+        "PATH",
+        "PATHEXT",
+        "PROGRAMDATA",
+        "PUBLIC",
+        "SYSTEMROOT",
+        "USERDOMAIN",
+        "USERNAME",
+        "USERPROFILE",
+        "WINDIR",
+    ] {
+        if let Ok(value) = std::env::var(name) {
+            environment.insert(name.to_owned(), value);
+        }
+    }
+    for (name, value) in &request.environment {
+        if name.is_empty() || name.contains('=') || name.contains('\0') || value.contains('\0') {
+            return Err(format!("invalid Windows environment entry {name:?}"));
+        }
+        environment.insert(name.to_uppercase(), value.clone());
+    }
+    environment.insert(
+        "WORKFLOW_VERIFIER_SOURCE".to_owned(),
+        request.source_root.to_string_lossy().into_owned(),
+    );
+    environment.insert(
+        "WORKFLOW_VERIFIER_WORKSPACE".to_owned(),
+        request.scratch_root.to_string_lossy().into_owned(),
+    );
+    environment.insert(
+        "TEMP".to_owned(),
+        request.scratch_root.to_string_lossy().into_owned(),
+    );
+    environment.insert(
+        "TMP".to_owned(),
+        request.scratch_root.to_string_lossy().into_owned(),
+    );
+    environment.insert(
+        BROKER_OUTPUT.to_owned(),
+        output_path.to_string_lossy().into_owned(),
+    );
+    environment.insert(
+        BROKER_WORKING_DIRECTORY.to_owned(),
+        request.working_directory.to_string_lossy().into_owned(),
+    );
+    let mut block = Vec::new();
+    for (name, value) in environment {
+        block.extend(wide(format!("{name}={value}"))?);
+    }
+    block.push(0);
+    Ok(block)
+}
+
+struct OutputFile {
+    path: PathBuf,
+    file: Option<File>,
+}
+
+impl OutputFile {
+    fn create() -> Result<Self, String> {
+        let (path, file) = reserve_temp_file("output", ".log")?;
+        Ok(Self {
+            path,
+            file: Some(file),
+        })
+    }
+
+    fn length(&self) -> Result<u64, String> {
+        self.file
+            .as_ref()
+            .expect("output file is open while owned")
+            .metadata()
+            .map(|metadata| metadata.len())
+            .map_err(|error| error.to_string())
+    }
+
+    fn read(&mut self, limit: u64) -> Result<Vec<u8>, String> {
+        let file = self.file.as_mut().expect("output file is open while owned");
+        file.seek(SeekFrom::Start(0))
+            .map_err(|error| error.to_string())?;
+        let mut output = Vec::new();
+        std::io::Read::take(file, limit)
+            .read_to_end(&mut output)
+            .map_err(|error| error.to_string())?;
+        Ok(output)
+    }
+}
+
+impl Drop for OutputFile {
+    fn drop(&mut self) {
+        drop(self.file.take());
+        let _ = std::fs::remove_file(&self.path);
+    }
+}
+
+struct BrokerExecutable {
+    path: PathBuf,
+}
+
+impl BrokerExecutable {
+    fn create(app_container_sid: PSID) -> Result<Self, String> {
+        let executable = broker_source()?;
+        let (path, mut destination) = reserve_temp_file("broker", ".exe")?;
+        let copy_result = File::open(executable)
+            .map_err(|error| error.to_string())
+            .and_then(|mut source| {
+                std::io::copy(&mut source, &mut destination)
+                    .map(|_| ())
+                    .map_err(|error| error.to_string())
+            })
+            .and_then(|()| destination.sync_all().map_err(|error| error.to_string()));
+        drop(destination);
+        if let Err(error) = copy_result {
+            let _ = std::fs::remove_file(&path);
+            return Err(error);
+        }
+        if let Err(error) = grant_path(
+            &path,
+            app_container_sid,
+            FILE_GENERIC_READ | FILE_GENERIC_EXECUTE,
+        ) {
+            let _ = std::fs::remove_file(&path);
+            return Err(error);
+        }
+        Ok(Self { path })
+    }
+}
+
+fn broker_source() -> Result<PathBuf, String> {
+    let current = std::env::current_exe().map_err(|error| error.to_string())?;
+    let expected = "workflow-verifier-windows-helper.exe";
+    if current.file_name().and_then(std::ffi::OsStr::to_str) == Some(expected) {
+        return Ok(current);
+    }
+    if cfg!(debug_assertions) {
+        let mut candidates = Vec::new();
+        if let Some(parent) = current.parent() {
+            candidates.push(parent.join(expected));
+            if let Some(grandparent) = parent.parent() {
+                candidates.push(grandparent.join(expected));
+            }
+        }
+        if let Some(candidate) = candidates.into_iter().find(|path| path.is_file()) {
+            return Ok(candidate);
+        }
+    }
+    Err("the signed workflow-verifier Windows helper cannot locate its broker image".to_owned())
+}
+
+impl Drop for BrokerExecutable {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_file(&self.path);
+    }
+}
+
+fn privilege_count(token: HANDLE) -> Result<u32, String> {
+    let mut bytes = 0_u32;
+    // SAFETY: the documented sizing call accepts a null output buffer.
+    unsafe {
+        GetTokenInformation(token, TokenPrivileges, null_mut(), 0, &raw mut bytes);
+    }
+    if bytes < u32::try_from(std::mem::size_of::<u32>()).expect("u32 size fits u32") {
+        return Err(windows_error("GetTokenInformation(TokenPrivileges) sizing"));
+    }
+    let words = usize::try_from(bytes)
+        .expect("token buffer size fits usize")
+        .div_ceil(std::mem::size_of::<u32>());
+    let mut buffer = vec![0_u32; words];
+    // SAFETY: the DWORD-aligned buffer has the size returned by the sizing call.
+    if unsafe {
+        GetTokenInformation(
+            token,
+            TokenPrivileges,
+            buffer.as_mut_ptr().cast(),
+            bytes,
+            &raw mut bytes,
+        )
+    } == 0
+    {
+        Err(windows_error("GetTokenInformation(TokenPrivileges)"))
+    } else {
+        Ok(buffer[0])
+    }
+}
+
+fn verify_privilege_stripped(token: HANDLE) -> Result<(), String> {
+    let privileges = privilege_count(token)?;
+    if privileges <= 1 {
+        Ok(())
+    } else {
+        Err(format!(
+            "restricted token retained {privileges} privileges; expected at most SeChangeNotifyPrivilege"
+        ))
+    }
+}
+
+fn verify_restricted_appcontainer(process: HANDLE) -> Result<(), String> {
+    let mut child_token = null_mut();
+    // SAFETY: process is a live process handle and child_token is writable.
+    if unsafe { OpenProcessToken(process, TOKEN_QUERY, &raw mut child_token) } == 0 {
+        return Err(windows_error("OpenProcessToken(AppContainer)"));
+    }
+    let child_token = OwnedHandle::new(child_token, "AppContainer token")?;
+    verify_privilege_stripped(child_token.raw())?;
+    let mut is_app_container = 0_u32;
+    let mut returned = 0_u32;
+    // SAFETY: output buffer has the documented TokenIsAppContainer size.
+    if unsafe {
+        GetTokenInformation(
+            child_token.raw(),
+            TokenIsAppContainer,
+            (&raw mut is_app_container).cast(),
+            u32::try_from(std::mem::size_of_val(&is_app_container)).expect("token flag fits u32"),
+            &raw mut returned,
+        )
+    } == 0
+        || is_app_container == 0
+    {
+        Err("created process token is not an AppContainer".to_owned())
+    } else {
+        Ok(())
+    }
+}
+
+fn run_process(
+    app_container_sid: PSID,
+    token: HANDLE,
+    broker: &Path,
+    request: &NativeStepRequest<'_>,
+) -> Result<ProcessObservation, String> {
+    let job = create_job(request.plan)?;
+    let mut output = OutputFile::create()?;
+    grant_path(&output.path, app_container_sid, FILE_ALL_ACCESS)?;
+    let mut attributes = AttributeList::new(app_container_sid)?;
+    let mut startup = STARTUPINFOEXW::default();
+    startup.StartupInfo.cb =
+        u32::try_from(std::mem::size_of::<STARTUPINFOEXW>()).expect("startup info fits u32");
+    startup.lpAttributeList = attributes.raw();
+    let mut process = PROCESS_INFORMATION::default();
+    let executable = wide(broker.as_os_str())?;
+    let broker_arguments = std::iter::once(broker.to_string_lossy().into_owned())
+        .chain(std::iter::once(BROKER_MODE.to_owned()))
+        .chain(std::iter::once("--".to_owned()))
+        .chain(request.step.argv.iter().cloned())
+        .collect::<Vec<_>>();
+    let mut command_line = command_line(&broker_arguments)?;
+    let environment = environment_block(request, &output.path)?;
+    let working_directory = wide(request.working_directory.as_os_str())?;
+    // SAFETY: all pointers refer to live mutable buffers for the duration of
+    // CreateProcessAsUserW. The broker opens its ACL-scoped evidence file itself;
+    // no host handle crosses the AppContainer boundary.
+    let created = unsafe {
+        CreateProcessAsUserW(
+            token,
+            executable.as_ptr(),
+            command_line.as_mut_ptr(),
+            null(),
+            null(),
+            0,
+            CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT | EXTENDED_STARTUPINFO_PRESENT,
+            environment.as_ptr().cast(),
+            working_directory.as_ptr(),
+            &raw const startup.StartupInfo,
+            &raw mut process,
+        )
+    };
+    if created == 0 {
+        return Err(windows_error("CreateProcessAsUserW"));
+    }
+    let process_handle = OwnedHandle::new(process.hProcess, "process handle")?;
+    let thread_handle = OwnedHandle::new(process.hThread, "thread handle")?;
+    // SAFETY: the new process is still suspended and both handles are live.
+    if unsafe { AssignProcessToJobObject(job.raw(), process_handle.raw()) } == 0 {
+        // SAFETY: the process is still suspended and not yet owned by the job.
+        unsafe {
+            TerminateProcess(process_handle.raw(), 5);
+        }
+        return Err(windows_error("AssignProcessToJobObject"));
+    }
+    verify_restricted_appcontainer(process_handle.raw())?;
+    // SAFETY: the primary thread is suspended exactly once by CREATE_SUSPENDED.
+    if unsafe { ResumeThread(thread_handle.raw()) } == u32::MAX {
+        // SAFETY: terminating the private job closes the untrusted process tree.
+        unsafe {
+            TerminateJobObject(job.raw(), 5);
+        }
+        return Err(windows_error("ResumeThread"));
+    }
+    let deadline = Instant::now() + Duration::from_secs(request.plan.limits.cpu_seconds);
+    let mut timed_out = false;
+    let mut output_exceeded = false;
+    loop {
+        // SAFETY: process_handle remains valid for the entire wait loop.
+        match unsafe { WaitForSingleObject(process_handle.raw(), 10) } {
+            WAIT_OBJECT_0 => break,
+            WAIT_TIMEOUT => {}
+            other => {
+                // SAFETY: fail-closed termination of our private job.
+                unsafe {
+                    TerminateJobObject(job.raw(), 5);
+                }
+                return Err(format!("WaitForSingleObject returned {other}"));
+            }
+        }
+        if output.length()? > request.plan.limits.output_bytes {
+            output_exceeded = true;
+        }
+        if Instant::now() >= deadline {
+            timed_out = true;
+        }
+        if timed_out || output_exceeded {
+            // SAFETY: job is private and owns the complete descendant tree.
+            if unsafe { TerminateJobObject(job.raw(), 5) } == 0 {
+                return Err(windows_error("TerminateJobObject"));
+            }
+            // SAFETY: the process handle remains valid after job termination.
+            unsafe {
+                WaitForSingleObject(process_handle.raw(), 5_000);
+            }
+            break;
+        }
+    }
+    let mut code = 0_u32;
+    // SAFETY: process has exited and code points to writable storage.
+    if unsafe { GetExitCodeProcess(process_handle.raw(), &raw mut code) } == 0 {
+        return Err(windows_error("GetExitCodeProcess"));
+    }
+    let captured = output.read(request.plan.limits.output_bytes)?;
+    Ok(ProcessObservation {
+        code: i32::try_from(code).ok(),
+        timed_out,
+        output_exceeded,
+        output: captured,
+    })
+}
+
+struct WindowsSandbox {
+    sid: Option<AppContainerSid>,
+    token: Option<OwnedHandle>,
+    broker: Option<BrokerExecutable>,
+}
+
+impl WindowsSandbox {
+    fn new() -> Self {
+        Self {
+            sid: None,
+            token: None,
+            broker: None,
+        }
+    }
+}
+
+impl NativeSandbox for WindowsSandbox {
+    fn prepare(&mut self, request: &NativeSandboxRequest<'_>) -> Result<(), String> {
+        let sid = AppContainerSid::create_or_open()?;
+        let token = restricted_token()?;
+        verify_privilege_stripped(token.raw())?;
+        grant_tree(
+            request.source_root,
+            sid.raw(),
+            FILE_GENERIC_READ | FILE_GENERIC_EXECUTE,
+        )?;
+        grant_tree(request.scratch_root, sid.raw(), FILE_ALL_ACCESS)?;
+        let broker = BrokerExecutable::create(sid.raw())?;
+        // Prove Job Object limits can be committed before emitting attestations.
+        drop(create_job(request.plan)?);
+        self.sid = Some(sid);
+        self.token = Some(token);
+        self.broker = Some(broker);
+        Ok(())
+    }
+
+    fn run(&mut self, request: &NativeStepRequest<'_>) -> Result<ProcessObservation, String> {
+        let sid = self
+            .sid
+            .as_ref()
+            .ok_or_else(|| "Windows sandbox was not prepared".to_owned())?;
+        let broker = self
+            .broker
+            .as_ref()
+            .ok_or_else(|| "Windows sandbox was not prepared".to_owned())?;
+        let token = self
+            .token
+            .as_ref()
+            .ok_or_else(|| "Windows sandbox was not prepared".to_owned())?;
+        run_process(sid.raw(), token.raw(), &broker.path, request)
+    }
+}
+
+fn run_broker(arguments: &[String]) -> Result<i32, String> {
+    verify_restricted_appcontainer(unsafe { GetCurrentProcess() })?;
+    let [mode, separator, command @ ..] = arguments else {
+        return Err("invalid AppContainer broker arguments".to_owned());
+    };
+    if mode != BROKER_MODE || separator != "--" || command.is_empty() {
+        return Err("invalid AppContainer broker arguments".to_owned());
+    }
+    let output_path = std::env::var_os(BROKER_OUTPUT)
+        .map(PathBuf::from)
+        .ok_or_else(|| "AppContainer broker output path is missing".to_owned())?;
+    let working_directory = std::env::var_os(BROKER_WORKING_DIRECTORY)
+        .map(PathBuf::from)
+        .ok_or_else(|| "AppContainer broker working directory is missing".to_owned())?;
+    let output = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .open(output_path)
+        .map_err(|error| error.to_string())?;
+    let error_output = output.try_clone().map_err(|error| error.to_string())?;
+    let (program, child_arguments) = command
+        .split_first()
+        .ok_or_else(|| "AppContainer broker command is empty".to_owned())?;
+    let status = Command::new(program)
+        .args(child_arguments)
+        .current_dir(working_directory)
+        .env_remove(BROKER_OUTPUT)
+        .env_remove(BROKER_WORKING_DIRECTORY)
+        .stdin(Stdio::null())
+        .stdout(Stdio::from(output))
+        .stderr(Stdio::from(error_output))
+        .status()
+        .map_err(|error| error.to_string())?;
+    Ok(status.code().unwrap_or(1))
+}
+
+pub(super) fn broker_main(arguments: &[String]) -> Option<i32> {
+    if arguments.first().map(String::as_str) != Some(BROKER_MODE) {
+        return None;
+    }
+    Some(match run_broker(arguments) {
+        Ok(code) => code,
+        Err(error) => {
+            eprintln!("AppContainer broker failure: {error}");
+            126
+        }
+    })
+}
+
+pub(super) fn probe() -> Vec<String> {
+    let mut reasons = Vec::new();
+    let sid = match AppContainerSid::create_or_open() {
+        Ok(sid) => Some(sid),
+        Err(error) => {
+            reasons.push(format!("AppContainer SID probe: {error}"));
+            None
+        }
+    };
+    if let Some(sid) = sid {
+        match restricted_token().and_then(|token| verify_privilege_stripped(token.raw())) {
+            Ok(()) => {}
+            Err(error) => {
+                reasons.push(format!("restricted token probe: {error}"));
+            }
+        }
+        let acl_result = reserve_temp_directory("windows-probe").and_then(|root| {
+            let result = grant_path(&root, sid.raw(), FILE_ALL_ACCESS);
+            let _ = std::fs::remove_dir(&root);
+            result
+        });
+        if let Err(error) = acl_result {
+            reasons.push(format!("AppContainer ACL probe: {error}"));
+        }
+    }
+    let probe_plan = ValidatedPlan {
+        digest: String::new(),
+        backend: "windows-native".to_owned(),
+        controls: Vec::new(),
+        status: workflow_verifier_runner_protocol::PlanStatus::Complete,
+        source_digest: String::new(),
+        lock_digest: String::new(),
+        limits: workflow_verifier_runner_protocol::Limits {
+            cpu_seconds: 1,
+            memory_mb: 64,
+            processes: 2,
+            output_bytes: 1024,
+        },
+        secret_names: Vec::new(),
+        dependencies: Vec::new(),
+        steps: Vec::new(),
+    };
+    if let Err(error) = create_job(&probe_plan) {
+        reasons.push(format!("Job Object probe: {error}"));
+    }
+    reasons
+}
+
+pub(super) fn launch(
+    plan: &ValidatedPlan,
+    source_root: &Path,
+    descriptor: &Descriptor,
+) -> Result<RunResult, LaunchError> {
+    let mut sandbox = WindowsSandbox::new();
+    execute_native(
+        plan,
+        descriptor,
+        source_root,
+        &EnvironmentSecrets,
+        &mut sandbox,
+    )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{AppContainerSid, OutputFile, command_line, probe, quote_argument};
+
+    #[test]
+    fn windows_command_line_quotes_spaces_quotes_and_trailing_slashes() {
+        assert_eq!(quote_argument("plain"), "\"plain\"");
+        assert_eq!(quote_argument("two words"), "\"two words\"");
+        assert_eq!(quote_argument("a\\\"b"), "\"a\\\\\\\"b\"");
+        assert_eq!(quote_argument("tail\\"), "\"tail\\\\\"");
+        assert!(command_line(&[]).is_err());
+    }
+
+    #[test]
+    fn output_capture_is_closed_before_its_private_file_is_removed() {
+        let output = OutputFile::create().expect("create output capture");
+        let path = output.path.clone();
+        assert!(path.is_file());
+        drop(output);
+        assert!(!path.exists());
+    }
+
+    #[test]
+    fn profile_initialization_is_safe_under_parallel_callers() {
+        let callers = (0..8)
+            .map(|_| {
+                std::thread::spawn(|| {
+                    drop(AppContainerSid::create_or_open().expect("initialize profile"));
+                })
+            })
+            .collect::<Vec<_>>();
+        for caller in callers {
+            caller.join().expect("join profile initializer");
+        }
+    }
+
+    #[test]
+    fn backend_probe_is_safe_under_parallel_callers() {
+        let callers = (0..16)
+            .map(|_| std::thread::spawn(probe))
+            .collect::<Vec<_>>();
+        for caller in callers {
+            let reasons = caller.join().expect("join backend probe");
+            assert!(reasons.is_empty(), "{}", reasons.join("; "));
+        }
+    }
+}

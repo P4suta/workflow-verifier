@@ -1,0 +1,82 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/corpus-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "expectation": {
+      "additionalProperties": false,
+      "properties": {
+        "id": { "pattern": "^diag_[0-9a-f]{20}$", "type": "string" },
+        "rule_id": { "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$", "type": "string" }
+      },
+      "required": ["id", "rule_id"],
+      "type": "object"
+    },
+    "path": {
+      "minLength": 1,
+      "not": { "pattern": "(?:^|/)(?:\\.\\.?)(?:/|$)|\\\\" },
+      "type": "string"
+    },
+    "repository": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_diagnostics": {
+          "items": { "$ref": "#/$defs/expectation" },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "checkout": { "$ref": "#/$defs/path" },
+        "expected_diagnostics": {
+          "items": { "$ref": "#/$defs/expectation" },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "id": {
+          "pattern": "^[a-z0-9](?:[a-z0-9._/-]*[a-z0-9])?$",
+          "type": "string"
+        },
+        "license": {
+          "pattern": "^[A-Za-z0-9.+() -]+$",
+          "type": "string"
+        },
+        "license_digest": { "$ref": "#/$defs/digest" },
+        "license_path": { "$ref": "#/$defs/path" },
+        "provider": { "enum": ["github", "gitlab", "azure", "circleci"] },
+        "report": { "$ref": "#/$defs/path" },
+        "revision": { "pattern": "^[0-9a-f]{40}$", "type": "string" },
+        "source_digest": { "$ref": "#/$defs/digest" },
+        "url": { "pattern": "^https://[^?#]+$", "type": "string" }
+      },
+      "required": [
+        "id",
+        "provider",
+        "url",
+        "revision",
+        "checkout",
+        "source_digest",
+        "license",
+        "license_path",
+        "license_digest",
+        "report",
+        "expected_diagnostics",
+        "allowed_diagnostics"
+      ],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "repositories": {
+      "items": { "$ref": "#/$defs/repository" },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema": { "const": "corpus-v1" }
+  },
+  "required": ["schema", "repositories"],
+  "title": "workflow-verifier immutable corpus manifest v1",
+  "type": "object"
+}

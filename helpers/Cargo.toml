@@ -1,0 +1,17 @@
+[workspace]
+resolver = "3"
+members = ["protocol", "runtime", "oci", "linux", "windows", "macos", "vm-agent", "conformance"]
+
+[workspace.package]
+version = "0.1.0-dev"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+rust-version = "1.85"
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+unused_must_use = "deny"
+
+[workspace.lints.clippy]
+all = "deny"
+pedantic = "warn"

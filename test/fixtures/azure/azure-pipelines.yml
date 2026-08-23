@@ -1,0 +1,15 @@
+trigger:
+  - main
+parameters:
+  - name: image
+    type: string
+    default: ubuntu-latest
+stages:
+  - stage: Build
+    jobs:
+      - job: build
+        pool:
+          vmImage: ${{ parameters.image }}
+        steps:
+          - template: steps.yml
+          - script: echo "$(System.PullRequest.Title) $(System.AccessToken)"

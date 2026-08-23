@@ -1,0 +1,54 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/sandbox-audit-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "backend": { "minLength": 1, "type": "string" },
+    "controls_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "event_count": { "minimum": 0, "type": "integer" },
+    "evidence_tail": { "minLength": 1, "type": "string" },
+    "observed_effects": { "items": { "type": "string" }, "type": "array", "uniqueItems": true },
+    "plan_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "reconciliation": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "explanation": { "type": "string" },
+            "id": { "const": "WV-RUNTIME-001" },
+            "reasons": { "items": { "type": "object" }, "type": "array" },
+            "state": { "enum": ["Proved", "Violated", "Unknown", "NotApplicable"] },
+            "subject": { "type": ["string", "null"] }
+          },
+          "required": ["explanation", "id", "reasons", "state", "subject"],
+          "type": "object"
+        }
+      ]
+    },
+    "schema": { "const": "sandbox-audit-v1" },
+    "source_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "status": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": { "state": { "const": "verified" } },
+          "required": ["state"],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "reasons": { "items": { "minLength": 1, "type": "string" }, "minItems": 1, "type": "array", "uniqueItems": true },
+            "state": { "const": "incomplete" }
+          },
+          "required": ["reasons", "state"],
+          "type": "object"
+        }
+      ]
+    }
+  },
+  "required": ["backend", "controls_digest", "event_count", "evidence_tail", "observed_effects", "plan_digest", "reconciliation", "schema", "source_digest", "status"],
+  "title": "workflow-verifier sandbox audit v1",
+  "type": "object"
+}
