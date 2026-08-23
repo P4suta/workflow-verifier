@@ -15,14 +15,7 @@ let property ~static ~possible_effect ~evidence =
       else Property.Not_applicable
 
 let envelope ~graphs ~evidence =
-  let static_effects =
-    graphs
-    |> List.concat_map (fun graph ->
-        graph.Ir.nodes
-        |> List.concat_map (fun (node : Ir.node) ->
-            node.effects
-            @ if node.kind = Ir.Command then [ Ir.Command_execution ] else []))
-    |> Util.deduplicate_compare Stdlib.compare
+  let static_effects = Verifier.observable_effects graphs
   and unknowns =
     graphs
     |> List.concat_map (fun graph ->

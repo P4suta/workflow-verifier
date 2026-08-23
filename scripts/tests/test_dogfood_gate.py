@@ -21,8 +21,8 @@ class DogfoodGateTests(unittest.TestCase):
             "lock.json": {"entries": [], "integrity": "sha256:" + "2" * 64, "schema": "lock-v2"},
             "doctor.json": {"backends": [{"id": "oci:docker", "available": True}], "frontends": [], "resolver_network": False, "sandbox_executor": True, "schema": "doctor-v1"},
             "plan.json": {"backend": "oci:docker", "digest": "sha256:" + "3" * 64, "schema": "runner-v1", "status": {"state": "complete"}, "steps": [{"id": "build"}]},
-            "run.json": {"evidence": {"events": [{"kind": "backend_attested"}, {"kind": "process_started"}, {"kind": "artifact_recorded"}], "plan_digest": "sha256:" + "3" * 64, "schema": "evidence-v1"}, "outcome": {"state": "completed"}, "schema": "sandbox-run-v1"},
-            "replay.json": {"events": [{"kind": "backend_attested"}, {"kind": "process_started"}, {"kind": "artifact_recorded"}], "plan_digest": "sha256:" + "3" * 64, "schema": "evidence-v1"},
+            "run.json": {"evidence": {"events": [{"body": {"kind": "backend_attested"}}, {"body": {"kind": "process_started"}}, {"body": {"kind": "artifact_recorded"}}], "plan_digest": "sha256:" + "3" * 64, "schema": "evidence-v1"}, "outcome": {"state": "completed"}, "schema": "sandbox-run-v1"},
+            "replay.json": {"events": [{"body": {"kind": "backend_attested"}}, {"body": {"kind": "process_started"}}, {"body": {"kind": "artifact_recorded"}}], "plan_digest": "sha256:" + "3" * 64, "schema": "evidence-v1"},
             "audit.json": {"event_count": 3, "plan_digest": "sha256:" + "3" * 64, "schema": "sandbox-audit-v1", "status": {"state": "verified"}},
         }
         for name, document in documents.items():

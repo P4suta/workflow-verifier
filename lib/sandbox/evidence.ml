@@ -137,7 +137,7 @@ let effects_of_body = function
         [ Ir.File_write ]
       else [ Ir.File_read ]
   | Network_attempt _ -> [ Ir.Network_request ]
-  | Artifact_recorded _ -> [ Ir.Artifact_publish ]
+  | Artifact_recorded _ -> []
   | Backend_attested _
   | Control_attested _
   | Process_exited _

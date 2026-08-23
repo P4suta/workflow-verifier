@@ -95,6 +95,16 @@ let shell_of_node (node : Ir.node) =
 let script_summary (node : Ir.node) =
   Script_adapter.analyze (shell_of_node node) (command_source node)
 
+let observable_effects graphs =
+  graphs
+  |> List.concat_map (fun graph ->
+      graph.Ir.nodes
+      |> List.concat_map (fun (node : Ir.node) ->
+          node.effects
+          @
+          if node.kind = Ir.Command then (script_summary node).effects else []))
+  |> Util.deduplicate_compare Stdlib.compare
+
 let injection_rule graph solution =
   let commands =
     List.filter (fun (node : Ir.node) -> node.kind = Ir.Command) graph.Ir.nodes

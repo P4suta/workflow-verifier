@@ -182,7 +182,13 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
     events = evidence.get("events")
     if not isinstance(events, list):
         raise ValueError("run.json evidence has no events")
-    kinds = {event.get("kind") for event in events if isinstance(event, dict)}
+    kinds = {
+        body.get("kind")
+        for event in events
+        if isinstance(event, dict)
+        for body in [event.get("body")]
+        if isinstance(body, dict)
+    }
     required_kinds = {"backend_attested", "process_started", "artifact_recorded"}
     if not required_kinds.issubset(kinds):
         raise ValueError("run.json lacks backend, process, or artifact evidence")

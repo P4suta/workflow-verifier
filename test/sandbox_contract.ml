@@ -443,6 +443,34 @@ let runtime_envelope_test () =
   expect "an observed effect outside a complete static model is violated"
     (unexpected.Property.state = Property.Violated)
 
+let scratch_artifact_reconciliation_test () =
+  let command =
+    Ir.make_node ~provider:Ir.Github ~kind:Ir.Command ~phase:Ir.Run
+      ~name:"printf 'result\\n' > result.txt" ~span:Span.none
+      ~condition:Condition.true_ ~attributes:[] ~capabilities:[]
+      ~effects:[ Ir.Command_execution ] ()
+  in
+  let graph =
+    Ir.empty Ir.Github "workflow.yml" |> Ir.add_node command |> Ir.finalize
+  in
+  let evidence =
+    Evidence.empty ~plan_digest:"sha256:plan"
+    |> Evidence.append
+         (Evidence.Filesystem_access
+            { path = "result.txt"; operation = "write"; allowed = true })
+    |> Evidence.append
+         (Evidence.Artifact_recorded
+            {
+              path = "result.txt";
+              digest = "sha256:" ^ String.make 64 'a';
+            })
+  in
+  let reconciled = Reconcile.envelope ~graphs:[ graph ] ~evidence in
+  expect "a redirected scratch file stays inside the script effect envelope"
+    (reconciled.Property.state = Property.Proved);
+  expect "recording scratch bytes is not a provider artifact publication"
+    (not (Evidence.observes_effect Ir.Artifact_publish evidence))
+
 let tests : test list =
   [
     ( "OCaml and helpers share canonical runner-v1 fixtures",
@@ -460,6 +488,8 @@ let tests : test list =
     ("sandbox audit verifies every requested control", sandbox_audit_test);
     ("OCI runner enforces controls through argv-safe ports", oci_runner_test);
     ("runtime absence never upgrades static proof", reconciliation_test);
+    ( "scratch artifacts retain file-write rather than publish semantics",
+      scratch_artifact_reconciliation_test );
     ( "runtime observations are checked against the static effect envelope",
       runtime_envelope_test );
   ]
