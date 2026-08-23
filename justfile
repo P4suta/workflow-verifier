@@ -56,6 +56,9 @@ architecture:
 purity:
     python -B scripts/verify_pure_ocaml.py
 
+licenses:
+    python -B scripts/verify_licenses.py
+
 install-check:
     opam exec -- dune build @install
     python -B scripts/verify_install_layout.py _build/install/default
@@ -63,7 +66,7 @@ install-check:
 sbom version artifact1 artifact2 artifact3 artifact4:
     python -B scripts/generate_sbom.py --version {{version}} --output dist/workflow-verifier.spdx.json --checksums dist/SHA256SUMS {{artifact1}} {{artifact2}} {{artifact3}} {{artifact4}}
 
-check: build test yaml-conformance tooling architecture helpers purity install-check
+check: build test yaml-conformance tooling architecture helpers purity licenses install-check
 
 dogfood:
     opam exec -- dune exec workflow-verifier -- check --persona audit .

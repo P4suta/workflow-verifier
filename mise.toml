@@ -90,6 +90,10 @@ run = "python -B scripts/verify_architecture.py"
 description = "Prove the analyzer dependency and source boundary"
 run = "python -B scripts/verify_pure_ocaml.py"
 
+[tasks.licenses]
+description = "Verify complete dual-license texts and aligned SPDX surfaces"
+run = "python -B scripts/verify_licenses.py"
+
 [tasks.install-check]
 description = "Verify the intentionally narrow install surface"
 run = "opam exec -- dune build @install && python -B scripts/verify_install_layout.py _build/install/default"
@@ -100,7 +104,7 @@ run = "python -B scripts/generate_sbom.py --version ${WV_RELEASE_VERSION} --outp
 
 [tasks.check]
 description = "Run the local release-readiness sequence"
-depends = ["build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "install-check"]
+depends = ["build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "licenses", "install-check"]
 
 [tasks.dogfood]
 description = "Analyze workflow-verifier with its own audit persona"
