@@ -1,0 +1,68 @@
+default:
+  image: proxy.ai-lab.ir/docker:25.0
+  services:
+    - name: docker:dind
+      alias: docker
+      command:
+        - --tls=false
+        - --registry-mirror=https://proxy.ai-lab.ir
+        - --insecure-registry=proxy.ai-lab.ir
+  before_script:
+    - docker login -u "$NEXUS_USERNAME" -p "$NEXUS_PASSWORD" $NEXUS_URL
+variables:
+  DOCKER_IMAGE: $NEXUS_URL/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_COMMIT_TAG
+
+
+
+
+stages:
+  - build
+  - update
+
+build-image:
+  tags:
+    - llm-team
+  stage: build
+  before_script:
+  script:
+    - echo "Building image:" "$DOCKER_IMAGE"
+    - docker build -f Dockerfile.Deploy -t $DOCKER_IMAGE .
+    - echo "Push image:"
+    - docker push $DOCKER_IMAGE
+  only:
+    - /^v[0-9]+(\.[0-9]+){0,2}(-rc\.[0-9]+)?$/
+
+
+release-candidate-gitops:
+  stage: update
+  trigger:
+    project: platform/aip-gitops
+    branch: main
+    strategy: depend  # Optional: waits for GitOps pipeline to finish
+  variables:
+    GITOPS_CI_IMAGE_NAMESPACE: "$CI_PROJECT_NAMESPACE"
+    GITOPS_CI_IMAGE_NAME: "$CI_PROJECT_NAME"
+    GITOPS_CI_IMAGE_TAG: "$CI_COMMIT_TAG"
+    GITOPS_CI_DOCKER_IMAGE: "$DOCKER_IMAGE"
+    GITOPS_CI_TRIGGER: "true"
+    GITOPS_ENVIRONMENT: "edge"
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+(?:\.[0-9]+)+-rc\.[0-9]+$/'
+
+
+
+production-gitops:
+  stage: update
+  trigger:
+    project: platform/aip-gitops
+    branch: main
+    strategy: depend
+  variables:
+    GITOPS_CI_IMAGE_NAMESPACE: "$CI_PROJECT_NAMESPACE"
+    GITOPS_CI_IMAGE_NAME: "$CI_PROJECT_NAME"
+    GITOPS_CI_IMAGE_TAG: "$CI_COMMIT_TAG"
+    GITOPS_CI_DOCKER_IMAGE: "$DOCKER_IMAGE"
+    GITOPS_CI_TRIGGER: "true"
+    GITOPS_ENVIRONMENT: "edge"
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+(\.[0-9]+){0,2}$/'

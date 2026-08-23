@@ -12,6 +12,16 @@ val add_gate :
   Ir.t ->
   Ir.t * Ir.node
 
+val add_static_gate :
+  provider:Ir.provider ->
+  owner:Ir.node ->
+  name:string ->
+  phase:Ir.phase ->
+  span:Span.t ->
+  mechanism:string ->
+  Ir.t ->
+  Ir.t * Ir.node
+
 val add_resource :
   provider:Ir.provider ->
   owner:Ir.node ->

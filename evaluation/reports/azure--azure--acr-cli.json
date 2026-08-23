@@ -1,0 +1,1202 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = GoTool@0"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/azure/acr-cli/azure-pipelines.yml",
+          "start": {
+            "byte": 223,
+            "column": 9,
+            "line": 16
+          },
+          "stop": {
+            "byte": 231,
+            "column": 17,
+            "line": 16
+          }
+        }
+      },
+      "id": "diag_78b85c748897eaac9a44",
+      "message": "dependency is not pinned to immutable content: GoTool@0",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/azure/acr-cli/azure-pipelines.yml",
+        "start": {
+          "byte": 223,
+          "column": 9,
+          "line": 16
+        },
+        "stop": {
+          "byte": 231,
+          "column": 17,
+          "line": 16
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_bb81f8ac1808511f5f02",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 223,
+              "column": 9,
+              "line": 16
+            },
+            "stop": {
+              "byte": 231,
+              "column": 17,
+              "line": 16
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = Docker@2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/azure/acr-cli/azure-pipelines.yml",
+          "start": {
+            "byte": 646,
+            "column": 9,
+            "line": 37
+          },
+          "stop": {
+            "byte": 654,
+            "column": 17,
+            "line": 37
+          }
+        }
+      },
+      "id": "diag_705e25b73f30a930e851",
+      "message": "dependency is not pinned to immutable content: Docker@2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/azure/acr-cli/azure-pipelines.yml",
+        "start": {
+          "byte": 646,
+          "column": 9,
+          "line": 37
+        },
+        "stop": {
+          "byte": 654,
+          "column": 17,
+          "line": 37
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_e66103149f424ff2ed3d",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 646,
+              "column": 9,
+              "line": 37
+            },
+            "stop": {
+              "byte": 654,
+              "column": 17,
+              "line": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:b040fdace50fa57f6da37e0bd22c5ace641c710da6ef5d3eacb06fa02e9e7ac5",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_b4251c080dbfef0d2939",
+          "id": "wv_00e67061cec5517c7c8a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_670ffa9f396b99a71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_902b43b79b3b85c71bdd",
+          "id": "wv_1fbae8d63ef7779c81bc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_309194947a08d4662a7e"
+        },
+        {
+          "condition": true,
+          "from": "wv_87f529059c0b085d4864",
+          "id": "wv_3c648cb30ac898b2e0cb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_309194947a08d4662a7e"
+        },
+        {
+          "condition": true,
+          "from": "wv_924c1c9e442aba314863",
+          "id": "wv_410956ee4e6c3361d324",
+          "kind": "call",
+          "label": null,
+          "to": "wv_bb81f8ac1808511f5f02"
+        },
+        {
+          "condition": true,
+          "from": "wv_770c208c9eba02ffbb42",
+          "id": "wv_4c8cabc50a7c19afa6cd",
+          "kind": "data",
+          "label": "ModulePath",
+          "to": "wv_6a6f770919218698785b"
+        },
+        {
+          "condition": true,
+          "from": "wv_309194947a08d4662a7e",
+          "id": "wv_4d6cab33106b9082eeb4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e66103149f424ff2ed3d"
+        },
+        {
+          "condition": true,
+          "from": "wv_87f529059c0b085d4864",
+          "id": "wv_5f5fbddda14fc9d68019",
+          "kind": "control",
+          "label": null,
+          "to": "wv_902b43b79b3b85c71bdd"
+        },
+        {
+          "condition": true,
+          "from": "wv_4e5575453d50ea8efff6",
+          "id": "wv_6ad8a1275a5c64726bd0",
+          "kind": "data",
+          "label": "GOPATH",
+          "to": "wv_6a6f770919218698785b"
+        },
+        {
+          "condition": true,
+          "from": "wv_670ffa9f396b99a71187",
+          "id": "wv_7ae9fa285c13d9833f0c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_87f529059c0b085d4864"
+        },
+        {
+          "condition": true,
+          "from": "wv_ed8f60421a7f7f229a87",
+          "id": "wv_82811e485a176f60b7a4",
+          "kind": "data",
+          "label": "GOPATH",
+          "to": "wv_670ffa9f396b99a71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_256fee84edbdd661e193",
+          "id": "wv_97852d1a53b428d3b09c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_902b43b79b3b85c71bdd"
+        },
+        {
+          "condition": true,
+          "from": "wv_bb47b3859044975be8ed",
+          "id": "wv_9ac572dd0e0bad5ae90b",
+          "kind": "data",
+          "label": "ModulePath",
+          "to": "wv_6a6f770919218698785b"
+        },
+        {
+          "condition": true,
+          "from": "wv_924c1c9e442aba314863",
+          "id": "wv_9db36e2d60973acdb191",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_256fee84edbdd661e193"
+        },
+        {
+          "condition": true,
+          "from": "wv_9045adde59eb5e239ba3",
+          "id": "wv_a997cfff00059d160d25",
+          "kind": "data",
+          "label": "ModulePath",
+          "to": "wv_670ffa9f396b99a71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_256fee84edbdd661e193",
+          "id": "wv_b5d270061b450448b61b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6a6f770919218698785b"
+        },
+        {
+          "condition": true,
+          "from": "wv_924c1c9e442aba314863",
+          "id": "wv_bc1ac887ca2958269355",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bb81f8ac1808511f5f02"
+        },
+        {
+          "condition": true,
+          "from": "wv_902b43b79b3b85c71bdd",
+          "id": "wv_d2141104fdc52205ff2b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a9e220866b2b752de283"
+        },
+        {
+          "condition": true,
+          "from": "wv_87f529059c0b085d4864",
+          "id": "wv_d3601c0c0c80bcae6620",
+          "kind": "control",
+          "label": null,
+          "to": "wv_256fee84edbdd661e193"
+        },
+        {
+          "condition": true,
+          "from": "wv_309194947a08d4662a7e",
+          "id": "wv_dd7f89eea540ae3c27ca",
+          "kind": "call",
+          "label": null,
+          "to": "wv_e66103149f424ff2ed3d"
+        },
+        {
+          "condition": true,
+          "from": "wv_87f529059c0b085d4864",
+          "id": "wv_e6af07802b312fd5005e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_924c1c9e442aba314863"
+        },
+        {
+          "condition": true,
+          "from": "wv_05be22707a64bbf8f6bd",
+          "id": "wv_f86f1a0a600ae40c91fb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_670ffa9f396b99a71187"
+        }
+      ],
+      "entrypoints": [
+        "wv_670ffa9f396b99a71187"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_05be22707a64bbf8f6bd",
+          "kind": "trigger",
+          "name": "pr",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 25,
+              "column": 1,
+              "line": 5
+            },
+            "stop": {
+              "byte": 31,
+              "column": 7,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_256fee84edbdd661e193",
+          "kind": "step",
+          "name": "Setup",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 271,
+              "column": 3,
+              "line": 20
+            },
+            "stop": {
+              "byte": 497,
+              "column": 23,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_309194947a08d4662a7e",
+          "kind": "step",
+          "name": "Build container image",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 640,
+              "column": 3,
+              "line": 37
+            },
+            "stop": {
+              "byte": 758,
+              "column": 39,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GOPATH",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 352,
+                      "column": 84,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 358,
+                      "column": 90,
+                      "line": 20
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GOPATH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4e5575453d50ea8efff6",
+          "kind": "resource",
+          "name": "GOPATH",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 352,
+              "column": 84,
+              "line": 20
+            },
+            "stop": {
+              "byte": 358,
+              "column": 90,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_670ffa9f396b99a71187",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 758,
+              "column": 39,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GOPATH",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 352,
+                      "column": 84,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 358,
+                      "column": 90,
+                      "line": 20
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "ModulePath",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 377,
+                      "column": 109,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 387,
+                      "column": 119,
+                      "line": 20
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "ModulePath",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 429,
+                      "column": 161,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 439,
+                      "column": 171,
+                      "line": 20
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 279,
+                      "column": 11,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 473,
+                      "column": 31,
+                      "line": 26
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GOPATH",
+                  "ModulePath",
+                  "set -e\nGOOS=linux scripts/setup/dev_setup\necho '##vso[task.prependpath]$(GOPATH)/bin'\nmkdir -p '$(ModulePath)'\nshopt -s dotglob extglob\nmv !(work) '$(ModulePath)'\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6a6f770919218698785b",
+          "kind": "command",
+          "name": "set -e\nGOOS=linux scripts/setup/dev_setup\necho '##vso[task.prependpath]$(GOPATH)/bin'\nmkdir -p '$(ModulePath)'\nshopt -s dotglob extglob\nmv !(work) '$(ModulePath)'\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 279,
+              "column": 11,
+              "line": 20
+            },
+            "stop": {
+              "byte": 473,
+              "column": 31,
+              "line": 26
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "ModulePath",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 377,
+                      "column": 109,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 387,
+                      "column": 119,
+                      "line": 20
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "ModulePath"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_770c208c9eba02ffbb42",
+          "kind": "resource",
+          "name": "ModulePath",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 377,
+              "column": 109,
+              "line": 20
+            },
+            "stop": {
+              "byte": 387,
+              "column": 119,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_87f529059c0b085d4864",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 758,
+              "column": 39,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_902b43b79b3b85c71bdd",
+          "kind": "step",
+          "name": "Build",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 503,
+              "column": 3,
+              "line": 29
+            },
+            "stop": {
+              "byte": 634,
+              "column": 23,
+              "line": 35
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 150,
+                      "column": 15,
+                      "line": 12
+                    },
+                    "stop": {
+                      "byte": 201,
+                      "column": 66,
+                      "line": 12
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GOPATH",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 152,
+                      "column": 17,
+                      "line": 12
+                    },
+                    "stop": {
+                      "byte": 158,
+                      "column": 23,
+                      "line": 12
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "build.repository.name",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 177,
+                      "column": 42,
+                      "line": 12
+                    },
+                    "stop": {
+                      "byte": 198,
+                      "column": 63,
+                      "line": 12
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "$(GOPATH)/src/github.com/$(build.repository.name)",
+                  "GOPATH",
+                  "build.repository.name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9045adde59eb5e239ba3",
+          "kind": "resource",
+          "name": "variable:ModulePath",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 138,
+              "column": 3,
+              "line": 12
+            },
+            "stop": {
+              "byte": 201,
+              "column": 66,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_924c1c9e442aba314863",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 217,
+              "column": 3,
+              "line": 16
+            },
+            "stop": {
+              "byte": 265,
+              "column": 22,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 511,
+                      "column": 11,
+                      "line": 29
+                    },
+                    "stop": {
+                      "byte": 573,
+                      "column": 20,
+                      "line": 33
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "set -e\ngo version\ngo env\nGOOS=linux make\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a9e220866b2b752de283",
+          "kind": "command",
+          "name": "set -e\ngo version\ngo env\nGOOS=linux make\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 511,
+              "column": 11,
+              "line": 29
+            },
+            "stop": {
+              "byte": 573,
+              "column": 20,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b4251c080dbfef0d2939",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 10,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 16,
+              "column": 7,
+              "line": 2
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "ModulePath",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 429,
+                      "column": 161,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 439,
+                      "column": 171,
+                      "line": 20
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "ModulePath"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bb47b3859044975be8ed",
+          "kind": "resource",
+          "name": "ModulePath",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 429,
+              "column": 161,
+              "line": 20
+            },
+            "stop": {
+              "byte": 439,
+              "column": 171,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_bb81f8ac1808511f5f02",
+          "kind": "call",
+          "name": "GoTool@0",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 223,
+              "column": 9,
+              "line": 16
+            },
+            "stop": {
+              "byte": 231,
+              "column": 17,
+              "line": 16
+            }
+          },
+          "unknown": {
+            "detail": "GoTool@0",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e66103149f424ff2ed3d",
+          "kind": "call",
+          "name": "Docker@2",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 646,
+              "column": 9,
+              "line": 37
+            },
+            "stop": {
+              "byte": 654,
+              "column": 17,
+              "line": 37
+            }
+          },
+          "unknown": {
+            "detail": "Docker@2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 94,
+                      "column": 11,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 134,
+                      "column": 51,
+                      "line": 11
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "system.defaultWorkingDirectory",
+                  "span": {
+                    "file": "azure/azure/acr-cli/azure-pipelines.yml",
+                    "start": {
+                      "byte": 96,
+                      "column": 13,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 126,
+                      "column": 43,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "$(system.defaultWorkingDirectory)/work",
+                  "system.defaultWorkingDirectory"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ed8f60421a7f7f229a87",
+          "kind": "resource",
+          "name": "variable:GOPATH",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/acr-cli/azure-pipelines.yml",
+            "start": {
+              "byte": 86,
+              "column": 3,
+              "line": 11
+            },
+            "stop": {
+              "byte": 134,
+              "column": 51,
+              "line": 11
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/azure/acr-cli/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:97510b9693644ea647c3d4f2c0a3a879921d58383407a2719e59d75fa4ef26d1",
+      "path": "azure/azure/acr-cli/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

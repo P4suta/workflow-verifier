@@ -1,0 +1,97 @@
+name: CSRS File Manager Build and Deployment
+
+on:
+  push:
+    branches:
+      - 'main'
+      # as per https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onpushpull_requestbranchestags 
+    paths:
+      - 'src/backend/Csrs.Services.FileManager/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+        api:
+            description: 'api Name (jag-csrs-file-manager)'    
+            required: true
+            default: jag-csrs-file-manager
+        env:
+            description: 'Image Target Env'     
+            required: true
+            default: 'dev'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-push-image:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.env }}
+    env:
+      api: ${{github.event.inputs.api}}
+      env: ${{github.event.inputs.env}}
+      api_from_gh_secret: ${{ secrets.FILE_MANAGER_SERVICE_NAME }}
+      env_from_gh_secret: ${{secrets.OPENSHIFT_ENV_TAG}}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Git Checkout
+        uses: actions/checkout@v4
+      
+      # Get Git latest short Sha# from the release branch used. This Sha# will be used in image tagging as well as DC Pod labelling.
+      - name: Get git commit short sha
+        id: sha
+        run: |
+          shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-7)
+          echo "gitsha=$shortSha" >> $GITHUB_ENV
+      
+      - name: env variables
+
+        run: |
+
+          if [[ -z "$api" ]]; then
+            echo "api=$api_from_gh_secret" >> $GITHUB_ENV
+          fi  
+
+          if [[ -z "$env" ]]; then
+            echo "env=$env_from_gh_secret" >> $GITHUB_ENV
+          fi  
+          
+      - name: print env variables
+
+        run: |
+
+          echo "Release API: ${{ env.api }}"
+          echo "Release Environment: ${{ env.env }}"
+          echo "Release Git Sha: ${{env.gitsha}}"
+          
+       #Login to OpenShift Container Repository
+      - name: Login to OpenShift Container Repository
+        uses: docker/login-action@v1
+        with:
+          registry: ${{secrets.OPENSHIFT_EXTERNAL_REPOSITORY}}
+          username: ${{secrets.OPENSHIFT_BUILDER_SA_USERNAME}}
+          password: ${{secrets.OPENSHIFT_BUILDER_SA_PASSWORD}}
+
+
+      #Build and push image to OpenShift Image stream
+      #Yet to add additional check that push happens only on successful test execution
+      - name: Build & Push Image to Openshift Image Stream
+        env:
+          COMPOSE_DOCKER_CLI_BUILD: 1
+          DOCKER_BUILDKIT: 1
+          CONTEXT: ./src/backend
+
+          # As of recently we have enough permission to manipulate RBAC and creating imagestream under tools. So going forward 
+          # image from tool namespace can be pulled and used in dev, test, prod.
+          # Accordingly the following (older mode of doing things) should be changed/updated to reflect better practice.
+          # However for first iteration still using older mode/style until I get chance to do the adjustment and cleanup
+          IMAGE: ${{secrets.OPENSHIFT_EXTERNAL_REPOSITORY}}/${{secrets.OPENSHIFT_LICENSE_PLATE}}-${{env.env}}/${{env.api}}:${{env.env}}
+        run: |
+          docker build -f ./src/backend/Csrs.Services.FileManager/Dockerfile.rhel8 \
+            --build-arg SOURCE_REVISION_ID=${{ env.gitsha  }} \
+            --tag ${IMAGE} \
+            ${CONTEXT}
+          docker push ${IMAGE}
+

@@ -21,9 +21,7 @@ let physical_location span =
       ("region", region span);
     ]
 
-let location span =
-  Json.Object
-    [ ("physicalLocation", physical_location span) ]
+let location span = Json.Object [ ("physicalLocation", physical_location span) ]
 
 let rule_descriptor diagnostic =
   Json.Object
@@ -154,8 +152,7 @@ let to_json report =
                           [
                             ( "informationUri",
                               Json.String
-                                "https://github.com/P4suta/workflow-verifier"
-                            );
+                                "https://github.com/P4suta/workflow-verifier" );
                             ("name", Json.String "workflow-verifier");
                             ("rules", Json.Array rules);
                             ("version", Json.String report.Report.tool_version);

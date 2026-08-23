@@ -1,0 +1,137 @@
+# Golang CircleCI 2.1 configuration file
+#
+# Check https://circleci.com/docs/2.1/language-go/ for more details
+version: 2.1
+
+jobs:
+
+  docs:
+    docker:
+      - image: cimg/go:1.26
+    steps:
+      - checkout
+      - run: |
+          curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+      - run: sudo npm install -g yarn
+      - run: |
+          cd hack/docs
+          make pipeline-nointegration
+  test:
+    docker:
+      - image: cimg/go:1.26
+    steps:
+      - checkout
+      - run: make build-deps ci-test # ci-upload-coverage
+
+  scan:
+    docker:
+      - image: cimg/go:1.26
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run local image vulnerability scan
+          command: |
+            make scan-base
+
+  e2e:
+    # Use machine for volume binding support in Docker
+    machine:
+      image: ubuntu-2004:2022.10.1
+    resource_class: large
+    environment:
+      GOPATH: /home/circleci/go
+      GO_SHA256SUM: 2b2cfc7148493da5e73981bffbf3353af381d5f93e789c82c79aff64962eb556
+      GO: /usr/local/go/bin/go
+      GOCACHE: "/tmp/go/cache"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - support-bundle-e2e-build-cache-base
+      - run: |
+          export GO_DOWNLOAD_URL=https://go.dev/dl/go1.26.3.linux-amd64.tar.gz
+          export GOPATH=/home/circleci/go
+          export GOROOT=/usr/local/go
+          export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+          sudo apt update --fix-missing
+          sudo apt install --no-install-recommends -y gcc
+          wget "$GO_DOWNLOAD_URL" -O golang.tar.gz
+          echo "${GO_SHA256SUM}  golang.tar.gz" | sha256sum -c -
+          tar -zxvf golang.tar.gz -C /tmp
+          sudo rm -rf ${GOROOT}
+          sudo mv /tmp/go ${GOROOT}
+      - run: |
+          export GOPATH=/home/circleci/go
+          export GOROOT=/usr/local/go
+          export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+          make build-deps ci-e2e
+      - store_artifacts:
+          path: e2e-artifacts
+          destination: e2e-artifacts
+      - save_cache:
+          paths:
+            - /tmp/go/cache
+          key: support-bundle-e2e-build-cache-base-{{ epoch }}
+
+  deploy:
+    docker:
+      - image: cimg/go:1.26
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build --pull -t replicated/support-bundle:base -f deploy/Dockerfile-base deploy/
+      - run: docker login -u="$DOCKER_USER" -p="$DOCKER_PASS" registry.replicated.com
+      - run: docker login -u="$DOCKERHUB_DOCKER_USER" -p="$DOCKERHUB_DOCKER_PASS"
+      - deploy:
+          command: curl -sL https://git.io/goreleaser | bash
+
+  deploy_unstable:
+    docker:
+      - image: cimg/go:1.26
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build --pull -t replicated/support-bundle:base -f deploy/Dockerfile-base deploy/
+      - deploy:
+          command: curl -sL https://git.io/goreleaser | bash -s -- --snapshot --config .goreleaser.unstable.yml
+      - run: docker login -u="$DOCKERHUB_DOCKER_USER" -p="$DOCKERHUB_DOCKER_PASS"
+      - deploy:
+          command: docker push replicated/support-bundle:alpha && docker push replicated/analyze:alpha
+
+workflows:
+  version: 2
+  build_accept_deploy:
+    jobs:
+      - docs
+      - test:
+          filters:
+            tags:
+              only: /.*/
+      - scan:
+          filters:
+            tags:
+              only: /.*/
+      - e2e:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - test
+            - e2e
+            - docs
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*(-.*)*/
+            branches:
+              ignore: /.*/
+      - deploy_unstable:
+          requires:
+            - test
+            - e2e
+            - docs
+          filters:
+            branches:
+              only: /main/

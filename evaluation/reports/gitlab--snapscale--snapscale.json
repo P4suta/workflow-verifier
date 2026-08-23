@@ -1,0 +1,1311 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_835b59c3054c8d8a9d14",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+        "start": {
+          "byte": 47,
+          "column": 9,
+          "line": 5
+        },
+        "stop": {
+          "byte": 108,
+          "column": 70,
+          "line": 5
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_f846ca5238c258817003",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:bfb239d60d2d65ad853d31f551e7b6e1b2ac23b1158b7c7c6f9944d5ade054cf",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_29c13df04ba114ffac05",
+          "id": "wv_049f7607cb2cb20d0da3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_21da71d192e29b4426a6"
+        },
+        {
+          "condition": true,
+          "from": "wv_a265057f87534e58cf32",
+          "id": "wv_06a8095d96a3c300771e",
+          "kind": "data",
+          "label": "CI_JOB_TOKEN",
+          "to": "wv_f846ca5238c258817003"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b19a490b20cb34158ca",
+          "id": "wv_0c481ca50fec30d5a700",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_438c4a6f785b84eb321e"
+        },
+        {
+          "condition": true,
+          "from": "wv_29c13df04ba114ffac05",
+          "id": "wv_2905ab8919bbb4810525",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a410570a97d0028933bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_373aaca3c74b92bcf0ea",
+          "id": "wv_30ef9747856562a92c96",
+          "kind": "control",
+          "label": null,
+          "to": "wv_75cdaf068fd39c866617"
+        },
+        {
+          "condition": true,
+          "from": "wv_5e51f9a0c6a015b602a1",
+          "id": "wv_3c95f9b6c9aab9c6b482",
+          "kind": "data",
+          "label": "CI_COMMIT_SHA",
+          "to": "wv_082a23e29e4243c6e6bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff1caea2011a5efdfefd",
+          "id": "wv_419e78fa3171e4f2119e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_418bfcc4d6e9d95d8d0c"
+        },
+        {
+          "condition": true,
+          "from": "wv_21da71d192e29b4426a6",
+          "id": "wv_42aede6f1a0a27f507a8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_7c15291b06e85b26af66"
+        },
+        {
+          "condition": true,
+          "from": "wv_dbb60ee9bbc2cbf0c071",
+          "id": "wv_58ff54fb2b8d9e8c3a83",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f846ca5238c258817003"
+        },
+        {
+          "condition": true,
+          "from": "wv_6894f4b0e2a36831321d",
+          "id": "wv_5c3bc898a2c42e2ac891",
+          "kind": "data",
+          "label": "CI_COMMIT_SHA",
+          "to": "wv_d4d327a7a3dff5faf221"
+        },
+        {
+          "condition": true,
+          "from": "wv_dbb60ee9bbc2cbf0c071",
+          "id": "wv_6f5c75ba083f12cabe55",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3b19a490b20cb34158ca"
+        },
+        {
+          "condition": true,
+          "from": "wv_418bfcc4d6e9d95d8d0c",
+          "id": "wv_791e64c61b543bef4090",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_373aaca3c74b92bcf0ea"
+        },
+        {
+          "condition": true,
+          "from": "wv_75cdaf068fd39c866617",
+          "id": "wv_791eb37c721763b608ce",
+          "kind": "control",
+          "label": null,
+          "to": "wv_438c4a6f785b84eb321e"
+        },
+        {
+          "condition": true,
+          "from": "wv_7c15291b06e85b26af66",
+          "id": "wv_7a99dd81998fcd47e587",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ff1caea2011a5efdfefd"
+        },
+        {
+          "condition": true,
+          "from": "wv_438c4a6f785b84eb321e",
+          "id": "wv_7f32433e1d1254d94567",
+          "kind": "control",
+          "label": null,
+          "to": "wv_082a23e29e4243c6e6bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b19a490b20cb34158ca",
+          "id": "wv_855426bf4969e3cc9c24",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d4d327a7a3dff5faf221"
+        },
+        {
+          "condition": true,
+          "from": "wv_93292f7ad1ecfe8ed113",
+          "id": "wv_92919e9293ec5551d7f2",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_d4d327a7a3dff5faf221"
+        },
+        {
+          "condition": true,
+          "from": "wv_29c13df04ba114ffac05",
+          "id": "wv_9c0c28bb8c9d95292841",
+          "kind": "call",
+          "label": null,
+          "to": "wv_a410570a97d0028933bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_30d7a879108130b92b3f",
+          "id": "wv_c9937b681e73fff0ddbb",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_082a23e29e4243c6e6bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_d015cb137fe8eff399c3",
+          "id": "wv_d5bb4dfc3e31fcc9fae8",
+          "kind": "data",
+          "label": "CI_REGISTRY",
+          "to": "wv_f846ca5238c258817003"
+        },
+        {
+          "condition": true,
+          "from": "wv_75cdaf068fd39c866617",
+          "id": "wv_ea97c0a09ea0ff7ef1e9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3b19a490b20cb34158ca"
+        },
+        {
+          "condition": true,
+          "from": "wv_75cdaf068fd39c866617",
+          "id": "wv_fa622aaeb268d97b8f48",
+          "kind": "control",
+          "label": null,
+          "to": "wv_dbb60ee9bbc2cbf0c071"
+        }
+      ],
+      "entrypoints": [
+        "wv_29c13df04ba114ffac05"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 41,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 211,
+                      "column": 22,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 228,
+                      "column": 39,
+                      "line": 7
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 198,
+                      "column": 9,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA",
+                  "CI_REGISTRY_IMAGE",
+                  "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_082a23e29e4243c6e6bb",
+          "kind": "command",
+          "name": "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_21da71d192e29b4426a6",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_29c13df04ba114ffac05",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 211,
+                      "column": 22,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 228,
+                      "column": 39,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_30d7a879108130b92b3f",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 211,
+              "column": 22,
+              "line": 7
+            },
+            "stop": {
+              "byte": 228,
+              "column": 39,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_373aaca3c74b92bcf0ea",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3b19a490b20cb34158ca",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 117,
+              "column": 9,
+              "line": 6
+            },
+            "stop": {
+              "byte": 189,
+              "column": 81,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_418bfcc4d6e9d95d8d0c",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_438c4a6f785b84eb321e",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 41,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5e51f9a0c6a015b602a1",
+          "kind": "resource",
+          "name": "CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 230,
+              "column": 41,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 153,
+                      "column": 45,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 166,
+                      "column": 58,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6894f4b0e2a36831321d",
+          "kind": "resource",
+          "name": "CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 153,
+              "column": 45,
+              "line": 6
+            },
+            "stop": {
+              "byte": 166,
+              "column": 58,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_75cdaf068fd39c866617",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 22,
+              "column": 1,
+              "line": 3
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7c15291b06e85b26af66",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 134,
+                      "column": 26,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 151,
+                      "column": 43,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_93292f7ad1ecfe8ed113",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 134,
+              "column": 26,
+              "line": 6
+            },
+            "stop": {
+              "byte": 151,
+              "column": 43,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 83,
+                      "column": 45,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 95,
+                      "column": 57,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a265057f87534e58cf32",
+          "kind": "resource",
+          "name": "CI_JOB_TOKEN",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 83,
+              "column": 45,
+              "line": 5
+            },
+            "stop": {
+              "byte": 95,
+              "column": 57,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a410570a97d0028933bf",
+          "kind": "call",
+          "name": "docker:latest",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 7,
+              "column": 8,
+              "line": 1
+            },
+            "stop": {
+              "byte": 20,
+              "column": 21,
+              "line": 1
+            }
+          },
+          "unknown": {
+            "detail": "docker:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 97,
+                      "column": 59,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d015cb137fe8eff399c3",
+          "kind": "resource",
+          "name": "CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 97,
+              "column": 59,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 153,
+                      "column": 45,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 166,
+                      "column": 58,
+                      "line": 6
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 134,
+                      "column": 26,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 151,
+                      "column": 43,
+                      "line": 6
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 117,
+                      "column": 9,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 189,
+                      "column": 81,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA",
+                  "CI_REGISTRY_IMAGE",
+                  "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_d4d327a7a3dff5faf221",
+          "kind": "command",
+          "name": "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 117,
+              "column": 9,
+              "line": 6
+            },
+            "stop": {
+              "byte": 189,
+              "column": 81,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_dbb60ee9bbc2cbf0c071",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 83,
+                      "column": 45,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 95,
+                      "column": 57,
+                      "line": 5
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 97,
+                      "column": 59,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 47,
+                      "column": 9,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN",
+                  "CI_REGISTRY",
+                  "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f846ca5238c258817003",
+          "kind": "command",
+          "name": "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ff1caea2011a5efdfefd",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/snapscale/snapscale/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/snapscale/snapscale/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:ff2bed3b69bd3dd4aa5e7a228e098cb42ae298c77495e1ddfdf9769bf528cec3",
+      "path": "gitlab/snapscale/snapscale/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "docker:latest",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

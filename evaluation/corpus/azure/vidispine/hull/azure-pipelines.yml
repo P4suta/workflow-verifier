@@ -1,0 +1,173 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+parameters:
+- name: RunTests
+  default: true
+
+trigger: none
+pr: none
+
+pool:
+    vmImage: 'ubuntu-22.04'
+
+jobs:
+- job: RunTests
+  timeoutInMinutes: 0
+  strategy: 
+    maxParallel: 5
+    matrix:
+      Helm_3_19_0_single: 
+        HelmVersion: "3.19.0"
+        TestType: single
+      Helm_3_19_1_single: 
+        HelmVersion: "3.19.1"
+        TestType: single
+      Helm_3_19_2_single: 
+        HelmVersion: "3.19.2"
+        TestType: single
+      Helm_3_19_3_single: 
+        HelmVersion: "3.19.3"
+        TestType: single
+      Helm_3_19_4_single: 
+        HelmVersion: "3.19.4"
+        TestType: single
+      Helm_3_19_5_single: 
+        HelmVersion: "3.19.5"
+        TestType: single
+      Helm_3_19_5_multi: 
+        HelmVersion: "3.19.5"
+        TestType: multi
+      Helm_3_20_0_single: 
+        HelmVersion: "3.20.0"
+        TestType: single
+      Helm_3_20_1_single: 
+        HelmVersion: "3.20.1"
+        TestType: single
+      Helm_3_20_1_multi: 
+        HelmVersion: "3.20.1"
+        TestType: multi
+      Helm_3_20_2_single: 
+        HelmVersion: "3.20.2"
+        TestType: single
+      Helm_3_20_2_multi: 
+        HelmVersion: "3.20.2"
+        TestType: multi
+      Helm_4_0_0_single: 
+        HelmVersion: "4.0.0"
+        TestType: single
+      Helm_4_0_1_single: 
+        HelmVersion: "4.0.1"
+        TestType: single
+      Helm_4_0_2_single: 
+        HelmVersion: "4.0.2"
+        TestType: single
+      Helm_4_0_3_single:
+        HelmVersion: "4.0.3"
+        TestType: single
+      Helm_4_0_4_single:
+        HelmVersion: "4.0.4"
+        TestType: single
+      Helm_4_0_5_single:
+        HelmVersion: "4.0.5"
+        TestType: single
+      Helm_4_0_5_multi:
+        HelmVersion: "4.0.5"
+        TestType: multi
+      Helm_4_1_0_single:
+        HelmVersion: "4.1.0"
+        TestType: single
+      Helm_4_1_1_single:
+        HelmVersion: "4.1.1"
+        TestType: single
+      # Helm_4_1_2_single:
+      #   HelmVersion: "4.1.2"
+      #   TestType: single
+      # Helm_4_1_2_multi:
+      #   HelmVersion: "4.1.2"
+      #   TestType: multi
+      Helm_4_1_3_single:
+        HelmVersion: "4.1.3"
+        TestType: single
+      Helm_4_1_3_multi:
+        HelmVersion: "4.1.3"
+        TestType: multi
+      Helm_4_1_4_single:
+        HelmVersion: "4.1.4"
+        TestType: single
+      Helm_4_1_4_multi:
+        HelmVersion: "4.1.4"
+        TestType: multi
+  steps:
+  - template: azure-pipelines-test.yml  # Template reference
+    parameters:
+      RunTests: ${{ parameters.RunTests }}
+
+- job: CreateRelease
+  dependsOn: RunTests
+  steps:
+  
+  - script: |
+        set -euo pipefail
+        echo "-> get chartreleaser"
+        CHART_RELEASER_VERSION=1.5.0
+        cp -r . $(Agent.TempDirectory)
+        cd $(Agent.TempDirectory)
+        wget https://github.com/helm/chart-releaser/releases/download/v${CHART_RELEASER_VERSION}/chart-releaser_${CHART_RELEASER_VERSION}_linux_amd64.tar.gz
+        tar -xvzf chart-releaser_${CHART_RELEASER_VERSION}_linux_amd64.tar.gz -C ./
+        ls
+        sudo chmod +x ./cr
+        echo "-> create hull-demo chart"
+        export HULL_VERSION=`sed -n 's/^version:\s//p' ./hull/Chart.yaml | sed 's/\"//g'` 
+        echo "-> hull version is ${HULL_VERSION}"
+        mkdir ./hull-demo
+        cp ./hull/files/test/HULL/sources/cases/deployment/values_short_demo.hull.yaml ./hull-demo/values.yaml
+        echo "This is a Helm chart for demonstration of the HULL library." > ./hull-demo/README.md
+        echo "" >> ./hull-demo/README.md
+        echo "It can also be used as a bootstrapped parent chart already fully integrating HULL." >> ./hull-demo/README.md
+        echo "" >> ./hull-demo/README.md
+        echo "Please visit (the HULL website)[https://github.com/vidispine/hull] for more information." >> ./hull-demo/README.md
+        cp ./hull/LICENSE ./hull-demo/LICENSE
+        mkdir ./hull-demo/templates
+        cp ./hull/hull.yaml ./hull-demo/templates/hull.yaml
+        cp ./hull/Chart.yaml ./hull-demo/Chart.yaml
+        sed -i 's/name: hull/name: hull-demo/' ./hull-demo/Chart.yaml
+        sed -i 's/description: HULL - Helm Uniform Layer Library/description: Demo Chart for showcasing HULL library chart usage/' ./hull-demo/Chart.yaml
+        sed -i 's/type: library/type: application/' ./hull-demo/Chart.yaml
+        sed -i "/dependencies: \[\]/d" ./hull-demo/Chart.yaml
+        echo ""
+        echo "dependencies:" >> ./hull-demo/Chart.yaml
+        echo "- name: hull" >> ./hull-demo/Chart.yaml
+        echo "  version: \"${HULL_VERSION}\"" >> ./hull-demo/Chart.yaml
+        echo "  repository: \"https://vidispine.github.io/hull\"" >> ./hull-demo/Chart.yaml
+        echo "-> Chart.yaml:"
+        cat ./hull-demo/Chart.yaml 
+        echo "<- Chart.yaml"
+        cp ./hull/CHANGELOG.md ./hull-demo/CHANGELOG.md
+        cp ./hull/HISTORY.md ./hull-demo/HISTORY.md
+        echo "-> package hull chart"        
+        sudo ./cr package ./hull
+        echo "-> upload hull chart"
+        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md --token $(GITHUBTOKEN) || true
+        mkdir .cr-index
+        wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
+        sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 
+        find . -name 'hull\.*\.tgz' -delete
+        sudo rm -rf .cr-release-packages
+        rm -rf ./hull
+        echo "sleep 60s"
+        sleep 60
+        echo "-> package hull-demo chart"  
+        sudo ./cr package ./hull-demo 
+        echo "-> test chart"
+        helm repo add hull https://vidispine.github.io/hull
+        helm dep build hull-demo
+        helm template --kube-version ${HULL_VERSION} hull-demo    
+        echo "-> upload hull-demo chart"
+        sudo ./cr upload --git-repo hull --owner vidispine --release-notes-file CHANGELOG.md --token $(GITHUBTOKEN) || true
+        sudo rm -rf .cr-index
+        mkdir .cr-index
+        wget https://vidispine.github.io/hull/index.yaml -O .cr-index/index.yaml
+        sudo ./cr index --git-repo hull --owner vidispine --token $(GITHUBTOKEN) --charts-repo https://vidispine.github.io/hull --push 

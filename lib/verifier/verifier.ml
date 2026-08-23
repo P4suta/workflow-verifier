@@ -67,33 +67,68 @@ let data_trace graph solution (target : Ir.node) =
 let make_property id state explanation =
   { Property.id; state; subject = None; explanation }
 
-let command_source (node : Ir.node) =
-  match attribute "command" node with
-  | Some value -> (
-      match Abstract_value.constants value with
-      | Some values when values <> [] ->
-          List.fold_left
-            (fun longest candidate ->
-              if String.length candidate > String.length longest then candidate
-              else longest)
-            node.Ir.name values
-      | _ -> node.name)
-  | None -> node.name
+let script_summary (node : Ir.node) = Script_adapter.analyze_node node
 
-let shell_of_node (node : Ir.node) =
-  match Option.bind (attribute "shell" node) Abstract_value.constants with
-  | Some (name :: _) -> (
-      match String.lowercase_ascii name with
-      | "sh" | "posix" -> Script_adapter.Posix
-      | "bash" -> Bash
-      | "pwsh" | "powershell" -> PowerShell
-      | "cmd" | "cmd.exe" -> Cmd
-      | "python" | "python3" -> Python
-      | other -> Unknown_shell other)
-  | _ -> Bash
+let environment_name (node : Ir.node) =
+  if node.kind = Ir.Resource && Util.starts_with ~prefix:"env:" node.name then
+    Some (String.sub node.name 4 (String.length node.name - 4))
+  else None
 
-let script_summary (node : Ir.node) =
-  Script_adapter.analyze (shell_of_node node) (command_source node)
+let shell_identifier_character = function
+  | 'a' .. 'z' | '0' .. '9' | '_' -> true
+  | _ -> false
+
+let contains_bounded_variable needle value =
+  let needle_length = String.length needle
+  and value_length = String.length value in
+  let rec search offset =
+    if offset + needle_length > value_length then false
+    else if
+      String.sub value offset needle_length = needle
+      &&
+      let after = offset + needle_length in
+      after = value_length || not (shell_identifier_character value.[after])
+    then true
+    else search (offset + 1)
+  in
+  search 0
+
+let expansion_mentions environment expansion =
+  let environment = String.lowercase_ascii environment
+  and expansion = String.lowercase_ascii expansion in
+  contains_bounded_variable ("$" ^ environment) expansion
+  || contains_bounded_variable ("$env:" ^ environment) expansion
+  || List.exists
+       (fun form -> Util.contains ~needle:form expansion)
+       [
+         "${" ^ environment ^ "}";
+         "${env:" ^ environment ^ "}";
+         "%" ^ environment ^ "%";
+         "!" ^ environment ^ "!";
+       ]
+
+let environment_flow_is_unsafe summary path =
+  match List.find_map environment_name path with
+  | None -> summary.Script_adapter.unsafe_interpolation
+  | Some environment ->
+      summary.expansions
+      |> List.exists (fun (expansion : Script_adapter.expansion) ->
+          expansion_mentions environment expansion.expansion_text
+          && not expansion.expansion_quoted)
+
+let unsafe_untrusted_flow graph solution (command : Ir.node) summary =
+  let paths =
+    graph.Ir.nodes
+    |> List.filter (fun (source : Ir.node) ->
+        List.mem source.kind [ Ir.Resource; Ir.Parameter ]
+        && Abstract_value.is_untrusted (Dataflow.value_at solution source.id))
+    |> List.filter_map (fun (source : Ir.node) ->
+        Graph_algorithms.shortest_path
+          ~edge_kinds:[ Ir.Data; Ir.Read; Ir.Write; Ir.Persist ]
+          graph source.id command.id)
+  in
+  if paths = [] then summary.Script_adapter.unsafe_interpolation
+  else List.exists (environment_flow_is_unsafe summary) paths
 
 let observable_effects graphs =
   graphs
@@ -101,8 +136,7 @@ let observable_effects graphs =
       graph.Ir.nodes
       |> List.concat_map (fun (node : Ir.node) ->
           node.effects
-          @
-          if node.kind = Ir.Command then (script_summary node).effects else []))
+          @ if node.kind = Ir.Command then (script_summary node).effects else []))
   |> Util.deduplicate_compare Stdlib.compare
 
 let injection_rule graph solution =
@@ -114,7 +148,9 @@ let injection_rule graph solution =
       (fun (states, diagnostics) (command : Ir.node) ->
         let value = Dataflow.value_at solution command.Ir.id in
         let summary = script_summary command in
-        if Abstract_value.is_untrusted value && summary.unsafe_interpolation
+        if
+          Abstract_value.is_untrusted value
+          && unsafe_untrusted_flow graph solution command summary
         then
           let diagnostic =
             Diagnostic.make ~rule_id:"WV-SEC-001" ~severity:Error
@@ -154,13 +190,6 @@ let injection_rule graph solution =
     diagnostics;
   }
 
-let externally_observable source summary =
-  let lower = String.lowercase_ascii source in
-  List.mem Ir.Network_request summary.Script_adapter.effects
-  || List.exists
-       (fun prefix -> Util.contains ~needle:prefix lower)
-       [ "echo "; "printf "; "write-output"; "console.log"; "print(" ]
-
 let secret_rule graph solution =
   let sinks =
     List.filter
@@ -176,24 +205,26 @@ let secret_rule graph solution =
         let value = Dataflow.value_at solution sink.Ir.id in
         let summary =
           if sink.kind = Ir.Command then Some (script_summary sink) else None
-        and source = command_source sink in
-        let observable =
-          match summary with
-          | Some summary -> externally_observable source summary
-          | None ->
-              List.mem Ir.Network_request sink.effects
-              || List.mem Ir.Network sink.capabilities
         in
+        let network, output =
+          match summary with
+          | Some summary -> (summary.secret_to_network, summary.secret_to_output)
+          | None -> (List.mem Ir.Network_request sink.effects, false)
+        and uncertainty =
+          ((match sink.unknown with
+             | Some reason -> [ reason ]
+             | None -> [])
+          @
+          match summary with
+          | Some summary -> summary.unknowns
+          | None -> [])
+          |> Util.deduplicate_compare Unknown.compare
+        in
+        let observable = network || output in
         if Abstract_value.is_secret value && observable then
-          let network =
-            match summary with
-            | Some summary -> List.mem Ir.Network_request summary.effects
-            | None ->
-                List.mem Ir.Network_request sink.effects
-                || List.mem Ir.Network sink.capabilities
-          in
           let capabilities =
-            [ Ir.Secret_access; Ir.Shell ]
+            [ Ir.Secret_access ]
+            @ (if sink.kind = Ir.Command then [ Ir.Shell ] else [])
             @ if network then [ Ir.Network ] else []
           in
           let diagnostic =
@@ -214,9 +245,14 @@ let secret_rule graph solution =
               ()
           in
           (Property.Violated :: states, diagnostic :: diagnostics)
+        else if Abstract_value.is_secret value && uncertainty <> [] then
+          (Property.Unknown uncertainty :: states, diagnostics)
         else
-          match value.secrecy with
-          | Abstract_value.Unknown_secrecy reasons when observable ->
+          match (value.secrecy, uncertainty) with
+          | Abstract_value.Unknown_secrecy reasons, _ when observable ->
+              (Property.Unknown reasons :: states, diagnostics)
+          | _, reasons
+            when reasons <> [] && List.mem Ir.Network sink.capabilities ->
               (Property.Unknown reasons :: states, diagnostics)
           | _ -> (Property.Proved :: states, diagnostics))
       ([], []) sinks
@@ -310,7 +346,14 @@ let supply_chain_rule graph =
 
 let permission_rule graph =
   let grants = Capability_analysis.declared_grants graph in
-  let unused = Capability_analysis.excessive_grants graph in
+  let demands = Capability_analysis.grant_demands graph in
+  let unused =
+    demands
+    |> List.filter_map (function
+      | grant, Capability_analysis.Excessive -> Some grant
+      | _, (Capability_analysis.Required | Capability_analysis.Unknown _) ->
+          None)
+  in
   let diagnostics =
     List.map
       (fun ((node : Ir.node), capability) ->
@@ -335,8 +378,13 @@ let permission_rule graph =
   in
   let state =
     if grants = [] then Property.Not_applicable
-    else if unused = [] then Proved
-    else Violated
+    else
+      demands
+      |> List.map (function
+        | _, Capability_analysis.Required -> Property.Proved
+        | _, Capability_analysis.Excessive -> Violated
+        | _, Capability_analysis.Unknown reasons -> Property.Unknown reasons)
+      |> Property.combine
   in
   {
     property =
@@ -601,79 +649,161 @@ let credential_persistence_rule (graph : Ir.t) solution =
     diagnostics;
   }
 
+type gate_assurance =
+  | Trusted_gate
+  | Unknown_gate of Unknown.reason list
+  | Not_authorization_gate
+
+let gate_mechanism (node : Ir.node) =
+  match attribute "mechanism" node with
+  | None -> false
+  | Some value -> (
+      match Abstract_value.constants value with
+      | None -> false
+      | Some mechanisms ->
+          List.exists
+            (fun mechanism ->
+              List.mem
+                (String.lowercase_ascii mechanism)
+                [ "approval"; "manual" ])
+            mechanisms)
+
+let protected_reference_atom atom =
+  List.mem
+    (String.lowercase_ascii atom)
+    [
+      "(github.ref_protected==true)";
+      "(true==github.ref_protected)";
+      "(ci_commit_ref_protected==\"true\")";
+      "(\"true\"==ci_commit_ref_protected)";
+      "github.ref_protected";
+    ]
+
+let protected_reference_gate (node : Ir.node) =
+  Condition.atoms node.condition
+  |> List.exists (fun atom ->
+      protected_reference_atom atom
+      && Condition.implies node.condition (Condition.atom atom))
+
+let explicit_approval_gate (node : Ir.node) =
+  let name = String.lowercase_ascii node.name in
+  name = "environment approval"
+  || (node.provider = Ir.Circleci && Util.starts_with ~prefix:"approval:" name)
+
 let authorization_gate solution (node : Ir.node) =
-  let text =
-    node.name
-    :: (node.attributes
-       |> List.filter_map (fun (name, value) ->
-           Abstract_value.constants value
-           |> Option.map (fun constants ->
-               name ^ " " ^ String.concat " " constants)))
-    |> String.concat " " |> String.lowercase_ascii
+  let authorization_evidence =
+    gate_mechanism node
+    || protected_reference_gate node
+    || explicit_approval_gate node
   in
-  let marker =
-    List.exists
-      (fun marker -> Util.contains ~needle:marker text)
-      [
-        "approval";
-        "environment";
-        "protected";
-        "reviewer";
-        "manual";
-        "repository_owner";
-        "actor";
-        "ref_protected";
-        "branch";
-      ]
-  in
-  marker
-  && not (Abstract_value.is_untrusted (Dataflow.value_at solution node.id))
+  let value = Dataflow.value_at solution node.id in
+  if (not authorization_evidence) || Abstract_value.is_untrusted value then
+    Not_authorization_gate
+  else
+    let reasons =
+      (reasons_of_value value
+      @
+      match node.unknown with
+      | Some reason -> [ reason ]
+      | None -> [])
+      |> Util.deduplicate_compare Unknown.compare
+    in
+    if reasons = [] then Trusted_gate else Unknown_gate reasons
+
+let environment_authorization_reasons graph (sink : Ir.node) =
+  graph.Ir.nodes
+  |> List.filter_map (fun (resource : Ir.node) ->
+      if
+        resource.kind = Ir.Resource
+        && Util.starts_with ~prefix:"environment:"
+             (String.lowercase_ascii resource.name)
+        && Option.is_some
+             (Graph_algorithms.shortest_path
+                ~edge_kinds:[ Ir.Grant; Ir.Control; Ir.Call_edge ]
+                graph resource.id sink.id)
+      then
+        Some
+          (match resource.unknown with
+          | Some reason -> reason
+          | None ->
+              Unknown.External_state ("protection rules for " ^ resource.name))
+      else None)
+  |> Util.deduplicate_compare Unknown.compare
 
 let authorization_rule graph solution =
   let sinks = List.filter privileged_effect graph.Ir.nodes
-  and gates =
+  and trusted_gates =
     List.filter
       (fun (node : Ir.node) ->
-        node.kind = Ir.Gate && authorization_gate solution node)
+        node.kind = Ir.Gate && authorization_gate solution node = Trusted_gate)
+      graph.nodes
+  and unknown_gates =
+    List.filter_map
+      (fun (node : Ir.node) ->
+        if node.kind <> Ir.Gate then None
+        else
+          match authorization_gate solution node with
+          | Unknown_gate reasons -> Some (node, reasons)
+          | Trusted_gate | Not_authorization_gate -> None)
       graph.nodes
   in
   let states, diagnostics =
     List.fold_left
       (fun (states, diagnostics) (sink : Ir.node) ->
-        let dominators =
+        let trusted_dominators =
           List.filter
             (fun (gate : Ir.node) ->
               Graph_algorithms.dominates graph ~dominator:gate.id
                 ~node:sink.Ir.id)
-            gates
+            trusted_gates
         in
-        if dominators <> [] then (Property.Proved :: states, diagnostics)
+        let unknown_dominator_reasons =
+          unknown_gates
+          |> List.filter_map (fun ((gate : Ir.node), reasons) ->
+              if
+                Graph_algorithms.dominates graph ~dominator:gate.id
+                  ~node:sink.Ir.id
+              then Some reasons
+              else None)
+          |> List.concat
+          |> Util.deduplicate_compare Unknown.compare
+        in
+        if trusted_dominators <> [] then (Property.Proved :: states, diagnostics)
+        else if unknown_dominator_reasons <> [] then
+          (Property.Unknown unknown_dominator_reasons :: states, diagnostics)
         else
-          let path =
-            List.find_map
-              (fun entry ->
-                Graph_algorithms.shortest_path ~edge_kinds:[ Ir.Control ]
-                  ~avoid:(List.map (fun (gate : Ir.node) -> gate.id) gates)
-                  graph entry sink.id)
-              graph.entrypoints
+          let environment_reasons =
+            environment_authorization_reasons graph sink
           in
-          let trace =
-            match path with
-            | Some nodes -> List.map (trace_hop "authorization bypass") nodes
-            | None ->
-                [ trace_hop "privileged sink without dominating gate" sink ]
-          in
-          let diagnostic =
-            Diagnostic.make ~rule_id:"WV-AUTH-001" ~severity:Error
-              ~confidence:High
-              ~message:
-                "a privileged effect is reachable without a dominating \
-                 authorization gate"
-              ~span:sink.span ~trace ~capabilities:sink.capabilities
-              ~evidence:[ "dominator set contains no Gate node" ]
-              ()
-          in
-          (Property.Violated :: states, diagnostic :: diagnostics))
+          if environment_reasons <> [] then
+            (Property.Unknown environment_reasons :: states, diagnostics)
+          else
+            let path =
+              List.find_map
+                (fun entry ->
+                  Graph_algorithms.shortest_path ~edge_kinds:[ Ir.Control ]
+                    ~avoid:
+                      (List.map (fun (gate : Ir.node) -> gate.id) trusted_gates)
+                    graph entry sink.id)
+                graph.entrypoints
+            in
+            let trace =
+              match path with
+              | Some nodes -> List.map (trace_hop "authorization bypass") nodes
+              | None ->
+                  [ trace_hop "privileged sink without dominating gate" sink ]
+            in
+            let diagnostic =
+              Diagnostic.make ~rule_id:"WV-AUTH-001" ~severity:Error
+                ~confidence:High
+                ~message:
+                  "a privileged effect is reachable without a dominating \
+                   authorization gate"
+                ~span:sink.span ~trace ~capabilities:sink.capabilities
+                ~evidence:[ "dominator set contains no Gate node" ]
+                ()
+            in
+            (Property.Violated :: states, diagnostic :: diagnostics))
       ([], []) sinks
   in
   {

@@ -1,0 +1,1311 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_792779e404444693cc86",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+        "start": {
+          "byte": 47,
+          "column": 9,
+          "line": 5
+        },
+        "stop": {
+          "byte": 108,
+          "column": 70,
+          "line": 5
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_3ba3d458944269704098",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:df3a3a32ad581e16e05e4706ca675b7b7dd4b253df3dd83ce856837d7d8fa597",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_5fc87e29d83f5607c471",
+          "id": "wv_05ea499fe3d012a4e65d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_21dd7cc4db30ae581434"
+        },
+        {
+          "condition": true,
+          "from": "wv_3074b88cad4fd17fd93c",
+          "id": "wv_18179664691d6fffd831",
+          "kind": "control",
+          "label": null,
+          "to": "wv_145db6190692c9789728"
+        },
+        {
+          "condition": true,
+          "from": "wv_0ae8c3d18d7de188eddc",
+          "id": "wv_1a4886631756c9096eeb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3ba3d458944269704098"
+        },
+        {
+          "condition": true,
+          "from": "wv_948c2f5787acc114e008",
+          "id": "wv_310555746a6a22512e55",
+          "kind": "data",
+          "label": "CI_REGISTRY",
+          "to": "wv_3ba3d458944269704098"
+        },
+        {
+          "condition": true,
+          "from": "wv_e2f4d7ab82dbf20b4668",
+          "id": "wv_39b5f02841245703c782",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ea44a447faf5931534ce"
+        },
+        {
+          "condition": true,
+          "from": "wv_d6c96251a4bd9a77b53e",
+          "id": "wv_424cd40e156640c94e10",
+          "kind": "data",
+          "label": "CI_COMMIT_SHA",
+          "to": "wv_ea44a447faf5931534ce"
+        },
+        {
+          "condition": true,
+          "from": "wv_c78f12ba12671302625f",
+          "id": "wv_45cec62f33b01221a658",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_45ef837d3b59a6f7b259"
+        },
+        {
+          "condition": true,
+          "from": "wv_21dd7cc4db30ae581434",
+          "id": "wv_5a08ae1913b54b367a77",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2011072df003a32ab638"
+        },
+        {
+          "condition": true,
+          "from": "wv_8684efbb30e57e79c141",
+          "id": "wv_71b4cd8f4c4d2b102927",
+          "kind": "data",
+          "label": "CI_JOB_TOKEN",
+          "to": "wv_3ba3d458944269704098"
+        },
+        {
+          "condition": true,
+          "from": "wv_3074b88cad4fd17fd93c",
+          "id": "wv_80a59ee98df2a1304853",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c88356b44d76c8e07e69"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d22b71c086fd00edcf9",
+          "id": "wv_9101b3556b33eef3bb6a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fc2a3bc49df9b32d8d77"
+        },
+        {
+          "condition": true,
+          "from": "wv_c88356b44d76c8e07e69",
+          "id": "wv_9f13f6ae23728c5b9c03",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c78f12ba12671302625f"
+        },
+        {
+          "condition": true,
+          "from": "wv_e77050629347b38ca290",
+          "id": "wv_a17ee8e28949aa6915e3",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_fc2a3bc49df9b32d8d77"
+        },
+        {
+          "condition": true,
+          "from": "wv_2011072df003a32ab638",
+          "id": "wv_b73f196e38ece879835d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0d22b71c086fd00edcf9"
+        },
+        {
+          "condition": true,
+          "from": "wv_2011072df003a32ab638",
+          "id": "wv_d0627bfda7a3a64c4530",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e2f4d7ab82dbf20b4668"
+        },
+        {
+          "condition": true,
+          "from": "wv_2011072df003a32ab638",
+          "id": "wv_d401940c66677f14b0de",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0ae8c3d18d7de188eddc"
+        },
+        {
+          "condition": true,
+          "from": "wv_0ae8c3d18d7de188eddc",
+          "id": "wv_d42e8918678717e20aba",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0d22b71c086fd00edcf9"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d22b71c086fd00edcf9",
+          "id": "wv_d53fea15e07298f3feff",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e2f4d7ab82dbf20b4668"
+        },
+        {
+          "condition": true,
+          "from": "wv_fe611d2544c0703f8420",
+          "id": "wv_ddf23cb13ea251b14b38",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_ea44a447faf5931534ce"
+        },
+        {
+          "condition": true,
+          "from": "wv_3074b88cad4fd17fd93c",
+          "id": "wv_def00c9f7a75edf91a66",
+          "kind": "call",
+          "label": null,
+          "to": "wv_145db6190692c9789728"
+        },
+        {
+          "condition": true,
+          "from": "wv_45ef837d3b59a6f7b259",
+          "id": "wv_dfc626311f46d29171d3",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5fc87e29d83f5607c471"
+        },
+        {
+          "condition": true,
+          "from": "wv_42bf9b676977aa9d522a",
+          "id": "wv_fa86ec4332ce7ec26f49",
+          "kind": "data",
+          "label": "CI_COMMIT_SHA",
+          "to": "wv_fc2a3bc49df9b32d8d77"
+        }
+      ],
+      "entrypoints": [
+        "wv_3074b88cad4fd17fd93c"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0ae8c3d18d7de188eddc",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0d22b71c086fd00edcf9",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 117,
+              "column": 9,
+              "line": 6
+            },
+            "stop": {
+              "byte": 189,
+              "column": 81,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_145db6190692c9789728",
+          "kind": "call",
+          "name": "docker:latest",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 7,
+              "column": 8,
+              "line": 1
+            },
+            "stop": {
+              "byte": 20,
+              "column": 21,
+              "line": 1
+            }
+          },
+          "unknown": {
+            "detail": "docker:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2011072df003a32ab638",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 22,
+              "column": 1,
+              "line": 3
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_21dd7cc4db30ae581434",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3074b88cad4fd17fd93c",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 83,
+                      "column": 45,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 95,
+                      "column": 57,
+                      "line": 5
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 97,
+                      "column": 59,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 47,
+                      "column": 9,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN",
+                  "CI_REGISTRY",
+                  "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_3ba3d458944269704098",
+          "kind": "command",
+          "name": "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 153,
+                      "column": 45,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 166,
+                      "column": 58,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_42bf9b676977aa9d522a",
+          "kind": "resource",
+          "name": "CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 153,
+              "column": 45,
+              "line": 6
+            },
+            "stop": {
+              "byte": 166,
+              "column": 58,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_45ef837d3b59a6f7b259",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5fc87e29d83f5607c471",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 83,
+                      "column": 45,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 95,
+                      "column": 57,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8684efbb30e57e79c141",
+          "kind": "resource",
+          "name": "CI_JOB_TOKEN",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 83,
+              "column": 45,
+              "line": 5
+            },
+            "stop": {
+              "byte": 95,
+              "column": 57,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 97,
+                      "column": 59,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_948c2f5787acc114e008",
+          "kind": "resource",
+          "name": "CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 97,
+              "column": 59,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c78f12ba12671302625f",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c88356b44d76c8e07e69",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 41,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d6c96251a4bd9a77b53e",
+          "kind": "resource",
+          "name": "CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 230,
+              "column": 41,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e2f4d7ab82dbf20b4668",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 134,
+                      "column": 26,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 151,
+                      "column": 43,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e77050629347b38ca290",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 134,
+              "column": 26,
+              "line": 6
+            },
+            "stop": {
+              "byte": 151,
+              "column": 43,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 41,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 211,
+                      "column": 22,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 228,
+                      "column": 39,
+                      "line": 7
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 198,
+                      "column": 9,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA",
+                  "CI_REGISTRY_IMAGE",
+                  "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_ea44a447faf5931534ce",
+          "kind": "command",
+          "name": "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 153,
+                      "column": 45,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 166,
+                      "column": 58,
+                      "line": 6
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 134,
+                      "column": 26,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 151,
+                      "column": 43,
+                      "line": 6
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 117,
+                      "column": 9,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 189,
+                      "column": 81,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA",
+                  "CI_REGISTRY_IMAGE",
+                  "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fc2a3bc49df9b32d8d77",
+          "kind": "command",
+          "name": "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 117,
+              "column": 9,
+              "line": 6
+            },
+            "stop": {
+              "byte": 189,
+              "column": 81,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 211,
+                      "column": 22,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 228,
+                      "column": 39,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fe611d2544c0703f8420",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml",
+            "start": {
+              "byte": 211,
+              "column": 22,
+              "line": 7
+            },
+            "stop": {
+              "byte": 228,
+              "column": 39,
+              "line": 7
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:ff2bed3b69bd3dd4aa5e7a228e098cb42ae298c77495e1ddfdf9769bf528cec3",
+      "path": "gitlab/codexnetwork/codex.io/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "docker:latest",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

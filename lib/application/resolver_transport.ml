@@ -306,8 +306,8 @@ let gitlab_component ~get ~allowed_sources reference =
   | Error _ as error -> error
   | Ok (identity, version) -> (
       match split_nonempty '/' identity with
-      | host :: rest when List.length rest >= 2 ->
-          (match List.rev rest with
+      | host :: rest when List.length rest >= 2 -> (
+          match List.rev rest with
           | component :: reversed_project ->
               let project = List.rev reversed_project |> String.concat "/" in
               if not (valid_name_component component) then
@@ -584,7 +584,7 @@ let parse_image reference =
         && is_hex (String.sub digest 7 64)
       then Ok (`Pinned (name, String.lowercase_ascii digest))
       else Error ("invalid OCI image digest: " ^ reference)
-  | None ->
+  | None -> (
       let slash = String.rindex_opt reference '/' in
       let colon = String.rindex_opt reference ':' in
       let name, tag =
@@ -600,16 +600,16 @@ let parse_image reference =
       | [] -> Error ("invalid OCI image: " ^ reference)
       | _ when tag = "" -> Error ("invalid OCI image: " ^ reference)
       | first :: remaining ->
-        let explicit_registry =
-          String.contains first '.' || String.contains first ':'
-        in
-        if explicit_registry then
-          Ok (`Tagged (first, String.concat "/" remaining, tag))
-        else
-          let repository =
-            if List.length components = 1 then "library/" ^ name else name
+          let explicit_registry =
+            String.contains first '.' || String.contains first ':'
           in
-          Ok (`Tagged ("registry-1.docker.io", repository, tag))
+          if explicit_registry then
+            Ok (`Tagged (first, String.concat "/" remaining, tag))
+          else
+            let repository =
+              if List.length components = 1 then "library/" ^ name else name
+            in
+            Ok (`Tagged ("registry-1.docker.io", repository, tag)))
 
 let bearer_token source =
   match json source with

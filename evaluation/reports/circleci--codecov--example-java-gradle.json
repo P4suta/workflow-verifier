@@ -1,0 +1,633 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = codecov/codecov@3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+          "start": {
+            "byte": 30,
+            "column": 12,
+            "line": 3
+          },
+          "stop": {
+            "byte": 47,
+            "column": 29,
+            "line": 3
+          }
+        }
+      },
+      "id": "diag_9b3acdcb228dfeccfa03",
+      "message": "dependency is not pinned to immutable content: codecov/codecov@3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+        "start": {
+          "byte": 30,
+          "column": 12,
+          "line": 3
+        },
+        "stop": {
+          "byte": 47,
+          "column": 29,
+          "line": 3
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_9ab80efd51a8feb27b76",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 30,
+              "column": 12,
+              "line": 3
+            },
+            "stop": {
+              "byte": 47,
+              "column": 29,
+              "line": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:3c471b6730a6638b88fb4182db196c9653e84e0da357d327769480dbb891fb47",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_c9cd707d970363ce1913",
+          "id": "wv_01cb3caaa1cd0fb104b3",
+          "kind": "read",
+          "label": null,
+          "to": "wv_2b3537dd8542497f63e5"
+        },
+        {
+          "condition": true,
+          "from": "wv_a4b9ef93cef9d37e0e54",
+          "id": "wv_0637334d26fddbf5b5f5",
+          "kind": "call",
+          "label": null,
+          "to": "wv_9dd8ead7cdd0caa3cc73"
+        },
+        {
+          "condition": true,
+          "from": "wv_f80b10b555f4df567fea",
+          "id": "wv_093f378ed69f0f1c5faf",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c9cd707d970363ce1913"
+        },
+        {
+          "condition": true,
+          "from": "wv_2f8d366af405c78d4681",
+          "id": "wv_27361050a1905c332f0d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a4b9ef93cef9d37e0e54"
+        },
+        {
+          "condition": true,
+          "from": "wv_568a5421b67bb755ab95",
+          "id": "wv_276b96c37112282c6d9d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9ab80efd51a8feb27b76"
+        },
+        {
+          "condition": true,
+          "from": "wv_568a5421b67bb755ab95",
+          "id": "wv_2ef804ca6ceaa3fd7a3e",
+          "kind": "call",
+          "label": null,
+          "to": "wv_18e9a60a32f21feaef25"
+        },
+        {
+          "condition": true,
+          "from": "wv_568a5421b67bb755ab95",
+          "id": "wv_33e97fb60614afa33f37",
+          "kind": "control",
+          "label": null,
+          "to": "wv_18e9a60a32f21feaef25"
+        },
+        {
+          "condition": true,
+          "from": "wv_2f8d366af405c78d4681",
+          "id": "wv_5b0ac01b1eddc325838c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2cf6144de414ff5d2ed7"
+        },
+        {
+          "condition": true,
+          "from": "wv_568a5421b67bb755ab95",
+          "id": "wv_6e44ad6ecd9d31e4a91d",
+          "kind": "call",
+          "label": null,
+          "to": "wv_9ab80efd51a8feb27b76"
+        },
+        {
+          "condition": true,
+          "from": "wv_c9cd707d970363ce1913",
+          "id": "wv_9c60b0bd45972f11b2f9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2b3537dd8542497f63e5"
+        },
+        {
+          "condition": true,
+          "from": "wv_f80b10b555f4df567fea",
+          "id": "wv_a30244a688e65c09bde7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a4b9ef93cef9d37e0e54"
+        },
+        {
+          "condition": true,
+          "from": "wv_f80b10b555f4df567fea",
+          "id": "wv_aeea1de175f5c6c107f9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2f8d366af405c78d4681"
+        },
+        {
+          "condition": true,
+          "from": "wv_c9cd707d970363ce1913",
+          "id": "wv_c2acaa771f23463770f3",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_2f8d366af405c78d4681"
+        },
+        {
+          "condition": true,
+          "from": "wv_9dd8ead7cdd0caa3cc73",
+          "id": "wv_d3edcc55c1745f2de973",
+          "kind": "call",
+          "label": null,
+          "to": "wv_9ab80efd51a8feb27b76"
+        },
+        {
+          "condition": true,
+          "from": "wv_a4b9ef93cef9d37e0e54",
+          "id": "wv_f8abe4bdfbf8b2ce37a1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9dd8ead7cdd0caa3cc73"
+        }
+      ],
+      "entrypoints": [
+        "wv_568a5421b67bb755ab95"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_18e9a60a32f21feaef25",
+          "kind": "call",
+          "name": "cimg/openjdk:18.0.2",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 91,
+              "column": 16,
+              "line": 8
+            },
+            "stop": {
+              "byte": 110,
+              "column": 35,
+              "line": 8
+            }
+          },
+          "unknown": {
+            "detail": "cimg/openjdk:18.0.2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_2b3537dd8542497f63e5",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 130,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 138,
+              "column": 17,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+                    "start": {
+                      "byte": 241,
+                      "column": 20,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 253,
+                      "column": 32,
+                      "line": 13
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "gradle build"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2cf6144de414ff5d2ed7",
+          "kind": "command",
+          "name": "Install dependencies, run tests, and collect coverage",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 241,
+              "column": 20,
+              "line": 13
+            },
+            "stop": {
+              "byte": 253,
+              "column": 32,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2f8d366af405c78d4681",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 147,
+              "column": 9,
+              "line": 11
+            },
+            "stop": {
+              "byte": 253,
+              "column": 32,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_568a5421b67bb755ab95",
+          "kind": "workflow",
+          "name": "CircleCI config",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 340,
+              "column": 14,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9ab80efd51a8feb27b76",
+          "kind": "call",
+          "name": "codecov/codecov@3",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 30,
+              "column": 12,
+              "line": 3
+            },
+            "stop": {
+              "byte": 47,
+              "column": 29,
+              "line": 3
+            }
+          },
+          "unknown": {
+            "detail": "codecov/codecov@3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "dependency.reference": {
+              "provenance": [
+                {
+                  "operation": "resolve immutable dependency identity",
+                  "origin": "CircleCI orb alias",
+                  "span": {
+                    "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+                    "start": {
+                      "byte": 262,
+                      "column": 9,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 276,
+                      "column": 23,
+                      "line": 14
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "codecov/codecov@3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9dd8ead7cdd0caa3cc73",
+          "kind": "call",
+          "name": "orb:codecov/upload",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 262,
+              "column": 9,
+              "line": 14
+            },
+            "stop": {
+              "byte": 276,
+              "column": 23,
+              "line": 14
+            }
+          },
+          "unknown": {
+            "detail": "codecov/codecov@3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a4b9ef93cef9d37e0e54",
+          "kind": "step",
+          "name": "codecov/upload",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 262,
+              "column": 9,
+              "line": 14
+            },
+            "stop": {
+              "byte": 276,
+              "column": 23,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c9cd707d970363ce1913",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 130,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 138,
+              "column": 17,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f80b10b555f4df567fea",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/codecov/example-java-gradle/.circleci/config.yml",
+            "start": {
+              "byte": 57,
+              "column": 3,
+              "line": 6
+            },
+            "stop": {
+              "byte": 276,
+              "column": 23,
+              "line": 14
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "circleci",
+      "source": "circleci/codecov/example-java-gradle/.circleci/config.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:f2d9dd532aebe3c5422c7e1c445c045124d638405949c0b7a3a3b25adbf413bb",
+      "path": "circleci/codecov/example-java-gradle/.circleci/config.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

@@ -1,0 +1,3893 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "filesystem_read",
+        "filesystem_write",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "dominator set contains no Gate node"
+      ],
+      "fix": null,
+      "id": "diag_47f63d0bcb0846ea1e9b",
+      "message": "a privileged effect is reachable without a dominating authorization gate",
+      "rule_id": "WV-AUTH-001",
+      "severity": "error",
+      "span": {
+        "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+        "start": {
+          "byte": 2435,
+          "column": 7,
+          "line": 109
+        },
+        "stop": {
+          "byte": 2628,
+          "column": 200,
+          "line": 109
+        }
+      },
+      "trace": [
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_aea73b7be9ce7e1959bf",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 2890,
+              "column": 17,
+              "line": 123
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_8a6c3ad51ba8b93db3c7",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 84,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 121,
+              "column": 11,
+              "line": 7
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_79b413999a17265976a5",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 84,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 121,
+              "column": 11,
+              "line": 7
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_864cd10827c94a8d2838",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2102,
+              "column": 1,
+              "line": 95
+            },
+            "stop": {
+              "byte": 2628,
+              "column": 200,
+              "line": 109
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_1fbdb3b2372de648d8a8",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2435,
+              "column": 7,
+              "line": 109
+            },
+            "stop": {
+              "byte": 2628,
+              "column": 200,
+              "line": 109
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_d87fb061b6c61c828014",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2435,
+              "column": 7,
+              "line": 109
+            },
+            "stop": {
+              "byte": 2628,
+              "column": 200,
+              "line": 109
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:f7eafa1e2536812c58c5ab48886256dcca5461ae460946844fbef75efbac9921",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_79b413999a17265976a5",
+          "id": "wv_0800ad8e4ccf7d6f0174",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_29a026e560d53f0256a8"
+        },
+        {
+          "condition": true,
+          "from": "wv_85b7b22c7c88bc8f64e6",
+          "id": "wv_09b856d6ca829c3429f5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5ee6ac6212c14217f02a"
+        },
+        {
+          "condition": true,
+          "from": "wv_143e8ac73d2248b3b275",
+          "id": "wv_125962e60a00d130af18",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9dad39a6f22e790e55a8"
+        },
+        {
+          "condition": true,
+          "from": "wv_85b7b22c7c88bc8f64e6",
+          "id": "wv_1a6d419f070d50688ea0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_143e8ac73d2248b3b275"
+        },
+        {
+          "condition": true,
+          "from": "wv_b6d180d64a47fc2924f9",
+          "id": "wv_1cebc6fd104b0b45feff",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1a4899cc2105465a4944"
+        },
+        {
+          "condition": true,
+          "from": "wv_ef91d9c67e878c305137",
+          "id": "wv_29de8f8885511973a49f",
+          "kind": "data",
+          "label": "UI_BOT_NPM_AUTH_TOKEN",
+          "to": "wv_a0ca28b821c5f6e56d11"
+        },
+        {
+          "condition": true,
+          "from": "wv_68881f2680f269b8363d",
+          "id": "wv_2dcaa05ebea9d708fcde",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e19734c9767a58ed701a"
+        },
+        {
+          "condition": true,
+          "from": "wv_8a6c3ad51ba8b93db3c7",
+          "id": "wv_2dccc975096f6e0b0aa0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_380aedd7579d5efc763f"
+        },
+        {
+          "condition": true,
+          "from": "wv_b6d180d64a47fc2924f9",
+          "id": "wv_2eee68902a6514fa70cd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d832f595c8d1ea680f34"
+        },
+        {
+          "condition": true,
+          "from": "wv_68881f2680f269b8363d",
+          "id": "wv_2fa7be02a387a4a44795",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3b485f97844f33e9ab3f"
+        },
+        {
+          "condition": true,
+          "from": "wv_24819753659e043e8c7b",
+          "id": "wv_30020fd26a636d8d00cd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6248683109d30f7bc65c"
+        },
+        {
+          "condition": true,
+          "from": "wv_aea73b7be9ce7e1959bf",
+          "id": "wv_396dda9ad49a499698d0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_00860477b3bcef32a6e4"
+        },
+        {
+          "condition": true,
+          "from": "wv_f908258c2a3c6876ded2",
+          "id": "wv_39c8f13b89f319d37a0f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b9cefbb3e0c86809ad00"
+        },
+        {
+          "condition": true,
+          "from": "wv_f96c30edb4eda17efc16",
+          "id": "wv_3a549ecaa76cae520d74",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1a7b894792550b8c6e53"
+        },
+        {
+          "condition": true,
+          "from": "wv_864cd10827c94a8d2838",
+          "id": "wv_3eb34415182e65425d75",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f210f6cf6902eacf3690"
+        },
+        {
+          "condition": true,
+          "from": "wv_5a17cce22dba32624456",
+          "id": "wv_405651dd1ffdcb72a5fe",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_b5169fcc5457a7bb1d18"
+        },
+        {
+          "condition": true,
+          "from": "wv_1fbdb3b2372de648d8a8",
+          "id": "wv_40579039ca6a7ed705e6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d87fb061b6c61c828014"
+        },
+        {
+          "condition": true,
+          "from": "wv_5a17cce22dba32624456",
+          "id": "wv_43ff2b1f61cee7703b57",
+          "kind": "control",
+          "label": null,
+          "to": "wv_48fe7ab22ce840cb9154"
+        },
+        {
+          "condition": true,
+          "from": "wv_8a6c3ad51ba8b93db3c7",
+          "id": "wv_448ed33a7856802839a9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b6d180d64a47fc2924f9"
+        },
+        {
+          "condition": true,
+          "from": "wv_3cbe1f4da9bd7c96db8e",
+          "id": "wv_47eed57233334cda581a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4a21b563d99f1d17e2a5"
+        },
+        {
+          "condition": true,
+          "from": "wv_864cd10827c94a8d2838",
+          "id": "wv_499d33a98dffd192eb0d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_68881f2680f269b8363d"
+        },
+        {
+          "condition": true,
+          "from": "wv_96365af9711107ad2cd8",
+          "id": "wv_4a7f1533023aac6e5fcf",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_996de14ac7115d66f646"
+        },
+        {
+          "condition": true,
+          "from": "wv_f2f5831d9a5be7576f70",
+          "id": "wv_4f103bf8ff093689eba4",
+          "kind": "read",
+          "label": null,
+          "to": "wv_09f2f4762ee0f64aba08"
+        },
+        {
+          "condition": true,
+          "from": "wv_8d84c036b921b9877fec",
+          "id": "wv_4fda7bcff262c552f73c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_8262d751bc6b1a8d7731"
+        },
+        {
+          "condition": true,
+          "from": "wv_8a6c3ad51ba8b93db3c7",
+          "id": "wv_518417baaf6c3bda0252",
+          "kind": "control",
+          "label": null,
+          "to": "wv_11befaa5ec9a6631ee46"
+        },
+        {
+          "condition": true,
+          "from": "wv_3cbe1f4da9bd7c96db8e",
+          "id": "wv_522efeb6711f23004217",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_143e8ac73d2248b3b275"
+        },
+        {
+          "condition": true,
+          "from": "wv_85b7b22c7c88bc8f64e6",
+          "id": "wv_5502a2607ff4842f6090",
+          "kind": "control",
+          "label": null,
+          "to": "wv_750aa746d116455fdf2c"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_56459717668744c2d9ea",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5a17cce22dba32624456"
+        },
+        {
+          "condition": true,
+          "from": "wv_f210f6cf6902eacf3690",
+          "id": "wv_5953d52f71d4a4948c23",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_68881f2680f269b8363d"
+        },
+        {
+          "condition": true,
+          "from": "wv_5676e1912b52725a3828",
+          "id": "wv_5aa32b0b84e526044cda",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_000f37065f0850b05d99"
+        },
+        {
+          "condition": true,
+          "from": "wv_996de14ac7115d66f646",
+          "id": "wv_5b086b2d9255b19aa6bf",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6b005ded0931974ce5e3"
+        },
+        {
+          "condition": true,
+          "from": "wv_c3858c8bd5cdb5331ea0",
+          "id": "wv_5fc7efbf5256bf7ac30e",
+          "kind": "read",
+          "label": null,
+          "to": "wv_11befaa5ec9a6631ee46"
+        },
+        {
+          "condition": true,
+          "from": "wv_bb9775773d540a420d4d",
+          "id": "wv_62851d72c41f0ecfaff5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0c09d75e84d2445b92de"
+        },
+        {
+          "condition": true,
+          "from": "wv_6248683109d30f7bc65c",
+          "id": "wv_62dd4833d130f177de78",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4a04996764b8a17bf5d0"
+        },
+        {
+          "condition": true,
+          "from": "wv_24819753659e043e8c7b",
+          "id": "wv_63305630b2f85ba966cf",
+          "kind": "control",
+          "label": null,
+          "to": "wv_960a6a37ba79fd8f4db2"
+        },
+        {
+          "condition": true,
+          "from": "wv_d832f595c8d1ea680f34",
+          "id": "wv_68b4b603fd126d9f316c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_96365af9711107ad2cd8"
+        },
+        {
+          "condition": true,
+          "from": "wv_bb9775773d540a420d4d",
+          "id": "wv_75f591f64e753d9e82fd",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1fbdb3b2372de648d8a8"
+        },
+        {
+          "condition": true,
+          "from": "wv_f210f6cf6902eacf3690",
+          "id": "wv_78656abc6771113629b0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3b9f6d148a218ac0e051"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_7bb764393f37bb8609fc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3838dfa83df733f0406b"
+        },
+        {
+          "condition": true,
+          "from": "wv_750aa746d116455fdf2c",
+          "id": "wv_7fb9678cf3b7186bb9f0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3cbe1f4da9bd7c96db8e"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_80d5e5fd2fbb611ba4b8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_000f37065f0850b05d99"
+        },
+        {
+          "condition": true,
+          "from": "wv_85b7b22c7c88bc8f64e6",
+          "id": "wv_80dc8586ff3ea66a1659",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3cbe1f4da9bd7c96db8e"
+        },
+        {
+          "condition": true,
+          "from": "wv_996de14ac7115d66f646",
+          "id": "wv_8ebd75bbb23c468b7eda",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1a4899cc2105465a4944"
+        },
+        {
+          "condition": true,
+          "from": "wv_3838dfa83df733f0406b",
+          "id": "wv_915fa8cfb21c4b227980",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5676e1912b52725a3828"
+        },
+        {
+          "condition": true,
+          "from": "wv_79b413999a17265976a5",
+          "id": "wv_956175b60fcdddef0f2e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_864cd10827c94a8d2838"
+        },
+        {
+          "condition": true,
+          "from": "wv_24819753659e043e8c7b",
+          "id": "wv_95a4f0a74e713079875c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_992de7739704beac00cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_b6d180d64a47fc2924f9",
+          "id": "wv_985029f58f1bde5174ab",
+          "kind": "write",
+          "label": null,
+          "to": "wv_ee72fb58f359a40c0cda"
+        },
+        {
+          "condition": true,
+          "from": "wv_864cd10827c94a8d2838",
+          "id": "wv_9a9513411c65d80c0470",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bb9775773d540a420d4d"
+        },
+        {
+          "condition": true,
+          "from": "wv_24819753659e043e8c7b",
+          "id": "wv_9b2454f436338006077e",
+          "kind": "write",
+          "label": null,
+          "to": "wv_3e56cd41e8fce263cce1"
+        },
+        {
+          "condition": true,
+          "from": "wv_000f37065f0850b05d99",
+          "id": "wv_9b7f5d99967802db0000",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_8d84c036b921b9877fec"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_9ce8e58619c9665248cd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b5169fcc5457a7bb1d18"
+        },
+        {
+          "condition": true,
+          "from": "wv_e19734c9767a58ed701a",
+          "id": "wv_9d81cdd5e08195d80ffb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5f21a6f8e6899a15b007"
+        },
+        {
+          "condition": true,
+          "from": "wv_5ee6ac6212c14217f02a",
+          "id": "wv_a08f31bf70a1391a4be9",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f908258c2a3c6876ded2"
+        },
+        {
+          "condition": true,
+          "from": "wv_e19734c9767a58ed701a",
+          "id": "wv_a47da17756319f33924d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_bb9775773d540a420d4d"
+        },
+        {
+          "condition": true,
+          "from": "wv_09f2f4762ee0f64aba08",
+          "id": "wv_a5cc5565787a82e3e037",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f96c30edb4eda17efc16"
+        },
+        {
+          "condition": true,
+          "from": "wv_960a6a37ba79fd8f4db2",
+          "id": "wv_a60d0adc3b3069f2790e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a6db2ec9b4c7983c01c1"
+        },
+        {
+          "condition": true,
+          "from": "wv_000f37065f0850b05d99",
+          "id": "wv_b277aa347d4766705f85",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a0ca28b821c5f6e56d11"
+        },
+        {
+          "condition": true,
+          "from": "wv_1a4899cc2105465a4944",
+          "id": "wv_b2d6e707003caf77d2c3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a1e5c9ef6704b74d42eb"
+        },
+        {
+          "condition": true,
+          "from": "wv_5e7328e787ed6f2917f3",
+          "id": "wv_b349b547052b4ebbcd58",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_960a6a37ba79fd8f4db2"
+        },
+        {
+          "condition": true,
+          "from": "wv_85b7b22c7c88bc8f64e6",
+          "id": "wv_b860ab76a2f3d7621662",
+          "kind": "write",
+          "label": null,
+          "to": "wv_680803a2bc6f1cca46bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_864cd10827c94a8d2838",
+          "id": "wv_bf1597f3e5317ff12bbd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e19734c9767a58ed701a"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_bf45a4dc4aff33ddf590",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8262d751bc6b1a8d7731"
+        },
+        {
+          "condition": true,
+          "from": "wv_680803a2bc6f1cca46bc",
+          "id": "wv_bff54a29beadfacc5d1f",
+          "kind": "read",
+          "label": null,
+          "to": "wv_85b7b22c7c88bc8f64e6"
+        },
+        {
+          "condition": true,
+          "from": "wv_29a026e560d53f0256a8",
+          "id": "wv_c20f548208263c1e7380",
+          "kind": "control",
+          "label": null,
+          "to": "wv_09f2f4762ee0f64aba08"
+        },
+        {
+          "condition": true,
+          "from": "wv_8262d751bc6b1a8d7731",
+          "id": "wv_c3892b12ce1861ffc0a7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_47541bdc6e960b8a0835"
+        },
+        {
+          "condition": true,
+          "from": "wv_5676e1912b52725a3828",
+          "id": "wv_ca8635c11b22551b64d3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1ef9a62bb1cd3dcbe38a"
+        },
+        {
+          "condition": true,
+          "from": "wv_8a6c3ad51ba8b93db3c7",
+          "id": "wv_cb29b182604859c24b90",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_79b413999a17265976a5"
+        },
+        {
+          "condition": true,
+          "from": "wv_3e56cd41e8fce263cce1",
+          "id": "wv_ce20c367cc4cf94a58b9",
+          "kind": "read",
+          "label": null,
+          "to": "wv_24819753659e043e8c7b"
+        },
+        {
+          "condition": true,
+          "from": "wv_143e8ac73d2248b3b275",
+          "id": "wv_cec794f58fe133118042",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5ee6ac6212c14217f02a"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee72fb58f359a40c0cda",
+          "id": "wv_cf930e57cc282712bbcd",
+          "kind": "read",
+          "label": null,
+          "to": "wv_b6d180d64a47fc2924f9"
+        },
+        {
+          "condition": true,
+          "from": "wv_380aedd7579d5efc763f",
+          "id": "wv_d0d5217906343219eb12",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_24819753659e043e8c7b"
+        },
+        {
+          "condition": true,
+          "from": "wv_96365af9711107ad2cd8",
+          "id": "wv_d1a65c7ed38beb72745d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2c999e72cf175774942b"
+        },
+        {
+          "condition": true,
+          "from": "wv_d832f595c8d1ea680f34",
+          "id": "wv_d211e3e9a78e71929227",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e6a633feae2fd7856001"
+        },
+        {
+          "condition": true,
+          "from": "wv_8262d751bc6b1a8d7731",
+          "id": "wv_d2845bf1558e6c4e1ed2",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5a17cce22dba32624456"
+        },
+        {
+          "condition": true,
+          "from": "wv_b5169fcc5457a7bb1d18",
+          "id": "wv_d59c942318614046a789",
+          "kind": "control",
+          "label": null,
+          "to": "wv_933b83c92c4d96fa976e"
+        },
+        {
+          "condition": true,
+          "from": "wv_864cd10827c94a8d2838",
+          "id": "wv_dc806e5865a65b75baa3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1fbdb3b2372de648d8a8"
+        },
+        {
+          "condition": true,
+          "from": "wv_e2d105d11ca742e04097",
+          "id": "wv_de8a07c2b0d1f2adb98a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_85b7b22c7c88bc8f64e6"
+        },
+        {
+          "condition": true,
+          "from": "wv_85b7b22c7c88bc8f64e6",
+          "id": "wv_df3e3dad8aa0c7f1829a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f908258c2a3c6876ded2"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_e014f011c81d36a1da5f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5676e1912b52725a3828"
+        },
+        {
+          "condition": true,
+          "from": "wv_aea73b7be9ce7e1959bf",
+          "id": "wv_e07f06443ccf7f0d1b7f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8a6c3ad51ba8b93db3c7"
+        },
+        {
+          "condition": true,
+          "from": "wv_992de7739704beac00cb",
+          "id": "wv_e3496cbcbdfd0c0ae03c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c79fea65b613c1df1902"
+        },
+        {
+          "condition": true,
+          "from": "wv_b6d180d64a47fc2924f9",
+          "id": "wv_e4afd8d3afeec1bfad04",
+          "kind": "control",
+          "label": null,
+          "to": "wv_996de14ac7115d66f646"
+        },
+        {
+          "condition": true,
+          "from": "wv_5e7328e787ed6f2917f3",
+          "id": "wv_e6d97e07fc21c44ec51f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1e0db487a8be6cfc29b4"
+        },
+        {
+          "condition": true,
+          "from": "wv_aea73b7be9ce7e1959bf",
+          "id": "wv_e84e4d1c10046ca139f0",
+          "kind": "call",
+          "label": null,
+          "to": "wv_00860477b3bcef32a6e4"
+        },
+        {
+          "condition": true,
+          "from": "wv_5ee6ac6212c14217f02a",
+          "id": "wv_ea4d4743f8f2049b89db",
+          "kind": "control",
+          "label": null,
+          "to": "wv_dceaa9e0e68d648aaa92"
+        },
+        {
+          "condition": true,
+          "from": "wv_960a6a37ba79fd8f4db2",
+          "id": "wv_ebd1faa4b715b8432381",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_992de7739704beac00cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_3838dfa83df733f0406b",
+          "id": "wv_edd35c8f19c184f87b2d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c65a00235ef0f834ca77"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_eef690aac16e20dddb0e",
+          "kind": "write",
+          "label": null,
+          "to": "wv_c3858c8bd5cdb5331ea0"
+        },
+        {
+          "condition": true,
+          "from": "wv_750aa746d116455fdf2c",
+          "id": "wv_ef3832fe4d45edf482a2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9060fc9a2c5e70bfc6e3"
+        },
+        {
+          "condition": true,
+          "from": "wv_09f2f4762ee0f64aba08",
+          "id": "wv_ef4f890abc8f2edc9b20",
+          "kind": "write",
+          "label": null,
+          "to": "wv_f2f5831d9a5be7576f70"
+        },
+        {
+          "condition": true,
+          "from": "wv_992de7739704beac00cb",
+          "id": "wv_f934d83b67fef3793662",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6248683109d30f7bc65c"
+        },
+        {
+          "condition": true,
+          "from": "wv_24819753659e043e8c7b",
+          "id": "wv_f949edecfa874537a7cb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5e7328e787ed6f2917f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_11befaa5ec9a6631ee46",
+          "id": "wv_f98dd47c003889157aec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8d84c036b921b9877fec"
+        },
+        {
+          "condition": true,
+          "from": "wv_29a026e560d53f0256a8",
+          "id": "wv_f9d08b47bb3eb739d838",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e2d105d11ca742e04097"
+        },
+        {
+          "condition": true,
+          "from": "wv_b6d180d64a47fc2924f9",
+          "id": "wv_fab6fbe542c27dc2fb77",
+          "kind": "control",
+          "label": null,
+          "to": "wv_96365af9711107ad2cd8"
+        },
+        {
+          "condition": true,
+          "from": "wv_8d84c036b921b9877fec",
+          "id": "wv_fd59de4c939447ed65f2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5719119e382524ade3f2"
+        }
+      ],
+      "entrypoints": [
+        "wv_aea73b7be9ce7e1959bf"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_000f37065f0850b05d99",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 799,
+              "column": 7,
+              "line": 54
+            },
+            "stop": {
+              "byte": 872,
+              "column": 80,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_00860477b3bcef32a6e4",
+          "kind": "call",
+          "name": "dockerhub.art.rambler.ru/andrepolischuk/node-chrome-firefox:0.7.1",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 7,
+              "column": 8,
+              "line": 1
+            },
+            "stop": {
+              "byte": 72,
+              "column": 73,
+              "line": 1
+            }
+          },
+          "unknown": {
+            "detail": "dockerhub.art.rambler.ru/andrepolischuk/node-chrome-firefox:0.7.1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_09f2f4762ee0f64aba08",
+          "kind": "job",
+          "name": "install",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 123,
+              "column": 1,
+              "line": 9
+            },
+            "stop": {
+              "byte": 335,
+              "column": 18,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2411,
+                      "column": 7,
+                      "line": 108
+                    },
+                    "stop": {
+                      "byte": 2428,
+                      "column": 24,
+                      "line": 108
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git fetch --prune"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_0c09d75e84d2445b92de",
+          "kind": "command",
+          "name": "git fetch --prune",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2411,
+              "column": 7,
+              "line": 108
+            },
+            "stop": {
+              "byte": 2428,
+              "column": 24,
+              "line": 108
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_11befaa5ec9a6631ee46",
+          "kind": "job",
+          "name": "build_package",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 607,
+              "column": 1,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1269,
+              "column": 18,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_143e8ac73d2248b3b275",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 503,
+              "column": 7,
+              "line": 35
+            },
+            "stop": {
+              "byte": 516,
+              "column": 20,
+              "line": 35
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1a4899cc2105465a4944",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2054,
+              "column": 7,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2100,
+              "column": 53,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 324,
+                      "column": 7,
+                      "line": 21
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 18,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm install"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1a7b894792550b8c6e53",
+          "kind": "command",
+          "name": "npm install",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 324,
+              "column": 7,
+              "line": 21
+            },
+            "stop": {
+              "byte": 335,
+              "column": 18,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1446,
+                      "column": 7,
+                      "line": 73
+                    },
+                    "stop": {
+                      "byte": 1517,
+                      "column": 78,
+                      "line": 73
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "./scripts/ci-git-push-prepare.sh gitlab.rambler.ru \"${SSH_PRIVATE_KEY}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1e0db487a8be6cfc29b4",
+          "kind": "command",
+          "name": "./scripts/ci-git-push-prepare.sh gitlab.rambler.ru \"${SSH_PRIVATE_KEY}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1446,
+              "column": 7,
+              "line": 73
+            },
+            "stop": {
+              "byte": 1517,
+              "column": 78,
+              "line": 73
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 784,
+                      "column": 7,
+                      "line": 53
+                    },
+                    "stop": {
+                      "byte": 792,
+                      "column": 15,
+                      "line": 53
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "cd build"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1ef9a62bb1cd3dcbe38a",
+          "kind": "command",
+          "name": "cd build",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 784,
+              "column": 7,
+              "line": 53
+            },
+            "stop": {
+              "byte": 792,
+              "column": 15,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1fbdb3b2372de648d8a8",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2435,
+              "column": 7,
+              "line": 109
+            },
+            "stop": {
+              "byte": 2628,
+              "column": 200,
+              "line": 109
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_24819753659e043e8c7b",
+          "kind": "job",
+          "name": "build_site",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1271,
+              "column": 1,
+              "line": 60
+            },
+            "stop": {
+              "byte": 1693,
+              "column": 58,
+              "line": 76
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_29a026e560d53f0256a8",
+          "kind": "stage",
+          "name": "setup",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 84,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 121,
+              "column": 11,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1936,
+                      "column": 7,
+                      "line": 91
+                    },
+                    "stop": {
+                      "byte": 1989,
+                      "column": 60,
+                      "line": 91
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --global user.email \"${GITLAB_USER_EMAIL}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2c999e72cf175774942b",
+          "kind": "command",
+          "name": "git config --global user.email \"${GITLAB_USER_EMAIL}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1936,
+              "column": 7,
+              "line": 91
+            },
+            "stop": {
+              "byte": 1989,
+              "column": 60,
+              "line": 91
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "mechanism": {
+              "provenance": [
+                {
+                  "operation": "static gate",
+                  "origin": "manual",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1423,
+                      "column": 9,
+                      "line": 71
+                    },
+                    "stop": {
+                      "byte": 1429,
+                      "column": 15,
+                      "line": 71
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "manual"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_380aedd7579d5efc763f",
+          "kind": "gate",
+          "name": "manual:build_site",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1423,
+              "column": 9,
+              "line": 71
+            },
+            "stop": {
+              "byte": 1429,
+              "column": 15,
+              "line": 71
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3838dfa83df733f0406b",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 764,
+              "column": 7,
+              "line": 52
+            },
+            "stop": {
+              "byte": 777,
+              "column": 20,
+              "line": 52
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2303,
+                      "column": 7,
+                      "line": 106
+                    },
+                    "stop": {
+                      "byte": 2351,
+                      "column": 55,
+                      "line": 106
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --global user.email \"${UI_BOT_EMAIL}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_3b485f97844f33e9ab3f",
+          "kind": "command",
+          "name": "git config --global user.email \"${UI_BOT_EMAIL}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2303,
+              "column": 7,
+              "line": 106
+            },
+            "stop": {
+              "byte": 2351,
+              "column": 55,
+              "line": 106
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2225,
+                      "column": 7,
+                      "line": 105
+                    },
+                    "stop": {
+                      "byte": 2296,
+                      "column": 78,
+                      "line": 105
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "./scripts/ci-git-push-prepare.sh github.com \"${UI_BOT_SSH_PRIVATE_KEY}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_3b9f6d148a218ac0e051",
+          "kind": "command",
+          "name": "./scripts/ci-git-push-prepare.sh github.com \"${UI_BOT_SSH_PRIVATE_KEY}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2225,
+              "column": 7,
+              "line": 105
+            },
+            "stop": {
+              "byte": 2296,
+              "column": 78,
+              "line": 105
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3cbe1f4da9bd7c96db8e",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 484,
+              "column": 7,
+              "line": 34
+            },
+            "stop": {
+              "byte": 496,
+              "column": 19,
+              "line": 34
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_3e56cd41e8fce263cce1",
+          "kind": "resource",
+          "name": "cache:build_site",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1311,
+              "column": 5,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1338,
+              "column": 17,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 897,
+                      "column": 7,
+                      "line": 56
+                    },
+                    "stop": {
+                      "byte": 1026,
+                      "column": 136,
+                      "line": 56
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "curl -u${PROJECT_NPM_USER}:${PROJECT_NPM_AUTH_KEY} 'https://art.rambler.ru/api/npm/rambler-common/auth/rambler-common' > ~/.npmrc"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_47541bdc6e960b8a0835",
+          "kind": "command",
+          "name": "curl -u${PROJECT_NPM_USER}:${PROJECT_NPM_AUTH_KEY} 'https://art.rambler.ru/api/npm/rambler-common/auth/rambler-common' > ~/.npmrc",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 897,
+              "column": 7,
+              "line": 56
+            },
+            "stop": {
+              "byte": 1026,
+              "column": 136,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1033,
+                      "column": 7,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1251,
+                      "column": 225,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "node -e \"var p=require('./package.json'); p.name='@rambler-common/rambler-ui'; p.publishConfig={registry:'https://art.rambler.ru/api/npm/rambler-common/'}; fs.writeFileSync('package.json', JSON.stringify(p, null, 2));\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_48fe7ab22ce840cb9154",
+          "kind": "command",
+          "name": "node -e \"var p=require('./package.json'); p.name='@rambler-common/rambler-ui'; p.publishConfig={registry:'https://art.rambler.ru/api/npm/rambler-common/'}; fs.writeFileSync('package.json', JSON.stringify(p, null, 2));\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1033,
+              "column": 7,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1251,
+              "column": 225,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1642,
+                      "column": 7,
+                      "line": 76
+                    },
+                    "stop": {
+                      "byte": 1693,
+                      "column": 58,
+                      "line": 76
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run pages -- --versions \"${CI_COMMIT_REF_NAME}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_4a04996764b8a17bf5d0",
+          "kind": "command",
+          "name": "npm run pages -- --versions \"${CI_COMMIT_REF_NAME}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1642,
+              "column": 7,
+              "line": 76
+            },
+            "stop": {
+              "byte": 1693,
+              "column": 58,
+              "line": 76
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 484,
+                      "column": 7,
+                      "line": 34
+                    },
+                    "stop": {
+                      "byte": 496,
+                      "column": 19,
+                      "line": 34
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run lint"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_4a21b563d99f1d17e2a5",
+          "kind": "command",
+          "name": "npm run lint",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 484,
+              "column": 7,
+              "line": 34
+            },
+            "stop": {
+              "byte": 496,
+              "column": 19,
+              "line": 34
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5676e1912b52725a3828",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 784,
+              "column": 7,
+              "line": 53
+            },
+            "stop": {
+              "byte": 792,
+              "column": 15,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 879,
+                      "column": 7,
+                      "line": 55
+                    },
+                    "stop": {
+                      "byte": 890,
+                      "column": 18,
+                      "line": 55
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm publish"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_5719119e382524ade3f2",
+          "kind": "command",
+          "name": "npm publish",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 879,
+              "column": 7,
+              "line": 55
+            },
+            "stop": {
+              "byte": 890,
+              "column": 18,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5a17cce22dba32624456",
+          "kind": "step",
+          "name": "script:6",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1033,
+              "column": 7,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1251,
+              "column": 225,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5e7328e787ed6f2917f3",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1446,
+              "column": 7,
+              "line": 73
+            },
+            "stop": {
+              "byte": 1517,
+              "column": 78,
+              "line": 73
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5ee6ac6212c14217f02a",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 523,
+              "column": 7,
+              "line": 36
+            },
+            "stop": {
+              "byte": 536,
+              "column": 20,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2358,
+                      "column": 7,
+                      "line": 107
+                    },
+                    "stop": {
+                      "byte": 2404,
+                      "column": 53,
+                      "line": 107
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --global user.name \"${UI_BOT_NAME}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_5f21a6f8e6899a15b007",
+          "kind": "command",
+          "name": "git config --global user.name \"${UI_BOT_NAME}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2358,
+              "column": 7,
+              "line": 107
+            },
+            "stop": {
+              "byte": 2404,
+              "column": 53,
+              "line": 107
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6248683109d30f7bc65c",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1642,
+              "column": 7,
+              "line": 76
+            },
+            "stop": {
+              "byte": 1693,
+              "column": 58,
+              "line": 76
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_680803a2bc6f1cca46bc",
+          "kind": "resource",
+          "name": "cache:test",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 370,
+              "column": 5,
+              "line": 26
+            },
+            "stop": {
+              "byte": 397,
+              "column": 17,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_68881f2680f269b8363d",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2303,
+              "column": 7,
+              "line": 106
+            },
+            "stop": {
+              "byte": 2351,
+              "column": 55,
+              "line": 106
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1996,
+                      "column": 7,
+                      "line": 92
+                    },
+                    "stop": {
+                      "byte": 2047,
+                      "column": 58,
+                      "line": 92
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --global user.name \"${GITLAB_USER_NAME}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6b005ded0931974ce5e3",
+          "kind": "command",
+          "name": "git config --global user.name \"${GITLAB_USER_NAME}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1996,
+              "column": 7,
+              "line": 92
+            },
+            "stop": {
+              "byte": 2047,
+              "column": 58,
+              "line": 92
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_750aa746d116455fdf2c",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 465,
+              "column": 7,
+              "line": 33
+            },
+            "stop": {
+              "byte": 477,
+              "column": 19,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_79b413999a17265976a5",
+          "kind": "stage",
+          "name": "mirror",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 84,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 121,
+              "column": 11,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8262d751bc6b1a8d7731",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 897,
+              "column": 7,
+              "line": 56
+            },
+            "stop": {
+              "byte": 1026,
+              "column": 136,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_85b7b22c7c88bc8f64e6",
+          "kind": "job",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 337,
+              "column": 1,
+              "line": 23
+            },
+            "stop": {
+              "byte": 605,
+              "column": 50,
+              "line": 38
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_864cd10827c94a8d2838",
+          "kind": "job",
+          "name": "mirror",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2102,
+              "column": 1,
+              "line": 95
+            },
+            "stop": {
+              "byte": 2628,
+              "column": 200,
+              "line": 109
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8a6c3ad51ba8b93db3c7",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 84,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 121,
+              "column": 11,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8d84c036b921b9877fec",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 879,
+              "column": 7,
+              "line": 55
+            },
+            "stop": {
+              "byte": 890,
+              "column": 18,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 465,
+                      "column": 7,
+                      "line": 33
+                    },
+                    "stop": {
+                      "byte": 477,
+                      "column": 19,
+                      "line": 33
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run test"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9060fc9a2c5e70bfc6e3",
+          "kind": "command",
+          "name": "npm run test",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 465,
+              "column": 7,
+              "line": 33
+            },
+            "stop": {
+              "byte": 477,
+              "column": 19,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1258,
+                      "column": 7,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1269,
+                      "column": 18,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm publish"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_933b83c92c4d96fa976e",
+          "kind": "command",
+          "name": "npm publish",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1258,
+              "column": 7,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1269,
+              "column": 18,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_960a6a37ba79fd8f4db2",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1524,
+              "column": 7,
+              "line": 74
+            },
+            "stop": {
+              "byte": 1577,
+              "column": 60,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_96365af9711107ad2cd8",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1936,
+              "column": 7,
+              "line": 91
+            },
+            "stop": {
+              "byte": 1989,
+              "column": 60,
+              "line": 91
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_992de7739704beac00cb",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1584,
+              "column": 7,
+              "line": 75
+            },
+            "stop": {
+              "byte": 1635,
+              "column": 58,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_996de14ac7115d66f646",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1996,
+              "column": 7,
+              "line": 92
+            },
+            "stop": {
+              "byte": 2047,
+              "column": 58,
+              "line": 92
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 503,
+                      "column": 7,
+                      "line": 35
+                    },
+                    "stop": {
+                      "byte": 516,
+                      "column": 20,
+                      "line": 35
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run types"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9dad39a6f22e790e55a8",
+          "kind": "command",
+          "name": "npm run types",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 503,
+              "column": 7,
+              "line": 35
+            },
+            "stop": {
+              "byte": 516,
+              "column": 20,
+              "line": 35
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "UI_BOT_NPM_AUTH_TOKEN",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 839,
+                      "column": 47,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 860,
+                      "column": 68,
+                      "line": 54
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 799,
+                      "column": 7,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 872,
+                      "column": 80,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "UI_BOT_NPM_AUTH_TOKEN",
+                  "echo \"//registry.npmjs.org/:_authToken=$UI_BOT_NPM_AUTH_TOKEN\" > ~/.npmrc"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a0ca28b821c5f6e56d11",
+          "kind": "command",
+          "name": "echo \"//registry.npmjs.org/:_authToken=$UI_BOT_NPM_AUTH_TOKEN\" > ~/.npmrc",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 799,
+              "column": 7,
+              "line": 54
+            },
+            "stop": {
+              "byte": 872,
+              "column": 80,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2054,
+                      "column": 7,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 2100,
+                      "column": 53,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run pages -- --versions \"${CI_COMMIT_TAG}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a1e5c9ef6704b74d42eb",
+          "kind": "command",
+          "name": "npm run pages -- --versions \"${CI_COMMIT_TAG}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2054,
+              "column": 7,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2100,
+              "column": 53,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1524,
+                      "column": 7,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 1577,
+                      "column": 60,
+                      "line": 74
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --global user.email \"${GITLAB_USER_EMAIL}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a6db2ec9b4c7983c01c1",
+          "kind": "command",
+          "name": "git config --global user.email \"${GITLAB_USER_EMAIL}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1524,
+              "column": 7,
+              "line": 74
+            },
+            "stop": {
+              "byte": 1577,
+              "column": 60,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_aea73b7be9ce7e1959bf",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 2890,
+              "column": 17,
+              "line": 123
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b5169fcc5457a7bb1d18",
+          "kind": "step",
+          "name": "script:7",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1258,
+              "column": 7,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1269,
+              "column": 18,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b6d180d64a47fc2924f9",
+          "kind": "job",
+          "name": "build_version_site",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1695,
+              "column": 1,
+              "line": 78
+            },
+            "stop": {
+              "byte": 2100,
+              "column": 53,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 543,
+                      "column": 7,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 555,
+                      "column": 19,
+                      "line": 37
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run size"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b9cefbb3e0c86809ad00",
+          "kind": "command",
+          "name": "npm run size",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 543,
+              "column": 7,
+              "line": 37
+            },
+            "stop": {
+              "byte": 555,
+              "column": 19,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bb9775773d540a420d4d",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2411,
+              "column": 7,
+              "line": 108
+            },
+            "stop": {
+              "byte": 2428,
+              "column": 24,
+              "line": 108
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_c3858c8bd5cdb5331ea0",
+          "kind": "resource",
+          "name": "cache:build_package",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 650,
+              "column": 5,
+              "line": 43
+            },
+            "stop": {
+              "byte": 677,
+              "column": 17,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 764,
+                      "column": 7,
+                      "line": 52
+                    },
+                    "stop": {
+                      "byte": 777,
+                      "column": 20,
+                      "line": 52
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run build"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c65a00235ef0f834ca77",
+          "kind": "command",
+          "name": "npm run build",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 764,
+              "column": 7,
+              "line": 52
+            },
+            "stop": {
+              "byte": 777,
+              "column": 20,
+              "line": 52
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1584,
+                      "column": 7,
+                      "line": 75
+                    },
+                    "stop": {
+                      "byte": 1635,
+                      "column": 58,
+                      "line": 75
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --global user.name \"${GITLAB_USER_NAME}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c79fea65b613c1df1902",
+          "kind": "command",
+          "name": "git config --global user.name \"${GITLAB_USER_NAME}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1584,
+              "column": 7,
+              "line": 75
+            },
+            "stop": {
+              "byte": 1635,
+              "column": 58,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d832f595c8d1ea680f34",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1858,
+              "column": 7,
+              "line": 90
+            },
+            "stop": {
+              "byte": 1929,
+              "column": 78,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2435,
+                      "column": 7,
+                      "line": 109
+                    },
+                    "stop": {
+                      "byte": 2628,
+                      "column": 200,
+                      "line": 109
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git push --prune git@github.com:rambler-digital-solutions/rambler-ui.git +refs/remotes/origin/master:refs/heads/master +refs/remotes/origin/gh-pages:refs/heads/gh-pages +refs/tags/*:refs/tags/*"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_d87fb061b6c61c828014",
+          "kind": "command",
+          "name": "git push --prune git@github.com:rambler-digital-solutions/rambler-ui.git +refs/remotes/origin/master:refs/heads/master +refs/remotes/origin/gh-pages:refs/heads/gh-pages +refs/tags/*:refs/tags/*",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2435,
+              "column": 7,
+              "line": 109
+            },
+            "stop": {
+              "byte": 2628,
+              "column": 200,
+              "line": 109
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 523,
+                      "column": 7,
+                      "line": 36
+                    },
+                    "stop": {
+                      "byte": 536,
+                      "column": 20,
+                      "line": 36
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run build"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_dceaa9e0e68d648aaa92",
+          "kind": "command",
+          "name": "npm run build",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 523,
+              "column": 7,
+              "line": 36
+            },
+            "stop": {
+              "byte": 536,
+              "column": 20,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e19734c9767a58ed701a",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2358,
+              "column": 7,
+              "line": 107
+            },
+            "stop": {
+              "byte": 2404,
+              "column": 53,
+              "line": 107
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e2d105d11ca742e04097",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 84,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 121,
+              "column": 11,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1858,
+                      "column": 7,
+                      "line": 90
+                    },
+                    "stop": {
+                      "byte": 1929,
+                      "column": 78,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "./scripts/ci-git-push-prepare.sh gitlab.rambler.ru \"${SSH_PRIVATE_KEY}\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e6a633feae2fd7856001",
+          "kind": "command",
+          "name": "./scripts/ci-git-push-prepare.sh gitlab.rambler.ru \"${SSH_PRIVATE_KEY}\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1858,
+              "column": 7,
+              "line": 90
+            },
+            "stop": {
+              "byte": 1929,
+              "column": 78,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_ee72fb58f359a40c0cda",
+          "kind": "resource",
+          "name": "cache:build_version_site",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 1743,
+              "column": 5,
+              "line": 81
+            },
+            "stop": {
+              "byte": 1770,
+              "column": 17,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "UI_BOT_NPM_AUTH_TOKEN",
+                  "span": {
+                    "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 839,
+                      "column": 47,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 860,
+                      "column": 68,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "UI_BOT_NPM_AUTH_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ef91d9c67e878c305137",
+          "kind": "resource",
+          "name": "UI_BOT_NPM_AUTH_TOKEN",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 839,
+              "column": 47,
+              "line": 54
+            },
+            "stop": {
+              "byte": 860,
+              "column": 68,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f210f6cf6902eacf3690",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 2225,
+              "column": 7,
+              "line": 105
+            },
+            "stop": {
+              "byte": 2296,
+              "column": 78,
+              "line": 105
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_f2f5831d9a5be7576f70",
+          "kind": "resource",
+          "name": "cache:install",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 156,
+              "column": 10,
+              "line": 11
+            },
+            "stop": {
+              "byte": 256,
+              "column": 17,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f908258c2a3c6876ded2",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 543,
+              "column": 7,
+              "line": 37
+            },
+            "stop": {
+              "byte": 555,
+              "column": 19,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f96c30edb4eda17efc16",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml",
+            "start": {
+              "byte": 324,
+              "column": 7,
+              "line": 21
+            },
+            "stop": {
+              "byte": 335,
+              "column": 18,
+              "line": 21
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:48b15cad6a0253d95eefc7ed438df6dc1beae5516fdc11b3da9e4d36ade4b351",
+      "path": "gitlab/rambler-digital-solutions/rambler-ui/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "dockerhub.art.rambler.ru/andrepolischuk/node-chrome-firefox:0.7.1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

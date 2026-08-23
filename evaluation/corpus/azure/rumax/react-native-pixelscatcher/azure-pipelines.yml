@@ -1,0 +1,98 @@
+variables:
+  MAC_RUNNER_IMAGE: 'macos-12'
+  NODE_VERSION: '19.x'
+  XCODE_VERSION: '14.2'
+
+trigger:
+  branches:
+    include:
+      - master
+
+stages:
+  - stage: Tests
+    jobs:
+      - job: UiTestsIOS
+        pool:
+          vmImage: '$(MAC_RUNNER_IMAGE)'
+        steps:
+          - task: NodeTool@0
+            displayName: 'Set Node version $(NODE_VERSION)'
+            inputs:
+              versionSpec: $(NODE_VERSION)
+          - script: npm run preinstall
+            displayName: 'NPM PreInstall'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - script: npm install
+            displayName: 'NPM Install'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - script: sudo xcode-select --switch /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer
+            displayName: 'Select xcode $(XCODE_VERSION)'
+          - script: ./run_ios_debug.sh
+            displayName: 'Run tests'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - publish: $(Build.SourcesDirectory)/demo/snapshots/ios
+            condition: failed()
+            artifact: screenshots_ios
+            displayName: 'Publish test results'
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            displayName: 'Publish test report'
+            inputs:
+              testRunner: JUnit
+              testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
+          - script: ./node_modules/.bin/pixels-catcher ios debug azureAttachments
+            condition: failed()
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+            displayName: 'Upload screenshots'
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Device Log Artifacts
+            inputs:
+              pathtoPublish: $(System.DefaultWorkingDirectory)/demo/ios_logs.log
+              artifactName: ios_logs
+      - job: UiTestsAndroid
+        pool:
+          vmImage: '$(MAC_RUNNER_IMAGE)'
+        steps:
+          - task: NodeTool@0
+            displayName: 'Set Node version $(NODE_VERSION)'
+            inputs:
+              versionSpec: $(NODE_VERSION)
+          - script: ./scripts/create_android_emulator.sh
+            displayName: 'Create and start Android Emulator'
+          - script: npm run preinstall
+            displayName: 'NPM PreInstall'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - script: npm install
+            displayName: 'NPM Install'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '11'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
+          - script: ./run_android_debug.sh
+            displayName: 'Run tests'
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+          - publish: $(Build.SourcesDirectory)/demo/snapshots/android
+            condition: failed()
+            artifact: screenshots_android
+            displayName: 'Publish test results'
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            displayName: 'Publish test report'
+            inputs:
+              testRunner: JUnit
+              testResultsFiles: '$(Build.SourcesDirectory)/demo/junit.xml'
+          - script: ./node_modules/.bin/pixels-catcher android debug azureAttachments
+            condition: failed()
+            env:
+              SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            workingDirectory: '$(Build.SourcesDirectory)/demo'
+            displayName: 'Upload screenshots'
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Device Log Artifacts
+            inputs:
+              pathtoPublish: $(System.DefaultWorkingDirectory)/demo/android_logs.log
+              artifactName: android_logs

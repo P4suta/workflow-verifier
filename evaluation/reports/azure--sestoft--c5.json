@@ -1,0 +1,292 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:a9a670448137033667b02dba6b9626e272f52f4842bd0d0593464334891471ad",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_2f6e79cd19e5460152f7",
+          "id": "wv_25c3e44a4873358e5dd8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4be401391f8334ac5d9d"
+        },
+        {
+          "condition": true,
+          "from": "wv_4be401391f8334ac5d9d",
+          "id": "wv_83482e7e26da80cbb282",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e6f23c726122acdbe643"
+        },
+        {
+          "condition": true,
+          "from": "wv_4c80d0682a25bfd3d04d",
+          "id": "wv_f92e191b1d014cc52467",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2f6e79cd19e5460152f7"
+        }
+      ],
+      "entrypoints": [
+        "wv_4c80d0682a25bfd3d04d"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2f6e79cd19e5460152f7",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sestoft/c5/azure-pipelines.yml",
+            "start": {
+              "byte": 4,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 88,
+              "column": 46,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4be401391f8334ac5d9d",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sestoft/c5/azure-pipelines.yml",
+            "start": {
+              "byte": 47,
+              "column": 5,
+              "line": 6
+            },
+            "stop": {
+              "byte": 88,
+              "column": 46,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4c80d0682a25bfd3d04d",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sestoft/c5/azure-pipelines.yml",
+            "start": {
+              "byte": 4,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 88,
+              "column": 46,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/sestoft/c5/azure-pipelines.yml",
+                    "start": {
+                      "byte": 55,
+                      "column": 13,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 88,
+                      "column": 46,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"Migrated to GitHub Actions\""
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e6f23c726122acdbe643",
+          "kind": "command",
+          "name": "echo \"Migrated to GitHub Actions\"",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sestoft/c5/azure-pipelines.yml",
+            "start": {
+              "byte": 55,
+              "column": 13,
+              "line": 6
+            },
+            "stop": {
+              "byte": 88,
+              "column": 46,
+              "line": 6
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/sestoft/c5/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:6a4da4133b1f48d3c855a5167419d9f57480db37659b8d6dba2f2c8db2e0442a",
+      "path": "azure/sestoft/c5/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

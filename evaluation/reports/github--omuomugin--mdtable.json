@@ -1,0 +1,631 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+          "start": {
+            "byte": 223,
+            "column": 13,
+            "line": 15
+          },
+          "stop": {
+            "byte": 242,
+            "column": 32,
+            "line": 15
+          }
+        }
+      },
+      "id": "diag_3e545b00bac9957ca176",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+        "start": {
+          "byte": 223,
+          "column": 13,
+          "line": 15
+        },
+        "stop": {
+          "byte": 242,
+          "column": 32,
+          "line": 15
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_3122412e4f9d545ab8a3",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 223,
+              "column": 13,
+              "line": 15
+            },
+            "stop": {
+              "byte": 242,
+              "column": 32,
+              "line": 15
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:375206cee7bc1f68b034624e7a45b19d91995bd44ec83c2373ab3069e87a30e9",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_b708386fef573f12e856",
+          "id": "wv_04a3264d24335d25e864",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6b6032a88a5868774c93"
+        },
+        {
+          "condition": true,
+          "from": "wv_b708386fef573f12e856",
+          "id": "wv_10c14b30d35048ec092e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6bce3e57ad8d7728a431"
+        },
+        {
+          "condition": true,
+          "from": "wv_6b6032a88a5868774c93",
+          "id": "wv_1ac0b3ae4e0f78d8bf4a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_594dbb948c7e92ccbb2e"
+        },
+        {
+          "condition": true,
+          "from": "wv_6bce3e57ad8d7728a431",
+          "id": "wv_4d1f6a4b72b12339a0e4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_36758c4e4090b3ffb225"
+        },
+        {
+          "condition": true,
+          "from": "wv_b708386fef573f12e856",
+          "id": "wv_50d8574cac891ff8619e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_610c03a1d5f088e5f9ac"
+        },
+        {
+          "condition": true,
+          "from": "wv_bebc265bd6c8426e4245",
+          "id": "wv_55d74d0bc92de5d3793c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b708386fef573f12e856"
+        },
+        {
+          "condition": true,
+          "from": "wv_610c03a1d5f088e5f9ac",
+          "id": "wv_59cdffe74367d8e53691",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3122412e4f9d545ab8a3"
+        },
+        {
+          "condition": true,
+          "from": "wv_610c03a1d5f088e5f9ac",
+          "id": "wv_9bb2e2c1516f85cca081",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6b6032a88a5868774c93"
+        },
+        {
+          "condition": true,
+          "from": "wv_6b6032a88a5868774c93",
+          "id": "wv_9c3d68c9ec68e478215e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6bce3e57ad8d7728a431"
+        },
+        {
+          "condition": true,
+          "from": "wv_ca4c915dbb22fcc83e58",
+          "id": "wv_a0bbff6c18f4f6c55741",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bebc265bd6c8426e4245"
+        },
+        {
+          "condition": true,
+          "from": "wv_610c03a1d5f088e5f9ac",
+          "id": "wv_b71246768cbbb5573f6f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3122412e4f9d545ab8a3"
+        },
+        {
+          "condition": true,
+          "from": "wv_2fa0fab25d24aa50ec3d",
+          "id": "wv_f2b23d2eb583da93c0e7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bebc265bd6c8426e4245"
+        }
+      ],
+      "entrypoints": [
+        "wv_bebc265bd6c8426e4245"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2fa0fab25d24aa50ec3d",
+          "kind": "trigger",
+          "name": "pull_request",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 57,
+              "column": 3,
+              "line": 6
+            },
+            "stop": {
+              "byte": 95,
+              "column": 25,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_3122412e4f9d545ab8a3",
+          "kind": "call",
+          "name": "actions/checkout@v2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 223,
+              "column": 13,
+              "line": 15
+            },
+            "stop": {
+              "byte": 242,
+              "column": 32,
+              "line": 15
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+                    "start": {
+                      "byte": 335,
+                      "column": 12,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 347,
+                      "column": 24,
+                      "line": 19
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "crystal spec"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_36758c4e4090b3ffb225",
+          "kind": "command",
+          "name": "crystal spec",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 335,
+              "column": 12,
+              "line": 19
+            },
+            "stop": {
+              "byte": 347,
+              "column": 24,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+                    "start": {
+                      "byte": 287,
+                      "column": 12,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 301,
+                      "column": 26,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "shards install"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_594dbb948c7e92ccbb2e",
+          "kind": "command",
+          "name": "shards install",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 287,
+              "column": 12,
+              "line": 17
+            },
+            "stop": {
+              "byte": 301,
+              "column": 26,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_610c03a1d5f088e5f9ac",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 217,
+              "column": 7,
+              "line": 15
+            },
+            "stop": {
+              "byte": 242,
+              "column": 32,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6b6032a88a5868774c93",
+          "kind": "step",
+          "name": "Install dependencies",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 249,
+              "column": 7,
+              "line": 16
+            },
+            "stop": {
+              "byte": 301,
+              "column": 26,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6bce3e57ad8d7728a431",
+          "kind": "step",
+          "name": "Run tests",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 308,
+              "column": 7,
+              "line": 18
+            },
+            "stop": {
+              "byte": 347,
+              "column": 24,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b708386fef573f12e856",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 105,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 347,
+              "column": 24,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bebc265bd6c8426e4245",
+          "kind": "workflow",
+          "name": "Crystal CI",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 347,
+              "column": 24,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ca4c915dbb22fcc83e58",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/omuomugin/mdtable/.github/workflows/crystal.yml",
+            "start": {
+              "byte": 24,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 54,
+              "column": 25,
+              "line": 5
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/omuomugin/mdtable/.github/workflows/crystal.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:fb6d8c6b4928b19136f36e01363d33d60305d4ce8258c8d7da20bf801139ed92",
+      "path": "github/omuomugin/mdtable/.github/workflows/crystal.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

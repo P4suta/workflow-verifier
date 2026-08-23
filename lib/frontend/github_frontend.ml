@@ -27,8 +27,10 @@ let entrypoint ~path ~source =
         (String.length path - String.length prefix)
     in
     detect ~path ~source
-    && not (String.contains name '/')
-    && List.exists (fun suffix -> Util.ends_with ~suffix name) [ ".yml"; ".yaml" ]
+    && (not (String.contains name '/'))
+    && List.exists
+         (fun suffix -> Util.ends_with ~suffix name)
+         [ ".yml"; ".yaml" ]
 
 let parse = Frontend_common.parse
 let expand = Frontend_common.expand
@@ -262,6 +264,32 @@ let add_embedded_references target container graph =
              Frontend_common.add_references provider target references graph)
        graph
 
+let add_environment_bindings (target : Ir.node) environment graph =
+  Frontend_common.mapping environment
+  |> List.fold_left
+       (fun graph (entry : Yaml_cst.mapping_entry) ->
+         let binding =
+           Ir.make_node ~provider ~kind:Ir.Resource
+             ~name:("env:" ^ entry.key.value) ~phase:target.phase
+             ~span:entry.span
+             ~attributes:
+               [
+                 ( "environment.name",
+                   Abstract_value.string_constant entry.key.value
+                     ~trust:Abstract_value.Trusted
+                     ~secrecy:Abstract_value.Public ~provenance:[] );
+               ]
+             ()
+         in
+         let graph =
+           graph |> Ir.add_node binding
+           |> Ir.add_edge
+                (Ir.make_edge ~kind:Ir.Data ~from_:binding.id ~to_:target.id
+                   ~label:entry.key.value ())
+         in
+         add_embedded_references binding entry.value graph)
+       graph
+
 let environment_name body =
   match Frontend_common.field "environment" body with
   | None -> None
@@ -280,8 +308,8 @@ let add_job_resources graph (job : Ir.node) body =
     | Some (name, span) ->
         Frontend_support.add_resource ~provider ~owner:job
           ~name:("environment:" ^ name) ~phase:Ir.Run ~span
-          ~capabilities:[ Ir.Deployment ]
-          ~edge_kind:Ir.Grant ~resource_to_owner:true graph
+          ~capabilities:[ Ir.Deployment ] ~edge_kind:Ir.Grant
+          ~resource_to_owner:true graph
         |> fst
   in
   match Frontend_common.field "outputs" body with
@@ -412,7 +440,7 @@ let add_steps resolved graph (job : Ir.node) body =
                   in
                   match Frontend_common.field "env" record.body with
                   | None -> graph
-                  | Some env -> add_embedded_references command env graph)))
+                  | Some env -> add_environment_bindings command env graph)))
         graph records
 
 let lower_action resolved root (workflow : Ir.node) =

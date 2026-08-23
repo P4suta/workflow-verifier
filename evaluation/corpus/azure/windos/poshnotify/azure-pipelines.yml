@@ -1,0 +1,70 @@
+# Thanks to Stefan Stranger
+# https://stefanstranger.github.io/2018/12/30/UseAzurePipelinesToPublishPowerShellModule/
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - /src/PoshNotify.psd1
+
+jobs:
+- job: macOS
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+  - template: azure-template.yml # Template reference
+
+- job: Windows
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - template: azure-template.yml # Template reference
+
+- job: Linux
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - template: azure-template.yml # Template reference
+
+- job: Linux_Coverage
+  displayName: 'Linux (/w Coverage)'
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: PowerShell@2
+    displayName: 'Run tests & coverage'
+    inputs:
+      targetType: Inline
+      script: ./build.ps1 -Bootstrap -Test -Coverage
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: NUnit
+      testResultsFiles: '**/TestResults.xml'
+      condition: succeededOrFailed()
+
+  - task: Bash@3
+    inputs:
+      targetType: 'filePath' # Optional. Options: filePath, inline
+      filePath: ./codecov.sh
+      arguments: -f coverage.json -t $(CODECOV_TOKEN)
+      #script: '# Write your commands here# Use the environment variables input below to pass secret variables to this script' # Required when targetType == Inline
+      #workingDirectory: # Optional
+      #failOnStderr: false # Optional
+
+- job: Publish
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - task: PowerShell@2
+    displayName: 'Run publish task'
+    env:
+      psgallery: $(NugetAPIKey)
+    inputs:
+      targetType: Inline
+      script: ./build.ps1 -Publish

@@ -42,7 +42,8 @@ let unsigned_json schema entries =
 
 let assemble schema entries =
   let integrity =
-    "sha256:" ^ Sha256.digest_string (Json.to_string (unsigned_json schema entries))
+    "sha256:"
+    ^ Sha256.digest_string (Json.to_string (unsigned_json schema entries))
   in
   { schema; entries; integrity }
 

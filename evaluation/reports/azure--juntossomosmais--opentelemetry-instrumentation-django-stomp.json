@@ -1,0 +1,394 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = juntossomosmais/azure-pipelines-templates@main"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+          "start": {
+            "byte": 309,
+            "column": 7,
+            "line": 20
+          },
+          "stop": {
+            "byte": 446,
+            "column": 16,
+            "line": 24
+          }
+        }
+      },
+      "id": "diag_4c0e8495fd954848bb07",
+      "message": "dependency is not pinned to immutable content: juntossomosmais/azure-pipelines-templates@main",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+        "start": {
+          "byte": 309,
+          "column": 7,
+          "line": 20
+        },
+        "stop": {
+          "byte": 446,
+          "column": 16,
+          "line": 24
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_6f0320253eccce60ac74",
+          "span": {
+            "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+            "start": {
+              "byte": 309,
+              "column": 7,
+              "line": 20
+            },
+            "stop": {
+              "byte": 446,
+              "column": 16,
+              "line": 24
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:ea42763f8a872aacf2d3e2c4e8c03186949c6376f8522264a378654606875de1",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_3affd93399b5e60ddd48",
+          "id": "wv_4ed62081b6c0d5e337b9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_37e362ee5a2cc6c65f12"
+        },
+        {
+          "condition": true,
+          "from": "wv_983e584ad11a18b56d27",
+          "id": "wv_52d08214c4ec4997f42b",
+          "kind": "read",
+          "label": null,
+          "to": "wv_3affd93399b5e60ddd48"
+        },
+        {
+          "condition": true,
+          "from": "wv_5f929687405927da8c63",
+          "id": "wv_69ac20c6689ded0c6e00",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3affd93399b5e60ddd48"
+        },
+        {
+          "condition": true,
+          "from": "wv_983e584ad11a18b56d27",
+          "id": "wv_d212257b21e8a8b9192e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6f0320253eccce60ac74"
+        },
+        {
+          "condition": true,
+          "from": "wv_983e584ad11a18b56d27",
+          "id": "wv_f01978825b66148f39c1",
+          "kind": "call",
+          "label": null,
+          "to": "wv_6f0320253eccce60ac74"
+        },
+        {
+          "condition": true,
+          "from": "wv_45430c75813d1a7a735c",
+          "id": "wv_f2c958af87f2ffaeb1fe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3affd93399b5e60ddd48"
+        }
+      ],
+      "entrypoints": [
+        "wv_3affd93399b5e60ddd48"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_37e362ee5a2cc6c65f12",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 539,
+              "column": 27,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3affd93399b5e60ddd48",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 539,
+              "column": 27,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_45430c75813d1a7a735c",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+            "start": {
+              "byte": 11,
+              "column": 3,
+              "line": 2
+            },
+            "stop": {
+              "byte": 139,
+              "column": 20,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5f929687405927da8c63",
+          "kind": "trigger",
+          "name": "pr",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+            "start": {
+              "byte": 146,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 274,
+              "column": 20,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6f0320253eccce60ac74",
+          "kind": "call",
+          "name": "juntossomosmais/azure-pipelines-templates@main",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+            "start": {
+              "byte": 309,
+              "column": 7,
+              "line": 20
+            },
+            "stop": {
+              "byte": 446,
+              "column": 16,
+              "line": 24
+            }
+          },
+          "unknown": {
+            "detail": "juntossomosmais/azure-pipelines-templates@main",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_983e584ad11a18b56d27",
+          "kind": "resource",
+          "name": "repository:templates",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml",
+            "start": {
+              "byte": 309,
+              "column": 7,
+              "line": 20
+            },
+            "stop": {
+              "byte": 446,
+              "column": 16,
+              "line": 24
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:eef31bf2e0129ed48706fb49c63ca0804274ce01a48262a6525764a48384896d",
+      "path": "azure/juntossomosmais/opentelemetry-instrumentation-django-stomp/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "juntossomosmais/azure-pipelines-templates@main",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

@@ -1,0 +1,36 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published] # triggers when you publish a GitHub Release
+
+jobs:
+  publish:
+    name: Build & publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (with npm registry auth)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: clearvue/package-lock.json
+
+      - name: Install dependencies
+        working-directory: clearvue
+        run: npm ci
+
+      - name: Build library
+        working-directory: clearvue
+        run: npm run build
+
+      - name: Publish to npm
+        working-directory: clearvue
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

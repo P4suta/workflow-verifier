@@ -1,0 +1,671 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:8f006c2299d8f8d71e54e9aab83fca1fe7efb0a090b18fcebbd6fccf7192f935",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_fa0bda6f53b4af12d098",
+          "id": "wv_1b763915ceafb41b5d7e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7e8e0047cced7c39305d"
+        },
+        {
+          "condition": true,
+          "from": "wv_83e3e6552e2a5d66102e",
+          "id": "wv_1de44ef440c901922a3f",
+          "kind": "data",
+          "label": "ALLOWED_HOSTS",
+          "to": "wv_7e8e0047cced7c39305d"
+        },
+        {
+          "condition": true,
+          "from": "wv_e86616657d560df11194",
+          "id": "wv_1e3d9bd7c2a4609931b6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a1739f78ca7d7dc2fce4"
+        },
+        {
+          "condition": true,
+          "from": "wv_f609b54e9169bb2b4612",
+          "id": "wv_25db2b4263258296b923",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_d53389142a3c48160594"
+        },
+        {
+          "condition": true,
+          "from": "wv_3a427be9dcee0e8ea61f",
+          "id": "wv_32e47a984254c5889a01",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f609b54e9169bb2b4612"
+        },
+        {
+          "condition": true,
+          "from": "wv_e94e9df48620967d4b34",
+          "id": "wv_554bc899ac230634cc34",
+          "kind": "data",
+          "label": "EMAIL_HOST",
+          "to": "wv_7e8e0047cced7c39305d"
+        },
+        {
+          "condition": true,
+          "from": "wv_608a56b2c972c5feb499",
+          "id": "wv_5f596572707696a7e754",
+          "kind": "data",
+          "label": "CACHE_URL",
+          "to": "wv_7e8e0047cced7c39305d"
+        },
+        {
+          "condition": true,
+          "from": "wv_f0f94f19c89391fc4138",
+          "id": "wv_9d1dcd25ff46fccde207",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3a427be9dcee0e8ea61f"
+        },
+        {
+          "condition": true,
+          "from": "wv_7e8e0047cced7c39305d",
+          "id": "wv_af492a69ae3702015a93",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e86616657d560df11194"
+        },
+        {
+          "condition": true,
+          "from": "wv_31bfbf1c9d18acffd829",
+          "id": "wv_bfc099b36d95f432e892",
+          "kind": "data",
+          "label": "SECRET_KEY",
+          "to": "wv_7e8e0047cced7c39305d"
+        },
+        {
+          "condition": true,
+          "from": "wv_d53389142a3c48160594",
+          "id": "wv_dbca46febd06302fb7a7",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_35f46b6323de46ef1b89"
+        },
+        {
+          "condition": true,
+          "from": "wv_e2bc12b040c4d72aafa2",
+          "id": "wv_f29a4c1b2e1d3deff31d",
+          "kind": "data",
+          "label": "DATABASE_URL",
+          "to": "wv_7e8e0047cced7c39305d"
+        },
+        {
+          "condition": true,
+          "from": "wv_35f46b6323de46ef1b89",
+          "id": "wv_f9b8318b2cd4ec0876eb",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_fa0bda6f53b4af12d098"
+        }
+      ],
+      "entrypoints": [
+        "wv_f0f94f19c89391fc4138"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_31bfbf1c9d18acffd829",
+          "kind": "resource",
+          "name": "variable:SECRET_KEY",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 245,
+              "column": 5,
+              "line": 11
+            },
+            "stop": {
+              "byte": 263,
+              "column": 23,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_35f46b6323de46ef1b89",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 38,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3a427be9dcee0e8ea61f",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 38,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_608a56b2c972c5feb499",
+          "kind": "resource",
+          "name": "variable:CACHE_URL",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 295,
+              "column": 5,
+              "line": 13
+            },
+            "stop": {
+              "byte": 321,
+              "column": 31,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7e8e0047cced7c39305d",
+          "kind": "job",
+          "name": "ci",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 191,
+              "column": 1,
+              "line": 7
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_83e3e6552e2a5d66102e",
+          "kind": "resource",
+          "name": "variable:ALLOWED_HOSTS",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 268,
+              "column": 5,
+              "line": 12
+            },
+            "stop": {
+              "byte": 290,
+              "column": 27,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 211,
+                      "column": 7,
+                      "line": 9
+                    },
+                    "stop": {
+                      "byte": 227,
+                      "column": 23,
+                      "line": 9
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bash runtests.sh"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a1739f78ca7d7dc2fce4",
+          "kind": "command",
+          "name": "bash runtests.sh",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 211,
+              "column": 7,
+              "line": 9
+            },
+            "stop": {
+              "byte": 227,
+              "column": 23,
+              "line": 9
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d53389142a3c48160594",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 38,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e2bc12b040c4d72aafa2",
+          "kind": "resource",
+          "name": "variable:DATABASE_URL",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 326,
+              "column": 5,
+              "line": 14
+            },
+            "stop": {
+              "byte": 367,
+              "column": 46,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e86616657d560df11194",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 211,
+              "column": 7,
+              "line": 9
+            },
+            "stop": {
+              "byte": 227,
+              "column": 23,
+              "line": 9
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e94e9df48620967d4b34",
+          "kind": "resource",
+          "name": "variable:EMAIL_HOST",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 372,
+              "column": 5,
+              "line": 15
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f0f94f19c89391fc4138",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 38,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f609b54e9169bb2b4612",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 38,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fa0bda6f53b4af12d098",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml",
+            "start": {
+              "byte": 38,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 395,
+              "column": 28,
+              "line": 15
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:86fc3b8369e74200124f6a7acb5f1791050c2b60911610a0c0408317ebf1fea2",
+      "path": "gitlab/djangocon/2017.djangocon.eu/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

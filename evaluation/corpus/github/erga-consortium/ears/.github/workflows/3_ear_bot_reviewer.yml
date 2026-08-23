@@ -1,0 +1,49 @@
+name: The EARs Reviewing bot for assigning reviewer after supervisor approval
+
+on:
+  schedule:
+    - cron: "0 9,21 * * *"
+
+  workflow_dispatch:
+
+concurrency:
+  group: ear-bot-scheduled
+  cancel-in-progress: false
+
+jobs:
+  find-reviewer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: 917566
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: "ERGA-consortium"
+          repositories: "EARs"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: "main"
+          token: ${{ steps.generate-token.outputs.token }}
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install dependencies
+        run: |
+          uv pip install --system -r ear_bot/requirements.txt
+
+      - name: Run python script to find a reviewer
+        env:
+          GITHUB_APP_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python -u ear_bot/ear_bot_reviewer.py --search

@@ -1,0 +1,51 @@
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+name: Nuget publish
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  deployNuget: '0'
+
+steps:
+- task: NuGetToolInstaller@1
+
+
+- script: |
+    cd src
+    cd NetCore2Blockly
+    dotnet tool restore --add-source https://myget.org/F/natemcmaster/api/v3/index.json 
+    pwsh ./setVersion.ps1 
+    pwsh ./createHTML.ps1
+    copy TestBlocklyHtml\wwwroot\blocklyNetCore.zip $(Build.ArtifactStagingDirectory)\blockly.zip
+    dotnet build --configuration $(buildConfiguration) NetCore2Blockly.sln /m:1    
+  displayName: build sln
+
+- script: |
+    echo "pack "
+    dotnet pack src/NetCore2Blockly/NetCore2Blockly/NetCore2Blockly.csproj --include-source  --no-build -o $(Build.ArtifactStagingDirectory) /p:Configuration=$(buildConfiguration) 
+    dotnet pack src/NetCore2Blockly/NetCore2BlocklyStorage.Sqlite/NetCore2BlocklyStorage.Sqlite.csproj --include-source  --no-build -o $(Build.ArtifactStagingDirectory) /p:Configuration=$(buildConfiguration) 
+  displayName: 'dotnet pack '
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: drop1
+
+
+- task: NuGetCommand@2
+  condition: and(succeeded(), eq(variables['deployNuget'], '1'))
+  inputs:
+    command: push
+    nuGetFeedType: external
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    publishFeedCredentials: 'nugetService'
+  displayName: 'dotnet nuget push'
+
+ 

@@ -1,0 +1,448 @@
+# Use a predefined Docker image to build and test the project.
+image: $SKA_K8S_TOOLS_DOCKER_BUILDER_IMAGE
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive # Ensures that git submodules are recursively checked out if any.
+
+# Cache configuration to store build files between jobs to speed up consecutive pipelines.
+cache:
+  paths:
+    - build
+
+stages:
+  - lint
+  - build
+  - test
+  - integration
+  - publish
+  - pages
+  - scan
+  - lifecycle
+
+include:
+# Python packages build,lint, test and publish
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/python-lint.gitlab-ci.yml'
+
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/release.gitlab-ci.yml'
+
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/helm-chart.gitlab-ci.yml'
+
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/docs-pages.gitlab-ci.yml'
+
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/docs.gitlab-ci.yml'
+
+  - project: 'ska-telescope/templates-repository'
+    file: 'gitlab-ci/includes/finaliser.gitlab-ci.yml'
+
+python-lint:
+  variables:
+    TELESCOPE: 'SKA-mid'
+
+python-lint-low:
+  extends: python-lint
+  variables:
+    TELESCOPE: 'SKA-low'
+
+k8s-test-low:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    KUBE_NAMESPACE: 'integration-ska-low' #'ci-dev-ska-low-integration'
+    MARK: 'system_level_tests'
+    CSP_SIMULATION_ENABLED: 'false'
+    SDP_SIMULATION_ENABLED: 'false'
+    MCCS_SIMULATION_ENABLED: 'false'
+  script:
+    - make k8s-test MARK='system_level_tests'
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-low"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/low-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-low 
+    auto_stop_in: 1 minute
+  allow_failure: true
+
+stop-k8s-test-low:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  when: manual
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-low' #'ci-dev-ska-low-integration'
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
+  environment:
+    name: test/low-$CI_COMMIT_REF_SLUG
+    action: stop 
+
+k8s-test-low-tmc-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
+  stage: integration
+  tags:
+    - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually 
+  variables:
+    TELESCOPE: 'SKA-low'
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
+    MARK: 'tmc_csp'
+    CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
+  script:
+    - make k8s-test MARK=tmc_csp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-low-csp"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/csp-low-$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
+    on_stop: stop-k8s-test-low-with-csp # Specify stop job.
+    auto_stop_in: 1 minute # Automatically stop environment after a minute.
+  rules:
+    - exists: 
+        - low/tests/**/* # Only run if test files for low exist.
+
+# Job to stop the test environment for TMC with CSP.
+stop-k8s-test-low-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  when: manual # Manual job to stop the environment.
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-csp'
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi # Delete the test runner pod in the Kubernetes namespace.
+  environment:
+    name: test/csp-low-$CI_COMMIT_REF_SLUG
+    action: stop # Stop action triggers the deletion.
+
+# Job to test TMC with SDP components.
+k8s-test-low-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  tags:
+    - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
+  variables:
+    TELESCOPE: 'SKA-low'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
+    SUBARRAY_COUNT: 2 
+    SDP_SIMULATION_ENABLED: 'false' 
+    TARANTA_ENABLED: 'true'
+    MARK: tmc_sdp
+  script:
+    - make k8s-test MARK=tmc_sdp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-low-sdp"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/sdp-low-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-low-tmc-with-sdp
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - low/tests/**/*
+
+stop-k8s-test-low-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  when: manual
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-sdp'
+    SDP_SIMULATION_ENABLED: 'false'
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
+  environment:
+    name: test/sdp-low-$CI_COMMIT_REF_SLUG
+    action: stop
+
+k8s-test-tmc-with-mccs-low:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  tags:
+    - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
+  variables:
+    TELESCOPE: 'SKA-low'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
+    SUBARRAY_COUNT: 1 
+    MCCS_SIMULATION_ENABLED: 'false' 
+    TARANTA_ENABLED: 'true'
+    MARK: tmc_mccs
+  script:
+    - make k8s-test MARK=tmc_mccs
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mccs-low"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/mccs-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-tmc-with-mccs
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - low/tests/**/*
+
+stop-k8s-test-tmc-with-mccs:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  when: manual
+  tags:
+    - ska-k8s
+  variables:
+    TELESCOPE: 'SKA-low'
+    KUBE_NAMESPACE: 'integration-ska-low-tmc-mccs'
+    MCCS_SIMULATION_ENABLED: 'false'
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
+  environment:
+    name: test/mccs-$CI_COMMIT_REF_SLUG
+    action: stop
+
+
+k8s-test-mid-tmc-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY # Use specific Docker image for this job.
+  stage: integration
+  tags:
+    - ska-k8s # GitLab runner tag to ensure the job runs on specific runners.
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
+  variables:
+    TELESCOPE: 'SKA-mid'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
+    MARK: 'tmc_csp'
+    CSP_SIMULATION_ENABLED: 'false' # Ensure CSP simulation is disabled.
+  script:
+    - make k8s-test MARK=tmc_csp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mid-csp"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/csp-mid-$CI_COMMIT_REF_SLUG # Set environment name dynamically based on branch or commit.
+    on_stop: stop-k8s-test-mid-with-csp # Specify stop job.
+    auto_stop_in: 1 minute # Automatically stop environment after a minute.
+  rules:
+    - exists: 
+        - mid/tests/**/* # Only run if test files for Mid exist.
+        
+# Job to stop the test environment for TMC with CSP.
+stop-k8s-test-mid-with-csp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  tags:
+    - ska-k8s
+  when: manual
+  variables:
+    TELESCOPE: 'SKA-mid'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-csp'
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
+  environment:
+    name: test/csp-mid-$CI_COMMIT_REF_SLUG
+    action: stop # Stop action triggers the deletion.
+
+
+# Job to test TMC with SDP components.
+k8s-test-mid-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  tags:
+    - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
+  variables:
+    TELESCOPE: 'SKA-mid'
+    PORT: "10000"
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
+    SUBARRAY_COUNT: 2 # Set subarray count for testing.
+    SDP_SIMULATION_ENABLED: 'false' # Disable SDP simulation.
+    TARANTA_ENABLED: 'true'
+    MARK: tmc_sdp
+  script:
+    - make k8s-test MARK=tmc_sdp
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mid-sdp"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/sdp-mid-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-mid-tmc-with-sdp
+    auto_stop_in: 1 minute
+  rules:
+    - exists: 
+        - mid/tests/**/*
+  
+
+
+# Job to stop the test environment for TMC with SDP.
+stop-k8s-test-mid-tmc-with-sdp:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  tags:
+    - ska-k8s
+  when: manual
+  variables:
+    TELESCOPE: 'SKA-mid'
+    KUBE_NAMESPACE: 'integration-ska-mid-tmc-sdp'
+    SDP_SIMULATION_ENABLED: 'false'
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
+  environment:
+    name: test/sdp-mid-$CI_COMMIT_REF_SLUG
+    action: stop
+
+# Job to test Dish-LMC with Kubernetes.
+k8s-test-dish-lmc:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  tags:
+    - ska-k8s
+  when: manual # Depnding on which sub-system is changes, specific job can be executed manually
+  variables:
+    TELESCOPE: 'SKA-mid'
+    DISH_SIMULATION_ENABLED: "false"
+    SUBARRAY_COUNT: 2
+    DISH_TANGO_HOST: "databaseds"
+    PORT: "10000"
+    DISH_INDEX_1: "001"
+    DISH_INDEX_36: "036"
+    DISH_INDEX_63: "063"
+    DISH_INDEX_100: "100"
+    DISH_NAMESPACE_1: "integration-ska-mid-tmc-dish001"
+    DISH_NAMESPACE_2: "integration-ska-mid-tmc-dish036"
+    DISH_NAMESPACE_3: "integration-ska-mid-tmc-dish063"
+    DISH_NAMESPACE_4: "integration-ska-mid-tmc-dish100"
+    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
+    DISH_LMC_SERVICE_ACCOUNT: "ci-svc-$CI_PROJECT_NAME-$CI_COMMIT_SHORT_SHA-dish-lmc-test"
+  script:
+    - make k8s-test MARK=tmc_dish
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mccs-low"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/dish-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-dish-lmc
+  rules:
+    - exists: 
+        - mid/tests/**/*
+
+# Job to stop the test environment for Dish-LMC.
+stop-k8s-test-dish-lmc:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: integration
+  tags:
+    - ska-k8s
+  when: manual
+  variables:
+    TELESCOPE: 'SKA-mid'
+    KUBE_NAMESPACE: "integration-ska-mid-tmc-dish"
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
+  environment:
+    name: test/dish-$CI_COMMIT_REF_SLUG
+    action: stop
+
+k8s-test-mid:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  tags:
+    - ska-k8s
+  variables:
+    CONFIG: "Mid"
+    TELESCOPE: 'SKA-mid'
+    KUBE_NAMESPACE: 'integration-ska-mid' #'ci-dev-ska-mid-integration'
+    MARK: 'system_level_test_mid'
+    CSP_SIMULATION_ENABLED: 'false'
+    SDP_SIMULATION_ENABLED: 'false'
+    DISH_SIMULATION_ENABLED: 'false'
+  script:
+    - make k8s-test MARK='system_level_test_mid'
+  after_script:
+    - pip3 install -q -U ska-ser-xray
+    - XRAY_TEST_RESULT_FILE="build/cucumber.json" make xray-publish
+  artifacts:
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID-mid"
+    paths:
+      - "build/"
+    reports:
+      junit: build/report.xml
+    when: always
+  environment:
+    name: test/mid-$CI_COMMIT_REF_SLUG
+    on_stop: stop-k8s-test-mid 
+    auto_stop_in: 1 minute
+  allow_failure: true
+
+# Job to stop the test environment for TMC
+stop-k8s-test-mid:
+  image: $SKA_K8S_TOOLS_BUILD_DEPLOY
+  stage: test
+  when: manual 
+  tags:
+    - ska-k8s
+  variables:
+    KUBE_NAMESPACE: 'integration-ska-mid' #'ci-dev-ska-mid-integration'
+  script:
+    - if kubectl get pod test-runner-test -n ${KUBE_NAMESPACE} &>/dev/null; then kubectl delete pod test-runner-test -n ${KUBE_NAMESPACE}; else echo "Pod test-runner-test does not exist, skipping deletion."; fi
+  environment:
+    name: test/mid-$CI_COMMIT_REF_SLUG
+    action: stop 

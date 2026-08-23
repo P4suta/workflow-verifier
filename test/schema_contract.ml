@@ -33,6 +33,8 @@ let schemas =
       "https://workflow-verifier.dev/schema/corpus-v1.json" );
     ( "corpus-report-v1.schema.json",
       "https://workflow-verifier.dev/schema/corpus-report-v1.json" );
+    ( "corpus-review-v1.schema.json",
+      "https://workflow-verifier.dev/schema/corpus-review-v1.json" );
     ( "performance-v1.schema.json",
       "https://workflow-verifier.dev/schema/performance-v1.json" );
     ( "performance-comparison-v1.schema.json",

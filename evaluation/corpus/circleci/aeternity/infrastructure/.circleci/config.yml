@@ -1,0 +1,314 @@
+version: 2.1
+
+executors:
+  infra-master:
+    docker:
+      - image: aeternity/infrastructure:master
+  ubuntu-container:
+    docker:
+      - image: aeternity/infrastructure:master
+      - name: aenode2204
+        image: aeternity/ubuntu-sshd:22.04
+
+references:
+  container_config: &container_config
+    docker:
+      - image: aeternity/infrastructure:master
+    working_directory: /infrastructure
+    environment:
+      DOCKERHUB_REPO: aeternity/infrastructure
+
+  machine_config: &machine_config
+    machine:
+      docker_layer_caching: true
+    working_directory: /home/circleci/infrastructure
+    environment:
+      DOCKERHUB_REPO: aeternity/infrastructure
+      VAULT_VERSION: 1.17.5
+
+  install_vault: &install_vault
+    run:
+      name: Install vault
+      command: |
+        curl -sSO https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
+        sudo unzip vault_${VAULT_VERSION}_linux_amd64.zip -d /bin
+        rm -f vault_${VAULT_VERSION}_linux_amd64.zip
+
+  pull_current_image: &pull_current_image
+    run:
+      name: Pull current branch Docker image
+      command: |
+        docker pull ${DOCKERHUB_REPO:?}:${CIRCLE_BRANCH//\//_}
+
+commands:
+  setup_secrets:
+    steps:
+      - run:
+          name: Setup Secrets
+          command: make secrets
+
+  docker_login:
+    steps:
+      - setup_secrets
+      - run:
+          name: Login to Docker Hub
+          command: |
+            docker login -u $(</tmp/secrets/DOCKER_USER) -p $(< /tmp/secrets/DOCKER_PASS)
+
+  integration_tests:
+    description: "Integration Tests"
+    steps:
+      - run:
+          name: Create Infrastructure
+          command: |
+            tfenv use 1.9.6
+            make integration-tests-init TF_VAR_envid="tf_test_${CIRCLE_JOB}_${CIRCLE_SHA1}"
+      - run:
+          name: Health Checks
+          command: |
+            make integration-tests-run TF_VAR_envid="tf_test_${CIRCLE_JOB}_${CIRCLE_SHA1}"
+      - run:
+          name: Tear Down Infrastructure (cleanup)
+          command: |
+            make integration-tests-cleanup TF_VAR_envid="tf_test_${CIRCLE_JOB}_${CIRCLE_SHA1}"
+          when: always
+
+  fail_notification:
+    description: Sends notification to RocketChat devops alert group on failure (master only)
+    steps:
+      - setup_secrets
+      - run:
+          name: Send failure notification
+          environment:
+            NOTIFY_BRANCH: master
+          command: |
+            export ROCKET_HOOK_URL="$(</tmp/secrets/ROCKET_HOOK_DEVOPS_URL)"
+            ./scripts/circleci/rocket_fail_notification.sh
+          when: on_fail
+
+  docker_build_branch:
+    steps:
+      - run:
+          name: Build docker branch image
+          command: |
+            docker build -t ${DOCKERHUB_REPO:?}:${CIRCLE_BRANCH//\//_} .
+
+  lint:
+    steps:
+      - run:
+          name: Configuration lint
+          # Secrets are auto-imported by the docker entry-point
+          command: |
+            .circleci/docker-run.sh make lint
+
+  use_remote_docker:
+    steps:
+      - setup_remote_docker:
+          version: default
+          docker_layer_caching: true
+
+  playbook_run:
+    parameters:
+      playbook:
+        type: string
+    steps:
+      - run:
+          name: Run << parameters.playbook >>
+          command: |
+            .circleci/test-ansible-playbook.sh << parameters.playbook >> \
+              -e "@/tmp/config/test.yml" \
+              -e "@.circleci/ansible-vars-ci.yml"
+
+  playbook_test:
+    parameters:
+      playbook:
+        type: string
+    steps:
+      - run:
+          name: Setup ansible environment
+          command: |
+            # Keep in sync with dockerfile with additional sshpass
+            apk add sshpass \
+              gcc python3-dev musl-dev openssl-dev libffi-dev linux-headers
+            pip3 uninstall -y ansible ansible-base ansible-core
+            pip3 install --upgrade pip==21.3.1
+            pip3 install -r requirements-lock.txt
+            ansible-galaxy install -r ansible/requirements.yml
+      - run:
+          name: Dump node configuration
+          command: |
+            make vault-config-test
+      - playbook_run:
+          playbook: ansible/setup.yml
+      - playbook_run:
+          playbook: << parameters.playbook >>
+
+jobs:
+  build_lint:
+    executor: infra-master
+    working_directory: /src
+    environment:
+      DOCKERHUB_REPO: aeternity/infrastructure
+    steps:
+      - checkout
+      - use_remote_docker
+      - docker_build_branch
+      - lint
+
+  playbook_test:
+    executor: ubuntu-container
+    parameters:
+      host:
+        type: string
+      playbook:
+        type: string
+    environment:
+      ANSIBLE_CALLBACK_WHITELIST: profile_tasks
+      ANSIBLE_HOST_KEY_CHECKING: False
+      PLAYBOOK_HOST: << parameters.host >>
+    steps:
+      - checkout
+      - use_remote_docker
+      - playbook_test:
+          playbook: << parameters.playbook >>
+
+  docker_push_branch:
+    executor: infra-master
+    environment:
+      DOCKERHUB_REPO: aeternity/infrastructure
+    steps:
+      - checkout
+      - use_remote_docker
+      - docker_login
+      - run:
+          name: Push (branch) Docker image to DockerHub
+          command: |
+            docker build -t ${DOCKERHUB_REPO:?}:${CIRCLE_BRANCH//\//_} .
+            docker push ${DOCKERHUB_REPO:?}:${CIRCLE_BRANCH//\//_}
+      - fail_notification
+
+  docker_push_latest:
+    <<: *machine_config
+    steps:
+      - checkout
+      - *install_vault
+      - *pull_current_image
+      - docker_login
+      - run:
+          name: Tag and push Docker "latest" image to DockerHub
+          command: |
+            docker tag ${DOCKERHUB_REPO:?}:${CIRCLE_BRANCH//\//_} ${DOCKERHUB_REPO:?}:latest
+            docker push ${DOCKERHUB_REPO:?}:latest
+      - fail_notification
+
+  docker_push_tag:
+    <<: *machine_config
+    steps:
+      - checkout
+      - *install_vault
+      - docker_login
+      - run:
+          name: Tag and push Docker image to DockerHub on Git tags
+          command: |
+            docker build -t ${DOCKERHUB_REPO:?}:${CIRCLE_TAG:?} -t ${DOCKERHUB_REPO:?}:stable .
+            docker push ${DOCKERHUB_REPO:?}:${CIRCLE_TAG:?}
+            docker push ${DOCKERHUB_REPO:?}:stable
+      - fail_notification
+
+  # Checks the compatibility of latest package build and master bootstrap
+  branch_integration_tests:
+    <<: *container_config
+    working_directory: /src
+    steps:
+      - checkout
+      - run:
+          name: Setup integration tests parameters
+          command: |
+            echo "export TF_VAR_bootstrap_version=${CIRCLE_BRANCH:?}" >> $BASH_ENV
+      - integration_tests
+      - fail_notification
+
+  # Checks the compatibility of latest package release and stable bootstrap
+  stable_integration_tests:
+      <<: *container_config
+      working_directory: /src
+      steps:
+        - checkout
+        - run:
+            name: Setup integration tests parameters
+            command: |
+              echo "export TF_VAR_bootstrap_version=${CIRCLE_TAG:?}" >> $BASH_ENV
+              echo "export TF_VAR_package=https://releases.aeternity.io/aeternity-latest-ubuntu-x86_64.tar.gz" >> $BASH_ENV
+        - integration_tests
+        - fail_notification
+
+workflows:
+  branch:
+    jobs:
+      - build_lint:
+          filters:
+            branches:
+              ignore: master
+      - playbook_test:
+          name: playbook-test-<<matrix.host>>-<< matrix.playbook >>
+          context: ae-vault-infra
+          matrix:
+            parameters:
+              host:
+                - aenode2204
+              playbook:
+                - ansible/monitoring.yml
+                - ansible/deploy.yml
+          requires:
+            - build_lint
+          filters:
+            branches:
+              ignore: master
+      - branch_integration_tests:
+          context: ae-vault-infra
+          requires:
+            - build_lint
+          filters:
+            branches:
+              ignore: master
+      - docker_push_branch:
+          context: ae-vault-infra
+          requires:
+            - build_lint
+            - playbook_test
+            - branch_integration_tests
+          filters:
+            branches:
+              ignore: master
+
+  master:
+    jobs:
+      - docker_push_branch:
+          context: ae-vault-infra
+          filters:
+            branches:
+              only: master
+      - docker_push_latest:
+          context: ae-vault-infra
+          requires:
+            - docker_push_branch
+          filters:
+            branches:
+              only: master
+
+  release:
+    jobs:
+      - stable_integration_tests:
+          context: ae-vault-infra
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*$/
+      - docker_push_tag:
+          context: ae-vault-infra
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*$/

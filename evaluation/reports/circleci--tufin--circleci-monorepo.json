@@ -1,0 +1,2739 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+          "start": {
+            "byte": 206,
+            "column": 20,
+            "line": 10
+          },
+          "stop": {
+            "byte": 2845,
+            "column": 17,
+            "line": 64
+          }
+        }
+      },
+      "id": "diag_845d85990ee6aae3f93f",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+        "start": {
+          "byte": 206,
+          "column": 20,
+          "line": 10
+        },
+        "stop": {
+          "byte": 2845,
+          "column": 17,
+          "line": 64
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_5791408d5200f6c671f5",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 367,
+              "column": 181,
+              "line": 10
+            },
+            "stop": {
+              "byte": 380,
+              "column": 194,
+              "line": 10
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_882d1d21c60a8bfb8921",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 206,
+              "column": 20,
+              "line": 10
+            },
+            "stop": {
+              "byte": 2845,
+              "column": 17,
+              "line": 64
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_41c7f0c404a7546f6a58",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+        "start": {
+          "byte": 206,
+          "column": 20,
+          "line": 10
+        },
+        "stop": {
+          "byte": 2845,
+          "column": 17,
+          "line": 64
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_5791408d5200f6c671f5",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 367,
+              "column": 181,
+              "line": 10
+            },
+            "stop": {
+              "byte": 380,
+              "column": 194,
+              "line": 10
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_882d1d21c60a8bfb8921",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 206,
+              "column": 20,
+              "line": 10
+            },
+            "stop": {
+              "byte": 2845,
+              "column": 17,
+              "line": 64
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:1659f6edb49a009b371c108075bb2c7ad068df6cab36e4b54f8989630f77089b",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_ac2f4b58b843683be209",
+          "id": "wv_00a3c2fcd042763d9326",
+          "kind": "control",
+          "label": null,
+          "to": "wv_537a3aa915bf61e94d18"
+        },
+        {
+          "condition": true,
+          "from": "wv_2484257b6a7a43b98e53",
+          "id": "wv_03f399a29e4fa620a475",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_088a63ecf28b5559a0d1"
+        },
+        {
+          "condition": true,
+          "from": "wv_9b178e5bc207b0b8c864",
+          "id": "wv_04b57537cb7e995b9c68",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_USERNAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_151be890312ed5a88e2a",
+          "id": "wv_04ea0e753597f7c4a300",
+          "kind": "control",
+          "label": null,
+          "to": "wv_30dcab25c2efdc0e8168"
+        },
+        {
+          "condition": true,
+          "from": "wv_3c201fb79f42db7f25f0",
+          "id": "wv_0b87246e89842f03ab18",
+          "kind": "control",
+          "label": null,
+          "to": "wv_150c898d674110b69832"
+        },
+        {
+          "condition": true,
+          "from": "wv_5b886f2fdf55fef7f9e0",
+          "id": "wv_0f80bbc1889c8823ee99",
+          "kind": "data",
+          "label": "CIRCLE_BRANCH",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_a74e1d4010f731b2cd9a",
+          "id": "wv_175a7aacc9b9d301c62f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ac2f4b58b843683be209"
+        },
+        {
+          "condition": true,
+          "from": "wv_088a63ecf28b5559a0d1",
+          "id": "wv_1b842627140b5ec28cde",
+          "kind": "call",
+          "label": null,
+          "to": "wv_0a126571b08c74714fd3"
+        },
+        {
+          "condition": true,
+          "from": "wv_d8d37d39819d3bcda7c5",
+          "id": "wv_1c3338a44a1de0c9e448",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_REPONAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_21c6726ae6b6e8ce2331",
+          "id": "wv_1dc5b77d6ef9db349c92",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_USERNAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_3c201fb79f42db7f25f0",
+          "id": "wv_1dfea0facf36bf9a466d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f13009dcb09cdef18103"
+        },
+        {
+          "condition": true,
+          "from": "wv_088a63ecf28b5559a0d1",
+          "id": "wv_21e54ec1744251f08dc7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0a126571b08c74714fd3"
+        },
+        {
+          "condition": true,
+          "from": "wv_b7f516c104db48936d70",
+          "id": "wv_237d17d8afb2c7a8395c",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_REPONAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_43aee6e6deadd28a503c",
+          "id": "wv_2585cd22ab2eec2a2012",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c8b540b188d76b3f8781"
+        },
+        {
+          "condition": true,
+          "from": "wv_2484257b6a7a43b98e53",
+          "id": "wv_2682eeb72bc4e487b70d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4517e32ee47554971a97"
+        },
+        {
+          "condition": true,
+          "from": "wv_0911902339e3626ab9f4",
+          "id": "wv_2acdc12ab6859b540f0a",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_REPONAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_21dc93650ff0c00cf127",
+          "id": "wv_33366c51655379ccda68",
+          "kind": "control",
+          "label": null,
+          "to": "wv_83660cb54ea898ae22ef"
+        },
+        {
+          "condition": true,
+          "from": "wv_21dc93650ff0c00cf127",
+          "id": "wv_34e90c34d8e77a63688b",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_43aee6e6deadd28a503c"
+        },
+        {
+          "condition": true,
+          "from": "wv_2dd0124bb8df9d35e3a2",
+          "id": "wv_38af915754bc2259d47d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_21dc93650ff0c00cf127"
+        },
+        {
+          "condition": true,
+          "from": "wv_a0a98514a6d5dc2cec2d",
+          "id": "wv_3c734ed8210fe129519b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_df6bbdf3e8564d6caf2c"
+        },
+        {
+          "condition": true,
+          "from": "wv_c5507ca99846b9f003ed",
+          "id": "wv_4eec4c7afcd9de0f0c7b",
+          "kind": "data",
+          "label": "COMMITS",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_21dc93650ff0c00cf127",
+          "id": "wv_4f9d0280f5785099e6a8",
+          "kind": "call",
+          "label": null,
+          "to": "wv_83660cb54ea898ae22ef"
+        },
+        {
+          "condition": true,
+          "from": "wv_bbe956ea379b7eedf482",
+          "id": "wv_50227eedafed2ec50653",
+          "kind": "control",
+          "label": null,
+          "to": "wv_be5609a6ee846a4713f0"
+        },
+        {
+          "condition": true,
+          "from": "wv_a74e1d4010f731b2cd9a",
+          "id": "wv_51edb22cddd5c181d1d3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_44f24a5d0f28f8b3aeee"
+        },
+        {
+          "condition": true,
+          "from": "wv_f13009dcb09cdef18103",
+          "id": "wv_5a70c0537dfd2f7d6c50",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_150c898d674110b69832"
+        },
+        {
+          "condition": true,
+          "from": "wv_a0a98514a6d5dc2cec2d",
+          "id": "wv_5c8991919a85b658e08e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_21dc93650ff0c00cf127"
+        },
+        {
+          "condition": true,
+          "from": "wv_43aee6e6deadd28a503c",
+          "id": "wv_5ed3ec3e5336520168ff",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c8b540b188d76b3f8781"
+        },
+        {
+          "condition": true,
+          "from": "wv_151be890312ed5a88e2a",
+          "id": "wv_5ef518a37e48072c0914",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8bdb1a58a73e985b752e"
+        },
+        {
+          "condition": true,
+          "from": "wv_bbe956ea379b7eedf482",
+          "id": "wv_60a493b1af0734e09e0e",
+          "kind": "read",
+          "label": null,
+          "to": "wv_be5609a6ee846a4713f0"
+        },
+        {
+          "condition": true,
+          "from": "wv_44a8a54526e5bd1399e7",
+          "id": "wv_64d3c9b18c133e845f69",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_REPONAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_a74e1d4010f731b2cd9a",
+          "id": "wv_66b0affc87820bcf8b9d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_088a63ecf28b5559a0d1"
+        },
+        {
+          "condition": true,
+          "from": "wv_a74e1d4010f731b2cd9a",
+          "id": "wv_6d9d205d142a93143861",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2484257b6a7a43b98e53"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d7da27b1d8f921225a4",
+          "id": "wv_6fec1edbcedb071c7034",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a0a98514a6d5dc2cec2d"
+        },
+        {
+          "condition": true,
+          "from": "wv_f13009dcb09cdef18103",
+          "id": "wv_7121a5419195b6feabaa",
+          "kind": "control",
+          "label": null,
+          "to": "wv_488cdea3872cdbcc6023"
+        },
+        {
+          "condition": true,
+          "from": "wv_ac2f4b58b843683be209",
+          "id": "wv_72f100643dc285a30b37",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_2484257b6a7a43b98e53"
+        },
+        {
+          "condition": true,
+          "from": "wv_44f24a5d0f28f8b3aeee",
+          "id": "wv_740ef4b51ea934f508f3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3ef2f3a64ecd6ebbd16b"
+        },
+        {
+          "condition": true,
+          "from": "wv_150c898d674110b69832",
+          "id": "wv_7656da1de412287a5b11",
+          "kind": "control",
+          "label": null,
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_2dd0124bb8df9d35e3a2",
+          "id": "wv_89d79e1d3503f10f37c0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a0a98514a6d5dc2cec2d"
+        },
+        {
+          "condition": true,
+          "from": "wv_2dd0124bb8df9d35e3a2",
+          "id": "wv_970a7bf690ca926c1f28",
+          "kind": "control",
+          "label": null,
+          "to": "wv_497b84acae8c7d016b40"
+        },
+        {
+          "condition": true,
+          "from": "wv_86b093012863e78355f7",
+          "id": "wv_97de85bea143bca68ce6",
+          "kind": "data",
+          "label": "CIRCLE_BRANCH",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_a74e1d4010f731b2cd9a",
+          "id": "wv_a08883792afa8f4ed8f8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bbe956ea379b7eedf482"
+        },
+        {
+          "condition": true,
+          "from": "wv_497b84acae8c7d016b40",
+          "id": "wv_a4804e7002f0871f7ee0",
+          "kind": "read",
+          "label": null,
+          "to": "wv_0136762b326eb3eabcf6"
+        },
+        {
+          "condition": true,
+          "from": "wv_44f24a5d0f28f8b3aeee",
+          "id": "wv_a912360a9002a31cf69c",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3ef2f3a64ecd6ebbd16b"
+        },
+        {
+          "condition": true,
+          "from": "wv_5791408d5200f6c671f5",
+          "id": "wv_aafb903e257d5f4539fd",
+          "kind": "data",
+          "label": "CIRCLE_BRANCH",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_b6b7020a976a7da23d66",
+          "id": "wv_b590f3b25604b1057eb1",
+          "kind": "data",
+          "label": "LAST_SUCCESSFUL_BUILD_URL",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_2dd0124bb8df9d35e3a2",
+          "id": "wv_ca219147ed6ec5eb51dc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3d7da27b1d8f921225a4"
+        },
+        {
+          "condition": true,
+          "from": "wv_151be890312ed5a88e2a",
+          "id": "wv_ce0a360e71314798a412",
+          "kind": "call",
+          "label": null,
+          "to": "wv_8bdb1a58a73e985b752e"
+        },
+        {
+          "condition": true,
+          "from": "wv_bbe956ea379b7eedf482",
+          "id": "wv_cfc60ca5afee958449bd",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ac2f4b58b843683be209"
+        },
+        {
+          "condition": true,
+          "from": "wv_497b84acae8c7d016b40",
+          "id": "wv_d4c2f93e93cf70747567",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0136762b326eb3eabcf6"
+        },
+        {
+          "condition": true,
+          "from": "wv_860b14bfa60b4270af43",
+          "id": "wv_dab30509afc939952286",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_USERNAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_2dd0124bb8df9d35e3a2",
+          "id": "wv_db34dc520996f5519b48",
+          "kind": "control",
+          "label": null,
+          "to": "wv_43aee6e6deadd28a503c"
+        },
+        {
+          "condition": true,
+          "from": "wv_fe545a449a16107ecb24",
+          "id": "wv_e0b0cccc4418fdbbbad4",
+          "kind": "data",
+          "label": "CIRCLE_TOKEN",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d7da27b1d8f921225a4",
+          "id": "wv_e5979d8fa62256c52b7d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_eecb14e63e84cba02545"
+        },
+        {
+          "condition": true,
+          "from": "wv_497b84acae8c7d016b40",
+          "id": "wv_e78e1c5352996fb5669a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3d7da27b1d8f921225a4"
+        },
+        {
+          "condition": true,
+          "from": "wv_151be890312ed5a88e2a",
+          "id": "wv_e8016ed81c8b9fe96b57",
+          "kind": "call",
+          "label": null,
+          "to": "wv_30dcab25c2efdc0e8168"
+        },
+        {
+          "condition": true,
+          "from": "wv_088a63ecf28b5559a0d1",
+          "id": "wv_eb3b161142263834a84e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_44f24a5d0f28f8b3aeee"
+        },
+        {
+          "condition": true,
+          "from": "wv_0f9c65cdbc14624cf858",
+          "id": "wv_f33467d61f1215c5192c",
+          "kind": "data",
+          "label": "CIRCLE_PROJECT_REPONAME",
+          "to": "wv_882d1d21c60a8bfb8921"
+        },
+        {
+          "condition": true,
+          "from": "wv_f13009dcb09cdef18103",
+          "id": "wv_fe706c604a93e84bbff4",
+          "kind": "read",
+          "label": null,
+          "to": "wv_488cdea3872cdbcc6023"
+        }
+      ],
+      "entrypoints": [
+        "wv_151be890312ed5a88e2a"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_0136762b326eb3eabcf6",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3720,
+              "column": 9,
+              "line": 95
+            },
+            "stop": {
+              "byte": 3728,
+              "column": 17,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_088a63ecf28b5559a0d1",
+          "kind": "step",
+          "name": "store_artifacts",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3338,
+              "column": 9,
+              "line": 82
+            },
+            "stop": {
+              "byte": 3427,
+              "column": 39,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1256,
+                      "column": 1070,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1279,
+                      "column": 1093,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_REPONAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0911902339e3626ab9f4",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_REPONAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 1256,
+              "column": 1070,
+              "line": 10
+            },
+            "stop": {
+              "byte": 1279,
+              "column": 1093,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_0a126571b08c74714fd3",
+          "kind": "call",
+          "name": "builtin:store_artifacts",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3338,
+              "column": 9,
+              "line": 82
+            },
+            "stop": {
+              "byte": 3427,
+              "column": 39,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1072,
+                      "column": 886,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1095,
+                      "column": 909,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_REPONAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0f9c65cdbc14624cf858",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_REPONAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 1072,
+              "column": 886,
+              "line": 10
+            },
+            "stop": {
+              "byte": 1095,
+              "column": 909,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_150c898d674110b69832",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 105,
+              "column": 9,
+              "line": 8
+            },
+            "stop": {
+              "byte": 2845,
+              "column": 17,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_151be890312ed5a88e2a",
+          "kind": "workflow",
+          "name": "CircleCI config",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 4133,
+              "column": 34,
+              "line": 108
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_USERNAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1231,
+                      "column": 1045,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1254,
+                      "column": 1068,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_21c6726ae6b6e8ce2331",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_USERNAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 1231,
+              "column": 1045,
+              "line": 10
+            },
+            "stop": {
+              "byte": 1254,
+              "column": 1068,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_21dc93650ff0c00cf127",
+          "kind": "step",
+          "name": "store_artifacts",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3982,
+              "column": 9,
+              "line": 104
+            },
+            "stop": {
+              "byte": 4071,
+              "column": 39,
+              "line": 106
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2484257b6a7a43b98e53",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3214,
+              "column": 9,
+              "line": 78
+            },
+            "stop": {
+              "byte": 3329,
+              "column": 64,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2dd0124bb8df9d35e3a2",
+          "kind": "job",
+          "name": "service2",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3492,
+              "column": 3,
+              "line": 87
+            },
+            "stop": {
+              "byte": 4133,
+              "column": 34,
+              "line": 108
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_30dcab25c2efdc0e8168",
+          "kind": "call",
+          "name": "tufin/circleci-golang",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3595,
+              "column": 16,
+              "line": 90
+            },
+            "stop": {
+              "byte": 3616,
+              "column": 37,
+              "line": 90
+            }
+          },
+          "unknown": {
+            "detail": "tufin/circleci-golang",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3c201fb79f42db7f25f0",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 19,
+              "column": 3,
+              "line": 3
+            },
+            "stop": {
+              "byte": 2845,
+              "column": 17,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3d7da27b1d8f921225a4",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3737,
+              "column": 9,
+              "line": 96
+            },
+            "stop": {
+              "byte": 3849,
+              "column": 65,
+              "line": 99
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_3ef2f3a64ecd6ebbd16b",
+          "kind": "call",
+          "name": "builtin:store_test_results",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3436,
+              "column": 9,
+              "line": 85
+            },
+            "stop": {
+              "byte": 3489,
+              "column": 34,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_43aee6e6deadd28a503c",
+          "kind": "step",
+          "name": "store_test_results",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 4080,
+              "column": 9,
+              "line": 107
+            },
+            "stop": {
+              "byte": 4133,
+              "column": 34,
+              "line": 108
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 2238,
+                      "column": 2052,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 2261,
+                      "column": 2075,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_REPONAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_44a8a54526e5bd1399e7",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_REPONAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 2238,
+              "column": 2052,
+              "line": 10
+            },
+            "stop": {
+              "byte": 2261,
+              "column": 2075,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_44f24a5d0f28f8b3aeee",
+          "kind": "step",
+          "name": "store_test_results",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3436,
+              "column": 9,
+              "line": 85
+            },
+            "stop": {
+              "byte": 3489,
+              "column": 34,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 3264,
+                      "column": 20,
+                      "line": 80
+                    },
+                    "stop": {
+                      "byte": 3329,
+                      "column": 64,
+                      "line": 81
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "/scripts/go_test.sh ${TEST_RESULTS} ${PROJECT_NAME}\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_4517e32ee47554971a97",
+          "kind": "command",
+          "name": "Run Tests",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3264,
+              "column": 20,
+              "line": 80
+            },
+            "stop": {
+              "byte": 3329,
+              "column": 64,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_488cdea3872cdbcc6023",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 88,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 96,
+              "column": 17,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_497b84acae8c7d016b40",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3720,
+              "column": 9,
+              "line": 95
+            },
+            "stop": {
+              "byte": 3728,
+              "column": 17,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 3139,
+                      "column": 20,
+                      "line": 76
+                    },
+                    "stop": {
+                      "byte": 3205,
+                      "column": 65,
+                      "line": 77
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "/scripts/go_build.sh ${PROJECT_NAME} ${PROJECT_NAME}\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_537a3aa915bf61e94d18",
+          "kind": "command",
+          "name": "Build",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3139,
+              "column": 20,
+              "line": 76
+            },
+            "stop": {
+              "byte": 3205,
+              "column": 65,
+              "line": 77
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 367,
+                      "column": 181,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 380,
+                      "column": 194,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5791408d5200f6c671f5",
+          "kind": "resource",
+          "name": "CIRCLE_BRANCH",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 367,
+              "column": 181,
+              "line": 10
+            },
+            "stop": {
+              "byte": 380,
+              "column": 194,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1286,
+                      "column": 1100,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1299,
+                      "column": 1113,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5b886f2fdf55fef7f9e0",
+          "kind": "resource",
+          "name": "CIRCLE_BRANCH",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 1286,
+              "column": 1100,
+              "line": 10
+            },
+            "stop": {
+              "byte": 1299,
+              "column": 1113,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_83660cb54ea898ae22ef",
+          "kind": "call",
+          "name": "builtin:store_artifacts",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3982,
+              "column": 9,
+              "line": 104
+            },
+            "stop": {
+              "byte": 4071,
+              "column": 39,
+              "line": 106
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_USERNAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 2213,
+                      "column": 2027,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 2236,
+                      "column": 2050,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_860b14bfa60b4270af43",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_USERNAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 2213,
+              "column": 2027,
+              "line": 10
+            },
+            "stop": {
+              "byte": 2236,
+              "column": 2050,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 2268,
+                      "column": 2082,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 2281,
+                      "column": 2095,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_86b093012863e78355f7",
+          "kind": "resource",
+          "name": "CIRCLE_BRANCH",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 2268,
+              "column": 2082,
+              "line": 10
+            },
+            "stop": {
+              "byte": 2281,
+              "column": 2095,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 367,
+                      "column": 181,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 380,
+                      "column": 194,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1286,
+                      "column": 1100,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1299,
+                      "column": 1113,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 2268,
+                      "column": 2082,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 2281,
+                      "column": 2095,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 337,
+                      "column": 151,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 360,
+                      "column": 174,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1072,
+                      "column": 886,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1095,
+                      "column": 909,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1256,
+                      "column": 1070,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1279,
+                      "column": 1093,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1633,
+                      "column": 1447,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1656,
+                      "column": 1470,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 2238,
+                      "column": 2052,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 2261,
+                      "column": 2075,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_USERNAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 312,
+                      "column": 126,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 149,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_USERNAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1231,
+                      "column": 1045,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1254,
+                      "column": 1068,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_USERNAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 2213,
+                      "column": 2027,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 2236,
+                      "column": 2050,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TOKEN",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 445,
+                      "column": 259,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 457,
+                      "column": 271,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "COMMITS",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 708,
+                      "column": 522,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 715,
+                      "column": 529,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "LAST_SUCCESSFUL_BUILD_URL",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 461,
+                      "column": 275,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 486,
+                      "column": 300,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 206,
+                      "column": 20,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 2845,
+                      "column": 17,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "# Identify modified directories\n\nLAST_SUCCESSFUL_BUILD_URL=\"https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH?filter=completed&limit=1\"\nLAST_SUCCESSFUL_COMMIT=`curl -Ss -u \"$CIRCLE_TOKEN:\" $LAST_SUCCESSFUL_BUILD_URL | jq -r '.[0][\"vcs_revision\"]'`\n\n#first commit in a branch\nif [[ ${LAST_SUCCESSFUL_COMMIT} == \"null\" ]]; then\n  COMMITS=\"origin/master\"\nelse\n  COMMITS=\"${CIRCLE_SHA1}..${LAST_SUCCESSFUL_COMMIT}\"\nfi\n\ngit diff --name-only $COMMITS | cut -d/ -f1 | sort -u > projects\necho -e \"Modified directories:\\n`cat projects`\\n\"\n\n\n# If modified directories contain Gopkg/vendor directores, build all projects and exit\nbuildall=0\nfor project in `cat projects`; do\n  if [[ ${project} =~ \"Gopkg\" || ${project} =~ \"vendor\" ]]; then\n    buildall=1\n    echo -e \"Dependencies change detected. building all $CIRCLE_PROJECT_REPONAME\"\n    curl -s -u ${CIRCLE_TOKEN}: \\\n        -d build_parameters[CIRCLE_JOB]=all \\\n        https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH\n  fi\n  if [[ ${buildall} -eq 1 ]]; then\n    exit 0\n  fi\ndone\n\n# Build affected projects and their dependencies\n\nprojects_inc_dep=(`cat projects`)\necho -e \"Calculating dependencies\\n\"\nfor dir in `ls -d */`; do\n  for dep in `go list -f '{{ .Deps }}' ./${dir} 2>/dev/null`; do\n    for project_dep in `echo $dep | grep github.com/tufin/$CIRCLE_PROJECT_REPONAME | egrep -v \"vendor|${dir%\\/}\"`; do\n      if [[ \" ${projects_inc_dep[@]} \" =~ \" ${project_dep##*\\/} \" ]] && ! [[ \" ${projects_inc_dep[@]} \" =~ \" ${dir%\\/} \" ]]; then\n        projects_inc_dep+=(${dir%\\/})\n      fi\n    done\n  done\ndone\n\necho -e \"Building: ${projects_inc_dep[@]}\\n\"\nfor project in ${projects_inc_dep[@]}; do\n  if grep -Fxq $project project-dirs; then\n    printf \"\\nTriggerring build for project: \"$project\n    curl -s -u ${CIRCLE_TOKEN}: \\\n      -d build_parameters[CIRCLE_JOB]=${project} \\\n      https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/tree/$CIRCLE_BRANCH\n  fi\ndone\n",
+                  "CIRCLE_BRANCH",
+                  "CIRCLE_PROJECT_REPONAME",
+                  "CIRCLE_PROJECT_USERNAME",
+                  "CIRCLE_TOKEN",
+                  "COMMITS",
+                  "LAST_SUCCESSFUL_BUILD_URL"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_882d1d21c60a8bfb8921",
+          "kind": "command",
+          "name": "Determine which projects have changed and trigger the builds",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 206,
+              "column": 20,
+              "line": 10
+            },
+            "stop": {
+              "byte": 2845,
+              "column": 17,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8bdb1a58a73e985b752e",
+          "kind": "call",
+          "name": "circleci/golang",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 53,
+              "column": 16,
+              "line": 5
+            },
+            "stop": {
+              "byte": 68,
+              "column": 31,
+              "line": 5
+            }
+          },
+          "unknown": {
+            "detail": "circleci/golang",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_USERNAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 312,
+                      "column": 126,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 149,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9b178e5bc207b0b8c864",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_USERNAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 312,
+              "column": 126,
+              "line": 10
+            },
+            "stop": {
+              "byte": 335,
+              "column": 149,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a0a98514a6d5dc2cec2d",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3858,
+              "column": 9,
+              "line": 100
+            },
+            "stop": {
+              "byte": 3973,
+              "column": 64,
+              "line": 103
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a74e1d4010f731b2cd9a",
+          "kind": "job",
+          "name": "service1",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 2848,
+              "column": 3,
+              "line": 65
+            },
+            "stop": {
+              "byte": 3489,
+              "column": 34,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ac2f4b58b843683be209",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3093,
+              "column": 9,
+              "line": 74
+            },
+            "stop": {
+              "byte": 3205,
+              "column": 65,
+              "line": 77
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "LAST_SUCCESSFUL_BUILD_URL",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 461,
+                      "column": 275,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 486,
+                      "column": 300,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "LAST_SUCCESSFUL_BUILD_URL"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b6b7020a976a7da23d66",
+          "kind": "resource",
+          "name": "LAST_SUCCESSFUL_BUILD_URL",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 461,
+              "column": 275,
+              "line": 10
+            },
+            "stop": {
+              "byte": 486,
+              "column": 300,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 337,
+                      "column": 151,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 360,
+                      "column": 174,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_REPONAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b7f516c104db48936d70",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_REPONAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 337,
+              "column": 151,
+              "line": 10
+            },
+            "stop": {
+              "byte": 360,
+              "column": 174,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bbe956ea379b7eedf482",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3076,
+              "column": 9,
+              "line": 73
+            },
+            "stop": {
+              "byte": 3084,
+              "column": 17,
+              "line": 73
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_be5609a6ee846a4713f0",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3076,
+              "column": 9,
+              "line": 73
+            },
+            "stop": {
+              "byte": 3084,
+              "column": 17,
+              "line": 73
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "COMMITS",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 708,
+                      "column": 522,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 715,
+                      "column": 529,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "COMMITS"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c5507ca99846b9f003ed",
+          "kind": "resource",
+          "name": "COMMITS",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 708,
+              "column": 522,
+              "line": 10
+            },
+            "stop": {
+              "byte": 715,
+              "column": 529,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_c8b540b188d76b3f8781",
+          "kind": "call",
+          "name": "builtin:store_test_results",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 4080,
+              "column": 9,
+              "line": 107
+            },
+            "stop": {
+              "byte": 4133,
+              "column": 34,
+              "line": 108
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_PROJECT_REPONAME",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 1633,
+                      "column": 1447,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 1656,
+                      "column": 1470,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_PROJECT_REPONAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d8d37d39819d3bcda7c5",
+          "kind": "resource",
+          "name": "CIRCLE_PROJECT_REPONAME",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 1633,
+              "column": 1447,
+              "line": 10
+            },
+            "stop": {
+              "byte": 1656,
+              "column": 1470,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 3908,
+                      "column": 20,
+                      "line": 102
+                    },
+                    "stop": {
+                      "byte": 3973,
+                      "column": 64,
+                      "line": 103
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "/scripts/go_test.sh ${TEST_RESULTS} ${PROJECT_NAME}\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_df6bbdf3e8564d6caf2c",
+          "kind": "command",
+          "name": "Run Tests",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3908,
+              "column": 20,
+              "line": 102
+            },
+            "stop": {
+              "byte": 3973,
+              "column": 64,
+              "line": 103
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 3783,
+                      "column": 20,
+                      "line": 98
+                    },
+                    "stop": {
+                      "byte": 3849,
+                      "column": 65,
+                      "line": 99
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "/scripts/go_build.sh ${PROJECT_NAME} ${PROJECT_NAME}\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_eecb14e63e84cba02545",
+          "kind": "command",
+          "name": "Build",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 3783,
+              "column": 20,
+              "line": 98
+            },
+            "stop": {
+              "byte": 3849,
+              "column": 65,
+              "line": 99
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f13009dcb09cdef18103",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 88,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 96,
+              "column": 17,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TOKEN",
+                  "span": {
+                    "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+                    "start": {
+                      "byte": 445,
+                      "column": 259,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 457,
+                      "column": 271,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fe545a449a16107ecb24",
+          "kind": "resource",
+          "name": "CIRCLE_TOKEN",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tufin/circleci-monorepo/.circleci/config.yml",
+            "start": {
+              "byte": 445,
+              "column": 259,
+              "line": 10
+            },
+            "stop": {
+              "byte": 457,
+              "column": 271,
+              "line": 10
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "circleci",
+      "source": "circleci/tufin/circleci-monorepo/.circleci/config.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:eb3a6177a5a1eb1eec58103781f214e30f2000ac47f063a4f94e83c6e1e5f07a",
+      "path": "circleci/tufin/circleci-monorepo/.circleci/config.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "builtin:checkout",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "builtin:store_artifacts",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "builtin:store_test_results",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "circleci/golang",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "tufin/circleci-golang",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

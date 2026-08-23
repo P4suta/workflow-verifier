@@ -1,0 +1,36 @@
+name: Jules AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  jules_review:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Jules Review Action
+        uses: google-labs-code/jules-action@main
+        with:
+          # Required input: Your GitHub token to post comments on the PR
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Recommended configuration for the AI behavior
+          mode: 'review'
+          # Providing context for the AI, ensuring it understands the strict architectural rules
+          system_prompt: |
+            You are Jules, reviewing a Pull Request for 'julesctl', a high-performance, Git-first Rust CLI application.
+            Strict Architectural Rules you must enforce:
+            1. NO `.unwrap()` or `.expect()` calls outside of test modules (`#[cfg(test)]`). These cause fatal crashes in raw-mode TUIs. Suggest proper `Result` propagation instead.
+            2. The UI thread MUST NEVER BE BLOCKED. All slow operations (e.g., `git fetch`, disk I/O, network calls) must be wrapped in `tokio::task::spawn_blocking` or use asynchronous libraries.
+            3. String truncation must be safe. Avoid raw byte slicing (`&s[..n]`) for strings that might contain emojis (like '🦑'). Ensure `.chars().take(n).collect::<String>()` is used.
+            4. `cli-chat-rs` MUST REMAIN GENERIC. It should not contain any `julesctl` specific domain logic.
+
+            Be concise, constructive, and focus on potential panics, performance bottlenecks in the `terminal.draw` loop, and architectural integrity.

@@ -80,10 +80,12 @@ let dependency_unknown dependency =
   | Frontend_intf.Unresolved reason -> Some reason
   | Locked _ -> None
 
+type parameter_binding = string * Ir.node
+
 let add_parameters graph (owner : Ir.node) prefix parameters =
   Frontend_common.mapping parameters
   |> List.fold_left
-       (fun graph (entry : Yaml_cst.mapping_entry) ->
+       (fun (graph, bindings) (entry : Yaml_cst.mapping_entry) ->
          let default = Frontend_common.field "default" entry.value in
          let value =
            match Option.bind default Frontend_common.scalar with
@@ -113,10 +115,61 @@ let add_parameters graph (owner : Ir.node) prefix parameters =
              ~attributes:[ ("value", value) ]
              ()
          in
-         graph |> Ir.add_node parameter
-         |> Ir.add_edge
-              (Ir.make_edge ~kind:Ir.Data ~from_:parameter.id ~to_:owner.id
-                 ~label:entry.key.value ()))
+         ( graph |> Ir.add_node parameter
+           |> Ir.add_edge
+                (Ir.make_edge ~kind:Ir.Data ~from_:parameter.id ~to_:owner.id
+                   ~label:entry.key.value ()),
+           (entry.key.value, parameter) :: bindings ))
+       (graph, [])
+  |> fun (graph, bindings) -> (graph, List.rev bindings)
+
+let local_parameter_name reference =
+  let prefix = "parameters." in
+  let name = String.lowercase_ascii reference.Expression.name in
+  if Util.starts_with ~prefix name then
+    Some
+      (String.sub reference.name (String.length prefix)
+         (String.length reference.name - String.length prefix))
+  else None
+
+let argument_value node =
+  let span = Yaml_cst.node_span node in
+  match Frontend_common.scalar node with
+  | None -> Abstract_value.unknown (Unknown.Dynamic_string "CircleCI argument")
+  | Some source ->
+      Expression.scan provider ~default_phase:Ir.Compile ~span source
+      |> List.fold_left
+           (fun value reference ->
+             Abstract_value.join value reference.Expression.value)
+           (Abstract_value.string_constant source ~trust:Abstract_value.Trusted
+              ~secrecy:Abstract_value.Public
+              ~provenance:
+                [
+                  {
+                    origin = "CircleCI invocation argument";
+                    span;
+                    operation = "bind";
+                  };
+                ])
+
+let bind_arguments graph ~scope bindings body =
+  Frontend_common.mapping body
+  |> List.fold_left
+       (fun graph (entry : Yaml_cst.mapping_entry) ->
+         match List.assoc_opt entry.key.value bindings with
+         | None -> graph
+         | Some (parameter : Ir.node) ->
+             let argument =
+               Ir.make_node ~provider ~kind:Ir.Parameter
+                 ~name:("argument:" ^ scope ^ "." ^ entry.key.value)
+                 ~phase:Ir.Compile ~span:entry.span
+                 ~attributes:[ ("value", argument_value entry.value) ]
+                 ()
+             in
+             graph |> Ir.add_node argument
+             |> Ir.add_edge
+                  (Ir.make_edge ~kind:Ir.Data ~from_:argument.id
+                     ~to_:parameter.id ~label:entry.key.value ()))
        graph
 
 let add_executors graph (config : Ir.node) root =
@@ -158,13 +211,15 @@ let add_commands graph (config : Ir.node) root =
                     (Ir.make_edge ~kind:Ir.Control ~from_:config.id
                        ~to_:resource.id ())
              in
-             let graph =
+             let graph, parameters =
                match Frontend_common.field "parameters" entry.value with
-               | None -> graph
+               | None -> (graph, [])
                | Some parameters ->
                    add_parameters graph resource entry.key.value parameters
              in
-             (graph, (entry.key.value, entry.value, resource) :: definitions))
+             ( graph,
+               (entry.key.value, entry.value, resource, parameters)
+               :: definitions ))
            (graph, [])
 
 let builtin_profile name =
@@ -187,7 +242,7 @@ let builtin_profile name =
       ([ Ir.Artifact_read; Ir.Filesystem_write ], [ Ir.File_write ], Ir.Read)
   | _ -> ([], [], Ir.Call_edge)
 
-let add_run graph (parent : Ir.node) run =
+let add_run ~parameters graph (parent : Ir.node) run =
   let command_node, name =
     match Frontend_common.scalar run with
     | Some source -> (run, source)
@@ -202,8 +257,21 @@ let add_run graph (parent : Ir.node) run =
   match Frontend_common.scalar command_node with
   | None -> graph
   | Some source ->
-      let value, references =
+      let raw_value, references =
         Frontend_common.command_value provider command_node source
+      in
+      let value =
+        references
+        |> List.fold_left
+             (fun value reference ->
+               match local_parameter_name reference with
+               | None -> value
+               | Some name when List.mem_assoc name parameters -> value
+               | Some name ->
+                   Abstract_value.join value
+                     (Abstract_value.unknown
+                        (Unknown.External_state ("CircleCI parameter " ^ name))))
+             raw_value
       in
       let command =
         Ir.make_node ~provider ~kind:Ir.Command ~name ~phase:Ir.Run
@@ -212,9 +280,24 @@ let add_run graph (parent : Ir.node) run =
           ~capabilities:[ Ir.Shell; Ir.Filesystem_read; Ir.Filesystem_write ]
           ~effects:[ Ir.Command_execution ] ()
       in
-      graph |> Ir.add_node command
-      |> Frontend_common.add_control parent command
-      |> Frontend_common.add_references provider command references
+      let graph =
+        graph |> Ir.add_node command
+        |> Frontend_common.add_control parent command
+        |> Frontend_common.add_references provider command references
+      in
+      List.fold_left
+        (fun graph reference ->
+          match
+            Option.bind (local_parameter_name reference) (fun name ->
+                List.assoc_opt name parameters)
+          with
+          | None -> graph
+          | Some (parameter : Ir.node) ->
+              Ir.add_edge
+                (Ir.make_edge ~kind:Ir.Data ~from_:parameter.id ~to_:command.id
+                   ~label:reference.name ())
+                graph)
+        graph references
 
 let mapping_head node =
   match Frontend_common.mapping node with
@@ -255,7 +338,7 @@ let orb_attributes span = function
               ] );
       ]
 
-let add_steps ~commands ~orbs graph (job : Ir.node) body =
+let add_steps ~commands ~orbs ~parameters graph (job : Ir.node) body =
   match Frontend_common.field "steps" body with
   | None -> graph
   | Some steps ->
@@ -316,14 +399,14 @@ let add_steps ~commands ~orbs graph (job : Ir.node) body =
                     graph)
           | None -> (
               match Frontend_common.field "run" body with
-              | Some run -> add_run graph step run
+              | Some run -> add_run ~parameters graph step run
               | None -> (
                   match mapping_head body with
                   | None -> graph
                   | Some (name, arguments) ->
                       let local_definition =
                         List.find_opt
-                          (fun (command_name, _, _) -> command_name = name)
+                          (fun (command_name, _, _, _) -> command_name = name)
                           commands
                       in
                       let local = Option.is_some local_definition in
@@ -351,11 +434,15 @@ let add_steps ~commands ~orbs graph (job : Ir.node) body =
                       in
                       let graph =
                         match (local_definition, orb_target) with
-                        | Some (_, _, (definition : Ir.node)), _ ->
-                            Ir.add_edge
-                              (Ir.make_edge ~kind:Ir.Call_edge ~from_:call.id
-                                 ~to_:definition.id ())
-                              graph
+                        | Some (_, _, (definition : Ir.node), bindings), _ ->
+                            let graph =
+                              Ir.add_edge
+                                (Ir.make_edge ~kind:Ir.Call_edge ~from_:call.id
+                                   ~to_:definition.id ())
+                                graph
+                            in
+                            bind_arguments graph ~scope:call.name bindings
+                              arguments
                         | None, Some (_, _, target) ->
                             Ir.add_edge
                               (Ir.make_edge ~kind:Ir.Call_edge ~from_:call.id
@@ -418,6 +505,7 @@ let add_job_matrix graph (job : Ir.node) invocation =
 
 type invocation = {
   alias : string;
+  aliases : string list;
   target : Ir.node;
   body : Yaml_cst.node;
   requires : string list;
@@ -427,7 +515,9 @@ type invocation = {
 let link_invocations invocations graph =
   let problems = ref [] and graph = ref graph in
   let find alias =
-    List.find_opt (fun invocation -> invocation.alias = alias) invocations
+    List.find_opt
+      (fun invocation -> List.mem alias invocation.aliases)
+      invocations
   in
   List.iter
     (fun invocation ->
@@ -521,7 +611,7 @@ let lower resolved =
       (match Frontend_common.field "parameters" root with
       | None -> ()
       | Some parameters ->
-          graph := add_parameters !graph config "pipeline" parameters);
+          graph := add_parameters !graph config "pipeline" parameters |> fst);
       let graph_with_executors, executors = add_executors !graph config root in
       graph := graph_with_executors;
       let graph_with_commands, commands = add_commands !graph config root in
@@ -535,8 +625,8 @@ let lower resolved =
       in
       graph :=
         List.fold_left
-          (fun graph (_, body, definition) ->
-            add_steps ~commands ~orbs graph definition body)
+          (fun graph (_, body, definition, parameters) ->
+            add_steps ~commands ~orbs ~parameters graph definition body)
           !graph commands;
       let job_entries =
         match Frontend_common.field "jobs" root with
@@ -552,16 +642,20 @@ let lower resolved =
             in
             graph := Ir.add_node job !graph;
             graph := add_job_executor !graph executors job entry.value;
-            (match Frontend_common.field "parameters" entry.value with
-            | None -> ()
-            | Some parameters ->
-                graph := add_parameters !graph job entry.key.value parameters);
-            graph := add_steps ~commands ~orbs !graph job entry.value;
-            (entry.key.value, entry.value, job))
+            let graph_with_parameters, parameters =
+              match Frontend_common.field "parameters" entry.value with
+              | None -> (!graph, [])
+              | Some declarations ->
+                  add_parameters !graph job entry.key.value declarations
+            in
+            graph := graph_with_parameters;
+            graph :=
+              add_steps ~commands ~orbs ~parameters !graph job entry.value;
+            (entry.key.value, entry.value, job, parameters))
           job_entries
       in
       let find_job name =
-        List.find_opt (fun (job_name, _, _) -> job_name = name) jobs
+        List.find_opt (fun (job_name, _, _, _) -> job_name = name) jobs
       in
       let workflow_entries =
         match Frontend_common.field "workflows" root with
@@ -594,7 +688,7 @@ let lower resolved =
           | Some workflow_jobs ->
               Frontend_common.sequence_nodes workflow_jobs
               |> List.iter (fun item ->
-                  let alias, invocation_body =
+                  let reference, invocation_body =
                     match Frontend_common.scalar item with
                     | Some name -> (name, item)
                     | None -> (
@@ -602,10 +696,26 @@ let lower resolved =
                         | Some pair -> pair
                         | None -> ("<unknown>", item))
                   in
+                  let alias =
+                    Frontend_common.field_scalar "name" invocation_body
+                    |> Option.value ~default:reference
+                  in
+                  let aliases =
+                    let matrix_alias =
+                      match Frontend_common.field "matrix" invocation_body with
+                      | None -> None
+                      | Some matrix ->
+                          Some
+                            (Frontend_common.field_scalar "alias" matrix
+                            |> Option.value ~default:reference)
+                    in
+                    alias :: Option.to_list matrix_alias
+                    |> Util.deduplicate_strings
+                  in
                   let requires =
                     Frontend_support.field_strings "requires" invocation_body
                   in
-                  let target =
+                  let target, parameters =
                     if
                       Frontend_common.field_scalar "type" invocation_body
                       = Some "approval"
@@ -613,33 +723,41 @@ let lower resolved =
                       let condition =
                         Condition.atom ("circleci:approval:" ^ alias)
                       in
-                      Ir.make_node ~provider ~kind:Ir.Gate
-                        ~name:("approval:" ^ alias) ~phase:Ir.Plan
-                        ~span:(Yaml_cst.node_span item) ~condition ()
+                      ( Ir.make_node ~provider ~kind:Ir.Gate
+                          ~name:("approval:" ^ alias) ~phase:Ir.Plan
+                          ~span:(Yaml_cst.node_span item) ~condition (),
+                        [] )
                     else
-                      match find_job alias with
-                      | Some (_, _, job) -> job
+                      match find_job reference with
+                      | Some (_, _, job, parameters) -> (job, parameters)
                       | None ->
                           problems :=
                             {
                               Frontend_intf.code = "CC-UNKNOWN-JOB";
                               message =
-                                workflow.name ^ " invokes unknown job " ^ alias;
+                                workflow.name ^ " invokes unknown job "
+                                ^ reference;
                               span = Yaml_cst.node_span item;
                             }
                             :: !problems;
-                          Ir.make_node ~provider ~kind:Ir.Opaque
-                            ~name:("unknown-job:" ^ alias) ~phase:Ir.Plan
-                            ~span:(Yaml_cst.node_span item)
-                            ~unknown:(Unknown.Unresolved_dependency alias) ()
+                          ( Ir.make_node ~provider ~kind:Ir.Opaque
+                              ~name:("unknown-job:" ^ reference)
+                              ~phase:Ir.Plan ~span:(Yaml_cst.node_span item)
+                              ~unknown:(Unknown.Unresolved_dependency reference)
+                              (),
+                            [] )
                   in
                   if Option.is_none (Ir.find_node !graph target.id) then
                     graph := Ir.add_node target !graph;
                   graph := Frontend_common.add_control workflow target !graph;
                   graph := add_job_matrix !graph target invocation_body;
+                  graph :=
+                    bind_arguments !graph ~scope:alias parameters
+                      invocation_body;
                   invocations :=
                     {
                       alias;
+                      aliases;
                       target;
                       body = invocation_body;
                       requires;

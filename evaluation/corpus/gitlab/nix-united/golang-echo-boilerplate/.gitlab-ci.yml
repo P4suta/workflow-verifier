@@ -1,0 +1,50 @@
+include:
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+image: golang:1.25.5
+
+stages:
+  - lint
+  - test
+  - security
+
+lint:
+  stage: lint
+  before_script:
+    - go install github.com/swaggo/swag/cmd/swag@v1.16.4
+    - swag init -g cmd/service/main.go
+  script:
+    - go tool golangci-lint run
+  allow_failure: true
+
+unit-tests:
+  stage: test
+  before_script:
+    - go install github.com/swaggo/swag/cmd/swag@v1.16.4
+    - swag init -g cmd/service/main.go
+  script:
+    - go test -race -v $(go list ./... | grep -v /tests/)
+
+integration-tests:
+  stage: test
+  tags:
+    - docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - docker:dind
+  script:
+    - go test -v ./tests/integration/...
+
+secret_detection:
+  stage: security
+
+govulncheck:
+  stage: security
+  before_script:
+    - go install github.com/swaggo/swag/cmd/swag@v1.16.4
+    - swag init -g cmd/service/main.go
+    - go install golang.org/x/vuln/cmd/govulncheck@v1.1.4
+  script:
+    - govulncheck -C . -format text ./...

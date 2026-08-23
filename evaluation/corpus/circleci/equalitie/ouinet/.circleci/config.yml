@@ -1,0 +1,71 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: debian:buster
+
+    environment:
+      CMAKE_BUILD_PARALLEL_LEVEL: 3
+      # cmake fails without this for some reason
+      LANG: C.UTF-8
+      BASH_ENV: ~/.bashrc
+
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            apt-get update
+            apt-get install -y \
+                autoconf \
+                automake \
+                autopoint \
+                build-essential \
+                cmake \
+                gettext \
+                git \
+                libssl-dev \
+                libtool \
+                ninja-build \
+                openjdk-11-jdk-headless \
+                pkg-config \
+                python3-pytest \
+                python3-pytest-asyncio \
+                python3-pytest-timeout \
+                rsync \
+                texinfo \
+                unzip \
+                wget \
+                zlib1g-dev
+
+      - checkout
+
+      - run:
+          name: Build
+          command: |
+            git submodule sync --recursive
+            git submodule update --recursive --init
+            mkdir build
+            cd build
+            cmake ..
+            cmake --build .
+
+      - run:
+          name: Test
+          command: |
+            export LD_LIBRARY_PATH=$PWD/build:/usr/local/lib
+
+            for test in ./build/test/test-*; do
+                "$test" --log_level=test_suite
+            done
+
+            export OUINET_BUILD_DIR=$PWD/build
+            ./scripts/run_integration_tests.sh
+
+      - run:
+          name: Build.Android
+          command: |
+            mkdir -p build.android
+            cd build.android
+            ../scripts/build-android.sh
+          no_output_timeout: 60m

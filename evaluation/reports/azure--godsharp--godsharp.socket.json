@@ -1,0 +1,388 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = CmdLine@2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+          "start": {
+            "byte": 779,
+            "column": 19,
+            "line": 35
+          },
+          "stop": {
+            "byte": 788,
+            "column": 28,
+            "line": 35
+          }
+        }
+      },
+      "id": "diag_fd400ad690fa3be55671",
+      "message": "dependency is not pinned to immutable content: CmdLine@2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+        "start": {
+          "byte": 779,
+          "column": 19,
+          "line": 35
+        },
+        "stop": {
+          "byte": 788,
+          "column": 28,
+          "line": 35
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_6b3afbfde151a2679fa8",
+          "span": {
+            "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+            "start": {
+              "byte": 779,
+              "column": 19,
+              "line": 35
+            },
+            "stop": {
+              "byte": 788,
+              "column": 28,
+              "line": 35
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:7b5ed7e9334e691120348a038e322ab2be6d279b740ad4baad7f7fa8f292827a",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_b087e765c82cb9d334df",
+          "id": "wv_03020888b17cc7595a69",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6b3afbfde151a2679fa8"
+        },
+        {
+          "condition": true,
+          "from": "wv_41e0284e0c337e87a495",
+          "id": "wv_1ce4efabf5c96a491447",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b087e765c82cb9d334df"
+        },
+        {
+          "condition": true,
+          "from": "wv_b087e765c82cb9d334df",
+          "id": "wv_33f50390ce150860c62a",
+          "kind": "call",
+          "label": null,
+          "to": "wv_6b3afbfde151a2679fa8"
+        },
+        {
+          "condition": true,
+          "from": "wv_3e1049bb034439f8fb8d",
+          "id": "wv_3627877df001b5b34683",
+          "kind": "control",
+          "label": null,
+          "to": "wv_41e0284e0c337e87a495"
+        },
+        {
+          "condition": true,
+          "from": "wv_f4ca96c0bed34659e7a7",
+          "id": "wv_99e6784c4ba3f3ed5f12",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0f4abe299541e996fa26"
+        },
+        {
+          "condition": true,
+          "from": "wv_0f4abe299541e996fa26",
+          "id": "wv_b8ceec6572083e7e4c88",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3e1049bb034439f8fb8d"
+        }
+      ],
+      "entrypoints": [
+        "wv_0f4abe299541e996fa26"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0f4abe299541e996fa26",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+            "start": {
+              "byte": 458,
+              "column": 1,
+              "line": 17
+            },
+            "stop": {
+              "byte": 1002,
+              "column": 42,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3e1049bb034439f8fb8d",
+          "kind": "stage",
+          "name": "windows_latest",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+            "start": {
+              "byte": 548,
+              "column": 5,
+              "line": 25
+            },
+            "stop": {
+              "byte": 1002,
+              "column": 42,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_41e0284e0c337e87a495",
+          "kind": "job",
+          "name": "Push",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+            "start": {
+              "byte": 684,
+              "column": 9,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1002,
+              "column": 42,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6b3afbfde151a2679fa8",
+          "kind": "call",
+          "name": "CmdLine@2",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+            "start": {
+              "byte": 779,
+              "column": 19,
+              "line": 35
+            },
+            "stop": {
+              "byte": 788,
+              "column": 28,
+              "line": 35
+            }
+          },
+          "unknown": {
+            "detail": "CmdLine@2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b087e765c82cb9d334df",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+            "start": {
+              "byte": 773,
+              "column": 13,
+              "line": 35
+            },
+            "stop": {
+              "byte": 1002,
+              "column": 42,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f4ca96c0bed34659e7a7",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/godsharp/godsharp.socket/azure-pipelines.yml",
+            "start": {
+              "byte": 469,
+              "column": 3,
+              "line": 18
+            },
+            "stop": {
+              "byte": 534,
+              "column": 16,
+              "line": 22
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/godsharp/godsharp.socket/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:93734224928a6c3b1128f54b40366fcb0a25edc3db1b47542ccbdc94b106d4e4",
+      "path": "azure/godsharp/godsharp.socket/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

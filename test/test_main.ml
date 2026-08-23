@@ -62,6 +62,14 @@ let yaml_source =
 let yaml_tests =
   [
     {
+      name = "CRLF-terminated block scalar validation makes forward progress";
+      run =
+        (fun () ->
+          let source = "literal: |\r\n  value\r\n" in
+          let tree = Yaml_cst.parse ~file:"block.yml" source in
+          expect_equal_string ~expected:source (Yaml_cst.print tree));
+    };
+    {
       name = "lossless YAML print preserves comments styles and CRLF bytes";
       run =
         (fun () ->
@@ -273,6 +281,100 @@ let yaml_tests =
                   (fun problem ->
                     problem.Yaml_cst.message
                     = "content follows a completed flow collection")
+                  tree.problems)));
+    };
+    {
+      name = "block header validation ignores shell pipes in folded payloads";
+      run =
+        (fun () ->
+          let source =
+            "command: >\n  xcodebuild test\n  -scheme Example\n  | xcpretty\n"
+          in
+          let tree = Yaml_cst.parse ~file:".circleci/config.yml" source in
+          expect_true "block scalar shell pipe must remain payload text"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message = "invalid block scalar header")
+                  tree.problems)));
+    };
+    {
+      name = "all validators ignore nested block scalar payload syntax";
+      run =
+        (fun () ->
+          let source =
+            {|steps:
+  - bash: |
+      BIN_DIR=bin
+      [ -d "$BIN_DIR" ] && rm -rf "$BIN_DIR"
+      const suffix = condition ? "ok" : "";
+|}
+          in
+          let tree = Yaml_cst.parse ~file:"azure-pipelines.yml" source in
+          expect_true "payload text must not be validated as YAML structure"
+            (not
+               (List.exists
+                  (fun problem -> problem.Yaml_cst.code = "YAML-SYNTAX")
+                  tree.problems)));
+    };
+    {
+      name = "inline comments do not add plain-scalar mapping separators";
+      run =
+        (fun () ->
+          let source =
+            {|permissions:
+  id-token: write # IMPORTANT: required
+# tee: /dev/stderr: unavailable
+steps:
+  - run: # Step 1: install
+      command: true
+|}
+          in
+          let tree = Yaml_cst.parse ~file:"workflow.yml" source in
+          expect_true "comments must be outside the node grammar"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message
+                    = "multiple mapping separators in a plain scalar")
+                  tree.problems)));
+    };
+    {
+      name = "plain script scalars retain shell quotes hashes and backslashes";
+      run =
+        (fun () ->
+          let source =
+            {|script:
+  - sed -i "s#<IMAGE>#${IMAGE}#g" deployment.yaml
+only:
+  - /^v[0-9]+(\.[0-9]+){0,2}(-rc\.[0-9]+)?$/
+|}
+          in
+          let tree = Yaml_cst.parse ~file:".gitlab-ci.yml" source in
+          expect_true "plain scalars must not open YAML quoted or flow nodes"
+            (not
+               (List.exists
+                  (fun problem -> problem.Yaml_cst.code = "YAML-SYNTAX")
+                  tree.problems)));
+    };
+    {
+      name = "shell quotes ending after colons do not open YAML scalars";
+      run =
+        (fun () ->
+          let source =
+            {|script:
+  - echo "Push image:"
+only:
+  - /^v[0-9]+(\.[0-9]+)$/
+|}
+          in
+          let tree = Yaml_cst.parse ~file:".gitlab-ci.yml" source in
+          expect_true "plain regex escapes must remain outside YAML quotes"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message
+                    = "invalid escape in a double-quoted scalar")
                   tree.problems)));
     };
     {

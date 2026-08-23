@@ -1,0 +1,420 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:acfbff8bdab479d958f2590df8d465e2930254e36c2efcec018d8ea9cb1f7af7",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_be7d5836e71f066d8fd5",
+          "id": "wv_1761aca2da0b754abb2a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_271d2483ab1a30417de7"
+        },
+        {
+          "condition": true,
+          "from": "wv_0a7728ef3063947b75b3",
+          "id": "wv_9222b59773431ab4bcf7",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e4f228b520aef1322030"
+        },
+        {
+          "condition": true,
+          "from": "wv_9cb07162a0dd61472735",
+          "id": "wv_9ee89af140ec0271d11f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1fbcc15073d4bb5bafdb"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4f228b520aef1322030",
+          "id": "wv_a0c2122df1f8bc1b32f2",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_19b1e5c70d552b99f5c1"
+        },
+        {
+          "condition": true,
+          "from": "wv_9cb07162a0dd61472735",
+          "id": "wv_bd8170b3c421779068ae",
+          "kind": "call",
+          "label": null,
+          "to": "wv_1fbcc15073d4bb5bafdb"
+        },
+        {
+          "condition": true,
+          "from": "wv_19b1e5c70d552b99f5c1",
+          "id": "wv_c3e4592c0a5f5e2b500e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_be7d5836e71f066d8fd5"
+        },
+        {
+          "condition": true,
+          "from": "wv_9cb07162a0dd61472735",
+          "id": "wv_d85bca3615d72b9d1e0d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0a7728ef3063947b75b3"
+        }
+      ],
+      "entrypoints": [
+        "wv_9cb07162a0dd61472735"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0a7728ef3063947b75b3",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/hashmapinc/hdm/.gitlab-ci.yml",
+            "start": {
+              "byte": 580,
+              "column": 1,
+              "line": 15
+            },
+            "stop": {
+              "byte": 620,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_19b1e5c70d552b99f5c1",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/hashmapinc/hdm/.gitlab-ci.yml",
+            "start": {
+              "byte": 580,
+              "column": 1,
+              "line": 15
+            },
+            "stop": {
+              "byte": 620,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1fbcc15073d4bb5bafdb",
+          "kind": "call",
+          "name": "python.gitlab-ci.yml",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/hashmapinc/hdm/.gitlab-ci.yml",
+            "start": {
+              "byte": 593,
+              "column": 5,
+              "line": 16
+            },
+            "stop": {
+              "byte": 620,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": {
+            "detail": "python.gitlab-ci.yml",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_271d2483ab1a30417de7",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/hashmapinc/hdm/.gitlab-ci.yml",
+            "start": {
+              "byte": 580,
+              "column": 1,
+              "line": 15
+            },
+            "stop": {
+              "byte": 620,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9cb07162a0dd61472735",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/hashmapinc/hdm/.gitlab-ci.yml",
+            "start": {
+              "byte": 580,
+              "column": 1,
+              "line": 15
+            },
+            "stop": {
+              "byte": 620,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_be7d5836e71f066d8fd5",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/hashmapinc/hdm/.gitlab-ci.yml",
+            "start": {
+              "byte": 580,
+              "column": 1,
+              "line": 15
+            },
+            "stop": {
+              "byte": 620,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e4f228b520aef1322030",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/hashmapinc/hdm/.gitlab-ci.yml",
+            "start": {
+              "byte": 580,
+              "column": 1,
+              "line": 15
+            },
+            "stop": {
+              "byte": 620,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/hashmapinc/hdm/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:6698b44bd83eae8a572133cc9e46c22708ca5f02d12c0a341db9f5c14360f910",
+      "path": "gitlab/hashmapinc/hdm/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "python.gitlab-ci.yml",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

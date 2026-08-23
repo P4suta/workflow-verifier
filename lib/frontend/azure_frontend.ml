@@ -474,9 +474,16 @@ let add_environment graph (job : Ir.node) body =
       Frontend_support.add_resource ~provider ~owner:job
         ~name:("environment:" ^ name) ~phase:Ir.Run
         ~span:(Yaml_cst.node_span environment)
-        ~capabilities:[ Ir.Deployment ]
-        ~edge_kind:Ir.Grant ~resource_to_owner:true graph
+        ~capabilities:[ Ir.Deployment ] ~edge_kind:Ir.Grant
+        ~resource_to_owner:true graph
       |> fst
+
+type lowered_job = {
+  body : Yaml_cst.node;
+  job : Ir.node;
+  parent : Ir.node;
+  owns_variables : bool;
+}
 
 let collect_jobs parent jobs_node =
   Frontend_common.sequence_nodes jobs_node
@@ -493,13 +500,17 @@ let collect_jobs parent jobs_node =
             || Option.is_some (Frontend_common.field "environment" body)
           in
           Some
-            ( body,
-              Ir.make_node ~provider ~kind:Ir.Job ~name ~phase:Ir.Plan
-                ~span:(Yaml_cst.node_span body)
-                ~capabilities:(if deployment then [ Ir.Deployment ] else [])
-                ~effects:(if deployment then [ Ir.Deployment_change ] else [])
-                (),
-              parent ))
+            {
+              body;
+              job =
+                Ir.make_node ~provider ~kind:Ir.Job ~name ~phase:Ir.Plan
+                  ~span:(Yaml_cst.node_span body)
+                  ~capabilities:(if deployment then [ Ir.Deployment ] else [])
+                  ~effects:(if deployment then [ Ir.Deployment_change ] else [])
+                  ();
+              parent;
+              owns_variables = true;
+            })
 
 let add_template_directives graph owner root =
   let rec walk graph node =
@@ -635,43 +646,56 @@ let lower resolved =
                Ir.make_node ~provider ~kind:Ir.Job ~name:"pipeline"
                  ~phase:Ir.Plan ~span:(Yaml_cst.node_span root) ()
              in
-             jobs := [ (root, synthetic, workflow) ]);
+             jobs :=
+               [
+                 {
+                   body = root;
+                   job = synthetic;
+                   parent = workflow;
+                   owns_variables = false;
+                 };
+               ]);
       List.iter
-        (fun (_, job, parent) ->
+        (fun lowered ->
           graph :=
-            !graph |> Ir.add_node job |> Frontend_common.add_control parent job)
+            !graph |> Ir.add_node lowered.job
+            |> Frontend_common.add_control lowered.parent lowered.job)
         !jobs;
       let linked_jobs, job_problems =
         Frontend_support.link_dependencies
           ~unknown_code:"AZ-UNKNOWN-JOB-DEPENDENCY"
           ~cycle_code:"AZ-JOB-DEPENDENCY-CYCLE" ~label:"dependsOn"
-          ~nodes:(List.map (fun (_, job, _) -> job) !jobs)
+          ~nodes:(List.map (fun lowered -> lowered.job) !jobs)
           ~dependencies:
             (List.map
-               (fun (body, job, _) ->
-                 ( job.Ir.name,
-                   dependency_names "dependsOn" body,
-                   Yaml_cst.node_span body ))
+               (fun lowered ->
+                 ( lowered.job.Ir.name,
+                   dependency_names "dependsOn" lowered.body,
+                   Yaml_cst.node_span lowered.body ))
                !jobs)
           !graph
       in
       graph := linked_jobs;
       problems := job_problems @ !problems;
       List.iter
-        (fun (body, job, _) ->
-          (match Frontend_common.field "condition" body with
+        (fun lowered ->
+          (match Frontend_common.field "condition" lowered.body with
           | None -> ()
           | Some expression_node ->
               graph :=
-                Frontend_support.add_gate ~provider ~owner:job
-                  ~name:("condition:job:" ^ job.name)
+                Frontend_support.add_gate ~provider ~owner:lowered.job
+                  ~name:("condition:job:" ^ lowered.job.name)
                   ~phase:Ir.Plan ~expression_node !graph
                 |> fst);
-          (match Frontend_common.field "variables" body with
-          | None -> ()
-          | Some variables -> graph := add_variables !graph job variables);
-          graph := add_matrix !graph job body;
-          graph := add_environment !graph job body;
-          graph := add_steps resolved !graph job body)
+          (match
+             ( lowered.owns_variables,
+               Frontend_common.field "variables" lowered.body )
+           with
+          | false, _ | true, None -> ()
+          | true, Some variables ->
+              graph := add_variables !graph lowered.job variables);
+          graph := add_matrix !graph lowered.job lowered.body;
+          graph := add_environment !graph lowered.job lowered.body;
+          graph := add_steps resolved !graph lowered.job lowered.body)
         !jobs;
       (Ir.finalize !graph, List.rev !problems)

@@ -10,6 +10,7 @@ let required =
     "../scripts/verify_release_version.py";
     "../scripts/verify_release_evidence.py";
     "../scripts/corpus_gate.py";
+    "../scripts/prepare_corpus.py";
     "../scripts/measure_performance.py";
     "../scripts/measure_performance_pair.py";
     "../scripts/performance_gate.py";
@@ -18,6 +19,7 @@ let required =
     "../scripts/determinism_probe.py";
     "../scripts/compare_determinism.py";
     "../scripts/dogfood_gate.py";
+    "../.gitattributes";
     "../.ocaml-mutants.toml";
     "../.github/workflows/ci.yml";
     "../.github/workflows/mutation.yml";
@@ -32,6 +34,7 @@ let required =
     "../performance/README.md";
     "../performance/suite-v1.json";
     "../schema/dogfood-v1.schema.json";
+    "../schema/corpus-review-v1.schema.json";
     "../schema/release-evidence-v1.schema.json";
     "../release-evidence/README.md";
   ]
@@ -79,6 +82,13 @@ let () =
       if Util.contains ~needle:forbidden opam then
         fail "analyzer dependency surface contains %s" forbidden)
     [ "ctypes"; "yaml"; "unix"; "cmdliner"; "yojson" ];
+  let attributes = read_required ".gitattributes" in
+  if
+    not
+      (Util.contains
+         ~needle:"evaluation/corpus/** -text -whitespace" attributes)
+  then
+    fail "immutable corpus bytes must bypass Git text and whitespace rewriting";
   let github = read_required ".github/workflows/ci.yml" in
   if
     Util.contains ~needle:"actions/checkout@v" github
@@ -121,7 +131,14 @@ let () =
       let source = read_required relative in
       if not (Util.contains ~needle:required source) then
         fail "%s omits period-balanced sample count: %s" relative required)
-    [ ("justfile", "samples=\"24\""); ("mise.toml", "--samples 24") ];
+    [
+      ("justfile", "samples=\"24\"");
+      ("mise.toml", "--samples 24");
+      ("justfile", "prepare_corpus.py acquire");
+      ("justfile", "prepare_corpus.py apply-review");
+      ("mise.toml", "prepare_corpus.py acquire");
+      ("mise.toml", "prepare_corpus.py apply-review");
+    ];
   if
     not
       (Util.contains

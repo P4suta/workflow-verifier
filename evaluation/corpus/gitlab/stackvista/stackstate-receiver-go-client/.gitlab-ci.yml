@@ -1,0 +1,22 @@
+stages:
+  - lint
+  - test
+
+.common:
+  image: ${REGISTRY_DOCKER_URL}/library/golang:1.26
+  tags:
+    - sts-k8s-m-runner
+
+lint:
+  extends: .common
+  stage: lint
+  script:
+    - go fmt ./...
+    - go install github.com/mgechev/revive@latest
+    - revive -formatter stylish -config revive-recommended.toml ./...
+
+test:
+  extends: .common
+  stage: test
+  script:
+    - go test -v ./...

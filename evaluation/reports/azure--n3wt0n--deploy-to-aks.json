@@ -1,0 +1,806 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = Docker@2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+          "start": {
+            "byte": 261,
+            "column": 13,
+            "line": 20
+          },
+          "stop": {
+            "byte": 269,
+            "column": 21,
+            "line": 20
+          }
+        }
+      },
+      "id": "diag_e917a10e149414357b56",
+      "message": "dependency is not pinned to immutable content: Docker@2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+        "start": {
+          "byte": 261,
+          "column": 13,
+          "line": 20
+        },
+        "stop": {
+          "byte": 269,
+          "column": 21,
+          "line": 20
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_477623590ee4d6a5ab4b",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 261,
+              "column": 13,
+              "line": 20
+            },
+            "stop": {
+              "byte": 269,
+              "column": 21,
+              "line": 20
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = PublishPipelineArtifact@1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+          "start": {
+            "byte": 537,
+            "column": 13,
+            "line": 29
+          },
+          "stop": {
+            "byte": 562,
+            "column": 38,
+            "line": 29
+          }
+        }
+      },
+      "id": "diag_46a24f51102d54f826d7",
+      "message": "dependency is not pinned to immutable content: PublishPipelineArtifact@1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+        "start": {
+          "byte": 537,
+          "column": 13,
+          "line": 29
+        },
+        "stop": {
+          "byte": 562,
+          "column": 38,
+          "line": 29
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_97c62bd44ee01a56580a",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 537,
+              "column": 13,
+              "line": 29
+            },
+            "stop": {
+              "byte": 562,
+              "column": 38,
+              "line": 29
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:a5fbd3355a55be4b6a9a4db1d7dc8ff72dad09926f416e4ecf3b1bc3d24091b3",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_d0a5259ef72b45e0ea14",
+          "id": "wv_0d7c3a0ceba717e2c112",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e5399f001216a161ac3e"
+        },
+        {
+          "condition": true,
+          "from": "wv_a7a1013d34ada954c0e2",
+          "id": "wv_1129c0928cac6025bccf",
+          "kind": "data",
+          "label": "tag",
+          "to": "wv_319fce9b053e2f46696e"
+        },
+        {
+          "condition": true,
+          "from": "wv_3a05d4dc222722062b85",
+          "id": "wv_1367a85d7c2bb35f6398",
+          "kind": "data",
+          "label": "imageRepo",
+          "to": "wv_319fce9b053e2f46696e"
+        },
+        {
+          "condition": true,
+          "from": "wv_0998ea605d8a40dec508",
+          "id": "wv_16f0b103e461d4ac616f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e5399f001216a161ac3e"
+        },
+        {
+          "condition": true,
+          "from": "wv_f822d4ae6c35c183cbe3",
+          "id": "wv_25f0f4c4fae631c2fa7c",
+          "kind": "control",
+          "label": "dependsOn",
+          "to": "wv_3b6402bae7e7a356b397"
+        },
+        {
+          "condition": true,
+          "from": "wv_d0a5259ef72b45e0ea14",
+          "id": "wv_37aeba937974d2b7e0d8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0998ea605d8a40dec508"
+        },
+        {
+          "condition": true,
+          "from": "wv_0998ea605d8a40dec508",
+          "id": "wv_6050682a8d9c2f7a88ee",
+          "kind": "control",
+          "label": null,
+          "to": "wv_477623590ee4d6a5ab4b"
+        },
+        {
+          "condition": true,
+          "from": "wv_319fce9b053e2f46696e",
+          "id": "wv_850f54010ca3fdfe8ef8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f822d4ae6c35c183cbe3"
+        },
+        {
+          "condition": true,
+          "from": "wv_0998ea605d8a40dec508",
+          "id": "wv_864e0bdd5c59e17860e8",
+          "kind": "call",
+          "label": null,
+          "to": "wv_477623590ee4d6a5ab4b"
+        },
+        {
+          "condition": true,
+          "from": "wv_e5399f001216a161ac3e",
+          "id": "wv_8720f5cfbb9c8273950c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_97c62bd44ee01a56580a"
+        },
+        {
+          "condition": true,
+          "from": "wv_5d24fc2893dedff0f6f8",
+          "id": "wv_a5631546f5ada034c975",
+          "kind": "control",
+          "label": null,
+          "to": "wv_319fce9b053e2f46696e"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b6402bae7e7a356b397",
+          "id": "wv_afd3f147365e7188164c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_41447b200210e1edbe5e"
+        },
+        {
+          "condition": true,
+          "from": "wv_43d9dfda86f7f80d06fd",
+          "id": "wv_bda062a26822400a5bab",
+          "kind": "grant",
+          "label": null,
+          "to": "wv_41447b200210e1edbe5e"
+        },
+        {
+          "condition": true,
+          "from": "wv_f822d4ae6c35c183cbe3",
+          "id": "wv_bfe7aabffa88587cb6e1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d0a5259ef72b45e0ea14"
+        },
+        {
+          "condition": true,
+          "from": "wv_319fce9b053e2f46696e",
+          "id": "wv_f13a6130893c22924fc5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3b6402bae7e7a356b397"
+        },
+        {
+          "condition": true,
+          "from": "wv_e5399f001216a161ac3e",
+          "id": "wv_f640e91e76f65bfee6fa",
+          "kind": "call",
+          "label": null,
+          "to": "wv_97c62bd44ee01a56580a"
+        }
+      ],
+      "entrypoints": [
+        "wv_319fce9b053e2f46696e"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0998ea605d8a40dec508",
+          "kind": "step",
+          "name": "Build an image",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 255,
+              "column": 7,
+              "line": 20
+            },
+            "stop": {
+              "byte": 524,
+              "column": 17,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_319fce9b053e2f46696e",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 2435,
+              "column": 47,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+                    "start": {
+                      "byte": 66,
+                      "column": 14,
+                      "line": 8
+                    },
+                    "stop": {
+                      "byte": 75,
+                      "column": 23,
+                      "line": 8
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sampleapp"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3a05d4dc222722062b85",
+          "kind": "resource",
+          "name": "variable:imageRepo",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 55,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 75,
+              "column": 23,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3b6402bae7e7a356b397",
+          "kind": "stage",
+          "name": "Deploy",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 711,
+              "column": 3,
+              "line": 35
+            },
+            "stop": {
+              "byte": 2435,
+              "column": 47,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [
+            "deployment_change"
+          ],
+          "id": "wv_41447b200210e1edbe5e",
+          "kind": "job",
+          "name": "Deploy",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 892,
+              "column": 5,
+              "line": 43
+            },
+            "stop": {
+              "byte": 2435,
+              "column": 47,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_43d9dfda86f7f80d06fd",
+          "kind": "resource",
+          "name": "environment:k8sdev.default",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 959,
+              "column": 18,
+              "line": 45
+            },
+            "stop": {
+              "byte": 975,
+              "column": 34,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_477623590ee4d6a5ab4b",
+          "kind": "call",
+          "name": "Docker@2",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 261,
+              "column": 13,
+              "line": 20
+            },
+            "stop": {
+              "byte": 269,
+              "column": 21,
+              "line": 20
+            }
+          },
+          "unknown": {
+            "detail": "Docker@2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5d24fc2893dedff0f6f8",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 9,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 15,
+              "column": 7,
+              "line": 2
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_97c62bd44ee01a56580a",
+          "kind": "call",
+          "name": "PublishPipelineArtifact@1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 537,
+              "column": 13,
+              "line": 29
+            },
+            "stop": {
+              "byte": 562,
+              "column": 38,
+              "line": 29
+            }
+          },
+          "unknown": {
+            "detail": "PublishPipelineArtifact@1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+                    "start": {
+                      "byte": 83,
+                      "column": 8,
+                      "line": 9
+                    },
+                    "stop": {
+                      "byte": 101,
+                      "column": 26,
+                      "line": 9
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.BuildId",
+                  "span": {
+                    "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+                    "start": {
+                      "byte": 85,
+                      "column": 10,
+                      "line": 9
+                    },
+                    "stop": {
+                      "byte": 98,
+                      "column": 23,
+                      "line": 9
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "$(Build.BuildId)",
+                  "Build.BuildId"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a7a1013d34ada954c0e2",
+          "kind": "resource",
+          "name": "variable:tag",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 78,
+              "column": 3,
+              "line": 9
+            },
+            "stop": {
+              "byte": 101,
+              "column": 26,
+              "line": 9
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d0a5259ef72b45e0ea14",
+          "kind": "job",
+          "name": "Build",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 165,
+              "column": 5,
+              "line": 15
+            },
+            "stop": {
+              "byte": 699,
+              "column": 36,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e5399f001216a161ac3e",
+          "kind": "step",
+          "name": "step 2",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 531,
+              "column": 7,
+              "line": 29
+            },
+            "stop": {
+              "byte": 699,
+              "column": 36,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f822d4ae6c35c183cbe3",
+          "kind": "stage",
+          "name": "Build",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml",
+            "start": {
+              "byte": 113,
+              "column": 3,
+              "line": 12
+            },
+            "stop": {
+              "byte": 699,
+              "column": 36,
+              "line": 33
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:d261fa0b891987e66204c75f73e5a8a3b77675a2a8be3a51880341565e0044e3",
+      "path": "azure/n3wt0n/deploy-to-aks/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [
+        {
+          "detail": "protection rules for environment:k8sdev.default",
+          "kind": "external_state"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "PublishPipelineArtifact@1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

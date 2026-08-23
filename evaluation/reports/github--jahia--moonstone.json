@@ -1,0 +1,5316 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "filesystem_read",
+        "filesystem_write",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "dominator set contains no Gate node"
+      ],
+      "fix": null,
+      "id": "diag_be9fb449523c7af99b0a",
+      "message": "a privileged effect is reachable without a dominating authorization gate",
+      "rule_id": "WV-AUTH-001",
+      "severity": "error",
+      "span": {
+        "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+        "start": {
+          "byte": 2955,
+          "column": 14,
+          "line": 89
+        },
+        "stop": {
+          "byte": 3012,
+          "column": 71,
+          "line": 89
+        }
+      },
+      "trace": [
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_3caad94ef8ab39a0ac9b",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 98,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 4395,
+              "column": 13,
+              "line": 111
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_a44c550573ad5f02258c",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 663,
+              "column": 9,
+              "line": 21
+            },
+            "stop": {
+              "byte": 720,
+              "column": 66,
+              "line": 21
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_ee33d5f99e1afd1b5d2e",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 569,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 4395,
+              "column": 13,
+              "line": 111
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_862d8be5b6f79c152fd6",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2896,
+              "column": 13,
+              "line": 88
+            },
+            "stop": {
+              "byte": 2941,
+              "column": 58,
+              "line": 88
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_818f4c2cb335051c556b",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2865,
+              "column": 9,
+              "line": 87
+            },
+            "stop": {
+              "byte": 3012,
+              "column": 71,
+              "line": 89
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_9540ee937f86e8b49187",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2955,
+              "column": 14,
+              "line": 89
+            },
+            "stop": {
+              "byte": 3012,
+              "column": 71,
+              "line": 89
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+          "start": {
+            "byte": 2955,
+            "column": 14,
+            "line": 89
+          },
+          "stop": {
+            "byte": 3012,
+            "column": 71,
+            "line": 89
+          }
+        }
+      },
+      "id": "diag_ce685a1d38a6485750f5",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+        "start": {
+          "byte": 2955,
+          "column": 14,
+          "line": 89
+        },
+        "stop": {
+          "byte": 3012,
+          "column": 71,
+          "line": 89
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_90c39add700f8aa8311b",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2994,
+              "column": 53,
+              "line": 89
+            },
+            "stop": {
+              "byte": 3009,
+              "column": 68,
+              "line": 89
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_9540ee937f86e8b49187",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2955,
+              "column": 14,
+              "line": 89
+            },
+            "stop": {
+              "byte": 3012,
+              "column": 71,
+              "line": 89
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+          "start": {
+            "byte": 3083,
+            "column": 14,
+            "line": 93
+          },
+          "stop": {
+            "byte": 4395,
+            "column": 13,
+            "line": 111
+          }
+        }
+      },
+      "id": "diag_04cdf31ab5eac4cc8993",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+        "start": {
+          "byte": 3083,
+          "column": 14,
+          "line": 93
+        },
+        "stop": {
+          "byte": 4395,
+          "column": 13,
+          "line": 111
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_3aec1cfd01d3b01b2f16",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3372,
+              "column": 303,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3387,
+              "column": 318,
+              "line": 93
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_84584404dbe4eed71187",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3083,
+              "column": 14,
+              "line": 93
+            },
+            "stop": {
+              "byte": 4395,
+              "column": 13,
+              "line": 111
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:69c935b964109d3a0d88cb367b119ce1ff875e5a19ebba1cc94200a74682d21c",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_038a9e22aacf791393c4",
+          "id": "wv_01d7a40f21acf999040e",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_3dc16819c21a0949ebac",
+          "id": "wv_046ff57629ef1461c79c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_148421b4c5bb9376bdbe"
+        },
+        {
+          "condition": true,
+          "from": "wv_98af980f43edbeb2a4f8",
+          "id": "wv_0d7ff7fd365cc7a71d77",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5ddb094beab6ffa15057"
+        },
+        {
+          "condition": true,
+          "from": "wv_f8f4de319d1c91f2f3ea",
+          "id": "wv_0dbb520a2a43ca2268cc",
+          "kind": "data",
+          "label": "github.head_ref",
+          "to": "wv_88f48c6e07f55d5f33cd"
+        },
+        {
+          "condition": true,
+          "from": "wv_5600e57be00bbf5f3610",
+          "id": "wv_0dc3c9d7894cc611cf2a",
+          "kind": "data",
+          "label": "GITHUB_OUTPUT",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_148421b4c5bb9376bdbe",
+          "id": "wv_0fb1f78197bb506bc62f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_63f08d6ba78a9b340550"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d61409eaa06eec630e7",
+          "id": "wv_125a1c9947c684df2b07",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_88f48c6e07f55d5f33cd"
+        },
+        {
+          "condition": true,
+          "from": "wv_571bbe113061136511ab",
+          "id": "wv_13c64dc7c26430dcfb6e",
+          "kind": "data",
+          "label": "steps.check_changes.outputs.changed_files",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_3aec1cfd01d3b01b2f16",
+          "id": "wv_14b8df669cc338718e08",
+          "kind": "data",
+          "label": "github.head_ref",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_98af980f43edbeb2a4f8",
+          "id": "wv_166ddfebc9f40776677f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_cae3411584c4fbdb5ee9"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_16b836d0fb7ee2f84aa1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_85d2e7cfc03a7fa102eb"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff74d5810d9b0c8ee9fa",
+          "id": "wv_1701646c5320acff9384",
+          "kind": "control",
+          "label": null,
+          "to": "wv_dcd27abc396fa8ca1817"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(steps.check_changes.outputs.changes==\"true\")"
+          },
+          "from": "wv_862d8be5b6f79c152fd6",
+          "id": "wv_1acb3d2fafc288bfd0a5",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_818f4c2cb335051c556b"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_1ebef8dd6d7e902b3c1e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3dc16819c21a0949ebac"
+        },
+        {
+          "condition": true,
+          "from": "wv_4a7fe4a603b83fbfac11",
+          "id": "wv_20d93b2c618c168d6868",
+          "kind": "data",
+          "label": "env.AUTHOR_EMAIL",
+          "to": "wv_63f08d6ba78a9b340550"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_244ad5c47c60b83bd241",
+          "kind": "control",
+          "label": null,
+          "to": "wv_98af980f43edbeb2a4f8"
+        },
+        {
+          "condition": true,
+          "from": "wv_818f4c2cb335051c556b",
+          "id": "wv_265b75edde5414d0a957",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9540ee937f86e8b49187"
+        },
+        {
+          "condition": true,
+          "from": "wv_ed32f1fc145592f3a3d9",
+          "id": "wv_2669df41a55fbb2798eb",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_e7438156cbdb3c712158",
+          "id": "wv_270fb783cfdfc0d054ee",
+          "kind": "data",
+          "label": "steps.check_changes.outputs.changed_count",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(steps.check_changes.outputs.changes==\"true\")"
+          },
+          "from": "wv_9442cb5dc3d28cf12358",
+          "id": "wv_337525ba59b6cc03d4a0",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_089e57ed990acb5647b3"
+        },
+        {
+          "condition": true,
+          "from": "wv_23cd3dafb63788f66559",
+          "id": "wv_34617ab02b31bd805bc1",
+          "kind": "data",
+          "label": "GITHUB_OUTPUT",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_85d2e7cfc03a7fa102eb",
+          "id": "wv_393946dcdd6cbb89d664",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ff74d5810d9b0c8ee9fa"
+        },
+        {
+          "condition": true,
+          "from": "wv_4310fd169757bfc6486b",
+          "id": "wv_3fde5d526e086d1f9ff6",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_42cc4f6d9fe8877779fe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cae3411584c4fbdb5ee9"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_478ffe7064f0233fe929",
+          "kind": "control",
+          "label": null,
+          "to": "wv_148421b4c5bb9376bdbe"
+        },
+        {
+          "condition": true,
+          "from": "wv_90c39add700f8aa8311b",
+          "id": "wv_49280fc4f682b0fb8577",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_9540ee937f86e8b49187"
+        },
+        {
+          "condition": true,
+          "from": "wv_40b0dd0745f2227c58c1",
+          "id": "wv_4ae38d252e4e4331cdf0",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_cae3411584c4fbdb5ee9",
+          "id": "wv_4b4bf94d4221a064e005",
+          "kind": "control",
+          "label": null,
+          "to": "wv_55dc95d761f56b43900c"
+        },
+        {
+          "condition": true,
+          "from": "wv_148421b4c5bb9376bdbe",
+          "id": "wv_4d6e238c58960048428b",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_354b3817d3bbc5b4bef9"
+        },
+        {
+          "condition": true,
+          "from": "wv_d21054f26417c31e742f",
+          "id": "wv_565961ec3bffef37c1bb",
+          "kind": "data",
+          "label": "github.event.repository.default_branch",
+          "to": "wv_a44c550573ad5f02258c"
+        },
+        {
+          "condition": true,
+          "from": "wv_3caad94ef8ab39a0ac9b",
+          "id": "wv_570bd1182ada21c9d526",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a44c550573ad5f02258c"
+        },
+        {
+          "condition": true,
+          "from": "wv_17befecfa7fca4a8e5eb",
+          "id": "wv_57d1f5c4e4c94e3d1942",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_b24a9672af835d7b94b4",
+          "id": "wv_583607ded5c6199535de",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_36ea70eeb4057454f625",
+          "id": "wv_59d4061aebf0544a884e",
+          "kind": "data",
+          "label": "env.COMMIT_MESSAGE",
+          "to": "wv_8709130d027c73624cb8"
+        },
+        {
+          "condition": true,
+          "from": "wv_2ed76db1e68db4b5b128",
+          "id": "wv_5d2d8f7e717a552e43d9",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_089e57ed990acb5647b3",
+          "id": "wv_5debb860dc7b0f97e461",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8709130d027c73624cb8"
+        },
+        {
+          "condition": true,
+          "from": "wv_1f5bc2584bf24b0bc28c",
+          "id": "wv_622e7fb815b15405d24e",
+          "kind": "data",
+          "label": "GITHUB_OUTPUT",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_d483f1a3a3e44ac53b92",
+          "id": "wv_6b05aeb4c1670edcbc65",
+          "kind": "data",
+          "label": "GITHUB_OUTPUT",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_f2347d484842f057d3ab",
+          "id": "wv_6de9b8943c9a4cceadb1",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_8cccd7bf55cdbfb3e15e",
+          "id": "wv_7408850683846f96cdcb",
+          "kind": "data",
+          "label": "GITHUB_OUTPUT",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_85d2e7cfc03a7fa102eb",
+          "id": "wv_751b96b2bab587a248f7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fa196472d85ae9df68bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff74d5810d9b0c8ee9fa",
+          "id": "wv_761926ea4aec686279a4",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_98af980f43edbeb2a4f8"
+        },
+        {
+          "condition": true,
+          "from": "wv_3ff27290c0170685b07f",
+          "id": "wv_777dfe3a7470d68f1725",
+          "kind": "data",
+          "label": "steps.check_changes.outputs.changes",
+          "to": "wv_862d8be5b6f79c152fd6"
+        },
+        {
+          "condition": true,
+          "from": "wv_577b912367bc95197c8e",
+          "id": "wv_7c96a716a11c44ae50f2",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_7eaa1e7489c40cf41861",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9442cb5dc3d28cf12358"
+        },
+        {
+          "condition": true,
+          "from": "wv_cae3411584c4fbdb5ee9",
+          "id": "wv_8223e8c275dea23f57f6",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_68e147b18236f2ce02d1"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4bcdad916a2341f1532",
+          "id": "wv_88f78635f0050c3df64a",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_818f4c2cb335051c556b",
+          "id": "wv_8a0578219a36cbc4fffc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_79abe3a8f1dbbb15ca2e"
+        },
+        {
+          "condition": true,
+          "from": "wv_b92161b02950ee98185d",
+          "id": "wv_8affac3a0173a0580e05",
+          "kind": "data",
+          "label": "git status --porcelain | awk '{print $2}'",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_76b8c82c7f90d45afadf",
+          "id": "wv_93c1621d11c026fc4d76",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_9c24ddd23404f3c78fc2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_862d8be5b6f79c152fd6"
+        },
+        {
+          "condition": true,
+          "from": "wv_6f06e46e72f82dd5cd64",
+          "id": "wv_a2f7c551976151821b7e",
+          "kind": "data",
+          "label": "steps.check_changes.outputs.changes",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_089e57ed990acb5647b3",
+          "id": "wv_a3348d852914a158dc58",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_862d8be5b6f79c152fd6"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_a85ff8317ad1920e8ffe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_354b3817d3bbc5b4bef9"
+        },
+        {
+          "condition": true,
+          "from": "wv_d138e34e744408a1eb70",
+          "id": "wv_acf33512eece67a8967f",
+          "kind": "data",
+          "label": "echo \"$CHANGED_FILES\" | wc -l",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_b538b6aa80c4295f7840",
+          "id": "wv_b246d9017f95c9d5b5bb",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_b46a714e1c155c87f4f6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_79abe3a8f1dbbb15ca2e"
+        },
+        {
+          "condition": true,
+          "from": "wv_e77f87d7921d388b334a",
+          "id": "wv_b6cbce5fb564ce5daa4a",
+          "kind": "data",
+          "label": "steps.check_changes.outputs.changes",
+          "to": "wv_9442cb5dc3d28cf12358"
+        },
+        {
+          "condition": true,
+          "from": "wv_755e358dd7e829dbef7e",
+          "id": "wv_bdac29fd545e9ac4a3a4",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_3dc16819c21a0949ebac",
+          "id": "wv_bfd8b8729d71710ad266",
+          "kind": "call",
+          "label": null,
+          "to": "wv_88f48c6e07f55d5f33cd"
+        },
+        {
+          "condition": true,
+          "from": "wv_354b3817d3bbc5b4bef9",
+          "id": "wv_c4aa0c4c6b634eb31680",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_85d2e7cfc03a7fa102eb"
+        },
+        {
+          "condition": true,
+          "from": "wv_628c3fd054bfd2e4b654",
+          "id": "wv_c5378cb8cc49ebc7c449",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_a44c550573ad5f02258c"
+        },
+        {
+          "condition": true,
+          "from": "wv_8efc631423c349dd8ad6",
+          "id": "wv_caabfc8f6f8bd21b0c17",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_cc1e38a1b9e608d6c51b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ff74d5810d9b0c8ee9fa"
+        },
+        {
+          "condition": true,
+          "from": "wv_bb028fa9e12596575a12",
+          "id": "wv_d640dd35fa57178e183f",
+          "kind": "data",
+          "label": "CHANGED_FILES",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_8f8afd62b31aac23bd1d",
+          "id": "wv_d6d9fa05583a822bf8e6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3caad94ef8ab39a0ac9b"
+        },
+        {
+          "condition": true,
+          "from": "wv_6aeddc4b9e9e655820f5",
+          "id": "wv_d7d0a67780984187eb13",
+          "kind": "data",
+          "label": "GITHUB_OUTPUT",
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_68e147b18236f2ce02d1",
+          "id": "wv_db7a5f816d6bfec55564",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9442cb5dc3d28cf12358"
+        },
+        {
+          "condition": true,
+          "from": "wv_354b3817d3bbc5b4bef9",
+          "id": "wv_dc2185cb4aaaa7f9882e",
+          "kind": "call",
+          "label": null,
+          "to": "wv_dea10dbf6eaf75130904"
+        },
+        {
+          "condition": true,
+          "from": "wv_72c22f9d75ed7a88a2fa",
+          "id": "wv_e2d384d1e115255f34ae",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_d7cbfb95ffd857b7b7ff",
+          "id": "wv_e371a2d5637863f1e834",
+          "kind": "data",
+          "label": "github.head_ref",
+          "to": "wv_9540ee937f86e8b49187"
+        },
+        {
+          "condition": true,
+          "from": "wv_5de894e3bd77cc2e97cb",
+          "id": "wv_ea947bc2cb9a6ac70a62",
+          "kind": "data",
+          "label": "GITHUB_STEP_SUMMARY",
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b759d56b65e47cdb0f9",
+          "id": "wv_eba6a9036e556039e077",
+          "kind": "data",
+          "label": "env.AUTHOR_NAME",
+          "to": "wv_63f08d6ba78a9b340550"
+        },
+        {
+          "condition": true,
+          "from": "wv_354b3817d3bbc5b4bef9",
+          "id": "wv_ecf9b75be9c4a98eb153",
+          "kind": "control",
+          "label": null,
+          "to": "wv_dea10dbf6eaf75130904"
+        },
+        {
+          "condition": true,
+          "from": "wv_3dc16819c21a0949ebac",
+          "id": "wv_f1f0ceced05d22505d3d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_88f48c6e07f55d5f33cd"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(github.ref_name!=github.event.repository.default_branch)"
+          },
+          "from": "wv_a44c550573ad5f02258c",
+          "id": "wv_f4c5e772ec950107740d",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_ee33d5f99e1afd1b5d2e"
+        },
+        {
+          "condition": true,
+          "from": "wv_79abe3a8f1dbbb15ca2e",
+          "id": "wv_f7b8d1d6bdef686b4732",
+          "kind": "control",
+          "label": null,
+          "to": "wv_84584404dbe4eed71187"
+        },
+        {
+          "condition": true,
+          "from": "wv_68e147b18236f2ce02d1",
+          "id": "wv_fa843e8658a4931ff7d7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ed502d421a3d9b19a4b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee33d5f99e1afd1b5d2e",
+          "id": "wv_ffc4fc60235e68134e6d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_68e147b18236f2ce02d1"
+        }
+      ],
+      "entrypoints": [
+        "wv_3caad94ef8ab39a0ac9b"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3700,
+                      "column": 631,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3719,
+                      "column": 650,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_038a9e22aacf791393c4",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3700,
+              "column": 631,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3719,
+              "column": 650,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_089e57ed990acb5647b3",
+          "kind": "step",
+          "name": "Commit changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2689,
+              "column": 9,
+              "line": 81
+            },
+            "stop": {
+              "byte": 2856,
+              "column": 1,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_148421b4c5bb9376bdbe",
+          "kind": "step",
+          "name": "Configure Git",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1240,
+              "column": 9,
+              "line": 39
+            },
+            "stop": {
+              "byte": 1407,
+              "column": 1,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3666,
+                      "column": 597,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3685,
+                      "column": 616,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_17befecfa7fca4a8e5eb",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3666,
+              "column": 597,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3685,
+              "column": 616,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2166,
+                      "column": 134,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2179,
+                      "column": 147,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1f5bc2584bf24b0bc28c",
+          "kind": "resource",
+          "name": "GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2166,
+              "column": 134,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2179,
+              "column": 147,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2346,
+                      "column": 314,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2359,
+                      "column": 327,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_23cd3dafb63788f66559",
+          "kind": "resource",
+          "name": "GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2346,
+              "column": 314,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2359,
+              "column": 327,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3626,
+                      "column": 557,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3645,
+                      "column": 576,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2ed76db1e68db4b5b128",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3626,
+              "column": 557,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3645,
+              "column": 576,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_354b3817d3bbc5b4bef9",
+          "kind": "step",
+          "name": "Setup toolchain",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1455,
+              "column": 9,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1547,
+              "column": 71,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.COMMIT_MESSAGE",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2811,
+                      "column": 44,
+                      "line": 83
+                    },
+                    "stop": {
+                      "byte": 2829,
+                      "column": 62,
+                      "line": 83
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.COMMIT_MESSAGE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.COMMIT_MESSAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_36ea70eeb4057454f625",
+          "kind": "resource",
+          "name": "env.COMMIT_MESSAGE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2811,
+              "column": 44,
+              "line": 83
+            },
+            "stop": {
+              "byte": 2829,
+              "column": 62,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.head_ref",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3372,
+                      "column": 303,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3387,
+                      "column": 318,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.head_ref"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3aec1cfd01d3b01b2f16",
+          "kind": "resource",
+          "name": "github.head_ref",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3372,
+              "column": 303,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3387,
+              "column": 318,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.AUTHOR_NAME",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1308,
+                      "column": 49,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 1323,
+                      "column": 64,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.AUTHOR_NAME",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.AUTHOR_NAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3b759d56b65e47cdb0f9",
+          "kind": "resource",
+          "name": "env.AUTHOR_NAME",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1308,
+              "column": 49,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1323,
+              "column": 64,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3caad94ef8ab39a0ac9b",
+          "kind": "workflow",
+          "name": "Update Visual Regression Screenshots",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 98,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 4395,
+              "column": 13,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1115,
+                      "column": 39,
+                      "line": 35
+                    },
+                    "stop": {
+                      "byte": 1130,
+                      "column": 54,
+                      "line": 35
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3d61409eaa06eec630e7",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1115,
+              "column": 39,
+              "line": 35
+            },
+            "stop": {
+              "byte": 1130,
+              "column": 54,
+              "line": 35
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3dc16819c21a0949ebac",
+          "kind": "step",
+          "name": "Checkout selected branch",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 951,
+              "column": 9,
+              "line": 32
+            },
+            "stop": {
+              "byte": 1133,
+              "column": 57,
+              "line": 35
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changes",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2896,
+                      "column": 13,
+                      "line": 88
+                    },
+                    "stop": {
+                      "byte": 2931,
+                      "column": 48,
+                      "line": 88
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value steps.check_changes.outputs.changes",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changes"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3ff27290c0170685b07f",
+          "kind": "resource",
+          "name": "steps.check_changes.outputs.changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2896,
+              "column": 13,
+              "line": 88
+            },
+            "stop": {
+              "byte": 2931,
+              "column": 48,
+              "line": 88
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3504,
+                      "column": 435,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3523,
+                      "column": 454,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_40b0dd0745f2227c58c1",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3504,
+              "column": 435,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3523,
+              "column": 454,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3213,
+                      "column": 144,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3232,
+                      "column": 163,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4310fd169757bfc6486b",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3213,
+              "column": 144,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3232,
+              "column": 163,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.AUTHOR_EMAIL",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1364,
+                      "column": 105,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 1380,
+                      "column": 121,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.AUTHOR_EMAIL",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.AUTHOR_EMAIL"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4a7fe4a603b83fbfac11",
+          "kind": "resource",
+          "name": "env.AUTHOR_EMAIL",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1364,
+              "column": 105,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1380,
+              "column": 121,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1921,
+                      "column": 14,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1946,
+                      "column": 39,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "yarn test:visual --update"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_55dc95d761f56b43900c",
+          "kind": "command",
+          "name": "yarn test:visual --update",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1921,
+              "column": 14,
+              "line": 59
+            },
+            "stop": {
+              "byte": 1946,
+              "column": 39,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2315,
+                      "column": 283,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2328,
+                      "column": 296,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5600e57be00bbf5f3610",
+          "kind": "resource",
+          "name": "GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2315,
+              "column": 283,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2328,
+              "column": 296,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changed_files",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3576,
+                      "column": 507,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3617,
+                      "column": 548,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value steps.check_changes.outputs.changed_files",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changed_files"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_571bbe113061136511ab",
+          "kind": "resource",
+          "name": "steps.check_changes.outputs.changed_files",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3576,
+              "column": 507,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3617,
+              "column": 548,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3924,
+                      "column": 855,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3943,
+                      "column": 874,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_577b912367bc95197c8e",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3924,
+              "column": 855,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3943,
+              "column": 874,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1804,
+                      "column": 14,
+                      "line": 55
+                    },
+                    "stop": {
+                      "byte": 1818,
+                      "column": 28,
+                      "line": 55
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "yarn build:lib"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_5ddb094beab6ffa15057",
+          "kind": "command",
+          "name": "yarn build:lib",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1804,
+              "column": 14,
+              "line": 55
+            },
+            "stop": {
+              "byte": 1818,
+              "column": 28,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3417,
+                      "column": 348,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3436,
+                      "column": 367,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5de894e3bd77cc2e97cb",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3417,
+              "column": 348,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3436,
+              "column": 367,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 663,
+                      "column": 9,
+                      "line": 21
+                    },
+                    "stop": {
+                      "byte": 678,
+                      "column": 24,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_628c3fd054bfd2e4b654",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 663,
+              "column": 9,
+              "line": 21
+            },
+            "stop": {
+              "byte": 678,
+              "column": 24,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.AUTHOR_EMAIL",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1364,
+                      "column": 105,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 1380,
+                      "column": 121,
+                      "line": 40
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "env.AUTHOR_NAME",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1308,
+                      "column": 49,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 1323,
+                      "column": 64,
+                      "line": 40
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1273,
+                      "column": 14,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 1407,
+                      "column": 1,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.AUTHOR_EMAIL",
+                    "kind": "dynamic_string"
+                  },
+                  {
+                    "detail": "unresolved GitHub dataflow value env.AUTHOR_NAME",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.AUTHOR_EMAIL",
+                  "env.AUTHOR_NAME",
+                  "git config --global user.name \"${{ env.AUTHOR_NAME }}\"\ngit config --global user.email \"${{ env.AUTHOR_EMAIL }}\"\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_63f08d6ba78a9b340550",
+          "kind": "command",
+          "name": "git config --global user.name \"${{ env.AUTHOR_NAME }}\"\ngit config --global user.email \"${{ env.AUTHOR_EMAIL }}\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1273,
+              "column": 14,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1407,
+              "column": 1,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_68e147b18236f2ce02d1",
+          "kind": "step",
+          "name": "Check for changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1983,
+              "column": 9,
+              "line": 62
+            },
+            "stop": {
+              "byte": 2644,
+              "column": 1,
+              "line": 79
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2273,
+                      "column": 241,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2286,
+                      "column": 254,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6aeddc4b9e9e655820f5",
+          "kind": "resource",
+          "name": "GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2273,
+              "column": 241,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2286,
+              "column": 254,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changes",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3094,
+                      "column": 25,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3129,
+                      "column": 60,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value steps.check_changes.outputs.changes",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changes"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6f06e46e72f82dd5cd64",
+          "kind": "resource",
+          "name": "steps.check_changes.outputs.changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3094,
+              "column": 25,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3129,
+              "column": 60,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 4079,
+                      "column": 1010,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 4098,
+                      "column": 1029,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_72c22f9d75ed7a88a2fa",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 4079,
+              "column": 1010,
+              "line": 93
+            },
+            "stop": {
+              "byte": 4098,
+              "column": 1029,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3247,
+                      "column": 178,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3266,
+                      "column": 197,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_755e358dd7e829dbef7e",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3247,
+              "column": 178,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3266,
+              "column": 197,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3544,
+                      "column": 475,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3563,
+                      "column": 494,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_76b8c82c7f90d45afadf",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3544,
+              "column": 475,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3563,
+              "column": 494,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_79abe3a8f1dbbb15ca2e",
+          "kind": "step",
+          "name": "Summary",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3056,
+              "column": 9,
+              "line": 92
+            },
+            "stop": {
+              "byte": 4395,
+              "column": 13,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_818f4c2cb335051c556b",
+          "kind": "step",
+          "name": "Push changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2865,
+              "column": 9,
+              "line": 87
+            },
+            "stop": {
+              "byte": 3012,
+              "column": 71,
+              "line": 89
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3213,
+                      "column": 144,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3232,
+                      "column": 163,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3247,
+                      "column": 178,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3266,
+                      "column": 197,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3417,
+                      "column": 348,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3436,
+                      "column": 367,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3451,
+                      "column": 382,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3470,
+                      "column": 401,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3504,
+                      "column": 435,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3523,
+                      "column": 454,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3544,
+                      "column": 475,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3563,
+                      "column": 494,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3626,
+                      "column": 557,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3645,
+                      "column": 576,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3666,
+                      "column": 597,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3685,
+                      "column": 616,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3700,
+                      "column": 631,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3719,
+                      "column": 650,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3844,
+                      "column": 775,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3863,
+                      "column": 794,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3924,
+                      "column": 855,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3943,
+                      "column": 874,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3958,
+                      "column": 889,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3977,
+                      "column": 908,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 4079,
+                      "column": 1010,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 4098,
+                      "column": 1029,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 4113,
+                      "column": 1044,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 4132,
+                      "column": 1063,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 4191,
+                      "column": 1122,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 4210,
+                      "column": 1141,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "github.head_ref",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3372,
+                      "column": 303,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3387,
+                      "column": 318,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3391,
+                      "column": 322,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3406,
+                      "column": 337,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changed_count",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3302,
+                      "column": 233,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3343,
+                      "column": 274,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changed_files",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3576,
+                      "column": 507,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3617,
+                      "column": 548,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changes",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3094,
+                      "column": 25,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3129,
+                      "column": 60,
+                      "line": 93
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3083,
+                      "column": 14,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 4395,
+                      "column": 13,
+                      "line": 111
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY",
+                  "github.head_ref",
+                  "github.ref_name",
+                  "if [[ \"${{ steps.check_changes.outputs.changes }}\" == \"true\" ]]; then\n  echo \"### 📸 Visual Regression Screenshots Updated\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"Successfully updated **${{ steps.check_changes.outputs.changed_count }}** screenshot(s) on \\`${{ github.head_ref || github.ref_name }}\\`\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"#### Changed Files:\" >> $GITHUB_STEP_SUMMARY\n  echo \"\\`\\`\\`\" >> $GITHUB_STEP_SUMMARY\n  echo \"${{ steps.check_changes.outputs.changed_files }}\" >> $GITHUB_STEP_SUMMARY\n  echo \"\\`\\`\\`\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"✅ The updated screenshots have been committed and pushed. Your visual regression baseline is now up to date!\" >> $GITHUB_STEP_SUMMARY\nelse\n  echo \"### ℹ️ No Screenshot Updates Required\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"The visual regression test command ran successfully but no screenshots needed updating.\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"All screenshots are already up to date! 🎉\" >> $GITHUB_STEP_SUMMARY\nfi\n",
+                  "steps.check_changes.outputs.changed_count",
+                  "steps.check_changes.outputs.changed_files",
+                  "steps.check_changes.outputs.changes"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_84584404dbe4eed71187",
+          "kind": "command",
+          "name": "if [[ \"${{ steps.check_changes.outputs.changes }}\" == \"true\" ]]; then\n  echo \"### 📸 Visual Regression Screenshots Updated\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"Successfully updated **${{ steps.check_changes.outputs.changed_count }}** screenshot(s) on \\`${{ github.head_ref || github.ref_name }}\\`\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"#### Changed Files:\" >> $GITHUB_STEP_SUMMARY\n  echo \"\\`\\`\\`\" >> $GITHUB_STEP_SUMMARY\n  echo \"${{ steps.check_changes.outputs.changed_files }}\" >> $GITHUB_STEP_SUMMARY\n  echo \"\\`\\`\\`\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"✅ The updated screenshots have been committed and pushed. Your visual regression baseline is now up to date!\" >> $GITHUB_STEP_SUMMARY\nelse\n  echo \"### ℹ️ No Screenshot Updates Required\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"The visual regression test command ran successfully but no screenshots needed updating.\" >> $GITHUB_STEP_SUMMARY\n  echo \"\" >> $GITHUB_STEP_SUMMARY\n  echo \"All screenshots are already up to date! 🎉\" >> $GITHUB_STEP_SUMMARY\nfi\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3083,
+              "column": 14,
+              "line": 93
+            },
+            "stop": {
+              "byte": 4395,
+              "column": 13,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_85d2e7cfc03a7fa102eb",
+          "kind": "step",
+          "name": "Install dependencies",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1566,
+              "column": 9,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1667,
+              "column": 75,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2896,
+                      "column": 13,
+                      "line": 88
+                    },
+                    "stop": {
+                      "byte": 2941,
+                      "column": 58,
+                      "line": 88
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changes == 'true'"
+                ]
+              }
+            },
+            "reference:steps.check_changes.outputs.changes": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changes",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2896,
+                      "column": 13,
+                      "line": 88
+                    },
+                    "stop": {
+                      "byte": 2931,
+                      "column": 48,
+                      "line": 88
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value steps.check_changes.outputs.changes",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changes"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(steps.check_changes.outputs.changes==\"true\")"
+          },
+          "effects": [],
+          "id": "wv_862d8be5b6f79c152fd6",
+          "kind": "gate",
+          "name": "if:update-screenshots:Push changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2896,
+              "column": 13,
+              "line": 88
+            },
+            "stop": {
+              "byte": 2941,
+              "column": 58,
+              "line": 88
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.COMMIT_MESSAGE",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2811,
+                      "column": 44,
+                      "line": 83
+                    },
+                    "stop": {
+                      "byte": 2829,
+                      "column": 62,
+                      "line": 83
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2781,
+                      "column": 14,
+                      "line": 83
+                    },
+                    "stop": {
+                      "byte": 2856,
+                      "column": 1,
+                      "line": 86
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.COMMIT_MESSAGE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.COMMIT_MESSAGE",
+                  "git add -A\ngit commit -m \"${{ env.COMMIT_MESSAGE }}\"\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_8709130d027c73624cb8",
+          "kind": "command",
+          "name": "git add -A\ngit commit -m \"${{ env.COMMIT_MESSAGE }}\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2781,
+              "column": 14,
+              "line": 83
+            },
+            "stop": {
+              "byte": 2856,
+              "column": 1,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_88f48c6e07f55d5f33cd",
+          "kind": "call",
+          "name": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 996,
+              "column": 15,
+              "line": 33
+            },
+            "stop": {
+              "byte": 1053,
+              "column": 72,
+              "line": 33
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2420,
+                      "column": 388,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2433,
+                      "column": 401,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8cccd7bf55cdbfb3e15e",
+          "kind": "resource",
+          "name": "GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2420,
+              "column": 388,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2433,
+              "column": 401,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3958,
+                      "column": 889,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3977,
+                      "column": 908,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8efc631423c349dd8ad6",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3958,
+              "column": 889,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3977,
+              "column": 908,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8f8afd62b31aac23bd1d",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 148,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 166,
+              "column": 21,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2994,
+                      "column": 53,
+                      "line": 89
+                    },
+                    "stop": {
+                      "byte": 3009,
+                      "column": 68,
+                      "line": 89
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_90c39add700f8aa8311b",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2994,
+              "column": 53,
+              "line": 89
+            },
+            "stop": {
+              "byte": 3009,
+              "column": 68,
+              "line": 89
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2722,
+                      "column": 13,
+                      "line": 82
+                    },
+                    "stop": {
+                      "byte": 2767,
+                      "column": 58,
+                      "line": 82
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changes == 'true'"
+                ]
+              }
+            },
+            "reference:steps.check_changes.outputs.changes": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changes",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2722,
+                      "column": 13,
+                      "line": 82
+                    },
+                    "stop": {
+                      "byte": 2757,
+                      "column": 48,
+                      "line": 82
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value steps.check_changes.outputs.changes",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changes"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(steps.check_changes.outputs.changes==\"true\")"
+          },
+          "effects": [],
+          "id": "wv_9442cb5dc3d28cf12358",
+          "kind": "gate",
+          "name": "if:update-screenshots:Commit changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2722,
+              "column": 13,
+              "line": 82
+            },
+            "stop": {
+              "byte": 2767,
+              "column": 58,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.head_ref",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2975,
+                      "column": 34,
+                      "line": 89
+                    },
+                    "stop": {
+                      "byte": 2990,
+                      "column": 49,
+                      "line": 89
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2994,
+                      "column": 53,
+                      "line": 89
+                    },
+                    "stop": {
+                      "byte": 3009,
+                      "column": 68,
+                      "line": 89
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2955,
+                      "column": 14,
+                      "line": 89
+                    },
+                    "stop": {
+                      "byte": 3012,
+                      "column": 71,
+                      "line": 89
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git push origin ${{ github.head_ref || github.ref_name }}",
+                  "github.head_ref",
+                  "github.ref_name"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9540ee937f86e8b49187",
+          "kind": "command",
+          "name": "git push origin ${{ github.head_ref || github.ref_name }}",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2955,
+              "column": 14,
+              "line": 89
+            },
+            "stop": {
+              "byte": 3012,
+              "column": 71,
+              "line": 89
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_98af980f43edbeb2a4f8",
+          "kind": "step",
+          "name": "Build library",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1771,
+              "column": 9,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1818,
+              "column": 28,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 663,
+                      "column": 9,
+                      "line": 21
+                    },
+                    "stop": {
+                      "byte": 720,
+                      "column": 66,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name != github.event.repository.default_branch"
+                ]
+              }
+            },
+            "reference:github.event.repository.default_branch": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.repository.default_branch",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 682,
+                      "column": 28,
+                      "line": 21
+                    },
+                    "stop": {
+                      "byte": 720,
+                      "column": 66,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.repository.default_branch"
+                ]
+              }
+            },
+            "reference:github.ref_name": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 663,
+                      "column": 9,
+                      "line": 21
+                    },
+                    "stop": {
+                      "byte": 678,
+                      "column": 24,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(github.ref_name!=github.event.repository.default_branch)"
+          },
+          "effects": [],
+          "id": "wv_a44c550573ad5f02258c",
+          "kind": "gate",
+          "name": "if:job:update-screenshots",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 663,
+              "column": 9,
+              "line": 21
+            },
+            "stop": {
+              "byte": 720,
+              "column": 66,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3391,
+                      "column": 322,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3406,
+                      "column": 337,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b24a9672af835d7b94b4",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3391,
+              "column": 322,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3406,
+              "column": 337,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 4113,
+                      "column": 1044,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 4132,
+                      "column": 1063,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b538b6aa80c4295f7840",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 4113,
+              "column": 1044,
+              "line": 93
+            },
+            "stop": {
+              "byte": 4132,
+              "column": 1063,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git status --porcelain | awk '{print $2}'",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2062,
+                      "column": 30,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2103,
+                      "column": 71,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git status --porcelain | awk '{print $2}'"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b92161b02950ee98185d",
+          "kind": "resource",
+          "name": "git status --porcelain | awk '{print $2}'",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2062,
+              "column": 30,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2103,
+              "column": 71,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CHANGED_FILES",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2296,
+                      "column": 264,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2309,
+                      "column": 277,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CHANGED_FILES"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bb028fa9e12596575a12",
+          "kind": "resource",
+          "name": "CHANGED_FILES",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2296,
+              "column": 264,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2309,
+              "column": 277,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cae3411584c4fbdb5ee9",
+          "kind": "step",
+          "name": "Update Visual Regression Screenshots",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1865,
+              "column": 9,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1946,
+              "column": 39,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "echo \"$CHANGED_FILES\" | wc -l",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2384,
+                      "column": 352,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2413,
+                      "column": 381,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"$CHANGED_FILES\" | wc -l"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d138e34e744408a1eb70",
+          "kind": "resource",
+          "name": "echo \"$CHANGED_FILES\" | wc -l",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2384,
+              "column": 352,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2413,
+              "column": 381,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.repository.default_branch",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 682,
+                      "column": 28,
+                      "line": 21
+                    },
+                    "stop": {
+                      "byte": 720,
+                      "column": 66,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.repository.default_branch"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d21054f26417c31e742f",
+          "kind": "resource",
+          "name": "github.event.repository.default_branch",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 682,
+              "column": 28,
+              "line": 21
+            },
+            "stop": {
+              "byte": 720,
+              "column": 66,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2466,
+                      "column": 434,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2479,
+                      "column": 447,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d483f1a3a3e44ac53b92",
+          "kind": "resource",
+          "name": "GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2466,
+              "column": 434,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2479,
+              "column": 447,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.head_ref",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2975,
+                      "column": 34,
+                      "line": 89
+                    },
+                    "stop": {
+                      "byte": 2990,
+                      "column": 49,
+                      "line": 89
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.head_ref"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d7cbfb95ffd857b7b7ff",
+          "kind": "resource",
+          "name": "github.head_ref",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2975,
+              "column": 34,
+              "line": 89
+            },
+            "stop": {
+              "byte": 2990,
+              "column": 49,
+              "line": 89
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1745,
+                      "column": 14,
+                      "line": 52
+                    },
+                    "stop": {
+                      "byte": 1761,
+                      "column": 30,
+                      "line": 52
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "yarn build:icons"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_dcd27abc396fa8ca1817",
+          "kind": "command",
+          "name": "yarn build:icons",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1745,
+              "column": 14,
+              "line": 52
+            },
+            "stop": {
+              "byte": 1761,
+              "column": 30,
+              "line": 52
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_dea10dbf6eaf75130904",
+          "kind": "call",
+          "name": "jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1491,
+              "column": 15,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1547,
+              "column": 71,
+              "line": 46
+            }
+          },
+          "unknown": {
+            "detail": "jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3451,
+                      "column": 382,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3470,
+                      "column": 401,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e4bcdad916a2341f1532",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3451,
+              "column": 382,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3470,
+              "column": 401,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changed_count",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3302,
+                      "column": 233,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3343,
+                      "column": 274,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value steps.check_changes.outputs.changed_count",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changed_count"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e7438156cbdb3c712158",
+          "kind": "resource",
+          "name": "steps.check_changes.outputs.changed_count",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3302,
+              "column": 233,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3343,
+              "column": 274,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "steps.check_changes.outputs.changes",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2722,
+                      "column": 13,
+                      "line": 82
+                    },
+                    "stop": {
+                      "byte": 2757,
+                      "column": 48,
+                      "line": 82
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value steps.check_changes.outputs.changes",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "steps.check_changes.outputs.changes"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e77f87d7921d388b334a",
+          "kind": "resource",
+          "name": "steps.check_changes.outputs.changes",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2722,
+              "column": 13,
+              "line": 82
+            },
+            "stop": {
+              "byte": 2757,
+              "column": 48,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 4191,
+                      "column": 1122,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 4210,
+                      "column": 1141,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ed32f1fc145592f3a3d9",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 4191,
+              "column": 1122,
+              "line": 93
+            },
+            "stop": {
+              "byte": 4210,
+              "column": 1141,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CHANGED_FILES",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2296,
+                      "column": 264,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2309,
+                      "column": 277,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2166,
+                      "column": 134,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2179,
+                      "column": 147,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2273,
+                      "column": 241,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2286,
+                      "column": 254,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2315,
+                      "column": 283,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2328,
+                      "column": 296,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2346,
+                      "column": 314,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2359,
+                      "column": 327,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2420,
+                      "column": 388,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2433,
+                      "column": 401,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2466,
+                      "column": 434,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2479,
+                      "column": 447,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "echo \"$CHANGED_FILES\" | wc -l",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2384,
+                      "column": 352,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2413,
+                      "column": 381,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "git status --porcelain | awk '{print $2}'",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2062,
+                      "column": 30,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2103,
+                      "column": 71,
+                      "line": 64
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 2046,
+                      "column": 14,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 2644,
+                      "column": 1,
+                      "line": 79
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CHANGED_FILES",
+                  "CHANGED_FILES=$(git status --porcelain | awk '{print $2}')\nif [ \"${CHANGED_FILES:+x}\" ]; then\n  echo \"changes=true\" >> $GITHUB_OUTPUT\n  echo \"Changes detected\"\n\n  # save the list for the summary\n  echo \"changed_files<<EOF\" >> $GITHUB_OUTPUT\n  echo \"$CHANGED_FILES\" >> $GITHUB_OUTPUT\n  echo \"EOF\" >> $GITHUB_OUTPUT\n  echo \"changed_count=$(echo \"$CHANGED_FILES\" | wc -l)\" >> $GITHUB_OUTPUT\nelse\n  echo \"changes=false\" >> $GITHUB_OUTPUT\n  echo \"No changes detected\"\nfi\n",
+                  "GITHUB_OUTPUT",
+                  "echo \"$CHANGED_FILES\" | wc -l",
+                  "git status --porcelain | awk '{print $2}'"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_ed502d421a3d9b19a4b2",
+          "kind": "command",
+          "name": "CHANGED_FILES=$(git status --porcelain | awk '{print $2}')\nif [ \"${CHANGED_FILES:+x}\" ]; then\n  echo \"changes=true\" >> $GITHUB_OUTPUT\n  echo \"Changes detected\"\n\n  # save the list for the summary\n  echo \"changed_files<<EOF\" >> $GITHUB_OUTPUT\n  echo \"$CHANGED_FILES\" >> $GITHUB_OUTPUT\n  echo \"EOF\" >> $GITHUB_OUTPUT\n  echo \"changed_count=$(echo \"$CHANGED_FILES\" | wc -l)\" >> $GITHUB_OUTPUT\nelse\n  echo \"changes=false\" >> $GITHUB_OUTPUT\n  echo \"No changes detected\"\nfi\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 2046,
+              "column": 14,
+              "line": 64
+            },
+            "stop": {
+              "byte": 2644,
+              "column": 1,
+              "line": 79
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ee33d5f99e1afd1b5d2e",
+          "kind": "job",
+          "name": "update-screenshots",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 569,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 4395,
+              "column": 13,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_STEP_SUMMARY",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 3844,
+                      "column": 775,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 3863,
+                      "column": 794,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_STEP_SUMMARY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f2347d484842f057d3ab",
+          "kind": "resource",
+          "name": "GITHUB_STEP_SUMMARY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 3844,
+              "column": 775,
+              "line": 93
+            },
+            "stop": {
+              "byte": 3863,
+              "column": 794,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.head_ref",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1096,
+                      "column": 20,
+                      "line": 35
+                    },
+                    "stop": {
+                      "byte": 1111,
+                      "column": 35,
+                      "line": 35
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.head_ref"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f8f4de319d1c91f2f3ea",
+          "kind": "resource",
+          "name": "github.head_ref",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1096,
+              "column": 20,
+              "line": 35
+            },
+            "stop": {
+              "byte": 1111,
+              "column": 35,
+              "line": 35
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+                    "start": {
+                      "byte": 1606,
+                      "column": 14,
+                      "line": 49
+                    },
+                    "stop": {
+                      "byte": 1667,
+                      "column": 75,
+                      "line": 49
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "yarn install && yarn playwright install chromium --only-shell"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fa196472d85ae9df68bf",
+          "kind": "command",
+          "name": "yarn install && yarn playwright install chromium --only-shell",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1606,
+              "column": 14,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1667,
+              "column": 75,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ff74d5810d9b0c8ee9fa",
+          "kind": "step",
+          "name": "Build icons (implicit dependency of the library)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/jahia/moonstone/.github/workflows/update-screenshots.yml",
+            "start": {
+              "byte": 1677,
+              "column": 9,
+              "line": 51
+            },
+            "stop": {
+              "byte": 1761,
+              "column": 30,
+              "line": 52
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/jahia/moonstone/.github/workflows/update-screenshots.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:9ad5a947498b7fdc21ef7abdcebb0e06ab0564397532072325abc765272da8bb",
+      "path": "github/jahia/moonstone/.github/workflows/update-screenshots.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 3,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

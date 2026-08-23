@@ -1,0 +1,89 @@
+version: 2.1
+orbs:
+    sonarcloud: sonarsource/sonarcloud@1.0.2
+commands:
+    node-install:
+        steps:
+            - run: npm ci
+    node-linter:
+        steps:
+            - run: npm run lint -- --format html --output-file ./coverage/lint/index.html
+            - store_artifacts:
+                path: ./coverage
+    node-test:
+        steps:
+            - run:
+                when: always
+                command: npm run test -- --reporter mocha-multi-reporters --reporter-options configFile=./test/reporter-config.json
+                environment:
+                    MOCHAWESOME_REPORTFILENAME: index.html
+                    MOCHAWESOME_REPORTDIR: ./coverage/unit-test
+            - store_test_results:
+                path: ./coverage/unit-test
+            - store_artifacts:
+                path: ./coverage
+    node-report:
+        steps:
+            - run: npm run report
+            - store_artifacts:
+                path: ./coverage
+    npm-deploy:
+        steps:
+            - run: echo "registry=https://registry.npmjs.org" >> .npmrc
+            - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+            - run: npm version $CIRCLE_TAG --allow-same-version --no-git-tag-version
+            - run: npm publish --access public
+jobs:
+    install-build-test:
+        docker:
+            - image: node:14
+            -
+                image: mysql
+                command: --default-authentication-plugin=mysql_native_password
+                environment:
+                    MYSQL_ROOT_USER: root
+                    MYSQL_ROOT_PASSWORD: password
+            -
+                image: neo4j:4.4.13-enterprise
+                environment:
+                    - NEO4J_dbms_memory_pagecache_size=1G
+                    - NEO4J_dbms.memory.heap.initial_size=1G
+                    - NEO4J_dbms_memory_heap_max__size=1G
+                    - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+                    - NEO4J_AUTH=neo4j/password
+        steps:
+            - checkout
+            - node-install
+            - node-linter
+            - node-test
+            - node-report
+            - sonarcloud/scan
+    install-build-deploy:
+        docker:
+            - image: node:14
+        steps:
+            - checkout
+            - node-install
+            - npm-deploy
+workflows:
+    install-build-deploy:
+        jobs:
+            - install-build-deploy:
+                context:
+                    - shared-npm-org-token
+                filters:
+                    tags:
+                        only: /.*/
+                    branches:
+                        ignore: /.*/
+    install-build-test:
+        jobs:
+            - install-build-test:
+                context:
+                    - shared-npm-org-token
+                    - shared-sonarcloud-token
+                filters:
+                    tags:
+                        ignore: /.*/
+                    branches:
+                        ignore: /dependabot.*/

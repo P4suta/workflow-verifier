@@ -37,17 +37,24 @@ the nested proof states, recomputes every digest, rejects a performance
 self-comparison, and exposes only validated paths and certificate identities to
 the release workflow. Pinned Cosign then verifies the review signature.
 
-## Deliberately external inputs
+## Reviewed acquisition inputs
 
 The public repository does not manufacture a 400-repository result or a
-performance baseline. Corpus selection, SPDX review, expected diagnostics, and
-the independent security review require human evidence. Release automation must
-be given those reviewed inputs; their absence is a failed publication gate, not
-an `Unknown` converted into success.
+performance baseline. `scripts/prepare_corpus.py acquire` performs explicit,
+credential-free source acquisition and records immutable source and permissive
+license evidence. Its separate `apply-review` phase requires every observed
+diagnostic to receive a reasoned `expected` or `allowed` decision. The
+independent security review remains separately signed release evidence; no
+missing input is converted into success.
 
-Local entry points are exposed by `just corpus`, `just performance-measure`,
-`just performance-gate`, `just mutation-gate`, `just determinism-probe`, and
-`just determinism-compare`. `just release-evidence REVISION TAG` closes the
-external-evidence composition gate. Equivalent `mise` tasks use the
-conventional `evaluation/`, `performance/`, `_build/`, and `release-evidence/`
-paths.
+After analyzer changes, `scripts/prepare_corpus.py refresh` first verifies all
+recorded source digests and then reanalyzes those exact snapshots into a new
+transaction without network access. The source evaluation is immutable; the
+new reports receive a fresh exhaustive review before promotion.
+
+Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
+`just corpus-review`, `just corpus`, `just performance-measure`, `just performance-gate`,
+`just mutation-gate`, `just determinism-probe`, and `just determinism-compare`.
+`just release-evidence REVISION TAG` closes the external-evidence composition
+gate. Equivalent `mise` tasks use the conventional `evaluation/`,
+`performance/`, `_build/`, and `release-evidence/` paths.

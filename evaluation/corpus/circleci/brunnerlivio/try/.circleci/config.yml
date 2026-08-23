@@ -1,0 +1,80 @@
+version: 2
+
+aliases:
+  - &restore-cache
+    restore_cache:
+        key: dependency-cache-{{ checksum "package-lock.json" }}
+  - &install-deps
+    run:
+        name: Install dependencies
+        command: npm ci
+
+base-template: &base-template
+  working_directory: ~/try
+  steps:
+    - checkout
+    - *restore-cache
+    - *install-deps
+
+jobs:
+  build:
+    working_directory: ~/try
+    <<: *base-template
+    docker:
+      - image: circleci/node:16
+  test:
+    working_directory: ~/try
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - *restore-cache
+      - *install-deps
+      - run: npm test
+  lint:
+    working_directory: ~/try
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - *restore-cache
+      - *install-deps
+      - run: npm run lint
+      - run: ./node_modules/.bin/commitlint-circle
+  release:
+    docker:
+      - image: circleci/node:16
+    steps:
+      - checkout
+      - *restore-cache
+      - *install-deps
+      - run: npx semantic-release
+
+workflows:
+  version: 2
+  build_and_lint:
+    jobs:
+      - build
+      - test
+      - lint
+  build_lint_deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+      - test:
+          filters:
+            branches:
+              only: master
+      - lint:
+          filters:
+            branches:
+              only: master
+      - release:
+          requires:
+            - build
+            - lint
+          filters:
+            branches:
+              only: master

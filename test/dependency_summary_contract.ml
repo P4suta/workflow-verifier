@@ -4,6 +4,7 @@ exception Failed of string
 
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
+
 let lockfile entries =
   match Lockfile.create entries with
   | Ok lock -> lock
@@ -136,8 +137,7 @@ let resolver_and_lock_summary_test () =
     }
   in
   let resolved =
-    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty
-      [ dependency ]
+    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty [ dependency ]
   in
   let entry =
     match resolved.locked with

@@ -1,0 +1,993 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+          "start": {
+            "byte": 174,
+            "column": 15,
+            "line": 11
+          },
+          "stop": {
+            "byte": 193,
+            "column": 34,
+            "line": 11
+          }
+        }
+      },
+      "id": "diag_eb67c14125528a4f2864",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+        "start": {
+          "byte": 174,
+          "column": 15,
+          "line": 11
+        },
+        "stop": {
+          "byte": 193,
+          "column": 34,
+          "line": 11
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_1751214e575cbef90572",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 174,
+              "column": 15,
+              "line": 11
+            },
+            "stop": {
+              "byte": 193,
+              "column": 34,
+              "line": 11
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/setup-node@v1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+          "start": {
+            "byte": 233,
+            "column": 15,
+            "line": 13
+          },
+          "stop": {
+            "byte": 254,
+            "column": 36,
+            "line": 13
+          }
+        }
+      },
+      "id": "diag_f0b53e738445e1145a29",
+      "message": "dependency is not pinned to immutable content: actions/setup-node@v1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+        "start": {
+          "byte": 233,
+          "column": 15,
+          "line": 13
+        },
+        "stop": {
+          "byte": 254,
+          "column": 36,
+          "line": 13
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_c44ff5fd8db85b41bbce",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 233,
+              "column": 15,
+              "line": 13
+            },
+            "stop": {
+              "byte": 254,
+              "column": 36,
+              "line": 13
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:abf825cab59c3b613b6488a8a72e806501d80091f78a6c7e594bf14d70e67ddf",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_6cb2d117ef43d508da05",
+          "id": "wv_00d552a0950caf46fac7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1751214e575cbef90572"
+        },
+        {
+          "condition": true,
+          "from": "wv_017e72e3b50b0ce387e2",
+          "id": "wv_02f7e886c2f1d11a6270",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0143108a6ee967f82b49"
+        },
+        {
+          "condition": true,
+          "from": "wv_463ddcaef2001cd0920b",
+          "id": "wv_13ea71d36ba3e0865998",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c44ff5fd8db85b41bbce"
+        },
+        {
+          "condition": true,
+          "from": "wv_6cb2d117ef43d508da05",
+          "id": "wv_1c1326efa36e333b5453",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_463ddcaef2001cd0920b"
+        },
+        {
+          "condition": true,
+          "from": "wv_85c2ffd6eec2cc4a8569",
+          "id": "wv_1fbfbf30d27591c64905",
+          "kind": "control",
+          "label": null,
+          "to": "wv_935999637ec52032902a"
+        },
+        {
+          "condition": true,
+          "from": "wv_6cb2d117ef43d508da05",
+          "id": "wv_2907d4562843377a5a6a",
+          "kind": "call",
+          "label": null,
+          "to": "wv_1751214e575cbef90572"
+        },
+        {
+          "condition": true,
+          "from": "wv_935999637ec52032902a",
+          "id": "wv_37eee86136e895848e64",
+          "kind": "control",
+          "label": null,
+          "to": "wv_dd7f6439efa5287269d6"
+        },
+        {
+          "condition": true,
+          "from": "wv_0143108a6ee967f82b49",
+          "id": "wv_4ec6be6e44bc2ebd4cac",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1f9fbdaafdec9e8c222e"
+        },
+        {
+          "condition": true,
+          "from": "wv_85c2ffd6eec2cc4a8569",
+          "id": "wv_62d395e1f566bed7713b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_017e72e3b50b0ce387e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_1b9ce001a9de9aae2462",
+          "id": "wv_68396958c0d429917510",
+          "kind": "control",
+          "label": null,
+          "to": "wv_85c2ffd6eec2cc4a8569"
+        },
+        {
+          "condition": true,
+          "from": "wv_1f9fbdaafdec9e8c222e",
+          "id": "wv_6d02da4d50ab7a07308e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0b78f4f60f359a9f2a21"
+        },
+        {
+          "condition": true,
+          "from": "wv_1f9fbdaafdec9e8c222e",
+          "id": "wv_6e2b132cff50a30e9d4d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_935999637ec52032902a"
+        },
+        {
+          "condition": true,
+          "from": "wv_017e72e3b50b0ce387e2",
+          "id": "wv_8137876aa6dcc8156c97",
+          "kind": "control",
+          "label": null,
+          "to": "wv_02e32d97e50b510b39a2"
+        },
+        {
+          "condition": true,
+          "from": "wv_463ddcaef2001cd0920b",
+          "id": "wv_893da5de1ee2619cde22",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c44ff5fd8db85b41bbce"
+        },
+        {
+          "condition": true,
+          "from": "wv_85c2ffd6eec2cc4a8569",
+          "id": "wv_98728786827fd875562f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_463ddcaef2001cd0920b"
+        },
+        {
+          "condition": true,
+          "from": "wv_0143108a6ee967f82b49",
+          "id": "wv_9d9e54787e547e0ab919",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c092c90fdf7388243376"
+        },
+        {
+          "condition": true,
+          "from": "wv_85c2ffd6eec2cc4a8569",
+          "id": "wv_c6ba9fa7d9209de03307",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0143108a6ee967f82b49"
+        },
+        {
+          "condition": true,
+          "from": "wv_c6f67625c8a97a089d6c",
+          "id": "wv_ca75590bf95e6288e331",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1b9ce001a9de9aae2462"
+        },
+        {
+          "condition": true,
+          "from": "wv_463ddcaef2001cd0920b",
+          "id": "wv_d01b71c29b2b5449e29d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_017e72e3b50b0ce387e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_85c2ffd6eec2cc4a8569",
+          "id": "wv_e6fa67d4ba3ea5f46934",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6cb2d117ef43d508da05"
+        },
+        {
+          "condition": true,
+          "from": "wv_85c2ffd6eec2cc4a8569",
+          "id": "wv_f3c8107784c7e242ab1a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1f9fbdaafdec9e8c222e"
+        }
+      ],
+      "entrypoints": [
+        "wv_1b9ce001a9de9aae2462"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0143108a6ee967f82b49",
+          "kind": "step",
+          "name": "Lint",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 358,
+              "column": 9,
+              "line": 18
+            },
+            "stop": {
+              "byte": 437,
+              "column": 31,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_017e72e3b50b0ce387e2",
+          "kind": "step",
+          "name": "Install",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 311,
+              "column": 9,
+              "line": 16
+            },
+            "stop": {
+              "byte": 349,
+              "column": 25,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+                    "start": {
+                      "byte": 338,
+                      "column": 14,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 349,
+                      "column": 25,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm install"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_02e32d97e50b510b39a2",
+          "kind": "command",
+          "name": "npm install",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 338,
+              "column": 14,
+              "line": 17
+            },
+            "stop": {
+              "byte": 349,
+              "column": 25,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+                    "start": {
+                      "byte": 471,
+                      "column": 14,
+                      "line": 23
+                    },
+                    "stop": {
+                      "byte": 484,
+                      "column": 27,
+                      "line": 23
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run build"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_0b78f4f60f359a9f2a21",
+          "kind": "command",
+          "name": "npm run build",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 471,
+              "column": 14,
+              "line": 23
+            },
+            "stop": {
+              "byte": 484,
+              "column": 27,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_1751214e575cbef90572",
+          "kind": "call",
+          "name": "actions/checkout@v2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 174,
+              "column": 15,
+              "line": 11
+            },
+            "stop": {
+              "byte": 193,
+              "column": 34,
+              "line": 11
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1b9ce001a9de9aae2462",
+          "kind": "workflow",
+          "name": "Continuous Integration",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 529,
+              "column": 26,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1f9fbdaafdec9e8c222e",
+          "kind": "step",
+          "name": "Build",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 446,
+              "column": 9,
+              "line": 22
+            },
+            "stop": {
+              "byte": 484,
+              "column": 27,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_463ddcaef2001cd0920b",
+          "kind": "step",
+          "name": "Setup Node",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 202,
+              "column": 9,
+              "line": 12
+            },
+            "stop": {
+              "byte": 302,
+              "column": 34,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6cb2d117ef43d508da05",
+          "kind": "step",
+          "name": "Checkout",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 145,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 193,
+              "column": 34,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_85c2ffd6eec2cc4a8569",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 49,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 529,
+              "column": 26,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_935999637ec52032902a",
+          "kind": "step",
+          "name": "Test",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 493,
+              "column": 9,
+              "line": 24
+            },
+            "stop": {
+              "byte": 529,
+              "column": 26,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+                    "start": {
+                      "byte": 382,
+                      "column": 14,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 437,
+                      "column": 31,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run lint\nnpm run format:check\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c092c90fdf7388243376",
+          "kind": "command",
+          "name": "npm run lint\nnpm run format:check\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 382,
+              "column": 14,
+              "line": 19
+            },
+            "stop": {
+              "byte": 437,
+              "column": 31,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c44ff5fd8db85b41bbce",
+          "kind": "call",
+          "name": "actions/setup-node@v1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 233,
+              "column": 15,
+              "line": 13
+            },
+            "stop": {
+              "byte": 254,
+              "column": 36,
+              "line": 13
+            }
+          },
+          "unknown": {
+            "detail": "actions/setup-node@v1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c6f67625c8a97a089d6c",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 34,
+              "column": 6,
+              "line": 2
+            },
+            "stop": {
+              "byte": 38,
+              "column": 10,
+              "line": 2
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+                    "start": {
+                      "byte": 517,
+                      "column": 14,
+                      "line": 25
+                    },
+                    "stop": {
+                      "byte": 529,
+                      "column": 26,
+                      "line": 25
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run test"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_dd7f6439efa5287269d6",
+          "kind": "command",
+          "name": "npm run test",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml",
+            "start": {
+              "byte": 517,
+              "column": 14,
+              "line": 25
+            },
+            "stop": {
+              "byte": 529,
+              "column": 26,
+              "line": 25
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:3d8d1ba2c362bd85c969cb03ab46e03434738b8857b89744d261f5a875c0284c",
+      "path": "github/nextfaze/cdk-extensions/.github/workflows/ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "actions/setup-node@v1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

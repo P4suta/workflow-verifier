@@ -1,0 +1,58 @@
+# master -> ensemblgenomes.org -> WP HH/HX (eg-static)
+# all other branches -> review apps -> WP HX (ensembl-dev)
+
+stages:
+  - build_static
+  - build_docker
+  - deploy
+
+variables:
+  EG_DOCKER_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}
+
+.deploy:
+  stage: deploy
+  image: dockerhub.ebi.ac.uk/ensembl-web/deploy-tools:latest
+  script:
+    - sed -i "s#<DOCKER_IMAGE>#${EG_DOCKER_IMAGE}#g" ensemblgenomes_deployment.yaml
+    - kubectl apply -f ensemblgenomes_deployment.yaml
+
+Build-Static:
+  stage: build_static
+  image: node:lts
+  script:
+    - npm ci
+    - npm run build
+
+  artifacts:
+    name: static_assets
+    paths:
+    - dist/
+
+Docker-Image:
+  stage: build_docker
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t ${EG_DOCKER_IMAGE} -f Dockerfile.prod --no-cache .
+    - docker push ${EG_DOCKER_IMAGE}
+    - docker rmi ${EG_DOCKER_IMAGE}
+    - docker logout $CI_REGISTRY
+
+# Deploy to WP40-HL cluster (Primary)
+Deploy:WP40:HL:
+  extends: .deploy
+  environment:
+    name : wp40-hl-static
+  only:
+    - main
+
+# Deploy to WP41-HX cluster (Fallback)
+Deploy:WP41:HX:
+  extends: .deploy
+  environment:
+    name : wp41-hx-static
+  only:
+    - main

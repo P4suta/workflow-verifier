@@ -1,0 +1,831 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+          "start": {
+            "byte": 357,
+            "column": 13,
+            "line": 21
+          },
+          "stop": {
+            "byte": 376,
+            "column": 32,
+            "line": 21
+          }
+        }
+      },
+      "id": "diag_a95a693684eeef902d9c",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+        "start": {
+          "byte": 357,
+          "column": 13,
+          "line": 21
+        },
+        "stop": {
+          "byte": 376,
+          "column": 32,
+          "line": 21
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_5d5e805725819e8359eb",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 357,
+              "column": 13,
+              "line": 21
+            },
+            "stop": {
+              "byte": 376,
+              "column": 32,
+              "line": 21
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = dart-lang/setup-dart@v1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+          "start": {
+            "byte": 414,
+            "column": 13,
+            "line": 24
+          },
+          "stop": {
+            "byte": 437,
+            "column": 36,
+            "line": 24
+          }
+        }
+      },
+      "id": "diag_5a21fc3553b65310ae1b",
+      "message": "dependency is not pinned to immutable content: dart-lang/setup-dart@v1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+        "start": {
+          "byte": 414,
+          "column": 13,
+          "line": 24
+        },
+        "stop": {
+          "byte": 437,
+          "column": 36,
+          "line": 24
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_3df2c7435c5e018dce3d",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 414,
+              "column": 13,
+              "line": 24
+            },
+            "stop": {
+              "byte": 437,
+              "column": 36,
+              "line": 24
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:42fefc710e03ad3285d636ad03a01e7a598e1ea03ea77fc22998db72187ca372",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_e6ff2da3f5447c0e3968",
+          "id": "wv_05ce14dd880308801712",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6332235b8adb449a96fc"
+        },
+        {
+          "condition": true,
+          "from": "wv_09b1561942e64e22ef25",
+          "id": "wv_09671f82f7c78ca876b5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3df2c7435c5e018dce3d"
+        },
+        {
+          "condition": true,
+          "from": "wv_6db8d5f79f04b2c0b998",
+          "id": "wv_20c52371939ea81d7475",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b5dc6a7adbc771422067"
+        },
+        {
+          "condition": true,
+          "from": "wv_db410f67484f421d90cb",
+          "id": "wv_252287493ec0df6582b2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e6ff2da3f5447c0e3968"
+        },
+        {
+          "condition": true,
+          "from": "wv_6332235b8adb449a96fc",
+          "id": "wv_26043e3474d94d4dfe06",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6db8d5f79f04b2c0b998"
+        },
+        {
+          "condition": true,
+          "from": "wv_ea262e6aa61415d87c1b",
+          "id": "wv_2665b51dc40b5c5b9f24",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5d5e805725819e8359eb"
+        },
+        {
+          "condition": true,
+          "from": "wv_ea262e6aa61415d87c1b",
+          "id": "wv_2f261ccd23aeea84d0c8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_09b1561942e64e22ef25"
+        },
+        {
+          "condition": true,
+          "from": "wv_e6ff2da3f5447c0e3968",
+          "id": "wv_3e9937379c231935eaa1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_09b1561942e64e22ef25"
+        },
+        {
+          "condition": true,
+          "from": "wv_e6ff2da3f5447c0e3968",
+          "id": "wv_435f778ca9f1e989d705",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6db8d5f79f04b2c0b998"
+        },
+        {
+          "condition": true,
+          "from": "wv_ea262e6aa61415d87c1b",
+          "id": "wv_5c634b05f45077a33818",
+          "kind": "call",
+          "label": null,
+          "to": "wv_5d5e805725819e8359eb"
+        },
+        {
+          "condition": true,
+          "from": "wv_09b1561942e64e22ef25",
+          "id": "wv_64fbca486e7f5d0bc4d3",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6332235b8adb449a96fc"
+        },
+        {
+          "condition": true,
+          "from": "wv_fed9665f5a3021f6b014",
+          "id": "wv_6ea9ed1d213d65e3c5f1",
+          "kind": "data",
+          "label": "os",
+          "to": "wv_e6ff2da3f5447c0e3968"
+        },
+        {
+          "condition": true,
+          "from": "wv_5e1d9a9dc3c62131e8e6",
+          "id": "wv_7b65d4e1c3bf2bf9b4b8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_db410f67484f421d90cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_c2ced7fedaded75f05ca",
+          "id": "wv_7cc0ff915b2f08e417ec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_db410f67484f421d90cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_e6ff2da3f5447c0e3968",
+          "id": "wv_967541c5036f8e68cdb9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ea262e6aa61415d87c1b"
+        },
+        {
+          "condition": true,
+          "from": "wv_09b1561942e64e22ef25",
+          "id": "wv_a75b8c133acffc1d393a",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3df2c7435c5e018dce3d"
+        },
+        {
+          "condition": true,
+          "from": "wv_6332235b8adb449a96fc",
+          "id": "wv_d40c8942126e6fc0a569",
+          "kind": "control",
+          "label": null,
+          "to": "wv_494ee74e4c66baaab5ab"
+        }
+      ],
+      "entrypoints": [
+        "wv_db410f67484f421d90cb"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_09b1561942e64e22ef25",
+          "kind": "step",
+          "name": "Set up Dart",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 384,
+              "column": 7,
+              "line": 23
+            },
+            "stop": {
+              "byte": 471,
+              "column": 22,
+              "line": 26
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3df2c7435c5e018dce3d",
+          "kind": "call",
+          "name": "dart-lang/setup-dart@v1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 414,
+              "column": 13,
+              "line": 24
+            },
+            "stop": {
+              "byte": 437,
+              "column": 36,
+              "line": 24
+            }
+          },
+          "unknown": {
+            "detail": "dart-lang/setup-dart@v1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+                    "start": {
+                      "byte": 517,
+                      "column": 12,
+                      "line": 29
+                    },
+                    "stop": {
+                      "byte": 529,
+                      "column": 24,
+                      "line": 29
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "dart pub get"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_494ee74e4c66baaab5ab",
+          "kind": "command",
+          "name": "dart pub get",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 517,
+              "column": 12,
+              "line": 29
+            },
+            "stop": {
+              "byte": 529,
+              "column": 24,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_5d5e805725819e8359eb",
+          "kind": "call",
+          "name": "actions/checkout@v2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 357,
+              "column": 13,
+              "line": 21
+            },
+            "stop": {
+              "byte": 376,
+              "column": 32,
+              "line": 21
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5e1d9a9dc3c62131e8e6",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 109,
+              "column": 6,
+              "line": 8
+            },
+            "stop": {
+              "byte": 113,
+              "column": 10,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6332235b8adb449a96fc",
+          "kind": "step",
+          "name": "Install dependencies",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 479,
+              "column": 7,
+              "line": 28
+            },
+            "stop": {
+              "byte": 529,
+              "column": 24,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6db8d5f79f04b2c0b998",
+          "kind": "step",
+          "name": "Run tests",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 537,
+              "column": 7,
+              "line": 31
+            },
+            "stop": {
+              "byte": 573,
+              "column": 21,
+              "line": 32
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+                    "start": {
+                      "byte": 564,
+                      "column": 12,
+                      "line": 32
+                    },
+                    "stop": {
+                      "byte": 573,
+                      "column": 21,
+                      "line": 32
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "dart test"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b5dc6a7adbc771422067",
+          "kind": "command",
+          "name": "dart test",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 564,
+              "column": 12,
+              "line": 32
+            },
+            "stop": {
+              "byte": 573,
+              "column": 21,
+              "line": 32
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c2ced7fedaded75f05ca",
+          "kind": "trigger",
+          "name": "pull_request",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 110,
+              "column": 7,
+              "line": 8
+            },
+            "stop": {
+              "byte": 122,
+              "column": 19,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_db410f67484f421d90cb",
+          "kind": "workflow",
+          "name": "Dart",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 573,
+              "column": 21,
+              "line": 32
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e6ff2da3f5447c0e3968",
+          "kind": "job",
+          "name": "test",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 138,
+              "column": 3,
+              "line": 11
+            },
+            "stop": {
+              "byte": 573,
+              "column": 21,
+              "line": 32
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ea262e6aa61415d87c1b",
+          "kind": "step",
+          "name": "Checkout repository",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 319,
+              "column": 7,
+              "line": 20
+            },
+            "stop": {
+              "byte": 376,
+              "column": 32,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "macos-latest",
+                  "ubuntu-latest",
+                  "windows-latest"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fed9665f5a3021f6b014",
+          "kind": "parameter",
+          "name": "matrix.os",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/mcmah309/sheller/.github/workflows/dart.yml",
+            "start": {
+              "byte": 251,
+              "column": 9,
+              "line": 17
+            },
+            "stop": {
+              "byte": 300,
+              "column": 58,
+              "line": 17
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/mcmah309/sheller/.github/workflows/dart.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:3d09e658929330355406e63e531d075e192d1d4c877c78ee13b5bbeb35ac07d2",
+      "path": "github/mcmah309/sheller/.github/workflows/dart.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "dart-lang/setup-dart@v1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

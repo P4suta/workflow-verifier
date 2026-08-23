@@ -23,7 +23,12 @@ type summary = {
   unknowns : Unknown.reason list;
   expansions : expansion list;
   unsafe_interpolation : bool;
+  secret_to_network : bool;
+  secret_to_output : bool;
 }
 
 val shell_name : shell -> string
+val command_source : Ir.node -> string
+val shell_of_node : Ir.node -> shell
 val analyze : shell -> string -> summary
+val analyze_node : Ir.node -> summary

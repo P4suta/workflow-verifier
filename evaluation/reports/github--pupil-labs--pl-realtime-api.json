@@ -1,0 +1,2002 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+          "start": {
+            "byte": 177,
+            "column": 15,
+            "line": 13
+          },
+          "stop": {
+            "byte": 196,
+            "column": 34,
+            "line": 13
+          }
+        }
+      },
+      "id": "diag_71eb8f4491800f2dc912",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+        "start": {
+          "byte": 177,
+          "column": 15,
+          "line": 13
+        },
+        "stop": {
+          "byte": 196,
+          "column": 34,
+          "line": 13
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_63559f04ba1b844d3f74",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 177,
+              "column": 15,
+              "line": 13
+            },
+            "stop": {
+              "byte": 196,
+              "column": 34,
+              "line": 13
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+          "start": {
+            "byte": 333,
+            "column": 14,
+            "line": 19
+          },
+          "stop": {
+            "byte": 581,
+            "column": 1,
+            "line": 24
+          }
+        }
+      },
+      "id": "diag_0e82de693af1e37408dc",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+        "start": {
+          "byte": 333,
+          "column": 14,
+          "line": 19
+        },
+        "stop": {
+          "byte": 581,
+          "column": 1,
+          "line": 24
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_0124336e05398066f264",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 513,
+              "column": 194,
+              "line": 19
+            },
+            "stop": {
+              "byte": 528,
+              "column": 209,
+              "line": 19
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_c3b9ce02ae4d31c58c84",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 333,
+              "column": 14,
+              "line": 19
+            },
+            "stop": {
+              "byte": 581,
+              "column": 1,
+              "line": 24
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+          "start": {
+            "byte": 678,
+            "column": 15,
+            "line": 30
+          },
+          "stop": {
+            "byte": 697,
+            "column": 34,
+            "line": 30
+          }
+        }
+      },
+      "id": "diag_6694153cc4cf1bd05b7d",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+        "start": {
+          "byte": 678,
+          "column": 15,
+          "line": 30
+        },
+        "stop": {
+          "byte": 697,
+          "column": 34,
+          "line": 30
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_f7f814361711f23c48ed",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 678,
+              "column": 15,
+              "line": 30
+            },
+            "stop": {
+              "byte": 697,
+              "column": 34,
+              "line": 30
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/setup-python@v5"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+          "start": {
+            "byte": 791,
+            "column": 15,
+            "line": 34
+          },
+          "stop": {
+            "byte": 814,
+            "column": 38,
+            "line": 34
+          }
+        }
+      },
+      "id": "diag_cd30f274696313eb11f6",
+      "message": "dependency is not pinned to immutable content: actions/setup-python@v5",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+        "start": {
+          "byte": 791,
+          "column": 15,
+          "line": 34
+        },
+        "stop": {
+          "byte": 814,
+          "column": 38,
+          "line": 34
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_c9f21c0a892b56e02eef",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 791,
+              "column": 15,
+              "line": 34
+            },
+            "stop": {
+              "byte": 814,
+              "column": 38,
+              "line": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/upload-artifact@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+          "start": {
+            "byte": 1132,
+            "column": 15,
+            "line": 46
+          },
+          "stop": {
+            "byte": 1158,
+            "column": 41,
+            "line": 46
+          }
+        }
+      },
+      "id": "diag_cc3d8b0e615043e064ba",
+      "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+        "start": {
+          "byte": 1132,
+          "column": 15,
+          "line": 46
+        },
+        "stop": {
+          "byte": 1158,
+          "column": 41,
+          "line": 46
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_6b4bbef980e0218402f4",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1132,
+              "column": 15,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1158,
+              "column": 41,
+              "line": 46
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/download-artifact@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+          "start": {
+            "byte": 1694,
+            "column": 15,
+            "line": 65
+          },
+          "stop": {
+            "byte": 1722,
+            "column": 43,
+            "line": 65
+          }
+        }
+      },
+      "id": "diag_b7f9d8f3465c397fb05c",
+      "message": "dependency is not pinned to immutable content: actions/download-artifact@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+        "start": {
+          "byte": 1694,
+          "column": 15,
+          "line": 65
+        },
+        "stop": {
+          "byte": 1722,
+          "column": 43,
+          "line": 65
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_7278aba89178c3e81d0e",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1694,
+              "column": 15,
+              "line": 65
+            },
+            "stop": {
+              "byte": 1722,
+              "column": 43,
+              "line": 65
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = pypa/gh-action-pypi-publish@release/v1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+          "start": {
+            "byte": 1866,
+            "column": 15,
+            "line": 70
+          },
+          "stop": {
+            "byte": 1904,
+            "column": 53,
+            "line": 70
+          }
+        }
+      },
+      "id": "diag_0b8b7129855cc36e2574",
+      "message": "dependency is not pinned to immutable content: pypa/gh-action-pypi-publish@release/v1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+        "start": {
+          "byte": 1866,
+          "column": 15,
+          "line": 70
+        },
+        "stop": {
+          "byte": 1904,
+          "column": 53,
+          "line": 70
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_9e1d0f1b3147b8015918",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1866,
+              "column": 15,
+              "line": 70
+            },
+            "stop": {
+              "byte": 1904,
+              "column": 53,
+              "line": 70
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:680a687e5ba2edd29417d9b830d3f026dc7b68f46d34d042abc22d47182133ba",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_35decc9df4fff95ac3cc",
+          "id": "wv_03e7b1c9f4f5fc954b91",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_7a66ed26647450ad542c"
+        },
+        {
+          "condition": true,
+          "from": "wv_62d63117e907d4ee4120",
+          "id": "wv_083ab99351657c8b0dc3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c3b9ce02ae4d31c58c84"
+        },
+        {
+          "condition": true,
+          "from": "wv_fa2c0f07c71f84095c8a",
+          "id": "wv_1041b22ef6e159185540",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_89c2392cf88fee4ff6b7"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a66ed26647450ad542c",
+          "id": "wv_18177b0246b6ba2f2ba8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_66f4eb117df62239edc1"
+        },
+        {
+          "condition": true,
+          "from": "wv_ce72cb49bdb031ac6069",
+          "id": "wv_1b5365765cd6fb2f3583",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_62d63117e907d4ee4120"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a66ed26647450ad542c",
+          "id": "wv_1d2d0e25ba8a0ccbf34b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3c62285777fcee27ea0a"
+        },
+        {
+          "condition": true,
+          "from": "wv_40e1739421d9b8c9ef16",
+          "id": "wv_23b3ca6ce426e7cb7319",
+          "kind": "control",
+          "label": null,
+          "to": "wv_35decc9df4fff95ac3cc"
+        },
+        {
+          "condition": true,
+          "from": "wv_35decc9df4fff95ac3cc",
+          "id": "wv_2437f55c7f581c1355c6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6f4e1a51537eee809f44"
+        },
+        {
+          "condition": true,
+          "from": "wv_ce72cb49bdb031ac6069",
+          "id": "wv_2884d2ed138267b71668",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6cbafb0e36bab68d39ff"
+        },
+        {
+          "condition": true,
+          "from": "wv_40e1739421d9b8c9ef16",
+          "id": "wv_2ab6b687c1a2fa6ba4ef",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7a66ed26647450ad542c"
+        },
+        {
+          "condition": true,
+          "from": "wv_6403a70c990e038c3828",
+          "id": "wv_2b9ad9288c32da131ee0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ce72cb49bdb031ac6069"
+        },
+        {
+          "condition": true,
+          "from": "wv_6403a70c990e038c3828",
+          "id": "wv_340e8e15410bbf636555",
+          "kind": "control",
+          "label": null,
+          "to": "wv_63559f04ba1b844d3f74"
+        },
+        {
+          "condition": true,
+          "from": "wv_89c2392cf88fee4ff6b7",
+          "id": "wv_37ba784cded3fe9b9cca",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_35decc9df4fff95ac3cc"
+        },
+        {
+          "condition": true,
+          "from": "wv_22fe93a67e4fb34e1c4e",
+          "id": "wv_3a3a50ef6817584dc3e6",
+          "kind": "call",
+          "label": null,
+          "to": "wv_9e1d0f1b3147b8015918"
+        },
+        {
+          "condition": true,
+          "from": "wv_89c2392cf88fee4ff6b7",
+          "id": "wv_3cc3303a05c868418f70",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c9f21c0a892b56e02eef"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c639a79151dc64476ae",
+          "id": "wv_44e6a9542dc5eac28143",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f8c39694adfb48d25e51"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "startsWith(github.ref,\"refs/tags/\")"
+          },
+          "from": "wv_f8c39694adfb48d25e51",
+          "id": "wv_45bfcdf1198b69aa9167",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_c8be1785cb7ff0206faf"
+        },
+        {
+          "condition": true,
+          "from": "wv_c1bd538b9c7856da0f34",
+          "id": "wv_47f674e93d7eeeec7b51",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6403a70c990e038c3828"
+        },
+        {
+          "condition": true,
+          "from": "wv_c1bd538b9c7856da0f34",
+          "id": "wv_48d62a325cdb37e61753",
+          "kind": "control",
+          "label": null,
+          "to": "wv_62d63117e907d4ee4120"
+        },
+        {
+          "condition": true,
+          "from": "wv_0124336e05398066f264",
+          "id": "wv_4a3e45477181a9d80721",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_c3b9ce02ae4d31c58c84"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa460ebe843b5427be7",
+          "id": "wv_61aea9da93ce91be22df",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7278aba89178c3e81d0e"
+        },
+        {
+          "condition": true,
+          "from": "wv_6403a70c990e038c3828",
+          "id": "wv_63f26150c90d31ca58ce",
+          "kind": "call",
+          "label": null,
+          "to": "wv_63559f04ba1b844d3f74"
+        },
+        {
+          "condition": true,
+          "from": "wv_89c2392cf88fee4ff6b7",
+          "id": "wv_65689606171c37d9449a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c9f21c0a892b56e02eef"
+        },
+        {
+          "condition": true,
+          "from": "wv_ce72cb49bdb031ac6069",
+          "id": "wv_6e084814657ae117e43d",
+          "kind": "call",
+          "label": null,
+          "to": "wv_6cbafb0e36bab68d39ff"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ce4a20e4c0fb423d095",
+          "id": "wv_6ea56f70b2ad8c3ed42b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1c639a79151dc64476ae"
+        },
+        {
+          "condition": true,
+          "from": "wv_40e1739421d9b8c9ef16",
+          "id": "wv_75cb2f17dbc73d095c45",
+          "kind": "control",
+          "label": "needs",
+          "to": "wv_f8c39694adfb48d25e51"
+        },
+        {
+          "condition": true,
+          "from": "wv_c8be1785cb7ff0206faf",
+          "id": "wv_7cbe28dec93a62e8a86c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8aa460ebe843b5427be7"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa460ebe843b5427be7",
+          "id": "wv_8216dfba9a9d20fd2c91",
+          "kind": "call",
+          "label": null,
+          "to": "wv_7278aba89178c3e81d0e"
+        },
+        {
+          "condition": true,
+          "from": "wv_40e1739421d9b8c9ef16",
+          "id": "wv_870f25b96d9e7b6488d2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fa2c0f07c71f84095c8a"
+        },
+        {
+          "condition": true,
+          "from": "wv_fa2c0f07c71f84095c8a",
+          "id": "wv_8a529715afbf9f195062",
+          "kind": "call",
+          "label": null,
+          "to": "wv_f7f814361711f23c48ed"
+        },
+        {
+          "condition": true,
+          "from": "wv_40e1739421d9b8c9ef16",
+          "id": "wv_961d9b8fcbda6c3ade48",
+          "kind": "control",
+          "label": null,
+          "to": "wv_89c2392cf88fee4ff6b7"
+        },
+        {
+          "condition": true,
+          "from": "wv_40e1739421d9b8c9ef16",
+          "id": "wv_9f90162d911d4f1f2f32",
+          "kind": "control",
+          "label": null,
+          "to": "wv_66f4eb117df62239edc1"
+        },
+        {
+          "condition": true,
+          "from": "wv_c1bd538b9c7856da0f34",
+          "id": "wv_a4aaef57e40966ed4bf6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ce72cb49bdb031ac6069"
+        },
+        {
+          "condition": true,
+          "from": "wv_f200f2827ac758f0c24c",
+          "id": "wv_aafeb0ab28e1c996a7a0",
+          "kind": "data",
+          "label": "github.ref",
+          "to": "wv_f8c39694adfb48d25e51"
+        },
+        {
+          "condition": true,
+          "from": "wv_66f4eb117df62239edc1",
+          "id": "wv_ac8760e601d346029b06",
+          "kind": "call",
+          "label": null,
+          "to": "wv_6b4bbef980e0218402f4"
+        },
+        {
+          "condition": true,
+          "from": "wv_fa2c0f07c71f84095c8a",
+          "id": "wv_adf4ade729846f5b3116",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f7f814361711f23c48ed"
+        },
+        {
+          "condition": true,
+          "from": "wv_f6cbfc773189f230b0f2",
+          "id": "wv_b99975367283100db56a",
+          "kind": "grant",
+          "label": null,
+          "to": "wv_c8be1785cb7ff0206faf"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c639a79151dc64476ae",
+          "id": "wv_c625cbfb815acc4d9b24",
+          "kind": "control",
+          "label": null,
+          "to": "wv_40e1739421d9b8c9ef16"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c639a79151dc64476ae",
+          "id": "wv_cf06d4697cd7da8d449f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c1bd538b9c7856da0f34"
+        },
+        {
+          "condition": true,
+          "from": "wv_66f4eb117df62239edc1",
+          "id": "wv_e6e40f9ed521ede11d0e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6b4bbef980e0218402f4"
+        },
+        {
+          "condition": true,
+          "from": "wv_22fe93a67e4fb34e1c4e",
+          "id": "wv_e7ee0e6e2c0ef0f5bcc1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9e1d0f1b3147b8015918"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa460ebe843b5427be7",
+          "id": "wv_f5eb0e831ae8d94d3505",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_22fe93a67e4fb34e1c4e"
+        },
+        {
+          "condition": true,
+          "from": "wv_c8be1785cb7ff0206faf",
+          "id": "wv_fffb6da6e59dbcff652a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_22fe93a67e4fb34e1c4e"
+        }
+      ],
+      "entrypoints": [
+        "wv_1c639a79151dc64476ae"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 513,
+                      "column": 194,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 528,
+                      "column": 209,
+                      "line": 19
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0124336e05398066f264",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 513,
+              "column": 194,
+              "line": 19
+            },
+            "stop": {
+              "byte": 528,
+              "column": 209,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1c639a79151dc64476ae",
+          "kind": "workflow",
+          "name": "release-main",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1904,
+              "column": 53,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_22fe93a67e4fb34e1c4e",
+          "kind": "step",
+          "name": "Publish distribution 📦 to PyPI",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1812,
+              "column": 9,
+              "line": 69
+            },
+            "stop": {
+              "byte": 1904,
+              "column": 53,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_35decc9df4fff95ac3cc",
+          "kind": "step",
+          "name": "Install pypa/build",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 869,
+              "column": 9,
+              "line": 37
+            },
+            "stop": {
+              "byte": 985,
+              "column": 17,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 1055,
+                      "column": 14,
+                      "line": 44
+                    },
+                    "stop": {
+                      "byte": 1071,
+                      "column": 30,
+                      "line": 44
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "python3 -m build"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_3c62285777fcee27ea0a",
+          "kind": "command",
+          "name": "python3 -m build",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1055,
+              "column": 14,
+              "line": 44
+            },
+            "stop": {
+              "byte": 1071,
+              "column": 30,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_40e1739421d9b8c9ef16",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 584,
+              "column": 3,
+              "line": 25
+            },
+            "stop": {
+              "byte": 1239,
+              "column": 22,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_62d63117e907d4ee4120",
+          "kind": "step",
+          "name": "Deploy documentation",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 293,
+              "column": 9,
+              "line": 18
+            },
+            "stop": {
+              "byte": 581,
+              "column": 1,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_63559f04ba1b844d3f74",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 177,
+              "column": 15,
+              "line": 13
+            },
+            "stop": {
+              "byte": 196,
+              "column": 34,
+              "line": 13
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6403a70c990e038c3828",
+          "kind": "step",
+          "name": "Check out",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 147,
+              "column": 9,
+              "line": 12
+            },
+            "stop": {
+              "byte": 196,
+              "column": 34,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_66f4eb117df62239edc1",
+          "kind": "step",
+          "name": "Store the distribution packages",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1080,
+              "column": 9,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1239,
+              "column": 22,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "network_request",
+            "artifact_publish"
+          ],
+          "id": "wv_6b4bbef980e0218402f4",
+          "kind": "call",
+          "name": "actions/upload-artifact@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1132,
+              "column": 15,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1158,
+              "column": 41,
+              "line": 46
+            }
+          },
+          "unknown": {
+            "detail": "actions/upload-artifact@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6cbafb0e36bab68d39ff",
+          "kind": "call",
+          "name": "./.github/actions/setup-python-env",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 249,
+              "column": 15,
+              "line": 16
+            },
+            "stop": {
+              "byte": 283,
+              "column": 49,
+              "line": 16
+            }
+          },
+          "unknown": {
+            "detail": "./.github/actions/setup-python-env",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 907,
+                      "column": 14,
+                      "line": 38
+                    },
+                    "stop": {
+                      "byte": 985,
+                      "column": 17,
+                      "line": 42
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "python3 -m pip install build --user"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6f4e1a51537eee809f44",
+          "kind": "command",
+          "name": "python3 -m pip install build --user",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 907,
+              "column": 14,
+              "line": 38
+            },
+            "stop": {
+              "byte": 985,
+              "column": 17,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "filesystem_write",
+            "artifact_read"
+          ],
+          "condition": true,
+          "effects": [
+            "network_request",
+            "file_write"
+          ],
+          "id": "wv_7278aba89178c3e81d0e",
+          "kind": "call",
+          "name": "actions/download-artifact@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1694,
+              "column": 15,
+              "line": 65
+            },
+            "stop": {
+              "byte": 1722,
+              "column": 43,
+              "line": 65
+            }
+          },
+          "unknown": {
+            "detail": "actions/download-artifact@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7a66ed26647450ad542c",
+          "kind": "step",
+          "name": "Build a binary wheel and a source tarball",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 994,
+              "column": 9,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1071,
+              "column": 30,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7ce4a20e4c0fb423d095",
+          "kind": "trigger",
+          "name": "release",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 26,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 78,
+              "column": 21,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_89c2392cf88fee4ff6b7",
+          "kind": "step",
+          "name": "Set up Python",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 757,
+              "column": 9,
+              "line": 33
+            },
+            "stop": {
+              "byte": 860,
+              "column": 32,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8aa460ebe843b5427be7",
+          "kind": "step",
+          "name": "Download all the dists",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1651,
+              "column": 9,
+              "line": 64
+            },
+            "stop": {
+              "byte": 1803,
+              "column": 22,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9e1d0f1b3147b8015918",
+          "kind": "call",
+          "name": "pypa/gh-action-pypi-publish@release/v1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1866,
+              "column": 15,
+              "line": 70
+            },
+            "stop": {
+              "byte": 1904,
+              "column": 53,
+              "line": 70
+            }
+          },
+          "unknown": {
+            "detail": "pypa/gh-action-pypi-publish@release/v1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c1bd538b9c7856da0f34",
+          "kind": "job",
+          "name": "deploy-docs",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 88,
+              "column": 3,
+              "line": 9
+            },
+            "stop": {
+              "byte": 581,
+              "column": 1,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 513,
+                      "column": 194,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 528,
+                      "column": 209,
+                      "line": 19
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 333,
+                      "column": 14,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 581,
+                      "column": 1,
+                      "line": 24
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git fetch origin gh-pages --depth=1\ngit config user.name \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\nuv run mike deploy ${{ github.ref_name }} --push\n",
+                  "github.ref_name"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c3b9ce02ae4d31c58c84",
+          "kind": "command",
+          "name": "git fetch origin gh-pages --depth=1\ngit config user.name \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\nuv run mike deploy ${{ github.ref_name }} --push\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 333,
+              "column": 14,
+              "line": 19
+            },
+            "stop": {
+              "byte": 581,
+              "column": 1,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "oidc",
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [
+            "deployment_change"
+          ],
+          "id": "wv_c8be1785cb7ff0206faf",
+          "kind": "job",
+          "name": "publish-to-pypi",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1243,
+              "column": 3,
+              "line": 51
+            },
+            "stop": {
+              "byte": 1904,
+              "column": 53,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c9f21c0a892b56e02eef",
+          "kind": "call",
+          "name": "actions/setup-python@v5",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 791,
+              "column": 15,
+              "line": 34
+            },
+            "stop": {
+              "byte": 814,
+              "column": 38,
+              "line": 34
+            }
+          },
+          "unknown": {
+            "detail": "actions/setup-python@v5",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ce72cb49bdb031ac6069",
+          "kind": "step",
+          "name": "Set up the environment",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 206,
+              "column": 9,
+              "line": 15
+            },
+            "stop": {
+              "byte": 283,
+              "column": 49,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 1344,
+                      "column": 20,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1354,
+                      "column": 30,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f200f2827ac758f0c24c",
+          "kind": "resource",
+          "name": "github.ref",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1344,
+              "column": 20,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1354,
+              "column": 30,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f6cbfc773189f230b0f2",
+          "kind": "resource",
+          "name": "environment:pypi",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1482,
+              "column": 7,
+              "line": 59
+            },
+            "stop": {
+              "byte": 1546,
+              "column": 54,
+              "line": 60
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_f7f814361711f23c48ed",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 678,
+              "column": 15,
+              "line": 30
+            },
+            "stop": {
+              "byte": 697,
+              "column": 34,
+              "line": 30
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 1333,
+                      "column": 9,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1369,
+                      "column": 45,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "startsWith(github.ref, 'refs/tags/')"
+                ]
+              }
+            },
+            "reference:github.ref": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref",
+                  "span": {
+                    "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+                    "start": {
+                      "byte": 1344,
+                      "column": 20,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1354,
+                      "column": 30,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "startsWith(github.ref,\"refs/tags/\")"
+          },
+          "effects": [],
+          "id": "wv_f8c39694adfb48d25e51",
+          "kind": "gate",
+          "name": "if:job:publish-to-pypi",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 1333,
+              "column": 9,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1369,
+              "column": 45,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fa2c0f07c71f84095c8a",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml",
+            "start": {
+              "byte": 672,
+              "column": 9,
+              "line": 30
+            },
+            "stop": {
+              "byte": 748,
+              "column": 37,
+              "line": 32
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:4baa89c9ab5094e122a693c767a387371b65b0a7aab0d9eb7dde6fc27615481c",
+      "path": "github/pupil-labs/pl-realtime-api/.github/workflows/on-release-main.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [
+        {
+          "detail": "protection rules for environment:pypi",
+          "kind": "external_state"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "actions/download-artifact@v4",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "actions/setup-python@v5",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "actions/upload-artifact@v4",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "pypa/gh-action-pypi-publish@release/v1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 7,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

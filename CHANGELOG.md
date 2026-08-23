@@ -27,6 +27,9 @@ after the first compatibility release.
   400-repository precision/recall tooling, performance regression tooling,
   four-platform byte comparison, deterministic packages, SPDX SBOM/checksums,
   signing, and provenance attestations.
+- Add atomic GitHub corpus acquisition with immutable source/license evidence
+  and a separate exhaustive, reason-required diagnostic review phase, plus
+  digest-verified network-free reanalysis into a new transaction.
 - Period-balance baseline and candidate performance one sample at a time to
   remove hosted runner order bias, and require a commit-bound external evidence
   manifest plus a verified independent-review Sigstore identity before publication.
@@ -37,6 +40,16 @@ after the first compatibility release.
   validation, including action metadata with Markdown links, and exercise
   current `lock-v2` determinism separately from canonical `lock-v1`
   compatibility.
+- Preserve forward progress when a block scalar is the final CRLF-terminated
+  YAML node; model GitLab inheritance/manual gates and CircleCI invocation
+  aliases/parameter bindings explicitly; and distinguish observed secret,
+  authorization, and permission violations from unresolved external behavior.
+- Parse top-level shell pipelines and redirections so stdout, private files,
+  dynamic destinations, and credential-consuming network sinks remain distinct;
+  centralize command-source effect inference; and require structured approval or
+  protected-ref evidence instead of authorization keywords in Gate labels.
+- Reject unvalidated corpus repository paths before network fetch or cleanup, so
+  a failed candidate can never escape the private acquisition transaction.
 - Make the analyzer library core total: quote state is represented by closed
   variants, structured encoders own their field lists, BDD application is
   exhaustive, graph traversal carries nonempty paths, lock updates are

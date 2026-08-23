@@ -1,0 +1,1867 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+          "start": {
+            "byte": 1486,
+            "column": 14,
+            "line": 47
+          },
+          "stop": {
+            "byte": 1542,
+            "column": 70,
+            "line": 47
+          }
+        }
+      },
+      "id": "diag_4e888b2c43dfa01f71ca",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+        "start": {
+          "byte": 1486,
+          "column": 14,
+          "line": 47
+        },
+        "stop": {
+          "byte": 1542,
+          "column": 70,
+          "line": 47
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_29419e6c2e72d8fb98df",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1527,
+              "column": 55,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1540,
+              "column": 68,
+              "line": 47
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_fa0883241042c0bdcba4",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1486,
+              "column": 14,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1542,
+              "column": 70,
+              "line": 47
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+          "start": {
+            "byte": 1557,
+            "column": 14,
+            "line": 49
+          },
+          "stop": {
+            "byte": 1607,
+            "column": 64,
+            "line": 49
+          }
+        }
+      },
+      "id": "diag_1359aadf7f940d9e4c97",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+        "start": {
+          "byte": 1557,
+          "column": 14,
+          "line": 49
+        },
+        "stop": {
+          "byte": 1607,
+          "column": 64,
+          "line": 49
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_31901ca81a3f661c955d",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1594,
+              "column": 51,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1607,
+              "column": 64,
+              "line": 49
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_6f7812059d45fd549bda",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1557,
+              "column": 14,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1607,
+              "column": 64,
+              "line": 49
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:998754515f8e260ec1d4ce57fcd2b46e0cc49786fd96f8309cdff1f8ae3cc4ff",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_8381ff06947688546125",
+          "id": "wv_04a90ea7ad2a9ac99e00",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a55f48ca74fbcdf7d294"
+        },
+        {
+          "condition": true,
+          "from": "wv_3fb694b07f8ea43eeb23",
+          "id": "wv_0a3e375a6d42da106dd9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1e44bdedf51a28c09d03"
+        },
+        {
+          "condition": true,
+          "from": "wv_9d015a6140a7d2029750",
+          "id": "wv_0aec28f77364f868ecbc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_aa849832ca0aac969e3c"
+        },
+        {
+          "condition": true,
+          "from": "wv_0784281537178b69f71a",
+          "id": "wv_0d95ee205d9d0807d081",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3fb694b07f8ea43eeb23"
+        },
+        {
+          "condition": true,
+          "from": "wv_749ffda5f7080afc07c3",
+          "id": "wv_0fa4c36faff98552a75a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0784281537178b69f71a"
+        },
+        {
+          "condition": true,
+          "from": "wv_749ffda5f7080afc07c3",
+          "id": "wv_1196d5af15860b8943ab",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a2e20cf6a932d8843501"
+        },
+        {
+          "condition": true,
+          "from": "wv_0784281537178b69f71a",
+          "id": "wv_125259acd44f0e46cfb9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f2b8089382b394f9779b"
+        },
+        {
+          "condition": true,
+          "from": "wv_bd9f706e5fbea5ed5586",
+          "id": "wv_15164449e2ea9909b008",
+          "kind": "control",
+          "label": null,
+          "to": "wv_749ffda5f7080afc07c3"
+        },
+        {
+          "condition": true,
+          "from": "wv_a2e20cf6a932d8843501",
+          "id": "wv_160b55b2021d8d291a03",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_87406980ccf7870f353f"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_549745ee7776cf795bd9",
+          "id": "wv_2eb9c8f5c3a86df13707",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_855f23b909b523c6c0c3"
+        },
+        {
+          "condition": true,
+          "from": "wv_35ed5a1645e55d5ea7da",
+          "id": "wv_3041b60a1899932d5c04",
+          "kind": "read",
+          "label": null,
+          "to": "wv_2ad86d7137114b8c74e4"
+        },
+        {
+          "condition": true,
+          "from": "wv_855f23b909b523c6c0c3",
+          "id": "wv_3a1cb27cafb5473558ce",
+          "kind": "control",
+          "label": null,
+          "to": "wv_aa849832ca0aac969e3c"
+        },
+        {
+          "condition": true,
+          "from": "wv_29419e6c2e72d8fb98df",
+          "id": "wv_3ce0ae2fed8acba2c384",
+          "kind": "data",
+          "label": "CIRCLE_BRANCH",
+          "to": "wv_fa0883241042c0bdcba4"
+        },
+        {
+          "condition": true,
+          "from": "wv_53843c1deff0acf15722",
+          "id": "wv_3e5077efed83a9d0e83e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cf36eea368552ad9115d"
+        },
+        {
+          "condition": true,
+          "from": "wv_bd9f706e5fbea5ed5586",
+          "id": "wv_3f0b4831c9c011919e6f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_549745ee7776cf795bd9"
+        },
+        {
+          "condition": true,
+          "from": "wv_a2e20cf6a932d8843501",
+          "id": "wv_454109b4b6858faf1360",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a4a019b3ccdafb17d1a2"
+        },
+        {
+          "condition": true,
+          "from": "wv_749ffda5f7080afc07c3",
+          "id": "wv_4a5594d9ec3ba8b2f06b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_87406980ccf7870f353f"
+        },
+        {
+          "condition": true,
+          "from": "wv_749ffda5f7080afc07c3",
+          "id": "wv_4a820e3c642e04ffca36",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ed48036a588747eda5f8"
+        },
+        {
+          "condition": true,
+          "from": "wv_a55f48ca74fbcdf7d294",
+          "id": "wv_4f489f0e974b9ee882f3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_96a6650650453ab7aa1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_53843c1deff0acf15722",
+          "id": "wv_4fc423f00a34cdcb972e",
+          "kind": "call",
+          "label": null,
+          "to": "wv_cf36eea368552ad9115d"
+        },
+        {
+          "condition": true,
+          "from": "wv_749ffda5f7080afc07c3",
+          "id": "wv_4fdb50108798c937967c",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_549745ee7776cf795bd9"
+        },
+        {
+          "condition": true,
+          "from": "wv_ed48036a588747eda5f8",
+          "id": "wv_5325e60b487f5f25320f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_88e726a8131b1ff33b1a"
+        },
+        {
+          "condition": true,
+          "from": "wv_53843c1deff0acf15722",
+          "id": "wv_57b89b365effb232bf43",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bd9f706e5fbea5ed5586"
+        },
+        {
+          "condition": true,
+          "from": "wv_05dd1a8a16b009459271",
+          "id": "wv_6d10683826388846adc9",
+          "kind": "data",
+          "label": "DOCKER_PASS",
+          "to": "wv_96a6650650453ab7aa1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_855f23b909b523c6c0c3",
+          "id": "wv_6ea4b3dbd423338cbc5c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9d015a6140a7d2029750"
+        },
+        {
+          "condition": true,
+          "from": "wv_9b6e49a3637c891fede8",
+          "id": "wv_6ff7f4ca25d5dadad2bb",
+          "kind": "data",
+          "label": "DOCKER_USER",
+          "to": "wv_96a6650650453ab7aa1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_3fb694b07f8ea43eeb23",
+          "id": "wv_793fd38fcd7680cf8a0d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a2e20cf6a932d8843501"
+        },
+        {
+          "condition": true,
+          "from": "wv_855f23b909b523c6c0c3",
+          "id": "wv_7edb48688a3bce1e7491",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8381ff06947688546125"
+        },
+        {
+          "condition": true,
+          "from": "wv_9d015a6140a7d2029750",
+          "id": "wv_8a014f674d168d5bafd3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fa0883241042c0bdcba4"
+        },
+        {
+          "condition": true,
+          "from": "wv_ed48036a588747eda5f8",
+          "id": "wv_8af3bae13f9cd81061f9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_88e726a8131b1ff33b1a"
+        },
+        {
+          "condition": true,
+          "from": "wv_35ed5a1645e55d5ea7da",
+          "id": "wv_a4936229ca6864589fc7",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0784281537178b69f71a"
+        },
+        {
+          "condition": true,
+          "from": "wv_749ffda5f7080afc07c3",
+          "id": "wv_af68fc3a040d88f06474",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3fb694b07f8ea43eeb23"
+        },
+        {
+          "condition": true,
+          "from": "wv_8381ff06947688546125",
+          "id": "wv_b352805e0c0e53ac3d1e",
+          "kind": "read",
+          "label": null,
+          "to": "wv_38062d2b78c3c71cc8c5"
+        },
+        {
+          "condition": true,
+          "from": "wv_a55f48ca74fbcdf7d294",
+          "id": "wv_b9b768efa0e199d1a320",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9d015a6140a7d2029750"
+        },
+        {
+          "condition": true,
+          "from": "wv_8381ff06947688546125",
+          "id": "wv_c1a6f56556173e02b1f0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_38062d2b78c3c71cc8c5"
+        },
+        {
+          "condition": true,
+          "from": "wv_87406980ccf7870f353f",
+          "id": "wv_c2e28c48a693697024c3",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ed48036a588747eda5f8"
+        },
+        {
+          "condition": true,
+          "from": "wv_0784281537178b69f71a",
+          "id": "wv_d6bc71b24928377e87c9",
+          "kind": "call",
+          "label": null,
+          "to": "wv_f2b8089382b394f9779b"
+        },
+        {
+          "condition": true,
+          "from": "wv_aa849832ca0aac969e3c",
+          "id": "wv_df51353e915ec7b86208",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6f7812059d45fd549bda"
+        },
+        {
+          "condition": true,
+          "from": "wv_31901ca81a3f661c955d",
+          "id": "wv_e29b3e34ede39078b4a7",
+          "kind": "data",
+          "label": "CIRCLE_BRANCH",
+          "to": "wv_6f7812059d45fd549bda"
+        },
+        {
+          "condition": true,
+          "from": "wv_35ed5a1645e55d5ea7da",
+          "id": "wv_e6f9305bca4bf76d5705",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2ad86d7137114b8c74e4"
+        },
+        {
+          "condition": true,
+          "from": "wv_749ffda5f7080afc07c3",
+          "id": "wv_ee0423dd6bc3f9048b16",
+          "kind": "control",
+          "label": null,
+          "to": "wv_35ed5a1645e55d5ea7da"
+        },
+        {
+          "condition": true,
+          "from": "wv_855f23b909b523c6c0c3",
+          "id": "wv_fd89c156e77688eab6e5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a55f48ca74fbcdf7d294"
+        },
+        {
+          "condition": true,
+          "from": "wv_87406980ccf7870f353f",
+          "id": "wv_fe246da69834337528a6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f9184209539b9f94f177"
+        }
+      ],
+      "entrypoints": [
+        "wv_53843c1deff0acf15722"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_PASS",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1460,
+                      "column": 47,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1471,
+                      "column": 58,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_PASS"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_05dd1a8a16b009459271",
+          "kind": "resource",
+          "name": "DOCKER_PASS",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1460,
+              "column": 47,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1471,
+              "column": 58,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0784281537178b69f71a",
+          "kind": "step",
+          "name": "restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 929,
+              "column": 9,
+              "line": 26
+            },
+            "stop": {
+              "byte": 1120,
+              "column": 29,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1134,
+                      "column": 14,
+                      "line": 31
+                    },
+                    "stop": {
+                      "byte": 1138,
+                      "column": 18,
+                      "line": 31
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "yarn"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1e44bdedf51a28c09d03",
+          "kind": "command",
+          "name": "yarn",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1134,
+              "column": 14,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1138,
+              "column": 18,
+              "line": 31
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1527,
+                      "column": 55,
+                      "line": 47
+                    },
+                    "stop": {
+                      "byte": 1540,
+                      "column": 68,
+                      "line": 47
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_29419e6c2e72d8fb98df",
+          "kind": "resource",
+          "name": "CIRCLE_BRANCH",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1527,
+              "column": 55,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1540,
+              "column": 68,
+              "line": 47
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_2ad86d7137114b8c74e4",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 872,
+              "column": 9,
+              "line": 24
+            },
+            "stop": {
+              "byte": 880,
+              "column": 17,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1594,
+                      "column": 51,
+                      "line": 49
+                    },
+                    "stop": {
+                      "byte": 1607,
+                      "column": 64,
+                      "line": 49
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_31901ca81a3f661c955d",
+          "kind": "resource",
+          "name": "CIRCLE_BRANCH",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1594,
+              "column": 51,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1607,
+              "column": 64,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_35ed5a1645e55d5ea7da",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 872,
+              "column": 9,
+              "line": 24
+            },
+            "stop": {
+              "byte": 880,
+              "column": 17,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_38062d2b78c3c71cc8c5",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1404,
+              "column": 9,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1412,
+              "column": 17,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3fb694b07f8ea43eeb23",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1129,
+              "column": 9,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1138,
+              "column": 18,
+              "line": 31
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_53843c1deff0acf15722",
+          "kind": "workflow",
+          "name": "CircleCI config",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 130,
+              "column": 1,
+              "line": 5
+            },
+            "stop": {
+              "byte": 1865,
+              "column": 25,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1785,
+                      "column": 13,
+                      "line": 61
+                    },
+                    "stop": {
+                      "byte": 1865,
+                      "column": 25,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_549745ee7776cf795bd9",
+          "kind": "gate",
+          "name": "filter:test-publish:publish",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1785,
+              "column": 13,
+              "line": 61
+            },
+            "stop": {
+              "byte": 1865,
+              "column": 25,
+              "line": 64
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1594,
+                      "column": 51,
+                      "line": 49
+                    },
+                    "stop": {
+                      "byte": 1607,
+                      "column": 64,
+                      "line": 49
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1557,
+                      "column": 14,
+                      "line": 49
+                    },
+                    "stop": {
+                      "byte": 1607,
+                      "column": 64,
+                      "line": 49
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_BRANCH",
+                  "docker push amidatech/indaba-client:$CIRCLE_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6f7812059d45fd549bda",
+          "kind": "command",
+          "name": "docker push amidatech/indaba-client:$CIRCLE_BRANCH",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1557,
+              "column": 14,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1607,
+              "column": 64,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_749ffda5f7080afc07c3",
+          "kind": "job",
+          "name": "test",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 149,
+              "column": 3,
+              "line": 7
+            },
+            "stop": {
+              "byte": 1316,
+              "column": 61,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8381ff06947688546125",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1404,
+              "column": 9,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1412,
+              "column": 17,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_855f23b909b523c6c0c3",
+          "kind": "job",
+          "name": "publish",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1358,
+              "column": 3,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1607,
+              "column": 64,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_87406980ccf7870f353f",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1172,
+              "column": 9,
+              "line": 33
+            },
+            "stop": {
+              "byte": 1191,
+              "column": 28,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_88e726a8131b1ff33b1a",
+          "kind": "call",
+          "name": "builtin:save_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1200,
+              "column": 9,
+              "line": 34
+            },
+            "stop": {
+              "byte": 1316,
+              "column": 61,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_PASS",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1460,
+                      "column": 47,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1471,
+                      "column": 58,
+                      "line": 45
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_USER",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1444,
+                      "column": 31,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1455,
+                      "column": 42,
+                      "line": 45
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1427,
+                      "column": 14,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1471,
+                      "column": 58,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_PASS",
+                  "DOCKER_USER",
+                  "docker login -u $DOCKER_USER -p $DOCKER_PASS"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_96a6650650453ab7aa1f",
+          "kind": "command",
+          "name": "docker login -u $DOCKER_USER -p $DOCKER_PASS",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1427,
+              "column": 14,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1471,
+              "column": 58,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_USER",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1444,
+                      "column": 31,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1455,
+                      "column": 42,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_USER"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9b6e49a3637c891fede8",
+          "kind": "resource",
+          "name": "DOCKER_USER",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1444,
+              "column": 31,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1455,
+              "column": 42,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9d015a6140a7d2029750",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1481,
+              "column": 9,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1542,
+              "column": 70,
+              "line": 47
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a2e20cf6a932d8843501",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1147,
+              "column": 9,
+              "line": 32
+            },
+            "stop": {
+              "byte": 1163,
+              "column": 25,
+              "line": 32
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1152,
+                      "column": 14,
+                      "line": 32
+                    },
+                    "stop": {
+                      "byte": 1163,
+                      "column": 25,
+                      "line": 32
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "yarn eslint"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a4a019b3ccdafb17d1a2",
+          "kind": "command",
+          "name": "yarn eslint",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1152,
+              "column": 14,
+              "line": 32
+            },
+            "stop": {
+              "byte": 1163,
+              "column": 25,
+              "line": 32
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a55f48ca74fbcdf7d294",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1422,
+              "column": 9,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1471,
+              "column": 58,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_aa849832ca0aac969e3c",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1552,
+              "column": 9,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1607,
+              "column": 64,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bd9f706e5fbea5ed5586",
+          "kind": "workflow",
+          "name": "test-publish",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1635,
+              "column": 3,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1865,
+              "column": 25,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cf36eea368552ad9115d",
+          "kind": "call",
+          "name": "circleci/node:8.9",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 226,
+              "column": 16,
+              "line": 10
+            },
+            "stop": {
+              "byte": 243,
+              "column": 33,
+              "line": 10
+            }
+          },
+          "unknown": {
+            "detail": "circleci/node:8.9",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ed48036a588747eda5f8",
+          "kind": "step",
+          "name": "save_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1200,
+              "column": 9,
+              "line": 34
+            },
+            "stop": {
+              "byte": 1316,
+              "column": 61,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_write",
+            "cache_read"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_f2b8089382b394f9779b",
+          "kind": "call",
+          "name": "builtin:restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 929,
+              "column": 9,
+              "line": 26
+            },
+            "stop": {
+              "byte": 1120,
+              "column": 29,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1177,
+                      "column": 14,
+                      "line": 33
+                    },
+                    "stop": {
+                      "byte": 1191,
+                      "column": 28,
+                      "line": 33
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "yarn stylelint"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f9184209539b9f94f177",
+          "kind": "command",
+          "name": "yarn stylelint",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1177,
+              "column": 14,
+              "line": 33
+            },
+            "stop": {
+              "byte": 1191,
+              "column": 28,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_BRANCH",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1527,
+                      "column": 55,
+                      "line": 47
+                    },
+                    "stop": {
+                      "byte": 1540,
+                      "column": 68,
+                      "line": 47
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+                    "start": {
+                      "byte": 1486,
+                      "column": 14,
+                      "line": 47
+                    },
+                    "stop": {
+                      "byte": 1542,
+                      "column": 70,
+                      "line": 47
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_BRANCH",
+                  "docker build -t amidatech/indaba-client:$CIRCLE_BRANCH ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fa0883241042c0bdcba4",
+          "kind": "command",
+          "name": "docker build -t amidatech/indaba-client:$CIRCLE_BRANCH .",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/amida-tech/indaba-client/.circleci/config.yml",
+            "start": {
+              "byte": 1486,
+              "column": 14,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1542,
+              "column": 70,
+              "line": 47
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "circleci",
+      "source": "circleci/amida-tech/indaba-client/.circleci/config.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:8d1d7a6e3b022e4acd6c6fb6a1f081c655f5f855dfb031ab64101d3148a6759b",
+      "path": "circleci/amida-tech/indaba-client/.circleci/config.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "builtin:checkout",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "builtin:restore_cache",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "builtin:save_cache",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "circleci/node:8.9",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

@@ -1,0 +1,618 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v7.0.1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+          "start": {
+            "byte": 315,
+            "column": 15,
+            "line": 17
+          },
+          "stop": {
+            "byte": 338,
+            "column": 38,
+            "line": 17
+          }
+        }
+      },
+      "id": "diag_c7ae6dc87e276411d7b0",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v7.0.1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+        "start": {
+          "byte": 315,
+          "column": 15,
+          "line": 17
+        },
+        "stop": {
+          "byte": 338,
+          "column": 38,
+          "line": 17
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_fb1a970c6bfc88595dc9",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 315,
+              "column": 15,
+              "line": 17
+            },
+            "stop": {
+              "byte": 338,
+              "column": 38,
+              "line": 17
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = navikt/digestabot@v1.2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+          "start": {
+            "byte": 424,
+            "column": 15,
+            "line": 20
+          },
+          "stop": {
+            "byte": 446,
+            "column": 37,
+            "line": 20
+          }
+        }
+      },
+      "id": "diag_5c9ca59befff61bc07e8",
+      "message": "dependency is not pinned to immutable content: navikt/digestabot@v1.2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+        "start": {
+          "byte": 424,
+          "column": 15,
+          "line": 20
+        },
+        "stop": {
+          "byte": 446,
+          "column": 37,
+          "line": 20
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_95d803efae3ac9f64a73",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 424,
+              "column": 15,
+              "line": 20
+            },
+            "stop": {
+              "byte": 446,
+              "column": 37,
+              "line": 20
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:28e73ce5c19591d0c482bebb59d1406a2de851d01e05cd2d92a786d4298e907c",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_9234a5699f71161d260e",
+          "id": "wv_393761e7301b64209bff",
+          "kind": "data",
+          "label": "secrets.GITHUB_TOKEN",
+          "to": "wv_95d803efae3ac9f64a73"
+        },
+        {
+          "condition": true,
+          "from": "wv_39fda3651d64f6b786d1",
+          "id": "wv_43b8b1cdf6586700bddf",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_917d90db9779a0420bb9"
+        },
+        {
+          "condition": true,
+          "from": "wv_39fda3651d64f6b786d1",
+          "id": "wv_4eadbec96142b09b15ae",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fb1a970c6bfc88595dc9"
+        },
+        {
+          "condition": true,
+          "from": "wv_42d8265d01b67d9783f0",
+          "id": "wv_5ce58640bf52ef0d0a6f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9f7bd85413c1a62808b8"
+        },
+        {
+          "condition": true,
+          "from": "wv_39fda3651d64f6b786d1",
+          "id": "wv_7a57061c3c8bf252fc31",
+          "kind": "call",
+          "label": null,
+          "to": "wv_fb1a970c6bfc88595dc9"
+        },
+        {
+          "condition": true,
+          "from": "wv_9f7bd85413c1a62808b8",
+          "id": "wv_7c3c5976a75d18633469",
+          "kind": "control",
+          "label": null,
+          "to": "wv_39fda3651d64f6b786d1"
+        },
+        {
+          "condition": true,
+          "from": "wv_917d90db9779a0420bb9",
+          "id": "wv_89eee83c2a9b3ee7fd69",
+          "kind": "control",
+          "label": null,
+          "to": "wv_95d803efae3ac9f64a73"
+        },
+        {
+          "condition": true,
+          "from": "wv_c31f23e62108eaf8e426",
+          "id": "wv_904af2ebbf0cd5f3b2d8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_42d8265d01b67d9783f0"
+        },
+        {
+          "condition": true,
+          "from": "wv_6a1ef3425922afb9abaa",
+          "id": "wv_e9033cb6804c99bb7f0e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_42d8265d01b67d9783f0"
+        },
+        {
+          "condition": true,
+          "from": "wv_9f7bd85413c1a62808b8",
+          "id": "wv_ea3719d939bef785c935",
+          "kind": "control",
+          "label": null,
+          "to": "wv_917d90db9779a0420bb9"
+        },
+        {
+          "condition": true,
+          "from": "wv_917d90db9779a0420bb9",
+          "id": "wv_f37837d4bca09c8992c0",
+          "kind": "call",
+          "label": null,
+          "to": "wv_95d803efae3ac9f64a73"
+        }
+      ],
+      "entrypoints": [
+        "wv_42d8265d01b67d9783f0"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_39fda3651d64f6b786d1",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 309,
+              "column": 9,
+              "line": 17
+            },
+            "stop": {
+              "byte": 409,
+              "column": 37,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_42d8265d01b67d9783f0",
+          "kind": "workflow",
+          "name": "Check for newer chainguard image versions",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 545,
+              "column": 20,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6a1ef3425922afb9abaa",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 57,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 75,
+              "column": 21,
+              "line": 4
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_917d90db9779a0420bb9",
+          "kind": "step",
+          "name": "step 2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 418,
+              "column": 9,
+              "line": 20
+            },
+            "stop": {
+              "byte": 545,
+              "column": 20,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.GITHUB_TOKEN",
+                  "span": {
+                    "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+                    "start": {
+                      "byte": 502,
+                      "column": 22,
+                      "line": 22
+                    },
+                    "stop": {
+                      "byte": 522,
+                      "column": 42,
+                      "line": 22
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.GITHUB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9234a5699f71161d260e",
+          "kind": "resource",
+          "name": "secrets.GITHUB_TOKEN",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 502,
+              "column": 22,
+              "line": 22
+            },
+            "stop": {
+              "byte": 522,
+              "column": 42,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_95d803efae3ac9f64a73",
+          "kind": "call",
+          "name": "navikt/digestabot@v1.2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 424,
+              "column": 15,
+              "line": 20
+            },
+            "stop": {
+              "byte": 446,
+              "column": 37,
+              "line": 20
+            }
+          },
+          "unknown": {
+            "detail": "navikt/digestabot@v1.2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write",
+            "oidc"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9f7bd85413c1a62808b8",
+          "kind": "job",
+          "name": "digest-update",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 160,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 545,
+              "column": 20,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c31f23e62108eaf8e426",
+          "kind": "trigger",
+          "name": "schedule",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 78,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 150,
+              "column": 25,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_fb1a970c6bfc88595dc9",
+          "kind": "call",
+          "name": "actions/checkout@v7.0.1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml",
+            "start": {
+              "byte": 315,
+              "column": 15,
+              "line": 17
+            },
+            "stop": {
+              "byte": 338,
+              "column": 38,
+              "line": 17
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v7.0.1",
+            "kind": "unresolved_dependency"
+          }
+        }
+      ],
+      "provider": "github",
+      "source": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:9eacb60910920be4b0bcede2b5f0117092fa6cfba2d94c0bc912aaa6fb2c6a1d",
+      "path": "github/navikt/lydia-radgiver-frontend/.github/workflows/check-image-update.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [
+        {
+          "detail": "actions/checkout@v7.0.1",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "navikt/digestabot@v1.2",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "navikt/digestabot@v1.2",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

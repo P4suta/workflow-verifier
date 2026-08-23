@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+    - '*' # must quote since "*" is a YAML reserved character; we want a string
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET sdk'
+  inputs:
+    packageType: sdk
+    version: 10.0.x
+    includePreviewVersions: true
+
+- script: dotnet --info
+  displayName: 'dotnet info'
+
+- powershell: ./build.ps1
+  displayName: 'Powershell Script'
+  env:
+    Nuget__ApiKey: $(nugetApiKey)
+    Nuget__SourceUrl: $(nugetSourceUrl)

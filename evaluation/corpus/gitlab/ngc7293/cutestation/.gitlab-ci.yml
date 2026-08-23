@@ -1,0 +1,35 @@
+image: ghcr.io/ngc7293/cxxci:focal
+
+build:
+  stage: build
+
+  before_script:
+    - apt-get update && apt-get install $(cat ci_requirements.txt) -y
+    - conan config set general.revisions_enabled=1
+    - conan remote add davidbourgault https://artifactory.davidbourgault.ca/artifactory/api/conan/conan
+    - mkdir build; cd build
+    - conan install .. --update --build=missing -s compiler.libcxx=libstdc++11 -s build_type=Release -r davidbourgault
+  script:
+    - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - cmake --build . --config Release --parallel 2
+
+  artifacts:
+    paths:
+      - build/bin
+      - build/**/*.cmake
+      - build/CMakeCache.txt
+    expire_in: 30 days
+
+test:
+  stage: test
+  dependencies:
+    - build
+
+  script:
+    - cd build
+    - ctest --rerun-failed --output-on-failure --output-junit report.xml
+
+  artifacts:
+    expire_in: 30 days
+    reports:
+      junit: build/report.xml

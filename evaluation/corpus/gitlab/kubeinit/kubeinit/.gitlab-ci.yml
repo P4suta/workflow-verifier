@@ -1,0 +1,37 @@
+---
+# The scope can be:
+# PERIODIC: a periodic job running in kubeinit.
+# PR: a PR job running in kubeinit.
+# SUBMARINER: a PR job running in the submariner operator repository.
+
+run-singlenode:
+  image: fedora
+  tags:
+    - kubeinit-ci-singlenode
+  script:
+    - echo "./ci/gitlab_ci_trigger.sh singlenode ${JOB_TYPE} ${JOB_LABEL}"
+    - ./ci/gitlab_ci_trigger.sh singlenode ${JOB_TYPE} ${JOB_LABEL}
+  only:
+    variables:
+      - $CLUSTER_TYPE == "singlenode"
+
+run-multinode:
+  image: fedora
+  tags:
+    - kubeinit-ci-multinode
+  script:
+    - echo "./ci/gitlab_ci_trigger.sh multinode ${JOB_TYPE} ${JOB_LABEL}"
+    - ./ci/gitlab_ci_trigger.sh multinode ${JOB_TYPE} ${JOB_LABEL}
+  only:
+    variables:
+      - $CLUSTER_TYPE == "multinode"
+
+merge-request:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  tags:
+    - kubeinit-merge-request
+  script:
+    - echo "bash -x ./ci/gitlab_merge_request.sh"
+    - bash -x ./ci/gitlab_merge_request.sh

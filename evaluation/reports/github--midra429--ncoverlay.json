@@ -1,0 +1,4472 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v6"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+          "start": {
+            "byte": 733,
+            "column": 15,
+            "line": 36
+          },
+          "stop": {
+            "byte": 752,
+            "column": 34,
+            "line": 36
+          }
+        }
+      },
+      "id": "diag_a0a80bfdfac8b5cb9ab9",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v6",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+        "start": {
+          "byte": 733,
+          "column": 15,
+          "line": 36
+        },
+        "stop": {
+          "byte": 752,
+          "column": 34,
+          "line": 36
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_e6d037d178175e8707dd",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 733,
+              "column": 15,
+              "line": 36
+            },
+            "stop": {
+              "byte": 752,
+              "column": 34,
+              "line": 36
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = oven-sh/setup-bun@v2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+          "start": {
+            "byte": 807,
+            "column": 15,
+            "line": 39
+          },
+          "stop": {
+            "byte": 827,
+            "column": 35,
+            "line": 39
+          }
+        }
+      },
+      "id": "diag_c11a9c574e45af8c403c",
+      "message": "dependency is not pinned to immutable content: oven-sh/setup-bun@v2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+        "start": {
+          "byte": 807,
+          "column": 15,
+          "line": 39
+        },
+        "stop": {
+          "byte": 827,
+          "column": 35,
+          "line": 39
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_577b7e6adbac806c3b22",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 807,
+              "column": 15,
+              "line": 39
+            },
+            "stop": {
+              "byte": 827,
+              "column": 35,
+              "line": 39
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+          "start": {
+            "byte": 1310,
+            "column": 14,
+            "line": 54
+          },
+          "stop": {
+            "byte": 1467,
+            "column": 1,
+            "line": 57
+          }
+        }
+      },
+      "id": "diag_59452db6e98c675e9b3b",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+        "start": {
+          "byte": 1310,
+          "column": 14,
+          "line": 54
+        },
+        "stop": {
+          "byte": 1467,
+          "column": 1,
+          "line": 57
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_7b1a96714b143ca17b9f",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1329,
+              "column": 33,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1345,
+              "column": 49,
+              "line": 54
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_6b87d2ef98c4627d9991",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1310,
+              "column": 14,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1467,
+              "column": 1,
+              "line": 57
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "filesystem_read",
+        "filesystem_write",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "dominator set contains no Gate node"
+      ],
+      "fix": null,
+      "id": "diag_49a16b0f942b38b866e5",
+      "message": "a privileged effect is reachable without a dominating authorization gate",
+      "rule_id": "WV-AUTH-001",
+      "severity": "error",
+      "span": {
+        "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+        "start": {
+          "byte": 1891,
+          "column": 14,
+          "line": 68
+        },
+        "stop": {
+          "byte": 2097,
+          "column": 92,
+          "line": 72
+        }
+      },
+      "trace": [
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_197a421b481cc4e51e08",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 3247,
+              "column": 32,
+              "line": 104
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_a041bb15c7c872df0b07",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 549,
+              "column": 3,
+              "line": 26
+            },
+            "stop": {
+              "byte": 3247,
+              "column": 32,
+              "line": 104
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_38dec5724ab766b7110b",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1846,
+              "column": 13,
+              "line": 67
+            },
+            "stop": {
+              "byte": 1877,
+              "column": 44,
+              "line": 67
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_2980a78af6a376594851",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1806,
+              "column": 9,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2158,
+              "column": 48,
+              "line": 74
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_6fe70dc167a3bf2fdd95",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1891,
+              "column": 14,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2097,
+              "column": 92,
+              "line": 72
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:2e40d3f870f2b78c5a9cb54592338e4651f71aecc0ce0f81421974ffaa1ca8af",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_39af416f085250ca4511",
+          "id": "wv_02b5acc8b84eabff1fb7",
+          "kind": "data",
+          "label": "FIREFOX_JWT_SECRET",
+          "to": "wv_b2af012a8ab6b716517a"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "inputs.submit_chrome"
+          },
+          "from": "wv_25349ac4911944b4debd",
+          "id": "wv_07df8c1353da66a08705",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_12bf52279e841dda4717"
+        },
+        {
+          "condition": true,
+          "from": "wv_b267ba2389b4eefdb199",
+          "id": "wv_0e47f98f784f1f10eaaf",
+          "kind": "data",
+          "label": "GH_TOKEN",
+          "to": "wv_6fe70dc167a3bf2fdd95"
+        },
+        {
+          "condition": true,
+          "from": "wv_abe6b23cbfa2791688bd",
+          "id": "wv_10d54a8a76f8e846e71e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_197a421b481cc4e51e08"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_1395cf76e85db084b5b5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3fe8266b58730ea3b00d"
+        },
+        {
+          "condition": true,
+          "from": "wv_12bf52279e841dda4717",
+          "id": "wv_13c4eb2fb80e73631989",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a4bdb760292046462704"
+        },
+        {
+          "condition": true,
+          "from": "wv_455803cbf68f19cadcba",
+          "id": "wv_1b84b04949432cb91dd5",
+          "kind": "data",
+          "label": "bun -e \"console.log(require('./package.json'",
+          "to": "wv_6fe70dc167a3bf2fdd95"
+        },
+        {
+          "condition": true,
+          "from": "wv_4d40c9b7f0619dd6c46a",
+          "id": "wv_1c0fef9488312221f90d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0528cde7c9050df79029"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_1e45d1966f48881a3028",
+          "kind": "control",
+          "label": null,
+          "to": "wv_41ac61eceb5188d88268"
+        },
+        {
+          "condition": true,
+          "from": "wv_4d40c9b7f0619dd6c46a",
+          "id": "wv_205ca3beb06796d29e4b",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_bdc154159ff40accd59b"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_28b2e3c23ff96c76184b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_25349ac4911944b4debd"
+        },
+        {
+          "condition": true,
+          "from": "wv_57fea94cca10ecc51ffe",
+          "id": "wv_2b15963ac104271d8bd9",
+          "kind": "data",
+          "label": "env.IS_RELEASE",
+          "to": "wv_bdc154159ff40accd59b"
+        },
+        {
+          "condition": true,
+          "from": "wv_17094ded39e8475cb902",
+          "id": "wv_3478133b6e5130b3e461",
+          "kind": "control",
+          "label": null,
+          "to": "wv_51436a20351060761d3f"
+        },
+        {
+          "condition": true,
+          "from": "wv_2c8471b7d073e6d5cd7f",
+          "id": "wv_3b9c3e199f06862e4619",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e6d037d178175e8707dd"
+        },
+        {
+          "condition": true,
+          "from": "wv_6cf5491c6166dfd49ce3",
+          "id": "wv_442d79c707cc700c7221",
+          "kind": "data",
+          "label": "env.IS_RELEASE",
+          "to": "wv_3fe8266b58730ea3b00d"
+        },
+        {
+          "condition": true,
+          "from": "wv_68b32bffa5b2a71ae789",
+          "id": "wv_452e045ad8f38377ee8f",
+          "kind": "data",
+          "label": "inputs.submit_edge",
+          "to": "wv_4e1ccef327ada974ea83"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "inputs.submit_edge"
+          },
+          "from": "wv_4e1ccef327ada974ea83",
+          "id": "wv_4fe52b366c2cca258a6b",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_17094ded39e8475cb902"
+        },
+        {
+          "condition": true,
+          "from": "wv_7c6a0c2a9d7afecec888",
+          "id": "wv_508b1b581f61b894389c",
+          "kind": "data",
+          "label": "secrets.GITHUB_TOKEN",
+          "to": "wv_b267ba2389b4eefdb199"
+        },
+        {
+          "condition": true,
+          "from": "wv_671f628dbaf8eea021b4",
+          "id": "wv_5195f6c13be2a1a47b86",
+          "kind": "data",
+          "label": "inputs.submit_edge",
+          "to": "wv_3fe8266b58730ea3b00d"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": {
+              "high": true,
+              "low": false,
+              "variable": "inputs.submit_firefox"
+            },
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "from": "wv_41ac61eceb5188d88268",
+          "id": "wv_5386c10cf2ba2d1d3e71",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_14414b223476a4bfee1b"
+        },
+        {
+          "condition": true,
+          "from": "wv_e1e80cc3403c950a1886",
+          "id": "wv_5462f7a366bbdbb5a57b",
+          "kind": "data",
+          "label": "env.IS_RELEASE",
+          "to": "wv_38dec5724ab766b7110b"
+        },
+        {
+          "condition": true,
+          "from": "wv_1531e5f22ad443bd4215",
+          "id": "wv_55a627d63a7ef7e2f0f7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_577b7e6adbac806c3b22"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_55f43564b6baa78f0162",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4d40c9b7f0619dd6c46a"
+        },
+        {
+          "condition": true,
+          "from": "wv_17094ded39e8475cb902",
+          "id": "wv_5a6330ac4f28da959ef8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4e9eee0a74272596b377"
+        },
+        {
+          "condition": true,
+          "from": "wv_8a9cf4d26cf5fded8e66",
+          "id": "wv_5b03411926115a4a93c8",
+          "kind": "data",
+          "label": "EDGE_API_KEY",
+          "to": "wv_51436a20351060761d3f"
+        },
+        {
+          "condition": true,
+          "from": "wv_bbe428409864094fb5ae",
+          "id": "wv_6565e178f155f0486be5",
+          "kind": "data",
+          "label": "inputs.submit_firefox",
+          "to": "wv_41ac61eceb5188d88268"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_6880626e425c09cb6ba1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1531e5f22ad443bd4215"
+        },
+        {
+          "condition": true,
+          "from": "wv_8057f1fcd5b3e5b93e9f",
+          "id": "wv_6dbf0925aaa40f571957",
+          "kind": "data",
+          "label": "bun -e \"console.log(require('./package.json'",
+          "to": "wv_6b87d2ef98c4627d9991"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_778e6fb81f6f6e5bd039",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bdc154159ff40accd59b"
+        },
+        {
+          "condition": true,
+          "from": "wv_0a49b4b42489465089fa",
+          "id": "wv_78116fda57f4475b9e83",
+          "kind": "data",
+          "label": "env.IS_RELEASE",
+          "to": "wv_482d33fa6b457571b3ed"
+        },
+        {
+          "condition": true,
+          "from": "wv_12bf52279e841dda4717",
+          "id": "wv_781e3aa64e3b8e1f6d4f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4e1ccef327ada974ea83"
+        },
+        {
+          "condition": true,
+          "from": "wv_14414b223476a4bfee1b",
+          "id": "wv_79f8aabd3db95931b34f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_38dec5724ab766b7110b"
+        },
+        {
+          "condition": true,
+          "from": "wv_6f3826f664e239935883",
+          "id": "wv_7c9c6f5c7f005499be00",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6b87d2ef98c4627d9991"
+        },
+        {
+          "condition": true,
+          "from": "wv_8b5bcfb23cc118e9699e",
+          "id": "wv_80ae771927b252daf85e",
+          "kind": "data",
+          "label": "secrets.EDGE_API_KEY",
+          "to": "wv_8a9cf4d26cf5fded8e66"
+        },
+        {
+          "condition": true,
+          "from": "wv_0509aa2016ef8a7db40d",
+          "id": "wv_85766445f5ed1980a339",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ec0602420d1b05a5e245"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_91b5068dda3fce6fb2e5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_38dec5724ab766b7110b"
+        },
+        {
+          "condition": true,
+          "from": "wv_6f3826f664e239935883",
+          "id": "wv_9455ec8bda21c009882d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3fe8266b58730ea3b00d"
+        },
+        {
+          "condition": true,
+          "from": "wv_a28aa42f63ce0ad8e841",
+          "id": "wv_95ea7b1fc284db0e7a10",
+          "kind": "data",
+          "label": "secrets.FIREFOX_JWT_SECRET",
+          "to": "wv_39af416f085250ca4511"
+        },
+        {
+          "condition": true,
+          "from": "wv_8825a5ee6e54666a559b",
+          "id": "wv_97be18451211f1ab13f2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_923a8b044ce15d2ee4d2"
+        },
+        {
+          "condition": true,
+          "from": "wv_d9e6f7d1b204e4b1e7d2",
+          "id": "wv_98fcb5a5f61cc635bdf7",
+          "kind": "data",
+          "label": "secrets.CHROME_SERVICE_ACCOUNT_PRIVATE_KEY",
+          "to": "wv_5208b72cc16c1dfa46f9"
+        },
+        {
+          "condition": true,
+          "from": "wv_2c8471b7d073e6d5cd7f",
+          "id": "wv_9d2599e4097571abd0cf",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1531e5f22ad443bd4215"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "from": "wv_38dec5724ab766b7110b",
+          "id": "wv_a15e13381f0adb798e6c",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_2980a78af6a376594851"
+        },
+        {
+          "condition": true,
+          "from": "wv_1531e5f22ad443bd4215",
+          "id": "wv_a240e84273f18100072a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4d40c9b7f0619dd6c46a"
+        },
+        {
+          "condition": true,
+          "from": "wv_1531e5f22ad443bd4215",
+          "id": "wv_a826923747dd52cc59c4",
+          "kind": "call",
+          "label": null,
+          "to": "wv_577b7e6adbac806c3b22"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "inputs.submit_firefox"
+          },
+          "from": "wv_4e9eee0a74272596b377",
+          "id": "wv_a9eed8799301e49d63f0",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_4756dc48a9b526cc782d"
+        },
+        {
+          "condition": true,
+          "from": "wv_2980a78af6a376594851",
+          "id": "wv_aad785b8c7fd90d5d4d7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6fe70dc167a3bf2fdd95"
+        },
+        {
+          "condition": true,
+          "from": "wv_ede781f9687291a0765c",
+          "id": "wv_afd8413e1847e4b2979e",
+          "kind": "data",
+          "label": "EDGE_CLIENT_ID",
+          "to": "wv_51436a20351060761d3f"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": {
+              "high": true,
+              "low": {
+                "high": true,
+                "low": false,
+                "variable": "inputs.submit_edge"
+              },
+              "variable": "inputs.submit_chrome"
+            },
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "from": "wv_3fe8266b58730ea3b00d",
+          "id": "wv_b70130a2e248de508c78",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_8825a5ee6e54666a559b"
+        },
+        {
+          "condition": true,
+          "from": "wv_2655f4f8acb2b5a9b0da",
+          "id": "wv_b794e37d1f33fb64e127",
+          "kind": "data",
+          "label": "secrets.CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL",
+          "to": "wv_d45ecaabfd1913858486"
+        },
+        {
+          "condition": true,
+          "from": "wv_2980a78af6a376594851",
+          "id": "wv_bab375bbd8a2bf3f292f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_25349ac4911944b4debd"
+        },
+        {
+          "condition": true,
+          "from": "wv_197a421b481cc4e51e08",
+          "id": "wv_bc739f77b8e82903d2ea",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a041bb15c7c872df0b07"
+        },
+        {
+          "condition": true,
+          "from": "wv_5208b72cc16c1dfa46f9",
+          "id": "wv_bd559e10d2f65f4d96a3",
+          "kind": "data",
+          "label": "CHROME_SERVICE_ACCOUNT_PRIVATE_KEY",
+          "to": "wv_a4bdb760292046462704"
+        },
+        {
+          "condition": true,
+          "from": "wv_d45ecaabfd1913858486",
+          "id": "wv_c17f0512d1e10f1c3821",
+          "kind": "data",
+          "label": "CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL",
+          "to": "wv_a4bdb760292046462704"
+        },
+        {
+          "condition": true,
+          "from": "wv_00256feb1751de7f6ae5",
+          "id": "wv_c1e8f8bc49d6d66cd390",
+          "kind": "data",
+          "label": "inputs.submit_firefox",
+          "to": "wv_4e9eee0a74272596b377"
+        },
+        {
+          "condition": true,
+          "from": "wv_0509aa2016ef8a7db40d",
+          "id": "wv_c6efc49bfe4612b35ee8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_482d33fa6b457571b3ed"
+        },
+        {
+          "condition": true,
+          "from": "wv_58a060c1c31e15a84249",
+          "id": "wv_cf34387d48f216b57f80",
+          "kind": "data",
+          "label": "inputs.submit_chrome",
+          "to": "wv_3fe8266b58730ea3b00d"
+        },
+        {
+          "condition": true,
+          "from": "wv_7b1a96714b143ca17b9f",
+          "id": "wv_d2a67d54355f6e17ab20",
+          "kind": "data",
+          "label": "inputs.bump_type",
+          "to": "wv_6b87d2ef98c4627d9991"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_d707b76fd4578526e75b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_482d33fa6b457571b3ed"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "from": "wv_bdc154159ff40accd59b",
+          "id": "wv_d9c7d60a858d5a7d1100",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_0509aa2016ef8a7db40d"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "from": "wv_482d33fa6b457571b3ed",
+          "id": "wv_da7118e86cc3245fe573",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_6f3826f664e239935883"
+        },
+        {
+          "condition": true,
+          "from": "wv_6312442fda8bca659711",
+          "id": "wv_dc03a23b09789e412d45",
+          "kind": "data",
+          "label": "GITHUB_ENV",
+          "to": "wv_6b87d2ef98c4627d9991"
+        },
+        {
+          "condition": true,
+          "from": "wv_2c8471b7d073e6d5cd7f",
+          "id": "wv_e471a34755f5513e2610",
+          "kind": "call",
+          "label": null,
+          "to": "wv_e6d037d178175e8707dd"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_e512903cc277f452b915",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2c8471b7d073e6d5cd7f"
+        },
+        {
+          "condition": true,
+          "from": "wv_c73028af7cacdc31d042",
+          "id": "wv_e6fc634e18bd10acd47f",
+          "kind": "data",
+          "label": "secrets.EDGE_CLIENT_ID",
+          "to": "wv_ede781f9687291a0765c"
+        },
+        {
+          "condition": true,
+          "from": "wv_bb8bfdc11f67d059a215",
+          "id": "wv_eaf771b1c819dd8527ac",
+          "kind": "data",
+          "label": "inputs.submit_chrome",
+          "to": "wv_25349ac4911944b4debd"
+        },
+        {
+          "condition": true,
+          "from": "wv_14414b223476a4bfee1b",
+          "id": "wv_edf05e093b10ced70a36",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9f00e658d3bb4f0c3118"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_ee16f306c2d1b3fc76de",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4e1ccef327ada974ea83"
+        },
+        {
+          "condition": true,
+          "from": "wv_a041bb15c7c872df0b07",
+          "id": "wv_f228bfc139dc5fa6a8c7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4e9eee0a74272596b377"
+        },
+        {
+          "condition": true,
+          "from": "wv_4756dc48a9b526cc782d",
+          "id": "wv_f7a50a2c147efba1e1db",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b2af012a8ab6b716517a"
+        },
+        {
+          "condition": true,
+          "from": "wv_8825a5ee6e54666a559b",
+          "id": "wv_fa771ebc6baf3398e2be",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_41ac61eceb5188d88268"
+        },
+        {
+          "condition": true,
+          "from": "wv_799a9d291f09b7fa9156",
+          "id": "wv_fe99f21970013ad983e1",
+          "kind": "data",
+          "label": "env.IS_RELEASE",
+          "to": "wv_41ac61eceb5188d88268"
+        }
+      ],
+      "entrypoints": [
+        "wv_197a421b481cc4e51e08"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_firefox",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2957,
+                      "column": 17,
+                      "line": 97
+                    },
+                    "stop": {
+                      "byte": 2978,
+                      "column": 38,
+                      "line": 97
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_firefox"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_00256feb1751de7f6ae5",
+          "kind": "resource",
+          "name": "inputs.submit_firefox",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2957,
+              "column": 17,
+              "line": 97
+            },
+            "stop": {
+              "byte": 2978,
+              "column": 38,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0509aa2016ef8a7db40d",
+          "kind": "step",
+          "name": "Gitのユーザーを設定",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 963,
+              "column": 9,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1213,
+              "column": 1,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 890,
+                      "column": 14,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 954,
+                      "column": 1,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun install --frozen-lockfile\nbun run pre\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_0528cde7c9050df79029",
+          "kind": "command",
+          "name": "bun install --frozen-lockfile\nbun run pre\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 890,
+              "column": 14,
+              "line": 42
+            },
+            "stop": {
+              "byte": 954,
+              "column": 1,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1269,
+                      "column": 17,
+                      "line": 53
+                    },
+                    "stop": {
+                      "byte": 1283,
+                      "column": 31,
+                      "line": 53
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0a49b4b42489465089fa",
+          "kind": "resource",
+          "name": "env.IS_RELEASE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1269,
+              "column": 17,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1283,
+              "column": 31,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_12bf52279e841dda4717",
+          "kind": "step",
+          "name": "Chrome Web Storeへ提出",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2168,
+              "column": 9,
+              "line": 76
+            },
+            "stop": {
+              "byte": 2576,
+              "column": 32,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_14414b223476a4bfee1b",
+          "kind": "step",
+          "name": "拡張機能をビルド (Firefox)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1654,
+              "column": 9,
+              "line": 62
+            },
+            "stop": {
+              "byte": 1796,
+              "column": 33,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1531e5f22ad443bd4215",
+          "kind": "step",
+          "name": "Bunをインストール",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 762,
+              "column": 9,
+              "line": 38
+            },
+            "stop": {
+              "byte": 827,
+              "column": 35,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_17094ded39e8475cb902",
+          "kind": "step",
+          "name": "Edge Add-onsへ提出",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2586,
+              "column": 9,
+              "line": 86
+            },
+            "stop": {
+              "byte": 2900,
+              "column": 32,
+              "line": 94
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_197a421b481cc4e51e08",
+          "kind": "workflow",
+          "name": "Release",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 3247,
+              "column": 32,
+              "line": 104
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2212,
+                      "column": 13,
+                      "line": 77
+                    },
+                    "stop": {
+                      "byte": 2239,
+                      "column": 40,
+                      "line": 77
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ inputs.submit_chrome }}"
+                ]
+              }
+            },
+            "reference:inputs.submit_chrome": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_chrome",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2216,
+                      "column": 17,
+                      "line": 77
+                    },
+                    "stop": {
+                      "byte": 2236,
+                      "column": 37,
+                      "line": 77
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_chrome"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "inputs.submit_chrome"
+          },
+          "effects": [],
+          "id": "wv_25349ac4911944b4debd",
+          "kind": "gate",
+          "name": "if:submit:Chrome Web Storeへ提出",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2212,
+              "column": 13,
+              "line": 77
+            },
+            "stop": {
+              "byte": 2239,
+              "column": 40,
+              "line": 77
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2402,
+                      "column": 52,
+                      "line": 82
+                    },
+                    "stop": {
+                      "byte": 2445,
+                      "column": 95,
+                      "line": 82
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2655f4f8acb2b5a9b0da",
+          "kind": "resource",
+          "name": "secrets.CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2402,
+              "column": 52,
+              "line": 82
+            },
+            "stop": {
+              "byte": 2445,
+              "column": 95,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2980a78af6a376594851",
+          "kind": "step",
+          "name": "GitHubへリリース",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1806,
+              "column": 9,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2158,
+              "column": 48,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2c8471b7d073e6d5cd7f",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 727,
+              "column": 9,
+              "line": 36
+            },
+            "stop": {
+              "byte": 752,
+              "column": 34,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1846,
+                      "column": 13,
+                      "line": 67
+                    },
+                    "stop": {
+                      "byte": 1877,
+                      "column": 44,
+                      "line": 67
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ env.IS_RELEASE == 'true' }}"
+                ]
+              }
+            },
+            "reference:env.IS_RELEASE": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1850,
+                      "column": 17,
+                      "line": 67
+                    },
+                    "stop": {
+                      "byte": 1864,
+                      "column": 31,
+                      "line": 67
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "effects": [],
+          "id": "wv_38dec5724ab766b7110b",
+          "kind": "gate",
+          "name": "if:submit:GitHubへリリース",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1846,
+              "column": 13,
+              "line": 67
+            },
+            "stop": {
+              "byte": 1877,
+              "column": 44,
+              "line": 67
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "FIREFOX_JWT_SECRET"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_39af416f085250ca4511",
+          "kind": "resource",
+          "name": "env:FIREFOX_JWT_SECRET",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 3162,
+              "column": 11,
+              "line": 103
+            },
+            "stop": {
+              "byte": 3215,
+              "column": 64,
+              "line": 103
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1535,
+                      "column": 13,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1612,
+                      "column": 90,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ env.IS_RELEASE == 'true' || inputs.submit_chrome || inputs.submit_edge }}"
+                ]
+              }
+            },
+            "reference:env.IS_RELEASE": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1539,
+                      "column": 17,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1553,
+                      "column": 31,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            },
+            "reference:inputs.submit_chrome": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_chrome",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1567,
+                      "column": 45,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1587,
+                      "column": 65,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_chrome"
+                ]
+              }
+            },
+            "reference:inputs.submit_edge": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_edge",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1591,
+                      "column": 69,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1609,
+                      "column": 87,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_edge"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": {
+              "high": true,
+              "low": {
+                "high": true,
+                "low": false,
+                "variable": "inputs.submit_edge"
+              },
+              "variable": "inputs.submit_chrome"
+            },
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "effects": [],
+          "id": "wv_3fe8266b58730ea3b00d",
+          "kind": "gate",
+          "name": "if:submit:拡張機能をビルド (Chrome / Edge)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1535,
+              "column": 13,
+              "line": 59
+            },
+            "stop": {
+              "byte": 1612,
+              "column": 90,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1707,
+                      "column": 13,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 1763,
+                      "column": 69,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ env.IS_RELEASE == 'true' || inputs.submit_firefox }}"
+                ]
+              }
+            },
+            "reference:env.IS_RELEASE": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1711,
+                      "column": 17,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 1725,
+                      "column": 31,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            },
+            "reference:inputs.submit_firefox": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_firefox",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1739,
+                      "column": 45,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 1760,
+                      "column": 66,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_firefox"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": {
+              "high": true,
+              "low": false,
+              "variable": "inputs.submit_firefox"
+            },
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "effects": [],
+          "id": "wv_41ac61eceb5188d88268",
+          "kind": "gate",
+          "name": "if:submit:拡張機能をビルド (Firefox)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1707,
+              "column": 13,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1763,
+              "column": 69,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "bun -e \"console.log(require('./package.json'",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1982,
+                      "column": 105,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2026,
+                      "column": 149,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun -e \"console.log(require('./package.json'"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_455803cbf68f19cadcba",
+          "kind": "resource",
+          "name": "bun -e \"console.log(require('./package.json'",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1982,
+              "column": 105,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2026,
+              "column": 149,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4756dc48a9b526cc782d",
+          "kind": "step",
+          "name": "Firefox Add-onsへ提出",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2910,
+              "column": 9,
+              "line": 96
+            },
+            "stop": {
+              "byte": 3247,
+              "column": 32,
+              "line": 104
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1265,
+                      "column": 13,
+                      "line": 53
+                    },
+                    "stop": {
+                      "byte": 1296,
+                      "column": 44,
+                      "line": 53
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ env.IS_RELEASE == 'true' }}"
+                ]
+              }
+            },
+            "reference:env.IS_RELEASE": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1269,
+                      "column": 17,
+                      "line": 53
+                    },
+                    "stop": {
+                      "byte": 1283,
+                      "column": 31,
+                      "line": 53
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "effects": [],
+          "id": "wv_482d33fa6b457571b3ed",
+          "kind": "gate",
+          "name": "if:submit:バージョンを更新",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1265,
+              "column": 13,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1296,
+              "column": 44,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4d40c9b7f0619dd6c46a",
+          "kind": "step",
+          "name": "依存関係をインストール",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 837,
+              "column": 9,
+              "line": 41
+            },
+            "stop": {
+              "byte": 954,
+              "column": 1,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2626,
+                      "column": 13,
+                      "line": 87
+                    },
+                    "stop": {
+                      "byte": 2651,
+                      "column": 38,
+                      "line": 87
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ inputs.submit_edge }}"
+                ]
+              }
+            },
+            "reference:inputs.submit_edge": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_edge",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2630,
+                      "column": 17,
+                      "line": 87
+                    },
+                    "stop": {
+                      "byte": 2648,
+                      "column": 35,
+                      "line": 87
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_edge"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "inputs.submit_edge"
+          },
+          "effects": [],
+          "id": "wv_4e1ccef327ada974ea83",
+          "kind": "gate",
+          "name": "if:submit:Edge Add-onsへ提出",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2626,
+              "column": 13,
+              "line": 87
+            },
+            "stop": {
+              "byte": 2651,
+              "column": 38,
+              "line": 87
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2953,
+                      "column": 13,
+                      "line": 97
+                    },
+                    "stop": {
+                      "byte": 2981,
+                      "column": 41,
+                      "line": 97
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ inputs.submit_firefox }}"
+                ]
+              }
+            },
+            "reference:inputs.submit_firefox": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_firefox",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2957,
+                      "column": 17,
+                      "line": 97
+                    },
+                    "stop": {
+                      "byte": 2978,
+                      "column": 38,
+                      "line": 97
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_firefox"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "inputs.submit_firefox"
+          },
+          "effects": [],
+          "id": "wv_4e9eee0a74272596b377",
+          "kind": "gate",
+          "name": "if:submit:Firefox Add-onsへ提出",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2953,
+              "column": 13,
+              "line": 97
+            },
+            "stop": {
+              "byte": 2981,
+              "column": 41,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2665,
+                      "column": 14,
+                      "line": 88
+                    },
+                    "stop": {
+                      "byte": 2747,
+                      "column": 43,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun run publish-extension \\\n  --edge-zip ./dist/*-chrome.zip\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_51436a20351060761d3f",
+          "kind": "command",
+          "name": "bun run publish-extension \\\n  --edge-zip ./dist/*-chrome.zip\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2665,
+              "column": 14,
+              "line": 88
+            },
+            "stop": {
+              "byte": 2747,
+              "column": 43,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CHROME_SERVICE_ACCOUNT_PRIVATE_KEY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5208b72cc16c1dfa46f9",
+          "kind": "resource",
+          "name": "env:CHROME_SERVICE_ACCOUNT_PRIVATE_KEY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2459,
+              "column": 11,
+              "line": 83
+            },
+            "stop": {
+              "byte": 2544,
+              "column": 96,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_577b7e6adbac806c3b22",
+          "kind": "call",
+          "name": "oven-sh/setup-bun@v2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 807,
+              "column": 15,
+              "line": 39
+            },
+            "stop": {
+              "byte": 827,
+              "column": 35,
+              "line": 39
+            }
+          },
+          "unknown": {
+            "detail": "oven-sh/setup-bun@v2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1013,
+                      "column": 17,
+                      "line": 47
+                    },
+                    "stop": {
+                      "byte": 1027,
+                      "column": 31,
+                      "line": 47
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_57fea94cca10ecc51ffe",
+          "kind": "resource",
+          "name": "env.IS_RELEASE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1013,
+              "column": 17,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1027,
+              "column": 31,
+              "line": 47
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_chrome",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1567,
+                      "column": 45,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1587,
+                      "column": 65,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_chrome"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_58a060c1c31e15a84249",
+          "kind": "resource",
+          "name": "inputs.submit_chrome",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1567,
+              "column": 45,
+              "line": 59
+            },
+            "stop": {
+              "byte": 1587,
+              "column": 65,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1434,
+                      "column": 138,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1444,
+                      "column": 148,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6312442fda8bca659711",
+          "kind": "resource",
+          "name": "GITHUB_ENV",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1434,
+              "column": 138,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1444,
+              "column": 148,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_edge",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1591,
+                      "column": 69,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1609,
+                      "column": 87,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_edge"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_671f628dbaf8eea021b4",
+          "kind": "resource",
+          "name": "inputs.submit_edge",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1591,
+              "column": 69,
+              "line": 59
+            },
+            "stop": {
+              "byte": 1609,
+              "column": 87,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_edge",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2630,
+                      "column": 17,
+                      "line": 87
+                    },
+                    "stop": {
+                      "byte": 2648,
+                      "column": 35,
+                      "line": 87
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_edge"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_68b32bffa5b2a71ae789",
+          "kind": "resource",
+          "name": "inputs.submit_edge",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2630,
+              "column": 17,
+              "line": 87
+            },
+            "stop": {
+              "byte": 2648,
+              "column": 35,
+              "line": 87
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1434,
+                      "column": 138,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1444,
+                      "column": 148,
+                      "line": 54
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "bun -e \"console.log(require('./package.json'",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1373,
+                      "column": 77,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1417,
+                      "column": 121,
+                      "line": 54
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.bump_type",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1329,
+                      "column": 33,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1345,
+                      "column": 49,
+                      "line": 54
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1310,
+                      "column": 14,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1467,
+                      "column": 1,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV",
+                  "bun -e \"console.log(require('./package.json'",
+                  "bun pm version ${{ inputs.bump_type }} -m \"v%s\"\necho VERSION=$(bun -e \"console.log(require('./package.json').version)\") >> $GITHUB_ENV\n",
+                  "inputs.bump_type"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6b87d2ef98c4627d9991",
+          "kind": "command",
+          "name": "bun pm version ${{ inputs.bump_type }} -m \"v%s\"\necho VERSION=$(bun -e \"console.log(require('./package.json').version)\") >> $GITHUB_ENV\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1310,
+              "column": 14,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1467,
+              "column": 1,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1539,
+                      "column": 17,
+                      "line": 59
+                    },
+                    "stop": {
+                      "byte": 1553,
+                      "column": 31,
+                      "line": 59
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6cf5491c6166dfd49ce3",
+          "kind": "resource",
+          "name": "env.IS_RELEASE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1539,
+              "column": 17,
+              "line": 59
+            },
+            "stop": {
+              "byte": 1553,
+              "column": 31,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6f3826f664e239935883",
+          "kind": "step",
+          "name": "バージョンを更新",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1222,
+              "column": 9,
+              "line": 52
+            },
+            "stop": {
+              "byte": 1467,
+              "column": 1,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "bun -e \"console.log(require('./package.json'",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1982,
+                      "column": 105,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2026,
+                      "column": 149,
+                      "line": 68
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1891,
+                      "column": 14,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2097,
+                      "column": 92,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun -e \"console.log(require('./package.json'",
+                  "gh release create \"v${VERSION}\" \\\n  ./dist/*-chrome.zip \\\n  ./dist/*-firefox.zip \\\n  -t \"$(bun -e \"console.log(require('./package.json').displayName)\") v${VERSION}\"\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6fe70dc167a3bf2fdd95",
+          "kind": "command",
+          "name": "gh release create \"v${VERSION}\" \\\n  ./dist/*-chrome.zip \\\n  ./dist/*-firefox.zip \\\n  -t \"$(bun -e \"console.log(require('./package.json').displayName)\") v${VERSION}\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1891,
+              "column": 14,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2097,
+              "column": 92,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1711,
+                      "column": 17,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 1725,
+                      "column": 31,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_799a9d291f09b7fa9156",
+          "kind": "resource",
+          "name": "env.IS_RELEASE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1711,
+              "column": 17,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1725,
+              "column": 31,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.bump_type",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1329,
+                      "column": 33,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1345,
+                      "column": 49,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.bump_type"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7b1a96714b143ca17b9f",
+          "kind": "resource",
+          "name": "inputs.bump_type",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1329,
+              "column": 33,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1345,
+              "column": 49,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.GITHUB_TOKEN",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2135,
+                      "column": 25,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2155,
+                      "column": 45,
+                      "line": 74
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.GITHUB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7c6a0c2a9d7afecec888",
+          "kind": "resource",
+          "name": "secrets.GITHUB_TOKEN",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2135,
+              "column": 25,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2155,
+              "column": 45,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "bun -e \"console.log(require('./package.json'",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1373,
+                      "column": 77,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 1417,
+                      "column": 121,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun -e \"console.log(require('./package.json'"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8057f1fcd5b3e5b93e9f",
+          "kind": "resource",
+          "name": "bun -e \"console.log(require('./package.json'",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1373,
+              "column": 77,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1417,
+              "column": 121,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8825a5ee6e54666a559b",
+          "kind": "step",
+          "name": "拡張機能をビルド (Chrome / Edge)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1476,
+              "column": 9,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1644,
+              "column": 32,
+              "line": 60
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "EDGE_API_KEY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8a9cf4d26cf5fded8e66",
+          "kind": "resource",
+          "name": "env:EDGE_API_KEY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2827,
+              "column": 11,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2868,
+              "column": 52,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.EDGE_API_KEY",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2845,
+                      "column": 29,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 2865,
+                      "column": 49,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.EDGE_API_KEY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8b5bcfb23cc118e9699e",
+          "kind": "resource",
+          "name": "secrets.EDGE_API_KEY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2845,
+              "column": 29,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2865,
+              "column": 49,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1626,
+                      "column": 14,
+                      "line": 60
+                    },
+                    "stop": {
+                      "byte": 1644,
+                      "column": 32,
+                      "line": 60
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun run zip:chrome"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_923a8b044ce15d2ee4d2",
+          "kind": "command",
+          "name": "bun run zip:chrome",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1626,
+              "column": 14,
+              "line": 60
+            },
+            "stop": {
+              "byte": 1644,
+              "column": 32,
+              "line": 60
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1777,
+                      "column": 14,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 1796,
+                      "column": 33,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun run zip:firefox"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9f00e658d3bb4f0c3118",
+          "kind": "command",
+          "name": "bun run zip:firefox",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1777,
+              "column": 14,
+              "line": 64
+            },
+            "stop": {
+              "byte": 1796,
+              "column": 33,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write",
+            "oidc"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a041bb15c7c872df0b07",
+          "kind": "job",
+          "name": "submit",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 549,
+              "column": 3,
+              "line": 26
+            },
+            "stop": {
+              "byte": 3247,
+              "column": 32,
+              "line": 104
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.FIREFOX_JWT_SECRET",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3186,
+                      "column": 35,
+                      "line": 103
+                    },
+                    "stop": {
+                      "byte": 3212,
+                      "column": 61,
+                      "line": 103
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.FIREFOX_JWT_SECRET"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a28aa42f63ce0ad8e841",
+          "kind": "resource",
+          "name": "secrets.FIREFOX_JWT_SECRET",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 3186,
+              "column": 35,
+              "line": 103
+            },
+            "stop": {
+              "byte": 3212,
+              "column": 61,
+              "line": 103
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2253,
+                      "column": 14,
+                      "line": 78
+                    },
+                    "stop": {
+                      "byte": 2337,
+                      "column": 45,
+                      "line": 80
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun run publish-extension \\\n  --chrome-zip ./dist/*-chrome.zip\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a4bdb760292046462704",
+          "kind": "command",
+          "name": "bun run publish-extension \\\n  --chrome-zip ./dist/*-chrome.zip\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2253,
+              "column": 14,
+              "line": 78
+            },
+            "stop": {
+              "byte": 2337,
+              "column": 45,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_abe6b23cbfa2791688bd",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 21,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 539,
+              "column": 22,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GH_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b267ba2389b4eefdb199",
+          "kind": "resource",
+          "name": "env:GH_TOKEN",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2121,
+              "column": 11,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2158,
+              "column": 48,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2995,
+                      "column": 14,
+                      "line": 98
+                    },
+                    "stop": {
+                      "byte": 3138,
+                      "column": 55,
+                      "line": 101
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun run publish-extension \\\n  --firefox-zip ./dist/*-firefox.zip \\\n  --firefox-sources-zip ./dist/*-sources.zip\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b2af012a8ab6b716517a",
+          "kind": "command",
+          "name": "bun run publish-extension \\\n  --firefox-zip ./dist/*-firefox.zip \\\n  --firefox-sources-zip ./dist/*-sources.zip\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2995,
+              "column": 14,
+              "line": 98
+            },
+            "stop": {
+              "byte": 3138,
+              "column": 55,
+              "line": 101
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_chrome",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2216,
+                      "column": 17,
+                      "line": 77
+                    },
+                    "stop": {
+                      "byte": 2236,
+                      "column": 37,
+                      "line": 77
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_chrome"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bb8bfdc11f67d059a215",
+          "kind": "resource",
+          "name": "inputs.submit_chrome",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2216,
+              "column": 17,
+              "line": 77
+            },
+            "stop": {
+              "byte": 2236,
+              "column": 37,
+              "line": 77
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.submit_firefox",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1739,
+                      "column": 45,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 1760,
+                      "column": 66,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.submit_firefox"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bbe428409864094fb5ae",
+          "kind": "resource",
+          "name": "inputs.submit_firefox",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1739,
+              "column": 45,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1760,
+              "column": 66,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1009,
+                      "column": 13,
+                      "line": 47
+                    },
+                    "stop": {
+                      "byte": 1040,
+                      "column": 44,
+                      "line": 47
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ env.IS_RELEASE == 'true' }}"
+                ]
+              }
+            },
+            "reference:env.IS_RELEASE": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1013,
+                      "column": 17,
+                      "line": 47
+                    },
+                    "stop": {
+                      "byte": 1027,
+                      "column": 31,
+                      "line": 47
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(env.IS_RELEASE==\"true\")"
+          },
+          "effects": [],
+          "id": "wv_bdc154159ff40accd59b",
+          "kind": "gate",
+          "name": "if:submit:Gitのユーザーを設定",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1009,
+              "column": 13,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1040,
+              "column": 44,
+              "line": 47
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.EDGE_CLIENT_ID",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2791,
+                      "column": 31,
+                      "line": 92
+                    },
+                    "stop": {
+                      "byte": 2813,
+                      "column": 53,
+                      "line": 92
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.EDGE_CLIENT_ID"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c73028af7cacdc31d042",
+          "kind": "resource",
+          "name": "secrets.EDGE_CLIENT_ID",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2791,
+              "column": 31,
+              "line": 92
+            },
+            "stop": {
+              "byte": 2813,
+              "column": 53,
+              "line": 92
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d45ecaabfd1913858486",
+          "kind": "resource",
+          "name": "env:CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2361,
+              "column": 11,
+              "line": 82
+            },
+            "stop": {
+              "byte": 2448,
+              "column": 98,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.CHROME_SERVICE_ACCOUNT_PRIVATE_KEY",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2499,
+                      "column": 51,
+                      "line": 83
+                    },
+                    "stop": {
+                      "byte": 2541,
+                      "column": 93,
+                      "line": 83
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.CHROME_SERVICE_ACCOUNT_PRIVATE_KEY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d9e6f7d1b204e4b1e7d2",
+          "kind": "resource",
+          "name": "secrets.CHROME_SERVICE_ACCOUNT_PRIVATE_KEY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2499,
+              "column": 51,
+              "line": 83
+            },
+            "stop": {
+              "byte": 2541,
+              "column": 93,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.IS_RELEASE",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1850,
+                      "column": 17,
+                      "line": 67
+                    },
+                    "stop": {
+                      "byte": 1864,
+                      "column": 31,
+                      "line": 67
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.IS_RELEASE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e1e80cc3403c950a1886",
+          "kind": "resource",
+          "name": "env.IS_RELEASE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1850,
+              "column": 17,
+              "line": 67
+            },
+            "stop": {
+              "byte": 1864,
+              "column": 31,
+              "line": 67
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_e6d037d178175e8707dd",
+          "kind": "call",
+          "name": "actions/checkout@v6",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 733,
+              "column": 15,
+              "line": 36
+            },
+            "stop": {
+              "byte": 752,
+              "column": 34,
+              "line": 36
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v6",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1054,
+                      "column": 14,
+                      "line": 48
+                    },
+                    "stop": {
+                      "byte": 1213,
+                      "column": 1,
+                      "line": 51
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --local user.name \"github-actions[bot]\"\ngit config --local user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_ec0602420d1b05a5e245",
+          "kind": "command",
+          "name": "git config --local user.name \"github-actions[bot]\"\ngit config --local user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 1054,
+              "column": 14,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1213,
+              "column": 1,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "EDGE_CLIENT_ID"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ede781f9687291a0765c",
+          "kind": "resource",
+          "name": "env:EDGE_CLIENT_ID",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/midra429/ncoverlay/.github/workflows/release.yml",
+            "start": {
+              "byte": 2771,
+              "column": 11,
+              "line": 92
+            },
+            "stop": {
+              "byte": 2816,
+              "column": 56,
+              "line": 92
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/midra429/ncoverlay/.github/workflows/release.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:c74861c1bf511612b121726e1a2e5be0b71aad4f085fcad6f5b830c15e86c83c",
+      "path": "github/midra429/ncoverlay/.github/workflows/release.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [
+        {
+          "detail": "actions/checkout@v6",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "oven-sh/setup-bun@v2",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "unresolved GitHub dataflow value env.IS_RELEASE",
+          "kind": "dynamic_string"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "shell default",
+          "kind": "unsupported_syntax"
+        },
+        {
+          "detail": "oven-sh/setup-bun@v2",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 4,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

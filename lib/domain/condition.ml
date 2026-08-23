@@ -26,21 +26,21 @@ let rec apply operation left right =
     | Or, Top, _ | Or, _, Top -> Top
     | Or, Bottom, value | Or, value, Bottom -> value
     | _, Branch left_node, Branch right_node ->
-          let comparison =
-            String.compare left_node.variable right_node.variable
-          in
-          if comparison = 0 then
-            branch left_node.variable
-              (apply operation left_node.low right_node.low)
-              (apply operation left_node.high right_node.high)
-          else if comparison < 0 then
-            branch left_node.variable
-              (apply operation left_node.low right)
-              (apply operation left_node.high right)
-          else
-            branch right_node.variable
-              (apply operation left right_node.low)
-              (apply operation left right_node.high)
+        let comparison =
+          String.compare left_node.variable right_node.variable
+        in
+        if comparison = 0 then
+          branch left_node.variable
+            (apply operation left_node.low right_node.low)
+            (apply operation left_node.high right_node.high)
+        else if comparison < 0 then
+          branch left_node.variable
+            (apply operation left_node.low right)
+            (apply operation left_node.high right)
+        else
+          branch right_node.variable
+            (apply operation left right_node.low)
+            (apply operation left right_node.high)
 
 let and_ = apply And
 let or_ = apply Or

@@ -1,0 +1,813 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = devops_community/the-way-of-cicd-open-source-edition:version/version.yml@$CI_COMMIT_REF_NAME"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+          "start": {
+            "byte": 170,
+            "column": 5,
+            "line": 10
+          },
+          "stop": {
+            "byte": 332,
+            "column": 30,
+            "line": 14
+          }
+        }
+      },
+      "id": "diag_26bb96b3b8e84a808e7f",
+      "message": "dependency is not pinned to immutable content: devops_community/the-way-of-cicd-open-source-edition:version/version.yml@$CI_COMMIT_REF_NAME",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+        "start": {
+          "byte": 170,
+          "column": 5,
+          "line": 10
+        },
+        "stop": {
+          "byte": 332,
+          "column": 30,
+          "line": 14
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_5956c414bb7a1cfe2633",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 170,
+              "column": 5,
+              "line": 10
+            },
+            "stop": {
+              "byte": 332,
+              "column": 30,
+              "line": 14
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = devops_community/the-way-of-cicd-open-source-edition:release/release.yml@$CI_COMMIT_REF_NAME"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+          "start": {
+            "byte": 170,
+            "column": 5,
+            "line": 10
+          },
+          "stop": {
+            "byte": 332,
+            "column": 30,
+            "line": 14
+          }
+        }
+      },
+      "id": "diag_5a43d0969816b56504b6",
+      "message": "dependency is not pinned to immutable content: devops_community/the-way-of-cicd-open-source-edition:release/release.yml@$CI_COMMIT_REF_NAME",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+        "start": {
+          "byte": 170,
+          "column": 5,
+          "line": 10
+        },
+        "stop": {
+          "byte": 332,
+          "column": 30,
+          "line": 14
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_acd882f416b4e59d666d",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 170,
+              "column": 5,
+              "line": 10
+            },
+            "stop": {
+              "byte": 332,
+              "column": 30,
+              "line": 14
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "frontend compiler"
+      ],
+      "fix": null,
+      "id": "diag_ff7a9d11c8ec347247d2",
+      "message": "version extends unknown .version_git",
+      "rule_id": "GL-UNKNOWN-EXTENDS",
+      "severity": "error",
+      "span": {
+        "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+        "start": {
+          "byte": 367,
+          "column": 1,
+          "line": 20
+        },
+        "stop": {
+          "byte": 422,
+          "column": 19,
+          "line": 23
+        }
+      },
+      "trace": []
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "frontend compiler"
+      ],
+      "fix": null,
+      "id": "diag_da0d505fd6554ef52a86",
+      "message": "create-release extends unknown .release",
+      "rule_id": "GL-UNKNOWN-EXTENDS",
+      "severity": "error",
+      "span": {
+        "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+        "start": {
+          "byte": 424,
+          "column": 1,
+          "line": 25
+        },
+        "stop": {
+          "byte": 482,
+          "column": 15,
+          "line": 28
+        }
+      },
+      "trace": []
+    }
+  ],
+  "digest": "sha256:6485cd721af994b1294b68954a05f2ed9045c7f6adb5703261fbee1e83897b30",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_83a341b37139063bca73",
+          "id": "wv_20ebfa17b6de051ceac8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_54042bcf8df50d5943fd"
+        },
+        {
+          "condition": true,
+          "from": "wv_8ede74884f3d745c5a73",
+          "id": "wv_23f400bc74a11ca7b8f6",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_83a341b37139063bca73"
+        },
+        {
+          "condition": true,
+          "from": "wv_54042bcf8df50d5943fd",
+          "id": "wv_2e324b85cce52b2bb80f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_5a4fe56d2c176d54d443"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "CI_COMMIT_TAG"
+          },
+          "from": "wv_e7a272c73d0e1ecef0f7",
+          "id": "wv_530a4b25b2fbb01e89b5",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_3b641c8943865386975d"
+        },
+        {
+          "condition": true,
+          "from": "wv_49fb8a6b269ceb0e3a30",
+          "id": "wv_557cd3af032697ea547f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_fc5fe31cd3180b3d90b5"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b641c8943865386975d",
+          "id": "wv_65741d60492141c3ba7a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5956c414bb7a1cfe2633"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b641c8943865386975d",
+          "id": "wv_73168c7910bddd4afdbe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8ede74884f3d745c5a73"
+        },
+        {
+          "condition": true,
+          "from": "wv_8ede74884f3d745c5a73",
+          "id": "wv_83a6d2fb197b8ebbcc0f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_49fb8a6b269ceb0e3a30"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b641c8943865386975d",
+          "id": "wv_8e071dc6fef6c30dbb17",
+          "kind": "call",
+          "label": null,
+          "to": "wv_acd882f416b4e59d666d"
+        },
+        {
+          "condition": true,
+          "from": "wv_49fb8a6b269ceb0e3a30",
+          "id": "wv_9b7c1b1afb277791463d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fc5fe31cd3180b3d90b5"
+        },
+        {
+          "condition": true,
+          "from": "wv_307792175839d0840fbe",
+          "id": "wv_a1e581ec1674f0764649",
+          "kind": "data",
+          "label": "CI_COMMIT_TAG",
+          "to": "wv_e7a272c73d0e1ecef0f7"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b641c8943865386975d",
+          "id": "wv_a3b89cfd745c8773437b",
+          "kind": "call",
+          "label": null,
+          "to": "wv_5956c414bb7a1cfe2633"
+        },
+        {
+          "condition": true,
+          "from": "wv_54042bcf8df50d5943fd",
+          "id": "wv_d9aa9b847b4ebcb2c174",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5a4fe56d2c176d54d443"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b641c8943865386975d",
+          "id": "wv_f8b7a9e690235e720754",
+          "kind": "control",
+          "label": null,
+          "to": "wv_acd882f416b4e59d666d"
+        }
+      ],
+      "entrypoints": [
+        "wv_e7a272c73d0e1ecef0f7"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_TAG",
+                  "span": {
+                    "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 29,
+                      "column": 11,
+                      "line": 3
+                    },
+                    "stop": {
+                      "byte": 43,
+                      "column": 25,
+                      "line": 3
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_307792175839d0840fbe",
+          "kind": "resource",
+          "name": "CI_COMMIT_TAG",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 29,
+              "column": 11,
+              "line": 3
+            },
+            "stop": {
+              "byte": 43,
+              "column": 25,
+              "line": 3
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3b641c8943865386975d",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 482,
+              "column": 15,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_49fb8a6b269ceb0e3a30",
+          "kind": "job",
+          "name": "create-release",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 424,
+              "column": 1,
+              "line": 25
+            },
+            "stop": {
+              "byte": 482,
+              "column": 15,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_54042bcf8df50d5943fd",
+          "kind": "job",
+          "name": "version",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 367,
+              "column": 1,
+              "line": 20
+            },
+            "stop": {
+              "byte": 422,
+              "column": 19,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5956c414bb7a1cfe2633",
+          "kind": "call",
+          "name": "devops_community/the-way-of-cicd-open-source-edition:version/version.yml@$CI_COMMIT_REF_NAME",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 170,
+              "column": 5,
+              "line": 10
+            },
+            "stop": {
+              "byte": 332,
+              "column": 30,
+              "line": 14
+            }
+          },
+          "unknown": {
+            "detail": "devops_community/the-way-of-cicd-open-source-edition:version/version.yml@$CI_COMMIT_REF_NAME",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5a4fe56d2c176d54d443",
+          "kind": "call",
+          "name": "extends:.version_git",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 367,
+              "column": 1,
+              "line": 20
+            },
+            "stop": {
+              "byte": 422,
+              "column": 19,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_83a341b37139063bca73",
+          "kind": "stage",
+          "name": "version",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 344,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 365,
+              "column": 12,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8ede74884f3d745c5a73",
+          "kind": "stage",
+          "name": "release",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 344,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 365,
+              "column": 12,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_acd882f416b4e59d666d",
+          "kind": "call",
+          "name": "devops_community/the-way-of-cicd-open-source-edition:release/release.yml@$CI_COMMIT_REF_NAME",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 170,
+              "column": 5,
+              "line": 10
+            },
+            "stop": {
+              "byte": 332,
+              "column": 30,
+              "line": 14
+            }
+          },
+          "unknown": {
+            "detail": "devops_community/the-way-of-cicd-open-source-edition:release/release.yml@$CI_COMMIT_REF_NAME",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 29,
+                      "column": 11,
+                      "line": 3
+                    },
+                    "stop": {
+                      "byte": 43,
+                      "column": 25,
+                      "line": 3
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "$CI_COMMIT_TAG"
+                ]
+              }
+            },
+            "reference:CI_COMMIT_TAG": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_TAG",
+                  "span": {
+                    "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 29,
+                      "column": 11,
+                      "line": 3
+                    },
+                    "stop": {
+                      "byte": 43,
+                      "column": 25,
+                      "line": 3
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "CI_COMMIT_TAG"
+          },
+          "effects": [],
+          "id": "wv_e7a272c73d0e1ecef0f7",
+          "kind": "gate",
+          "name": "workflow-rule:GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 29,
+              "column": 11,
+              "line": 3
+            },
+            "stop": {
+              "byte": 43,
+              "column": 25,
+              "line": 3
+            }
+          },
+          "unknown": {
+            "detail": "CI_COMMIT_TAG is unavailable during compile",
+            "kind": "phase_unavailable"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fc5fe31cd3180b3d90b5",
+          "kind": "call",
+          "name": "extends:.release",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml",
+            "start": {
+              "byte": 424,
+              "column": 1,
+              "line": 25
+            },
+            "stop": {
+              "byte": 482,
+              "column": 15,
+              "line": 28
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:654232342fb86459f084ceeb624142e8351ccfa626ba7297bdcbcad539ea0982",
+      "path": "gitlab/raiffeisen-dgtl/the-way-of-cicd-open-source-edition/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 4,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

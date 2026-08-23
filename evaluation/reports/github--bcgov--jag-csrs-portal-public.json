@@ -1,0 +1,2498 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+          "start": {
+            "byte": 1381,
+            "column": 15,
+            "line": 40
+          },
+          "stop": {
+            "byte": 1400,
+            "column": 34,
+            "line": 40
+          }
+        }
+      },
+      "id": "diag_77e3957b507a77225803",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+        "start": {
+          "byte": 1381,
+          "column": 15,
+          "line": 40
+        },
+        "stop": {
+          "byte": 1400,
+          "column": 34,
+          "line": 40
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_960522dd0dbf0c8eaee8",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1381,
+              "column": 15,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1400,
+              "column": 34,
+              "line": 40
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = docker/login-action@v1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+          "start": {
+            "byte": 2335,
+            "column": 15,
+            "line": 71
+          },
+          "stop": {
+            "byte": 2357,
+            "column": 37,
+            "line": 71
+          }
+        }
+      },
+      "id": "diag_c25f282648d7a41b6251",
+      "message": "dependency is not pinned to immutable content: docker/login-action@v1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+        "start": {
+          "byte": 2335,
+          "column": 15,
+          "line": 71
+        },
+        "stop": {
+          "byte": 2357,
+          "column": 37,
+          "line": 71
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_767e3083965f2e34a922",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2335,
+              "column": 15,
+              "line": 71
+            },
+            "stop": {
+              "byte": 2357,
+              "column": 37,
+              "line": 71
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:ab1af35f8da9106defa0e1b3a57c0ff6e5460a2c7deb339687f3ac3b7e558157",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_5fe5e0425961ff4ff08d",
+          "id": "wv_11d217e47b9458a709e4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_177ce2aa19aa98dc5e6c"
+        },
+        {
+          "condition": true,
+          "from": "wv_9cc1556840f379b12e1a",
+          "id": "wv_13d8d6e74c7e02dd7953",
+          "kind": "data",
+          "label": "secrets.OPENSHIFT_BUILDER_SA_USERNAME",
+          "to": "wv_767e3083965f2e34a922"
+        },
+        {
+          "condition": true,
+          "from": "wv_390cc9033eef1846e3e9",
+          "id": "wv_20add47ce820ce43e8a3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_960522dd0dbf0c8eaee8"
+        },
+        {
+          "condition": true,
+          "from": "wv_528de46225a51f0117f9",
+          "id": "wv_22ae242495981c82ec71",
+          "kind": "control",
+          "label": null,
+          "to": "wv_177ce2aa19aa98dc5e6c"
+        },
+        {
+          "condition": true,
+          "from": "wv_0f757205117f5ccded37",
+          "id": "wv_238fafd6decd05421255",
+          "kind": "data",
+          "label": "env.env",
+          "to": "wv_f57255a60c708a297e7c"
+        },
+        {
+          "condition": true,
+          "from": "wv_6346ff370a1eb24666bb",
+          "id": "wv_245af63696211b8b7be0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4b0b7ba7938d67fbce3c"
+        },
+        {
+          "condition": true,
+          "from": "wv_02bb23b43e4d9cb12bf0",
+          "id": "wv_2ca6c42552b4cf848b22",
+          "kind": "data",
+          "label": "secrets.OPENSHIFT_LICENSE_PLATE",
+          "to": "wv_f57255a60c708a297e7c"
+        },
+        {
+          "condition": true,
+          "from": "wv_30e93033e0fe7224a0e2",
+          "id": "wv_3413bc71bc0de2550eb1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_78291c53de8632d06b36"
+        },
+        {
+          "condition": true,
+          "from": "wv_f19327274735554a1529",
+          "id": "wv_44276a4c42b6610af1fe",
+          "kind": "data",
+          "label": "env.gitsha",
+          "to": "wv_3cbb485453ed1bf1bb02"
+        },
+        {
+          "condition": true,
+          "from": "wv_6346ff370a1eb24666bb",
+          "id": "wv_4c2fd95b1c4dd99ae33c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_112efec046a95749a7a1"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec483c0dfd21d7a72914",
+          "id": "wv_4e8cac7fbe792a70fc78",
+          "kind": "data",
+          "label": "secrets.OPENSHIFT_EXTERNAL_REPOSITORY",
+          "to": "wv_767e3083965f2e34a922"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ed16346051e974562e8",
+          "id": "wv_56aad66d9704094c7f62",
+          "kind": "data",
+          "label": "CONTEXT",
+          "to": "wv_dfd90136a4e97d472f13"
+        },
+        {
+          "condition": true,
+          "from": "wv_4b0b7ba7938d67fbce3c",
+          "id": "wv_57d2cef07bcaed62ed63",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3cbb485453ed1bf1bb02"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ee0dc587fcb1b72ddca",
+          "id": "wv_61c66c23ef2d0829fb4b",
+          "kind": "data",
+          "label": "env.env",
+          "to": "wv_3cbb485453ed1bf1bb02"
+        },
+        {
+          "condition": true,
+          "from": "wv_5b78fe6ccf86c23f4099",
+          "id": "wv_656af6adf66969ddf666",
+          "kind": "data",
+          "label": "GITHUB_ENV",
+          "to": "wv_78291c53de8632d06b36"
+        },
+        {
+          "condition": true,
+          "from": "wv_6346ff370a1eb24666bb",
+          "id": "wv_69d63293ada723f65fe0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_30e93033e0fe7224a0e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_79ca1c69a521320dc6cd",
+          "id": "wv_69e64e17c1afe9bd6466",
+          "kind": "data",
+          "label": "GITHUB_ENV",
+          "to": "wv_fa2156294c8446c5d833"
+        },
+        {
+          "condition": true,
+          "from": "wv_fbbfa333e36a9f3b4a86",
+          "id": "wv_7380646c7d4a118f5bd1",
+          "kind": "data",
+          "label": "env.env",
+          "to": "wv_f57255a60c708a297e7c"
+        },
+        {
+          "condition": true,
+          "from": "wv_57c096eb63ed0d287df9",
+          "id": "wv_7ba1d2dd17afd7dd9029",
+          "kind": "data",
+          "label": "COMPOSE_DOCKER_CLI_BUILD",
+          "to": "wv_dfd90136a4e97d472f13"
+        },
+        {
+          "condition": true,
+          "from": "wv_177ce2aa19aa98dc5e6c",
+          "id": "wv_828a722d75ff9c2795b1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6346ff370a1eb24666bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_03e3a3ecff66d1f75955",
+          "id": "wv_894ea73bacf17ff82e8c",
+          "kind": "data",
+          "label": "secrets.OPENSHIFT_BUILDER_SA_PASSWORD",
+          "to": "wv_767e3083965f2e34a922"
+        },
+        {
+          "condition": true,
+          "from": "wv_884e1a905384b059fc20",
+          "id": "wv_90fe79e93807cc6da55e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_112efec046a95749a7a1"
+        },
+        {
+          "condition": true,
+          "from": "wv_884e1a905384b059fc20",
+          "id": "wv_950afbaaebbf5cbd4945",
+          "kind": "control",
+          "label": null,
+          "to": "wv_767e3083965f2e34a922"
+        },
+        {
+          "condition": true,
+          "from": "wv_7bd1b0a805fd31461e10",
+          "id": "wv_97942e6d85ec06d8db30",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fa2156294c8446c5d833"
+        },
+        {
+          "condition": true,
+          "from": "wv_7bd1b0a805fd31461e10",
+          "id": "wv_9cecba39463f1ec9709e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_30e93033e0fe7224a0e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_390cc9033eef1846e3e9",
+          "id": "wv_a2acdb416a85fd3dbfa0",
+          "kind": "call",
+          "label": null,
+          "to": "wv_960522dd0dbf0c8eaee8"
+        },
+        {
+          "condition": true,
+          "from": "wv_500f5790a67a4d4cd2fc",
+          "id": "wv_a6256dc677861a7ee77a",
+          "kind": "data",
+          "label": "DOCKER_BUILDKIT",
+          "to": "wv_dfd90136a4e97d472f13"
+        },
+        {
+          "condition": true,
+          "from": "wv_390cc9033eef1846e3e9",
+          "id": "wv_b397d1b4696be9fdd623",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_7bd1b0a805fd31461e10"
+        },
+        {
+          "condition": true,
+          "from": "wv_b2d661f162cb653f1cfb",
+          "id": "wv_b4f367e016e6c5950baf",
+          "kind": "data",
+          "label": "env.gitsha",
+          "to": "wv_dfd90136a4e97d472f13"
+        },
+        {
+          "condition": true,
+          "from": "wv_4b0b7ba7938d67fbce3c",
+          "id": "wv_bc9e9743efb67f9d8321",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_884e1a905384b059fc20"
+        },
+        {
+          "condition": true,
+          "from": "wv_f57255a60c708a297e7c",
+          "id": "wv_bfd56a637ce4c7dfac52",
+          "kind": "data",
+          "label": "IMAGE",
+          "to": "wv_dfd90136a4e97d472f13"
+        },
+        {
+          "condition": true,
+          "from": "wv_6346ff370a1eb24666bb",
+          "id": "wv_d2da8af6273ab70862c7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_390cc9033eef1846e3e9"
+        },
+        {
+          "condition": true,
+          "from": "wv_e2ea794ac7e8d50013e3",
+          "id": "wv_d494f00b925688ee812a",
+          "kind": "grant",
+          "label": null,
+          "to": "wv_6346ff370a1eb24666bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_1e5f7bcde35061bf4bea",
+          "id": "wv_d88cfd1369870c435d75",
+          "kind": "data",
+          "label": "env.api",
+          "to": "wv_3cbb485453ed1bf1bb02"
+        },
+        {
+          "condition": true,
+          "from": "wv_4757758af032896ff8a8",
+          "id": "wv_db0ee6a622cad3208e65",
+          "kind": "data",
+          "label": "secrets.OPENSHIFT_EXTERNAL_REPOSITORY",
+          "to": "wv_f57255a60c708a297e7c"
+        },
+        {
+          "condition": true,
+          "from": "wv_6346ff370a1eb24666bb",
+          "id": "wv_e3b12463c366100259df",
+          "kind": "control",
+          "label": null,
+          "to": "wv_884e1a905384b059fc20"
+        },
+        {
+          "condition": true,
+          "from": "wv_08e7f1e6df50871d163e",
+          "id": "wv_e5ec676b40710b2e6826",
+          "kind": "data",
+          "label": "GITHUB_ENV",
+          "to": "wv_78291c53de8632d06b36"
+        },
+        {
+          "condition": true,
+          "from": "wv_112efec046a95749a7a1",
+          "id": "wv_f0a278a06529f6cd696a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_dfd90136a4e97d472f13"
+        },
+        {
+          "condition": true,
+          "from": "wv_1bf87d50476d965e38da",
+          "id": "wv_f19b96843f171396565f",
+          "kind": "data",
+          "label": "echo $(git rev-parse --short HEAD",
+          "to": "wv_fa2156294c8446c5d833"
+        },
+        {
+          "condition": true,
+          "from": "wv_884e1a905384b059fc20",
+          "id": "wv_f566542caa5a78b21c8e",
+          "kind": "call",
+          "label": null,
+          "to": "wv_767e3083965f2e34a922"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c0e9e38b4086024c45c",
+          "id": "wv_fb9f4a7678e51671a25d",
+          "kind": "data",
+          "label": "env.api",
+          "to": "wv_f57255a60c708a297e7c"
+        },
+        {
+          "condition": true,
+          "from": "wv_6346ff370a1eb24666bb",
+          "id": "wv_ff56cc945ab66cc30067",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7bd1b0a805fd31461e10"
+        },
+        {
+          "condition": true,
+          "from": "wv_30e93033e0fe7224a0e2",
+          "id": "wv_ffda2095fc3a12051350",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4b0b7ba7938d67fbce3c"
+        }
+      ],
+      "entrypoints": [
+        "wv_177ce2aa19aa98dc5e6c"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.OPENSHIFT_LICENSE_PLATE",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3391,
+                      "column": 64,
+                      "line": 90
+                    },
+                    "stop": {
+                      "byte": 3422,
+                      "column": 95,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.OPENSHIFT_LICENSE_PLATE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_02bb23b43e4d9cb12bf0",
+          "kind": "resource",
+          "name": "secrets.OPENSHIFT_LICENSE_PLATE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3391,
+              "column": 64,
+              "line": 90
+            },
+            "stop": {
+              "byte": 3422,
+              "column": 95,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.OPENSHIFT_BUILDER_SA_PASSWORD",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2521,
+                      "column": 24,
+                      "line": 75
+                    },
+                    "stop": {
+                      "byte": 2558,
+                      "column": 61,
+                      "line": 75
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.OPENSHIFT_BUILDER_SA_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_03e3a3ecff66d1f75955",
+          "kind": "resource",
+          "name": "secrets.OPENSHIFT_BUILDER_SA_PASSWORD",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2521,
+              "column": 24,
+              "line": 75
+            },
+            "stop": {
+              "byte": 2558,
+              "column": 61,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1920,
+                      "column": 156,
+                      "line": 51
+                    },
+                    "stop": {
+                      "byte": 1930,
+                      "column": 166,
+                      "line": 51
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_08e7f1e6df50871d163e",
+          "kind": "resource",
+          "name": "GITHUB_ENV",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1920,
+              "column": 156,
+              "line": 51
+            },
+            "stop": {
+              "byte": 1930,
+              "column": 166,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.env",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3428,
+                      "column": 101,
+                      "line": 90
+                    },
+                    "stop": {
+                      "byte": 3435,
+                      "column": 108,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.env",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.env"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0f757205117f5ccded37",
+          "kind": "resource",
+          "name": "env.env",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3428,
+              "column": 101,
+              "line": 90
+            },
+            "stop": {
+              "byte": 3435,
+              "column": 108,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_112efec046a95749a7a1",
+          "kind": "step",
+          "name": "Build & Push Image to Openshift Image Stream",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2712,
+              "column": 9,
+              "line": 80
+            },
+            "stop": {
+              "byte": 3711,
+              "column": 1,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_177ce2aa19aa98dc5e6c",
+          "kind": "workflow",
+          "name": "CSRS File Manager Build and Deployment",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 3711,
+              "column": 1,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "echo $(git rev-parse --short HEAD",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1620,
+                      "column": 25,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1653,
+                      "column": 58,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo $(git rev-parse --short HEAD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1bf87d50476d965e38da",
+          "kind": "resource",
+          "name": "echo $(git rev-parse --short HEAD",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1620,
+              "column": 25,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1653,
+              "column": 58,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.api",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3441,
+                      "column": 114,
+                      "line": 90
+                    },
+                    "stop": {
+                      "byte": 3448,
+                      "column": 121,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.api",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.api"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1c0e9e38b4086024c45c",
+          "kind": "resource",
+          "name": "env.api",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3441,
+              "column": 114,
+              "line": 90
+            },
+            "stop": {
+              "byte": 3448,
+              "column": 121,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.api",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2081,
+                      "column": 38,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 2088,
+                      "column": 45,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.api",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.api"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1e5f7bcde35061bf4bea",
+          "kind": "resource",
+          "name": "env.api",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2081,
+              "column": 38,
+              "line": 63
+            },
+            "stop": {
+              "byte": 2088,
+              "column": 45,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_30e93033e0fe7224a0e2",
+          "kind": "step",
+          "name": "env variables",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1744,
+              "column": 9,
+              "line": 49
+            },
+            "stop": {
+              "byte": 2008,
+              "column": 11,
+              "line": 60
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_390cc9033eef1846e3e9",
+          "kind": "step",
+          "name": "Git Checkout",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1348,
+              "column": 9,
+              "line": 39
+            },
+            "stop": {
+              "byte": 1400,
+              "column": 34,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.api",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2081,
+                      "column": 38,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 2088,
+                      "column": 45,
+                      "line": 63
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "env.env",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2124,
+                      "column": 81,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 2131,
+                      "column": 88,
+                      "line": 63
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "env.gitsha",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2162,
+                      "column": 119,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 2172,
+                      "column": 129,
+                      "line": 63
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2057,
+                      "column": 14,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 2218,
+                      "column": 11,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.api",
+                    "kind": "dynamic_string"
+                  },
+                  {
+                    "detail": "unresolved GitHub dataflow value env.env",
+                    "kind": "dynamic_string"
+                  },
+                  {
+                    "detail": "unresolved GitHub dataflow value env.gitsha",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "\necho \"Release API: ${{ env.api }}\"\necho \"Release Environment: ${{ env.env }}\"\necho \"Release Git Sha: ${{env.gitsha}}\"\n",
+                  "env.api",
+                  "env.env",
+                  "env.gitsha"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_3cbb485453ed1bf1bb02",
+          "kind": "command",
+          "name": "\necho \"Release API: ${{ env.api }}\"\necho \"Release Environment: ${{ env.env }}\"\necho \"Release Git Sha: ${{env.gitsha}}\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2057,
+              "column": 14,
+              "line": 63
+            },
+            "stop": {
+              "byte": 2218,
+              "column": 11,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.OPENSHIFT_EXTERNAL_REPOSITORY",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3348,
+                      "column": 21,
+                      "line": 90
+                    },
+                    "stop": {
+                      "byte": 3385,
+                      "column": 58,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.OPENSHIFT_EXTERNAL_REPOSITORY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4757758af032896ff8a8",
+          "kind": "resource",
+          "name": "secrets.OPENSHIFT_EXTERNAL_REPOSITORY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3348,
+              "column": 21,
+              "line": 90
+            },
+            "stop": {
+              "byte": 3385,
+              "column": 58,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4b0b7ba7938d67fbce3c",
+          "kind": "step",
+          "name": "print env variables",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2017,
+              "column": 9,
+              "line": 61
+            },
+            "stop": {
+              "byte": 2218,
+              "column": 11,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_BUILDKIT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_500f5790a67a4d4cd2fc",
+          "kind": "resource",
+          "name": "env:DOCKER_BUILDKIT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2824,
+              "column": 11,
+              "line": 83
+            },
+            "stop": {
+              "byte": 2842,
+              "column": 29,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_528de46225a51f0117f9",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 52,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 286,
+              "column": 51,
+              "line": 9
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "COMPOSE_DOCKER_CLI_BUILD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_57c096eb63ed0d287df9",
+          "kind": "resource",
+          "name": "env:COMPOSE_DOCKER_CLI_BUILD",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2786,
+              "column": 11,
+              "line": 82
+            },
+            "stop": {
+              "byte": 2813,
+              "column": 38,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1841,
+                      "column": 77,
+                      "line": 51
+                    },
+                    "stop": {
+                      "byte": 1851,
+                      "column": 87,
+                      "line": 51
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5b78fe6ccf86c23f4099",
+          "kind": "resource",
+          "name": "GITHUB_ENV",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1841,
+              "column": 77,
+              "line": 51
+            },
+            "stop": {
+              "byte": 1851,
+              "column": 87,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5fe5e0425961ff4ff08d",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 356,
+              "column": 3,
+              "line": 12
+            },
+            "stop": {
+              "byte": 649,
+              "column": 27,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [
+            "deployment_change"
+          ],
+          "id": "wv_6346ff370a1eb24666bb",
+          "kind": "job",
+          "name": "build-push-image",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 803,
+              "column": 3,
+              "line": 26
+            },
+            "stop": {
+              "byte": 3711,
+              "column": 1,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_767e3083965f2e34a922",
+          "kind": "call",
+          "name": "docker/login-action@v1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2335,
+              "column": 15,
+              "line": 71
+            },
+            "stop": {
+              "byte": 2357,
+              "column": 37,
+              "line": 71
+            }
+          },
+          "unknown": {
+            "detail": "docker/login-action@v1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1841,
+                      "column": 77,
+                      "line": 51
+                    },
+                    "stop": {
+                      "byte": 1851,
+                      "column": 87,
+                      "line": 51
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1920,
+                      "column": 156,
+                      "line": 51
+                    },
+                    "stop": {
+                      "byte": 1930,
+                      "column": 166,
+                      "line": 51
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1778,
+                      "column": 14,
+                      "line": 51
+                    },
+                    "stop": {
+                      "byte": 2008,
+                      "column": 11,
+                      "line": 60
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "\nif [[ -z \"$api\" ]]; then\n  echo \"api=$api_from_gh_secret\" >> $GITHUB_ENV\nfi  \n\nif [[ -z \"$env\" ]]; then\n  echo \"env=$env_from_gh_secret\" >> $GITHUB_ENV\nfi  \n",
+                  "GITHUB_ENV"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_78291c53de8632d06b36",
+          "kind": "command",
+          "name": "\nif [[ -z \"$api\" ]]; then\n  echo \"api=$api_from_gh_secret\" >> $GITHUB_ENV\nfi  \n\nif [[ -z \"$env\" ]]; then\n  echo \"env=$env_from_gh_secret\" >> $GITHUB_ENV\nfi  \n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1778,
+              "column": 14,
+              "line": 51
+            },
+            "stop": {
+              "byte": 2008,
+              "column": 11,
+              "line": 60
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1696,
+                      "column": 101,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1706,
+                      "column": 111,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_79ca1c69a521320dc6cd",
+          "kind": "resource",
+          "name": "GITHUB_ENV",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1696,
+              "column": 101,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1706,
+              "column": 111,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7bd1b0a805fd31461e10",
+          "kind": "step",
+          "name": "Get git commit short sha",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1549,
+              "column": 9,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1735,
+              "column": 7,
+              "line": 48
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CONTEXT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7ed16346051e974562e8",
+          "kind": "resource",
+          "name": "env:CONTEXT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2853,
+              "column": 11,
+              "line": 84
+            },
+            "stop": {
+              "byte": 2875,
+              "column": 33,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.env",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2124,
+                      "column": 81,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 2131,
+                      "column": 88,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.env",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.env"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7ee0dc587fcb1b72ddca",
+          "kind": "resource",
+          "name": "env.env",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2124,
+              "column": 81,
+              "line": 63
+            },
+            "stop": {
+              "byte": 2131,
+              "column": 88,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_884e1a905384b059fc20",
+          "kind": "step",
+          "name": "Login to OpenShift Container Repository",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2275,
+              "column": 9,
+              "line": 70
+            },
+            "stop": {
+              "byte": 2560,
+              "column": 63,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_960522dd0dbf0c8eaee8",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1381,
+              "column": 15,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1400,
+              "column": 34,
+              "line": 40
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.OPENSHIFT_BUILDER_SA_USERNAME",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2458,
+                      "column": 24,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2495,
+                      "column": 61,
+                      "line": 74
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.OPENSHIFT_BUILDER_SA_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9cc1556840f379b12e1a",
+          "kind": "resource",
+          "name": "secrets.OPENSHIFT_BUILDER_SA_USERNAME",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2458,
+              "column": 24,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2495,
+              "column": 61,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.gitsha",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3589,
+                      "column": 126,
+                      "line": 91
+                    },
+                    "stop": {
+                      "byte": 3599,
+                      "column": 136,
+                      "line": 91
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.gitsha",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.gitsha"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b2d661f162cb653f1cfb",
+          "kind": "resource",
+          "name": "env.gitsha",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3589,
+              "column": 126,
+              "line": 91
+            },
+            "stop": {
+              "byte": 3599,
+              "column": 136,
+              "line": 91
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.gitsha",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3589,
+                      "column": 126,
+                      "line": 91
+                    },
+                    "stop": {
+                      "byte": 3599,
+                      "column": 136,
+                      "line": 91
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3477,
+                      "column": 14,
+                      "line": 91
+                    },
+                    "stop": {
+                      "byte": 3711,
+                      "column": 1,
+                      "line": 97
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.gitsha",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker build -f ./src/backend/Csrs.Services.FileManager/Dockerfile.rhel8 \\\n  --build-arg SOURCE_REVISION_ID=${{ env.gitsha  }} \\\n  --tag ${IMAGE} \\\n  ${CONTEXT}\ndocker push ${IMAGE}\n",
+                  "env.gitsha"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_dfd90136a4e97d472f13",
+          "kind": "command",
+          "name": "docker build -f ./src/backend/Csrs.Services.FileManager/Dockerfile.rhel8 \\\n  --build-arg SOURCE_REVISION_ID=${{ env.gitsha  }} \\\n  --tag ${IMAGE} \\\n  ${CONTEXT}\ndocker push ${IMAGE}\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3477,
+              "column": 14,
+              "line": 91
+            },
+            "stop": {
+              "byte": 3711,
+              "column": 1,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e2ea794ac7e8d50013e3",
+          "kind": "resource",
+          "name": "environment:${{ github.event.inputs.env }}",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 915,
+              "column": 18,
+              "line": 29
+            },
+            "stop": {
+              "byte": 945,
+              "column": 48,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.OPENSHIFT_EXTERNAL_REPOSITORY",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2395,
+                      "column": 24,
+                      "line": 73
+                    },
+                    "stop": {
+                      "byte": 2432,
+                      "column": 61,
+                      "line": 73
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.OPENSHIFT_EXTERNAL_REPOSITORY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ec483c0dfd21d7a72914",
+          "kind": "resource",
+          "name": "secrets.OPENSHIFT_EXTERNAL_REPOSITORY",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2395,
+              "column": 24,
+              "line": 73
+            },
+            "stop": {
+              "byte": 2432,
+              "column": 61,
+              "line": 73
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.gitsha",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 2162,
+                      "column": 119,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 2172,
+                      "column": 129,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.gitsha",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.gitsha"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f19327274735554a1529",
+          "kind": "resource",
+          "name": "env.gitsha",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 2162,
+              "column": 119,
+              "line": 63
+            },
+            "stop": {
+              "byte": 2172,
+              "column": 129,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f57255a60c708a297e7c",
+          "kind": "resource",
+          "name": "env:IMAGE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3338,
+              "column": 11,
+              "line": 90
+            },
+            "stop": {
+              "byte": 3463,
+              "column": 136,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1696,
+                      "column": 101,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1706,
+                      "column": 111,
+                      "line": 45
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "echo $(git rev-parse --short HEAD",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1620,
+                      "column": 25,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1653,
+                      "column": 58,
+                      "line": 45
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 1609,
+                      "column": 14,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 1735,
+                      "column": 7,
+                      "line": 48
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV",
+                  "echo $(git rev-parse --short HEAD",
+                  "shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-7)\necho \"gitsha=$shortSha\" >> $GITHUB_ENV\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fa2156294c8446c5d833",
+          "kind": "command",
+          "name": "shortSha=$(echo $(git rev-parse --short HEAD) | cut -c1-7)\necho \"gitsha=$shortSha\" >> $GITHUB_ENV\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 1609,
+              "column": 14,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1735,
+              "column": 7,
+              "line": 48
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.env",
+                  "span": {
+                    "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+                    "start": {
+                      "byte": 3454,
+                      "column": 127,
+                      "line": 90
+                    },
+                    "stop": {
+                      "byte": 3461,
+                      "column": 134,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.env",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.env"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fbbfa333e36a9f3b4a86",
+          "kind": "resource",
+          "name": "env.env",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml",
+            "start": {
+              "byte": 3454,
+              "column": 127,
+              "line": 90
+            },
+            "stop": {
+              "byte": 3461,
+              "column": 134,
+              "line": 90
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:0ffd1c4f8ba226e4f199ef277e85a1ced296ac8e0cc32759406e94c925489630",
+      "path": "github/bcgov/jag-csrs-portal-public/.github/workflows/build-file-manager.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [
+        {
+          "detail": "protection rules for environment:${{ github.event.inputs.env }}",
+          "kind": "external_state"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [
+        {
+          "detail": "unresolved GitHub dataflow value env.api",
+          "kind": "dynamic_string"
+        },
+        {
+          "detail": "unresolved GitHub dataflow value env.env",
+          "kind": "dynamic_string"
+        },
+        {
+          "detail": "unresolved GitHub dataflow value env.gitsha",
+          "kind": "dynamic_string"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "shell default",
+          "kind": "unsupported_syntax"
+        },
+        {
+          "detail": "docker/login-action@v1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 3
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

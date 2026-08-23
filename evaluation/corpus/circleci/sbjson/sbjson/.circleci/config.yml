@@ -1,0 +1,51 @@
+version: 2.1
+
+executors:
+    default:
+        macos:
+            # https://circleci.com/docs/guides/execution-managed/using-macos/#supported-xcode-versions
+            xcode: 26.4.0
+
+workflows:
+    build-and-test:
+        jobs:
+            - build:
+                name: build-ios
+                scheme: SBJson5_iOS
+                destination: platform=iOS Simulator,name=iPhone 17 Pro
+            - build:
+                name: build-mac
+                scheme: SBJson5_macOS
+                destination: platform=macOS,arch=arm64
+            - pod-lib-lint
+            - carthage-build
+
+jobs:
+    build:
+        executor: default
+        parameters:
+            scheme:
+                type: string
+            destination:
+                type: string
+        steps:
+            - checkout
+            - run:
+                name: Run tests
+                command: >
+                    xcodebuild test
+                    -scheme <<parameters.scheme>>
+                    -destination "<<parameters.destination>>"
+                    | xcpretty
+
+    pod-lib-lint:
+        executor: default
+        steps:
+            - checkout
+            - run: pod lib lint
+
+    carthage-build:
+        executor: default
+        steps:
+            - checkout
+            - run: carthage build --use-xcframeworks --no-skip-current

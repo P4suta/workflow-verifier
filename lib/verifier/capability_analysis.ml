@@ -1,8 +1,7 @@
 let effects_of_node (node : Ir.node) =
   let inferred =
     if node.kind = Ir.Command then
-      Script_adapter.analyze Script_adapter.Bash node.name |> fun summary ->
-      summary.Script_adapter.effects
+      (Script_adapter.analyze_node node).Script_adapter.effects
     else []
   in
   Util.deduplicate_compare Stdlib.compare (node.effects @ inferred)
@@ -84,21 +83,58 @@ let declared_grants graph =
   |> List.concat_map (fun (node : Ir.node) ->
       List.map (fun capability -> (node, capability)) node.capabilities)
 
-let excessive_grants graph =
-  let sinks =
-    graph.Ir.nodes |> List.filter (fun node -> effects_of_node node <> [])
+type demand = Required | Excessive | Unknown of Unknown.reason list
+
+let value_unknowns value =
+  let values =
+    match value.Abstract_value.value with
+    | Unknown_value reasons -> reasons
+    | _ -> []
+  and trust =
+    match value.trust with
+    | Unknown_trust reasons -> reasons
+    | _ -> []
+  and secrecy =
+    match value.secrecy with
+    | Unknown_secrecy reasons -> reasons
+    | _ -> []
   in
+  values @ trust @ secrecy
+
+let node_unknowns (node : Ir.node) =
+  (match node.unknown with
+    | Some reason -> [ reason ]
+    | None -> [])
+  @ List.concat_map (fun (_, value) -> value_unknowns value) node.attributes
+  |> Util.deduplicate_compare Unknown.compare
+
+let grant_demands graph =
   declared_grants graph
-  |> List.filter_map (fun ((grant : Ir.node), capability) ->
+  |> List.map (fun ((grant : Ir.node), capability) ->
+      let reachable =
+        graph.Ir.nodes
+        |> List.filter (fun (node : Ir.node) -> reaches graph grant.id node.id)
+      in
       let effects =
-        sinks
-        |> List.filter (fun (sink : Ir.node) ->
-            reaches graph grant.id sink.Ir.id)
+        reachable
         |> List.concat_map effects_of_node
         |> Util.deduplicate_compare Stdlib.compare
+      and unknowns =
+        reachable
+        |> List.concat_map node_unknowns
+        |> Util.deduplicate_compare Unknown.compare
       in
-      if
-        List.mem capability privileged
-        && not (capability_matches capability effects)
-      then Some (grant, capability)
-      else None)
+      let demand =
+        if capability_matches capability effects then Required
+        else if List.mem capability privileged && unknowns <> [] then
+          Unknown unknowns
+        else if List.mem capability privileged then Excessive
+        else Required
+      in
+      ((grant, capability), demand))
+
+let excessive_grants graph =
+  grant_demands graph
+  |> List.filter_map (function
+    | grant, Excessive -> Some grant
+    | _, (Required | Unknown _) -> None)

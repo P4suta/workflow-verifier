@@ -1,0 +1,1282 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+          "start": {
+            "byte": 2590,
+            "column": 13,
+            "line": 58
+          },
+          "stop": {
+            "byte": 2609,
+            "column": 32,
+            "line": 58
+          }
+        }
+      },
+      "id": "diag_a77e2a79fa6a2146c7a2",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+        "start": {
+          "byte": 2590,
+          "column": 13,
+          "line": 58
+        },
+        "stop": {
+          "byte": 2609,
+          "column": 32,
+          "line": 58
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_6641e55fde12b7b42537",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 2590,
+              "column": 13,
+              "line": 58
+            },
+            "stop": {
+              "byte": 2609,
+              "column": 32,
+              "line": 58
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = github/codeql-action/init@v3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+          "start": {
+            "byte": 3016,
+            "column": 13,
+            "line": 68
+          },
+          "stop": {
+            "byte": 3044,
+            "column": 41,
+            "line": 68
+          }
+        }
+      },
+      "id": "diag_953d0ed598823f32d9bd",
+      "message": "dependency is not pinned to immutable content: github/codeql-action/init@v3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+        "start": {
+          "byte": 3016,
+          "column": 13,
+          "line": 68
+        },
+        "stop": {
+          "byte": 3044,
+          "column": 41,
+          "line": 68
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_daa7bbd982f28f1a0e3a",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 3016,
+              "column": 13,
+              "line": 68
+            },
+            "stop": {
+              "byte": 3044,
+              "column": 41,
+              "line": 68
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = github/codeql-action/analyze@v3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+          "start": {
+            "byte": 4550,
+            "column": 13,
+            "line": 96
+          },
+          "stop": {
+            "byte": 4581,
+            "column": 44,
+            "line": 96
+          }
+        }
+      },
+      "id": "diag_4115808a3a62abfb3e52",
+      "message": "dependency is not pinned to immutable content: github/codeql-action/analyze@v3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+        "start": {
+          "byte": 4550,
+          "column": 13,
+          "line": 96
+        },
+        "stop": {
+          "byte": 4581,
+          "column": 44,
+          "line": 96
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_ad7412b25744daeff6f4",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4550,
+              "column": 13,
+              "line": 96
+            },
+            "stop": {
+              "byte": 4581,
+              "column": 44,
+              "line": 96
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:9f5fab262c48e3b0088cf34df00f11bd930d60c45a41c57c23050e065ece68a7",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_0d20882537fd9f26f1e7",
+          "id": "wv_07406d46eaf45b3aaa20",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bfaff964950b96dc7d25"
+        },
+        {
+          "condition": true,
+          "from": "wv_04ac47c002867ad219d9",
+          "id": "wv_0ee5e37d1e4f9fc0f9d8",
+          "kind": "call",
+          "label": null,
+          "to": "wv_6641e55fde12b7b42537"
+        },
+        {
+          "condition": true,
+          "from": "wv_089aa0a6f10243adcfa0",
+          "id": "wv_12c2d6488c32c4b80bea",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_8287e9e3f540a9a9e8ab"
+        },
+        {
+          "condition": true,
+          "from": "wv_28881cc0ca411451a0bb",
+          "id": "wv_1833ed41eccf094703a9",
+          "kind": "data",
+          "label": "matrix.build-mode",
+          "to": "wv_daa7bbd982f28f1a0e3a"
+        },
+        {
+          "condition": true,
+          "from": "wv_3317a1b9d356ae2ad0e9",
+          "id": "wv_24c78fff9788c3e69aa1",
+          "kind": "data",
+          "label": "matrix.language",
+          "to": "wv_ad7412b25744daeff6f4"
+        },
+        {
+          "condition": true,
+          "from": "wv_8287e9e3f540a9a9e8ab",
+          "id": "wv_26eaecbe3dc31910d162",
+          "kind": "call",
+          "label": null,
+          "to": "wv_ad7412b25744daeff6f4"
+        },
+        {
+          "condition": true,
+          "from": "wv_04ac47c002867ad219d9",
+          "id": "wv_26ffa59e1dfed380fdca",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6641e55fde12b7b42537"
+        },
+        {
+          "condition": true,
+          "from": "wv_0aa03c9cdb7f8a23deaa",
+          "id": "wv_2c6666c8c9b9aabb55d3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_63f60223e6a3a4dec0bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_bfaff964950b96dc7d25",
+          "id": "wv_3dca62687b6d09c335ce",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_13e9af9bf12f596a3fdc"
+        },
+        {
+          "condition": true,
+          "from": "wv_cb0acc729caea8dab22f",
+          "id": "wv_4420063e6eb15212a63f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_63f60223e6a3a4dec0bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_8d845a4c79ade2a306c4",
+          "id": "wv_48f954daa22ef1cbfae8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_63f60223e6a3a4dec0bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_63f60223e6a3a4dec0bf",
+          "id": "wv_55a82146bbf525c86326",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0d20882537fd9f26f1e7"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d20882537fd9f26f1e7",
+          "id": "wv_55bd799edac8d9ad7561",
+          "kind": "control",
+          "label": null,
+          "to": "wv_04ac47c002867ad219d9"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d20882537fd9f26f1e7",
+          "id": "wv_5fe063b2ed17d6735ff7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8287e9e3f540a9a9e8ab"
+        },
+        {
+          "condition": true,
+          "from": "wv_bfaff964950b96dc7d25",
+          "id": "wv_65440ba61d357c093be8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_daa7bbd982f28f1a0e3a"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d20882537fd9f26f1e7",
+          "id": "wv_6ddb4edc762f919525bb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_13e9af9bf12f596a3fdc"
+        },
+        {
+          "condition": true,
+          "from": "wv_d1cc46e9537cc4c33a14",
+          "id": "wv_6edb133fcb19e48f72f1",
+          "kind": "data",
+          "label": "include",
+          "to": "wv_0d20882537fd9f26f1e7"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(matrix.build-mode==\"manual\")"
+          },
+          "from": "wv_13e9af9bf12f596a3fdc",
+          "id": "wv_89fc2bbcf260c3b2ab0a",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_089aa0a6f10243adcfa0"
+        },
+        {
+          "condition": true,
+          "from": "wv_bfaff964950b96dc7d25",
+          "id": "wv_8f37c13235844aafa95e",
+          "kind": "call",
+          "label": null,
+          "to": "wv_daa7bbd982f28f1a0e3a"
+        },
+        {
+          "condition": true,
+          "from": "wv_8287e9e3f540a9a9e8ab",
+          "id": "wv_905a13e8d7ba6a5c99b3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ad7412b25744daeff6f4"
+        },
+        {
+          "condition": true,
+          "from": "wv_89742ae3436921be6e77",
+          "id": "wv_a8e048a042c3b215f8d7",
+          "kind": "data",
+          "label": "matrix.build-mode",
+          "to": "wv_13e9af9bf12f596a3fdc"
+        },
+        {
+          "condition": true,
+          "from": "wv_089aa0a6f10243adcfa0",
+          "id": "wv_c0e5ca096321928c4d9f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f029a2e6ccd548b2cd47"
+        },
+        {
+          "condition": true,
+          "from": "wv_04ac47c002867ad219d9",
+          "id": "wv_c160f330734f5480c418",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_bfaff964950b96dc7d25"
+        },
+        {
+          "condition": true,
+          "from": "wv_e3b1837279609f5bf2c5",
+          "id": "wv_d3f33f148f029f679a87",
+          "kind": "data",
+          "label": "matrix.language",
+          "to": "wv_daa7bbd982f28f1a0e3a"
+        }
+      ],
+      "entrypoints": [
+        "wv_63f60223e6a3a4dec0bf"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_04ac47c002867ad219d9",
+          "kind": "step",
+          "name": "Checkout repository",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 2552,
+              "column": 7,
+              "line": 57
+            },
+            "stop": {
+              "byte": 2609,
+              "column": 32,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_089aa0a6f10243adcfa0",
+          "kind": "step",
+          "name": "step 3",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4161,
+              "column": 7,
+              "line": 85
+            },
+            "stop": {
+              "byte": 4501,
+              "column": 1,
+              "line": 94
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0aa03c9cdb7f8a23deaa",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 485,
+              "column": 3,
+              "line": 15
+            },
+            "stop": {
+              "byte": 517,
+              "column": 27,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "repository_write",
+            "token_read",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0d20882537fd9f26f1e7",
+          "kind": "job",
+          "name": "analyze",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 607,
+              "column": 3,
+              "line": 23
+            },
+            "stop": {
+              "byte": 4644,
+              "column": 51,
+              "line": 98
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+                    "start": {
+                      "byte": 4165,
+                      "column": 11,
+                      "line": 85
+                    },
+                    "stop": {
+                      "byte": 4194,
+                      "column": 40,
+                      "line": 85
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.build-mode == 'manual'"
+                ]
+              }
+            },
+            "reference:matrix.build-mode": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.build-mode",
+                  "span": {
+                    "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+                    "start": {
+                      "byte": 4165,
+                      "column": 11,
+                      "line": 85
+                    },
+                    "stop": {
+                      "byte": 4182,
+                      "column": 28,
+                      "line": 85
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.build-mode"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(matrix.build-mode==\"manual\")"
+          },
+          "effects": [],
+          "id": "wv_13e9af9bf12f596a3fdc",
+          "kind": "gate",
+          "name": "if:analyze:step 3",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4165,
+              "column": 11,
+              "line": 85
+            },
+            "stop": {
+              "byte": 4194,
+              "column": 40,
+              "line": 85
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.build-mode",
+                  "span": {
+                    "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+                    "start": {
+                      "byte": 3123,
+                      "column": 25,
+                      "line": 71
+                    },
+                    "stop": {
+                      "byte": 3140,
+                      "column": 42,
+                      "line": 71
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.build-mode"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_28881cc0ca411451a0bb",
+          "kind": "resource",
+          "name": "matrix.build-mode",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 3123,
+              "column": 25,
+              "line": 71
+            },
+            "stop": {
+              "byte": 3140,
+              "column": 42,
+              "line": 71
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.language",
+                  "span": {
+                    "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+                    "start": {
+                      "byte": 4625,
+                      "column": 32,
+                      "line": 98
+                    },
+                    "stop": {
+                      "byte": 4640,
+                      "column": 47,
+                      "line": 98
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.language"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3317a1b9d356ae2ad0e9",
+          "kind": "resource",
+          "name": "matrix.language",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4625,
+              "column": 32,
+              "line": 98
+            },
+            "stop": {
+              "byte": 4640,
+              "column": 47,
+              "line": 98
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_63f60223e6a3a4dec0bf",
+          "kind": "workflow",
+          "name": "CodeQL Advanced",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 454,
+              "column": 1,
+              "line": 12
+            },
+            "stop": {
+              "byte": 4644,
+              "column": 51,
+              "line": 98
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_6641e55fde12b7b42537",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 2590,
+              "column": 13,
+              "line": 58
+            },
+            "stop": {
+              "byte": 2609,
+              "column": 32,
+              "line": 58
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8287e9e3f540a9a9e8ab",
+          "kind": "step",
+          "name": "Perform CodeQL Analysis",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4508,
+              "column": 7,
+              "line": 95
+            },
+            "stop": {
+              "byte": 4644,
+              "column": 51,
+              "line": 98
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.build-mode",
+                  "span": {
+                    "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+                    "start": {
+                      "byte": 4165,
+                      "column": 11,
+                      "line": 85
+                    },
+                    "stop": {
+                      "byte": 4182,
+                      "column": 28,
+                      "line": 85
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.build-mode"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_89742ae3436921be6e77",
+          "kind": "resource",
+          "name": "matrix.build-mode",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4165,
+              "column": 11,
+              "line": 85
+            },
+            "stop": {
+              "byte": 4182,
+              "column": 28,
+              "line": 85
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8d845a4c79ade2a306c4",
+          "kind": "trigger",
+          "name": "pull_request",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 520,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 560,
+              "column": 27,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ad7412b25744daeff6f4",
+          "kind": "call",
+          "name": "github/codeql-action/analyze@v3",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4550,
+              "column": 13,
+              "line": 96
+            },
+            "stop": {
+              "byte": 4581,
+              "column": 44,
+              "line": 96
+            }
+          },
+          "unknown": {
+            "detail": "github/codeql-action/analyze@v3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bfaff964950b96dc7d25",
+          "kind": "step",
+          "name": "Initialize CodeQL",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 2980,
+              "column": 7,
+              "line": 67
+            },
+            "stop": {
+              "byte": 3143,
+              "column": 45,
+              "line": 71
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cb0acc729caea8dab22f",
+          "kind": "trigger",
+          "name": "schedule",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 563,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 597,
+              "column": 25,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [],
+              "secrecy": {
+                "reasons": [
+                  {
+                    "detail": "include",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "include",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "dynamic",
+              "value": {
+                "unknown": [
+                  {
+                    "detail": "include",
+                    "kind": "dynamic_string"
+                  }
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d1cc46e9537cc4c33a14",
+          "kind": "parameter",
+          "name": "matrix.include",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 1458,
+              "column": 9,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1535,
+              "column": 27,
+              "line": 47
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_daa7bbd982f28f1a0e3a",
+          "kind": "call",
+          "name": "github/codeql-action/init@v3",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 3016,
+              "column": 13,
+              "line": 68
+            },
+            "stop": {
+              "byte": 3044,
+              "column": 41,
+              "line": 68
+            }
+          },
+          "unknown": {
+            "detail": "github/codeql-action/init@v3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.language",
+                  "span": {
+                    "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+                    "start": {
+                      "byte": 3080,
+                      "column": 24,
+                      "line": 70
+                    },
+                    "stop": {
+                      "byte": 3095,
+                      "column": 39,
+                      "line": 70
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.language"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e3b1837279609f5bf2c5",
+          "kind": "resource",
+          "name": "matrix.language",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 3080,
+              "column": 24,
+              "line": 70
+            },
+            "stop": {
+              "byte": 3095,
+              "column": 39,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+                    "start": {
+                      "byte": 4224,
+                      "column": 12,
+                      "line": 87
+                    },
+                    "stop": {
+                      "byte": 4501,
+                      "column": 1,
+                      "line": 94
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo 'If you are using a \"manual\" build mode for one or more of the' \\\n  'languages you are analyzing, replace this with the commands to build' \\\n  'your code, for example:'\necho '  make bootstrap'\necho '  make release'\nexit 1\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bash"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f029a2e6ccd548b2cd47",
+          "kind": "command",
+          "name": "echo 'If you are using a \"manual\" build mode for one or more of the' \\\n  'languages you are analyzing, replace this with the commands to build' \\\n  'your code, for example:'\necho '  make bootstrap'\necho '  make release'\nexit 1\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml",
+            "start": {
+              "byte": 4224,
+              "column": 12,
+              "line": 87
+            },
+            "stop": {
+              "byte": 4501,
+              "column": 1,
+              "line": 94
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:2e9689f7a027713b72ad611e35bfe7b2a6eaf34825021572c36864a302b7ebf4",
+      "path": "github/psergus/ngwysiwyg/.github/workflows/codeql.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [
+        {
+          "detail": "actions/checkout@v4",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "github/codeql-action/analyze@v3",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "github/codeql-action/init@v3",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "github/codeql-action/analyze@v3",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "github/codeql-action/init@v3",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 3,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

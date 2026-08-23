@@ -1,0 +1,476 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = NodeTool@0"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/cotts/git-idle/azure-pipelines.yml",
+          "start": {
+            "byte": 285,
+            "column": 9,
+            "line": 13
+          },
+          "stop": {
+            "byte": 295,
+            "column": 19,
+            "line": 13
+          }
+        }
+      },
+      "id": "diag_d18c4d9cf9fac40ae28c",
+      "message": "dependency is not pinned to immutable content: NodeTool@0",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/cotts/git-idle/azure-pipelines.yml",
+        "start": {
+          "byte": 285,
+          "column": 9,
+          "line": 13
+        },
+        "stop": {
+          "byte": 295,
+          "column": 19,
+          "line": 13
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_05cdf1a0a678a2ca0d48",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 285,
+              "column": 9,
+              "line": 13
+            },
+            "stop": {
+              "byte": 295,
+              "column": 19,
+              "line": 13
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:296017f728d05ca4b77da870fddbd35df422bf85975ffbfaa77433b60e7f49b9",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_17cd9aa08a1052577728",
+          "id": "wv_1e3e92d49ef2cc867296",
+          "kind": "control",
+          "label": null,
+          "to": "wv_490b7202cde9f27b9fc4"
+        },
+        {
+          "condition": true,
+          "from": "wv_81e66954a41afe4ce23c",
+          "id": "wv_4e97293aa26b657e8a14",
+          "kind": "control",
+          "label": null,
+          "to": "wv_05cdf1a0a678a2ca0d48"
+        },
+        {
+          "condition": true,
+          "from": "wv_6d5f8dd3c3c5be6359a8",
+          "id": "wv_57f41b8205f8f013b994",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6da7aea40b718ca63ee3"
+        },
+        {
+          "condition": true,
+          "from": "wv_81e66954a41afe4ce23c",
+          "id": "wv_7b8be66c9b4100d68f60",
+          "kind": "call",
+          "label": null,
+          "to": "wv_05cdf1a0a678a2ca0d48"
+        },
+        {
+          "condition": true,
+          "from": "wv_6da7aea40b718ca63ee3",
+          "id": "wv_b6a4b8485fb50ca489c5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8ad75e09159cbde16bbd"
+        },
+        {
+          "condition": true,
+          "from": "wv_8ad75e09159cbde16bbd",
+          "id": "wv_e212fcffa711f6b8712e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_81e66954a41afe4ce23c"
+        },
+        {
+          "condition": true,
+          "from": "wv_81e66954a41afe4ce23c",
+          "id": "wv_e8ce143b3ead614e60cc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_17cd9aa08a1052577728"
+        },
+        {
+          "condition": true,
+          "from": "wv_8ad75e09159cbde16bbd",
+          "id": "wv_ed7109676d15ae04b868",
+          "kind": "control",
+          "label": null,
+          "to": "wv_17cd9aa08a1052577728"
+        }
+      ],
+      "entrypoints": [
+        "wv_6da7aea40b718ca63ee3"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_05cdf1a0a678a2ca0d48",
+          "kind": "call",
+          "name": "NodeTool@0",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 285,
+              "column": 9,
+              "line": 13
+            },
+            "stop": {
+              "byte": 295,
+              "column": 19,
+              "line": 13
+            }
+          },
+          "unknown": {
+            "detail": "NodeTool@0",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_17cd9aa08a1052577728",
+          "kind": "step",
+          "name": "npm install, run webpack",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 366,
+              "column": 3,
+              "line": 18
+            },
+            "stop": {
+              "byte": 500,
+              "column": 42,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/cotts/git-idle/azure-pipelines.yml",
+                    "start": {
+                      "byte": 374,
+                      "column": 11,
+                      "line": 18
+                    },
+                    "stop": {
+                      "byte": 458,
+                      "column": 17,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm install -g webpack webpack-cli --save-dev\nnpm install\nnpm run test\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_490b7202cde9f27b9fc4",
+          "kind": "command",
+          "name": "npm install -g webpack webpack-cli --save-dev\nnpm install\nnpm run test\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 374,
+              "column": 11,
+              "line": 18
+            },
+            "stop": {
+              "byte": 458,
+              "column": 17,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6d5f8dd3c3c5be6359a8",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 226,
+              "column": 1,
+              "line": 7
+            },
+            "stop": {
+              "byte": 234,
+              "column": 9,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6da7aea40b718ca63ee3",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 217,
+              "column": 1,
+              "line": 6
+            },
+            "stop": {
+              "byte": 500,
+              "column": 42,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_81e66954a41afe4ce23c",
+          "kind": "step",
+          "name": "Install Node.js",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 279,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 362,
+              "column": 33,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8ad75e09159cbde16bbd",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/cotts/git-idle/azure-pipelines.yml",
+            "start": {
+              "byte": 217,
+              "column": 1,
+              "line": 6
+            },
+            "stop": {
+              "byte": 500,
+              "column": 42,
+              "line": 22
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/cotts/git-idle/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:40200db755200d7093bcd3ecf3d2a8b0ecfccdf757aa5bc0d65e4201eca53443",
+      "path": "azure/cotts/git-idle/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

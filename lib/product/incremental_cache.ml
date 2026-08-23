@@ -43,8 +43,7 @@ let unsigned_fields entry =
 let unsigned_json entry = Json.Object (unsigned_fields entry)
 
 let create ~key ~exit_code ~report =
-  if exit_code < 0 || exit_code > 5 then
-    Error "cache exit code must be 0..5"
+  if exit_code < 0 || exit_code > 5 then Error "cache exit code must be 0..5"
   else
     let provisional =
       { schema = "analysis-cache-v1"; key; exit_code; report; integrity = "" }

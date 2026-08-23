@@ -1,0 +1,41 @@
+# The Docker image that will be used to build your app
+image: node:20-alpine
+
+# Cache dependencies between jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .yarn-cache/
+
+stages:
+  - test
+
+# Define the tests job
+unit-tests:
+  stage: test
+  script:
+    - yarn config set cache-folder .yarn-cache
+    - yarn install --frozen-lockfile
+    # Install jest-junit reporter
+    - yarn add --dev jest-junit
+    - mkdir -p reports
+    # Run tests and generate JUnit report
+    - yarn test --ci --reporters=default --reporters=jest-junit
+  # Run this job on merge requests and main branch
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH == 'main'
+    - if: $CI_COMMIT_BRANCH == 'master'
+  # Create a report for the test results
+  artifacts:
+    when: always
+    reports:
+      junit: reports/junit.xml
+    paths:
+      - reports/
+    expire_in: 1 week
+
+variables:
+  JEST_JUNIT_OUTPUT_DIR: "reports"
+  JEST_JUNIT_OUTPUT_NAME: "junit.xml"

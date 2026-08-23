@@ -34,6 +34,15 @@ mutation-gate report="_build/mutation-report.json" output="_build/mutation-gate-
 corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" reports_root="evaluation/reports" output="_build/corpus-report-v1.json":
     python -B scripts/corpus_gate.py --manifest {{manifest}} --corpus-root {{corpus_root}} --reports-root {{reports_root}} --output {{output}} --release
 
+corpus-acquire analyzer="_build/default/bin/main.exe" output="evaluation" pages="10" workers="8":
+    python -B scripts/prepare_corpus.py acquire --analyzer {{analyzer}} --output {{output}} --per-provider 100 --pages {{pages}} --workers {{workers}}
+
+corpus-refresh evaluation="evaluation" analyzer="_build/default/bin/main.exe" output="_build/evaluation-refreshed" workers="8":
+    python -B scripts/prepare_corpus.py refresh --evaluation {{evaluation}} --analyzer {{analyzer}} --output {{output}} --workers {{workers}}
+
+corpus-review review="evaluation/review-v1.json" manifest="evaluation/corpus-v1.json" reports_root="evaluation/reports":
+    python -B scripts/prepare_corpus.py apply-review --manifest {{manifest}} --reports-root {{reports_root}} --review {{review}}
+
 performance-measure suite="performance/suite-v1.json" revision output="_build/performance-current.json" samples="7":
     python -B scripts/measure_performance.py --suite {{suite}} --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
 

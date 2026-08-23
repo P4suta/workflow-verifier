@@ -1,0 +1,648 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+          "start": {
+            "byte": 130,
+            "column": 15,
+            "line": 11
+          },
+          "stop": {
+            "byte": 149,
+            "column": 34,
+            "line": 11
+          }
+        }
+      },
+      "id": "diag_574aaaa6f5b47550b4b3",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+        "start": {
+          "byte": 130,
+          "column": 15,
+          "line": 11
+        },
+        "stop": {
+          "byte": 149,
+          "column": 34,
+          "line": 11
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_e6f16e6c7c180d7d17c2",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 130,
+              "column": 15,
+              "line": 11
+            },
+            "stop": {
+              "byte": 149,
+              "column": 34,
+              "line": 11
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:61eedd6b988ec2ab19c0cfecf021ecf57c568fb400eed4c856e51fd6b4b99684",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_9ab97897097c66126262",
+          "id": "wv_02c5069456a508e79db7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9dad5e6905d66e9c175f"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c2e78e3725f0b06b81f",
+          "id": "wv_03eb5e29dce888356f01",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f6ce8b2da93fce52f378"
+        },
+        {
+          "condition": true,
+          "from": "wv_19e527c85b17186da75f",
+          "id": "wv_0cd8e71b290c09ff2b21",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9ab97897097c66126262"
+        },
+        {
+          "condition": true,
+          "from": "wv_9ab97897097c66126262",
+          "id": "wv_2c1740e33e0182db9ce9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9e1a518effa57df09812"
+        },
+        {
+          "condition": true,
+          "from": "wv_9dad5e6905d66e9c175f",
+          "id": "wv_343161ce182f885f1ab8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1c2e78e3725f0b06b81f"
+        },
+        {
+          "condition": true,
+          "from": "wv_9ab97897097c66126262",
+          "id": "wv_472ad8187cd116dddb6c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1c2e78e3725f0b06b81f"
+        },
+        {
+          "condition": true,
+          "from": "wv_9dad5e6905d66e9c175f",
+          "id": "wv_49d0a23c581b2830705b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e6f16e6c7c180d7d17c2"
+        },
+        {
+          "condition": true,
+          "from": "wv_0909302fefbfe0312dbf",
+          "id": "wv_59d7241a58539e08e293",
+          "kind": "control",
+          "label": null,
+          "to": "wv_19e527c85b17186da75f"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c2e78e3725f0b06b81f",
+          "id": "wv_64afd5d8b4ed9d02adb4",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9e1a518effa57df09812"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c2e78e3725f0b06b81f",
+          "id": "wv_ae8f2fd6d9fb9e8d3868",
+          "kind": "call",
+          "label": null,
+          "to": "wv_f6ce8b2da93fce52f378"
+        },
+        {
+          "condition": true,
+          "from": "wv_9e1a518effa57df09812",
+          "id": "wv_e10802d04f848e4bb78e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a64959621368f43aca21"
+        },
+        {
+          "condition": true,
+          "from": "wv_f618b653d6fcac7d33a3",
+          "id": "wv_e84ab87c9633466006d9",
+          "kind": "data",
+          "label": "secrets.PYPI_TOKEN",
+          "to": "wv_a64959621368f43aca21"
+        },
+        {
+          "condition": true,
+          "from": "wv_9dad5e6905d66e9c175f",
+          "id": "wv_f8e69f8a55f4381a7c35",
+          "kind": "call",
+          "label": null,
+          "to": "wv_e6f16e6c7c180d7d17c2"
+        }
+      ],
+      "entrypoints": [
+        "wv_19e527c85b17186da75f"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0909302fefbfe0312dbf",
+          "kind": "trigger",
+          "name": "release",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 21,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 54,
+              "column": 25,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_19e527c85b17186da75f",
+          "kind": "workflow",
+          "name": "Release",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 360,
+              "column": 50,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1c2e78e3725f0b06b81f",
+          "kind": "step",
+          "name": "step 2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 158,
+              "column": 9,
+              "line": 12
+            },
+            "stop": {
+              "byte": 199,
+              "column": 50,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9ab97897097c66126262",
+          "kind": "job",
+          "name": "pypi-publish",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 64,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 360,
+              "column": 50,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9dad5e6905d66e9c175f",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 124,
+              "column": 9,
+              "line": 11
+            },
+            "stop": {
+              "byte": 149,
+              "column": 34,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9e1a518effa57df09812",
+          "kind": "step",
+          "name": "Publish to pypi",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 208,
+              "column": 9,
+              "line": 13
+            },
+            "stop": {
+              "byte": 360,
+              "column": 50,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.PYPI_TOKEN",
+                  "span": {
+                    "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 277,
+                      "column": 48,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 295,
+                      "column": 66,
+                      "line": 14
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 243,
+                      "column": 14,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 360,
+                      "column": 50,
+                      "line": 16
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}\npoetry publish --build --no-interaction\n",
+                  "secrets.PYPI_TOKEN"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a64959621368f43aca21",
+          "kind": "command",
+          "name": "poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}\npoetry publish --build --no-interaction\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 243,
+              "column": 14,
+              "line": 14
+            },
+            "stop": {
+              "byte": 360,
+              "column": 50,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_e6f16e6c7c180d7d17c2",
+          "kind": "call",
+          "name": "actions/checkout@v3",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 130,
+              "column": 15,
+              "line": 11
+            },
+            "stop": {
+              "byte": 149,
+              "column": 34,
+              "line": 11
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.PYPI_TOKEN",
+                  "span": {
+                    "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 277,
+                      "column": 48,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 295,
+                      "column": 66,
+                      "line": 14
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.PYPI_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f618b653d6fcac7d33a3",
+          "kind": "resource",
+          "name": "secrets.PYPI_TOKEN",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 277,
+              "column": 48,
+              "line": 14
+            },
+            "stop": {
+              "byte": 295,
+              "column": 66,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f6ce8b2da93fce52f378",
+          "kind": "call",
+          "name": "./.github/actions/python-poetry-env",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/dagleaves/languageassistant/.github/workflows/release.yml",
+            "start": {
+              "byte": 164,
+              "column": 15,
+              "line": 12
+            },
+            "stop": {
+              "byte": 199,
+              "column": 50,
+              "line": 12
+            }
+          },
+          "unknown": {
+            "detail": "./.github/actions/python-poetry-env",
+            "kind": "unresolved_dependency"
+          }
+        }
+      ],
+      "provider": "github",
+      "source": "github/dagleaves/languageassistant/.github/workflows/release.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:b1ae45dd71ac9ae66d068672c33e3058d2b7dd2a756af178671af4f7682c7feb",
+      "path": "github/dagleaves/languageassistant/.github/workflows/release.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "shell default",
+          "kind": "unsupported_syntax"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

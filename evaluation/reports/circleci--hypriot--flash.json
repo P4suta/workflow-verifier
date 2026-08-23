@@ -1,0 +1,1849 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "circleci/hypriot/flash/.circleci/config.yml",
+          "start": {
+            "byte": 866,
+            "column": 20,
+            "line": 49
+          },
+          "stop": {
+            "byte": 1155,
+            "column": 1,
+            "line": 56
+          }
+        }
+      },
+      "id": "diag_c02c83aca1a605d465c1",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "circleci/hypriot/flash/.circleci/config.yml",
+        "start": {
+          "byte": 866,
+          "column": 20,
+          "line": 49
+        },
+        "stop": {
+          "byte": 1155,
+          "column": 1,
+          "line": 56
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_cde97665b3cb54ca559e",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 1062,
+              "column": 216,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1072,
+              "column": 226,
+              "line": 49
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_95d6a4b6ead8d7d4f0f2",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 866,
+              "column": 20,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1155,
+              "column": 1,
+              "line": 56
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:4f6b859bebe89c94006e38f268bad2b958dbe025b286b934ced2e29e70f39a8d",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_4ea909e292789c5d1c8a",
+          "id": "wv_036494d170dc76c8aafe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_be0742761a355a7f0994"
+        },
+        {
+          "condition": true,
+          "from": "wv_55508557cfae23d58824",
+          "id": "wv_06b3f449022f909223e2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_95d6a4b6ead8d7d4f0f2"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a608e5b5e135b572c41",
+          "id": "wv_08f7b082ba71bedf0137",
+          "kind": "control",
+          "label": null,
+          "to": "wv_18551010a0c486f03a84"
+        },
+        {
+          "condition": true,
+          "from": "wv_a5956e1506b305483b00",
+          "id": "wv_16cc11a1e78d1823463e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8c6db283b4f0afd3a357"
+        },
+        {
+          "condition": true,
+          "from": "wv_8c04826215ad0201b83a",
+          "id": "wv_199584f3bbbef9ac3724",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a5956e1506b305483b00"
+        },
+        {
+          "condition": true,
+          "from": "wv_04a568e6a7d7301e63bb",
+          "id": "wv_29b76c5df9dc9ff12edd",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_77fc4985216295ae188c"
+        },
+        {
+          "condition": true,
+          "from": "wv_7eb934949061740dd48e",
+          "id": "wv_2a043322fe7308776b74",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a5956e1506b305483b00"
+        },
+        {
+          "condition": true,
+          "from": "wv_5b1535584ae54302946c",
+          "id": "wv_2d84c6c66b7ae4ed561a",
+          "kind": "data",
+          "label": "CIRCLE_TAG",
+          "to": "wv_c8ab38d09f9a684124f0"
+        },
+        {
+          "condition": true,
+          "from": "wv_a941857044b20f7c0f71",
+          "id": "wv_34bd5f43820f3332f8d4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0b5826aef54db2c3d50a"
+        },
+        {
+          "condition": true,
+          "from": "wv_8c04826215ad0201b83a",
+          "id": "wv_4f6088f8d3d4f46b0e25",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3dc8b13286078af5b795"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_222957286ec071e19b14",
+          "id": "wv_534babb485172ace8fbf",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_7eb934949061740dd48e"
+        },
+        {
+          "condition": true,
+          "from": "wv_079ba21680b389c45eaa",
+          "id": "wv_56bad33cebfcdb760984",
+          "kind": "data",
+          "label": "CIRCLE_TAG",
+          "to": "wv_8c6db283b4f0afd3a357"
+        },
+        {
+          "condition": true,
+          "from": "wv_a7a07559cd606885363a",
+          "id": "wv_577191df21f69df38624",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cb10753a08de81e40a30"
+        },
+        {
+          "condition": true,
+          "from": "wv_77fc4985216295ae188c",
+          "id": "wv_5db8b89d969bea2e02cc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_18551010a0c486f03a84"
+        },
+        {
+          "condition": true,
+          "from": "wv_8b45320a8e77aa5fab16",
+          "id": "wv_6adc38f5173ae11ada53",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_55508557cfae23d58824"
+        },
+        {
+          "condition": true,
+          "from": "wv_dffa997f020358db85ef",
+          "id": "wv_77bfb745e59371b4d8e2",
+          "kind": "data",
+          "label": "CIRCLE_TAG",
+          "to": "wv_c8ab38d09f9a684124f0"
+        },
+        {
+          "condition": true,
+          "from": "wv_a941857044b20f7c0f71",
+          "id": "wv_7da48f70641409626b14",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_8b45320a8e77aa5fab16"
+        },
+        {
+          "condition": true,
+          "from": "wv_7eb934949061740dd48e",
+          "id": "wv_832d6dcc47c56bdfd49f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_55508557cfae23d58824"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_cb10753a08de81e40a30",
+          "id": "wv_884dd3564580a7f6eafb",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_7a608e5b5e135b572c41"
+        },
+        {
+          "condition": true,
+          "from": "wv_04a568e6a7d7301e63bb",
+          "id": "wv_886b68002da98d03b212",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c8ab38d09f9a684124f0"
+        },
+        {
+          "condition": true,
+          "from": "wv_7eb934949061740dd48e",
+          "id": "wv_894bd3d06d7a52da4ed6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8b45320a8e77aa5fab16"
+        },
+        {
+          "condition": true,
+          "from": "wv_7eb934949061740dd48e",
+          "id": "wv_a1bb26179934294fc399",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8c04826215ad0201b83a"
+        },
+        {
+          "condition": true,
+          "from": "wv_36193ce79d386a07f6b2",
+          "id": "wv_a3413ea5a269e9dc2ab8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a913ddb602c0fc7bd284"
+        },
+        {
+          "condition": true,
+          "from": "wv_77fc4985216295ae188c",
+          "id": "wv_a51ab5d4e91fdd82d132",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5a0056cdd67af0e8badd"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a608e5b5e135b572c41",
+          "id": "wv_abd7b7d6af4c3147c49f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4ea909e292789c5d1c8a"
+        },
+        {
+          "condition": true,
+          "from": "wv_a5956e1506b305483b00",
+          "id": "wv_b36f505999e7d4803bc5",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a941857044b20f7c0f71"
+        },
+        {
+          "condition": true,
+          "from": "wv_18551010a0c486f03a84",
+          "id": "wv_b3b11238a9817da3a2e1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fef82772e16eacd7fe39"
+        },
+        {
+          "condition": true,
+          "from": "wv_8c04826215ad0201b83a",
+          "id": "wv_b9bcac3305ed61c5f33e",
+          "kind": "read",
+          "label": null,
+          "to": "wv_3dc8b13286078af5b795"
+        },
+        {
+          "condition": true,
+          "from": "wv_7eb934949061740dd48e",
+          "id": "wv_bcb17ae13c17e93d1f40",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a941857044b20f7c0f71"
+        },
+        {
+          "condition": true,
+          "from": "wv_f474fdc54587cc890196",
+          "id": "wv_c381f1819c54e4ce9de1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a7a07559cd606885363a"
+        },
+        {
+          "condition": true,
+          "from": "wv_8b45320a8e77aa5fab16",
+          "id": "wv_cbf5eb726594b18046c5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ba94e1b562ff878698b7"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a608e5b5e135b572c41",
+          "id": "wv_cfde34581874b981e996",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_222957286ec071e19b14"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a608e5b5e135b572c41",
+          "id": "wv_d46b700d7fd546676657",
+          "kind": "control",
+          "label": null,
+          "to": "wv_36193ce79d386a07f6b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_4ea909e292789c5d1c8a",
+          "id": "wv_d56f7ccf60287cbc82c2",
+          "kind": "read",
+          "label": null,
+          "to": "wv_be0742761a355a7f0994"
+        },
+        {
+          "condition": true,
+          "from": "wv_4ea909e292789c5d1c8a",
+          "id": "wv_d7e40a41278e3073733d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_36193ce79d386a07f6b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a608e5b5e135b572c41",
+          "id": "wv_de34837b0febb4fe2a19",
+          "kind": "control",
+          "label": null,
+          "to": "wv_77fc4985216295ae188c"
+        },
+        {
+          "condition": true,
+          "from": "wv_a7a07559cd606885363a",
+          "id": "wv_ecfb98fd2ba63f274a16",
+          "kind": "control",
+          "label": null,
+          "to": "wv_222957286ec071e19b14"
+        },
+        {
+          "condition": true,
+          "from": "wv_cde97665b3cb54ca559e",
+          "id": "wv_ed1782ca1a728c72e101",
+          "kind": "data",
+          "label": "CIRCLE_TAG",
+          "to": "wv_95d6a4b6ead8d7d4f0f2"
+        },
+        {
+          "condition": true,
+          "from": "wv_36193ce79d386a07f6b2",
+          "id": "wv_f1aaf036386296533c23",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_04a568e6a7d7301e63bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a608e5b5e135b572c41",
+          "id": "wv_fa39637466afc9e593e6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_04a568e6a7d7301e63bb"
+        }
+      ],
+      "entrypoints": [
+        "wv_f474fdc54587cc890196"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_04a568e6a7d7301e63bb",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 163,
+              "column": 9,
+              "line": 14
+            },
+            "stop": {
+              "byte": 330,
+              "column": 1,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 623,
+                      "column": 37,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 633,
+                      "column": 47,
+                      "line": 37
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_079ba21680b389c45eaa",
+          "kind": "resource",
+          "name": "CIRCLE_TAG",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 623,
+              "column": 37,
+              "line": 37
+            },
+            "stop": {
+              "byte": 633,
+              "column": 47,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 705,
+                      "column": 20,
+                      "line": 41
+                    },
+                    "stop": {
+                      "byte": 722,
+                      "column": 37,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "./flash --version"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_0b5826aef54db2c3d50a",
+          "kind": "command",
+          "name": "Show version",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 705,
+              "column": 20,
+              "line": 41
+            },
+            "stop": {
+              "byte": 722,
+              "column": 37,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_18551010a0c486f03a84",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 419,
+              "column": 9,
+              "line": 25
+            },
+            "stop": {
+              "byte": 483,
+              "column": 29,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 1372,
+                      "column": 13,
+                      "line": 69
+                    },
+                    "stop": {
+                      "byte": 1452,
+                      "column": 27,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_222957286ec071e19b14",
+          "kind": "gate",
+          "name": "filter:build-n-deploy:deploy",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 1372,
+              "column": 13,
+              "line": 69
+            },
+            "stop": {
+              "byte": 1452,
+              "column": 27,
+              "line": 72
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_36193ce79d386a07f6b2",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 83,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 153,
+              "column": 35,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_3dc8b13286078af5b795",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 533,
+              "column": 9,
+              "line": 33
+            },
+            "stop": {
+              "byte": 541,
+              "column": 17,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4ea909e292789c5d1c8a",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 65,
+              "column": 9,
+              "line": 8
+            },
+            "stop": {
+              "byte": 73,
+              "column": 17,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_55508557cfae23d58824",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 819,
+              "column": 9,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1155,
+              "column": 1,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 392,
+                      "column": 20,
+                      "line": 23
+                    },
+                    "stop": {
+                      "byte": 409,
+                      "column": 37,
+                      "line": 23
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "./flash --version"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_5a0056cdd67af0e8badd",
+          "kind": "command",
+          "name": "Show version",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 392,
+              "column": 20,
+              "line": 23
+            },
+            "stop": {
+              "byte": 409,
+              "column": 37,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 269,
+                      "column": 71,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 279,
+                      "column": 81,
+                      "line": 16
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5b1535584ae54302946c",
+          "kind": "resource",
+          "name": "CIRCLE_TAG",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 269,
+              "column": 71,
+              "line": 16
+            },
+            "stop": {
+              "byte": 279,
+              "column": 81,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_77fc4985216295ae188c",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 339,
+              "column": 9,
+              "line": 21
+            },
+            "stop": {
+              "byte": 409,
+              "column": 37,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7a608e5b5e135b572c41",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 20,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 483,
+              "column": 29,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7eb934949061740dd48e",
+          "kind": "job",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 487,
+              "column": 3,
+              "line": 29
+            },
+            "stop": {
+              "byte": 1155,
+              "column": 1,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8b45320a8e77aa5fab16",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 732,
+              "column": 9,
+              "line": 43
+            },
+            "stop": {
+              "byte": 809,
+              "column": 29,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8c04826215ad0201b83a",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 533,
+              "column": 9,
+              "line": 33
+            },
+            "stop": {
+              "byte": 541,
+              "column": 17,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 623,
+                      "column": 37,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 633,
+                      "column": 47,
+                      "line": 37
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 606,
+                      "column": 20,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 642,
+                      "column": 56,
+                      "line": 37
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TAG",
+                  "sed -i \"s/dirty/$CIRCLE_TAG/g\" flash"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_8c6db283b4f0afd3a357",
+          "kind": "command",
+          "name": "Insert version",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 606,
+              "column": 20,
+              "line": 37
+            },
+            "stop": {
+              "byte": 642,
+              "column": 56,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 1062,
+                      "column": 216,
+                      "line": 49
+                    },
+                    "stop": {
+                      "byte": 1072,
+                      "column": 226,
+                      "line": 49
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 866,
+                      "column": 20,
+                      "line": 49
+                    },
+                    "stop": {
+                      "byte": 1155,
+                      "column": 1,
+                      "line": 56
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TAG",
+                  "curl -sSL https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_linux_amd64.zip -o ghr.zip\nunzip ghr.zip\nmkdir output\nsha256sum flash > flash.sha256\ncp flash* output\n./ghr -u hypriot $CIRCLE_TAG output/\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_95d6a4b6ead8d7d4f0f2",
+          "kind": "command",
+          "name": "Deploy",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 866,
+              "column": 20,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1155,
+              "column": 1,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a5956e1506b305483b00",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 551,
+              "column": 9,
+              "line": 35
+            },
+            "stop": {
+              "byte": 642,
+              "column": 56,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a7a07559cd606885363a",
+          "kind": "workflow",
+          "name": "build-n-deploy",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 1182,
+              "column": 3,
+              "line": 59
+            },
+            "stop": {
+              "byte": 1452,
+              "column": 27,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 138,
+                      "column": 20,
+                      "line": 12
+                    },
+                    "stop": {
+                      "byte": 153,
+                      "column": 35,
+                      "line": 12
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "make shellcheck"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a913ddb602c0fc7bd284",
+          "kind": "command",
+          "name": "Run shellcheck",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 138,
+              "column": 20,
+              "line": 12
+            },
+            "stop": {
+              "byte": 153,
+              "column": 35,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a941857044b20f7c0f71",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 652,
+              "column": 9,
+              "line": 39
+            },
+            "stop": {
+              "byte": 722,
+              "column": 37,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 800,
+                      "column": 20,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 809,
+                      "column": 29,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "make test"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_ba94e1b562ff878698b7",
+          "kind": "command",
+          "name": "Run BATS tests with version",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 800,
+              "column": 20,
+              "line": 45
+            },
+            "stop": {
+              "byte": 809,
+              "column": 29,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_be0742761a355a7f0994",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 65,
+              "column": 9,
+              "line": 8
+            },
+            "stop": {
+              "byte": 73,
+              "column": 17,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 32,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 240,
+                      "column": 42,
+                      "line": 16
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 269,
+                      "column": 71,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 279,
+                      "column": 81,
+                      "line": 16
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 218,
+                      "column": 20,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 330,
+                      "column": 1,
+                      "line": 20
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TAG",
+                  "if [ ! -z \"$CIRCLE_TAG\" ]; then\n  sed -i \"s/dirty/$CIRCLE_TAG/g\" flash\nfi\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c8ab38d09f9a684124f0",
+          "kind": "command",
+          "name": "Insert version",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 218,
+              "column": 20,
+              "line": 16
+            },
+            "stop": {
+              "byte": 330,
+              "column": 1,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 1254,
+                      "column": 13,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 1284,
+                      "column": 25,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_cb10753a08de81e40a30",
+          "kind": "gate",
+          "name": "filter:build-n-deploy:build",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 1254,
+              "column": 13,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1284,
+              "column": 25,
+              "line": 64
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 1062,
+                      "column": 216,
+                      "line": 49
+                    },
+                    "stop": {
+                      "byte": 1072,
+                      "column": 226,
+                      "line": 49
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cde97665b3cb54ca559e",
+          "kind": "resource",
+          "name": "CIRCLE_TAG",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 1062,
+              "column": 216,
+              "line": 49
+            },
+            "stop": {
+              "byte": 1072,
+              "column": 226,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CIRCLE_TAG",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 32,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 240,
+                      "column": 42,
+                      "line": 16
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CIRCLE_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_dffa997f020358db85ef",
+          "kind": "resource",
+          "name": "CIRCLE_TAG",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 230,
+              "column": 32,
+              "line": 16
+            },
+            "stop": {
+              "byte": 240,
+              "column": 42,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f474fdc54587cc890196",
+          "kind": "workflow",
+          "name": "CircleCI config",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1452,
+              "column": 27,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/hypriot/flash/.circleci/config.yml",
+                    "start": {
+                      "byte": 474,
+                      "column": 20,
+                      "line": 27
+                    },
+                    "stop": {
+                      "byte": 483,
+                      "column": 29,
+                      "line": 27
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "make test"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fef82772e16eacd7fe39",
+          "kind": "command",
+          "name": "Run BATS tests",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/hypriot/flash/.circleci/config.yml",
+            "start": {
+              "byte": 474,
+              "column": 20,
+              "line": 27
+            },
+            "stop": {
+              "byte": 483,
+              "column": 29,
+              "line": 27
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "circleci",
+      "source": "circleci/hypriot/flash/.circleci/config.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:fb733e85990966b02c42d869500706f36724f5f263dc51eea7c5050c7a25bdad",
+      "path": "circleci/hypriot/flash/.circleci/config.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "builtin:checkout",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

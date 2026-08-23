@@ -1,0 +1,1311 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_950e4cf9963860e73660",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+        "start": {
+          "byte": 47,
+          "column": 9,
+          "line": 5
+        },
+        "stop": {
+          "byte": 108,
+          "column": 70,
+          "line": 5
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_e3e95380e5b3ffc7df1d",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:e9eb7ac1228c02c3b49907644ab26679a903ed06c3d5001e7088d63509ec9307",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_c768f05728217e48cfab",
+          "id": "wv_08734ad99fafade78dc7",
+          "kind": "data",
+          "label": "CI_REGISTRY",
+          "to": "wv_e3e95380e5b3ffc7df1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_22e295c7471a6d015e6a",
+          "id": "wv_118be414b43c9f442da3",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_298d786152c9c7b5610d"
+        },
+        {
+          "condition": true,
+          "from": "wv_360f24ef8db087b065ab",
+          "id": "wv_34a9ddfe258af9fc4043",
+          "kind": "data",
+          "label": "CI_JOB_TOKEN",
+          "to": "wv_e3e95380e5b3ffc7df1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_9f41ea7450a2881e28bd",
+          "id": "wv_55c14e9531ab4dcaa28d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_59155d1fbf6a19b4a74b"
+        },
+        {
+          "condition": true,
+          "from": "wv_3847bb4d5836694157f8",
+          "id": "wv_5ad45ae57be0a6c2a0a6",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_2ff0f26728af20b79d44"
+        },
+        {
+          "condition": true,
+          "from": "wv_53aebc7cdfea654a48fe",
+          "id": "wv_6458199d864efb604b17",
+          "kind": "data",
+          "label": "CI_COMMIT_SHA",
+          "to": "wv_298d786152c9c7b5610d"
+        },
+        {
+          "condition": true,
+          "from": "wv_54c2e2499da533ebbab4",
+          "id": "wv_6f0884b9dff4cc921cb3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e4074f10530538c903b4"
+        },
+        {
+          "condition": true,
+          "from": "wv_9f41ea7450a2881e28bd",
+          "id": "wv_71f80f2740e60beb1b7e",
+          "kind": "call",
+          "label": null,
+          "to": "wv_59155d1fbf6a19b4a74b"
+        },
+        {
+          "condition": true,
+          "from": "wv_9f41ea7450a2881e28bd",
+          "id": "wv_74bdd6905232e4673c82",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bc9538e1e870f787fc5e"
+        },
+        {
+          "condition": true,
+          "from": "wv_3a04b6e172bdd39d77ec",
+          "id": "wv_8f1e34fa8aead4b2ffd8",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_e4074f10530538c903b4"
+        },
+        {
+          "condition": true,
+          "from": "wv_2ff0f26728af20b79d44",
+          "id": "wv_9849e83d4def138d07a8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7d390dd45e6df9148190"
+        },
+        {
+          "condition": true,
+          "from": "wv_4f8c2893f88df3c72d62",
+          "id": "wv_9a6ebd80e3fa9e3329ad",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_54c2e2499da533ebbab4"
+        },
+        {
+          "condition": true,
+          "from": "wv_889d3600e8c02aa89632",
+          "id": "wv_9b5df7a8e2292915d33a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4f8c2893f88df3c72d62"
+        },
+        {
+          "condition": true,
+          "from": "wv_bc9538e1e870f787fc5e",
+          "id": "wv_9e44adcdbe5dfa6d36fb",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c470b58259b8e0a05d3e"
+        },
+        {
+          "condition": true,
+          "from": "wv_7d390dd45e6df9148190",
+          "id": "wv_aa4a087a7f3eaaa775b4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_889d3600e8c02aa89632"
+        },
+        {
+          "condition": true,
+          "from": "wv_c470b58259b8e0a05d3e",
+          "id": "wv_c2da8a1bdfaacf23e335",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_91bc2c357a58fbc29587"
+        },
+        {
+          "condition": true,
+          "from": "wv_4f8c2893f88df3c72d62",
+          "id": "wv_cc2995a288ad183010b0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_298d786152c9c7b5610d"
+        },
+        {
+          "condition": true,
+          "from": "wv_7d390dd45e6df9148190",
+          "id": "wv_ccee245d24170298f8a4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4f8c2893f88df3c72d62"
+        },
+        {
+          "condition": true,
+          "from": "wv_12da1ef7fcdd2ea4dd7d",
+          "id": "wv_db8ffce13799fd02a92c",
+          "kind": "data",
+          "label": "CI_COMMIT_SHA",
+          "to": "wv_e4074f10530538c903b4"
+        },
+        {
+          "condition": true,
+          "from": "wv_7d390dd45e6df9148190",
+          "id": "wv_dea2b22aea6a615ff84a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_54c2e2499da533ebbab4"
+        },
+        {
+          "condition": true,
+          "from": "wv_889d3600e8c02aa89632",
+          "id": "wv_f1c05573129e51743e83",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e3e95380e5b3ffc7df1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_91bc2c357a58fbc29587",
+          "id": "wv_fa654b7ea9c2fb6031ea",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3847bb4d5836694157f8"
+        }
+      ],
+      "entrypoints": [
+        "wv_9f41ea7450a2881e28bd"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 41,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_12da1ef7fcdd2ea4dd7d",
+          "kind": "resource",
+          "name": "CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 230,
+              "column": 41,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 134,
+                      "column": 26,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 151,
+                      "column": 43,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_22e295c7471a6d015e6a",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 134,
+              "column": 26,
+              "line": 6
+            },
+            "stop": {
+              "byte": 151,
+              "column": 43,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 153,
+                      "column": 45,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 166,
+                      "column": 58,
+                      "line": 6
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 134,
+                      "column": 26,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 151,
+                      "column": 43,
+                      "line": 6
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 117,
+                      "column": 9,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 189,
+                      "column": 81,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA",
+                  "CI_REGISTRY_IMAGE",
+                  "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_298d786152c9c7b5610d",
+          "kind": "command",
+          "name": "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 117,
+              "column": 9,
+              "line": 6
+            },
+            "stop": {
+              "byte": 189,
+              "column": 81,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2ff0f26728af20b79d44",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 83,
+                      "column": 45,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 95,
+                      "column": 57,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_360f24ef8db087b065ab",
+          "kind": "resource",
+          "name": "CI_JOB_TOKEN",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 83,
+              "column": 45,
+              "line": 5
+            },
+            "stop": {
+              "byte": 95,
+              "column": 57,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3847bb4d5836694157f8",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 211,
+                      "column": 22,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 228,
+                      "column": 39,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3a04b6e172bdd39d77ec",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 211,
+              "column": 22,
+              "line": 7
+            },
+            "stop": {
+              "byte": 228,
+              "column": 39,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4f8c2893f88df3c72d62",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 117,
+              "column": 9,
+              "line": 6
+            },
+            "stop": {
+              "byte": 189,
+              "column": 81,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 153,
+                      "column": 45,
+                      "line": 6
+                    },
+                    "stop": {
+                      "byte": 166,
+                      "column": 58,
+                      "line": 6
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_53aebc7cdfea654a48fe",
+          "kind": "resource",
+          "name": "CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 153,
+              "column": 45,
+              "line": 6
+            },
+            "stop": {
+              "byte": 166,
+              "column": 58,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_54c2e2499da533ebbab4",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_59155d1fbf6a19b4a74b",
+          "kind": "call",
+          "name": "docker:latest",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 7,
+              "column": 8,
+              "line": 1
+            },
+            "stop": {
+              "byte": 20,
+              "column": 21,
+              "line": 1
+            }
+          },
+          "unknown": {
+            "detail": "docker:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7d390dd45e6df9148190",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 22,
+              "column": 1,
+              "line": 3
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_889d3600e8c02aa89632",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_91bc2c357a58fbc29587",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9f41ea7450a2881e28bd",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bc9538e1e870f787fc5e",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c470b58259b8e0a05d3e",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 97,
+                      "column": 59,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c768f05728217e48cfab",
+          "kind": "resource",
+          "name": "CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 97,
+              "column": 59,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 83,
+                      "column": 45,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 95,
+                      "column": 57,
+                      "line": 5
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 97,
+                      "column": 59,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 47,
+                      "column": 9,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 108,
+                      "column": 70,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN",
+                  "CI_REGISTRY",
+                  "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e3e95380e5b3ffc7df1d",
+          "kind": "command",
+          "name": "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 9,
+              "line": 5
+            },
+            "stop": {
+              "byte": 108,
+              "column": 70,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_SHA",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 230,
+                      "column": 41,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 211,
+                      "column": 22,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 228,
+                      "column": 39,
+                      "line": 7
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 198,
+                      "column": 9,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 54,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_SHA",
+                  "CI_REGISTRY_IMAGE",
+                  "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e4074f10530538c903b4",
+          "kind": "command",
+          "name": "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/eosforce/eosforce/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 9,
+              "line": 7
+            },
+            "stop": {
+              "byte": 243,
+              "column": 54,
+              "line": 7
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/eosforce/eosforce/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:ff2bed3b69bd3dd4aa5e7a228e098cb42ae298c77495e1ddfdf9769bf528cec3",
+      "path": "gitlab/eosforce/eosforce/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "docker:latest",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

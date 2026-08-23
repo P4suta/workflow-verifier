@@ -11,11 +11,23 @@ enforces the release minimum of 100 unique repositories per provider. It also
 requires at least one owned vulnerability expectation for every provider and
 enforces precision >= 95% and recall = 100%.
 
-Large third-party snapshots are intentionally not fabricated or silently
-downloaded by `check`. Place reviewed snapshots under `evaluation/corpus`, their
-reports under `evaluation/reports`, and the signed-off manifest at
-`evaluation/corpus-v1.json`; then run `just corpus`. Network acquisition and
-license approval remain explicit release-preparation steps.
+Large third-party snapshots are never fabricated or silently downloaded by
+`check`. `just corpus-acquire` explicitly searches public GitHub repositories,
+pins each default branch to a 40-character commit, retains only MIT,
+Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, or 0BSD license evidence, and
+atomically builds 100 snapshots plus real `report-v1` documents per provider.
+
+`just corpus-refresh` verifies every recorded source digest, copies the exact
+immutable snapshots into a new transaction, and reruns the analyzer without
+network access. It never edits the reviewed input in place. Promote the staged
+output only after its reports have been classified and the release gate passes.
+
+Acquisition writes `evaluation/review-draft-v1.json`. Reviewers classify every
+observed diagnostic in `evaluation/review-v1.json` with an `expected` or
+`allowed` decision and a substantive reason. `just corpus-review` rejects
+missing, stale, duplicate, or rule-mismatched decisions before updating the
+manifest. `just corpus` then enforces provider counts, precision, recall,
+source/license digests, and known-vulnerability coverage.
 
 Copy the resulting passing `corpus-report-v1.json` into the candidate's
 `release-evidence/` directory and bind its exact SHA-256 digest and review URL

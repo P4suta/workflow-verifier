@@ -1,0 +1,932 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = azure-pipelines-templates/class-lib-build.yml@templates"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+          "start": {
+            "byte": 1061,
+            "column": 13,
+            "line": 52
+          },
+          "stop": {
+            "byte": 1116,
+            "column": 68,
+            "line": 52
+          }
+        }
+      },
+      "id": "diag_0238d51cd9f873f9ca59",
+      "message": "dependency is not pinned to immutable content: azure-pipelines-templates/class-lib-build.yml@templates",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+        "start": {
+          "byte": 1061,
+          "column": 13,
+          "line": 52
+        },
+        "stop": {
+          "byte": 1116,
+          "column": 68,
+          "line": 52
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_96f6440d6bb43130d702",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 1061,
+              "column": 13,
+              "line": 52
+            },
+            "stop": {
+              "byte": 1116,
+              "column": 68,
+              "line": 52
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = azure-pipelines-templates/discord-webhook-task.yml@templates"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+          "start": {
+            "byte": 1365,
+            "column": 13,
+            "line": 60
+          },
+          "stop": {
+            "byte": 1425,
+            "column": 73,
+            "line": 60
+          }
+        }
+      },
+      "id": "diag_5812d330ec4a8e3bbef7",
+      "message": "dependency is not pinned to immutable content: azure-pipelines-templates/discord-webhook-task.yml@templates",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+        "start": {
+          "byte": 1365,
+          "column": 13,
+          "line": 60
+        },
+        "stop": {
+          "byte": 1425,
+          "column": 73,
+          "line": 60
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_c550cde14134a3cc3c4a",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 1365,
+              "column": 13,
+              "line": 60
+            },
+            "stop": {
+              "byte": 1425,
+              "column": 73,
+              "line": 60
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:74e610c42f80647b84b21a6e4eb54f9116730d7666f1b536cc7b607f748cc8c6",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_78f74f171e218d3b2217",
+          "id": "wv_091e9bf91fa2bd5da242",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7ff96b5c477e9a56793f"
+        },
+        {
+          "condition": true,
+          "from": "wv_6f0659f50802993cd71a",
+          "id": "wv_11dba5d0a50d2d04e4ad",
+          "kind": "data",
+          "label": "solution",
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ff96b5c477e9a56793f",
+          "id": "wv_1941dc385ba590876402",
+          "kind": "control",
+          "label": null,
+          "to": "wv_96f6440d6bb43130d702"
+        },
+        {
+          "condition": true,
+          "from": "wv_b5f98e579f919e75886b",
+          "id": "wv_194710335fe0db0f295f",
+          "kind": "data",
+          "label": "buildConfiguration",
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_e23b0faaf1adca205aaa",
+          "id": "wv_28f60d0e24e0825807d8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b1d86ed44799142fda65"
+        },
+        {
+          "condition": true,
+          "from": "wv_78f74f171e218d3b2217",
+          "id": "wv_30616879e6eb0cfc7406",
+          "kind": "control",
+          "label": null,
+          "to": "wv_45d4e62ad750dcc26f53"
+        },
+        {
+          "condition": true,
+          "from": "wv_45d4e62ad750dcc26f53",
+          "id": "wv_3356b8ea9fdcccb6f187",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c550cde14134a3cc3c4a"
+        },
+        {
+          "condition": true,
+          "from": "wv_876bcb5e0b1a45bb69f3",
+          "id": "wv_4f3a6b6dbe1d0bc500ee",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_45d4e62ad750dcc26f53",
+          "id": "wv_58af0114b747d5ec8626",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c550cde14134a3cc3c4a"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ff96b5c477e9a56793f",
+          "id": "wv_62883214564309944fc0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_45d4e62ad750dcc26f53"
+        },
+        {
+          "condition": true,
+          "from": "wv_e23b0faaf1adca205aaa",
+          "id": "wv_64349d33068eb86e07a2",
+          "kind": "read",
+          "label": null,
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_434b9d450a0942646645",
+          "id": "wv_649f316a287f7c3bb8ff",
+          "kind": "data",
+          "label": "DOTNET_NOLOGO",
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ff96b5c477e9a56793f",
+          "id": "wv_7c7ab6edb34feb8b730b",
+          "kind": "call",
+          "label": null,
+          "to": "wv_96f6440d6bb43130d702"
+        },
+        {
+          "condition": true,
+          "from": "wv_41335f78e59a8933d98e",
+          "id": "wv_7e05e9d144c092ecd2d1",
+          "kind": "data",
+          "label": "nugetPackageName",
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_4488e4473a7a4c54eadf",
+          "id": "wv_a8a384e1a01952981314",
+          "kind": "data",
+          "label": "buildPlatform",
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_77605feb4d47946b9137",
+          "id": "wv_aa65f4365ec7786ce9f2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4e971d707abd19173709"
+        },
+        {
+          "condition": true,
+          "from": "wv_e23b0faaf1adca205aaa",
+          "id": "wv_abaee4ebd31f0561719d",
+          "kind": "call",
+          "label": null,
+          "to": "wv_b1d86ed44799142fda65"
+        },
+        {
+          "condition": true,
+          "from": "wv_4e971d707abd19173709",
+          "id": "wv_e7de3fff73e998b7f6c2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_78f74f171e218d3b2217"
+        }
+      ],
+      "entrypoints": [
+        "wv_4e971d707abd19173709"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+                    "start": {
+                      "byte": 934,
+                      "column": 12,
+                      "line": 46
+                    },
+                    "stop": {
+                      "byte": 964,
+                      "column": 42,
+                      "line": 46
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "nanoFramework.Hardware.Stm32"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_41335f78e59a8933d98e",
+          "kind": "resource",
+          "name": "variable:nugetPackageName",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 900,
+              "column": 5,
+              "line": 45
+            },
+            "stop": {
+              "byte": 964,
+              "column": 42,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+                    "start": {
+                      "byte": 727,
+                      "column": 12,
+                      "line": 38
+                    },
+                    "stop": {
+                      "byte": 731,
+                      "column": 16,
+                      "line": 38
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "true"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_434b9d450a0942646645",
+          "kind": "resource",
+          "name": "variable:DOTNET_NOLOGO",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 696,
+              "column": 5,
+              "line": 37
+            },
+            "stop": {
+              "byte": 731,
+              "column": 16,
+              "line": 38
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+                    "start": {
+                      "byte": 769,
+                      "column": 12,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 778,
+                      "column": 21,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Any CPU"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4488e4473a7a4c54eadf",
+          "kind": "resource",
+          "name": "variable:buildPlatform",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 738,
+              "column": 5,
+              "line": 39
+            },
+            "stop": {
+              "byte": 778,
+              "column": 21,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_45d4e62ad750dcc26f53",
+          "kind": "step",
+          "name": "step 2",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 1355,
+              "column": 3,
+              "line": 60
+            },
+            "stop": {
+              "byte": 1515,
+              "column": 16,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4e971d707abd19173709",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 119,
+              "column": 1,
+              "line": 4
+            },
+            "stop": {
+              "byte": 1515,
+              "column": 16,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+                    "start": {
+                      "byte": 861,
+                      "column": 12,
+                      "line": 44
+                    },
+                    "stop": {
+                      "byte": 895,
+                      "column": 46,
+                      "line": 44
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "nanoFramework.Hardware.Stm32.sln"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6f0659f50802993cd71a",
+          "kind": "resource",
+          "name": "variable:solution",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 835,
+              "column": 5,
+              "line": 43
+            },
+            "stop": {
+              "byte": 895,
+              "column": 46,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_77605feb4d47946b9137",
+          "kind": "trigger",
+          "name": "pr",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 388,
+              "column": 3,
+              "line": 22
+            },
+            "stop": {
+              "byte": 404,
+              "column": 19,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_78f74f171e218d3b2217",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 119,
+              "column": 1,
+              "line": 4
+            },
+            "stop": {
+              "byte": 1515,
+              "column": 16,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7ff96b5c477e9a56793f",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 1051,
+              "column": 3,
+              "line": 52
+            },
+            "stop": {
+              "byte": 1299,
+              "column": 74,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_876bcb5e0b1a45bb69f3",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 130,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 354,
+              "column": 18,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_96f6440d6bb43130d702",
+          "kind": "call",
+          "name": "azure-pipelines-templates/class-lib-build.yml@templates",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 1061,
+              "column": 13,
+              "line": 52
+            },
+            "stop": {
+              "byte": 1116,
+              "column": 68,
+              "line": 52
+            }
+          },
+          "unknown": {
+            "detail": "azure-pipelines-templates/class-lib-build.yml@templates",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b1d86ed44799142fda65",
+          "kind": "call",
+          "name": "nanoframework/nf-tools",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 504,
+              "column": 7,
+              "line": 27
+            },
+            "stop": {
+              "byte": 609,
+              "column": 30,
+              "line": 30
+            }
+          },
+          "unknown": {
+            "detail": "nanoframework/nf-tools",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+                    "start": {
+                      "byte": 821,
+                      "column": 12,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 830,
+                      "column": 21,
+                      "line": 42
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Release"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b5f98e579f919e75886b",
+          "kind": "resource",
+          "name": "variable:buildConfiguration",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 785,
+              "column": 5,
+              "line": 41
+            },
+            "stop": {
+              "byte": 830,
+              "column": 21,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c550cde14134a3cc3c4a",
+          "kind": "call",
+          "name": "azure-pipelines-templates/discord-webhook-task.yml@templates",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 1365,
+              "column": 13,
+              "line": 60
+            },
+            "stop": {
+              "byte": 1425,
+              "column": 73,
+              "line": 60
+            }
+          },
+          "unknown": {
+            "detail": "azure-pipelines-templates/discord-webhook-task.yml@templates",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e23b0faaf1adca205aaa",
+          "kind": "resource",
+          "name": "repository:templates",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml",
+            "start": {
+              "byte": 504,
+              "column": 7,
+              "line": 27
+            },
+            "stop": {
+              "byte": 609,
+              "column": 30,
+              "line": 30
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:c97724c6b7bba0d0427edf88548719fc2e1cdde645ec767585319b537c3a1570",
+      "path": "azure/qtnetmodernization-5000-repos/nanoframework.hardware.stm32_1/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "nanoframework/nf-tools",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

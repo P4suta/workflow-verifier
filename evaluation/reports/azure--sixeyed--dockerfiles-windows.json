@@ -1,0 +1,625 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_7e2c699b0bbe9400bde5",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+        "start": {
+          "byte": 302,
+          "column": 11,
+          "line": 10
+        },
+        "stop": {
+          "byte": 346,
+          "column": 55,
+          "line": 10
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_466279179bf21c9ac8bf",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 302,
+              "column": 11,
+              "line": 10
+            },
+            "stop": {
+              "byte": 346,
+              "column": 55,
+              "line": 10
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:b2be3891b75240bd49eda1f654c4dbd89b0fc428ee41dc5a9aab544cf53e9d8b",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_d33bc280cb7d73c32114",
+          "id": "wv_60d286a366f8e14616a4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7ba12605eef972535fa5"
+        },
+        {
+          "condition": true,
+          "from": "wv_88e2e2af9955ac36da77",
+          "id": "wv_9908655e7828e09e567a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_7ba12605eef972535fa5"
+        },
+        {
+          "condition": true,
+          "from": "wv_d33bc280cb7d73c32114",
+          "id": "wv_a49c7dd2621627922db1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_88e2e2af9955ac36da77"
+        },
+        {
+          "condition": true,
+          "from": "wv_88e2e2af9955ac36da77",
+          "id": "wv_b4f9ad24f5300cdc1e67",
+          "kind": "control",
+          "label": null,
+          "to": "wv_466279179bf21c9ac8bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ba12605eef972535fa5",
+          "id": "wv_b62ff6188b22415ea6be",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b6ca081e9e8d04b12299"
+        },
+        {
+          "condition": true,
+          "from": "wv_c17dd61ef92d7408657d",
+          "id": "wv_d2eda2bb8a0f51621b64",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d33bc280cb7d73c32114"
+        },
+        {
+          "condition": true,
+          "from": "wv_d0950cf57baa1166ffab",
+          "id": "wv_d40b423366017e09ac87",
+          "kind": "data",
+          "label": "hub-id",
+          "to": "wv_466279179bf21c9ac8bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_1de0b8af1a82feb1f728",
+          "id": "wv_e9e8307e40b6b21c82e1",
+          "kind": "data",
+          "label": "hub-password",
+          "to": "wv_466279179bf21c9ac8bf"
+        }
+      ],
+      "entrypoints": [
+        "wv_c17dd61ef92d7408657d"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "hub-password",
+                  "span": {
+                    "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+                    "start": {
+                      "byte": 333,
+                      "column": 42,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 345,
+                      "column": 54,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "hub-password"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1de0b8af1a82feb1f728",
+          "kind": "resource",
+          "name": "hub-password",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 333,
+              "column": 42,
+              "line": 10
+            },
+            "stop": {
+              "byte": 345,
+              "column": 54,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "hub-id",
+                  "span": {
+                    "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+                    "start": {
+                      "byte": 320,
+                      "column": 29,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 326,
+                      "column": 35,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "hub-password",
+                  "span": {
+                    "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+                    "start": {
+                      "byte": 333,
+                      "column": 42,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 345,
+                      "column": 54,
+                      "line": 10
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+                    "start": {
+                      "byte": 302,
+                      "column": 11,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 346,
+                      "column": 55,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker login -u $(hub-id) -p $(hub-password)",
+                  "hub-id",
+                  "hub-password"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_466279179bf21c9ac8bf",
+          "kind": "command",
+          "name": "docker login -u $(hub-id) -p $(hub-password)",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 302,
+              "column": 11,
+              "line": 10
+            },
+            "stop": {
+              "byte": 346,
+              "column": 55,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7ba12605eef972535fa5",
+          "kind": "step",
+          "name": "build-all-ltsc2016",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 349,
+              "column": 3,
+              "line": 11
+            },
+            "stop": {
+              "byte": 475,
+              "column": 36,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_88e2e2af9955ac36da77",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 294,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 346,
+              "column": 55,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+                    "start": {
+                      "byte": 361,
+                      "column": 15,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 439,
+                      "column": 93,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  ".\\build-all -os windowsservercore -osBranch ltsc2016 -ignoreTestFailures $true"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "powershell"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b6ca081e9e8d04b12299",
+          "kind": "command",
+          "name": ".\\build-all -os windowsservercore -osBranch ltsc2016 -ignoreTestFailures $true",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 361,
+              "column": 15,
+              "line": 11
+            },
+            "stop": {
+              "byte": 439,
+              "column": 93,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c17dd61ef92d7408657d",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 250,
+              "column": 1,
+              "line": 6
+            },
+            "stop": {
+              "byte": 475,
+              "column": 36,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "hub-id",
+                  "span": {
+                    "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+                    "start": {
+                      "byte": 320,
+                      "column": 29,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 326,
+                      "column": 35,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "hub-id"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d0950cf57baa1166ffab",
+          "kind": "resource",
+          "name": "hub-id",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 320,
+              "column": 29,
+              "line": 10
+            },
+            "stop": {
+              "byte": 326,
+              "column": 35,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d33bc280cb7d73c32114",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml",
+            "start": {
+              "byte": 250,
+              "column": 1,
+              "line": 6
+            },
+            "stop": {
+              "byte": 475,
+              "column": 36,
+              "line": 12
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:bbf362b43232679d5fbebf83bd6b190d69d71bc0b02b5379f1f847a758592c25",
+      "path": "azure/sixeyed/dockerfiles-windows/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

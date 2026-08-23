@@ -1,0 +1,401 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:ceaca49fb8689d2f5f5f878d0b62f47a9bb84dfb8382a8ee05577e78213e447b",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_9ffe517c7d5aa1aaa559",
+          "id": "wv_54dbbf2a6a0d4a1caa36",
+          "kind": "data",
+          "label": "DebugArguments",
+          "to": "wv_762193267646cd761012"
+        },
+        {
+          "condition": true,
+          "from": "wv_50e17e3e468ed0b3ff4b",
+          "id": "wv_7350e520e710fb5c46f3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_762193267646cd761012"
+        },
+        {
+          "condition": true,
+          "from": "wv_25ef30325840f3763c0d",
+          "id": "wv_8f030dbacd483a9a5c4f",
+          "kind": "data",
+          "label": "ReleaseArguments",
+          "to": "wv_762193267646cd761012"
+        },
+        {
+          "condition": true,
+          "from": "wv_3273f059004b3a785b79",
+          "id": "wv_f221c9a9903a1201bb5e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_762193267646cd761012"
+        },
+        {
+          "condition": true,
+          "from": "wv_7562cf6c16adb94f5cd2",
+          "id": "wv_f5c05b92c362760b9899",
+          "kind": "data",
+          "label": "VmImage",
+          "to": "wv_762193267646cd761012"
+        }
+      ],
+      "entrypoints": [
+        "wv_762193267646cd761012"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+                    "start": {
+                      "byte": 274,
+                      "column": 21,
+                      "line": 15
+                    },
+                    "stop": {
+                      "byte": 359,
+                      "column": 106,
+                      "line": 15
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  " --filter \"TestCategory!=Quarantine & TestCategory!=Functional\" --verbosity normal "
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_25ef30325840f3763c0d",
+          "kind": "resource",
+          "name": "variable:ReleaseArguments",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+            "start": {
+              "byte": 256,
+              "column": 3,
+              "line": 15
+            },
+            "stop": {
+              "byte": 359,
+              "column": 106,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3273f059004b3a785b79",
+          "kind": "trigger",
+          "name": "pr",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+            "start": {
+              "byte": 53,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 137,
+              "column": 10,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_50e17e3e468ed0b3ff4b",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+            "start": {
+              "byte": 41,
+              "column": 10,
+              "line": 2
+            },
+            "stop": {
+              "byte": 45,
+              "column": 14,
+              "line": 2
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+                    "start": {
+                      "byte": 371,
+                      "column": 12,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 385,
+                      "column": 26,
+                      "line": 16
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "windows-latest"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7562cf6c16adb94f5cd2",
+          "kind": "resource",
+          "name": "variable:VmImage",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+            "start": {
+              "byte": 362,
+              "column": 3,
+              "line": 16
+            },
+            "stop": {
+              "byte": 385,
+              "column": 26,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_762193267646cd761012",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+            "start": {
+              "byte": 32,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 1888,
+              "column": 25,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+                    "start": {
+                      "byte": 168,
+                      "column": 19,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 253,
+                      "column": 104,
+                      "line": 14
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  " --filter \"TestCategory!=Quarantine & TestCategory!=Functional\" --verbosity normal "
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9ffe517c7d5aa1aaa559",
+          "kind": "resource",
+          "name": "variable:DebugArguments",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml",
+            "start": {
+              "byte": 152,
+              "column": 3,
+              "line": 14
+            },
+            "stop": {
+              "byte": 253,
+              "column": 104,
+              "line": 14
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:b75399c516e091d3a195a222c65ca86209bbcaa8f5014c0b8f5318f9755e769b",
+      "path": "azure/vpavve/azure-cosmos-dotnet-v3/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

@@ -460,10 +460,7 @@ let scratch_artifact_reconciliation_test () =
             { path = "result.txt"; operation = "write"; allowed = true })
     |> Evidence.append
          (Evidence.Artifact_recorded
-            {
-              path = "result.txt";
-              digest = "sha256:" ^ String.make 64 'a';
-            })
+            { path = "result.txt"; digest = "sha256:" ^ String.make 64 'a' })
   in
   let reconciled = Reconcile.envelope ~graphs:[ graph ] ~evidence in
   expect "a redirected scratch file stays inside the script effect envelope"

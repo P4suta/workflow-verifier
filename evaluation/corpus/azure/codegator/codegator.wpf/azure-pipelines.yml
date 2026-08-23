@@ -1,0 +1,75 @@
+trigger:
+- main
+
+pool:
+  vmImage: windows-latest
+
+variables:
+  BuildConfiguration: 'Debug'
+  SolutionName: CodeGator.Wpf
+  SolutionPath: 'src/$(SolutionName)'
+  
+steps:
+
+- checkout: self
+  displayName: 'github checkout'
+  fetchDepth: 0
+
+- task: UseDotNet@2
+  displayName: 'dotnet install'
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+    
+- task: NuGetToolInstaller@1
+  displayName: 'nuget install'
+  inputs:
+    versionSpec: 
+    checkLatest: true
+    
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: 'restore'
+    nugetConfigPath: 'nuget.config'
+    feedsToUse: config
+    arguments: '--interactive'
+    projects: '$(SolutionPath).slnx'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(BuildConfiguration) /p:SourceRevisionId=$(Build.SourceVersion)'
+    projects: '$(SolutionPath).slnx'
+
+- task: DotNetCoreCLI@2
+  displayName: "dotnet test"
+  inputs:
+    command: 'test'
+    projects: '$(SolutionPath).slnx'
+    arguments: '--configuration $(BuildConfiguration) --report-trx --coverlet --coverlet-output-format cobertura'
+    publishTestResults: true
+    nobuild: true
+
+- task: DotNetCoreCLI@2
+  displayName: "dotnet pack"
+  inputs:
+    command: 'pack'
+    arguments: '--configuration $(BuildConfiguration)'    
+    packagesToPack: '$(SolutionPath).slnx'
+    nobuild: true
+    includesymbols: true
+    includesource: true
+    versioningScheme: 'off'
+
+- task: NuGetCommand@2
+  displayName: 'nuget external push'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'NUGET.ORG'
+    versioningScheme: 'off'
+    allowPackageConflicts: true 
+    arguments: -SkipDuplicate  

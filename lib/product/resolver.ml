@@ -88,7 +88,7 @@ let resolve ?(allowed_sources = []) ?(refresh = false) ~network ~lock
                       Printf.sprintf "%s: %s" dependency.reference message
                       :: !errors;
                     unresolved := dependency :: !unresolved
-                | Ok fetched ->
+                | Ok fetched -> (
                     if
                       not
                         (immutable_revision dependency.provider fetched.revision)
@@ -130,9 +130,9 @@ let resolve ?(allowed_sources = []) ?(refresh = false) ~network ~lock
                              (fun existing ->
                                existing.Lockfile.provider <> entry.provider
                                || existing.reference <> entry.reference)
-                             (!current_lock).entries
+                             !current_lock.entries
                       in
-                      (match Lockfile.create entries with
+                      match Lockfile.create entries with
                       | Error message ->
                           errors :=
                             Printf.sprintf "%s: %s" dependency.reference message

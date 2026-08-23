@@ -1,0 +1,184 @@
+name: build_publish
+
+# on:
+#   workflow_dispatch
+
+on:
+  push:
+    tags:        # Trigger on tag pushes
+      - '*.*.*'   # Adjust the pattern to match your version tags
+
+jobs:
+  build_wheels:
+    name: Build Wheels ${{ matrix.python.py_ver }}-${{ matrix.buildplat[1] }}
+    runs-on: ${{ matrix.buildplat[0] }}
+    strategy:
+      fail-fast: false
+      matrix:
+        buildplat:
+          - [ubuntu-latest, manylinux_x86_64]
+          - [macos-latest, macosx_universal2]
+          - [windows-latest, win_amd64]
+        python:
+          - { py_ver: cp38, py_version: '3.8' }
+          - { py_ver: cp39, py_version: '3.9' }
+          - { py_ver: cp310, py_version: '3.10' }
+          - { py_ver: cp311, py_version: '3.11' }
+          - { py_ver: cp312, py_version: '3.12' }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python.py_version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python.py_version }}
+          check-latest: true
+
+
+
+      - name: Install cibuildwheel
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install cibuildwheel==2.21.3
+
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: ${{ matrix.python.py_ver }}-${{ matrix.buildplat[1] }}
+          CIBW_ARCHS_MACOS: universal2
+          CIBW_BEFORE_BUILD: "pip install -r requirements.txt"
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: pytest {project}/tests
+          CIBW_ENVIRONMENT: |
+            CFLAGS='-O3 -g0 -mtune=generic -pipe -fPIC'
+            LDFLAGS='-fPIC'    
+
+      - name: check build
+        run:  ls -l wheelhouse
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.python.py_ver }}-${{ matrix.buildplat[1] }}
+          path: wheelhouse/*.whl
+
+  build_sdist:
+    name: Build Source Distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          check-latest: true       
+
+      - name: Build sdist
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist --outdir dist/
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+
+  publish_to_pypi_N_release:
+    name: Publish to PyPI
+    needs:
+      - build_wheels
+      - build_sdist
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          check-latest: true
+
+      - name: Extract Version 
+        id: extract_version
+        run: |
+          python -m pip install --upgrade pip build
+          VERSION=$(python -c "import os; vl=[line for line in open(os.path.join('quicksectx', '__init__.py')).read().splitlines() if line.startswith('__version__')][0]; delim = '\"' if '\"' in vl else '\''; print(vl.split(delim)[1]);")
+          echo "VERSION: ${VERSION}"
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV  
+          echo "env VERSION: "+ ${{ env.VERSION }}    
+
+      - uses: actions/download-artifact@v4.1.7
+        with:
+          path: dist
+
+      - name: check downloaded
+        run: |
+          mv ./dist/**/quicksectx* ./dist/
+          rm -rf dist/wheels*
+          rm -rf dist/sdist
+          ls -R
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          check-latest: true
+
+      - name: Install twine
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install twine
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          twine upload  --skip-existing --verbose dist/*
+
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ env.VERSION }}
+          tag_name: ${{ env.VERSION }}
+          files: |
+            dist/*
+
+        
+
+  cleanup_artifacts:
+      name: Cleanup All Artifacts
+      needs: publish_to_pypi_N_release
+      runs-on: ubuntu-latest
+      steps:
+        - name: Delete all artifacts
+          uses: actions/github-script@v7
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              const { repo } = context;
+              // No need to getOctokit, directly use the github object provided
+              const listArtifacts = await github.rest.actions.listArtifactsForRepo({
+                owner: repo.owner,
+                repo: repo.repo,
+              });
+              const artifactIds = listArtifacts.data.artifacts.map(artifact => artifact.id);
+              
+              for (const artifactId of artifactIds) {
+                await github.rest.actions.deleteArtifact({
+                  owner: repo.owner,
+                  repo: repo.repo,
+                  artifact_id: artifactId,
+                });
+                console.log(`Deleted artifact ${artifactId}`);
+              }

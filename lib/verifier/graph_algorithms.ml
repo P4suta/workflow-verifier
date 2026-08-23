@@ -93,7 +93,8 @@ let dominates graph ~dominator ~node =
                       predecessors)
               |> Util.deduplicate_strings
           in
-          if Option.value ~default:[] (Hashtbl.find_opt table id) <> updated then (
+          if Option.value ~default:[] (Hashtbl.find_opt table id) <> updated
+          then (
             Hashtbl.replace table id updated;
             changed := true))
       ids

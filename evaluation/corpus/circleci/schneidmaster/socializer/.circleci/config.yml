@@ -1,0 +1,110 @@
+version: 2
+jobs:
+  build:
+    parallelism: 1
+    docker:
+      - image: circleci/elixir:1.8.0-node
+        environment:
+          MIX_ENV: test
+          PGHOST: 127.0.0.1
+          POSTGRES_USER: circleci
+      - image: circleci/postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: circleci
+
+    working_directory: ~/socializer
+
+    steps:
+      - checkout
+      - run:
+          name: Set up hex and rebar
+          command: mix local.hex --force && mix local.rebar --force
+
+      - restore_cache:
+          keys:
+            - v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
+            - v1-mix-cache-{{ .Branch }}
+            - v1-mix-cache
+
+      - restore_cache:
+          keys:
+            - v1-build-cache-{{ .Branch }}
+            - v1-build-cache
+
+      - restore_cache:
+          key: v1-yarn-cache
+
+      - restore_cache:
+          key: v1-node-modules-cache-{{ checksum "client/yarn.lock" }}
+
+      - run:
+          name: Install and compile Elixir dependencies
+          command: mix do deps.get, compile
+
+      - run:
+          name: Install npm dependencies
+          command: cd client && yarn install
+
+      - save_cache:
+          key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
+          paths: "deps"
+      - save_cache:
+          key: v1-mix-cache-{{ .Branch }}
+          paths: "deps"
+      - save_cache:
+          key: v1-mix-cache
+          paths: "deps"
+
+      - save_cache:
+          key: v1-build-cache-{{ .Branch }}
+          paths: "_build"
+      - save_cache:
+          key: v1-build-cache
+          paths: "_build"
+
+      - save_cache:
+          key: v1-yarn-cache
+          paths:
+            - ~/.cache/yarn
+
+      - save_cache:
+          key: v1-node-modules-cache-{{ checksum "client/yarn.lock" }}
+          paths:
+            - client/node_modules
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - run:
+          name: Check Elixir formatting
+          command: mix format --check-formatted
+
+      - run:
+          name: Check JS formatting
+          command: cd client && yarn lint
+
+      - run:
+          name: Create dir for test results
+          command: mkdir -p /tmp/test-results/exunit
+
+      - run:
+          name: Run ExUnit tests
+          command: mix coveralls.html
+
+      - run:
+          name: Run jest tests
+          command: cd client && yarn test:ci
+
+      - store_test_results:
+          path: /tmp/test-results
+
+      - run:
+          name: Move coverage files to top-level directory
+          command: sudo mv cover/excoveralls.html /exunit-coverage.html && sudo mv client/coverage/lcov-report /jest-coverage
+
+      - store_artifacts:
+          path: /exunit-coverage.html
+
+      - store_artifacts:
+          path: /jest-coverage

@@ -1,0 +1,148 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release version tag (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows x64 Binary
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine Version Tag
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag_name }}"
+          elif [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+          else
+            TAG="v1.0.0"
+          fi
+          echo "TAG=${TAG}" >> $GITHUB_ENV
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DFASTWAD_BUILD_TESTS=OFF
+
+      - name: Build fastwad.exe
+        run: cmake --build build --config Release --parallel
+
+      - name: Package Windows Release Bundle
+        shell: pwsh
+        run: |
+          $TAG = $env:TAG
+          $DIST_DIR = "fastwad-$TAG-windows-x64"
+          New-Item -ItemType Directory -Path $DIST_DIR
+          Copy-Item "build/Release/fastwad.exe" "$DIST_DIR/"
+          Copy-Item "LICENSE" "$DIST_DIR/"
+          Copy-Item "README.md" "$DIST_DIR/"
+          New-Item -ItemType Directory -Path "$DIST_DIR/include/fastwad"
+          Copy-Item "include/fastwad/fastwad.hpp" "$DIST_DIR/include/fastwad/"
+          Compress-Archive -Path "$DIST_DIR/*" -DestinationPath "fastwad-$TAG-windows-x64.zip"
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-binaries
+          path: fastwad-*-windows-x64.zip
+
+  build-linux:
+    name: Build Linux x64 Binary
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine Version Tag
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag_name }}"
+          elif [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+          else
+            TAG="v1.0.0"
+          fi
+          echo "TAG=${TAG}" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential ninja-build
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DFASTWAD_BUILD_TESTS=OFF
+
+      - name: Build fastwad
+        run: cmake --build build --config Release --parallel
+
+      - name: Package Linux Release Bundle
+        run: |
+          TAG="${TAG:-v1.0.0}"
+          DIST_DIR="fastwad-${TAG}-linux-x64"
+          mkdir -p "$DIST_DIR/include/fastwad"
+          cp build/fastwad "$DIST_DIR/"
+          cp LICENSE README.md "$DIST_DIR/"
+          cp include/fastwad/fastwad.hpp "$DIST_DIR/include/fastwad/"
+          tar -czvf "fastwad-${TAG}-linux-x64.tar.gz" -C "$DIST_DIR" .
+
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-binaries
+          path: fastwad-*-linux-x64.tar.gz
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine Release Metadata
+        id: release_meta
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag_name }}"
+          elif [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+          else
+            TAG="v1.0.0"
+          fi
+          echo "tag_name=${TAG}" >> $GITHUB_OUTPUT
+          echo "release_name=fastwad ${TAG}" >> $GITHUB_OUTPUT
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_meta.outputs.tag_name }}
+          name: ${{ steps.release_meta.outputs.release_name }}
+          target_commitish: ${{ github.sha }}
+          files: release-assets/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false

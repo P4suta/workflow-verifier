@@ -1,0 +1,555 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:7b30e55c49731848fe319b1df72a27ec76d9a609b32c39ae692e73fcedffc381",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_a46bf76d2345c3efe994",
+          "id": "wv_1dc7d2be9e5c37ff5134",
+          "kind": "control",
+          "label": null,
+          "to": "wv_750595b72c2c2ac8fea3"
+        },
+        {
+          "condition": true,
+          "from": "wv_c2df9d02aaeddbb967d7",
+          "id": "wv_2d6fc224b0a3924fe1fd",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c97359af0a33e876d6ad"
+        },
+        {
+          "condition": true,
+          "from": "wv_c97359af0a33e876d6ad",
+          "id": "wv_58e889b258b647351c97",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_87e6ecf526e52e65d923"
+        },
+        {
+          "condition": true,
+          "from": "wv_67c08373f6aeeaa11423",
+          "id": "wv_722137e6e68b696ebe50",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a46bf76d2345c3efe994"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec641a3b9ee380f6ae6a",
+          "id": "wv_979f42e53022b5377ec7",
+          "kind": "call",
+          "label": null,
+          "to": "wv_a220220ee5b8edf6366b"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec641a3b9ee380f6ae6a",
+          "id": "wv_9d2f88e152d10fc0a456",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a220220ee5b8edf6366b"
+        },
+        {
+          "condition": true,
+          "from": "wv_c39424d382ec730642ef",
+          "id": "wv_a838085de1eaecf6dfbf",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_fa68b69fa9903021f8e7"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec641a3b9ee380f6ae6a",
+          "id": "wv_ae9a1229d7201ee82a55",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c2df9d02aaeddbb967d7"
+        },
+        {
+          "condition": true,
+          "from": "wv_87e6ecf526e52e65d923",
+          "id": "wv_c69e7a9b037db9ab263d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c39424d382ec730642ef"
+        },
+        {
+          "condition": true,
+          "from": "wv_87e6ecf526e52e65d923",
+          "id": "wv_d429696536a54392564f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_67c08373f6aeeaa11423"
+        }
+      ],
+      "entrypoints": [
+        "wv_ec641a3b9ee380f6ae6a"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_67c08373f6aeeaa11423",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 240,
+              "column": 1,
+              "line": 11
+            },
+            "stop": {
+              "byte": 337,
+              "column": 19,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 276,
+                      "column": 5,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 299,
+                      "column": 28,
+                      "line": 14
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"Build successful\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_750595b72c2c2ac8fea3",
+          "kind": "command",
+          "name": "echo \"Build successful\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 276,
+              "column": 5,
+              "line": 14
+            },
+            "stop": {
+              "byte": 299,
+              "column": 28,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_87e6ecf526e52e65d923",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 523,
+              "column": 9,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a220220ee5b8edf6366b",
+          "kind": "call",
+          "name": "ocaml/opam2:latest",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 7,
+              "column": 8,
+              "line": 1
+            },
+            "stop": {
+              "byte": 25,
+              "column": 26,
+              "line": 1
+            }
+          },
+          "unknown": {
+            "detail": "ocaml/opam2:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a46bf76d2345c3efe994",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 276,
+              "column": 5,
+              "line": 14
+            },
+            "stop": {
+              "byte": 299,
+              "column": 28,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c2df9d02aaeddbb967d7",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 523,
+              "column": 9,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c39424d382ec730642ef",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 523,
+              "column": 9,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c97359af0a33e876d6ad",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 523,
+              "column": 9,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ec641a3b9ee380f6ae6a",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 523,
+              "column": 9,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fa68b69fa9903021f8e7",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mishio595/disml/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 523,
+              "column": 9,
+              "line": 29
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/mishio595/disml/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:8bc68b1ebf8f3aa135e03f9ba162a4f157e06196efd14e331af35cd1e5c36cf5",
+      "path": "gitlab/mishio595/disml/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "ocaml/opam2:latest",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

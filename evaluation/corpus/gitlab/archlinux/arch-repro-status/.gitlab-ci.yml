@@ -1,0 +1,29 @@
+image: "archlinux:latest"
+
+before_script:
+  - pacman -Syu --needed --noconfirm rust gcc cargo-audit pkg-config openssl
+
+stages:
+  - lint
+  - test
+  - audit
+
+format:
+  stage: lint
+  script:
+    - cargo fmt --all -- --check
+
+clippy:
+  stage: lint
+  script:
+    - cargo clippy --all -- -D warnings
+
+audit:
+  stage: audit
+  script:
+    - cargo audit
+
+test:
+  stage: test
+  script:
+    - cargo test --locked --all --release --features dumb_terminal

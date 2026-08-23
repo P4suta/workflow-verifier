@@ -113,8 +113,7 @@ let relative_to root path =
   let root = normalize root and path = normalize path in
   let rec without_current_directory path =
     if Util.starts_with ~prefix:"./" path then
-      without_current_directory
-        (String.sub path 2 (String.length path - 2))
+      without_current_directory (String.sub path 2 (String.length path - 2))
     else path
   in
   let root =
@@ -152,8 +151,8 @@ let discover io target =
         | None -> false
         | Some provider ->
             (not directory)
-            || Frontend.entrypoint ~provider
-                 ~path:(relative_to target path) ~source)
+            || Frontend.entrypoint ~provider ~path:(relative_to target path)
+                 ~source)
   in
   { candidates; entrypoints }
 
@@ -466,8 +465,8 @@ let check io arguments =
                     when has "--write-cache" arguments
                          && String.lowercase_ascii format = "json" -> (
                       match
-                        Incremental_cache.create ~key:context.cache_key ~exit_code
-                          ~report:text
+                        Incremental_cache.create ~key:context.cache_key
+                          ~exit_code ~report:text
                       with
                       | Error message -> io.stderr ("cache: " ^ message ^ "\n")
                       | Ok entry -> (

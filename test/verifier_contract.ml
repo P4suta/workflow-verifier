@@ -105,6 +105,77 @@ let injection_triple_test () =
       expect "Unknown must retain a reason" (reasons <> [])
   | _ -> fail "dynamic command must remain Unknown"
 
+let injection_environment_binding_test () =
+  let source =
+    node ~kind:Ir.Resource
+      ~attributes:[ ("value", value ~trust:Abstract_value.Untrusted "input") ]
+      "inputs.title"
+  and binding = node ~kind:Ir.Resource "env:TITLE"
+  and safe_command =
+    node
+      ~attributes:
+        [ ("command", value "STAMP=$(date)\nprintf '%s' \"$TITLE\"\n") ]
+      ~capabilities:[ Ir.Shell ] "safe environment boundary"
+  in
+  let safe =
+    graph
+      [ source; binding; safe_command ]
+      [
+        edge ~kind:Ir.Data source binding;
+        edge ~kind:Ir.Data binding safe_command;
+      ]
+      [ safe_command ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "quoted environment binding isolates the untrusted value"
+    (not (has_rule "WV-SEC-001" safe));
+  let unrelated_command =
+    node
+      ~attributes:[ ("command", value "printf '%s' $TITLE_SUFFIX") ]
+      ~capabilities:[ Ir.Shell ] "unrelated environment expansion"
+  in
+  let unrelated =
+    graph
+      [ source; binding; unrelated_command ]
+      [
+        edge ~kind:Ir.Data source binding;
+        edge ~kind:Ir.Data binding unrelated_command;
+      ]
+      [ unrelated_command ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "environment names match complete shell identifiers"
+    (not (has_rule "WV-SEC-001" unrelated));
+  let unsafe_command =
+    node
+      ~attributes:[ ("command", value "printf '%s' $TITLE") ]
+      ~capabilities:[ Ir.Shell ] "unsafe environment boundary"
+  in
+  let unsafe_graph =
+    graph
+      [ source; binding; unsafe_command ]
+      [
+        edge ~kind:Ir.Data source binding;
+        edge ~kind:Ir.Data binding unsafe_command;
+      ]
+      [ unsafe_command ]
+  in
+  let unsafe_solution = Dataflow.solve unsafe_graph in
+  expect "environment data edge propagates untrusted input"
+    (Abstract_value.is_untrusted
+       (Dataflow.value_at unsafe_solution unsafe_command.id));
+  let unsafe_summary =
+    Script_adapter.analyze Script_adapter.Bash "printf '%s' $TITLE"
+  in
+  expect "script adapter retains the unquoted environment expansion"
+    (List.exists
+       (fun (expansion : Script_adapter.expansion) ->
+         expansion.expansion_text = "$TITLE" && not expansion.expansion_quoted)
+       unsafe_summary.expansions);
+  let unsafe = Verifier.verify ~persona:Verifier.Gate unsafe_graph in
+  expect "unquoted environment binding remains an injection boundary"
+    (has_rule "WV-SEC-001" unsafe)
+
 let secret_network_test () =
   let command =
     node
@@ -130,6 +201,136 @@ let secret_network_test () =
   expect "minimal set includes network and secret access"
     (List.mem Ir.Network finding.capabilities
     && List.mem Ir.Secret_access finding.capabilities)
+
+let secret_observability_boundaries_test () =
+  let redirected =
+    node
+      ~attributes:
+        [
+          ( "command",
+            value ~secrecy:Abstract_value.Secret
+              "echo \"$NPM_TOKEN\" > ~/.npmrc" );
+        ]
+      ~capabilities:[ Ir.Shell; Ir.Filesystem_write ]
+      "write npm config"
+  in
+  let redirected_result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ redirected ] [] [ redirected ])
+  in
+  expect "redirecting a secret to a file is not a log exfiltration"
+    (not (has_rule "WV-SEC-002" redirected_result));
+  let piped =
+    node
+      ~attributes:
+        [
+          ( "command",
+            value ~secrecy:Abstract_value.Secret
+              "printf '%s' \"$NPM_TOKEN\" | base64" );
+        ]
+      ~capabilities:[ Ir.Shell ] "pipe secret to stdout"
+  in
+  let piped_result =
+    Verifier.verify ~persona:Verifier.Gate (graph [ piped ] [] [ piped ])
+  in
+  expect "a pipe whose output remains on stdout is observable"
+    (has_rule "WV-SEC-002" piped_result);
+  let piped_to_file =
+    node
+      ~attributes:
+        [
+          ( "command",
+            value ~secrecy:Abstract_value.Secret
+              "printf '%s' \"$NPM_TOKEN\" | base64 > private.enc" );
+        ]
+      ~capabilities:[ Ir.Shell; Ir.Filesystem_write ]
+      "pipe secret to file"
+  in
+  let piped_to_file_result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ piped_to_file ] [] [ piped_to_file ])
+  in
+  expect "a pipeline redirected to a constant private file is not a log leak"
+    (not (has_rule "WV-SEC-002" piped_to_file_result));
+  let dynamic_redirect =
+    node
+      ~attributes:
+        [
+          ( "command",
+            value ~secrecy:Abstract_value.Secret
+              "printf '%s' \"$NPM_TOKEN\" > $DESTINATION_FILE" );
+        ]
+      ~capabilities:[ Ir.Shell; Ir.Filesystem_write ]
+      "pipe secret to dynamic file"
+  in
+  let dynamic_redirect_result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ dynamic_redirect ] [] [ dynamic_redirect ])
+  in
+  expect "a dynamic redirect target is Unknown rather than a log violation"
+    ((not (has_rule "WV-SEC-002" dynamic_redirect_result))
+    &&
+    match (property "WV-SEC-002" dynamic_redirect_result).state with
+    | Property.Unknown reasons -> reasons <> []
+    | _ -> false);
+  let credential_pipe =
+    node
+      ~attributes:
+        [
+          ( "command",
+            value ~secrecy:Abstract_value.Secret
+              "echo \"$REGISTRY_PASSWORD\" | docker login registry.example \
+               --password-stdin" );
+        ]
+      ~capabilities:[ Ir.Shell; Ir.Network; Ir.Secret_access ]
+      "registry login"
+  in
+  let credential_pipe_result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ credential_pipe ] [] [ credential_pipe ])
+  in
+  let credential_finding =
+    List.find
+      (fun item -> item.Diagnostic.rule_id = "WV-SEC-002")
+      credential_pipe_result.diagnostics
+  in
+  expect "a password-stdin consumer is a network sink, not stdout"
+    (List.mem Ir.Network credential_finding.capabilities);
+  let literal =
+    node
+      ~attributes:
+        [
+          ( "command",
+            value ~secrecy:Abstract_value.Secret
+              "echo 'Verify token permissions'" );
+        ]
+      ~capabilities:[ Ir.Shell ] "literal security guidance"
+  in
+  let literal_result =
+    Verifier.verify ~persona:Verifier.Gate (graph [ literal ] [] [ literal ])
+  in
+  expect "a literal security word is not a secret variable reference"
+    (not (has_rule "WV-SEC-002" literal_result));
+  let remote =
+    node ~kind:Ir.Call ~phase:Ir.Run
+      ~attributes:
+        [
+          ( "credential",
+            value ~secrecy:Abstract_value.Secret "secrets.DEPLOY_TOKEN" );
+        ]
+      ~capabilities:[ Ir.Network; Ir.Secret_access ]
+      ~unknown:(Unknown.Unresolved_dependency "owner/action@v1")
+      "owner/action@v1"
+  in
+  let remote_result =
+    Verifier.verify ~persona:Verifier.Gate (graph [ remote ] [] [ remote ])
+  in
+  expect "an unresolved network-capable action remains Unknown, not violated"
+    (not (has_rule "WV-SEC-002" remote_result));
+  expect "unresolved action observability retains its reason"
+    (match (property "WV-SEC-002" remote_result).state with
+    | Property.Unknown reasons -> reasons <> []
+    | _ -> false)
 
 let dominance_test () =
   let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
@@ -157,6 +358,65 @@ let dominance_test () =
   expect "bypass produces a deterministic witness"
     (has_rule "WV-AUTH-001" bypass)
 
+let authorization_unknown_and_manual_test () =
+  let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
+  and deploy =
+    node ~kind:Ir.Effect ~effects:[ Ir.Deployment_change ]
+      ~capabilities:[ Ir.Deployment ] "deploy"
+  and environment =
+    node ~kind:Ir.Resource ~phase:Ir.Plan
+      ~unknown:(Unknown.External_state "environment protection rules")
+      "environment:production"
+  in
+  let external_result =
+    graph
+      [ workflow; deploy; environment ]
+      [ edge workflow deploy; edge ~kind:Ir.Grant environment deploy ]
+      [ workflow ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "unobserved environment protection keeps authorization Unknown"
+    (match (property "WV-AUTH-001" external_result).state with
+    | Property.Unknown reasons -> reasons <> []
+    | _ -> false);
+  expect "external protection uncertainty is not a definite bypass"
+    (not (has_rule "WV-AUTH-001" external_result));
+  let unknown_gate =
+    node ~kind:Ir.Gate ~phase:Ir.Plan
+      ~unknown:(Unknown.External_state "reviewer decision")
+      "environment approval"
+  in
+  let uncertain =
+    graph
+      [ workflow; unknown_gate; deploy ]
+      [ edge workflow unknown_gate; edge unknown_gate deploy ]
+      [ workflow ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "an Unknown gate cannot prove authorization"
+    (match (property "WV-AUTH-001" uncertain).state with
+    | Property.Unknown reasons -> reasons <> []
+    | _ -> false);
+  let manual_source =
+    {|stages: [deploy]
+release:
+  stage: deploy
+  when: manual
+  environment: production
+  script: kubectl apply -f deployment.yml
+|}
+  in
+  let manual =
+    match
+      Frontend.compile_string ~provider:Ir.Gitlab ~path:".gitlab-ci.yml"
+        ~source:manual_source ()
+    with
+    | Ok compilation -> Verifier.verify ~persona:Verifier.Gate compilation.graph
+    | Error _ -> fail "GitLab manual authorization fixture did not compile"
+  in
+  expect "GitLab manual execution is an explicit dominating approval gate"
+    ((property "WV-AUTH-001" manual).state = Property.Proved)
+
 let supply_chain_and_permission_test () =
   let workflow =
     node ~kind:Ir.Workflow ~phase:Ir.Compile
@@ -173,21 +433,64 @@ let supply_chain_and_permission_test () =
   in
   expect "mutable action tag must be diagnosed"
     (has_rule "WV-SUPPLY-001" result);
-  expect "unused write grants must be diagnosed" (has_rule "WV-PERM-001" result)
+  expect "an unresolved action cannot prove a write grant excessive"
+    (not (has_rule "WV-PERM-001" result));
+  expect "unresolved grant demand remains Unknown"
+    (match (property "WV-PERM-001" result).state with
+    | Property.Unknown reasons -> reasons <> []
+    | _ -> false)
+
+let known_excessive_permission_test () =
+  let workflow =
+    node ~kind:Ir.Workflow ~phase:Ir.Compile
+      ~capabilities:[ Ir.Repository_write; Ir.Token_write ]
+      "workflow"
+  and command =
+    node ~effects:[ Ir.Command_execution ] ~capabilities:[ Ir.Shell ]
+      "echo safe"
+  in
+  let result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ workflow; command ] [ edge workflow command ] [ workflow ])
+  in
+  expect "a closed graph proves unrelated write grants excessive"
+    (has_rule "WV-PERM-001" result)
+
+let command_attribute_consumes_permission_test () =
+  let workflow =
+    node ~kind:Ir.Workflow ~phase:Ir.Compile
+      ~capabilities:[ Ir.Repository_write ] "workflow"
+  and command =
+    node
+      ~attributes:[ ("command", value "gh release create v1 dist/app") ]
+      ~capabilities:[ Ir.Shell ] "publish release"
+  in
+  let result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ workflow; command ] [ edge workflow command ] [ workflow ])
+  in
+  expect "least privilege analyzes the command source rather than its label"
+    (not (has_rule "WV-PERM-001" result));
+  expect "a repository write sink consumes the declared grant"
+    ((property "WV-PERM-001" result).state = Property.Proved)
 
 let inherent_execution_capabilities_are_not_reducible_grants_test () =
   let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
   and command =
-    node ~capabilities:[ Ir.Filesystem_write; Ir.Network; Ir.Shell ]
+    node
+      ~capabilities:[ Ir.Filesystem_write; Ir.Network; Ir.Shell ]
       ~effects:[ Ir.Command_execution ] "echo safe"
   and action =
-    node ~kind:Ir.Call ~capabilities:[ Ir.Network; Ir.Filesystem_write ]
+    node ~kind:Ir.Call
+      ~capabilities:[ Ir.Network; Ir.Filesystem_write ]
       "immutable action"
   in
   let result =
     Verifier.verify ~persona:Verifier.Audit
-      (graph [ workflow; command; action ]
-         [ edge workflow command; edge command action ] [ workflow ])
+      (graph
+         [ workflow; command; action ]
+         [ edge workflow command; edge command action ]
+         [ workflow ])
   in
   expect "runner and action requirements are not removable permission grants"
     (not (has_rule "WV-PERM-001" result));
@@ -230,7 +533,13 @@ let github_end_to_end_test () =
   let result = Verifier.verify ~persona:Verifier.Gate compilation.graph in
   List.iter
     (fun rule -> expect ("end-to-end missing " ^ rule) (has_rule rule result))
-    [ "WV-SEC-001"; "WV-SEC-002"; "WV-SUPPLY-001"; "WV-PERM-001" ]
+    [ "WV-SEC-001"; "WV-SEC-002"; "WV-SUPPLY-001" ];
+  expect "unresolved action demand does not create a false permission finding"
+    (not (has_rule "WV-PERM-001" result));
+  expect "unresolved action demand keeps least privilege Unknown"
+    (match (property "WV-PERM-001" result).state with
+    | Property.Unknown reasons -> reasons <> []
+    | _ -> false)
 
 let protected_release_dominance_test () =
   let attestation_revision = String.make 40 'a' in
@@ -273,13 +582,78 @@ jobs:
   expect "attestation grants are consumed by the attestation effect"
     (not (has_rule "WV-PERM-001" result))
 
+let circleci_parameter_binding_test () =
+  let verify source =
+    match
+      Frontend.compile_string ~provider:Ir.Circleci ~path:".circleci/config.yml"
+        ~source ()
+    with
+    | Ok compilation -> Verifier.verify ~persona:Verifier.Gate compilation.graph
+    | Error _ -> fail "CircleCI parameter fixture did not compile"
+  in
+  let safe =
+    verify
+      {|version: 2.1
+jobs:
+  test:
+    parameters:
+      target:
+        type: string
+        default: unit
+    docker: [{image: cimg/base:current}]
+    steps:
+      - run: npm run << parameters.target >>
+workflows:
+  checks:
+    jobs:
+      - test:
+          target: integration
+|}
+  in
+  expect "version-controlled job parameter values are trusted shell inputs"
+    (not (has_rule "WV-SEC-001" safe));
+  let unsafe =
+    verify
+      {|version: 2.1
+parameters:
+  target:
+    type: string
+    default: unit
+jobs:
+  test:
+    parameters:
+      target:
+        type: string
+    docker: [{image: cimg/base:current}]
+    steps:
+      - run: npm run << parameters.target >>
+workflows:
+  checks:
+    jobs:
+      - test:
+          target: << pipeline.parameters.target >>
+|}
+  in
+  expect "an externally supplied pipeline parameter taints its job binding"
+    (has_rule "WV-SEC-001" unsafe)
+
 let tests : test list =
   [
     ("injection has violated proved and unknown states", injection_triple_test);
+    ( "injection correlates taint with environment quote boundaries",
+      injection_environment_binding_test );
     ("secret to network yields minimal capabilities", secret_network_test);
+    ( "secret observability distinguishes redirects and unknown calls",
+      secret_observability_boundaries_test );
     ("authorization gates must dominate privileged effects", dominance_test);
+    ( "authorization distinguishes external Unknown and manual approval",
+      authorization_unknown_and_manual_test );
     ( "supply chain and least privilege share the graph",
       supply_chain_and_permission_test );
+    ( "least privilege diagnoses only closed excessive grants",
+      known_excessive_permission_test );
+    ( "least privilege reads the canonical command source",
+      command_attribute_consumes_permission_test );
     ( "inherent execution capabilities are not reducible grants",
       inherent_execution_capabilities_are_not_reducible_grants_test );
     ("script adapters infer effects and quote boundaries", script_adapter_test);
@@ -287,6 +661,8 @@ let tests : test list =
       github_end_to_end_test );
     ( "protected release ref dominates deployment and repository effects",
       protected_release_dominance_test );
+    ( "CircleCI parameter bindings preserve trust across workflow calls",
+      circleci_parameter_binding_test );
   ]
 
 let () =

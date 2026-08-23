@@ -1,0 +1,228 @@
+variables:
+  JAVA_BUILD_IMAGE_VERSION: maven:3-eclipse-temurin-17
+
+  DEPENDENCY_SCANNING_IMAGE_VERSION: 5
+  SECRET_DETECTION_IMAGE_VERSION: 6
+
+  SONAR_IMAGE_VERSION: 5.0.1
+  ALLOW_QUALITY_GATE_FAILURE: 'false'
+
+  VULNERABILITY_EVALUATION_IMAGE_VERSION: 1.1.3
+  ALLOW_VULNERABILITY_EVALUATION_FAILURE: 'false'
+  VULNERABILITY_EVALUATION_SEVERITY: 'high'
+  VULNERABILITY_EVALUATION_GITLAB_DISMISSER_IDS: '18,20' # IDs of Florian Scheuer and Octavio Simone
+
+default:
+  id_tokens:
+    ID_TOKEN:
+      aud: "https://$VAULT_DOMAIN"
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+stages:
+  - build
+  - test
+  - analyze
+  - deploy
+  - rollout
+
+image:
+  name: ${JAVA_BUILD_IMAGE_VERSION}
+
+.job-template:
+  secrets:
+    ARTIFACTORY_DOMAIN:
+      vault: Artifactory/domain@Build-Environment
+      file: false
+    ARTIFACTORY_USERNAME:
+      vault: Artifactory/user-write-username@Build-Environment
+      file: false
+    ARTIFACTORY_PASSWORD:
+      vault: Artifactory/user-write-password@Build-Environment
+      file: false
+    SONATYPE_OSSRH_SIGN_KEY_NAME:
+      vault: sonatype-ossrh-signing/name@Build-Environment
+      file: false
+    SONATYPE_OSSRH_SIGN_KEY_PASSPHRASE:
+      vault: sonatype-ossrh-signing/passphrase@Build-Environment
+      file: false
+    SONATYPE_OSSRH_SIGN_SECRING:
+      vault: sonatype-ossrh-signing/secring@Build-Environment
+      file: false
+    SONATYPE_OSSRH_SIGN_PUBRING:
+      vault: sonatype-ossrh-signing/pubring@Build-Environment
+      file: false
+    SONATYPE_OSSRH_REPO_USERNAME:
+      vault: sonatype-ossrh-repository/username@Build-Environment
+      file: false
+    SONATYPE_OSSRH_REPO_TOKEN:
+      vault: sonatype-ossrh-repository/token@Build-Environment
+      file: false
+  cache:
+    key: maven-repository
+    paths:
+      - .m2/repository
+  before_script:
+    - ./configure_maven.sh
+
+build:
+  extends: .job-template
+  stage: build
+  script:
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target
+
+unit-test:
+  extends: .job-template
+  stage: test
+  needs:
+    - job: build
+  script:
+    - mvn test
+    - mvn jacoco:report
+    - ./print_coverage.sh target/site/jacoco/jacoco.csv
+  coverage: '/Instructions covered: \d+.\d+%/'
+  artifacts:
+    when: always
+    paths:
+      - target/surefire-reports
+      - target/site/jacoco
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+
+dependency-scan:
+  stage: test
+  image:
+    name: registry.gitlab.com/security-products/gemnasium-maven:${DEPENDENCY_SCANNING_IMAGE_VERSION}
+    entrypoint: [""]
+  script:
+    - /analyzer run
+  artifacts:
+    paths:
+      - 'gl-dependency-scanning-report.json'
+    reports:
+      dependency_scanning: 'gl-dependency-scanning-report.json'
+  allow_failure: false
+
+secret-detection:
+  stage: test
+  image:
+    name: registry.gitlab.com/security-products/secrets:${SECRET_DETECTION_IMAGE_VERSION}
+    entrypoint: [""]
+  script:
+    - /analyzer run
+  artifacts:
+    paths:
+      - 'gl-secret-detection-report.json'
+    reports:
+      secret_detection: 'gl-secret-detection-report.json'
+  allow_failure: false
+
+sonar:
+  stage: analyze
+  image:
+    name: sonarsource/sonar-scanner-cli:${SONAR_IMAGE_VERSION}
+    entrypoint: [""]
+  needs:
+    - build
+    - unit-test
+  secrets:
+    SONAR_DOMAIN:
+      vault: Sonar/domain@Build-Environment
+      file: false
+    SONAR_TOKEN:
+      vault: Sonar/token@Build-Environment
+      file: false
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: 0
+  cache:
+    key: $CI_JOB_NAME
+    paths:
+      - .sonar/cache
+  script:
+    - ./sonar.sh
+  rules:
+    - if: $ALLOW_QUALITY_GATE_FAILURE == 'true' || ($CI_COMMIT_TAG == null && $CI_COMMIT_REF_NAME != 'main')
+      when: on_success
+      allow_failure: true
+    - allow_failure: false
+
+vulnerability-evaluation:
+  stage: analyze
+  image:
+    name: docker-release.${ARTIFACTORY_DOMAIN}/pipeline-integration-vulnerability-evaluation:${VULNERABILITY_EVALUATION_IMAGE_VERSION}
+    entrypoint: [""]
+  needs:
+    - dependency-scan
+  secrets:
+    ARTIFACTORY_DOMAIN:
+      vault: Artifactory/domain@Build-Environment
+      file: false
+    GITLAB_ACCESS_TOKEN:
+      vault: gitlab/vulnerability-evaluation-token@Build-Environment
+      file: false
+  variables:
+    LOG_LEVEL: 'info'
+    SEVERITY: ${VULNERABILITY_EVALUATION_SEVERITY}
+    DEPENDENCY_SCANNING_ENABLED: 'true'
+    DEPENDENCY_SCANNING_REPORT: 'gl-dependency-scanning-report.json'
+    CONTAINER_SCANNING_ENABLED: 'false'
+    CONTAINER_SCANNING_REPORT: ''
+    GITLAB_DISMISSER_IDS: ${VULNERABILITY_EVALUATION_GITLAB_DISMISSER_IDS}
+    GITLAB_PROJECT_PATH: ${CI_PROJECT_PATH}
+  script:
+    - cd /usr/share/dracoon/pipeline-integration-vulnerability-evaluation
+    - cp ${CI_PROJECT_DIR}/gl-dependency-scanning-report.json .
+    - python ${PYTHON_OPTS} -u -m pipeline_integration_vulnerability_evaluation.main
+  rules:
+    - if: $ALLOW_VULNERABILITY_EVALUATION_FAILURE == 'true' || ($CI_COMMIT_TAG == null && $CI_COMMIT_REF_NAME != 'main')
+      when: on_success
+      allow_failure: true
+    - allow_failure: false
+
+deploy-development:
+  extends: .job-template
+  stage: deploy
+  needs:
+    - job: build
+    - job: sonar
+      artifacts: false
+  except:
+    - tags
+  script:
+    - mvn -Pdevelopment deploy -DskipTests
+
+deploy-release:
+  extends: .job-template
+  stage: deploy
+  needs:
+    - job: build
+    - job: sonar
+      artifacts: false
+  only:
+    - tags
+  script:
+    - mvn -Prelease deploy -DskipTests
+
+rollout:
+  extends: .job-template
+  stage: rollout
+  needs:
+    - job: build
+    - job: sonar
+      artifacts: false
+  only:
+    - tags
+  when: manual
+  script:
+    - ./configure_gnupg.sh
+    - mvn -Prollout deploy -DskipTests -Dgpg.keyname=$SONATYPE_OSSRH_SIGN_KEY_NAME -Dgpg.passphrase=$SONATYPE_OSSRH_SIGN_KEY_PASSPHRASE

@@ -4,6 +4,7 @@ exception Failed of string
 
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
+
 let lockfile entries =
   match Lockfile.create entries with
   | Ok lock -> lock
@@ -178,8 +179,7 @@ let lock_and_resolver_integrity_test () =
     }
   in
   let result =
-    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty
-      [ dependency ]
+    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty [ dependency ]
   in
   expect "mutable fetched revisions never enter the lock" (result.locked = []);
   expect "resolver exposes the integrity failure" (result.errors <> [])
@@ -212,9 +212,12 @@ let resolver_rejects_invalid_lock_entry_test () =
   let result =
     Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty [ dependency ]
   in
-  expect "invalid fetched entries remain unresolved without escaping an exception"
-    (result.locked = [] && result.unresolved = [ dependency ]
-    && result.errors <> [] && result.lockfile.entries = [])
+  expect
+    "invalid fetched entries remain unresolved without escaping an exception"
+    (result.locked = []
+    && result.unresolved = [ dependency ]
+    && result.errors <> []
+    && result.lockfile.entries = [])
 
 let semantic_program_diff_test () =
   let safe = node "echo safe" in
@@ -487,8 +490,7 @@ let resolver_local_dependency_test () =
     }
   in
   let result =
-    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty
-      [ dependency ]
+    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty [ dependency ]
   in
   expect "local dependency evidence is complete without a lockfile entry"
     (result.unresolved = [] && result.errors = []

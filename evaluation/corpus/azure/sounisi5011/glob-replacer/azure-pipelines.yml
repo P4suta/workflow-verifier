@@ -1,0 +1,28 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+# no PR builds
+pr: none
+
+jobs:
+  - template: ./.template/azure-pipelines/jobs/single-test.yml
+    parameters:
+      jobName: Lint
+      stepLabel: Run linter
+      script: npx run-s test:lint-1 test:lint-2
+
+  - template: ./.template/azure-pipelines/jobs/multi-test.yml
+    parameters:
+      jobName: UnitTest_Linux
+      vmImage: ubuntu-latest
+      stepLabel: Run unit test
+      script: npm run test:unit-test
+
+  - template: ./.template/azure-pipelines/jobs/multi-test.yml
+    parameters:
+      jobName: UnitTest_Windows
+      vmImage: windows-latest
+      stepLabel: Run unit test
+      script: npm run test:unit-test

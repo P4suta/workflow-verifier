@@ -62,6 +62,18 @@ run = "python -B scripts/verify_mutation_report.py --report _build/mutation-repo
 description = "Enforce the 400-repository release precision and recall gate"
 run = "python -B scripts/corpus_gate.py --manifest evaluation/corpus-v1.json --corpus-root evaluation/corpus --reports-root evaluation/reports --output _build/corpus-report-v1.json --release"
 
+[tasks.corpus-acquire]
+description = "Explicitly acquire immutable permissively licensed corpus snapshots"
+run = "python -B scripts/prepare_corpus.py acquire --analyzer _build/default/bin/main.exe --output evaluation --per-provider 100 --pages 10 --workers 8"
+
+[tasks.corpus-refresh]
+description = "Reanalyze verified immutable corpus snapshots without network access"
+run = "python -B scripts/prepare_corpus.py refresh --evaluation evaluation --analyzer _build/default/bin/main.exe --output _build/evaluation-refreshed --workers 8"
+
+[tasks.corpus-review]
+description = "Apply exhaustive reviewed diagnostic classifications to the corpus"
+run = "python -B scripts/prepare_corpus.py apply-review --manifest evaluation/corpus-v1.json --reports-root evaluation/reports --review evaluation/review-v1.json"
+
 [tasks.performance-measure]
 description = "Measure cold, warm, and incremental scenarios for WV_REVISION"
 run = "python -B scripts/measure_performance.py --suite performance/suite-v1.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-current.json"

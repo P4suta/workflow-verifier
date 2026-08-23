@@ -1,0 +1,47 @@
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - test
+  - deploy
+
+install:
+  stage: build
+  script:
+    - npm install
+  tags:
+    - node
+
+lint-frontend:
+  stage: test
+  script:
+    - npm run-script lint-frontend
+  tags:
+    - node
+
+lint-server:
+  stage: test
+  script:
+    - npm run-script lint-server
+  tags:
+    - node
+
+tests:
+  stage: test
+  script:
+    - npm stop
+    - npm start
+    - npm test
+    - npm stop
+  tags:
+    - node
+
+deploy:
+  stage: deploy
+  script:
+    - npm stop
+    - npm start
+  tags:
+    - node

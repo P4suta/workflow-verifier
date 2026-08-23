@@ -40,29 +40,68 @@ let looks_like_reference value =
 
 let classify_trust provider name =
   let lower = String.lowercase_ascii name in
-  let untrusted_fragments =
-    [
-      "pull_request";
-      "merge_request";
-      "commit_message";
-      "issue";
-      "comment";
-      "event.inputs";
-      "github.event";
-      "pipeline.parameters";
-      "system.pullrequest";
-    ]
+  let unknown label =
+    Abstract_value.Unknown_trust
+      [ Unknown.Dynamic_string ("unresolved " ^ label ^ " " ^ name) ]
   in
-  if
-    List.exists
-      (fun fragment -> Util.contains ~needle:fragment lower)
-      untrusted_fragments
-  then Abstract_value.Untrusted
-  else
-    match provider with
-    | Ir.Circleci when Util.starts_with ~prefix:"parameters." lower ->
-        Abstract_value.Untrusted
-    | _ -> Abstract_value.Trusted
+  match provider with
+  | Ir.Github ->
+      if
+        Util.starts_with ~prefix:"github.event." lower
+        || Util.starts_with ~prefix:"inputs." lower
+        || List.mem lower
+             [
+               "github.actor";
+               "github.base_ref";
+               "github.head_ref";
+               "github.ref";
+               "github.ref_name";
+               "github.triggering_actor";
+             ]
+      then Abstract_value.Untrusted
+      else if
+        Util.starts_with ~prefix:"env." lower
+        || Util.starts_with ~prefix:"needs." lower
+        || Util.starts_with ~prefix:"steps." lower
+           && Util.contains ~needle:".outputs." lower
+      then unknown "GitHub dataflow value"
+      else Abstract_value.Trusted
+  | Ir.Gitlab ->
+      if lower = "ci_merge_request_diff_base_sha" then Abstract_value.Trusted
+      else if
+        Util.starts_with ~prefix:"ci_merge_request_" lower
+        || Util.starts_with ~prefix:"ci_external_pull_request_" lower
+        || List.mem lower
+             [
+               "ci_commit_branch";
+               "ci_commit_message";
+               "ci_commit_ref_name";
+               "ci_commit_tag";
+             ]
+      then Abstract_value.Untrusted
+      else Abstract_value.Trusted
+  | Ir.Azure ->
+      if lower = "system.pullrequest.pullrequestnumber" then
+        Abstract_value.Trusted
+      else if
+        Util.starts_with ~prefix:"system.pullrequest." lower
+        || List.mem lower
+             [
+               "build.sourcebranch";
+               "build.sourcebranchname";
+               "build.sourceversionmessage";
+             ]
+      then Abstract_value.Untrusted
+      else Abstract_value.Trusted
+  | Ir.Circleci ->
+      if
+        Util.starts_with ~prefix:"pipeline.parameters." lower
+        || List.mem lower
+             [ "circle_branch"; "circle_pull_request"; "circle_tag" ]
+      then Abstract_value.Untrusted
+      else if Util.starts_with ~prefix:"parameters." lower then
+        Abstract_value.Trusted
+      else Abstract_value.Trusted
 
 let classify_secrecy name =
   let lower = String.lowercase_ascii name in

@@ -4,6 +4,7 @@ exception Failed of string
 
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
+
 let lockfile entries =
   match Lockfile.create entries with
   | Ok lock -> lock

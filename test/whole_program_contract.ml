@@ -219,6 +219,7 @@ let call_recursion () =
 let authorization_semantics () =
   let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
   and ordinary = node ~kind:Ir.Gate ~phase:Ir.Plan "success condition"
+  and misleading = node ~kind:Ir.Gate ~phase:Ir.Plan "branch naming check"
   and approval = node ~kind:Ir.Gate ~phase:Ir.Plan "environment approval"
   and deploy =
     node ~kind:Ir.Effect ~effects:[ Ir.Deployment_change ]
@@ -233,6 +234,15 @@ let authorization_semantics () =
   in
   expect "an ordinary success condition is not authorization"
     ((property "WV-AUTH-001" ordinary_result).state = Property.Violated);
+  let misleading_result =
+    graph
+      [ workflow; misleading; deploy ]
+      [ edge workflow misleading; edge misleading deploy ]
+      [ workflow ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "an authorization keyword in a gate label is not evidence"
+    ((property "WV-AUTH-001" misleading_result).state = Property.Violated);
   let approved_result =
     graph
       [ workflow; approval; deploy ]

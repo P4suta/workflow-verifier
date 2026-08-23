@@ -1,0 +1,59 @@
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/node:10
+  working_directory: ~/repo
+
+restore-npm-cache: &restore-npm-cache
+  restore_cache:
+    keys:
+      - v1-dependencies-{{ checksum "package.json" }}
+      - v1-dependencies-
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - <<: *restore-npm-cache
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+  audit:
+    <<: *defaults
+    steps:
+      - checkout
+      - <<: *restore-npm-cache
+      - run: yarn flow
+      - run: yarn lint
+  test-dev:
+    <<: *defaults
+    steps:
+      - checkout
+      - <<: *restore-npm-cache
+      - run: yarn test:cov
+      - run: yarn report-coverage
+  test-prod:
+    <<: *defaults
+    steps:
+      - checkout
+      - <<: *restore-npm-cache
+      - run: yarn test:prod
+
+workflows:
+  version: 2
+  microcosm:
+    jobs:
+      - build
+      - audit:
+          requires:
+            - build
+      - test-dev:
+          requires:
+            - build
+      - test-prod:
+          requires:
+            - build

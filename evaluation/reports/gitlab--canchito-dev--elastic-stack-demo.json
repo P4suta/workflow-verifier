@@ -1,0 +1,273 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:dc54d59cdbf156e25abc84ed4c587b430b0ea6c5951497c9fcea0eef09d715f4",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_5277d24c1bb4f3a613ce",
+          "id": "wv_4739fa00fe8e85561032",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3d7cd97e5b1e2c5cb897"
+        },
+        {
+          "condition": true,
+          "from": "wv_5277d24c1bb4f3a613ce",
+          "id": "wv_7a252ed2c121bb2ea372",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3d7cd97e5b1e2c5cb897"
+        },
+        {
+          "condition": true,
+          "from": "wv_04af3b6ad1eae7a7ec3c",
+          "id": "wv_be1099c14b32bdd33091",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a90cc71fb28f9d57d1ae"
+        },
+        {
+          "condition": true,
+          "from": "wv_5277d24c1bb4f3a613ce",
+          "id": "wv_d17d44385449962247ac",
+          "kind": "control",
+          "label": null,
+          "to": "wv_04af3b6ad1eae7a7ec3c"
+        }
+      ],
+      "entrypoints": [
+        "wv_5277d24c1bb4f3a613ce"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_04af3b6ad1eae7a7ec3c",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/canchito-dev/elastic-stack-demo/.gitlab-ci.yml",
+            "start": {
+              "byte": 614,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 620,
+              "column": 9,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3d7cd97e5b1e2c5cb897",
+          "kind": "call",
+          "name": "Security/SAST.gitlab-ci.yml",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/canchito-dev/elastic-stack-demo/.gitlab-ci.yml",
+            "start": {
+              "byte": 654,
+              "column": 5,
+              "line": 12
+            },
+            "stop": {
+              "byte": 691,
+              "column": 42,
+              "line": 12
+            }
+          },
+          "unknown": {
+            "detail": "Security/SAST.gitlab-ci.yml",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5277d24c1bb4f3a613ce",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/canchito-dev/elastic-stack-demo/.gitlab-ci.yml",
+            "start": {
+              "byte": 604,
+              "column": 1,
+              "line": 7
+            },
+            "stop": {
+              "byte": 691,
+              "column": 42,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a90cc71fb28f9d57d1ae",
+          "kind": "job",
+          "name": "sast",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/canchito-dev/elastic-stack-demo/.gitlab-ci.yml",
+            "start": {
+              "byte": 621,
+              "column": 1,
+              "line": 9
+            },
+            "stop": {
+              "byte": 640,
+              "column": 14,
+              "line": 10
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/canchito-dev/elastic-stack-demo/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:19c4c9929865caebe3da7ebd6c2111d62bbc6e27e417a386f0341696f50237d7",
+      "path": "gitlab/canchito-dev/elastic-stack-demo/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "Security/SAST.gitlab-ci.yml",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0-dev"
+  }
+}

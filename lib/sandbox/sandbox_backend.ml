@@ -52,13 +52,15 @@ let attestation_fields attestation =
     ("version", Json.String attestation.version);
   ]
 
-let attestation_to_json attestation = Json.Object (attestation_fields attestation)
+let attestation_to_json attestation =
+  Json.Object (attestation_fields attestation)
 
 let probe_to_json probe =
   Json.Object
     (("available", Json.Bool probe.available)
     :: ( "reasons",
-         Json.Array (List.map (fun reason -> Json.String reason) probe.reasons) )
+         Json.Array (List.map (fun reason -> Json.String reason) probe.reasons)
+       )
     :: ("schema", Json.String "backend-attestation-v1")
     :: attestation_fields probe.attestation)
 

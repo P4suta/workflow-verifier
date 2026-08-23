@@ -1,0 +1,145 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+parameters:
+- name: result
+  type: string
+  default: '**/target/site/serenity/'
+- name: tag
+  displayName: Tag
+  type: string
+  default: '@CRUD'
+
+- name: environment
+  displayName: Environment
+  values:
+    - stage
+  default: stage
+
+- name: browser
+  displayName: Browser
+  values:
+    - chrome
+    - edge
+  default: chrome
+
+- name: headless
+  displayName: Headless
+  values:
+    - true
+    - false
+  default: false
+  
+trigger:
+  branches:
+    include:
+      - main
+      - master
+
+jobs:
+- job: BuildAndTest
+  displayName: Build, Test and Publish Serenity Report
+  container: maven:3.10-jdk-21
+  services:
+    selenium:
+      image: selenium/standalone-chrome:latest
+      ports:
+        - 4444:4444
+      options: --shm-size=2g
+  pool:
+    vmImage: ubuntu-latest
+
+  steps:
+  - checkout: self
+    displayName: Checkout repo
+
+  - task: Cache@2
+    displayName: Cache Maven local repository
+    inputs:
+      key: 'maven | "$(Agent.OS)" | **/pom.xml'
+      path: ~/.m2/repository
+
+  - script: |
+      echo "Waiting for Selenium on http://localhost:4444 ..."
+      for i in $(seq 1 30); do
+        if curl -sS http://localhost:4444/status | grep -q '"ready":true'; then
+          echo "Selenium ready"
+          break
+        fi
+        echo "waiting ($i)..."
+        sleep 2
+      done
+    displayName: Wait for Selenium service
+
+  - script: |
+      mvn -B -Dwebdriver.driver=remote -Dwebdriver.remote.url=http://localhost:4444 \
+        -Dwebdriver.remote.sessionCapabilities='{"browserName":"chrome","goog:chromeOptions":{"args":["--no-sandbox","--headless=new","--disable-gpu","--window-size=1920,1080"]}}' \
+        -DskipTests=false clean verify
+    displayName: Run Maven tests (Serenity + Cucumber)
+
+  - task: PublishTestResults@2
+    displayName: Publish JUnit/Failsafe results
+    inputs:
+      testResultsFiles: |
+        **/target/surefire-reports/*.xml
+        **/target/failsafe-reports/*.xml
+      testResultsFormat: JUnit
+      failTaskOnFailedTests: false
+
+  - task: PublishPipelineArtifact@1
+    displayName: Upload Serenity HTML report
+    inputs:
+      targetPath: 'target/site/serenity'
+      artifact: 'serenity-report'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish build artifacts (jars)
+    inputs:
+      pathToPublish: 'target/*.jar'
+      artifactName: 'artifacts'
+      publishLocation: 'Container'
+
+## Containerization and optional container deploy
+# Build and push image to ACR (requires `azureSubscription` and `acrName` to be set)
+- ${{ if eq(variables.deploy, 'true') }}:
+  - task: AzureCLI@2
+    displayName: 'Build and push Docker image to ACR'
+    inputs:
+      azureSubscription: '$(azureSubscription)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        set -euo pipefail
+        echo "Logging in to ACR: $(acrName)"
+        az acr login --name $(acrName)
+        FULL_IMAGE=$(acrName).azurecr.io/$(imageName):$(imageTag)
+        echo "Building image $FULL_IMAGE"
+        docker build -t $FULL_IMAGE .
+        echo "Pushing image $FULL_IMAGE"
+        docker push $FULL_IMAGE
+
+  # Deploy to Web App for Containers (if selected)
+  - ${{ if eq(variables.deployTarget, 'webapp') }}:
+    - task: AzureWebAppContainer@1
+      displayName: 'Deploy image to Azure Web App for Containers'
+      inputs:
+        azureSubscription: '$(azureSubscription)'
+        appName: '$(appName)'
+        imageName: '$(acrName).azurecr.io/$(imageName):$(imageTag)'
+
+  # Deploy to Azure Container Apps (if selected). Requires `resourceGroup` and container app `appName` to exist.
+  - ${{ if eq(variables.deployTarget, 'containerapp') }}:
+    - task: AzureCLI@2
+      displayName: 'Update Azure Container App image'
+      inputs:
+        azureSubscription: '$(azureSubscription)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          set -euo pipefail
+          FULL_IMAGE=$(acrName).azurecr.io/$(imageName):$(imageTag)
+          echo "Updating Container App $(appName) in resource group $(resourceGroup) to image $FULL_IMAGE"
+          az containerapp update --name $(appName) --resource-group $(resourceGroup) --image $FULL_IMAGE
+

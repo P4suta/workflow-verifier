@@ -1,0 +1,54 @@
+image: mcr.microsoft.com/dotnet/sdk:6.0
+
+stages:
+    - build
+    - test
+    - deploy
+
+variables:
+    test: "MRTSharp.Test"
+    parserProject:  "MRTSharp"
+
+before_script:
+    - cd MRTSharp
+    - dotnet restore
+
+build:
+    stage: build
+    script:
+        - export VERSION=$(cat MRTSharp/MRTSharp.csproj | grep -oP '<AssemblyVersion>\K.*?(?=</AssemblyVersion>)' | rev | cut -c 3- | rev)
+        - echo "VERSION=$VERSION" >> $CI_PROJECT_DIR/build.env
+        - dotnet build -c Release
+    artifacts:
+        paths:
+            - MRTSharp/MRTSharp/bin/Release/MRTSharp.*.nupkg
+        reports:
+            dotenv: build.env
+
+test:
+    stage: test
+    dependencies:
+        - build
+    script: 
+        - cd $test
+        - dotnet test
+
+deploy:
+    stage: deploy
+    needs:
+        - job: build
+          artifacts: true
+    script: 
+        - cd MRTSharp/bin/Release
+        - dotnet nuget push MRTSharp.$VERSION.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+        - git remote remove origin
+        - git remote add origin https://oauth2:${GITLAB_ACCESS_TOKEN}@gitlab.com/${CI_PROJECT_PATH}.git
+        - git config user.email "${GITLAB_USER_EMAIL}"
+        - git config user.name "${GITLAB_USER_NAME}"
+        - git tag -a v$VERSION -m "Version created by gitlab-ci deploy"
+        - git push origin v$VERSION
+    environment:
+        name: production
+    only: 
+        - master
+    when: manual
