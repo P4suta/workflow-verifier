@@ -94,6 +94,26 @@ fn appcontainer_step_records_its_scratch_artifact() {
 }
 
 #[test]
+fn appcontainer_can_read_private_source_into_scratch() {
+    let root = source();
+    let result = execute(
+        &root,
+        vec![
+            "cmd.exe".to_owned(),
+            "/D".to_owned(),
+            "/S".to_owned(),
+            "/C".to_owned(),
+            "type \"%WORKFLOW_VERIFIER_SOURCE%\\input.txt\">copied.txt".to_owned(),
+        ],
+        5,
+        4096,
+    );
+    assert_eq!(result.outcome, Outcome::Completed);
+    assert!(result.canonical_json().contains("copied.txt"));
+    std::fs::remove_dir_all(root).expect("remove fixture");
+}
+
+#[test]
 fn appcontainer_cannot_modify_the_private_source_view() {
     let root = source();
     let result = execute(

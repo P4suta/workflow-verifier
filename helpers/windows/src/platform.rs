@@ -1,8 +1,8 @@
 use std::collections::BTreeMap;
-use std::ffi::c_void;
+use std::ffi::{OsString, c_void};
 use std::fs::File;
 use std::io::{Read as _, Seek as _, SeekFrom};
-use std::os::windows::ffi::OsStrExt as _;
+use std::os::windows::ffi::{OsStrExt as _, OsStringExt as _};
 use std::os::windows::io::AsRawHandle as _;
 use std::path::{Path, PathBuf};
 use std::ptr::{null, null_mut};
@@ -10,16 +10,18 @@ use std::sync::OnceLock;
 use std::time::{Duration, Instant};
 
 use windows_sys::Win32::Foundation::{
-    CloseHandle, ERROR_ALREADY_EXISTS, HANDLE, HANDLE_FLAG_INHERIT, INVALID_HANDLE_VALUE, LocalFree,
-    SetHandleInformation, WAIT_OBJECT_0, WAIT_TIMEOUT,
+    CloseHandle, ERROR_ALREADY_EXISTS, HANDLE, HANDLE_FLAG_INHERIT, INVALID_HANDLE_VALUE,
+    LocalFree, SetHandleInformation, WAIT_OBJECT_0, WAIT_TIMEOUT,
 };
 use windows_sys::Win32::Security::Authorization::{
-    ConvertStringSecurityDescriptorToSecurityDescriptorW, EXPLICIT_ACCESS_W, GRANT_ACCESS,
-    GetNamedSecurityInfoW, NO_MULTIPLE_TRUSTEE, SDDL_REVISION_1, SE_FILE_OBJECT, SetEntriesInAclW,
-    SetNamedSecurityInfoW, TRUSTEE_IS_GROUP, TRUSTEE_IS_SID, TRUSTEE_W,
+    ConvertSidToStringSidW, ConvertStringSecurityDescriptorToSecurityDescriptorW, DENY_ACCESS,
+    EXPLICIT_ACCESS_W, GRANT_ACCESS, GetNamedSecurityInfoW, NO_MULTIPLE_TRUSTEE, SDDL_REVISION_1,
+    SE_FILE_OBJECT, SetEntriesInAclW, SetNamedSecurityInfoW, TRUSTEE_IS_GROUP, TRUSTEE_IS_SID,
+    TRUSTEE_W,
 };
 use windows_sys::Win32::Security::Isolation::{
     CreateAppContainerProfile, DeriveAppContainerSidFromAppContainerName,
+    GetAppContainerFolderPath,
 };
 use windows_sys::Win32::Security::{
     ACL, CONTAINER_INHERIT_ACE, CreateRestrictedToken, DACL_SECURITY_INFORMATION,
@@ -29,8 +31,10 @@ use windows_sys::Win32::Security::{
     TokenPrivileges,
 };
 use windows_sys::Win32::Storage::FileSystem::{
-    FILE_ALL_ACCESS, FILE_GENERIC_EXECUTE, FILE_GENERIC_READ,
+    DELETE, FILE_ALL_ACCESS, FILE_DELETE_CHILD, FILE_GENERIC_EXECUTE, FILE_GENERIC_READ,
+    FILE_GENERIC_WRITE,
 };
+use windows_sys::Win32::System::Com::CoTaskMemFree;
 use windows_sys::Win32::System::JobObjects::{
     AssignProcessToJobObject, CreateJobObjectW, JOB_OBJECT_LIMIT_ACTIVE_PROCESS,
     JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, JOB_OBJECT_LIMIT_PROCESS_MEMORY,
@@ -101,6 +105,29 @@ impl Drop for SecurityDescriptor {
     }
 }
 
+struct LocalWide(*mut u16);
+
+impl Drop for LocalWide {
+    fn drop(&mut self) {
+        // SAFETY: ConvertSidToStringSidW allocated this buffer with LocalAlloc.
+        unsafe {
+            LocalFree(self.0.cast());
+        }
+    }
+}
+
+struct CoTaskWide(*mut u16);
+
+impl Drop for CoTaskWide {
+    fn drop(&mut self) {
+        // SAFETY: GetAppContainerFolderPath allocated this buffer with the COM
+        // task allocator.
+        unsafe {
+            CoTaskMemFree(self.0.cast());
+        }
+    }
+}
+
 struct LocalAcl(*mut ACL);
 
 impl Drop for LocalAcl {
@@ -149,6 +176,49 @@ impl AppContainerSid {
 
     fn raw(&self) -> PSID {
         self.0
+    }
+
+    fn storage_root(&self) -> Result<PathBuf, String> {
+        let mut sid_text = null_mut();
+        // SAFETY: this object owns a live SID and sid_text is writable.
+        if unsafe { ConvertSidToStringSidW(self.raw(), &raw mut sid_text) } == 0
+            || sid_text.is_null()
+        {
+            return Err(windows_error("ConvertSidToStringSidW"));
+        }
+        let sid_text = LocalWide(sid_text);
+        let mut folder = null_mut();
+        // SAFETY: sid_text is a live NUL-terminated SID string and folder is a
+        // writable out pointer.
+        let result = unsafe { GetAppContainerFolderPath(sid_text.0, &raw mut folder) };
+        if result < 0 || folder.is_null() {
+            return Err(format!(
+                "GetAppContainerFolderPath failed: HRESULT 0x{:08x}",
+                result.cast_unsigned()
+            ));
+        }
+        let folder = CoTaskWide(folder);
+        let length = (0..32_768)
+            .find(|offset| {
+                // SAFETY: the API returned a NUL-terminated Windows path. The
+                // documented maximum extended path is below this hard bound.
+                unsafe { *folder.0.add(*offset) == 0 }
+            })
+            .ok_or_else(|| "AppContainer storage path is not NUL-terminated".to_owned())?;
+        // SAFETY: the preceding bounded scan proved every element through
+        // length readable and found the terminator at length.
+        let path = PathBuf::from(OsString::from_wide(unsafe {
+            std::slice::from_raw_parts(folder.0, length)
+        }));
+        let metadata = std::fs::symlink_metadata(&path).map_err(|error| error.to_string())?;
+        if path.is_absolute() && metadata.is_dir() && !metadata.file_type().is_symlink() {
+            Ok(path)
+        } else {
+            Err(format!(
+                "AppContainer storage is not a real absolute directory: {}",
+                path.display()
+            ))
+        }
     }
 }
 
@@ -232,7 +302,12 @@ fn restricted_token() -> Result<OwnedHandle, String> {
     }
 }
 
-fn grant_path(path: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+fn update_path_acl(
+    path: &Path,
+    sid: PSID,
+    permissions: u32,
+    deny: bool,
+) -> Result<(), String> {
     let path = wide(path.as_os_str())?;
     let mut old_acl: *mut ACL = null_mut();
     let mut descriptor: PSECURITY_DESCRIPTOR = null_mut();
@@ -255,7 +330,7 @@ fn grant_path(path: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
     let _descriptor = SecurityDescriptor(descriptor);
     let entry = EXPLICIT_ACCESS_W {
         grfAccessPermissions: permissions,
-        grfAccessMode: GRANT_ACCESS,
+        grfAccessMode: if deny { DENY_ACCESS } else { GRANT_ACCESS },
         grfInheritance: CONTAINER_INHERIT_ACE | OBJECT_INHERIT_ACE,
         Trustee: TRUSTEE_W {
             pMultipleTrustee: null_mut(),
@@ -291,15 +366,32 @@ fn grant_path(path: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
     }
 }
 
-fn grant_tree(root: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+fn grant_path(path: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+    update_path_acl(path, sid, permissions, false)
+}
+
+fn deny_path(path: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+    update_path_acl(path, sid, permissions, true)
+}
+
+fn update_tree_acl(
+    root: &Path,
+    sid: PSID,
+    permissions: u32,
+    deny: bool,
+) -> Result<(), String> {
     let metadata = std::fs::symlink_metadata(root).map_err(|error| error.to_string())?;
     if metadata.file_type().is_symlink() {
         return Err(format!(
-            "refusing ACL grant through symlink: {}",
+            "refusing ACL update through symlink: {}",
             root.display()
         ));
     }
-    grant_path(root, sid, permissions)?;
+    if deny {
+        deny_path(root, sid, permissions)?;
+    } else {
+        grant_path(root, sid, permissions)?;
+    }
     if metadata.is_dir() {
         let mut entries = std::fs::read_dir(root)
             .map_err(|error| error.to_string())?
@@ -307,10 +399,18 @@ fn grant_tree(root: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
             .map_err(|error| error.to_string())?;
         entries.sort_by_key(std::fs::DirEntry::file_name);
         for entry in entries {
-            grant_tree(&entry.path(), sid, permissions)?;
+            update_tree_acl(&entry.path(), sid, permissions, deny)?;
         }
     }
     Ok(())
+}
+
+fn grant_tree(root: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+    update_tree_acl(root, sid, permissions, false)
+}
+
+fn deny_tree(root: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
+    update_tree_acl(root, sid, permissions, true)
 }
 
 fn set_low_integrity_label(path: &Path, directory: bool) -> Result<(), String> {
@@ -677,9 +777,7 @@ impl OutputFile {
     }
 
     fn file(&self) -> &File {
-        self.file
-            .as_ref()
-            .expect("output file is open while owned")
+        self.file.as_ref().expect("output file is open while owned")
     }
 
     fn read(&mut self, limit: u64) -> Result<Vec<u8>, String> {
@@ -906,10 +1004,32 @@ impl WindowsSandbox {
 }
 
 impl NativeSandbox for WindowsSandbox {
+    fn storage_root(&mut self) -> Result<Option<PathBuf>, String> {
+        if self.sid.is_none() {
+            self.sid = Some(AppContainerSid::create_or_open()?);
+        }
+        self.sid
+            .as_ref()
+            .ok_or_else(|| "AppContainer SID was not initialized".to_owned())?
+            .storage_root()
+            .map(Some)
+    }
+
     fn prepare(&mut self, request: &NativeSandboxRequest<'_>) -> Result<(), String> {
-        let sid = AppContainerSid::create_or_open()?;
+        if self.sid.is_none() {
+            self.sid = Some(AppContainerSid::create_or_open()?);
+        }
+        let sid = self
+            .sid
+            .as_ref()
+            .ok_or_else(|| "AppContainer SID was not initialized".to_owned())?;
         let token = restricted_token()?;
         verify_privilege_stripped(token.raw())?;
+        deny_tree(
+            request.source_root,
+            sid.raw(),
+            FILE_GENERIC_WRITE | DELETE | FILE_DELETE_CHILD,
+        )?;
         grant_tree(
             request.source_root,
             sid.raw(),
@@ -919,7 +1039,6 @@ impl NativeSandbox for WindowsSandbox {
         grant_tree(request.scratch_root, sid.raw(), FILE_ALL_ACCESS)?;
         // Prove Job Object limits can be committed before emitting attestations.
         drop(create_job(request.plan)?);
-        self.sid = Some(sid);
         self.token = Some(token);
         Ok(())
     }
@@ -947,6 +1066,9 @@ pub(super) fn probe() -> Vec<String> {
         }
     };
     if let Some(sid) = sid {
+        if let Err(error) = sid.storage_root() {
+            reasons.push(format!("AppContainer storage probe: {error}"));
+        }
         match restricted_token().and_then(|token| verify_privilege_stripped(token.raw())) {
             Ok(()) => {}
             Err(error) => {

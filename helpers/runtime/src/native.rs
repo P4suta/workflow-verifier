@@ -59,6 +59,17 @@ pub struct NativeSandboxRequest<'a> {
 
 /// Operating-system containment boundary used by the common evidence runner.
 pub trait NativeSandbox {
+    /// Selects a backend-owned parent for private source and scratch trees.
+    /// The default keeps both trees below the controller's temporary directory.
+    ///
+    /// # Errors
+    ///
+    /// Returns a fail-closed error when the backend cannot obtain its isolated
+    /// storage root.
+    fn storage_root(&mut self) -> Result<Option<PathBuf>, String> {
+        Ok(None)
+    }
+
     /// Installs every advertised control for the private source and scratch roots.
     ///
     /// # Errors
@@ -229,11 +240,15 @@ where
             plan.source_digest, baseline.manifest.digest
         )));
     }
-    let source_view =
-        PrivateSourceTree::prepare(&source_root, &baseline).map_err(LaunchError::Infrastructure)?;
-    let scratch =
-        ScratchTree::prepare(&source_root, baseline).map_err(LaunchError::Infrastructure)?;
     let secret_values = secret_values(plan, secrets);
+    let storage_root = sandbox
+        .storage_root()
+        .map_err(|error| LaunchError::Infrastructure(redact_text(&error, &secret_values)))?
+        .unwrap_or_else(std::env::temp_dir);
+    let source_view = PrivateSourceTree::prepare_in(&source_root, &baseline, &storage_root)
+        .map_err(LaunchError::Infrastructure)?;
+    let scratch = ScratchTree::prepare_in(&source_root, baseline, &storage_root)
+        .map_err(LaunchError::Infrastructure)?;
     sandbox
         .prepare(&NativeSandboxRequest {
             plan,

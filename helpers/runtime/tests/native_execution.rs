@@ -4,8 +4,8 @@ use std::path::PathBuf;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use workflow_verifier_helper_runtime::{
-    ClosureSandbox, MapSecrets, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
-    execute_native, source_snapshot,
+    ClosureSandbox, MapSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest,
+    ProcessObservation, execute_native, source_snapshot,
 };
 use workflow_verifier_runner_protocol::{
     Control, Descriptor, Limits, Outcome, PlanStatus, Step, ValidatedPlan,
@@ -13,16 +13,21 @@ use workflow_verifier_runner_protocol::{
 
 static NEXT_DIRECTORY: AtomicU64 = AtomicU64::new(0);
 
-fn temporary_source() -> PathBuf {
+fn temporary_directory(purpose: &str) -> PathBuf {
     let sequence = NEXT_DIRECTORY.fetch_add(1, Ordering::Relaxed);
     let root = std::env::temp_dir().join(format!(
-        "workflow-verifier-native-execution-test-{}-{sequence}",
+        "workflow-verifier-{purpose}-test-{}-{sequence}",
         std::process::id()
     ));
     if root.exists() {
         std::fs::remove_dir_all(&root).expect("remove stale test source");
     }
-    std::fs::create_dir(&root).expect("create test source");
+    std::fs::create_dir(&root).expect("create test directory");
+    root
+}
+
+fn temporary_source() -> PathBuf {
+    let root = temporary_directory("native-execution");
     std::fs::write(root.join("input.txt"), b"immutable").expect("write test source");
     root
 }
@@ -146,4 +151,69 @@ fn native_execution_emits_common_process_secret_and_artifact_evidence() {
     assert!(json.contains("\"kind\":\"artifact_recorded\""));
     assert!(!json.contains("do-not-leak"));
     std::fs::remove_dir_all(root).expect("remove test source");
+}
+
+struct LocatedSandbox {
+    storage_root: PathBuf,
+    prepared: bool,
+}
+
+impl NativeSandbox for LocatedSandbox {
+    fn storage_root(&mut self) -> Result<Option<PathBuf>, String> {
+        Ok(Some(self.storage_root.clone()))
+    }
+
+    fn prepare(&mut self, request: &NativeSandboxRequest<'_>) -> Result<(), String> {
+        assert_eq!(request.source_root.parent(), Some(self.storage_root.as_path()));
+        assert_eq!(
+            request.scratch_root.parent(),
+            Some(self.storage_root.as_path())
+        );
+        self.prepared = true;
+        Ok(())
+    }
+
+    fn run(&mut self, _request: &NativeStepRequest<'_>) -> Result<ProcessObservation, String> {
+        assert!(self.prepared);
+        Ok(ProcessObservation {
+            code: Some(0),
+            timed_out: false,
+            output_exceeded: false,
+            output: Vec::new(),
+        })
+    }
+}
+
+#[test]
+fn native_execution_uses_and_cleans_backend_storage_root() {
+    let root = temporary_source();
+    let digest = source_snapshot(&root)
+        .expect("source snapshot")
+        .manifest
+        .digest;
+    let storage_root = temporary_directory("native-storage");
+    let mut sandbox = LocatedSandbox {
+        storage_root: storage_root.clone(),
+        prepared: false,
+    };
+
+    let result = execute_native(
+        &plan(digest),
+        &descriptor(),
+        &root,
+        &MapSecrets::default(),
+        &mut sandbox,
+    )
+    .expect("native execution in backend storage");
+
+    assert_eq!(result.outcome, Outcome::Completed);
+    assert!(
+        std::fs::read_dir(&storage_root)
+            .expect("read backend storage")
+            .next()
+            .is_none(),
+        "private source and scratch trees must be removed"
+    );
+    std::fs::remove_dir_all(root).expect("remove test source");
+    std::fs::remove_dir_all(storage_root).expect("remove backend storage");
 }

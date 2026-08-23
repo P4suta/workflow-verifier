@@ -41,17 +41,42 @@ fn validate_temp_name(purpose: &str, suffix: &str) -> Result<(), String> {
     }
 }
 
-fn temp_candidate(purpose: &str, suffix: &str) -> Result<PathBuf, String> {
+fn temp_candidate_in(parent: &Path, purpose: &str, suffix: &str) -> Result<PathBuf, String> {
     validate_temp_name(purpose, suffix)?;
     let nonce = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map_err(|error| error.to_string())?
         .as_nanos();
     let sequence = NEXT_TEMP_RESOURCE.fetch_add(1, Ordering::Relaxed);
-    Ok(std::env::temp_dir().join(format!(
+    Ok(parent.join(format!(
         "workflow-verifier-{purpose}-{}-{nonce}-{sequence}{suffix}",
         std::process::id()
     )))
+}
+
+fn validate_temp_parent(parent: &Path) -> Result<(), String> {
+    let metadata = fs::symlink_metadata(parent).map_err(|error| error.to_string())?;
+    if metadata.file_type().is_symlink() || !metadata.is_dir() {
+        Err(format!(
+            "temporary resource parent is not a real directory: {}",
+            parent.display()
+        ))
+    } else {
+        Ok(())
+    }
+}
+
+fn reserve_temp_directory_in(parent: &Path, purpose: &str) -> Result<PathBuf, String> {
+    validate_temp_parent(parent)?;
+    for _ in 0..TEMP_RESOURCE_ATTEMPTS {
+        let path = temp_candidate_in(parent, purpose, "")?;
+        match fs::create_dir(&path) {
+            Ok(()) => return Ok(path),
+            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {}
+            Err(error) => return Err(error.to_string()),
+        }
+    }
+    Err("could not reserve a unique temporary directory".to_owned())
 }
 
 /// Atomically reserves a uniquely named private directory below the process
@@ -61,15 +86,7 @@ fn temp_candidate(purpose: &str, suffix: &str) -> Result<PathBuf, String> {
 ///
 /// Rejects path syntax in `purpose`, or fails if no candidate can be created.
 pub fn reserve_temp_directory(purpose: &str) -> Result<PathBuf, String> {
-    for _ in 0..TEMP_RESOURCE_ATTEMPTS {
-        let path = temp_candidate(purpose, "")?;
-        match fs::create_dir(&path) {
-            Ok(()) => return Ok(path),
-            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {}
-            Err(error) => return Err(error.to_string()),
-        }
-    }
-    Err("could not reserve a unique temporary directory".to_owned())
+    reserve_temp_directory_in(&std::env::temp_dir(), purpose)
 }
 
 /// Atomically reserves a uniquely named private file below the process
@@ -80,8 +97,10 @@ pub fn reserve_temp_directory(purpose: &str) -> Result<PathBuf, String> {
 /// Rejects path syntax in `purpose` or `suffix`, or fails if no candidate can
 /// be created.
 pub fn reserve_temp_file(purpose: &str, suffix: &str) -> Result<(PathBuf, File), String> {
+    let parent = std::env::temp_dir();
+    validate_temp_parent(&parent)?;
     for _ in 0..TEMP_RESOURCE_ATTEMPTS {
-        let path = temp_candidate(purpose, suffix)?;
+        let path = temp_candidate_in(&parent, purpose, suffix)?;
         match OpenOptions::new()
             .create_new(true)
             .read(true)
@@ -254,22 +273,25 @@ fn copy_tree(source: &Path, destination: &Path) -> Result<(), String> {
 
 pub struct ScratchTree {
     path: PathBuf,
+    cleanup_parent: PathBuf,
     baseline: SourceSnapshot,
 }
 
 pub(crate) struct PrivateSourceTree {
     path: PathBuf,
+    cleanup_parent: PathBuf,
 }
 
 fn private_copy(
     source: &Path,
     baseline: &SourceSnapshot,
+    storage_root: &Path,
     purpose: &str,
 ) -> Result<PathBuf, String> {
     if source_snapshot(source)? != *baseline {
         return Err("source changed while preparing the sandbox".to_owned());
     }
-    let path = reserve_temp_directory(purpose)?;
+    let path = reserve_temp_directory_in(storage_root, purpose)?;
     if let Err(error) = copy_tree(source, &path) {
         let _ = fs::remove_dir_all(&path);
         return Err(error);
@@ -285,8 +307,15 @@ fn private_copy(
 }
 
 impl PrivateSourceTree {
-    pub(crate) fn prepare(source: &Path, baseline: &SourceSnapshot) -> Result<Self, String> {
-        private_copy(source, baseline, "source").map(|path| Self { path })
+    pub(crate) fn prepare_in(
+        source: &Path,
+        baseline: &SourceSnapshot,
+        storage_root: &Path,
+    ) -> Result<Self, String> {
+        private_copy(source, baseline, storage_root, "source").map(|path| Self {
+            path,
+            cleanup_parent: storage_root.to_path_buf(),
+        })
     }
 
     pub(crate) fn path(&self) -> &Path {
@@ -301,7 +330,7 @@ impl Drop for PrivateSourceTree {
             .file_name()
             .and_then(std::ffi::OsStr::to_str)
             .is_some_and(|name| name.starts_with("workflow-verifier-source-"));
-        if safe_name && self.path.parent() == Some(std::env::temp_dir().as_path()) {
+        if safe_name && self.path.parent() == Some(self.cleanup_parent.as_path()) {
             let _ = fs::remove_dir_all(&self.path);
         }
     }
@@ -314,8 +343,20 @@ impl ScratchTree {
     ///
     /// Fails if the source changed, contains unsafe entries, or cannot be copied.
     pub fn prepare(source: &Path, baseline: SourceSnapshot) -> Result<Self, String> {
-        let path = private_copy(source, &baseline, "scratch")?;
-        Ok(Self { path, baseline })
+        Self::prepare_in(source, baseline, &std::env::temp_dir())
+    }
+
+    pub(crate) fn prepare_in(
+        source: &Path,
+        baseline: SourceSnapshot,
+        storage_root: &Path,
+    ) -> Result<Self, String> {
+        let path = private_copy(source, &baseline, storage_root, "scratch")?;
+        Ok(Self {
+            path,
+            cleanup_parent: storage_root.to_path_buf(),
+            baseline,
+        })
     }
 
     #[must_use]
@@ -370,7 +411,7 @@ impl Drop for ScratchTree {
             .file_name()
             .and_then(std::ffi::OsStr::to_str)
             .is_some_and(|name| name.starts_with("workflow-verifier-scratch-"));
-        if safe_name && self.path.parent() == Some(std::env::temp_dir().as_path()) {
+        if safe_name && self.path.parent() == Some(self.cleanup_parent.as_path()) {
             let _ = fs::remove_dir_all(&self.path);
         }
     }
