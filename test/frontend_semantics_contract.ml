@@ -159,6 +159,30 @@ jobs:
     (dependency_kind Frontend_intf.Action result);
   expect_valid graph
 
+let github_attestation_profile () =
+  let revision = String.make 40 'a' in
+  let reference = "actions/attest@" ^ revision in
+  let source =
+    "on: workflow_dispatch\n"
+    ^ "jobs:\n  attest:\n    runs-on: ubuntu-latest\n"
+    ^ "    permissions:\n      id-token: write\n"
+    ^ "      attestations: write\n      artifact-metadata: write\n"
+    ^ "    steps:\n      - uses: " ^ reference ^ "\n"
+    ^ "        with:\n          subject-checksums: dist/SHA256SUMS\n"
+  in
+  let result = compile Ir.Github ".github/workflows/attest.yml" source in
+  let call = require Ir.Call reference result.graph
+  and job = require Ir.Job "attest" result.graph in
+  expect "attestation permissions lower to artifact and OIDC capabilities"
+    (List.mem Ir.Oidc job.capabilities
+    && List.mem Ir.Artifact_write job.capabilities
+    && not (List.mem Ir.Repository_write job.capabilities));
+  expect "actions/attest publishes an artifact using an OIDC credential"
+    (List.mem Ir.Artifact_publish call.effects
+    && List.mem Ir.Credential_use call.effects
+    && List.mem Ir.Network_request call.effects);
+  expect_valid result.graph
+
 let gitlab_semantics () =
   let source =
     {|
@@ -467,6 +491,8 @@ let dependency_locator_semantics () =
 let tests : test list =
   [
     ("GitHub semantic surface", github_semantics);
+    ( "GitHub attestation capability/effect profile",
+      github_attestation_profile );
     ("GitLab semantic surface", gitlab_semantics);
     ("Azure semantic surface", azure_semantics);
     ("CircleCI semantic surface", circleci_semantics);

@@ -200,20 +200,19 @@ jobs:
           cp scripts/benchmark_fixture.py _performance-base/scripts/benchmark_fixture.py
       - name: Measure identical cold, warm, and incremental workloads
         shell: bash
-        env:
-          BASE_REVISION: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.sha }}
-          HEAD_REVISION: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
         run: |
+          base_revision=$(git -C _performance-base rev-parse HEAD)
+          head_revision=$(git rev-parse HEAD)
           mkdir -p "_performance-evidence/${{ matrix.platform }}"
           python -B scripts/measure_performance.py \
             --suite performance/suite-v1.json \
             --workspace _performance-base \
-            --revision "$BASE_REVISION" --samples 21 \
+            --revision "$base_revision" --samples 21 \
             --output "_performance-evidence/${{ matrix.platform }}/baseline.json"
           python -B scripts/measure_performance.py \
             --suite performance/suite-v1.json \
             --workspace . \
-            --revision "$HEAD_REVISION" --samples 21 \
+            --revision "$head_revision" --samples 21 \
             --output "_performance-evidence/${{ matrix.platform }}/current.json"
           python -B scripts/performance_gate.py \
             --baseline "_performance-evidence/${{ matrix.platform }}/baseline.json" \

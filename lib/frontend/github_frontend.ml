@@ -95,8 +95,8 @@ let access_capabilities name access =
   if access = "none" then []
   else if name = "id-token" && access = "write" then [ Ir.Oidc ]
   else if name = "models" then [ Ir.Ai_tool; Ir.Network ]
-  else if name = "attestations" then
-    [ Ir.Artifact_read; Ir.Artifact_write; Ir.Token_write ]
+  else if name = "attestations" || name = "artifact-metadata" then
+    if access = "write" then [ Ir.Artifact_write ] else [ Ir.Artifact_read ]
   else if name = "deployments" || name = "pages" then
     if access = "write" then [ Ir.Deployment; Ir.Token_write ]
     else [ Ir.Repository_read; Ir.Token_read ]
@@ -141,6 +141,20 @@ let call_profile reference =
   then ([], [])
   else if Util.contains ~needle:"actions/checkout" lower then
     ([ Ir.Repository_read; Ir.Filesystem_write ], [ Ir.File_write ])
+  else if Util.contains ~needle:"actions/attest@" lower then
+    ( [
+        Ir.Oidc;
+        Ir.Artifact_write;
+        Ir.Filesystem_read;
+        Ir.Filesystem_write;
+        Ir.Network;
+      ],
+      [
+        Ir.Credential_use;
+        Ir.Artifact_publish;
+        Ir.File_write;
+        Ir.Network_request;
+      ] )
   else if Util.contains ~needle:"upload-artifact" lower then
     ( [ Ir.Artifact_write; Ir.Filesystem_read; Ir.Network ],
       [ Ir.Artifact_publish; Ir.Network_request ] )

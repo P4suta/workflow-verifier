@@ -233,6 +233,7 @@ let github_end_to_end_test () =
     [ "WV-SEC-001"; "WV-SEC-002"; "WV-SUPPLY-001"; "WV-PERM-001" ]
 
 let protected_release_dominance_test () =
+  let attestation_revision = String.make 40 'a' in
   let source =
     {|
 on:
@@ -243,7 +244,16 @@ jobs:
     if: github.ref_protected == true
     environment: release
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
+      artifact-metadata: write
     steps:
+      - uses: actions/attest@|}
+    ^ attestation_revision
+    ^ {|
+        with:
+          subject-checksums: dist/SHA256SUMS
       - run: gh release create "$GITHUB_REF_NAME" dist/*
 |}
   in
@@ -259,7 +269,9 @@ jobs:
   expect "a trusted protected-ref gate dominates the release effect"
     ((property "WV-AUTH-001" result).state = Property.Proved);
   expect "the environment grant is not a second deployment effect"
-    (not (has_rule "WV-AUTH-001" result))
+    (not (has_rule "WV-AUTH-001" result));
+  expect "attestation grants are consumed by the attestation effect"
+    (not (has_rule "WV-PERM-001" result))
 
 let tests : test list =
   [
