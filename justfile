@@ -22,7 +22,7 @@ helpers:
     cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
 
 tooling:
-    python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
+    python -B -m unittest discover -s scripts/tests -p "test_*.py" -v
 
 fuzz seconds="60" memory_mb="1024":
     opam exec -- dune build --profile afl test/yaml_fuzz.exe

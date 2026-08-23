@@ -48,7 +48,7 @@ run = "cargo fmt --manifest-path helpers/Cargo.toml --all -- --check && cargo cl
 
 [tasks.tooling]
 description = "Run release-tool regression tests"
-run = "python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v"
+run = 'python -B -m unittest discover -s scripts/tests -p "test_*.py" -v'
 
 [tasks.fuzz]
 description = "Build the AFL-instrumented YAML harness and run a bounded campaign"
