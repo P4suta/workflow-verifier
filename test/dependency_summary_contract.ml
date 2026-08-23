@@ -4,6 +4,10 @@ exception Failed of string
 
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
+let lockfile entries =
+  match Lockfile.create entries with
+  | Ok lock -> lock
+  | Error message -> fail "%s" message
 
 let dependency_for provider kind reference =
   {
@@ -132,7 +136,7 @@ let resolver_and_lock_summary_test () =
     }
   in
   let resolved =
-    Resolver.resolve ~network:(Some network) ~lock:(Lockfile.make [])
+    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty
       [ dependency ]
   in
   let entry =
@@ -174,7 +178,7 @@ let locked_program_uncertainty_test () =
       summary = Some summary;
     }
   in
-  let locked = Locked_program.apply (Lockfile.make [ entry ]) compilation in
+  let locked = Locked_program.apply (lockfile [ entry ]) compilation in
   let call =
     locked.graph.nodes
     |> List.find (fun (node : Ir.node) ->
@@ -188,7 +192,7 @@ let locked_program_uncertainty_test () =
   let complete =
     { entry with summary = Some { summary with complete = true; reasons = [] } }
   in
-  let locked = Locked_program.apply (Lockfile.make [ complete ]) compilation in
+  let locked = Locked_program.apply (lockfile [ complete ]) compilation in
   let call =
     locked.graph.nodes
     |> List.find (fun (node : Ir.node) ->
@@ -197,7 +201,7 @@ let locked_program_uncertainty_test () =
   expect "only a complete exact-source summary discharges call uncertainty"
     (Option.is_none call.unknown);
   let legacy = { entry with summary = None } in
-  let locked = Locked_program.apply (Lockfile.make [ legacy ]) compilation in
+  let locked = Locked_program.apply (lockfile [ legacy ]) compilation in
   let call =
     locked.graph.nodes
     |> List.find (fun (node : Ir.node) ->
@@ -241,7 +245,7 @@ let orb_alias_lock_link_test () =
       summary = Some summary;
     }
   in
-  let locked = Locked_program.apply (Lockfile.make [ entry ]) compilation in
+  let locked = Locked_program.apply (lockfile [ entry ]) compilation in
   let call =
     locked.graph.nodes
     |> List.find (fun (node : Ir.node) -> node.name = "orb:node/test")

@@ -32,32 +32,32 @@ let key ~tool_version ~config_digest ~lock_digest inputs =
   in
   "sha256:" ^ Sha256.digest_string (Json.to_string material)
 
-let unsigned_json entry =
-  Json.Object
-    [
-      ("exit_code", Json.Int entry.exit_code);
-      ("key", Json.String entry.key);
-      ("report", Json.String entry.report);
-      ("schema", Json.String entry.schema);
-    ]
+let unsigned_fields entry =
+  [
+    ("exit_code", Json.Int entry.exit_code);
+    ("key", Json.String entry.key);
+    ("report", Json.String entry.report);
+    ("schema", Json.String entry.schema);
+  ]
 
-let make ~key ~exit_code ~report =
+let unsigned_json entry = Json.Object (unsigned_fields entry)
+
+let create ~key ~exit_code ~report =
   if exit_code < 0 || exit_code > 5 then
-    invalid_arg "cache exit code must be 0..5";
-  let provisional =
-    { schema = "analysis-cache-v1"; key; exit_code; report; integrity = "" }
-  in
-  let integrity =
-    "sha256:"
-    ^ Sha256.digest_string (Json.to_string (unsigned_json provisional))
-  in
-  { provisional with integrity }
+    Error "cache exit code must be 0..5"
+  else
+    let provisional =
+      { schema = "analysis-cache-v1"; key; exit_code; report; integrity = "" }
+    in
+    let integrity =
+      "sha256:"
+      ^ Sha256.digest_string (Json.to_string (unsigned_json provisional))
+    in
+    Ok { provisional with integrity }
 
 let to_json entry =
-  match unsigned_json entry with
-  | Json.Object fields ->
-      Json.Object (("integrity", Json.String entry.integrity) :: fields)
-  | _ -> assert false
+  Json.Object
+    (("integrity", Json.String entry.integrity) :: unsigned_fields entry)
 
 let to_canonical_json entry = Json.to_string (to_json entry) ^ "\n"
 
@@ -84,7 +84,7 @@ let parse source =
     let* integrity = required "integrity" Json.as_string json in
     if exit_code < 0 || exit_code > 5 then Error "cache exit code must be 0..5"
     else
-      let rebuilt = make ~key ~exit_code ~report in
+      let* rebuilt = create ~key ~exit_code ~report in
       if rebuilt.integrity <> integrity then
         Error "analysis cache integrity mismatch"
       else Ok rebuilt

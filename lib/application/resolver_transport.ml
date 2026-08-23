@@ -307,14 +307,15 @@ let gitlab_component ~get ~allowed_sources reference =
   | Ok (identity, version) -> (
       match split_nonempty '/' identity with
       | host :: rest when List.length rest >= 2 ->
-          let reversed = List.rev rest in
-          let component = List.hd reversed in
-          let project = List.rev (List.tl reversed) |> String.concat "/" in
-          if not (valid_name_component component) then
-            Error ("invalid GitLab component reference: " ^ reference)
-          else
-            gitlab_project ~get ~allowed_sources ~host ~project
-              ~requested:version ~path:("templates/" ^ component)
+          (match List.rev rest with
+          | component :: reversed_project ->
+              let project = List.rev reversed_project |> String.concat "/" in
+              if not (valid_name_component component) then
+                Error ("invalid GitLab component reference: " ^ reference)
+              else
+                gitlab_project ~get ~allowed_sources ~host ~project
+                  ~requested:version ~path:("templates/" ^ component)
+          | [] -> Error ("invalid GitLab component reference: " ^ reference))
       | _ -> Error ("invalid GitLab component reference: " ^ reference))
 
 let gitlab_repository_file ~get ~allowed_sources ~repository ~revision ~path =
@@ -595,15 +596,15 @@ let parse_image reference =
         | _ -> (reference, "latest")
       in
       let components = split_nonempty '/' name in
-      if components = [] || tag = "" then
-        Error ("invalid OCI image: " ^ reference)
-      else
-        let first = List.hd components in
+      match components with
+      | [] -> Error ("invalid OCI image: " ^ reference)
+      | _ when tag = "" -> Error ("invalid OCI image: " ^ reference)
+      | first :: remaining ->
         let explicit_registry =
           String.contains first '.' || String.contains first ':'
         in
         if explicit_registry then
-          Ok (`Tagged (first, String.concat "/" (List.tl components), tag))
+          Ok (`Tagged (first, String.concat "/" remaining, tag))
         else
           let repository =
             if List.length components = 1 then "library/" ^ name else name

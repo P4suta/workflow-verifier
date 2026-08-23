@@ -1,5 +1,6 @@
 type scalar_style = Plain | Single_quoted | Double_quoted | Literal | Folded
 type trivia_kind = Comment | Blank | Directive | Document_start | Document_end
+type quote = Single_quote | Double_quote
 type trivia = { kind : trivia_kind; raw : string; span : Span.t }
 
 type scalar = {
@@ -179,15 +180,15 @@ let comment_index value =
   while !index < String.length value && !result = None do
     let character = value.[!index] in
     (match !quote with
-    | Some '"' ->
+    | Some Double_quote ->
         if !escaped then escaped := false
         else if character = '\\' then escaped := true
         else if character = '"' then quote := None
-    | Some '\'' -> if character = '\'' then quote := None
-    | Some _ -> assert false
+    | Some Single_quote -> if character = '\'' then quote := None
     | None -> (
         match character with
-        | '"' | '\'' -> quote := Some character
+        | '"' -> quote := Some Double_quote
+        | '\'' -> quote := Some Single_quote
         | '[' | '{' | '(' -> incr flow_depth
         | ']' | '}' | ')' -> flow_depth := max 0 (!flow_depth - 1)
         | '#'
@@ -385,15 +386,15 @@ let find_mapping_colon value =
   while !index < String.length value && !answer = None do
     let character = value.[!index] in
     (match !quote with
-    | Some '"' ->
+    | Some Double_quote ->
         if !escaped then escaped := false
         else if character = '\\' then escaped := true
         else if character = '"' then quote := None
-    | Some '\'' -> if character = '\'' then quote := None
-    | Some _ -> assert false
+    | Some Single_quote -> if character = '\'' then quote := None
     | None -> (
         match character with
-        | ('"' | '\'') when !index = scalar_start -> quote := Some character
+        | '"' when !index = scalar_start -> quote := Some Double_quote
+        | '\'' when !index = scalar_start -> quote := Some Single_quote
         | '[' | '{' | '(' -> incr depth
         | ']' | '}' | ')' -> depth := max 0 (!depth - 1)
         | ':'
@@ -425,15 +426,15 @@ let find_flow_mapping_colon value =
   while !index < String.length value && !answer = None do
     let character = value.[!index] in
     (match !quote with
-    | Some '"' ->
+    | Some Double_quote ->
         if !escaped then escaped := false
         else if character = '\\' then escaped := true
         else if character = '"' then quote := None
-    | Some '\'' -> if character = '\'' then quote := None
-    | Some _ -> assert false
+    | Some Single_quote -> if character = '\'' then quote := None
     | None -> (
         match character with
-        | '"' | '\'' -> quote := Some character
+        | '"' -> quote := Some Double_quote
+        | '\'' -> quote := Some Single_quote
         | '[' | '{' | '(' -> incr depth
         | ']' | '}' | ')' -> depth := max 0 (!depth - 1)
         | ':'
@@ -462,15 +463,15 @@ let split_flow separator value =
   String.iteri
     (fun index character ->
       match !quote with
-      | Some '"' ->
+      | Some Double_quote ->
           if !escaped then escaped := false
           else if character = '\\' then escaped := true
           else if character = '"' then quote := None
-      | Some '\'' -> if character = '\'' then quote := None
-      | Some _ -> assert false
+      | Some Single_quote -> if character = '\'' then quote := None
       | None -> (
           match character with
-          | '"' | '\'' -> quote := Some character
+          | '"' -> quote := Some Double_quote
+          | '\'' -> quote := Some Single_quote
           | '[' | '{' | '(' -> incr depth
           | ']' | '}' | ')' -> depth := max 0 (!depth - 1)
           | character when character = separator && !depth = 0 -> push index
@@ -719,15 +720,15 @@ let inline_needs_continuation raw =
         String.iter
           (fun character ->
             match !quote with
-            | Some '"' ->
+            | Some Double_quote ->
                 if !escaped then escaped := false
                 else if character = '\\' then escaped := true
                 else if character = '"' then quote := None
-            | Some '\'' -> if character = '\'' then quote := None
-            | Some _ -> assert false
+            | Some Single_quote -> if character = '\'' then quote := None
             | None -> (
                 match character with
-                | '"' | '\'' -> quote := Some character
+                | '"' -> quote := Some Double_quote
+                | '\'' -> quote := Some Single_quote
                 | '[' | '{' -> incr depth
                 | ']' | '}' -> decr depth
                 | _ -> ()))

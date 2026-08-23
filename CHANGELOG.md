@@ -37,3 +37,8 @@ after the first compatibility release.
   validation, including action metadata with Markdown links, and exercise
   current `lock-v2` determinism separately from canonical `lock-v1`
   compatibility.
+- Make the analyzer library core total: quote state is represented by closed
+  variants, structured encoders own their field lists, BDD application is
+  exhaustive, graph traversal carries nonempty paths, lock updates are
+  transactional, invalid boundaries return `Error`, and the architecture gate
+  rejects partial API regressions.

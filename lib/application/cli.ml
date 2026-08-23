@@ -179,7 +179,7 @@ let persona_of_string = function
   | _ -> None
 
 let load_lock io path =
-  if not (io.exists path) then Ok (Lockfile.make [])
+  if not (io.exists path) then Ok Lockfile.empty
   else
     match io.read_file path with
     | Error _ as error -> error
@@ -465,16 +465,19 @@ let check io arguments =
                   | Some context
                     when has "--write-cache" arguments
                          && String.lowercase_ascii format = "json" -> (
-                      let entry =
-                        Incremental_cache.make ~key:context.cache_key ~exit_code
-                          ~report:text
-                      in
                       match
-                        io.write_file context.cache_path
-                          (Incremental_cache.to_canonical_json entry)
+                        Incremental_cache.create ~key:context.cache_key ~exit_code
+                          ~report:text
                       with
-                      | Ok () -> ()
-                      | Error message -> io.stderr ("cache: " ^ message ^ "\n"))
+                      | Error message -> io.stderr ("cache: " ^ message ^ "\n")
+                      | Ok entry -> (
+                          match
+                            io.write_file context.cache_path
+                              (Incremental_cache.to_canonical_json entry)
+                          with
+                          | Ok () -> ()
+                          | Error message ->
+                              io.stderr ("cache: " ^ message ^ "\n")))
                   | _ -> ());
                   exit_code)))
 

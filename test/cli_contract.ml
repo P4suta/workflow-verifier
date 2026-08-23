@@ -4,6 +4,10 @@ exception Failed of string
 
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
+let lockfile entries =
+  match Lockfile.create entries with
+  | Ok lock -> lock
+  | Error message -> fail "%s" message
 
 type harness = {
   mutable files : (string * string) list;
@@ -251,7 +255,7 @@ let explicit_effects_test () =
     );
   let pinned = harness () in
   let lock =
-    Lockfile.make
+    lockfile
       [
         {
           Lockfile.provider = Ir.Github;

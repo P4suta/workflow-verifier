@@ -10,6 +10,21 @@ import sys
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+PARTIAL_EXPRESSIONS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("assert false", re.compile(r"\bassert\s+false\b")),
+    ("List.hd", re.compile(r"\bList\.hd\b")),
+    ("List.tl", re.compile(r"\bList\.tl\b")),
+    ("List.nth", re.compile(r"\bList\.nth\b")),
+    ("List.find", re.compile(r"\bList\.find\b")),
+    ("Option.get", re.compile(r"\bOption\.get\b")),
+    ("Result.get_ok", re.compile(r"\bResult\.get_ok\b")),
+    ("Result.get_error", re.compile(r"\bResult\.get_error\b")),
+    ("Hashtbl.find", re.compile(r"\bHashtbl\.find\b")),
+    ("invalid_arg", re.compile(r"\binvalid_arg\b")),
+    ("failwith", re.compile(r"\bfailwith\b")),
+    ("Obj.magic", re.compile(r"\bObj\.magic\b")),
+    ("Bytes.unsafe_to_string", re.compile(r"\bBytes\.unsafe_to_string\b")),
+)
 
 EXPECTED_DEPENDENCIES: dict[str, tuple[str, ...]] = {
     "wv_foundation": (),
@@ -110,6 +125,17 @@ def validate_dependencies(actual: dict[str, tuple[str, ...]]) -> list[str]:
     return errors
 
 
+def partial_expression_errors(root: pathlib.Path) -> list[str]:
+    errors: list[str] = []
+    for path in sorted((root / "lib").rglob("*.ml*")):
+        source = path.read_text(encoding="utf-8")
+        for expression, pattern in PARTIAL_EXPRESSIONS:
+            if pattern.search(source):
+                relative = path.relative_to(root).as_posix()
+                errors.append(f"{relative} contains partial expression {expression!r}")
+    return errors
+
+
 def repository_errors(root: pathlib.Path = ROOT) -> list[str]:
     errors: list[str] = []
     libraries: list[Library] = []
@@ -152,6 +178,7 @@ def repository_errors(root: pathlib.Path = ROOT) -> list[str]:
             previous = owners.setdefault(module, library.name)
             if previous != library.name:
                 errors.append(f"module {module} is owned by both {previous} and {library.name}")
+    errors.extend(partial_expression_errors(root))
     return errors
 
 
@@ -162,7 +189,7 @@ def run() -> None:
             print(f"architecture gate: {error}", file=sys.stderr)
         raise SystemExit(1)
     print(
-        "architecture gate: 8 private layers, one-way dependencies, unique module ownership"
+        "architecture gate: 8 private total layers, one-way dependencies, unique module ownership"
     )
 
 

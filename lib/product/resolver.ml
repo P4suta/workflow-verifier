@@ -53,7 +53,7 @@ let resolve ?(allowed_sources = []) ?(refresh = false) ~network ~lock
   let locked = ref []
   and unresolved = ref []
   and errors = ref []
-  and entries = ref lock.Lockfile.entries in
+  and current_lock = ref lock in
   dependencies
   |> List.sort
        (fun
@@ -74,7 +74,7 @@ let resolve ?(allowed_sources = []) ?(refresh = false) ~network ~lock
         match
           if refresh then None
           else
-            Lockfile.find lock dependency.Frontend_intf.provider
+            Lockfile.find !current_lock dependency.Frontend_intf.provider
               dependency.reference
         with
         | Some entry -> locked := (dependency, entry) :: !locked
@@ -124,17 +124,26 @@ let resolve ?(allowed_sources = []) ?(refresh = false) ~network ~lock
                               fetched.semantic_source;
                         }
                       in
-                      entries :=
+                      let entries =
                         entry
                         :: List.filter
                              (fun existing ->
                                existing.Lockfile.provider <> entry.provider
                                || existing.reference <> entry.reference)
-                             !entries;
-                      locked := (dependency, entry) :: !locked)));
+                             (!current_lock).entries
+                      in
+                      (match Lockfile.create entries with
+                      | Error message ->
+                          errors :=
+                            Printf.sprintf "%s: %s" dependency.reference message
+                            :: !errors;
+                          unresolved := dependency :: !unresolved
+                      | Ok lockfile ->
+                          current_lock := lockfile;
+                          locked := (dependency, entry) :: !locked))));
   {
     locked = List.rev !locked;
     unresolved = List.rev !unresolved;
     errors = List.rev !errors;
-    lockfile = Lockfile.make !entries;
+    lockfile = !current_lock;
   }

@@ -40,6 +40,12 @@ let unsigned_json schema entries =
       ("schema", Json.String schema);
     ]
 
+let assemble schema entries =
+  let integrity =
+    "sha256:" ^ Sha256.digest_string (Json.to_string (unsigned_json schema entries))
+  in
+  { schema; entries; integrity }
+
 let valid_hex value =
   String.length value > 0
   && String.for_all
@@ -97,19 +103,10 @@ let create_with_schema schema entries =
     in
     match validate None [] entries with
     | Error _ as error -> error
-    | Ok entries ->
-        let integrity =
-          "sha256:"
-          ^ Sha256.digest_string (Json.to_string (unsigned_json schema entries))
-        in
-        Ok { schema; entries; integrity }
+    | Ok entries -> Ok (assemble schema entries)
 
 let create entries = create_with_schema "lock-v2" entries
-
-let make entries =
-  match create entries with
-  | Ok lock -> lock
-  | Error message -> invalid_arg message
+let empty = assemble "lock-v2" []
 
 let find lock provider reference =
   List.find_opt

@@ -16,11 +16,11 @@ let feasible_edge graph (edge : Ir.edge) =
 let shortest_path ?edge_kinds ?(avoid = []) graph source target =
   let rec bfs visited = function
     | [] -> None
-    | path :: rest ->
-        let current = List.hd path in
+    | (current, path) :: rest ->
         if current = target then
           Some
-            (List.rev path |> List.filter_map (fun id -> Ir.find_node graph id))
+            (List.rev (current :: path)
+            |> List.filter_map (fun id -> Ir.find_node graph id))
         else
           let next =
             graph.Ir.edges
@@ -33,10 +33,11 @@ let shortest_path ?edge_kinds ?(avoid = []) graph source target =
                 (not (List.mem id visited)) && not (List.mem id avoid))
             |> Util.deduplicate_strings
           in
-          bfs (next @ visited) (rest @ List.map (fun id -> id :: path) next)
+          bfs (next @ visited)
+            (rest @ List.map (fun id -> (id, current :: path)) next)
   in
   if List.mem source avoid || List.mem target avoid then None
-  else bfs [ source ] [ [ source ] ]
+  else bfs [ source ] [ (source, []) ]
 
 let intersections sets =
   match sets with
@@ -92,7 +93,7 @@ let dominates graph ~dominator ~node =
                       predecessors)
               |> Util.deduplicate_strings
           in
-          if Hashtbl.find table id <> updated then (
+          if Option.value ~default:[] (Hashtbl.find_opt table id) <> updated then (
             Hashtbl.replace table id updated;
             changed := true))
       ids

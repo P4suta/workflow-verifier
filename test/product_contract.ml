@@ -4,6 +4,10 @@ exception Failed of string
 
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
+let lockfile entries =
+  match Lockfile.create entries with
+  | Ok lock -> lock
+  | Error message -> fail "%s" message
 
 let string_value ?(trust = Abstract_value.Trusted) text =
   Abstract_value.string_constant text ~trust ~secrecy:Abstract_value.Public
@@ -155,7 +159,7 @@ let lockfile_and_resolver_test () =
       };
     ]
   in
-  let lock = Lockfile.make entries in
+  let lock = lockfile entries in
   let bytes = Lockfile.to_canonical_json lock in
   let reparsed =
     match Lockfile.parse bytes with

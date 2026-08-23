@@ -151,9 +151,8 @@ let status_json = function
           ("state", Json.String "incomplete");
         ]
 
-let unsigned_json plan =
-  Json.Object
-    [
+let unsigned_fields plan =
+  [
       ("backend", Json.String (backend_name plan.backend));
       ( "controls",
         Json.Array
@@ -177,7 +176,9 @@ let unsigned_json plan =
       ("source_digest", Json.String plan.source_digest);
       ("status", status_json plan.status);
       ("steps", Json.Array (List.map step_json plan.steps));
-    ]
+  ]
+
+let unsigned_json plan = Json.Object (unsigned_fields plan)
 
 let redact_environment secret_names environment =
   List.map
@@ -315,10 +316,7 @@ let make_plan ~backend ~source_digest ~lock_digest ~controls ~limits
   Ok { provisional with digest }
 
 let to_json plan =
-  match unsigned_json plan with
-  | Json.Object fields ->
-      Json.Object (("digest", Json.String plan.digest) :: fields)
-  | _ -> assert false
+  Json.Object (("digest", Json.String plan.digest) :: unsigned_fields plan)
 
 let to_canonical_json plan = Json.to_string (to_json plan) ^ "\n"
 

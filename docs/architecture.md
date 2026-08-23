@@ -81,7 +81,11 @@ domain-owned total orders, never filesystem enumeration order.
 ## Architectural enforcement
 
 `scripts/verify_architecture.py` checks exact Dune dependency tuples,
-private/unwrapped libraries, unique module ownership, and acyclicity.
+private/unwrapped libraries, unique module ownership, acyclicity, and a total
+library core with no assertion, partial collection lookup, unchecked Result,
+or exception-raising smart-constructor escape hatch. Closed state machines use
+variants, structured encoders construct field lists directly instead of
+downcasting a generic JSON value, and boundary validation stays in `Result`.
 `scripts/verify_pure_ocaml.py` audits declared dependencies and linked artifacts
 so the analyzer cannot acquire a foreign stub or hidden linter subprocess. The
 install-layout gate independently restricts the public package to one analyzer

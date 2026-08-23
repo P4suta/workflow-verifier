@@ -1,4 +1,5 @@
 type issue = { code : string; message : string; span : Span.t }
+type quote = Single_quote | Double_quote
 
 type line = {
   number : int;
@@ -96,15 +97,15 @@ let find_mapping_colons value =
   String.iteri
     (fun index character ->
       match !quote with
-      | Some '"' ->
+      | Some Double_quote ->
           if !escaped then escaped := false
           else if character = '\\' then escaped := true
           else if character = '"' then quote := None
-      | Some '\'' -> if character = '\'' then quote := None
-      | Some _ -> assert false
+      | Some Single_quote -> if character = '\'' then quote := None
       | None -> (
           match character with
-          | '"' | '\'' -> quote := Some character
+          | '"' -> quote := Some Double_quote
+          | '\'' -> quote := Some Single_quote
           | '[' | '{' -> incr depth
           | ']' | '}' -> depth := max 0 (!depth - 1)
           | ':'
@@ -230,10 +231,10 @@ let validate_double_escapes file source source_lines =
             done;
             !previous < 0 || String.contains ":,-?[{" line.raw.[!previous]
           in
-          if character = '"' && starts_node then quote := Some '"'
-          else if character = '\'' && starts_node then quote := Some '\''
-    | Some '\'' -> if character = '\'' then quote := None
-    | Some '"' ->
+          if character = '"' && starts_node then quote := Some Double_quote
+          else if character = '\'' && starts_node then quote := Some Single_quote
+    | Some Single_quote -> if character = '\'' then quote := None
+    | Some Double_quote ->
         if character = '"' then quote := None
         else if character = '\\' then
           if !index + 1 < String.length source then
@@ -267,7 +268,7 @@ let validate_double_escapes file source source_lines =
                   (!index - source_lines.(!line_index).start_byte)
                   2 "invalid escape in a double-quoted scalar"
                 :: !problems
-    | Some _ -> assert false);
+    );
     incr index
   done;
   List.rev !problems
@@ -524,20 +525,21 @@ let validate_flow file source_lines =
         while !index < String.length line.raw && not !stop_line do
           let character = line.raw.[!index] in
           (match !quote with
-          | Some '"' ->
+          | Some Double_quote ->
               if !escaped then escaped := false
               else if character = '\\' then escaped := true
               else if character = '"' then (
                 quote := None;
                 last_token := `Other)
-          | Some '\'' ->
+          | Some Single_quote ->
               if character = '\'' then (
                 quote := None;
                 last_token := `Other)
-          | Some _ -> assert false
           | None -> (
-              if !stack <> [] && (character = '"' || character = '\'') then
-                quote := Some character
+              if !stack <> [] && character = '"' then
+                quote := Some Double_quote
+              else if !stack <> [] && character = '\'' then
+                quote := Some Single_quote
               else if
                 !stack <> [] && character = '#' && !index > 0
                 && separation line.raw.[!index - 1]

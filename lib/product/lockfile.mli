@@ -9,7 +9,7 @@ type entry = {
 
 type t = { schema : string; entries : entry list; integrity : string }
 
-val make : entry list -> t
+val empty : t
 val create : entry list -> (t, string) result
 val validate_entry : entry -> (unit, string) result
 val find : t -> Ir.provider -> string -> entry option

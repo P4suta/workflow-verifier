@@ -40,30 +40,27 @@ let select request available =
       in
       if missing = [] then Ok candidate else Error missing
 
-let attestation_to_json attestation =
-  Json.Object
-    [
-      ( "controls",
-        Json.Array
-          (List.map
-             (fun value -> Json.String (Sandbox_protocol.control_name value))
-             attestation.controls) );
-      ("id", Json.String attestation.id);
-      ("platform", Json.String attestation.platform);
-      ("version", Json.String attestation.version);
-    ]
+let attestation_fields attestation =
+  [
+    ( "controls",
+      Json.Array
+        (List.map
+           (fun value -> Json.String (Sandbox_protocol.control_name value))
+           attestation.controls) );
+    ("id", Json.String attestation.id);
+    ("platform", Json.String attestation.platform);
+    ("version", Json.String attestation.version);
+  ]
+
+let attestation_to_json attestation = Json.Object (attestation_fields attestation)
 
 let probe_to_json probe =
-  match attestation_to_json probe.attestation with
-  | Json.Object fields ->
-      Json.Object
-        (("available", Json.Bool probe.available)
-        :: ( "reasons",
-             Json.Array
-               (List.map (fun reason -> Json.String reason) probe.reasons) )
-        :: ("schema", Json.String "backend-attestation-v1")
-        :: fields)
-  | _ -> assert false
+  Json.Object
+    (("available", Json.Bool probe.available)
+    :: ( "reasons",
+         Json.Array (List.map (fun reason -> Json.String reason) probe.reasons) )
+    :: ("schema", Json.String "backend-attestation-v1")
+    :: attestation_fields probe.attestation)
 
 let parse_probe source =
   let* json =
