@@ -263,7 +263,7 @@ let add_job_resources graph (job : Ir.node) body =
     | Some (name, span) ->
         Frontend_support.add_resource ~provider ~owner:job
           ~name:("environment:" ^ name) ~phase:Ir.Run ~span
-          ~capabilities:[ Ir.Deployment ] ~effects:[ Ir.Deployment_change ]
+          ~capabilities:[ Ir.Deployment ]
           ~edge_kind:Ir.Grant ~resource_to_owner:true graph
         |> fst
   in

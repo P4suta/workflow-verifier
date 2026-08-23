@@ -309,11 +309,7 @@ let supply_chain_rule graph =
   }
 
 let permission_rule graph =
-  let grants =
-    graph.Ir.nodes
-    |> List.concat_map (fun (node : Ir.node) ->
-        List.map (fun capability -> (node, capability)) node.capabilities)
-  in
+  let grants = Capability_analysis.declared_grants graph in
   let unused = Capability_analysis.excessive_grants graph in
   let diagnostics =
     List.map

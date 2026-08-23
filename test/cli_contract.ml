@@ -193,6 +193,15 @@ let discovery_boundary_test () =
   expect "audit succeeds" (code = 0);
   expect "only root provider entrypoints are discovered as source inputs"
     (Util.contains ~needle:"\"inputs\":1" (output state.stdout));
+  let system_paths = harness () in
+  system_paths.files <-
+    List.map (fun (path, source) -> ("./" ^ path, source)) system_paths.files;
+  let system_path_code =
+    Cli.run ~io:(io system_paths) ~services:(services system_paths)
+      [| "workflow-verifier"; "check"; "--persona"; "audit"; "." |]
+  in
+  expect "filesystem paths prefixed by the current directory are entrypoints"
+    (system_path_code = 0);
   let filtered = harness () in
   filtered.files <-
     ( ".workflow-verifier.toml",

@@ -147,7 +147,11 @@ jobs:
     && not (List.mem Ir.Repository_write workflow.capabilities));
   expect "self-hosted runner persistence is explicit"
     (List.mem Ir.Self_hosted_persistence deploy.capabilities);
-  ignore (require Ir.Resource "environment:production" graph);
+  let environment = require Ir.Resource "environment:production" graph in
+  expect "an environment grants deployment without duplicating its effect"
+    (environment.effects = []
+    && List.mem Ir.Deployment environment.capabilities
+    && List.mem Ir.Deployment_change deploy.effects);
   ignore (require Ir.Resource "output:deploy.digest" graph);
   expect "matrix is planned explicitly"
     (Option.is_some (named Ir.Parameter "matrix.target" graph));
@@ -160,6 +164,8 @@ let gitlab_semantics () =
     {|
 include:
   - component: gitlab.example/components/build@1.2
+variables:
+  GLOBAL_MODE: strict
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -197,7 +203,10 @@ child:
   expect "rules become gates" (List.length (nodes Ir.Gate graph) >= 2);
   ignore (require Ir.Call "extends:.base" graph);
   ignore (require Ir.Call "child:child.yml" graph);
-  ignore (require Ir.Resource "environment:production" graph);
+  let environment = require Ir.Resource "environment:production" graph in
+  expect "GitLab environment effects occur on the deployment job"
+    (environment.effects = []
+    && List.mem Ir.Deployment_change deploy.effects);
   ignore (require Ir.Resource "cache:deploy" graph);
   ignore (require Ir.Resource "artifact:deploy" graph);
   expect "hidden templates are not executable jobs"
@@ -256,7 +265,11 @@ stages:
   expect "stage condition is a gate" (List.length (nodes Ir.Gate graph) >= 1);
   ignore (require Ir.Resource "repository:shared" graph);
   ignore (require Ir.Resource "variable:configuration" graph);
-  ignore (require Ir.Resource "environment:production" graph);
+  let environment = require Ir.Resource "environment:production" graph
+  and production = require Ir.Job "production" graph in
+  expect "Azure environment effects occur on the deployment job"
+    (environment.effects = []
+    && List.mem Ir.Deployment_change production.effects);
   ignore (require Ir.Parameter "matrix.linux" graph);
   ignore (require Ir.Call "checkout:self" graph);
   ignore (require Ir.Call "Bash@3" graph);

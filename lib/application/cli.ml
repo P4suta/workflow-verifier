@@ -111,12 +111,18 @@ let yaml_path path =
 
 let relative_to root path =
   let root = normalize root and path = normalize path in
+  let rec without_current_directory path =
+    if Util.starts_with ~prefix:"./" path then
+      without_current_directory
+        (String.sub path 2 (String.length path - 2))
+    else path
+  in
   let root =
     if Util.ends_with ~suffix:"/" root then
       String.sub root 0 (String.length root - 1)
     else root
   in
-  if root = "." || root = "" then path
+  if root = "." || root = "" then without_current_directory path
   else
     let prefix = root ^ "/" in
     if Util.starts_with ~prefix path then

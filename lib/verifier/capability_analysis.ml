@@ -71,12 +71,25 @@ let capability_matches capability effects =
   | Cache_read -> List.mem Ir.Cache_publish effects
   | capability -> List.mem capability required
 
+let declared_grants graph =
+  let has_grant_edge (node : Ir.node) =
+    List.exists
+      (fun (edge : Ir.edge) ->
+        edge.kind = Ir.Grant && (edge.from_ = node.id || edge.to_ = node.id))
+      graph.Ir.edges
+  in
+  graph.Ir.nodes
+  |> List.filter (fun (node : Ir.node) ->
+      List.mem node.kind [ Ir.Workflow; Ir.Job ] || has_grant_edge node)
+  |> List.concat_map (fun (node : Ir.node) ->
+      List.map (fun capability -> (node, capability)) node.capabilities)
+
 let excessive_grants graph =
   let sinks =
     graph.Ir.nodes |> List.filter (fun node -> effects_of_node node <> [])
   in
-  graph.nodes
-  |> List.concat_map (fun (grant : Ir.node) ->
+  declared_grants graph
+  |> List.filter_map (fun ((grant : Ir.node), capability) ->
       let effects =
         sinks
         |> List.filter (fun (sink : Ir.node) ->
@@ -84,8 +97,8 @@ let excessive_grants graph =
         |> List.concat_map effects_of_node
         |> Util.deduplicate_compare Stdlib.compare
       in
-      grant.capabilities
-      |> List.filter (fun capability ->
-          List.mem capability privileged
-          && not (capability_matches capability effects))
-      |> List.map (fun capability -> (grant, capability)))
+      if
+        List.mem capability privileged
+        && not (capability_matches capability effects)
+      then Some (grant, capability)
+      else None)

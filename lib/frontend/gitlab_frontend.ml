@@ -316,7 +316,7 @@ let add_variable_resources graph (owner : Ir.node) variables =
          let resource =
            Ir.make_node ~provider ~kind:Ir.Resource
              ~name:("variable:" ^ entry.key.value)
-             ~phase:Ir.Plan ~span:entry.span ()
+             ~phase:owner.phase ~span:entry.span ()
          in
          graph |> Ir.add_node resource
          |> Ir.add_edge
@@ -343,7 +343,7 @@ let add_job_resources graph (job : Ir.node) body =
         Frontend_support.add_resource ~provider ~owner:job
           ~name:("environment:" ^ name) ~phase:Ir.Run
           ~span:(Yaml_cst.node_span environment)
-          ~capabilities:[ Ir.Deployment ] ~effects:[ Ir.Deployment_change ]
+          ~capabilities:[ Ir.Deployment ]
           ~edge_kind:Ir.Grant ~resource_to_owner:true graph
         |> fst
   in

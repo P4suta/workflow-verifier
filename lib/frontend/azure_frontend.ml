@@ -471,7 +471,7 @@ let add_environment graph (job : Ir.node) body =
       Frontend_support.add_resource ~provider ~owner:job
         ~name:("environment:" ^ name) ~phase:Ir.Run
         ~span:(Yaml_cst.node_span environment)
-        ~capabilities:[ Ir.Deployment ] ~effects:[ Ir.Deployment_change ]
+        ~capabilities:[ Ir.Deployment ]
         ~edge_kind:Ir.Grant ~resource_to_owner:true graph
       |> fst
 

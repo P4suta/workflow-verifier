@@ -99,10 +99,17 @@ def _commands(value: Any, label: str) -> list[list[str]]:
     return [_argv(command, f"{label}[{index}]") for index, command in enumerate(value)]
 
 
+def _native_argv(argv: list[str], cwd: Path) -> list[str]:
+    executable = argv[0]
+    if not os.path.isabs(executable) and ("/" in executable or "\\" in executable):
+        return [str((cwd / executable).resolve()), *argv[1:]]
+    return argv
+
+
 def _run(argv: list[str], cwd: Path, timeout: int, environment: dict[str, str], label: str) -> None:
     try:
         completed = subprocess.run(
-            argv,
+            _native_argv(argv, cwd),
             cwd=cwd,
             env=environment,
             stdin=subprocess.DEVNULL,

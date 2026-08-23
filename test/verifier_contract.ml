@@ -175,6 +175,25 @@ let supply_chain_and_permission_test () =
     (has_rule "WV-SUPPLY-001" result);
   expect "unused write grants must be diagnosed" (has_rule "WV-PERM-001" result)
 
+let inherent_execution_capabilities_are_not_reducible_grants_test () =
+  let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
+  and command =
+    node ~capabilities:[ Ir.Filesystem_write; Ir.Network; Ir.Shell ]
+      ~effects:[ Ir.Command_execution ] "echo safe"
+  and action =
+    node ~kind:Ir.Call ~capabilities:[ Ir.Network; Ir.Filesystem_write ]
+      "immutable action"
+  in
+  let result =
+    Verifier.verify ~persona:Verifier.Audit
+      (graph [ workflow; command; action ]
+         [ edge workflow command; edge command action ] [ workflow ])
+  in
+  expect "runner and action requirements are not removable permission grants"
+    (not (has_rule "WV-PERM-001" result));
+  expect "a graph without declared grants is not a least-privilege subject"
+    ((property "WV-PERM-001" result).state = Property.Not_applicable)
+
 let script_adapter_test () =
   let cases =
     [
@@ -213,6 +232,35 @@ let github_end_to_end_test () =
     (fun rule -> expect ("end-to-end missing " ^ rule) (has_rule rule result))
     [ "WV-SEC-001"; "WV-SEC-002"; "WV-SUPPLY-001"; "WV-PERM-001" ]
 
+let protected_release_dominance_test () =
+  let source =
+    {|
+on:
+  push:
+    tags: [v1.0.0]
+jobs:
+  publish:
+    if: github.ref_protected == true
+    environment: release
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh release create "$GITHUB_REF_NAME" dist/*
+|}
+  in
+  let compilation =
+    match
+      Frontend.compile_string ~provider:Ir.Github
+        ~path:".github/workflows/release.yml" ~source ()
+    with
+    | Ok value -> value
+    | Error _ -> fail "protected release fixture did not compile"
+  in
+  let result = Verifier.verify ~persona:Verifier.Gate compilation.graph in
+  expect "a trusted protected-ref gate dominates the release effect"
+    ((property "WV-AUTH-001" result).state = Property.Proved);
+  expect "the environment grant is not a second deployment effect"
+    (not (has_rule "WV-AUTH-001" result))
+
 let tests : test list =
   [
     ("injection has violated proved and unknown states", injection_triple_test);
@@ -220,9 +268,13 @@ let tests : test list =
     ("authorization gates must dominate privileged effects", dominance_test);
     ( "supply chain and least privilege share the graph",
       supply_chain_and_permission_test );
+    ( "inherent execution capabilities are not reducible grants",
+      inherent_execution_capabilities_are_not_reducible_grants_test );
     ("script adapters infer effects and quote boundaries", script_adapter_test);
     ( "GitHub frontend feeds whole-program security analysis",
       github_end_to_end_test );
+    ( "protected release ref dominates deployment and repository effects",
+      protected_release_dominance_test );
   ]
 
 let () =

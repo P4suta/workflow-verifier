@@ -10,6 +10,18 @@ from scripts.measure_performance import measure
 
 
 class MeasurePerformanceTests(unittest.TestCase):
+    def test_relative_executable_is_made_absolute_for_native_windows_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            cwd = Path(temporary) / "test"
+            cwd.mkdir()
+            resolved = measurement._native_argv(
+                ["../_build/default/bin/main.exe", "check"], cwd
+            )
+            self.assertEqual(
+                resolved,
+                [str((cwd / "../_build/default/bin/main.exe").resolve()), "check"],
+            )
+
     def test_committed_suite_is_strict_and_exercises_every_mode(self) -> None:
         root = Path(__file__).resolve().parents[2]
         with mock.patch.object(measurement, "_run") as invoked:
