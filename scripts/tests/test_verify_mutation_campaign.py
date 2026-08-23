@@ -53,6 +53,13 @@ def result(mutant: dict[str, object]) -> dict[str, object]:
     }
 
 
+def catalog_mutant(mutant: dict[str, object]) -> dict[str, object]:
+    return {
+        field: mutant[field]
+        for field in ("id", "full_id", "path", "range", "family", "rule")
+    }
+
+
 def report(mutants: list[dict[str, object]]) -> dict[str, object]:
     count = len(mutants)
     return {
@@ -149,7 +156,7 @@ operators = ["boolean-literal"]
                     "workspace": {"digest": "b" * 64, "toolchain": "OCaml 5.5.0"},
                     "profile": "balanced",
                     "selection": "all",
-                    "mutants": [self.domain, self.verifier],
+                    "mutants": [catalog_mutant(self.domain), catalog_mutant(self.verifier)],
                     "skips": [],
                 }
             ),

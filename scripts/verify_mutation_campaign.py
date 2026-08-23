@@ -51,13 +51,15 @@ CATALOG_FIELDS = {
     "mutants",
     "skips",
 }
-MUTANT_FIELDS = {
+CATALOG_MUTANT_FIELDS = {
     "id",
     "full_id",
     "path",
     "range",
     "family",
     "rule",
+}
+REPORT_MUTANT_FIELDS = CATALOG_MUTANT_FIELDS | {
     "original",
     "replacement",
     "source_digest",
@@ -313,10 +315,13 @@ def load_plan(manifest_path: Path, config_path: Path, workspace: Path) -> Plan:
     )
 
 
-def _validate_mutant(value: Any, label: str) -> dict[str, Any]:
+def _validate_mutant(
+    value: Any, label: str, *, report: bool
+) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise CampaignError(f"{label} must be an object")
-    _exact_fields(value, MUTANT_FIELDS, label)
+    expected_fields = REPORT_MUTANT_FIELDS if report else CATALOG_MUTANT_FIELDS
+    _exact_fields(value, expected_fields, label)
     identifier = value["id"]
     full_id = value["full_id"]
     if (
@@ -332,13 +337,16 @@ def _validate_mutant(value: Any, label: str) -> dict[str, Any]:
         raise CampaignError(f"{label} has an unknown family")
     if not isinstance(value["rule"], str) or not RULE.fullmatch(value["rule"]):
         raise CampaignError(f"{label} has an invalid rule")
-    for field in ("original", "replacement"):
-        if not isinstance(value[field], str) or not value[field]:
-            raise CampaignError(f"{label}.{field} must be a nonempty string")
-    if value["original"] == value["replacement"]:
-        raise CampaignError(f"{label} does not change the source expression")
-    if not isinstance(value["source_digest"], str) or not HEX64.fullmatch(value["source_digest"]):
-        raise CampaignError(f"{label} has an invalid source digest")
+    if report:
+        for field in ("original", "replacement"):
+            if not isinstance(value[field], str) or not value[field]:
+                raise CampaignError(f"{label}.{field} must be a nonempty string")
+        if value["original"] == value["replacement"]:
+            raise CampaignError(f"{label} does not change the source expression")
+        if not isinstance(value["source_digest"], str) or not HEX64.fullmatch(
+            value["source_digest"]
+        ):
+            raise CampaignError(f"{label} has an invalid source digest")
     range_value = value["range"]
     if not isinstance(range_value, dict):
         raise CampaignError(f"{label}.range must be an object")
@@ -387,7 +395,7 @@ def load_catalog(plan: Plan, catalog_path: Path) -> Catalog:
     mutants: dict[str, dict[str, Any]] = {}
     partitions = {shard.name: {} for shard in plan.shards}
     for index, row in enumerate(rows):
-        mutant = _validate_mutant(row, f"catalog mutant {index}")
+        mutant = _validate_mutant(row, f"catalog mutant {index}", report=False)
         full_id = mutant["full_id"]
         if full_id in mutants:
             raise CampaignError(f"mutation catalog contains duplicate mutant {full_id}")
@@ -414,7 +422,9 @@ def _report_mutants(report_path: Path) -> tuple[dict[str, Any], dict[str, dict[s
     for index, row in enumerate(rows):
         if not isinstance(row, dict) or not isinstance(row.get("mutant"), dict):
             raise CampaignError(f"mutation result {index} is malformed")
-        mutant = _validate_mutant(row["mutant"], f"mutation result {index}.mutant")
+        mutant = _validate_mutant(
+            row["mutant"], f"mutation result {index}.mutant", report=True
+        )
         full_id = mutant["full_id"]
         if full_id in mutants:
             raise CampaignError(f"mutation report contains duplicate mutant {full_id}")
@@ -429,7 +439,11 @@ def verify_shard(
     catalog = load_catalog(plan, catalog_path)
     document, actual = _report_mutants(report_path)
     expected = catalog.partitions[shard.name]
-    if actual != expected:
+    actual_catalog = {
+        full_id: {field: mutant[field] for field in CATALOG_MUTANT_FIELDS}
+        for full_id, mutant in actual.items()
+    }
+    if actual_catalog != expected:
         missing = sorted(set(expected) - set(actual))
         extra = sorted(set(actual) - set(expected))
         details = []
