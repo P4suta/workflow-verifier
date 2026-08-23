@@ -87,7 +87,8 @@ static effect; absence from a finite run never proves impossibility.
 tooling, architecture/purity audits, native helper checks, and install-surface
 verification. Property, AFL, mutation, corpus, performance, and determinism
 tasks are named separately because some require platform tools or reviewed
-evidence.
+evidence. Hosted CI also runs every public CLI command against all four real
+provider entrypoints and independently verifies the OCI runtime evidence chain.
 
 See [architecture](docs/architecture.md), [TDD ledger](docs/tdd.md),
 [policy language](docs/policy.md), [sandbox protocol](docs/sandbox-protocol.md),

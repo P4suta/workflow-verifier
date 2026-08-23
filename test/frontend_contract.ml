@@ -67,6 +67,18 @@ let detection_test () =
       (".gitlab-ci.yml", "stages: [test]\n", Some Ir.Gitlab);
       ("azure-pipelines.yaml", "pool: default\nsteps: []\n", Some Ir.Azure);
       (".circleci/config.yml", "version: 2.1\nworkflows: {}\n", Some Ir.Circleci);
+      ( ".github/workflows/adversarial.yml",
+        "stages: [test]\nbuild:\n  script: echo github\n",
+        Some Ir.Github );
+      ( ".gitlab-ci.yml",
+        "trigger: [main]\npool: hosted\nstages: [test]\n",
+        Some Ir.Gitlab );
+      ( "nested/azure-pipelines.yml",
+        "stages:\n  - stage: Verify\n    jobs:\n      - job: test\n        steps:\n          - script: echo azure\n",
+        Some Ir.Azure );
+      ( ".circleci/config.yml",
+        "on: push\njobs: {}\nversion: 2.1\nworkflows: {}\n",
+        Some Ir.Circleci );
       ("notes.yml", "title: notes\n", None);
     ]
   in

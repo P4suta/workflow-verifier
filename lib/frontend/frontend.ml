@@ -6,12 +6,22 @@ let module_for_provider = function
 
 let providers = [ Ir.Github; Ir.Gitlab; Ir.Azure; Ir.Circleci ]
 
-let detect ~path ~source =
+let find_provider predicate =
   List.find_opt
     (fun provider ->
       let module Compiler = (val module_for_provider provider) in
-      Compiler.detect ~path ~source)
+      predicate (module Compiler : Frontend_intf.S))
     providers
+
+let detect ~path ~source =
+  match
+    find_provider (fun (module Compiler : Frontend_intf.S) ->
+        Compiler.path_identity ~path)
+  with
+  | Some _ as provider -> provider
+  | None ->
+      find_provider (fun (module Compiler : Frontend_intf.S) ->
+          Compiler.detect ~path ~source)
 
 let entrypoint ~provider ~path ~source =
   let module Compiler = (val module_for_provider provider) in

@@ -18,6 +18,10 @@ machine-readable evidence.
   as equivalent.
 - `determinism-comparison-v1` byte-compares report, lockfile, and fix output from
   Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64.
+- `dogfood-v1` requires zero diagnostics while analyzing the repository's real
+  GitHub, GitLab, Azure, and CircleCI entrypoints, exercises every public CLI
+  surface, recomputes the OCI evidence hash chain, and binds the verified audit
+  tail and static/runtime reconciliation to the execution plan.
 - The AFL campaign must execute a nonempty corpus and finish with no crash or
   hang artifact.
 

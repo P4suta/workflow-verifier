@@ -30,6 +30,7 @@ ARTIFACTS = (
     "replay.json",
     "audit.json",
 )
+EXPECTED_FRONTENDS = {"github", "gitlab", "azure", "circleci"}
 
 
 def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -82,6 +83,61 @@ def _canonical(value: object) -> bytes:
     ).encode("utf-8")
 
 
+def _canonical_without_newline(value: object) -> bytes:
+    return json.dumps(
+        value, ensure_ascii=False, separators=(",", ":"), sort_keys=True
+    ).encode("utf-8")
+
+
+def _report_frontends(report: dict[str, Any]) -> set[str]:
+    inputs = report.get("inputs")
+    if not isinstance(inputs, list):
+        raise ValueError("report.json lacks source inputs")
+    frontends: set[str] = set()
+    for item in inputs:
+        if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+            raise ValueError("report.json contains an invalid source input")
+        path = item["path"].replace("\\", "/").lower()
+        while path.startswith("./"):
+            path = path[2:]
+        if path.startswith(".github/workflows/"):
+            frontends.add("github")
+        elif path in {".gitlab-ci.yml", ".gitlab-ci.yaml"}:
+            frontends.add("gitlab")
+        elif path in {"azure-pipelines.yml", "azure-pipelines.yaml"}:
+            frontends.add("azure")
+        elif path in {".circleci/config.yml", ".circleci/config.yaml"}:
+            frontends.add("circleci")
+    return frontends
+
+
+def _verify_evidence_chain(evidence: dict[str, Any], name: str) -> str:
+    plan_digest = evidence.get("plan_digest")
+    events = evidence.get("events")
+    if not isinstance(plan_digest, str) or DIGEST.fullmatch(plan_digest) is None:
+        raise ValueError(f"{name} has an invalid plan digest")
+    if not isinstance(events, list) or not events:
+        raise ValueError(f"{name} has no runtime events")
+    previous = plan_digest
+    for sequence, event in enumerate(events):
+        if not isinstance(event, dict) or not isinstance(event.get("body"), dict):
+            raise ValueError(f"{name} event {sequence} is invalid")
+        if event.get("sequence") != sequence:
+            raise ValueError(f"{name} event sequence is not contiguous")
+        if event.get("previous_digest") != previous:
+            raise ValueError(f"{name} event previous digest mismatch")
+        unsigned = {
+            "body": event["body"],
+            "previous_digest": previous,
+            "sequence": sequence,
+        }
+        expected = "sha256:" + hashlib.sha256(_canonical_without_newline(unsigned)).hexdigest()
+        if event.get("digest") != expected:
+            raise ValueError(f"{name} event digest mismatch")
+        previous = expected
+    return previous
+
+
 def extract_evidence(run_path: pathlib.Path, output: pathlib.Path) -> None:
     run = _json(run_path)
     _schema(run, "sandbox-run-v1", run_path.name)
@@ -114,6 +170,10 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
     _schema(report, "report-v1", "report.json")
     if not isinstance(report.get("properties"), list) or not report["properties"]:
         raise ValueError("report.json contains no proved properties")
+    if report.get("diagnostics") != []:
+        raise ValueError("report.json dogfood must contain zero diagnostics")
+    if _report_frontends(report) != EXPECTED_FRONTENDS:
+        raise ValueError("report.json must analyze all four provider entrypoints")
 
     sarif = _json(root / "report.sarif.json")
     if sarif.get("version") != "2.1.0" or not isinstance(sarif.get("runs"), list):
@@ -155,8 +215,15 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
     doctor = _json(root / "doctor.json")
     _schema(doctor, "doctor-v1", "doctor.json")
     backends = doctor.get("backends")
+    frontends = doctor.get("frontends")
     if doctor.get("sandbox_executor") is not True or not isinstance(backends, list):
         raise ValueError("doctor.json reports no sandbox executor")
+    if (
+        not isinstance(frontends, list)
+        or len(frontends) != len(EXPECTED_FRONTENDS)
+        or set(frontends) != EXPECTED_FRONTENDS
+    ):
+        raise ValueError("doctor.json does not expose exactly four frontends")
     if not any(
         isinstance(backend, dict)
         and backend.get("id") == "oci:docker"
@@ -179,9 +246,8 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
         raise ValueError("run.json lacks evidence-v1")
     if evidence.get("plan_digest") != plan.get("digest"):
         raise ValueError("run.json evidence does not bind plan.json")
+    evidence_tail = _verify_evidence_chain(evidence, "run.json evidence")
     events = evidence.get("events")
-    if not isinstance(events, list):
-        raise ValueError("run.json evidence has no events")
     kinds = {
         body.get("kind")
         for event in events
@@ -200,8 +266,11 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
     audit = _json(root / "audit.json")
     _schema(audit, "sandbox-audit-v1", "audit.json")
     _state(audit, "status", "verified", "audit.json")
-    if not isinstance(audit.get("event_count"), int) or audit["event_count"] <= 0:
-        raise ValueError("audit.json verified no runtime events")
+    _state(audit, "reconciliation", "Proved", "audit.json")
+    if audit.get("event_count") != len(events):
+        raise ValueError("audit.json event count does not match evidence")
+    if audit.get("evidence_tail") != evidence_tail:
+        raise ValueError("audit.json evidence tail does not match evidence")
     if audit.get("plan_digest") != plan.get("digest"):
         raise ValueError("audit.json does not bind plan.json")
 

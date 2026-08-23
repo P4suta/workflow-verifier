@@ -1,8 +1,11 @@
 let provider = Ir.Gitlab
 
-let detect ~path ~source =
+let path_identity ~path =
   let name = Filename.basename path |> String.lowercase_ascii in
   name = ".gitlab-ci.yml" || name = ".gitlab-ci.yaml"
+
+let detect ~path ~source =
+  path_identity ~path
   || Util.contains ~needle:"stages:" source
      && Util.contains ~needle:"script:" source
 

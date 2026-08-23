@@ -1,8 +1,11 @@
 let provider = Ir.Azure
 
-let detect ~path ~source =
+let path_identity ~path =
   let name = Filename.basename path |> String.lowercase_ascii in
   List.mem name [ "azure-pipelines.yml"; "azure-pipelines.yaml" ]
+
+let detect ~path ~source =
+  path_identity ~path
   || Util.contains ~needle:"trigger:" source
      && (Util.contains ~needle:"pool:" source
         || Util.contains ~needle:"stages:" source)

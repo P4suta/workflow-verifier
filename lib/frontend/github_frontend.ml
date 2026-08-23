@@ -4,14 +4,17 @@ let has_top_level key source =
   Util.starts_with ~prefix:(key ^ ":") source
   || Util.contains ~needle:("\n" ^ key ^ ":") source
 
-let detect ~path ~source =
+let path_identity ~path =
   let path = Util.normalize_slashes path |> String.lowercase_ascii in
   Util.contains ~needle:"/.github/workflows/" path
   || Util.starts_with ~prefix:".github/workflows/" path
   || List.exists
        (fun suffix -> Util.ends_with ~suffix path)
        [ "/action.yml"; "/action.yaml" ]
-     && Util.contains ~needle:"runs:" source
+  || List.mem path [ "action.yml"; "action.yaml" ]
+
+let detect ~path ~source =
+  path_identity ~path
   || (has_top_level "on" source && has_top_level "jobs" source)
 
 let entrypoint ~path ~source =

@@ -1,10 +1,13 @@
 let provider = Ir.Circleci
 
-let detect ~path ~source =
+let path_identity ~path =
   let path = Util.normalize_slashes path |> String.lowercase_ascii in
   Util.ends_with ~suffix:"/.circleci/config.yml" path
   || Util.ends_with ~suffix:"/.circleci/config.yaml" path
   || Util.starts_with ~prefix:".circleci/config." path
+
+let detect ~path ~source =
+  path_identity ~path
   || Util.contains ~needle:"version: 2.1" source
      && Util.contains ~needle:"workflows:" source
 

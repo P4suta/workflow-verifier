@@ -57,6 +57,7 @@ type compilation = {
 
 module type S = sig
   val provider : Ir.provider
+  val path_identity : path:string -> bool
   val detect : path:string -> source:string -> bool
   val entrypoint : path:string -> source:string -> bool
   val parse : source_unit -> (parsed, problem list) result
