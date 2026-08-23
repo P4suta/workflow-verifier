@@ -21,9 +21,11 @@ machine-readable evidence.
   proves that their immutable full-ID union has no omission, duplication, or
   metadata substitution. Both passing and complete-but-failing campaigns are
   representable, while only a passing campaign can satisfy publication.
-  The mutation pipeline also runs the pinned 402-case yaml-test-suite inside
+  The mutation pipeline also runs the pinned 402-case yaml-test-suite through
   each worker's private Dune build directory; one catalog job acquires the
-  oracle and every shard consumes the same artifact bytes.
+  oracle and every shard consumes the same artifact bytes. The suite remains
+  under the ignored build root outside the mutation runner's source snapshot
+  and crosses that boundary through one explicit read-only path capability.
   A separate semantic fingerprint stage covers typed configuration failures,
   every policy selector and capability/effect name, cross-shell source/sink
   boundaries, graph algorithms, fixed-point dataflow, and all verifier personas.

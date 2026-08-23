@@ -104,7 +104,9 @@ the point where the quality boundary rejects a shard. Fast semantic
 fingerprints exercise the public config, policy, shell, graph, dataflow,
 capability, and verifier surfaces before the complete contract suite. Their
 inputs are readable fixtures while canonical-output digests make any behavioral
-change an explicit review event.
+change an explicit review event. The externally acquired YAML oracle stays
+under the caller's ignored build root and is passed through one explicit
+environment capability; it never enters the analyzed workspace snapshot.
 
 ## Runner boundary
 

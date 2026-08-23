@@ -131,12 +131,12 @@
  (alias mutation-yaml-conformance)
  (deps
   yaml_conformance.exe
-  (source_tree upstream/yaml-test-suite-data-2022-01-17))
+  (env_var WORKFLOW_VERIFIER_YAML_SUITE))
  (action
   (run
    %{exe:yaml_conformance.exe}
    --suite
-   %{workspace_root}/test/upstream/yaml-test-suite-data-2022-01-17)))
+   %{env:WORKFLOW_VERIFIER_YAML_SUITE=})))
 
 (executable
  (name mutation_oracle_contract)

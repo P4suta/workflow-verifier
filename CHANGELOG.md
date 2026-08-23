@@ -35,7 +35,7 @@ after the first compatibility release.
   without confusing evidence generation with publication success.
 - Run the pinned 402-case yaml-test-suite as a private-build mutation stage,
   acquiring the immutable oracle once and distributing identical bytes to every
-  catalog shard.
+  catalog shard without copying external fixtures into the analyzed snapshot.
 - Add reviewed semantic fingerprints over config, policy, shell adapters,
   graph/dataflow/capability analysis, and the whole verifier so broad behavioral
   regressions fail early in the mutation stage.

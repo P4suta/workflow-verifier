@@ -184,7 +184,9 @@ let () =
       "mkdir -p _build";
       "ocaml-mutants list --json";
       "ocaml-mutants run --fresh --json";
-      "--destination test/upstream/yaml-test-suite-data-2022-01-17";
+      "--destination _build/upstream/yaml-test-suite-data-2022-01-17";
+      "WORKFLOW_VERIFIER_YAML_SUITE: ${{ github.workspace \
+       }}/_build/upstream/yaml-test-suite-data-2022-01-17";
       "verify_mutation_campaign.py";
       "mutation-shards-v1.json";
       "fromJSON(needs.catalog.outputs.matrix)";
@@ -208,6 +210,16 @@ let () =
     ];
   if not (Util.contains ~needle:"(alias mutation-yaml-conformance)" test_build)
   then fail "test build omits the mutation YAML conformance alias";
+  if
+    not
+      (Util.contains ~needle:"(env_var WORKFLOW_VERIFIER_YAML_SUITE)" test_build)
+  then fail "mutation YAML alias omits its explicit external oracle input";
+  if
+    not
+      (Util.contains ~needle:"%{env:WORKFLOW_VERIFIER_YAML_SUITE=}" test_build)
+  then fail "mutation YAML alias does not pass the external oracle path";
+  if Util.contains ~needle:"(source_tree upstream/" test_build then
+    fail "mutation YAML oracle must stay outside the analyzed source snapshot";
   if not (Util.contains ~needle:"(alias mutation-semantic-oracle)" test_build)
   then fail "test build omits the semantic mutation oracle alias";
   if Util.contains ~needle:"Run all configured analyzer-core mutants" mutation
