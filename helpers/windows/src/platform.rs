@@ -916,6 +916,53 @@ fn verify_restricted_appcontainer(process: HANDLE) -> Result<(), String> {
     }
 }
 
+struct SupervisionOutcome {
+    timed_out: bool,
+    output_exceeded: bool,
+}
+
+fn supervise_process(
+    job: &OwnedHandle,
+    process: &OwnedHandle,
+    output: &OutputFile,
+    cpu_seconds: u64,
+    output_bytes: u64,
+) -> Result<SupervisionOutcome, String> {
+    let deadline = Instant::now() + Duration::from_secs(cpu_seconds);
+    let mut outcome = SupervisionOutcome {
+        timed_out: false,
+        output_exceeded: false,
+    };
+    loop {
+        // SAFETY: process remains valid for the entire wait loop.
+        match unsafe { WaitForSingleObject(process.raw(), 10) } {
+            WAIT_OBJECT_0 => break,
+            WAIT_TIMEOUT => {}
+            other => {
+                // SAFETY: fail-closed termination of our private job.
+                unsafe {
+                    TerminateJobObject(job.raw(), 5);
+                }
+                return Err(format!("WaitForSingleObject returned {other}"));
+            }
+        }
+        outcome.output_exceeded = output.length()? > output_bytes;
+        outcome.timed_out = Instant::now() >= deadline;
+        if outcome.timed_out || outcome.output_exceeded {
+            // SAFETY: job is private and owns the complete descendant tree.
+            if unsafe { TerminateJobObject(job.raw(), 5) } == 0 {
+                return Err(windows_error("TerminateJobObject"));
+            }
+            // SAFETY: process remains valid after job termination.
+            unsafe {
+                WaitForSingleObject(process.raw(), 5_000);
+            }
+            break;
+        }
+    }
+    Ok(outcome)
+}
+
 fn run_process(
     app_container_sid: PSID,
     token: HANDLE,
@@ -989,40 +1036,13 @@ fn run_process(
         }
         return Err(windows_error("ResumeThread"));
     }
-    let deadline = Instant::now() + Duration::from_secs(request.plan.limits.cpu_seconds);
-    let mut timed_out = false;
-    let mut output_exceeded = false;
-    loop {
-        // SAFETY: process_handle remains valid for the entire wait loop.
-        match unsafe { WaitForSingleObject(process_handle.raw(), 10) } {
-            WAIT_OBJECT_0 => break,
-            WAIT_TIMEOUT => {}
-            other => {
-                // SAFETY: fail-closed termination of our private job.
-                unsafe {
-                    TerminateJobObject(job.raw(), 5);
-                }
-                return Err(format!("WaitForSingleObject returned {other}"));
-            }
-        }
-        if output.length()? > request.plan.limits.output_bytes {
-            output_exceeded = true;
-        }
-        if Instant::now() >= deadline {
-            timed_out = true;
-        }
-        if timed_out || output_exceeded {
-            // SAFETY: job is private and owns the complete descendant tree.
-            if unsafe { TerminateJobObject(job.raw(), 5) } == 0 {
-                return Err(windows_error("TerminateJobObject"));
-            }
-            // SAFETY: the process handle remains valid after job termination.
-            unsafe {
-                WaitForSingleObject(process_handle.raw(), 5_000);
-            }
-            break;
-        }
-    }
+    let supervision = supervise_process(
+        &job,
+        &process_handle,
+        &output,
+        request.plan.limits.cpu_seconds,
+        request.plan.limits.output_bytes,
+    )?;
     let mut code = 0_u32;
     // SAFETY: process has exited and code points to writable storage.
     if unsafe { GetExitCodeProcess(process_handle.raw(), &raw mut code) } == 0 {
@@ -1031,8 +1051,8 @@ fn run_process(
     let captured = output.read(request.plan.limits.output_bytes)?;
     Ok(ProcessObservation {
         code: i32::try_from(code).ok(),
-        timed_out,
-        output_exceeded,
+        timed_out: supervision.timed_out,
+        output_exceeded: supervision.output_exceeded,
         output: captured,
     })
 }
