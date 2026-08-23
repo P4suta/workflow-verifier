@@ -14,7 +14,49 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  analyzer-core:
+  catalog:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+      - name: Install analyzer dependencies
+        run: opam install . --deps-only --with-test --yes
+      - name: Install immutable mutation runner
+        run: >-
+          opam pin add ocaml-mutants.dev
+          git+https://github.com/P4suta/ocaml-mutants.git#15d857152f91bc3bf960f9a6d8297ecfd5800f10
+          --yes
+      - name: Build the complete canonical mutant catalog
+        id: plan
+        shell: bash
+        run: |
+          mkdir -p _build
+          opam exec -- ocaml-mutants list --json . > _build/mutation-catalog.json
+          python -B scripts/verify_mutation_campaign.py plan \
+            --manifest scripts/mutation-shards-v1.json \
+            --config .ocaml-mutants.toml \
+            --workspace . \
+            --catalog _build/mutation-catalog.json \
+            --github-output "$GITHUB_OUTPUT"
+      - name: Upload canonical catalog
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mutation-catalog
+          path: _build/mutation-catalog.json
+          if-no-files-found: error
+
+  shard:
+    needs: catalog
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.catalog.outputs.matrix) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     steps:
@@ -31,25 +73,79 @@ jobs:
           opam pin add ocaml-mutants.dev
           git+https://github.com/P4suta/ocaml-mutants.git#15d857152f91bc3bf960f9a6d8297ecfd5800f10
           --yes
-      - name: Run all configured analyzer-core mutants
+      - name: Download canonical catalog
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: mutation-catalog
+          path: _build/catalog
+      - name: Run the complete catalog partition
+        shell: bash
+        env:
+          MUTATION_SHARD: ${{ matrix.shard }}
         run: |
           mkdir -p _build
-          opam exec -- ocaml-mutants run --fresh --json . > _build/mutation-report.json
-      - name: Verify complete non-vacuous mutation evidence
+          mapfile -t mutant_ids < <(python -B scripts/verify_mutation_campaign.py select \
+            --manifest scripts/mutation-shards-v1.json \
+            --config .ocaml-mutants.toml \
+            --workspace . \
+            --shard "$MUTATION_SHARD" \
+            --field mutants \
+            --catalog _build/catalog/mutation-catalog.json)
+          test "${#mutant_ids[@]}" -gt 0
+          arguments=()
+          for mutant_id in "${mutant_ids[@]}"; do
+            arguments+=(--mutant "$mutant_id")
+          done
+          opam exec -- ocaml-mutants run --fresh --json "${arguments[@]}" . \
+            > "_build/mutation-report-${MUTATION_SHARD}.json"
+      - name: Reconcile shard report with the canonical catalog
+        shell: bash
+        env:
+          MUTATION_SHARD: ${{ matrix.shard }}
+        run: |
+          python -B scripts/verify_mutation_campaign.py verify-shard \
+            --manifest scripts/mutation-shards-v1.json \
+            --config .ocaml-mutants.toml \
+            --workspace . \
+            --catalog _build/catalog/mutation-catalog.json \
+            --shard "$MUTATION_SHARD" \
+            --report "_build/mutation-report-${MUTATION_SHARD}.json" \
+            --output "_build/mutation-gate-${MUTATION_SHARD}.json"
+      - name: Upload complete shard evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mutation-shard-${{ matrix.shard }}
+          path: |
+            _build/mutation-report-${{ matrix.shard }}.json
+            _build/mutation-gate-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: [catalog, shard]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Download every catalog-bound shard
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: mutation-*
+          path: _build/mutation-evidence
+          merge-multiple: true
+      - name: Verify exact catalog union and aggregate evidence
         run: >-
-          python -B scripts/verify_mutation_report.py
-          --report _build/mutation-report.json
-          --output _build/mutation-gate-v1.json
-          --require-prefix lib/foundation/
-          --require-prefix lib/syntax/
-          --require-prefix lib/domain/
-          --require-prefix lib/verifier/
-          --require-prefix lib/product/
-      - name: Upload mutation evidence
+          python -B scripts/verify_mutation_campaign.py aggregate
+          --manifest scripts/mutation-shards-v1.json
+          --config .ocaml-mutants.toml
+          --workspace .
+          --catalog _build/mutation-evidence/mutation-catalog.json
+          --evidence-dir _build/mutation-evidence
+          --output _build/mutation-evidence/mutation-campaign-v1.json
+      - name: Upload complete mutation evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mutation-evidence
-          path: |
-            _build/mutation-report.json
-            _build/mutation-gate-v1.json
+          path: _build/mutation-evidence
           if-no-files-found: error

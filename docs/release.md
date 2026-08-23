@@ -23,6 +23,13 @@ byte-identical determinism probes on four release platforms. A tag therefore
 cannot bypass either live quality gates or reviewed evidence.
 Every third-party action and container image is pinned by immutable digest.
 
+The mutation workflow first emits one canonical catalog from the pinned runner,
+then executes disjoint full-ID-prefix partitions in parallel. Each report
+is reconciled byte-for-byte with its assigned catalog entries before an
+aggregate gate proves that the report union equals the original catalog with no
+missing or duplicate mutant. Sharding changes wall-clock scheduling only; it
+cannot reduce the selected mutation surface.
+
 Before tagging:
 
 1. Run `just check` and `just version`.

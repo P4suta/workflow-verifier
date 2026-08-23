@@ -1,0 +1,58 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/mutation-campaign-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalog_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "detected": { "minimum": 1, "type": "integer" },
+    "expected_survivors": { "minimum": 0, "type": "integer" },
+    "failures": { "maxItems": 0, "type": "array" },
+    "manifest_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "mutants": { "minimum": 1, "type": "integer" },
+    "passed": { "const": true },
+    "profile": { "enum": ["balanced", "strong", "all"] },
+    "schema": { "const": "mutation-campaign-v1" },
+    "shards": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "detected": { "minimum": 0, "type": "integer" },
+          "expected_survivors": { "minimum": 0, "type": "integer" },
+          "mutants": { "minimum": 1, "type": "integer" },
+          "name": { "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "type": "string" },
+          "report_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "unexpected_survivors": { "const": 0 }
+        },
+        "required": [
+          "detected",
+          "expected_survivors",
+          "mutants",
+          "name",
+          "report_digest",
+          "unexpected_survivors"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "unexpected_survivors": { "const": 0 },
+    "workspace_digest": { "pattern": "^[0-9a-f]{64}$", "type": "string" }
+  },
+  "required": [
+    "catalog_digest",
+    "detected",
+    "expected_survivors",
+    "failures",
+    "manifest_digest",
+    "mutants",
+    "passed",
+    "profile",
+    "schema",
+    "shards",
+    "unexpected_survivors",
+    "workspace_digest"
+  ],
+  "title": "workflow-verifier catalog-reconciled mutation campaign v1",
+  "type": "object"
+}

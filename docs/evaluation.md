@@ -13,9 +13,11 @@ machine-readable evidence.
 - `performance-comparison-v1` compares cold, warm, and incremental samples on an
   identical declared environment. An increase above 10% needs a substantive
   explanation and an HTTPS review reference.
-- `mutation-gate-v1` proves that the configured analyzer-core source prefixes
-  were actually mutated and that every survivor is either detected or reviewed
-  as equivalent.
+- Each `mutation-gate-v1` authenticates one complete catalog-bound shard and
+  requires every survivor to be detected or reviewed as equivalent.
+- `mutation-campaign-v1` binds those reports to one pinned-runner catalog and
+  proves that their immutable full-ID union has no omission, duplication, or
+  metadata substitution.
 - `determinism-comparison-v1` byte-compares report, lockfile, and fix output from
   Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64.
 - `dogfood-v1` requires zero diagnostics while analyzing the repository's real
@@ -53,8 +55,9 @@ transaction without network access. The source evaluation is immutable; the
 new reports receive a fresh exhaustive review before promotion.
 
 Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
-`just corpus-review`, `just corpus`, `just performance-measure`, `just performance-gate`,
-`just mutation-gate`, `just determinism-probe`, and `just determinism-compare`.
+`just corpus-review`, `just corpus`, `just performance-measure`,
+`just performance-gate`, `just mutation-gate`, `just mutation-campaign`,
+`just determinism-probe`, and `just determinism-compare`.
 `just release-evidence REVISION TAG` closes the external-evidence composition
 gate. Equivalent `mise` tasks use the conventional `evaluation/`,
 `performance/`, `_build/`, and `release-evidence/` paths.

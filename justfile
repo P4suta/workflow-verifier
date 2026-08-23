@@ -31,6 +31,9 @@ fuzz seconds="60" memory_mb="1024":
 mutation-gate report="_build/mutation-report.json" output="_build/mutation-gate-v1.json":
     python -B scripts/verify_mutation_report.py --report {{report}} --output {{output}} --require-prefix lib/foundation/ --require-prefix lib/syntax/ --require-prefix lib/domain/ --require-prefix lib/verifier/ --require-prefix lib/product/
 
+mutation-campaign catalog="_build/mutation-evidence/mutation-catalog.json" evidence="_build/mutation-evidence" output="_build/mutation-evidence/mutation-campaign-v1.json":
+    python -B scripts/verify_mutation_campaign.py aggregate --manifest scripts/mutation-shards-v1.json --config .ocaml-mutants.toml --workspace . --catalog {{catalog}} --evidence-dir {{evidence}} --output {{output}}
+
 corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" reports_root="evaluation/reports" output="_build/corpus-report-v1.json":
     python -B scripts/corpus_gate.py --manifest {{manifest}} --corpus-root {{corpus_root}} --reports-root {{reports_root}} --output {{output}} --release
 

@@ -92,6 +92,13 @@ install-layout gate independently restricts the public package to one analyzer
 executable and the config/report schemas. Property, mutation, fuzz, and
 cross-platform byte-comparison gates cover invariants beyond example fixtures.
 
+Mutation scheduling is an evidence boundary rather than a test shortcut. One
+pinned runner creates the authoritative catalog. Hosted jobs receive disjoint
+sets of its immutable full IDs, and the campaign verifier checks each result's
+workspace, toolchain, profile, selection, and complete mutant metadata before
+proving that the report union is exactly the original catalog. Parallelism can
+change wall-clock order but cannot change the selected semantic surface.
+
 ## Runner boundary
 
 The runner boundary is intentionally narrow. The analyzer emits a

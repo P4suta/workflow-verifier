@@ -55,8 +55,12 @@ description = "Build the AFL-instrumented YAML harness and run a bounded campaig
 run = "opam exec -- dune build --profile afl test/yaml_fuzz.exe && python -B scripts/run_afl_fuzz.py --seeds fuzz/corpus/yaml --output _build/afl-results --target _build/default/test/yaml_fuzz.exe --seconds 60 --memory-mb 1024"
 
 [tasks.mutation-gate]
-description = "Verify complete mutation evidence for every analyzer-core layer"
+description = "Verify one complete catalog-bound mutation report"
 run = "python -B scripts/verify_mutation_report.py --report _build/mutation-report.json --output _build/mutation-gate-v1.json --require-prefix lib/foundation/ --require-prefix lib/syntax/ --require-prefix lib/domain/ --require-prefix lib/verifier/ --require-prefix lib/product/"
+
+[tasks.mutation-campaign]
+description = "Prove that all mutation shard reports exactly cover the canonical catalog"
+run = "python -B scripts/verify_mutation_campaign.py aggregate --manifest scripts/mutation-shards-v1.json --config .ocaml-mutants.toml --workspace . --catalog _build/mutation-evidence/mutation-catalog.json --evidence-dir _build/mutation-evidence --output _build/mutation-evidence/mutation-campaign-v1.json"
 
 [tasks.corpus]
 description = "Enforce the 400-repository release precision and recall gate"

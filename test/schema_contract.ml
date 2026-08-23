@@ -43,6 +43,8 @@ let schemas =
       "https://workflow-verifier.dev/schema/performance-suite-v1.json" );
     ( "mutation-gate-v1.schema.json",
       "https://workflow-verifier.dev/schema/mutation-gate-v1.json" );
+    ( "mutation-campaign-v1.schema.json",
+      "https://workflow-verifier.dev/schema/mutation-campaign-v1.json" );
     ( "determinism-v1.schema.json",
       "https://workflow-verifier.dev/schema/determinism-v1.json" );
     ( "determinism-comparison-v1.schema.json",

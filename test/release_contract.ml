@@ -16,6 +16,8 @@ let required =
     "../scripts/performance_gate.py";
     "../scripts/run_afl_fuzz.py";
     "../scripts/verify_mutation_report.py";
+    "../scripts/verify_mutation_campaign.py";
+    "../scripts/mutation-shards-v1.json";
     "../scripts/determinism_probe.py";
     "../scripts/compare_determinism.py";
     "../scripts/dogfood_gate.py";
@@ -34,6 +36,7 @@ let required =
     "../performance/README.md";
     "../performance/suite-v1.json";
     "../schema/dogfood-v1.schema.json";
+    "../schema/mutation-campaign-v1.schema.json";
     "../schema/corpus-review-v1.schema.json";
     "../schema/release-evidence-v1.schema.json";
     "../release-evidence/README.md";
@@ -85,8 +88,7 @@ let () =
   let attributes = read_required ".gitattributes" in
   if
     not
-      (Util.contains
-         ~needle:"evaluation/corpus/** -text -whitespace" attributes)
+      (Util.contains ~needle:"evaluation/corpus/** -text -whitespace" attributes)
   then
     fail "immutable corpus bytes must bypass Git text and whitespace rewriting";
   let github = read_required ".github/workflows/ci.yml" in
@@ -165,7 +167,12 @@ let () =
       if Util.contains ~needle:mutable_reference mutation then
         fail "mutation workflow contains mutable action reference %s"
           mutable_reference)
-    [ "actions/checkout@v"; "actions/upload-artifact@v"; "ocaml/setup-ocaml@v" ];
+    [
+      "actions/checkout@v";
+      "actions/upload-artifact@v";
+      "actions/download-artifact@v";
+      "ocaml/setup-ocaml@v";
+    ];
   List.iter
     (fun required_surface ->
       if not (Util.contains ~needle:required_surface mutation) then
@@ -173,11 +180,19 @@ let () =
     [
       "15d857152f91bc3bf960f9a6d8297ecfd5800f10";
       "mkdir -p _build";
+      "ocaml-mutants list --json";
       "ocaml-mutants run --fresh --json";
-      "verify_mutation_report.py";
-      "--require-prefix lib/foundation/";
-      "--require-prefix lib/verifier/";
+      "verify_mutation_campaign.py";
+      "mutation-shards-v1.json";
+      "fromJSON(needs.catalog.outputs.matrix)";
+      "mutation-report-${{ matrix.shard }}.json";
+      "mutation-campaign-v1.json";
     ];
+  if Util.contains ~needle:"Run all configured analyzer-core mutants" mutation
+  then fail "mutation workflow must shard the complete catalog before execution";
+  let mutation_campaign = read_required "scripts/verify_mutation_campaign.py" in
+  if not (Util.contains ~needle:"verify_mutation_report" mutation_campaign) then
+    fail "mutation campaign verifier must retain the strict per-report verifier";
   List.iter
     (fun mutable_reference ->
       if Util.contains ~needle:mutable_reference release then
@@ -227,6 +242,7 @@ let () =
       "performance_gate.py";
       "run_afl_fuzz.py";
       "verify_mutation_report.py";
+      "verify_mutation_campaign.py";
       "determinism_probe.py";
       "compare_determinism.py";
       "dogfood_gate.py";
