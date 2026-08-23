@@ -108,7 +108,12 @@ fn appcontainer_can_read_private_source_into_scratch() {
         5,
         4096,
     );
-    assert_eq!(result.outcome, Outcome::Completed);
+    assert_eq!(
+        result.outcome,
+        Outcome::Completed,
+        "{}",
+        result.canonical_json()
+    );
     assert!(result.canonical_json().contains("copied.txt"));
     std::fs::remove_dir_all(root).expect("remove fixture");
 }

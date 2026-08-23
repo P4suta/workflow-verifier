@@ -634,7 +634,7 @@ impl Drop for AttributeList {
     }
 }
 
-fn quote_argument(argument: &str) -> String {
+fn quote_crt_argument(argument: &str) -> String {
     if !argument.is_empty()
         && !argument
             .chars()
@@ -662,17 +662,51 @@ fn quote_argument(argument: &str) -> String {
     quoted
 }
 
-fn command_line(arguments: &[String]) -> Result<Vec<u16>, String> {
+fn is_command_processor_script(arguments: &[String]) -> bool {
+    let Some((executable, tail)) = arguments.split_first() else {
+        return false;
+    };
+    let Some(file_name) = Path::new(executable).file_name().and_then(|name| name.to_str()) else {
+        return false;
+    };
+    let is_command_processor =
+        file_name.eq_ignore_ascii_case("cmd.exe") || file_name.eq_ignore_ascii_case("cmd");
+    is_command_processor
+        && tail.len() >= 2
+        && tail[tail.len() - 2]
+            .as_str()
+            .eq_ignore_ascii_case("/c")
+}
+
+fn render_command_line(arguments: &[String]) -> Result<String, String> {
     if arguments.is_empty() {
         return Err("step argv cannot be empty".to_owned());
     }
-    wide(
-        arguments
+    if is_command_processor_script(arguments) {
+        let (prefix, script) = arguments.split_at(arguments.len() - 1);
+        // cmd.exe consumes the text after /C as shell syntax rather than as a
+        // CRT argv element. Its outer quotes must therefore preserve embedded
+        // quotes verbatim; backslash-escaping them changes the command itself.
+        Ok(format!(
+            "{} \"{}\"",
+            prefix
+                .iter()
+                .map(|value| quote_crt_argument(value))
+                .collect::<Vec<_>>()
+                .join(" "),
+            script[0]
+        ))
+    } else {
+        Ok(arguments
             .iter()
-            .map(|value| quote_argument(value))
+            .map(|value| quote_crt_argument(value))
             .collect::<Vec<_>>()
-            .join(" "),
-    )
+            .join(" "))
+    }
+}
+
+fn command_line(arguments: &[String]) -> Result<Vec<u16>, String> {
+    wide(render_command_line(arguments)?)
 }
 
 fn environment_block(request: &NativeStepRequest<'_>) -> Result<Vec<u16>, String> {
@@ -1030,11 +1064,7 @@ impl NativeSandbox for WindowsSandbox {
             .ok_or_else(|| "AppContainer SID was not initialized".to_owned())?;
         let token = restricted_token()?;
         verify_privilege_stripped(token.raw())?;
-        deny_tree(
-            request.source_root,
-            sid.raw(),
-            SOURCE_MUTATION_RIGHTS,
-        )?;
+        deny_tree(request.source_root, sid.raw(), SOURCE_MUTATION_RIGHTS)?;
         grant_tree(
             request.source_root,
             sid.raw(),
@@ -1132,7 +1162,7 @@ pub(super) fn launch(
 mod tests {
     use super::{
         AppContainerSid, FILE_GENERIC_READ, OutputFile, SOURCE_MUTATION_RIGHTS, command_line, probe,
-        quote_argument,
+        quote_crt_argument,
     };
 
     #[test]
@@ -1142,11 +1172,11 @@ mod tests {
 
     #[test]
     fn windows_command_line_quotes_spaces_quotes_and_trailing_slashes() {
-        assert_eq!(quote_argument("plain"), "plain");
-        assert_eq!(quote_argument(""), "\"\"");
-        assert_eq!(quote_argument("two words"), "\"two words\"");
-        assert_eq!(quote_argument("a\\\"b"), "\"a\\\\\\\"b\"");
-        assert_eq!(quote_argument("tail\\"), "tail\\");
+        assert_eq!(quote_crt_argument("plain"), "plain");
+        assert_eq!(quote_crt_argument(""), "\"\"");
+        assert_eq!(quote_crt_argument("two words"), "\"two words\"");
+        assert_eq!(quote_crt_argument("a\\\"b"), "\"a\\\\\\\"b\"");
+        assert_eq!(quote_crt_argument("tail\\"), "tail\\");
         assert!(command_line(&[]).is_err());
     }
 
@@ -1163,6 +1193,22 @@ mod tests {
         assert_eq!(
             String::from_utf16(&encoded[..encoded.len() - 1]).expect("UTF-16 command line"),
             "cmd.exe /D /S /C \"echo artifact>artifact.txt\""
+        );
+    }
+
+    #[test]
+    fn cmd_command_line_preserves_quotes_inside_the_script() {
+        let encoded = command_line(&[
+            r"C:\Windows\System32\cmd.exe".to_owned(),
+            "/D".to_owned(),
+            "/S".to_owned(),
+            "/C".to_owned(),
+            r#"type "%WORKFLOW_VERIFIER_SOURCE%\input.txt">copied.txt"#.to_owned(),
+        ])
+        .expect("encode command line");
+        assert_eq!(
+            String::from_utf16(&encoded[..encoded.len() - 1]).expect("UTF-16 command line"),
+            r#"C:\Windows\System32\cmd.exe /D /S /C "type "%WORKFLOW_VERIFIER_SOURCE%\input.txt">copied.txt""#
         );
     }
 
