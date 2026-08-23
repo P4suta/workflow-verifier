@@ -30,8 +30,9 @@ use windows_sys::Win32::Security::{
     TokenPrivileges,
 };
 use windows_sys::Win32::Storage::FileSystem::{
-    DELETE, FILE_ALL_ACCESS, FILE_DELETE_CHILD, FILE_GENERIC_EXECUTE, FILE_GENERIC_READ,
-    FILE_GENERIC_WRITE,
+    DELETE, FILE_ALL_ACCESS, FILE_APPEND_DATA, FILE_DELETE_CHILD, FILE_GENERIC_EXECUTE,
+    FILE_GENERIC_READ, FILE_WRITE_ATTRIBUTES, FILE_WRITE_DATA, FILE_WRITE_EA, WRITE_DAC,
+    WRITE_OWNER,
 };
 use windows_sys::Win32::System::Com::CoTaskMemFree;
 use windows_sys::Win32::System::JobObjects::{
@@ -61,6 +62,14 @@ const PROFILE_NAME: &str = "OpenAI.workflow-verifier.sandbox.v1";
 const PROFILE_LABEL: &str = "workflow-verifier sandbox";
 const PROFILE_DESCRIPTION: &str = "Network-denied native workflow verification";
 const ERROR_ALREADY_EXISTS_HRESULT: i32 = 0x8007_00B7_u32.cast_signed();
+const SOURCE_MUTATION_RIGHTS: u32 = FILE_WRITE_DATA
+    | FILE_APPEND_DATA
+    | FILE_WRITE_EA
+    | FILE_WRITE_ATTRIBUTES
+    | FILE_DELETE_CHILD
+    | DELETE
+    | WRITE_DAC
+    | WRITE_OWNER;
 
 static PROFILE_INITIALIZED: OnceLock<Result<(), String>> = OnceLock::new();
 
@@ -1024,7 +1033,7 @@ impl NativeSandbox for WindowsSandbox {
         deny_tree(
             request.source_root,
             sid.raw(),
-            FILE_GENERIC_WRITE | DELETE | FILE_DELETE_CHILD,
+            SOURCE_MUTATION_RIGHTS,
         )?;
         grant_tree(
             request.source_root,
@@ -1121,7 +1130,15 @@ pub(super) fn launch(
 
 #[cfg(test)]
 mod tests {
-    use super::{AppContainerSid, OutputFile, command_line, probe, quote_argument};
+    use super::{
+        AppContainerSid, FILE_GENERIC_READ, OutputFile, SOURCE_MUTATION_RIGHTS, command_line, probe,
+        quote_argument,
+    };
+
+    #[test]
+    fn source_mutation_deny_does_not_overlap_generic_read() {
+        assert_eq!(SOURCE_MUTATION_RIGHTS & FILE_GENERIC_READ, 0);
+    }
 
     #[test]
     fn windows_command_line_quotes_spaces_quotes_and_trailing_slashes() {
