@@ -182,9 +182,131 @@
           }
         }
       ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = docker://hhvm/hhvm:3.30-lts-latest"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/clue/reactphp-stdio/.github/workflows/ci.yml",
+          "start": {
+            "byte": 1314,
+            "column": 15,
+            "line": 52
+          },
+          "stop": {
+            "byte": 1348,
+            "column": 49,
+            "line": 52
+          }
+        }
+      },
+      "id": "diag_aff7002258d436491809",
+      "message": "dependency is not pinned to immutable content: docker://hhvm/hhvm:3.30-lts-latest",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/clue/reactphp-stdio/.github/workflows/ci.yml",
+        "start": {
+          "byte": 1314,
+          "column": 15,
+          "line": 52
+        },
+        "stop": {
+          "byte": 1348,
+          "column": 49,
+          "line": 52
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_526ccdc70aae69e009b1",
+          "span": {
+            "file": "github/clue/reactphp-stdio/.github/workflows/ci.yml",
+            "start": {
+              "byte": 1314,
+              "column": 15,
+              "line": 52
+            },
+            "stop": {
+              "byte": 1348,
+              "column": 49,
+              "line": 52
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = docker://hhvm/hhvm:3.30-lts-latest"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/clue/reactphp-stdio/.github/workflows/ci.yml",
+          "start": {
+            "byte": 1462,
+            "column": 15,
+            "line": 56
+          },
+          "stop": {
+            "byte": 1496,
+            "column": 49,
+            "line": 56
+          }
+        }
+      },
+      "id": "diag_e148d9b57e1ab97baa1c",
+      "message": "dependency is not pinned to immutable content: docker://hhvm/hhvm:3.30-lts-latest",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/clue/reactphp-stdio/.github/workflows/ci.yml",
+        "start": {
+          "byte": 1462,
+          "column": 15,
+          "line": 56
+        },
+        "stop": {
+          "byte": 1496,
+          "column": 49,
+          "line": 56
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_6f31f14febfb8537e5bd",
+          "span": {
+            "file": "github/clue/reactphp-stdio/.github/workflows/ci.yml",
+            "start": {
+              "byte": 1462,
+              "column": 15,
+              "line": 56
+            },
+            "stop": {
+              "byte": 1496,
+              "column": 49,
+              "line": 56
+            }
+          }
+        }
+      ]
     }
   ],
-  "digest": "sha256:b83ec125138601225f42e191b97c2d931e58aa2bf772bc4255b3f81df27912ee",
+  "digest": "sha256:593bf4a235ccf9e81493822f89f07828c945a5d8c45a0d27e9e39a082f570112",
   "graphs": [
     {
       "edges": [
@@ -1796,7 +1918,7 @@
   ],
   "schema": "report-v1",
   "summary": {
-    "diagnostics": 3,
+    "diagnostics": 5,
     "graphs": 1,
     "inputs": 1,
     "unknown_properties": 1

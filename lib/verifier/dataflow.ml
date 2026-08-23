@@ -53,11 +53,7 @@ let solve graph =
         Option.value ~default:[] (Hashtbl.find_opt outgoing edge.Ir.from_)
       in
       Hashtbl.replace outgoing edge.from_ (edge :: edges));
-  let updates = ref 0
-  and limit =
-    max 64 ((List.length graph.nodes + 1) * (List.length graph.edges + 1) * 16)
-  in
-  while (not (Queue.is_empty queue)) && !updates < limit do
+  while not (Queue.is_empty queue) do
     let source = Queue.take queue in
     Hashtbl.remove queued source;
     let source_value =
@@ -72,17 +68,15 @@ let solve graph =
         in
         let after = Abstract_value.join before source_value in
         if before <> after then (
-          incr updates;
           Hashtbl.replace table edge.to_ after;
           if not (Hashtbl.mem queued edge.to_) then (
             Queue.add edge.to_ queue;
             Hashtbl.replace queued edge.to_ ())))
   done;
-  let complete = Queue.is_empty queue in
   let values =
     Hashtbl.to_seq table |> List.of_seq
     |> List.sort (fun (left, _) (right, _) -> String.compare left right)
   in
-  { values; complete }
+  { values; complete = true }
 
 let value_at solution id = value solution.values id

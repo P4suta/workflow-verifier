@@ -37,23 +37,36 @@ let reasons_of_value value =
 let trace_hop label (node : Ir.node) =
   { Diagnostic.node_id = node.id; label; span = node.span }
 
-let data_trace graph solution (target : Ir.node) =
-  let sources =
+type origin_path = From_origin of Ir.node list | Target_only of Ir.node
+
+let shortest_origin_path ~is_origin ~edge_kinds graph (target : Ir.node) =
+  match
     graph.Ir.nodes
-    |> List.filter (fun (node : Ir.node) ->
+    |> List.filter is_origin
+    |> List.find_map (fun (source : Ir.node) ->
+        Graph_algorithms.shortest_path ~edge_kinds graph source.id target.id)
+  with
+  | Some nodes -> From_origin nodes
+  | None -> Target_only target
+
+let origin_nodes = function
+  | From_origin nodes -> nodes
+  | Target_only target -> [ target ]
+
+let data_trace graph solution (target : Ir.node) =
+  let path =
+    shortest_origin_path
+      ~is_origin:(fun (node : Ir.node) ->
         node.kind = Ir.Resource
         && Abstract_value.is_untrusted (Dataflow.value_at solution node.id))
-  in
-  let path =
-    List.find_map
-      (fun (source : Ir.node) ->
-        Graph_algorithms.shortest_path
-          ~edge_kinds:[ Ir.Data; Ir.Read; Ir.Write; Ir.Persist ]
-          graph source.id target.Ir.id)
-      sources
+      ~edge_kinds:[ Ir.Data; Ir.Read; Ir.Write; Ir.Persist ]
+      graph target
+  and trace_target node =
+    trace_hop "command sink contains untrusted data" node
   in
   match path with
-  | Some nodes ->
+  | Target_only _ -> List.map trace_target (origin_nodes path)
+  | From_origin nodes ->
       List.mapi
         (fun index node ->
           trace_hop
@@ -62,7 +75,6 @@ let data_trace graph solution (target : Ir.node) =
              else "data flow")
             node)
         nodes
-  | None -> [ trace_hop "command sink contains untrusted data" target ]
 
 let make_property id state explanation =
   { Property.id; state; subject = None; explanation }
@@ -265,37 +277,17 @@ let secret_rule graph solution =
   }
 
 let immutable_reference reference =
-  if
-    Util.starts_with ~prefix:"./" reference
-    || Util.starts_with ~prefix:"../" reference
-  then Some true
-  else if Util.contains ~needle:"@sha256:" reference then Some true
-  else
-    match String.rindex_opt reference '@' with
-    | None -> None
-    | Some index ->
-        let revision =
-          String.sub reference (index + 1) (String.length reference - index - 1)
-        in
-        Some
-          (String.length revision >= 40
-          && String.for_all
-               (function
-                 | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
-                 | _ -> false)
-               revision)
+  match Dependency_identity.classify_reference reference with
+  | Dependency_identity.Local | Dependency_identity.Immutable -> Some true
+  | Dependency_identity.Mutable -> Some false
+  | Dependency_identity.Unknown -> None
 
 let locked_dependency (node : Ir.node) =
   match
     Option.bind (attribute "dependency.digest" node) Abstract_value.constants
   with
-  | Some (digest :: _) ->
-      String.length digest = 71
-      && Util.starts_with ~prefix:"sha256:" digest
-      && String.sub digest 7 64
-         |> String.for_all (function
-           | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
-           | _ -> false)
+  | Some (_ :: _ as digests) ->
+      List.for_all Dependency_identity.valid_content_digest digests
   | _ -> false
 
 let supply_chain_rule graph =
@@ -447,13 +439,10 @@ let integrity_rule ~rule_id ~label ~resource_matches ~write_capability
         match attack with
         | Some (sink, suffix) ->
             let prefix =
-              graph.nodes
-              |> List.filter initial_untrusted
-              |> List.find_map (fun (source : Ir.node) ->
-                  Graph_algorithms.shortest_path
-                    ~edge_kinds:[ Ir.Data; Ir.Write; Ir.Persist ]
-                    graph source.id resource.id)
-              |> Option.value ~default:[ resource ]
+              shortest_origin_path ~is_origin:initial_untrusted
+                ~edge_kinds:[ Ir.Data; Ir.Write; Ir.Persist ]
+                graph resource
+              |> origin_nodes
             in
             let path =
               prefix
@@ -603,16 +592,14 @@ let credential_persistence_rule (graph : Ir.t) solution =
         let value = Dataflow.value_at solution candidate.id in
         if Abstract_value.is_secret value then
           let path =
-            graph.nodes
-            |> List.filter (fun node ->
+            shortest_origin_path
+              ~is_origin:(fun node ->
                 List.exists
                   (fun (_, value) -> Abstract_value.is_secret value)
                   node.Ir.attributes)
-            |> List.find_map (fun (source : Ir.node) ->
-                Graph_algorithms.shortest_path
-                  ~edge_kinds:[ Ir.Data; Ir.Persist; Ir.Write ]
-                  graph source.id candidate.id)
-            |> Option.value ~default:[ candidate ]
+              ~edge_kinds:[ Ir.Data; Ir.Persist; Ir.Write ]
+              graph candidate
+            |> origin_nodes
           in
           let capabilities =
             Ir.Secret_access :: Ir.Self_hosted_persistence

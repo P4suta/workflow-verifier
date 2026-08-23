@@ -128,20 +128,25 @@ let joined_value (node : Ir.node) =
     (fun accumulator (_, value) -> Abstract_value.join accumulator value)
     Abstract_value.bottom node.Ir.attributes
 
+let has_valid_lock_digest (node : Ir.node) =
+  match
+    Option.bind
+      (List.assoc_opt "dependency.digest" node.attributes)
+      Abstract_value.constants
+  with
+  | Some (_ :: _ as digests) ->
+      List.for_all Dependency_identity.valid_content_digest digests
+  | _ -> false
+
 let mutability (node : Ir.node) =
   if node.Ir.kind <> Ir.Call then Frontend_intf.Unknown_mutability
-  else if Option.is_some (List.assoc_opt "dependency.digest" node.attributes)
-  then Immutable
-  else if Util.starts_with ~prefix:"./" node.name then Local
-  else if Util.contains ~needle:"@sha256:" node.name then Immutable
+  else if has_valid_lock_digest node then Immutable
   else
-    match String.rindex_opt node.name '@' with
-    | None -> Unknown_mutability
-    | Some index ->
-        let revision =
-          String.sub node.name (index + 1) (String.length node.name - index - 1)
-        in
-        if String.length revision >= 40 then Immutable else Mutable
+    match Dependency_identity.classify_reference node.name with
+    | Dependency_identity.Local -> Frontend_intf.Local
+    | Dependency_identity.Immutable -> Immutable
+    | Dependency_identity.Mutable -> Mutable
+    | Dependency_identity.Unknown -> Unknown_mutability
 
 let effects (node : Ir.node) =
   node.Ir.effects
@@ -246,10 +251,8 @@ let evaluate_rule graph rule =
               ~confidence:High ~message:rule.message ~span:Span.none ();
           ])
   | Limit maximum ->
-      if List.length matches <= maximum then []
-      else
-        List.map (diagnostic rule)
-          (Util.take (List.length matches - maximum) matches)
+      List.map (diagnostic rule)
+        (Util.take (max 0 (List.length matches - maximum)) matches)
 
 let evaluate rules graph =
   List.concat_map (evaluate_rule graph) rules |> List.sort Diagnostic.compare

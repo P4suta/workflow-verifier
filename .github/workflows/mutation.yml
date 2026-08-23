@@ -123,8 +123,16 @@ jobs:
             arguments+=(--mutant "$mutant_id")
           done
           set +e
-          opam exec -- ocaml-mutants run --fresh --json "${arguments[@]}" . \
-            > "_build/mutation-report-${MUTATION_SHARD}.json"
+          opam exec -- ocaml-mutants run --fresh --json --jobs=1 \
+            "${arguments[@]}" . \
+            > "_build/mutation-report-${MUTATION_SHARD}.json" &
+          runner_pid=$!
+          while kill -0 "$runner_pid" 2>/dev/null; do
+            printf 'mutation heartbeat: shard=%s pid=%s\n' \
+              "$MUTATION_SHARD" "$runner_pid"
+            sleep 30
+          done
+          wait "$runner_pid"
           runner_exit_code=$?
           set -e
           printf '%s\n' "$runner_exit_code" \

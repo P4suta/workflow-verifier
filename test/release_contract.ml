@@ -228,6 +228,11 @@ let () =
       "mkdir -p _build";
       "ocaml-mutants list --json";
       "ocaml-mutants run --fresh --json";
+      "--jobs=1";
+      "runner_pid=$!";
+      "kill -0 \"$runner_pid\"";
+      "mutation heartbeat";
+      "wait \"$runner_pid\"";
       "--destination _build/upstream/yaml-test-suite-data-2022-01-17";
       "--export-destination";
       "_build/upstream/yaml-test-suite-canonical-data-2022-01-17";

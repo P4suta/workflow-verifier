@@ -71,6 +71,10 @@ let injection_triple_test () =
       unsafe_result.diagnostics
   in
   expect "diagnostic needs a source-to-command trace" (diagnostic.trace <> []);
+  expect "a directly tainted command is labelled as the contained sink"
+    (List.exists
+       (fun hop -> hop.Diagnostic.label = "command sink contains untrusted data")
+       diagnostic.trace);
   expect "shell is part of the minimal exploit capability set"
     (List.mem Ir.Shell diagnostic.capabilities);
 
@@ -201,6 +205,31 @@ let secret_network_test () =
   expect "minimal set includes network and secret access"
     (List.mem Ir.Network finding.capabilities
     && List.mem Ir.Secret_access finding.capabilities)
+
+let unknown_secret_network_effect_test () =
+  let reason = Unknown.External_state "runtime credential classification" in
+  let uncertain =
+    {
+      Abstract_value.value_type = Dynamic_type;
+      value = String Top;
+      trust = Trusted;
+      secrecy = Unknown_secrecy [ reason ];
+      provenance = [];
+    }
+  in
+  let network_effect =
+    node ~kind:Ir.Effect ~attributes:[ ("payload", uncertain) ]
+      ~capabilities:[ Ir.Network ] ~effects:[ Ir.Network_request ]
+      "opaque network effect"
+  in
+  let result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ network_effect ] [] [ network_effect ])
+  in
+  expect "an observable value with unknown secrecy stays Unknown"
+    (match (property "WV-SEC-002" result).state with
+    | Property.Unknown reasons -> List.mem reason reasons
+    | _ -> false)
 
 let secret_observability_boundaries_test () =
   let redirected =
@@ -645,6 +674,8 @@ let tests : test list =
     ("secret to network yields minimal capabilities", secret_network_test);
     ( "secret observability distinguishes redirects and unknown calls",
       secret_observability_boundaries_test );
+    ( "unknown secrecy remains explicit at an observable network effect",
+      unknown_secret_network_effect_test );
     ("authorization gates must dominate privileged effects", dominance_test);
     ( "authorization distinguishes external Unknown and manual approval",
       authorization_unknown_and_manual_test );

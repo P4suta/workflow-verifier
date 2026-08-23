@@ -10,9 +10,9 @@ let required_by_effect observed_effect =
   match observed_effect with
   | Ir.Repository_change -> [ Ir.Repository_write; Ir.Token_write ]
   | Network_request -> [ Ir.Network ]
-  | File_read -> [ Ir.Filesystem_read ]
+  | File_read -> []
   | File_write -> [ Ir.Filesystem_write ]
-  | Command_execution -> [ Ir.Shell ]
+  | Command_execution -> []
   | Artifact_publish -> [ Ir.Artifact_write ]
   | Cache_publish -> [ Ir.Cache_write ]
   | Deployment_change -> [ Ir.Deployment ]
@@ -60,8 +60,7 @@ let reaches graph source target =
 let capability_matches capability effects =
   let required = List.concat_map required_by_effect effects in
   match capability with
-  | Ir.Repository_read | Token_read | Filesystem_read | Shell -> true
-  | Oidc | Cloud_credential ->
+  | Ir.Oidc | Cloud_credential ->
       List.mem Ir.Deployment_change effects
       || List.mem Ir.Credential_use effects
   | Self_hosted_persistence ->
@@ -125,11 +124,10 @@ let grant_demands graph =
         |> Util.deduplicate_compare Unknown.compare
       in
       let demand =
-        if capability_matches capability effects then Required
-        else if List.mem capability privileged && unknowns <> [] then
-          Unknown unknowns
-        else if List.mem capability privileged then Excessive
-        else Required
+        if not (List.mem capability privileged) then Required
+        else if capability_matches capability effects then Required
+        else if unknowns <> [] then Unknown unknowns
+        else Excessive
       in
       ((grant, capability), demand))
 

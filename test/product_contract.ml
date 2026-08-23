@@ -78,6 +78,38 @@ let config_and_policy_test () =
       "version = 1\nfrontends = [\"github\", \"github\"]\n";
     ]
 
+let policy_dependency_identity_test () =
+  let matches ?(attributes = []) expected reference =
+    let call = node ~kind:Ir.Call ~attributes reference in
+    let rule =
+      {
+        Policy.id = "IDENTITY";
+        kind = Forbid;
+        selector = All [ Dependency_mutability expected ];
+        message = "dependency identity";
+        severity = Diagnostic.Warning;
+      }
+    in
+    Policy.evaluate [ rule ] (graph [ call ] [] call) <> []
+  in
+  let digest value = [ ("dependency.digest", string_value value) ] in
+  let valid_digest = "sha256:" ^ String.make 64 'a' in
+  expect "a full hexadecimal revision is immutable"
+    (matches Frontend_intf.Immutable
+       ("owner/action@" ^ String.make 40 'b'));
+  expect "a non-hexadecimal forty-character revision remains mutable"
+    (matches Frontend_intf.Mutable
+       ("owner/action@" ^ String.make 39 'b' ^ "z"));
+  expect "a parent-relative dependency is local"
+    (matches Frontend_intf.Local "../action");
+  expect "a valid lock digest proves immutable identity"
+    (matches ~attributes:(digest valid_digest) Frontend_intf.Immutable
+       "owner/action@v4");
+  expect "an invalid lock digest cannot hide a mutable reference"
+    (matches
+       ~attributes:(digest ("sha256:" ^ String.make 63 'a' ^ "z"))
+       Frontend_intf.Mutable "owner/action@v4")
+
 let report_and_sarif_test () =
   let command =
     node
@@ -271,6 +303,8 @@ let safe_fix_test () =
 let tests : test list =
   [
     ("typed config drives declarative policy", config_and_policy_test);
+    ( "policy uses canonical dependency identities",
+      policy_dependency_identity_test );
     ("report-v1 and SARIF are deterministic", report_and_sarif_test);
     ("lockfile enables truly offline resolution", lockfile_and_resolver_test);
     ("legacy lock-v1 remains readable", legacy_lock_v1_compatibility_test);

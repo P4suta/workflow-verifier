@@ -222,24 +222,25 @@ let output_destination shell source =
       else Standard_output
   | Posix | Bash | PowerShell | Cmd -> (
       let length = String.length source in
-      let rec scan index quote escaped depth redirects =
+      let rec scan index quote depth redirects =
         if index >= length then List.rev redirects
         else
           let character = source.[index] in
           match quote with
-          | Some delimiter ->
-              if escaped then scan (index + 1) quote false depth redirects
+          | Some (delimiter, escaped) ->
+              if escaped then
+                scan (index + 1) (Some (delimiter, false)) depth redirects
               else if character = '\\' && delimiter = '"' then
-                scan (index + 1) quote true depth redirects
+                scan (index + 1) (Some (delimiter, true)) depth redirects
               else if character = delimiter then
-                scan (index + 1) None false depth redirects
-              else scan (index + 1) quote false depth redirects
+                scan (index + 1) None depth redirects
+              else scan (index + 1) quote depth redirects
           | None -> (
               match character with
               | ('"' | '\'') as delimiter ->
-                  scan (index + 1) (Some delimiter) false depth redirects
-              | '(' -> scan (index + 1) None false (depth + 1) redirects
-              | ')' -> scan (index + 1) None false (max 0 (depth - 1)) redirects
+                  scan (index + 1) (Some (delimiter, false)) depth redirects
+              | '(' -> scan (index + 1) None (depth + 1) redirects
+              | ')' -> scan (index + 1) None (max 0 (depth - 1)) redirects
               | '>' when depth = 0 ->
                   let previous =
                     if index = 0 then None else Some source.[index - 1]
@@ -253,15 +254,15 @@ let output_destination shell source =
                     | _ -> false
                   in
                   if descriptor || following = Some '=' then
-                    scan (index + 1) None false depth redirects
+                    scan (index + 1) None depth redirects
                   else
                     let after =
                       if following = Some '>' then index + 2 else index + 1
                     in
-                    scan after None false depth (after :: redirects)
-              | _ -> scan (index + 1) None false depth redirects)
+                    scan after None depth (after :: redirects)
+              | _ -> scan (index + 1) None depth redirects)
       in
-      match scan 0 None false 0 [] with
+      match scan 0 None 0 [] with
       | [ after ] ->
           let target =
             String.sub source after (length - after) |> String.trim

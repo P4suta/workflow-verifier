@@ -67,10 +67,9 @@ let dominates graph ~dominator ~node =
     (fun id ->
       Hashtbl.replace table id (if List.mem id entries then [ id ] else ids))
     ids;
-  let changed = ref true and iterations = ref 0 in
-  while !changed && !iterations <= (List.length ids * 2) + 1 do
+  let changed = ref true in
+  while !changed do
     changed := false;
-    incr iterations;
     List.iter
       (fun id ->
         if not (List.mem id entries) then

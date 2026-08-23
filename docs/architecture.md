@@ -64,6 +64,12 @@ the provider spelling used for diagnostics, fixes, and lock identity, plus a
 typed locator such as `Repository_file { repository; revision; path;
 repository_type }`. GitLab project includes and Azure repository aliases can
 therefore resolve without encoding context into an ad-hoc reference string.
+Reference mutability is decided once in the dependency-identity foundation
+module: local paths, exact hexadecimal revisions, and exact SHA-256 content
+digests have one provider-independent meaning. Frontends, the verifier, and
+declarative policy consume that classification instead of maintaining parallel
+pinning heuristics. A lock proves immutability only when every abstract digest
+alternative is a canonical SHA-256 identity.
 The resolver hashes the complete immutable archive or response, then separately
 fetches the semantic entry source at that same revision. The product-layer
 dependency summarizer recompiles composite actions, reusable units, templates,

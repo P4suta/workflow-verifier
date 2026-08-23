@@ -3156,6 +3156,18 @@
           "id": "diag_4713c0a8151a0ba225d0",
           "reason": "The reviewed source declares this executable dependency by a mutable tag or channel instead of immutable content: dependency is not pinned to immutable content: actions/checkout@v6",
           "rule_id": "WV-SUPPLY-001"
+        },
+        {
+          "classification": "expected",
+          "id": "diag_aff7002258d436491809",
+          "reason": "The reviewed workflow executes the hhvm/hhvm image through a mutable Docker tag rather than a content digest.",
+          "rule_id": "WV-SUPPLY-001"
+        },
+        {
+          "classification": "expected",
+          "id": "diag_e148d9b57e1ab97baa1c",
+          "reason": "The reviewed workflow executes the hhvm/hhvm image through a mutable Docker tag rather than a content digest.",
+          "rule_id": "WV-SUPPLY-001"
         }
       ],
       "id": "github/clue/reactphp-stdio"
@@ -6514,6 +6526,12 @@
     },
     {
       "diagnostics": [
+        {
+          "classification": "expected",
+          "id": "diag_28649747496b7c0258d7",
+          "reason": "The reviewed GitLab include loads executable CI configuration from the mutable master branch instead of immutable content.",
+          "rule_id": "WV-SUPPLY-001"
+        },
         {
           "classification": "allowed",
           "id": "diag_52d6e66c33e6fe6abe56",

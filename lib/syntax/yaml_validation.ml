@@ -92,21 +92,25 @@ let has_separated_comment value =
   !found
 
 let previous_non_separation value index =
-  let previous = ref (index - 1) in
-  while !previous >= 0 && separation value.[!previous] do
-    decr previous
-  done;
-  !previous
+  let rec loop stop =
+    match stop with
+    | 0 -> None
+    | _ ->
+        let previous = pred stop in
+        if separation value.[previous] then loop previous else Some previous
+  in
+  loop index
 
 let flow_depth_before value index =
-  let depth = ref 0 in
+  let stack = ref [] in
   for cursor = 0 to index - 1 do
     match value.[cursor] with
-    | '[' | '{' -> incr depth
-    | ']' | '}' -> depth := max 0 (!depth - 1)
+    | ('[' | '{') as opener -> stack := opener :: !stack
+    | ']' | '}' -> (
+        match !stack with _ :: rest -> stack := rest | [] -> ())
     | _ -> ()
   done;
-  !depth
+  List.length !stack
 
 let property_precedes value index previous =
   if previous + 1 = index then false
@@ -115,12 +119,12 @@ let property_precedes value index previous =
     while !start > 0 && not (separation value.[!start - 1]) do
       decr start
     done;
-    !start < String.length value && String.contains "&!" value.[!start]
+    String.contains "&!" value.[!start]
 
 let quote_starts_node value index =
-  let previous = previous_non_separation value index in
-  if previous < 0 then true
-  else
+  match previous_non_separation value index with
+  | None -> true
+  | Some previous ->
     let separated = previous + 1 < index in
     match value.[previous] with
     | '[' | '{' | ',' -> true
@@ -128,31 +132,39 @@ let quote_starts_node value index =
     | ':' -> separated || flow_depth_before value index > 0
     | _ -> property_precedes value index previous
 
+let quoted_step ~skip_doubled_single value limit index quote =
+  let next = succ index in
+  match (quote, value.[index]) with
+  | Double_quote, '\\' -> (min limit (succ next), Some Double_quote)
+  | Double_quote, '"' -> (next, None)
+  | Single_quote, '\''
+    when next < limit && value.[next] = '\'' && skip_doubled_single ->
+      (succ next, Some Single_quote)
+  | Single_quote, '\'' -> (next, None)
+  | _ -> (next, Some quote)
+
 let separated_comment_start value =
-  let quote = ref None and escaped = ref false and answer = ref None in
-  let index = ref 0 in
-  while !index < String.length value && !answer = None do
-    let character = value.[!index] in
-    (match !quote with
-    | Some Double_quote ->
-        if !escaped then escaped := false
-        else if character = '\\' then escaped := true
-        else if character = '"' then quote := None
-    | Some Single_quote ->
-        if character = '\'' then
-          if !index + 1 < String.length value && value.[!index + 1] = '\'' then
-            incr index
-          else quote := None
-    | None ->
-        if character = '#' && (!index = 0 || separation value.[!index - 1]) then
-          answer := Some !index
-        else if character = '"' && quote_starts_node value !index then
-          quote := Some Double_quote
-        else if character = '\'' && quote_starts_node value !index then
-          quote := Some Single_quote);
-    incr index
-  done;
-  !answer
+  let limit = String.length value in
+  let rec loop index quote =
+    if index >= limit then None
+    else
+      match quote with
+      | Some quote ->
+          let next, quote =
+            quoted_step ~skip_doubled_single:true value limit index quote
+          in
+          loop next quote
+      | None ->
+          let character = value.[index] in
+          if character = '#' && (index = 0 || separation value.[pred index]) then
+            Some index
+          else if character = '"' && quote_starts_node value index then
+            loop (succ index) (Some Double_quote)
+          else if character = '\'' && quote_starts_node value index then
+            loop (succ index) (Some Single_quote)
+          else loop (succ index) None
+  in
+  loop 0 None
 
 let without_separated_comment value =
   match separated_comment_start value with
@@ -160,43 +172,43 @@ let without_separated_comment value =
   | None -> value
 
 let find_mapping_colons value =
-  let quote = ref None
-  and escaped = ref false
-  and property_token = ref false
-  and depth = ref 0 in
-  let answer = ref [] in
   let limit =
     separated_comment_start value |> Option.value ~default:(String.length value)
   in
-  for index = 0 to limit - 1 do
-    let character = value.[index] in
-    match !quote with
-    | Some Double_quote ->
-        if !escaped then escaped := false
-        else if character = '\\' then escaped := true
-        else if character = '"' then quote := None
-    | Some Single_quote ->
-        if character = '\'' then
-          if index + 1 < limit && value.[index + 1] = '\'' then ()
-          else quote := None
-    | None when !property_token ->
-        if separation character || String.contains "[],{}" character then
-          property_token := false
-    | None -> (
-        match character with
-        | ('&' | '*' | '!') when quote_starts_node value index ->
-            property_token := true
-        | '"' when quote_starts_node value index -> quote := Some Double_quote
-        | '\'' when quote_starts_node value index -> quote := Some Single_quote
-        | '[' | '{' -> incr depth
-        | ']' | '}' -> depth := max 0 (!depth - 1)
-        | ':'
-          when !depth = 0
-               && (index + 1 = String.length value
-                  || separation value.[index + 1]) -> answer := index :: !answer
-        | _ -> ())
-  done;
-  List.rev !answer
+  let rec loop index quote property_token depth answer =
+    if index >= limit then List.rev answer
+    else
+      match quote with
+      | Some quote ->
+          let next, quote =
+            quoted_step ~skip_doubled_single:false value limit index quote
+          in
+          loop next quote property_token depth answer
+      | None ->
+          let character = value.[index] in
+          if property_token then
+            loop (succ index) None
+              (not (separation character || String.contains "[],{}" character))
+              depth answer
+          else
+            match character with
+            | ('&' | '*' | '!') when quote_starts_node value index ->
+                loop (succ index) None true depth answer
+            | '"' when quote_starts_node value index ->
+                loop (succ index) (Some Double_quote) false depth answer
+            | '\'' when quote_starts_node value index ->
+                loop (succ index) (Some Single_quote) false depth answer
+            | '[' | '{' -> loop (succ index) None false (succ depth) answer
+            | ']' | '}' ->
+                loop (succ index) None false (max 0 (pred depth)) answer
+            | ':'
+              when depth = 0
+                   && (succ index = String.length value
+                      || separation value.[succ index]) ->
+                loop (succ index) None false depth (index :: answer)
+            | _ -> loop (succ index) None false depth answer
+  in
+  loop 0 None false 0 []
 
 let strip_properties value =
   let value = trim_left value in
@@ -223,7 +235,7 @@ let strip_properties value =
 let node_fragment raw =
   let rec strip_indicators value =
     let value = trim_left value in
-    if String.length value >= 3 && String.sub value 0 3 = "---" then
+    if Util.starts_with ~prefix:"---" value then
       strip_indicators (String.sub value 3 (String.length value - 3))
     else if indicator '-' value || indicator '?' value then
       strip_indicators (String.sub value 1 (String.length value - 1))
@@ -315,6 +327,13 @@ let is_hex = function
 let validate_double_escapes file source source_lines payload_lines =
   let problems = ref [] and quote = ref None and index = ref 0 in
   let line_index = ref 0 in
+  let rec consume_hex cursor remaining =
+    match remaining with
+    | 0 -> Some cursor
+    | _ when cursor < String.length source && is_hex source.[cursor] ->
+        consume_hex (succ cursor) (pred remaining)
+    | _ -> None
+  in
   while !index < String.length source do
     while
       !line_index + 1 < Array.length source_lines
@@ -333,51 +352,41 @@ let validate_double_escapes file source source_lines payload_lines =
        match !quote with
        | None ->
            let column = !index - line.start_byte in
-           if column >= 0 && column < String.length line.raw then
-             if
-               character = '#'
-               && (column = 0 || separation line.raw.[column - 1])
-             then index := line.stop_byte
-             else if character = '"' && quote_starts_node line.raw column then
-               quote := Some Double_quote
-             else if character = '\'' && quote_starts_node line.raw column then
-               quote := Some Single_quote
+           if
+             character = '#'
+             && (column = 0 || separation line.raw.[pred column])
+           then index := line.stop_byte
+           else if character = '"' && quote_starts_node line.raw column then
+             quote := Some Double_quote
+           else if character = '\'' && quote_starts_node line.raw column then
+             quote := Some Single_quote
        | Some Single_quote -> if character = '\'' then quote := None
        | Some Double_quote ->
            if character = '"' then quote := None
            else if character = '\\' then
-             if !index + 1 < String.length source then
-               let escaped = source.[!index + 1] in
-               let digits =
+             if succ !index < String.length source then
+               let escaped = source.[succ !index] in
+               let hex_stop =
                  match escaped with
-                 | 'x' -> 2
-                 | 'u' -> 4
-                 | 'U' -> 8
-                 | _ -> 0
+                 | 'x' -> consume_hex (succ (succ !index)) 2
+                 | 'u' -> consume_hex (succ (succ !index)) 4
+                 | 'U' -> consume_hex (succ (succ !index)) 8
+                 | _ -> None
                in
                let simple =
                  String.contains "0abtnvfre \"/\\N_LP" escaped
                  || escaped = '\n' || escaped = '\r' || escaped = '\t'
                in
-               let valid_hex =
-                 digits > 0
-                 && !index + 2 + digits <= String.length source
-                 &&
-                 let valid = ref true in
-                 for offset = 0 to digits - 1 do
-                   if not (is_hex source.[!index + 2 + offset]) then
-                     valid := false
-                 done;
-                 !valid
-               in
                if simple then incr index
-               else if valid_hex then index := !index + digits + 1
                else
-                 problems :=
-                   issue file source_lines.(!line_index)
-                     (!index - source_lines.(!line_index).start_byte)
-                     2 "invalid escape in a double-quoted scalar"
-                   :: !problems);
+                 match hex_stop with
+                 | Some stop -> index := pred stop
+                 | None ->
+                     problems :=
+                       issue file source_lines.(!line_index)
+                         (!index - source_lines.(!line_index).start_byte)
+                         2 "invalid escape in a double-quoted scalar"
+                       :: !problems);
     incr index
   done;
   List.rev !problems
@@ -422,9 +431,16 @@ let validate_directives file source_lines payload_lines =
             pending := true;
             let directive =
               match String.index_opt content '#' with
-              | Some index when index > 0 && separation content.[index - 1] ->
-                  String.sub content 0 index |> String.trim
-              | _ -> content
+              | Some index -> (
+                  let prefix = String.sub content 0 index in
+                  match
+                    String.to_seq prefix
+                    |> Seq.fold_left (fun _ character -> Some character) None
+                  with
+                  | Some character when separation character ->
+                      String.trim prefix
+                  | _ -> content)
+              | None -> content
             in
             match words directive with
             | [ "%YAML"; version ]
@@ -625,8 +641,8 @@ let validate_flow file source_lines payload_lines =
             then
               add line line.indent "implicit flow key crosses a line boundary"
         | _ -> ());
-        let index = ref 0 and stop_line = ref false in
-        while !index < String.length line.raw && not !stop_line do
+        let index = ref 0 in
+        while !index < String.length line.raw do
           let character = line.raw.[!index] in
           (match !quote with
           | Some Double_quote ->
@@ -648,13 +664,13 @@ let validate_flow file source_lines payload_lines =
                 && line.raw.[!index - 1] = ','
               then (
                 add line !index "comment after comma requires separation";
-                stop_line := true)
+                index := String.length line.raw)
               else if
                 !stack <> [] && character = '#' && !index > 0
                 && separation line.raw.[!index - 1]
               then (
                 if !last_token = `Other then comment_interrupted := true;
-                stop_line := true)
+                index := String.length line.raw)
               else
                 match character with
                 | ('[' | '{') when opener_allowed line !index ->
@@ -710,7 +726,7 @@ let validate_flow file source_lines payload_lines =
                             | '#' ->
                                 add line !cursor
                                   "flow comment requires separation";
-                                stop_line := true
+                                index := String.length line.raw
                             | ':' when opened_line = line.number -> ()
                             | _ ->
                                 add line !cursor
@@ -749,16 +765,17 @@ let validate_layout file source_lines payload_lines =
   let add line column message =
     problems := issue file line column 1 message :: !problems
   in
-  let closes_double value =
-    let escaped = ref false and closed = ref false in
-    String.iteri
-      (fun index character ->
-        if index > 0 && not !closed then
-          if !escaped then escaped := false
-          else if character = '\\' then escaped := true
-          else if character = '"' then closed := true)
-      value;
-    !closed
+  let closing_double_quote value =
+    let rec loop index escaped =
+      if index >= String.length value then None
+      else if escaped then loop (succ index) false
+      else
+        match value.[index] with
+        | '\\' -> loop (succ index) true
+        | '"' -> Some index
+        | _ -> loop (succ index) false
+    in
+    loop 1 false
   in
   Array.iteri
     (fun index line ->
@@ -777,41 +794,31 @@ let validate_layout file source_lines payload_lines =
               String.sub content (colon + 1) (String.length content - colon - 1)
               |> trim_left
             in
-            if String.length value > 0 && value.[0] = '"' then
-              if closes_double value then (
-                let escaped = ref false and closing = ref None in
-                let index = ref 1 in
-                while !index < String.length value && !closing = None do
-                  if !escaped then escaped := false
-                  else if value.[!index] = '\\' then escaped := true
-                  else if value.[!index] = '"' then closing := Some !index;
-                  incr index
-                done;
-                Option.iter
-                  (fun closing ->
-                    let tail =
-                      String.sub value (closing + 1)
-                        (String.length value - closing - 1)
-                    in
-                    let trimmed_tail = String.trim tail in
-                    if
-                      trimmed_tail <> ""
-                      && (not (Util.starts_with ~prefix:"#" trimmed_tail))
-                      && not (String.contains ",]}" trimmed_tail.[0])
-                    then
-                      add line
-                        (line.indent + colon + closing + 2)
-                        "content follows a quoted scalar"
-                    else if
-                      Util.starts_with ~prefix:"#" trimmed_tail
-                      && String.length tail > 0
-                      && tail.[0] = '#'
-                    then
-                      add line
-                        (line.indent + colon + closing + 2)
-                        "comment requires separation after a quoted scalar")
-                  !closing)
-              else quoted_mapping := Some line.indent
+            if String.length value > 0 && value.[0] = '"' then (
+              match closing_double_quote value with
+              | Some closing ->
+                  let tail =
+                    String.sub value (closing + 1)
+                      (String.length value - closing - 1)
+                  in
+                  let trimmed_tail = String.trim tail in
+                  if
+                    trimmed_tail <> ""
+                    && (not (Util.starts_with ~prefix:"#" trimmed_tail))
+                    && not (String.contains ",]}" trimmed_tail.[0])
+                  then
+                    add line
+                      (line.indent + colon + closing + 2)
+                      "content follows a quoted scalar"
+                  else if
+                    Util.starts_with ~prefix:"#" trimmed_tail
+                    && String.length tail > 0
+                    && tail.[0] = '#'
+                  then
+                    add line
+                      (line.indent + colon + closing + 2)
+                      "comment requires separation after a quoted scalar"
+              | None -> quoted_mapping := Some line.indent)
         | [] -> ());
         let first_non_space = ref 0 in
         while
@@ -834,24 +841,25 @@ let validate_layout file source_lines payload_lines =
         if String.length content > 1 then
           match content.[0] with
           | '-' | '?' | ':' ->
-              let cursor = ref 1 and saw_tab = ref false in
-              while
-                !cursor < String.length content && separation content.[!cursor]
-              do
-                if content.[!cursor] = '\t' then saw_tab := true;
-                incr cursor
-              done;
-              if !saw_tab && !cursor < String.length content then
-                let remainder =
-                  String.sub content !cursor (String.length content - !cursor)
-                in
+              let rec split_separation saw_tab = function
+                | ((' ' | '\t' | '\r' | '\n') as character) :: rest ->
+                    split_separation (saw_tab || character = '\t') rest
+                | rest -> (saw_tab, rest)
+              in
+              let saw_tab, remainder =
+                String.sub content 1 (String.length content - 1)
+                |> String.to_seq |> List.of_seq |> split_separation false
+              in
+              (match (saw_tab, remainder) with
+              | true, _ :: _ ->
+                let remainder = remainder |> List.to_seq |> String.of_seq in
                 if
-                  String.length remainder > 0
-                  && (indicator '-' remainder || indicator '?' remainder
+                  indicator '-' remainder || indicator '?' remainder
                     || indicator ':' remainder
-                     || find_mapping_colons remainder <> [])
+                    || find_mapping_colons remainder <> []
                 then
                   add line line.indent "tab cannot indent a nested block node"
+              | _ -> ())
           | _ -> ()))
     source_lines;
   List.rev !problems

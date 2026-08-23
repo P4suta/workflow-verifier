@@ -72,3 +72,10 @@ after the first compatibility release.
   exhaustive, graph traversal carries nonempty paths, lock updates are
   transactional, invalid boundaries return `Error`, and the architecture gate
   rejects partial API regressions.
+- Centralize local, commit, and SHA-256 dependency identity in the foundation
+  layer so frontends, policy, and the verifier cannot disagree about mutable
+  references or accept an invalid lock digest; refresh and exhaustively review
+  the complete 400-repository evaluation corpus against that classification.
+- Make mutation workers single-writer and observable with authenticated runner
+  exits and periodic heartbeats, and reject process-spawn or Dune-lock failures
+  instead of counting infrastructure faults as detected mutants.
