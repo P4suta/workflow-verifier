@@ -30,6 +30,9 @@ after the first compatibility release.
 - Reconcile mutation evidence against one pinned-runner catalog, distribute its
   immutable full IDs across deterministic hexadecimal shards, and require the
   completed report union to equal that catalog without omission or duplication.
+- Bind each mutation shard's canonical runner exit to its report, retain raw and
+  reconciled evidence on every outcome, and aggregate complete failing campaigns
+  without confusing evidence generation with publication success.
 - Add atomic GitHub corpus acquisition with immutable source/license evidence
   and a separate exhaustive, reason-required diagnostic review phase, plus
   digest-verified network-free reanalysis into a new transaction.

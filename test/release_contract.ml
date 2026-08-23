@@ -185,6 +185,10 @@ let () =
       "verify_mutation_campaign.py";
       "mutation-shards-v1.json";
       "fromJSON(needs.catalog.outputs.matrix)";
+      "continue-on-error: true";
+      "if: always()";
+      "--runner-exit";
+      "mutation-runner-exit-${{ matrix.shard }}.txt";
       "mutation-report-${{ matrix.shard }}.json";
       "mutation-campaign-v1.json";
     ];

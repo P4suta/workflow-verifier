@@ -169,6 +169,26 @@ operators = ["boolean-literal"]
     def write_report(self, name: str, mutants: list[dict[str, object]]) -> Path:
         path = self.root / f"mutation-report-{name}.json"
         path.write_text(json.dumps(report(mutants)), encoding="utf-8")
+        (self.root / f"mutation-runner-exit-{name}.txt").write_bytes(b"0\n")
+        return path
+
+    def write_surviving_report(
+        self, name: str, mutant: dict[str, object]
+    ) -> Path:
+        document = report([mutant])
+        document["mutants"][0]["outcome"] = "survived"
+        document["summary"].update(
+            {
+                "detected": 0,
+                "killed": 0,
+                "score": 0.0,
+                "survived": 1,
+                "unexpected_survivors": 1,
+            }
+        )
+        path = self.root / f"mutation-report-{name}.json"
+        path.write_text(json.dumps(document), encoding="utf-8")
+        (self.root / f"mutation-runner-exit-{name}.txt").write_bytes(b"1\n")
         return path
 
     def test_complete_catalog_partition_and_aggregate_pass(self) -> None:
@@ -176,7 +196,9 @@ operators = ["boolean-literal"]
         self.assertEqual(plan.names[0], "hex-0")
         self.assertEqual(plan.names[-1], "hex-f")
         domain_report = self.write_report("hex-1", [self.domain])
-        gate = verify_shard(plan, self.catalog, "hex-1", domain_report)
+        gate = verify_shard(
+            plan, self.catalog, "hex-1", domain_report, runner_exit_code=0
+        )
         self.assertTrue(gate["passed"])
         self.assertEqual(gate["mutants"], 1)
         self.write_report("hex-2", [self.verifier])
@@ -190,13 +212,17 @@ operators = ["boolean-literal"]
         plan = load_plan(self.manifest, self.config, self.root)
         empty = self.write_report("hex-1", [])
         with self.assertRaisesRegex(CampaignError, "catalog partition"):
-            verify_shard(plan, self.catalog, "hex-1", empty)
+            verify_shard(
+                plan, self.catalog, "hex-1", empty, runner_exit_code=0
+            )
 
     def test_mutant_assigned_to_wrong_shard_fails_closed(self) -> None:
         plan = load_plan(self.manifest, self.config, self.root)
         wrong = self.write_report("hex-1", [self.verifier])
         with self.assertRaisesRegex(CampaignError, "catalog partition"):
-            verify_shard(plan, self.catalog, "hex-1", wrong)
+            verify_shard(
+                plan, self.catalog, "hex-1", wrong, runner_exit_code=0
+            )
 
     def test_overlapping_manifest_selector_is_rejected(self) -> None:
         document = json.loads(self.manifest.read_text(encoding="utf-8"))
@@ -219,7 +245,42 @@ operators = ["boolean-literal"]
         document["workspace"]["digest"] = "c" * 64
         path.write_text(json.dumps(document), encoding="utf-8")
         with self.assertRaisesRegex(CampaignError, "workspace digest"):
-            verify_shard(plan, self.catalog, "hex-1", path)
+            verify_shard(
+                plan, self.catalog, "hex-1", path, runner_exit_code=0
+            )
+
+    def test_survivor_is_preserved_as_failed_shard_and_campaign_evidence(self) -> None:
+        plan = load_plan(self.manifest, self.config, self.root)
+        domain_report = self.write_surviving_report("hex-1", self.domain)
+        gate = verify_shard(
+            plan, self.catalog, "hex-1", domain_report, runner_exit_code=1
+        )
+        self.assertFalse(gate["passed"])
+        self.assertEqual(gate["runner_exit_code"], 1)
+        self.assertEqual(gate["unexpected_survivors"], 1)
+        self.assertEqual(gate["failures"], ["one unexpected mutant survived"])
+
+        self.write_report("hex-2", [self.verifier])
+        campaign = aggregate(plan, self.catalog, self.root)
+        self.assertFalse(campaign["passed"])
+        self.assertEqual(campaign["unexpected_survivors"], 1)
+        self.assertEqual(
+            campaign["failures"], ["hex-1: one unexpected mutant survived"]
+        )
+
+    def test_runner_exit_code_must_agree_with_the_authenticated_gate(self) -> None:
+        plan = load_plan(self.manifest, self.config, self.root)
+        passing = self.write_report("hex-1", [self.domain])
+        with self.assertRaisesRegex(CampaignError, "runner exit code"):
+            verify_shard(
+                plan, self.catalog, "hex-1", passing, runner_exit_code=1
+            )
+
+        failing = self.write_surviving_report("hex-1", self.domain)
+        with self.assertRaisesRegex(CampaignError, "runner exit code"):
+            verify_shard(
+                plan, self.catalog, "hex-1", failing, runner_exit_code=0
+            )
 
     def test_catalog_mutant_metadata_is_strict(self) -> None:
         plan = load_plan(self.manifest, self.config, self.root)
@@ -258,6 +319,44 @@ operators = ["boolean-literal"]
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertEqual(completed.stdout, "1" * 64 + "\n")
+
+    def test_verify_shard_cli_writes_failed_gate_before_exiting_one(self) -> None:
+        script = Path(__file__).resolve().parents[1] / "verify_mutation_campaign.py"
+        report_path = self.write_surviving_report("hex-1", self.domain)
+        output = self.root / "mutation-gate-hex-1.json"
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-B",
+                str(script),
+                "verify-shard",
+                "--manifest",
+                str(self.manifest),
+                "--config",
+                str(self.config),
+                "--workspace",
+                str(self.root),
+                "--catalog",
+                str(self.catalog),
+                "--shard",
+                "hex-1",
+                "--report",
+                str(report_path),
+                "--runner-exit",
+                str(self.root / "mutation-runner-exit-hex-1.txt"),
+                "--output",
+                str(output),
+            ],
+            cwd=self.root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(completed.returncode, 1, completed.stderr)
+        self.assertTrue(output.is_file())
+        gate = json.loads(output.read_text(encoding="utf-8"))
+        self.assertFalse(gate["passed"])
+        self.assertEqual(gate["runner_exit_code"], 1)
 
 
 if __name__ == "__main__":

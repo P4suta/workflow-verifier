@@ -4,12 +4,12 @@
   "additionalProperties": false,
   "properties": {
     "catalog_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
-    "detected": { "minimum": 1, "type": "integer" },
+    "detected": { "minimum": 0, "type": "integer" },
     "expected_survivors": { "minimum": 0, "type": "integer" },
-    "failures": { "maxItems": 0, "type": "array" },
+    "failures": { "items": { "minLength": 1, "type": "string" }, "type": "array" },
     "manifest_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
     "mutants": { "minimum": 1, "type": "integer" },
-    "passed": { "const": true },
+    "passed": { "type": "boolean" },
     "profile": { "enum": ["balanced", "strong", "all"] },
     "schema": { "const": "mutation-campaign-v1" },
     "shards": {
@@ -18,25 +18,52 @@
         "properties": {
           "detected": { "minimum": 0, "type": "integer" },
           "expected_survivors": { "minimum": 0, "type": "integer" },
+          "failures": {
+            "items": { "minLength": 1, "type": "string" },
+            "type": "array"
+          },
           "mutants": { "minimum": 1, "type": "integer" },
           "name": { "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "type": "string" },
+          "passed": { "type": "boolean" },
           "report_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
-          "unexpected_survivors": { "const": 0 }
+          "runner_exit_code": { "enum": [0, 1] },
+          "unexpected_survivors": { "minimum": 0, "type": "integer" }
         },
         "required": [
           "detected",
           "expected_survivors",
+          "failures",
           "mutants",
           "name",
+          "passed",
           "report_digest",
+          "runner_exit_code",
           "unexpected_survivors"
+        ],
+        "allOf": [
+          {
+            "if": { "properties": { "passed": { "const": true } } },
+            "then": {
+              "properties": {
+                "failures": { "maxItems": 0 },
+                "runner_exit_code": { "const": 0 },
+                "unexpected_survivors": { "const": 0 }
+              }
+            },
+            "else": {
+              "properties": {
+                "failures": { "minItems": 1 },
+                "runner_exit_code": { "const": 1 }
+              }
+            }
+          }
         ],
         "type": "object"
       },
       "minItems": 1,
       "type": "array"
     },
-    "unexpected_survivors": { "const": 0 },
+    "unexpected_survivors": { "minimum": 0, "type": "integer" },
     "workspace_digest": { "pattern": "^[0-9a-f]{64}$", "type": "string" }
   },
   "required": [
@@ -52,6 +79,19 @@
     "shards",
     "unexpected_survivors",
     "workspace_digest"
+  ],
+  "allOf": [
+    {
+      "if": { "properties": { "passed": { "const": true } } },
+      "then": {
+        "properties": {
+          "detected": { "minimum": 1 },
+          "failures": { "maxItems": 0 },
+          "unexpected_survivors": { "const": 0 }
+        }
+      },
+      "else": { "properties": { "failures": { "minItems": 1 } } }
+    }
   ],
   "title": "workflow-verifier catalog-reconciled mutation campaign v1",
   "type": "object"

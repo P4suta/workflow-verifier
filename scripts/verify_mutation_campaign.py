@@ -433,8 +433,18 @@ def _report_mutants(report_path: Path) -> tuple[dict[str, Any], dict[str, dict[s
 
 
 def verify_shard(
-    plan: Plan, catalog_path: Path, shard_name: str, report_path: Path
+    plan: Plan,
+    catalog_path: Path,
+    shard_name: str,
+    report_path: Path,
+    *,
+    runner_exit_code: int,
 ) -> dict[str, Any]:
+    if type(runner_exit_code) is not int or runner_exit_code not in {0, 1}:
+        raise CampaignError(
+            f"mutation shard {shard_name} has invalid runner exit code "
+            f"{runner_exit_code!r}"
+        )
     shard = plan.shard(shard_name)
     catalog = load_catalog(plan, catalog_path)
     document, actual = _report_mutants(report_path)
@@ -483,11 +493,24 @@ def verify_shard(
         gate = verify_report(report_path, prefixes)
     except ValueError as error:
         raise CampaignError(f"mutation shard {shard.name}: {error}") from error
-    if not gate["passed"]:
+    expected_exit_code = 0 if gate["passed"] else 1
+    if runner_exit_code != expected_exit_code:
         raise CampaignError(
-            f"mutation shard {shard.name} failed: {'; '.join(gate['failures'])}"
+            f"mutation shard {shard.name} runner exit code {runner_exit_code} "
+            f"does not match authenticated gate outcome "
+            f"{expected_exit_code}"
         )
+    gate["runner_exit_code"] = runner_exit_code
     return gate
+
+
+def _runner_exit_code(path: Path, shard_name: str) -> int:
+    raw = _read_regular(path, f"mutation shard {shard_name} runner exit", maximum=16)
+    if raw not in {b"0\n", b"1\n"}:
+        raise CampaignError(
+            f"mutation shard {shard_name} runner exit must be exactly 0 or 1"
+        )
+    return int(raw[:1])
 
 
 def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, Any]:
@@ -500,6 +523,22 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
         raise CampaignError(f"mutation campaign is missing shard reports: {', '.join(missing)}")
     if extra:
         raise CampaignError(f"mutation campaign has unexpected shard reports: {', '.join(extra)}")
+    expected_exit_names = {
+        f"mutation-runner-exit-{name}.txt" for name in catalog.active_names
+    }
+    actual_exit_names = {
+        path.name for path in evidence_dir.glob("mutation-runner-exit-*.txt")
+    }
+    missing_exits = sorted(expected_exit_names - actual_exit_names)
+    extra_exits = sorted(actual_exit_names - expected_exit_names)
+    if missing_exits:
+        raise CampaignError(
+            "mutation campaign is missing runner exits: " + ", ".join(missing_exits)
+        )
+    if extra_exits:
+        raise CampaignError(
+            "mutation campaign has unexpected runner exits: " + ", ".join(extra_exits)
+        )
     shards: list[dict[str, Any]] = []
     totals = {
         "detected": 0,
@@ -507,18 +546,32 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
         "mutants": 0,
         "unexpected_survivors": 0,
     }
+    failures: list[str] = []
     for name in catalog.active_names:
         report_path = evidence_dir / f"mutation-report-{name}.json"
-        gate = verify_shard(plan, catalog_path, name, report_path)
+        runner_exit_code = _runner_exit_code(
+            evidence_dir / f"mutation-runner-exit-{name}.txt", name
+        )
+        gate = verify_shard(
+            plan,
+            catalog_path,
+            name,
+            report_path,
+            runner_exit_code=runner_exit_code,
+        )
         for field in totals:
             totals[field] += gate[field]
+        failures.extend(f"{name}: {failure}" for failure in gate["failures"])
         shards.append(
             {
                 "detected": gate["detected"],
                 "expected_survivors": gate["expected_survivors"],
+                "failures": gate["failures"],
                 "mutants": gate["mutants"],
                 "name": name,
+                "passed": gate["passed"],
                 "report_digest": gate["report_digest"],
+                "runner_exit_code": runner_exit_code,
                 "unexpected_survivors": gate["unexpected_survivors"],
             }
         )
@@ -528,10 +581,10 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
         "catalog_digest": catalog.digest,
         "detected": totals["detected"],
         "expected_survivors": totals["expected_survivors"],
-        "failures": [],
+        "failures": failures,
         "manifest_digest": plan.manifest_digest,
         "mutants": totals["mutants"],
-        "passed": True,
+        "passed": not failures,
         "profile": plan.profile,
         "schema": "mutation-campaign-v1",
         "shards": shards,
@@ -596,6 +649,7 @@ def main() -> int:
     verify_parser.add_argument("--catalog", required=True, type=Path)
     verify_parser.add_argument("--shard", required=True)
     verify_parser.add_argument("--report", required=True, type=Path)
+    verify_parser.add_argument("--runner-exit", required=True, type=Path)
     verify_parser.add_argument("--output", required=True, type=Path)
     aggregate_parser = commands.add_parser("aggregate")
     _common(aggregate_parser)
@@ -621,8 +675,21 @@ def main() -> int:
                 raise CampaignError(f"mutation shard {arguments.shard} is vacuous")
             print("\n".join(values))
         elif arguments.command == "verify-shard":
-            result = verify_shard(plan, arguments.catalog, arguments.shard, arguments.report)
+            runner_exit_code = _runner_exit_code(arguments.runner_exit, arguments.shard)
+            result = verify_shard(
+                plan,
+                arguments.catalog,
+                arguments.shard,
+                arguments.report,
+                runner_exit_code=runner_exit_code,
+            )
             _atomic_json(arguments.output, result)
+            if not result["passed"]:
+                for failure in result["failures"]:
+                    print(
+                        f"mutation shard {arguments.shard}: {failure}", file=sys.stderr
+                    )
+                return 1
             print(
                 f"mutation shard {arguments.shard}: "
                 f"{result['detected']}/{result['mutants']} detected"
@@ -630,6 +697,10 @@ def main() -> int:
         else:
             result = aggregate(plan, arguments.catalog, arguments.evidence_dir)
             _atomic_json(arguments.output, result)
+            if not result["passed"]:
+                for failure in result["failures"]:
+                    print(f"mutation campaign: {failure}", file=sys.stderr)
+                return 1
             print(
                 f"mutation campaign: {result['detected']}/{result['mutants']} detected "
                 f"across {len(result['shards'])} shards"

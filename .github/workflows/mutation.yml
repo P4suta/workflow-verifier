@@ -79,6 +79,8 @@ jobs:
           name: mutation-catalog
           path: _build/catalog
       - name: Run the complete catalog partition
+        id: mutation-runner
+        continue-on-error: true
         shell: bash
         env:
           MUTATION_SHARD: ${{ matrix.shard }}
@@ -96,9 +98,16 @@ jobs:
           for mutant_id in "${mutant_ids[@]}"; do
             arguments+=(--mutant "$mutant_id")
           done
+          set +e
           opam exec -- ocaml-mutants run --fresh --json "${arguments[@]}" . \
             > "_build/mutation-report-${MUTATION_SHARD}.json"
+          runner_exit_code=$?
+          set -e
+          printf '%s\n' "$runner_exit_code" \
+            > "_build/mutation-runner-exit-${MUTATION_SHARD}.txt"
+          exit "$runner_exit_code"
       - name: Reconcile shard report with the canonical catalog
+        if: always()
         shell: bash
         env:
           MUTATION_SHARD: ${{ matrix.shard }}
@@ -110,18 +119,22 @@ jobs:
             --catalog _build/catalog/mutation-catalog.json \
             --shard "$MUTATION_SHARD" \
             --report "_build/mutation-report-${MUTATION_SHARD}.json" \
+            --runner-exit "_build/mutation-runner-exit-${MUTATION_SHARD}.txt" \
             --output "_build/mutation-gate-${MUTATION_SHARD}.json"
       - name: Upload complete shard evidence
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mutation-shard-${{ matrix.shard }}
           path: |
             _build/mutation-report-${{ matrix.shard }}.json
             _build/mutation-gate-${{ matrix.shard }}.json
+            _build/mutation-runner-exit-${{ matrix.shard }}.txt
           if-no-files-found: error
 
   aggregate:
     needs: [catalog, shard]
+    if: ${{ always() && needs.catalog.result == 'success' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -144,6 +157,7 @@ jobs:
           --evidence-dir _build/mutation-evidence
           --output _build/mutation-evidence/mutation-campaign-v1.json
       - name: Upload complete mutation evidence
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mutation-evidence

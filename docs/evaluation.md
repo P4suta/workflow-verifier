@@ -14,10 +14,13 @@ machine-readable evidence.
   identical declared environment. An increase above 10% needs a substantive
   explanation and an HTTPS review reference.
 - Each `mutation-gate-v1` authenticates one complete catalog-bound shard and
-  requires every survivor to be detected or reviewed as equivalent.
+  binds its runner exit code to the verified report. Every survivor must be
+  detected or reviewed as equivalent. A quality failure still emits the raw
+  report and a machine-readable failed gate; it never discards the evidence.
 - `mutation-campaign-v1` binds those reports to one pinned-runner catalog and
   proves that their immutable full-ID union has no omission, duplication, or
-  metadata substitution.
+  metadata substitution. Both passing and complete-but-failing campaigns are
+  representable, while only a passing campaign can satisfy publication.
 - `determinism-comparison-v1` byte-compares report, lockfile, and fix output from
   Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64.
 - `dogfood-v1` requires zero diagnostics while analyzing the repository's real

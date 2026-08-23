@@ -97,7 +97,10 @@ pinned runner creates the authoritative catalog. Hosted jobs receive disjoint
 sets of its immutable full IDs, and the campaign verifier checks each result's
 workspace, toolchain, profile, selection, and complete mutant metadata before
 proving that the report union is exactly the original catalog. Parallelism can
-change wall-clock order but cannot change the selected semantic surface.
+change wall-clock order but cannot change the selected semantic surface. The
+runner's canonical exit record, raw report, and reconciled gate are uploaded on
+both success and failure, so the strongest debugging evidence is retained at
+the point where the quality boundary rejects a shard.
 
 ## Runner boundary
 
