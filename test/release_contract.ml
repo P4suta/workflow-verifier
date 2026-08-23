@@ -206,6 +206,19 @@ let () =
       "actions/download-artifact@v";
       "ocaml/setup-ocaml@v";
     ];
+  if
+    not
+      (Util.contains
+         ~needle:
+           "name: yaml-conformance-oracle\n\
+           \          path: \
+            _build/upstream/yaml-test-suite-canonical-data-2022-01-17\n\
+           \          if-no-files-found: error\n\
+           \          include-hidden-files: true"
+         mutation)
+  then
+    fail
+      "mutation workflow must retain the hidden canonical YAML export manifest";
   List.iter
     (fun required_surface ->
       if not (Util.contains ~needle:required_surface mutation) then
