@@ -8,6 +8,7 @@ identity=${WORKFLOW_VERIFIER_CODESIGN_IDENTITY:--}
 mkdir -p "$(dirname -- "$output")"
 swiftc \
   -O \
+  -parse-as-library \
   -swift-version 5 \
   -framework CryptoKit \
   -framework Virtualization \

@@ -3,7 +3,6 @@
 // safer than cosmetically renaming or regrouping the reference algorithm. The
 // chunk iterators also preserve the workspace's Rust 1.85 MSRV.
 #![allow(
-    clippy::chunks_exact_to_as_chunks,
     clippy::many_single_char_names,
     clippy::unreadable_literal
 )]

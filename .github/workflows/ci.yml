@@ -161,7 +161,6 @@ jobs:
           name: determinism-${{ matrix.platform }}
           path: _build/determinism/${{ matrix.platform }}/*
           if-no-files-found: error
-          archive: false
 
   determinism-compare:
     needs: determinism-probe
@@ -184,3 +183,27 @@ jobs:
           _determinism/determinism-windows-x86_64
           _determinism/determinism-macos-arm64
           _determinism/determinism-macos-x86_64
+
+  required:
+    name: Required CI
+    if: ${{ always() }}
+    needs:
+      - ocaml
+      - native-helpers
+      - linux-native-containment
+      - coverage-guided-yaml-fuzz
+      - determinism-probe
+      - determinism-compare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Require every CI job to succeed
+        shell: bash
+        env:
+          RESULTS: ${{ join(needs.*.result, ',') }}
+        run: |
+          printf 'dependency results: %s\n' "$RESULTS"
+          case ",$RESULTS," in
+            *,failure,*|*,cancelled,*|*,skipped,*) exit 1 ;;
+          esac

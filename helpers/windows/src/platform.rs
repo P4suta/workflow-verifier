@@ -14,17 +14,19 @@ use windows_sys::Win32::Foundation::{
     WAIT_TIMEOUT,
 };
 use windows_sys::Win32::Security::Authorization::{
-    EXPLICIT_ACCESS_W, GRANT_ACCESS, GetNamedSecurityInfoW, NO_MULTIPLE_TRUSTEE, SE_FILE_OBJECT,
-    SetEntriesInAclW, SetNamedSecurityInfoW, TRUSTEE_IS_GROUP, TRUSTEE_IS_SID, TRUSTEE_W,
+    ConvertStringSecurityDescriptorToSecurityDescriptorW, EXPLICIT_ACCESS_W, GRANT_ACCESS,
+    GetNamedSecurityInfoW, NO_MULTIPLE_TRUSTEE, SDDL_REVISION_1, SE_FILE_OBJECT, SetEntriesInAclW,
+    SetNamedSecurityInfoW, TRUSTEE_IS_GROUP, TRUSTEE_IS_SID, TRUSTEE_W,
 };
 use windows_sys::Win32::Security::Isolation::{
     CreateAppContainerProfile, DeriveAppContainerSidFromAppContainerName,
 };
 use windows_sys::Win32::Security::{
     ACL, CONTAINER_INHERIT_ACE, CreateRestrictedToken, DACL_SECURITY_INFORMATION,
-    DISABLE_MAX_PRIVILEGE, FreeSid, GetTokenInformation, OBJECT_INHERIT_ACE, PSECURITY_DESCRIPTOR,
-    PSID, SECURITY_CAPABILITIES, TOKEN_ASSIGN_PRIMARY, TOKEN_DUPLICATE, TOKEN_QUERY,
-    TokenIsAppContainer, TokenPrivileges,
+    DISABLE_MAX_PRIVILEGE, FreeSid, GetSecurityDescriptorSacl, GetTokenInformation,
+    LABEL_SECURITY_INFORMATION, OBJECT_INHERIT_ACE, PSECURITY_DESCRIPTOR, PSID,
+    SECURITY_CAPABILITIES, TOKEN_ASSIGN_PRIMARY, TOKEN_DUPLICATE, TOKEN_QUERY, TokenIsAppContainer,
+    TokenPrivileges,
 };
 use windows_sys::Win32::Storage::FileSystem::{
     FILE_ALL_ACCESS, FILE_GENERIC_EXECUTE, FILE_GENERIC_READ,
@@ -306,6 +308,87 @@ fn grant_tree(root: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
         entries.sort_by_key(std::fs::DirEntry::file_name);
         for entry in entries {
             grant_tree(&entry.path(), sid, permissions)?;
+        }
+    }
+    Ok(())
+}
+
+fn set_low_integrity_label(path: &Path, directory: bool) -> Result<(), String> {
+    let label = if directory {
+        "S:(ML;OICI;NW;;;LW)"
+    } else {
+        "S:(ML;;NW;;;LW)"
+    };
+    let label = wide(label)?;
+    let mut descriptor: PSECURITY_DESCRIPTOR = null_mut();
+    // SAFETY: label is valid, NUL-terminated SDDL and descriptor is writable.
+    if unsafe {
+        ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            label.as_ptr(),
+            SDDL_REVISION_1,
+            &raw mut descriptor,
+            null_mut(),
+        )
+    } == 0
+        || descriptor.is_null()
+    {
+        return Err(windows_error("create low-integrity security descriptor"));
+    }
+    let descriptor = SecurityDescriptor(descriptor);
+    let mut present = 0;
+    let mut defaulted = 0;
+    let mut label_acl: *mut ACL = null_mut();
+    // SAFETY: descriptor is a live security descriptor and all outputs are writable.
+    if unsafe {
+        GetSecurityDescriptorSacl(
+            descriptor.0,
+            &raw mut present,
+            &raw mut label_acl,
+            &raw mut defaulted,
+        )
+    } == 0
+        || present == 0
+        || label_acl.is_null()
+    {
+        return Err(windows_error("read low-integrity label ACL"));
+    }
+    let path = wide(path.as_os_str())?;
+    // SAFETY: path and the label ACL remain live for the synchronous call.
+    let result = unsafe {
+        SetNamedSecurityInfoW(
+            path.as_ptr(),
+            SE_FILE_OBJECT,
+            LABEL_SECURITY_INFORMATION,
+            null_mut(),
+            null_mut(),
+            null_mut(),
+            label_acl,
+        )
+    };
+    if result == 0 {
+        Ok(())
+    } else {
+        Err(format!("SetNamedSecurityInfoW integrity label failed with {result}"))
+    }
+}
+
+fn label_writable_tree(root: &Path) -> Result<(), String> {
+    let metadata = std::fs::symlink_metadata(root).map_err(|error| error.to_string())?;
+    if metadata.file_type().is_symlink() {
+        return Err(format!(
+            "refusing integrity-label grant through symlink: {}",
+            root.display()
+        ));
+    }
+    set_low_integrity_label(root, metadata.is_dir())?;
+    if metadata.is_dir() {
+        let mut entries = std::fs::read_dir(root)
+            .map_err(|error| error.to_string())?
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|error| error.to_string())?;
+        entries.sort_by_key(std::fs::DirEntry::file_name);
+        for entry in entries {
+            label_writable_tree(&entry.path())?;
         }
     }
     Ok(())
@@ -688,6 +771,7 @@ fn run_process(
 ) -> Result<ProcessObservation, String> {
     let job = create_job(request.plan)?;
     let mut output = OutputFile::create()?;
+    set_low_integrity_label(&output.path, false)?;
     grant_path(&output.path, app_container_sid, FILE_ALL_ACCESS)?;
     let mut attributes = AttributeList::new(app_container_sid)?;
     let mut startup = STARTUPINFOEXW::default();
@@ -818,6 +902,7 @@ impl NativeSandbox for WindowsSandbox {
             sid.raw(),
             FILE_GENERIC_READ | FILE_GENERIC_EXECUTE,
         )?;
+        label_writable_tree(request.scratch_root)?;
         grant_tree(request.scratch_root, sid.raw(), FILE_ALL_ACCESS)?;
         let broker = BrokerExecutable::create(sid.raw())?;
         // Prove Job Object limits can be committed before emitting attestations.
@@ -863,8 +948,10 @@ fn run_broker(arguments: &[String]) -> Result<i32, String> {
         .write(true)
         .truncate(true)
         .open(output_path)
-        .map_err(|error| error.to_string())?;
-    let error_output = output.try_clone().map_err(|error| error.to_string())?;
+        .map_err(|error| format!("open broker output: {error}"))?;
+    let error_output = output
+        .try_clone()
+        .map_err(|error| format!("clone broker output: {error}"))?;
     let (program, child_arguments) = command
         .split_first()
         .ok_or_else(|| "AppContainer broker command is empty".to_owned())?;
@@ -877,7 +964,7 @@ fn run_broker(arguments: &[String]) -> Result<i32, String> {
         .stdout(Stdio::from(output))
         .stderr(Stdio::from(error_output))
         .status()
-        .map_err(|error| error.to_string())?;
+        .map_err(|error| format!("launch contained workload: {error}"))?;
     Ok(status.code().unwrap_or(1))
 }
 
@@ -911,7 +998,8 @@ pub(super) fn probe() -> Vec<String> {
             }
         }
         let acl_result = reserve_temp_directory("windows-probe").and_then(|root| {
-            let result = grant_path(&root, sid.raw(), FILE_ALL_ACCESS);
+            let result = set_low_integrity_label(&root, true)
+                .and_then(|()| grant_path(&root, sid.raw(), FILE_ALL_ACCESS));
             let _ = std::fs::remove_dir(&root);
             result
         });

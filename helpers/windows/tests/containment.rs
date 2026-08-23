@@ -123,7 +123,12 @@ fn appcontainer_cannot_modify_the_private_source_view() {
         5,
         4096,
     );
-    assert!(matches!(result.outcome, Outcome::StepFailed { .. }));
+    match result.outcome {
+        Outcome::StepFailed { code, .. } => {
+            assert_ne!(code, Some(126), "broker failed before the workload ran");
+        }
+        ref outcome => panic!("expected workload failure, got {outcome:?}"),
+    }
     assert_eq!(
         std::fs::read(root.join("input.txt")).expect("read host source"),
         b"source"
@@ -217,6 +222,11 @@ fn appcontainer_without_capabilities_cannot_reach_loopback() {
     stop.store(true, Ordering::Release);
     server.join().expect("join local probe");
     assert!(!connected.load(Ordering::Acquire));
-    assert!(matches!(result.outcome, Outcome::StepFailed { .. }));
+    match result.outcome {
+        Outcome::StepFailed { code, .. } => {
+            assert_ne!(code, Some(126), "broker failed before the workload ran");
+        }
+        ref outcome => panic!("expected network denial, got {outcome:?}"),
+    }
     std::fs::remove_dir_all(root).expect("remove fixture");
 }
