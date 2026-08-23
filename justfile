@@ -37,7 +37,7 @@ corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" repo
 performance-measure suite="performance/suite-v1.json" revision output="_build/performance-current.json" samples="7":
     python -B scripts/measure_performance.py --suite {{suite}} --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
 
-performance-pair baseline_workspace baseline_revision current_revision suite="performance/suite-v1.json" output_dir="_build/performance-pair" samples="21":
+performance-pair baseline_workspace baseline_revision current_revision suite="performance/suite-v1.json" output_dir="_build/performance-pair" samples="24":
     python -B scripts/measure_performance_pair.py --suite {{suite}} --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
 
 performance-gate baseline current="_build/performance-current.json" output="_build/performance-comparison-v1.json":

@@ -107,8 +107,8 @@ let () =
       "rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4";
       "Performance ${{ matrix.platform }}";
       "measure_performance_pair.py";
-      "A-B-B-A-A-B";
-      "--samples 21";
+      "Period-balance identical workloads";
+      "--samples 24";
       "performance_gate.py";
       "- performance-regression";
     ];
@@ -116,6 +116,12 @@ let () =
   then fail "macOS shim build must use an explicit POSIX shell";
   if Util.contains ~needle:"rust:1.85-bookworm sh" github then
     fail "Linux containment image must be pinned by digest";
+  List.iter
+    (fun (relative, required) ->
+      let source = read_required relative in
+      if not (Util.contains ~needle:required source) then
+        fail "%s omits period-balanced sample count: %s" relative required)
+    [ ("justfile", "samples=\"24\""); ("mise.toml", "--samples 24") ];
   if
     not
       (Util.contains

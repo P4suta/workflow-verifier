@@ -200,7 +200,7 @@ jobs:
         run: |
           mkdir -p _performance-base/scripts
           cp scripts/benchmark_fixture.py _performance-base/scripts/benchmark_fixture.py
-      - name: Counterbalance identical workloads (A-B-B-A-A-B)
+      - name: Period-balance identical workloads
         shell: bash
         run: |
           base_revision=$(git -C _performance-base rev-parse HEAD)
@@ -212,7 +212,7 @@ jobs:
             --baseline-revision "$base_revision" \
             --current-workspace . \
             --current-revision "$head_revision" \
-            --samples 21 \
+            --samples 24 \
             --output-dir "_performance-evidence/${{ matrix.platform }}"
           python -B scripts/performance_gate.py \
             --baseline "_performance-evidence/${{ matrix.platform }}/baseline.json" \

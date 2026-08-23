@@ -6,11 +6,11 @@ command in cold, warm, and incremental modes. The measurement runner fixes
 locale and timezone, bounds time and output, records positive nanosecond samples,
 and writes `performance-v1` atomically.
 
-CI measures the baseline (`A`) and candidate (`B`) in counterbalanced
-`A-B-B-A-A-B` batches. Each side still receives 21 samples, while equal early,
-middle, and late exposure removes runner warm-up, contention, and thermal order
-bias. The two aggregated `performance-v1` documents then enter the unchanged
-10% comparison gate.
+CI measures the baseline (`A`) and candidate (`B`) one sample at a time in
+paired `A-B-B-A-B-A-A-B` / `B-A-A-B-A-B-B-A` cycles. Each side receives 24
+samples with equal time-position sums, predecessor counts, and first/last
+placement. The two aggregated `performance-v1` documents then enter the
+unchanged 10% comparison gate.
 
 Release baselines are platform-specific reviewed artifacts. They are not copied
 from synthetic timings. `scripts/performance_gate.py` requires an identical

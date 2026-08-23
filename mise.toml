@@ -67,8 +67,8 @@ description = "Measure cold, warm, and incremental scenarios for WV_REVISION"
 run = "python -B scripts/measure_performance.py --suite performance/suite-v1.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-current.json"
 
 [tasks.performance-pair]
-description = "Counterbalance WV_BASE_REVISION and WV_REVISION on one runner"
-run = "python -B scripts/measure_performance_pair.py --suite performance/suite-v1.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 21 --output-dir _build/performance-pair"
+description = "Period-balance WV_BASE_REVISION and WV_REVISION on one runner"
+run = "python -B scripts/measure_performance_pair.py --suite performance/suite-v1.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 24 --output-dir _build/performance-pair"
 
 [tasks.performance-gate]
 description = "Reject unexplained performance regressions above ten percent"
