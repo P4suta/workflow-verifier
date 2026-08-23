@@ -242,6 +242,7 @@ let () =
       "verify_mutation_campaign.py";
       "mutation-shards-v1.json";
       "fromJSON(needs.catalog.outputs.matrix)";
+      "max-parallel: 4";
       "continue-on-error: true";
       "if: always()";
       "--runner-exit";

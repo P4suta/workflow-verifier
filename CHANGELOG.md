@@ -77,5 +77,6 @@ after the first compatibility release.
   references or accept an invalid lock digest; refresh and exhaustively review
   the complete 400-repository evaluation corpus against that classification.
 - Make mutation workers single-writer and observable with authenticated runner
-  exits and periodic heartbeats, and reject process-spawn or Dune-lock failures
-  instead of counting infrastructure faults as detected mutants.
+  exits, periodic heartbeats, and four-worker hosted backpressure; reject
+  process-spawn or Dune-lock failures instead of counting infrastructure faults
+  as detected mutants.
