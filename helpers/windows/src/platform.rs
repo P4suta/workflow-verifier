@@ -411,6 +411,13 @@ fn deny_tree(root: &Path, sid: PSID, permissions: u32) -> Result<(), String> {
     update_tree_acl(root, sid, permissions, true)
 }
 
+fn authorize_source_tree(root: &Path, sid: PSID) -> Result<(), String> {
+    grant_tree(root, sid, FILE_GENERIC_READ | FILE_GENERIC_EXECUTE)?;
+    // SetEntriesInAcl canonicalizes a new deny against the existing allow for
+    // the same trustee. Reversing these calls lets the later grant weaken it.
+    deny_tree(root, sid, SOURCE_MUTATION_RIGHTS)
+}
+
 fn set_low_integrity_label(path: &Path, directory: bool) -> Result<(), String> {
     let label = if directory {
         "S:(ML;OICI;NW;;;LW)"
@@ -666,16 +673,17 @@ fn is_command_processor_script(arguments: &[String]) -> bool {
     let Some((executable, tail)) = arguments.split_first() else {
         return false;
     };
-    let Some(file_name) = Path::new(executable).file_name().and_then(|name| name.to_str()) else {
+    let Some(file_name) = Path::new(executable)
+        .file_name()
+        .and_then(|name| name.to_str())
+    else {
         return false;
     };
     let is_command_processor =
         file_name.eq_ignore_ascii_case("cmd.exe") || file_name.eq_ignore_ascii_case("cmd");
     is_command_processor
         && tail.len() >= 2
-        && tail[tail.len() - 2]
-            .as_str()
-            .eq_ignore_ascii_case("/c")
+        && tail[tail.len() - 2].as_str().eq_ignore_ascii_case("/c")
 }
 
 fn render_command_line(arguments: &[String]) -> Result<String, String> {
@@ -1064,12 +1072,7 @@ impl NativeSandbox for WindowsSandbox {
             .ok_or_else(|| "AppContainer SID was not initialized".to_owned())?;
         let token = restricted_token()?;
         verify_privilege_stripped(token.raw())?;
-        deny_tree(request.source_root, sid.raw(), SOURCE_MUTATION_RIGHTS)?;
-        grant_tree(
-            request.source_root,
-            sid.raw(),
-            FILE_GENERIC_READ | FILE_GENERIC_EXECUTE,
-        )?;
+        authorize_source_tree(request.source_root, sid.raw())?;
         label_writable_tree(request.scratch_root)?;
         grant_tree(request.scratch_root, sid.raw(), FILE_ALL_ACCESS)?;
         // Prove Job Object limits can be committed before emitting attestations.
@@ -1161,8 +1164,8 @@ pub(super) fn launch(
 #[cfg(test)]
 mod tests {
     use super::{
-        AppContainerSid, FILE_GENERIC_READ, OutputFile, SOURCE_MUTATION_RIGHTS, command_line, probe,
-        quote_crt_argument,
+        AppContainerSid, FILE_GENERIC_READ, OutputFile, SOURCE_MUTATION_RIGHTS, command_line,
+        probe, quote_crt_argument,
     };
 
     #[test]
