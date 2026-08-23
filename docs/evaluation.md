@@ -21,6 +21,14 @@ machine-readable evidence.
   proves that their immutable full-ID union has no omission, duplication, or
   metadata substitution. Both passing and complete-but-failing campaigns are
   representable, while only a passing campaign can satisfy publication.
+  The mutation pipeline also runs the pinned 402-case yaml-test-suite inside
+  each worker's private Dune build directory; one catalog job acquires the
+  oracle and every shard consumes the same artifact bytes.
+  A separate semantic fingerprint stage covers typed configuration failures,
+  every policy selector and capability/effect name, cross-shell source/sink
+  boundaries, graph algorithms, fixed-point dataflow, and all verifier personas.
+  Fingerprint updates therefore require an intentional test review rather than
+  silently accepting changed behavior.
 - `determinism-comparison-v1` byte-compares report, lockfile, and fix output from
   Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64.
 - `dogfood-v1` requires zero diagnostics while analyzing the repository's real

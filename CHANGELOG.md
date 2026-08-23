@@ -33,6 +33,12 @@ after the first compatibility release.
 - Bind each mutation shard's canonical runner exit to its report, retain raw and
   reconciled evidence on every outcome, and aggregate complete failing campaigns
   without confusing evidence generation with publication success.
+- Run the pinned 402-case yaml-test-suite as a private-build mutation stage,
+  acquiring the immutable oracle once and distributing identical bytes to every
+  catalog shard.
+- Add reviewed semantic fingerprints over config, policy, shell adapters,
+  graph/dataflow/capability analysis, and the whole verifier so broad behavioral
+  regressions fail early in the mutation stage.
 - Add atomic GitHub corpus acquisition with immutable source/license evidence
   and a separate exhaustive, reason-required diagnostic review phase, plus
   digest-verified network-free reanalysis into a new transaction.

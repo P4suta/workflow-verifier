@@ -100,7 +100,11 @@ proving that the report union is exactly the original catalog. Parallelism can
 change wall-clock order but cannot change the selected semantic surface. The
 runner's canonical exit record, raw report, and reconciled gate are uploaded on
 both success and failure, so the strongest debugging evidence is retained at
-the point where the quality boundary rejects a shard.
+the point where the quality boundary rejects a shard. Fast semantic
+fingerprints exercise the public config, policy, shell, graph, dataflow,
+capability, and verifier surfaces before the complete contract suite. Their
+inputs are readable fixtures while canonical-output digests make any behavioral
+change an explicit review event.
 
 ## Runner boundary
 

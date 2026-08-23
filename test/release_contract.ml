@@ -162,6 +162,8 @@ let () =
     fail "CI workflow must be reusable by the release workflow";
   let release = read_required ".github/workflows/release.yml" in
   let mutation = read_required ".github/workflows/mutation.yml" in
+  let mutation_config = read_required ".ocaml-mutants.toml" in
+  let test_build = read_required "test/dune" in
   List.iter
     (fun mutable_reference ->
       if Util.contains ~needle:mutable_reference mutation then
@@ -182,6 +184,7 @@ let () =
       "mkdir -p _build";
       "ocaml-mutants list --json";
       "ocaml-mutants run --fresh --json";
+      "--destination test/upstream/yaml-test-suite-data-2022-01-17";
       "verify_mutation_campaign.py";
       "mutation-shards-v1.json";
       "fromJSON(needs.catalog.outputs.matrix)";
@@ -192,6 +195,21 @@ let () =
       "mutation-report-${{ matrix.shard }}.json";
       "mutation-campaign-v1.json";
     ];
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface mutation_config) then
+        fail "mutation configuration omits required surface: %s"
+          required_surface)
+    [
+      "name = \"yaml-conformance\"";
+      "@@test/mutation-yaml-conformance";
+      "name = \"semantic-fingerprints\"";
+      "@@test/mutation-semantic-oracle";
+    ];
+  if not (Util.contains ~needle:"(alias mutation-yaml-conformance)" test_build)
+  then fail "test build omits the mutation YAML conformance alias";
+  if not (Util.contains ~needle:"(alias mutation-semantic-oracle)" test_build)
+  then fail "test build omits the semantic mutation oracle alias";
   if Util.contains ~needle:"Run all configured analyzer-core mutants" mutation
   then fail "mutation workflow must shard the complete catalog before execution";
   let mutation_campaign = read_required "scripts/verify_mutation_campaign.py" in

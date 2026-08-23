@@ -23,6 +23,14 @@ name = "algebraic-properties"
 command = ["dune", "exec", "test/property_contract.exe"]
 
 [[test.stages]]
+name = "semantic-fingerprints"
+command = ["dune", "build", "--force", "@@test/mutation-semantic-oracle"]
+
+[[test.stages]]
+name = "yaml-conformance"
+command = ["dune", "build", "--force", "@@test/mutation-yaml-conformance"]
+
+[[test.stages]]
 name = "full-contracts"
 command = ["dune", "runtest", "--force"]
 
