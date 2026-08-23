@@ -41,9 +41,11 @@ use windows_sys::Win32::System::Threading::{
     CREATE_SUSPENDED, CREATE_UNICODE_ENVIRONMENT, CreateProcessAsUserW,
     DeleteProcThreadAttributeList, EXTENDED_STARTUPINFO_PRESENT, GetCurrentProcess,
     GetExitCodeProcess, InitializeProcThreadAttributeList, OpenProcessToken,
-    PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES, PROCESS_INFORMATION, ResumeThread, STARTUPINFOEXW,
-    TerminateProcess, UpdateProcThreadAttribute, WaitForSingleObject,
+    PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY, PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES,
+    PROCESS_INFORMATION, ResumeThread, STARTUPINFOEXW, TerminateProcess, UpdateProcThreadAttribute,
+    WaitForSingleObject,
 };
+use windows_sys::Win32::System::WindowsProgramming::PROCESS_CREATION_CHILD_PROCESS_OVERRIDE;
 
 use workflow_verifier_helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
@@ -368,7 +370,9 @@ fn set_low_integrity_label(path: &Path, directory: bool) -> Result<(), String> {
     if result == 0 {
         Ok(())
     } else {
-        Err(format!("SetNamedSecurityInfoW integrity label failed with {result}"))
+        Err(format!(
+            "SetNamedSecurityInfoW integrity label failed with {result}"
+        ))
     }
 }
 
@@ -431,6 +435,7 @@ struct AttributeList {
     storage: Vec<usize>,
     initialized: bool,
     capabilities: Box<SECURITY_CAPABILITIES>,
+    child_process_policy: Box<u32>,
 }
 
 impl AttributeList {
@@ -438,7 +443,7 @@ impl AttributeList {
         let mut bytes = 0;
         // SAFETY: the documented sizing call accepts a null list.
         unsafe {
-            InitializeProcThreadAttributeList(null_mut(), 1, 0, &raw mut bytes);
+            InitializeProcThreadAttributeList(null_mut(), 2, 0, &raw mut bytes);
         }
         if bytes == 0 {
             return Err(windows_error("InitializeProcThreadAttributeList sizing"));
@@ -453,9 +458,10 @@ impl AttributeList {
                 CapabilityCount: 0,
                 Reserved: 0,
             }),
+            child_process_policy: Box::new(PROCESS_CREATION_CHILD_PROCESS_OVERRIDE),
         };
         // SAFETY: storage is suitably aligned and at least the requested size.
-        if unsafe { InitializeProcThreadAttributeList(value.raw(), 1, 0, &raw mut bytes) } == 0 {
+        if unsafe { InitializeProcThreadAttributeList(value.raw(), 2, 0, &raw mut bytes) } == 0 {
             return Err(windows_error("InitializeProcThreadAttributeList"));
         }
         value.initialized = true;
@@ -474,6 +480,23 @@ impl AttributeList {
         } == 0
         {
             return Err(windows_error("security-capabilities attribute"));
+        }
+        // SAFETY: the boxed policy remains live and stable for the complete
+        // process-creation transaction. Descendants retain the same AppContainer
+        // token and remain inside the private Job Object.
+        if unsafe {
+            UpdateProcThreadAttribute(
+                value.raw(),
+                0,
+                PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY as usize,
+                (&raw const *value.child_process_policy).cast(),
+                std::mem::size_of::<u32>(),
+                null_mut(),
+                null(),
+            )
+        } == 0
+        {
+            return Err(windows_error("child-process policy attribute"));
         }
         Ok(value)
     }

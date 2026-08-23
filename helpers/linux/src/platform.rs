@@ -67,14 +67,15 @@ fn broker_source() -> Result<PathBuf, String> {
     if current.file_name().and_then(std::ffi::OsStr::to_str) == Some(expected) {
         return Ok(current);
     }
-    if cfg!(debug_assertions)
-        && let Some(candidate) = current
+    if cfg!(debug_assertions) {
+        let candidate = current
             .ancestors()
             .take(8)
             .map(|ancestor| ancestor.join(expected))
-            .find(|path| path.is_file())
-    {
-        return Ok(candidate);
+            .find(|path| path.is_file());
+        if let Some(candidate) = candidate {
+            return Ok(candidate);
+        }
     }
     Err("the signed workflow-verifier Linux helper cannot locate its broker image".to_owned())
 }
