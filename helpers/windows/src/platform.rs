@@ -53,8 +53,9 @@ use windows_sys::Win32::System::Threading::{
 use windows_sys::Win32::System::WindowsProgramming::PROCESS_CREATION_CHILD_PROCESS_OVERRIDE;
 
 use workflow_verifier_helper_runtime::{
-    EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
-    NativeStorageParents, execute_native, reserve_temp_directory, reserve_temp_file,
+    EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest,
+    NativeStorageParents, ProcessObservation, execute_native, reserve_temp_directory,
+    reserve_temp_file,
 };
 use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, ValidatedPlan};
 
