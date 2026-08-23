@@ -28,6 +28,7 @@ let required =
     "../docs/evaluation.md";
     "../corpus/README.md";
     "../performance/README.md";
+    "../performance/suite-v1.json";
     "../schema/dogfood-v1.schema.json";
   ]
 
@@ -100,6 +101,10 @@ let () =
       "sandbox run --backend oci:docker";
       "WORKFLOW_VERIFIER_OCI_HELPER";
       "rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4";
+      "Performance ${{ matrix.platform }}";
+      "--samples 21";
+      "performance_gate.py";
+      "- performance-regression";
     ];
   if not (Util.contains ~needle:"run: sh helpers/macos/build-shim.sh" github)
   then fail "macOS shim build must use an explicit POSIX shell";

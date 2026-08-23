@@ -3,11 +3,32 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
+import scripts.measure_performance as measurement
 from scripts.measure_performance import measure
 
 
 class MeasurePerformanceTests(unittest.TestCase):
+    def test_committed_suite_is_strict_and_exercises_every_mode(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        with mock.patch.object(measurement, "_run") as invoked:
+            result = measure(
+                root / "performance" / "suite-v1.json",
+                root,
+                revision="a" * 40,
+                samples=1,
+            )
+        self.assertEqual(
+            [item["id"] for item in result["scenarios"]],
+            ["four-provider-analysis"],
+        )
+        self.assertEqual(
+            set(result["scenarios"][0]["modes"]),
+            {"cold", "incremental", "warm"},
+        )
+        self.assertGreaterEqual(invoked.call_count, 8)
+
     def suite(self, root: Path, command: list[str]) -> Path:
         document = {
             "schema": "performance-suite-v1",
