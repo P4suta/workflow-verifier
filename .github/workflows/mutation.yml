@@ -32,7 +32,9 @@ jobs:
           git+https://github.com/P4suta/ocaml-mutants.git#15d857152f91bc3bf960f9a6d8297ecfd5800f10
           --yes
       - name: Run all configured analyzer-core mutants
-        run: opam exec -- ocaml-mutants run --fresh --json . > _build/mutation-report.json
+        run: |
+          mkdir -p _build
+          opam exec -- ocaml-mutants run --fresh --json . > _build/mutation-report.json
       - name: Verify complete non-vacuous mutation evidence
         run: >-
           python -B scripts/verify_mutation_report.py

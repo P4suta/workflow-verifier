@@ -131,6 +131,7 @@ let () =
         fail "mutation workflow omits required surface: %s" required_surface)
     [
       "15d857152f91bc3bf960f9a6d8297ecfd5800f10";
+      "mkdir -p _build";
       "ocaml-mutants run --fresh --json";
       "verify_mutation_report.py";
       "--require-prefix lib/foundation/";
