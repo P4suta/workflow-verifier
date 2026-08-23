@@ -173,6 +173,10 @@ let discovery_boundary_test () =
   state.files <-
     ("_build/default/.github/workflows/copied.yml", vulnerable_workflow)
     :: ("helpers/target/debug/.github/workflows/copied.yml", vulnerable_workflow)
+    :: ("test/fixtures/.github/workflows/intentional.yml", vulnerable_workflow)
+    :: ("test/fixtures/.gitlab-ci.yml", "verify:\n  script: echo fixture\n")
+    :: ("test/fixtures/azure-pipelines.yml", "trigger: [main]\npool: hosted\n")
+    :: ("test/fixtures/.circleci/config.yml", "version: 2.1\nworkflows: {}\n")
     :: state.files;
   let code =
     Cli.run ~io:(io state) ~services:(services state)
@@ -187,7 +191,7 @@ let discovery_boundary_test () =
       |]
   in
   expect "audit succeeds" (code = 0);
-  expect "generated trees are not rediscovered as source inputs"
+  expect "only root provider entrypoints are discovered as source inputs"
     (Util.contains ~needle:"\"inputs\":1" (output state.stdout));
   let filtered = harness () in
   filtered.files <-

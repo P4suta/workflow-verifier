@@ -145,7 +145,9 @@ let discover io target =
         match Frontend.detect ~path ~source with
         | None -> false
         | Some provider ->
-            (not directory) || Frontend.entrypoint ~provider ~path ~source)
+            (not directory)
+            || Frontend.entrypoint ~provider
+                 ~path:(relative_to target path) ~source)
   in
   { candidates; entrypoints }
 

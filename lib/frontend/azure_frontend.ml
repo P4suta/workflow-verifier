@@ -8,9 +8,9 @@ let detect ~path ~source =
         || Util.contains ~needle:"stages:" source)
 
 let entrypoint ~path ~source =
-  let name = Filename.basename path |> String.lowercase_ascii in
+  let path = Util.normalize_slashes path |> String.lowercase_ascii in
   detect ~path ~source
-  && List.mem name [ "azure-pipelines.yml"; "azure-pipelines.yaml" ]
+  && List.mem path [ "azure-pipelines.yml"; "azure-pipelines.yaml" ]
 
 let parse = Frontend_common.parse
 let expand = Frontend_common.expand

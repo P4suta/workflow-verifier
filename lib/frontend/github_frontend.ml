@@ -15,8 +15,17 @@ let detect ~path ~source =
   || (has_top_level "on" source && has_top_level "jobs" source)
 
 let entrypoint ~path ~source =
-  let name = Filename.basename path |> String.lowercase_ascii in
-  detect ~path ~source && not (List.mem name [ "action.yml"; "action.yaml" ])
+  let path = Util.normalize_slashes path |> String.lowercase_ascii in
+  let prefix = ".github/workflows/" in
+  if not (Util.starts_with ~prefix path) then false
+  else
+    let name =
+      String.sub path (String.length prefix)
+        (String.length path - String.length prefix)
+    in
+    detect ~path ~source
+    && not (String.contains name '/')
+    && List.exists (fun suffix -> Util.ends_with ~suffix name) [ ".yml"; ".yaml" ]
 
 let parse = Frontend_common.parse
 let expand = Frontend_common.expand

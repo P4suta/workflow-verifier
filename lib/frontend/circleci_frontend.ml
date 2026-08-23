@@ -11,9 +11,7 @@ let detect ~path ~source =
 let entrypoint ~path ~source =
   let path = Util.normalize_slashes path |> String.lowercase_ascii in
   detect ~path ~source
-  && (Util.ends_with ~suffix:"/.circleci/config.yml" path
-     || Util.ends_with ~suffix:"/.circleci/config.yaml" path
-     || Util.starts_with ~prefix:".circleci/config." path)
+  && List.mem path [ ".circleci/config.yml"; ".circleci/config.yaml" ]
 
 let parse = Frontend_common.parse
 let expand = Frontend_common.expand

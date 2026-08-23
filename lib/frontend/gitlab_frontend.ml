@@ -7,8 +7,8 @@ let detect ~path ~source =
      && Util.contains ~needle:"script:" source
 
 let entrypoint ~path ~source =
-  let name = Filename.basename path |> String.lowercase_ascii in
-  detect ~path ~source && List.mem name [ ".gitlab-ci.yml"; ".gitlab-ci.yaml" ]
+  let path = Util.normalize_slashes path |> String.lowercase_ascii in
+  detect ~path ~source && List.mem path [ ".gitlab-ci.yml"; ".gitlab-ci.yaml" ]
 
 let parse = Frontend_common.parse
 let expand = Frontend_common.expand
