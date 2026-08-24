@@ -3,6 +3,7 @@
 // safer than cosmetically renaming or regrouping the reference algorithm. The
 // chunk iterators also preserve the workspace's Rust 1.85 MSRV; `as_chunks`
 // is newer than that contract even though current Clippy recommends it.
+#![allow(unknown_lints)]
 #![allow(
     clippy::chunks_exact_to_as_chunks,
     clippy::many_single_char_names,
