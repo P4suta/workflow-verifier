@@ -1105,9 +1105,14 @@ let graph_algorithm_differential_test () =
           |> List.filter (fun (target : Ir.node) ->
               Option.is_some (naive_path candidate source.id target.id))
           |> List.map (fun (item : Ir.node) -> item.id)
+        and wrapped_reachable =
+          Graph_algorithms.reachable_from candidate source.id
+          |> List.map (fun (item : Ir.node) -> item.id)
         in
         expect "indexed reachability differs from the naive contract"
           (reachable = expected_reachable);
+        expect "public reachability wrapper differs from the indexed contract"
+          (wrapped_reachable = expected_reachable);
         List.iter
           (fun (target : Ir.node) ->
             let avoid =

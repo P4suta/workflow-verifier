@@ -7,7 +7,7 @@ type indexed = {
   outgoing : (string, Ir.edge list) Hashtbl.t;
   incoming : (string, Ir.edge list) Hashtbl.t;
   entrypoints : (string, unit) Hashtbl.t;
-  mutable dominators : (string, String_set.t) Hashtbl.t option;
+  dominators : (string, String_set.t) Hashtbl.t Lazy.t;
 }
 
 let matching_edge kinds (edge : Ir.edge) =
@@ -48,6 +48,58 @@ let index graph =
       add outgoing edge.from_ edge;
       add incoming edge.to_ edge)
     (List.rev feasible_edges);
+  let dominators =
+    lazy
+      (let ids = List.map (fun (node : Ir.node) -> node.id) graph.nodes in
+       let all =
+         List.fold_left
+           (fun set id -> String_set.add id set)
+           String_set.empty ids
+       in
+       let table = Hashtbl.create (max 1 (List.length ids)) in
+       List.iter
+         (fun id ->
+           Hashtbl.replace table id
+             (if Hashtbl.mem entrypoints id then String_set.singleton id
+              else all))
+         ids;
+       let intersections = function
+         | [] -> String_set.empty
+         | first :: rest -> List.fold_left String_set.inter first rest
+       in
+       let changed = ref true in
+       while !changed do
+         changed := false;
+         List.iter
+           (fun id ->
+             if not (Hashtbl.mem entrypoints id) then
+               let predecessors =
+                 Option.value ~default:[] (Hashtbl.find_opt incoming id)
+                 |> List.filter (fun (edge : Ir.edge) ->
+                     edge.kind = Ir.Control)
+                 |> List.map (fun (edge : Ir.edge) -> edge.from_)
+               in
+               let updated =
+                 match predecessors with
+                 | [] -> String_set.singleton id
+                 | _ ->
+                     predecessors
+                     |> List.map (fun predecessor ->
+                         Option.value ~default:all
+                           (Hashtbl.find_opt table predecessor))
+                     |> intersections |> String_set.add id
+               in
+               let before =
+                 Option.value ~default:String_set.empty
+                   (Hashtbl.find_opt table id)
+               in
+               if not (String_set.equal before updated) then (
+                 Hashtbl.replace table id updated;
+                 changed := true))
+           ids
+       done;
+       table)
+  in
   {
     graph;
     nodes_by_id;
@@ -55,7 +107,7 @@ let index graph =
     outgoing;
     incoming;
     entrypoints;
-    dominators = None;
+    dominators;
   }
 
 let graph indexed = indexed.graph
@@ -151,59 +203,7 @@ let reachable_from_indexed ?edge_kinds ?(avoid = []) indexed source =
 let reachable_from ?edge_kinds ?(avoid = []) graph source =
   reachable_from_indexed ?edge_kinds ~avoid (index graph) source
 
-let intersections sets =
-  match sets with
-  | [] -> String_set.empty
-  | first :: rest -> List.fold_left String_set.inter first rest
-
-let dominator_table indexed =
-  match indexed.dominators with
-  | Some table -> table
-  | None ->
-      let ids = List.map (fun (node : Ir.node) -> node.id) indexed.graph.nodes in
-      let all =
-        List.fold_left
-          (fun set id -> String_set.add id set)
-          String_set.empty ids
-      in
-      let table = Hashtbl.create (max 1 (List.length ids)) in
-      List.iter
-        (fun id ->
-          Hashtbl.replace table id
-            (if Hashtbl.mem indexed.entrypoints id then String_set.singleton id
-             else all))
-        ids;
-      let changed = ref true in
-      while !changed do
-        changed := false;
-        List.iter
-          (fun id ->
-            if not (Hashtbl.mem indexed.entrypoints id) then
-              let predecessors =
-                edges_to ~edge_kinds:[ Ir.Control ] indexed id
-                |> List.map (fun (edge : Ir.edge) -> edge.from_)
-              in
-              let updated =
-                match predecessors with
-                | [] -> String_set.singleton id
-                | _ ->
-                    predecessors
-                    |> List.map (fun predecessor ->
-                        Option.value ~default:all
-                          (Hashtbl.find_opt table predecessor))
-                    |> intersections |> String_set.add id
-              in
-              let before =
-                Option.value ~default:String_set.empty
-                  (Hashtbl.find_opt table id)
-              in
-              if not (String_set.equal before updated) then (
-                Hashtbl.replace table id updated;
-                changed := true))
-          ids
-      done;
-      indexed.dominators <- Some table;
-      table
+let dominator_table indexed = Lazy.force indexed.dominators
 
 let dominates_indexed indexed ~dominator ~node =
   Hashtbl.find_opt (dominator_table indexed) node

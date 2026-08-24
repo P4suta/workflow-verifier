@@ -59,9 +59,7 @@ let classify raw =
       String.sub fragment !cursor (String.length fragment - !cursor)
       |> trim_left
     in
-    let trailer_is_comment =
-      trailer = "" || (String.length trailer > 0 && trailer.[0] = '#')
-    in
+    let trailer_is_comment = trailer = "" || trailer.[0] = '#' in
     if !valid && suffix_is_separated && trailer_is_comment then
       Valid
         {

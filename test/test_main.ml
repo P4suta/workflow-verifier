@@ -830,14 +830,48 @@ let yaml_tests =
       name = "shared block header classifier rejects malformed indicators";
       run =
         (fun () ->
-          [ "value: |0\n  data\n"; "value: |++\n  data\n"; "value: |2+ trailer\n  data\n" ]
-          |> List.iter (fun source ->
+          [ ("zero indentation indicator", "value: |0\n  data\n");
+            ("duplicate keep indicator", "value: |++\n  data\n");
+            ("duplicate strip indicator", "value: |--\n  data\n");
+            ("mixed chomping indicators", "value: |-+\n  data\n");
+            ("non-comment trailer", "value: |2+ trailer\n  data\n");
+            ("empty mapping head", "value:\n  |0\n    data\n");
+            ( "quoted mapping head",
+              "value: \"quoted\"\n  |0\n    data\n" );
+            ("document start head", "---\n  |0\n    data\n");
+            ("document end head", "...\n  |0\n    data\n");
+            ("directive head", "%YAML 1.2\n  |0\n    data\n");
+            ( "nested mapping ends continuation",
+              "value: plain\n  nested:\n    |0\n      data\n" );
+            ( "comment-only line ends continuation",
+              "value: plain\n  # separated\n    |0\n      data\n" );
+            ( "separated inline comment ends continuation",
+              "value: plain # separated\n  |0\n    data\n" );
+            ( "same-indent line is not a continuation",
+              "value: plain\n|0\n  data\n" )
+          ]
+          |> List.iter (fun (label, source) ->
                  let tree = Yaml_cst.parse source in
-                 expect_true "malformed block header must remain rejected"
+                 expect_true
+                   (label ^ ": malformed block header must remain rejected")
                    (List.exists
                       (fun problem ->
                         problem.Yaml_cst.message = "invalid block scalar header")
                       tree.problems)));
+    };
+    {
+      name = "plain scalar continuation remains distinct from a block header";
+      run =
+        (fun () ->
+          let tree =
+            Yaml_cst.parse "value: command ||\n  | exit_code=$?\n"
+          in
+          expect_true "a direct plain continuation must not become a block header"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message = "invalid block scalar header")
+                  tree.problems)));
     };
     {
       name = "validation resumes after a block scalar dedent";

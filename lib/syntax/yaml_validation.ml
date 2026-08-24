@@ -255,11 +255,10 @@ let plain_scalar_head raw =
   let fragment = node_fragment (without_separated_comment raw) |> String.trim in
   if fragment = "" then false
   else
-    match (Yaml_block_header.classify fragment, fragment.[0]) with
-    | (Valid _ | Invalid _), _ -> false
-    | Not_block, ('\'' | '"' | '[' | '{' | ']' | '}' | '*' | '&' | '!' | '#') ->
+    match fragment.[0] with
+    | '\'' | '"' | '[' | '{' | ']' | '}' | '*' | '&' | '!' | '#' ->
         false
-    | Not_block, _ ->
+    | _ ->
         not
           (Util.starts_with ~prefix:"---" fragment
           || Util.starts_with ~prefix:"..." fragment
