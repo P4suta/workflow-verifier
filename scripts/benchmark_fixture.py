@@ -44,6 +44,10 @@ workflows:
 }
 
 SCENARIOS = ("four-provider", "arcade-scale")
+ARCADE_REPOSITORIES = 64
+ARCADE_VARIABLES = 778
+ARCADE_GATED_STAGES = 2
+ARCADE_DISPLAY_PADDING = 1050
 
 
 def _github(variant: str) -> str:
@@ -61,7 +65,11 @@ jobs:
 
 
 def _arcade_scale(variant: str) -> str:
-    """Generate a stable Azure graph with Arcade-like resources and gates."""
+    """Generate a stable Azure graph with Arcade-like resources and gates.
+
+    Azure's ``bash`` key keeps historical baselines from mistaking the
+    ``stages``/``script`` content shape for GitLab before checking the path.
+    """
     lines = [
         "trigger:\n",
         "  branches:\n",
@@ -69,7 +77,7 @@ def _arcade_scale(variant: str) -> str:
         "resources:\n",
         "  repositories:\n",
     ]
-    for index in range(64):
+    for index in range(ARCADE_REPOSITORIES):
         lines.extend(
             [
                 f"    - repository: dependency_{index:03d}\n",
@@ -79,7 +87,7 @@ def _arcade_scale(variant: str) -> str:
             ]
         )
     lines.append("variables:\n")
-    for index in range(128):
+    for index in range(ARCADE_VARIABLES):
         lines.extend(
             [
                 f"  - name: arcadeVariable{index:03d}\n",
@@ -87,12 +95,12 @@ def _arcade_scale(variant: str) -> str:
             ]
         )
     lines.append("stages:\n")
-    for stage in range(28):
+    for stage in range(ARCADE_GATED_STAGES):
         lines.extend(
             [
                 f"  - stage: release_{stage:03d}\n",
                 f"    displayName: Release train {stage:03d} "
-                + ("cross-platform-artifact-validation-" * 75)
+                + ("cross-platform-artifact-validation-" * ARCADE_DISPLAY_PADDING)
                 + "\n",
                 "    condition: succeeded()\n",
                 "    jobs:\n",
@@ -104,7 +112,7 @@ def _arcade_scale(variant: str) -> str:
                 "            deploy:\n",
                 "              steps:\n",
                 "                - checkout: none\n",
-                f"                - script: echo approve-{stage:03d}\n",
+                f"                - bash: echo approve-{stage:03d}\n",
                 f"      - job: build_{stage:03d}\n",
                 f"        displayName: Build leg {stage:03d}\n",
                 f"        dependsOn: approve_{stage:03d}\n",
@@ -115,12 +123,12 @@ def _arcade_scale(variant: str) -> str:
                 "        steps:\n",
                 "          - checkout: self\n",
                 "            persistCredentials: false\n",
-                f"          - checkout: dependency_{stage % 64:03d}\n",
+                f"          - checkout: dependency_{stage % ARCADE_REPOSITORIES:03d}\n",
                 "          - task: Cache@2\n",
                 "            inputs:\n",
                 f"              key: arcade-{stage:03d}-$(Agent.OS)\n",
                 f"              path: $(Pipeline.Workspace)/cache-{stage:03d}\n",
-                f"          - script: echo build-{stage:03d} $(arcadeVariable{stage:03d})\n",
+                f"          - bash: echo build-{stage:03d} $(arcadeVariable{stage:03d})\n",
                 "            displayName: Compile repository leg\n",
                 f"          - publish: $(Build.ArtifactStagingDirectory)/{stage:03d}\n",
                 f"            artifact: arcade-{stage:03d}\n",
@@ -133,7 +141,7 @@ def _arcade_scale(variant: str) -> str:
                 "          - checkout: none\n",
                 f"          - download: current\n",
                 f"            artifact: arcade-{stage:03d}\n",
-                f"          - script: echo validate-{stage:03d}\n",
+                f"          - bash: echo validate-{stage:03d}\n",
                 "            displayName: Validate artifact\n",
                 "          - task: PublishTestResults@2\n",
                 "            inputs:\n",
@@ -146,7 +154,7 @@ def _arcade_scale(variant: str) -> str:
             "    jobs:\n",
             "      - job: marker\n",
             "        steps:\n",
-            f"          - script: echo {variant}\n",
+            f"          - bash: echo {variant}\n",
         ]
     )
     return "".join(lines)
