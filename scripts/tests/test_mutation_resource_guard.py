@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -93,7 +92,7 @@ class MutationResourceGuardTests(unittest.TestCase):
             '"schema":"mutation-resource-guard-v1"}'
         )
 
-    @unittest.skipUnless(os.name == "posix", "the production guard is Linux-only")
+    @unittest.skipUnless(sys.platform == "linux", "the production guard is Linux-only")
     def test_check_mode_emits_the_canonical_contract(self) -> None:
         script = Path(mutation_resource_guard.__file__).resolve()
         completed = subprocess.run(
