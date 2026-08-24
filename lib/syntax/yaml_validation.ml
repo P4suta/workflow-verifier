@@ -1,5 +1,6 @@
 type issue = { code : string; message : string; span : Span.t }
 type quote = Single_quote | Double_quote
+type flow_quote = Flow_single | Flow_double | Flow_double_escape
 
 type line = {
   number : int;
@@ -102,15 +103,14 @@ let previous_non_separation value index =
   loop index
 
 let flow_depth_before value index =
-  let stack = ref [] in
+  let depth = ref 0 in
   for cursor = 0 to index - 1 do
     match value.[cursor] with
-    | ('[' | '{') as opener -> stack := opener :: !stack
-    | ']' | '}' -> (
-        match !stack with _ :: rest -> stack := rest | [] -> ())
+    | '[' | '{' -> incr depth
+    | ']' | '}' -> depth := max 0 (pred !depth)
     | _ -> ()
   done;
-  List.length !stack
+  !depth
 
 let property_precedes value index previous =
   if previous + 1 = index then false
@@ -288,9 +288,11 @@ let classify_block_header raw =
 let block_scalar_payload active_indent line =
   match !active_indent with
   | None -> false
-  | Some base_indent ->
-      if String.trim line.raw = "" || line.indent > base_indent then true
-      else (
+  | Some base_indent -> (
+      match String.trim line.raw with
+      | "" -> true
+      | _ when line.indent > base_indent -> true
+      | _ ->
         active_indent := None;
         false)
 
@@ -333,19 +335,19 @@ let validate_double_escapes file source source_lines payload_lines =
   while !index < String.length source do
     while
       !line_index + 1 < Array.length source_lines
-      && !index > source_lines.(!line_index).stop_byte
+      && !index >= source_lines.(!line_index + 1).start_byte
     do
       incr line_index
     done;
     let line = source_lines.(!line_index) in
     let character = source.[!index] in
-    (if payload_lines.(!line_index) then
+    if payload_lines.(!line_index) then
        index :=
          if !line_index + 1 < Array.length source_lines then
-           source_lines.(!line_index + 1).start_byte - 1
-         else String.length source - 1
-     else
-       match !quote with
+           source_lines.(!line_index + 1).start_byte
+         else String.length source
+     else (
+       (match !quote with
        | None ->
            let column = !index - line.start_byte in
            if
@@ -376,21 +378,21 @@ let validate_double_escapes file source source_lines payload_lines =
                if simple then incr index
                else
                  match hex_stop with
-                  | Some _ -> ()
+                 | Some _ -> ()
                  | None ->
                      problems :=
                        issue file source_lines.(!line_index)
                          (!index - source_lines.(!line_index).start_byte)
                          2 "invalid escape in a double-quoted scalar"
                        :: !problems);
-    incr index
+       incr index)
   done;
   List.rev !problems
 
 let validate_directives file source_lines payload_lines =
   let problems = ref []
   and in_document = ref false
-  and pending = ref false
+  and pending_directive = ref None
   and yaml_seen = ref false
   and pending_handles = ref []
   and active_handles = ref [ "!!" ]
@@ -413,22 +415,21 @@ let validate_directives file source_lines payload_lines =
         then (
           let previous_plain =
             !in_document
-            &&
-            match !previous_line with
-            | None -> false
-            | Some previous_line ->
+            && Option.exists
+                 (fun previous_line ->
                 let previous = String.trim previous_line.raw in
                 previous <> ""
                 && find_mapping_colons previous = []
                 && (not (has_separated_comment previous))
                 && (not (String.contains "!&'\"[{|>" previous.[0]))
                 && (not (Util.starts_with ~prefix:"---" previous))
-                && not (Util.starts_with ~prefix:"..." previous)
+                && not (Util.starts_with ~prefix:"..." previous))
+                 !previous_line
           in
           if not previous_plain then (
             if !in_document then
               add line "directive appears before document end";
-            pending := true;
+            pending_directive := Some line;
             let directive =
               match String.index_opt content '#' with
               | Some index -> (
@@ -462,12 +463,12 @@ let validate_directives file source_lines payload_lines =
           active_handles := "!!" :: !pending_handles;
           pending_handles := [];
           yaml_seen := false;
-          pending := false;
+          pending_directive := None;
           in_document := true)
         else if String.length content >= 3 && String.sub content 0 3 = "..."
         then in_document := false
         else (
-          if !pending then
+          if Option.is_some !pending_directive then
             add line "directives require an explicit document start";
           in_document := true);
         if not (Util.starts_with ~prefix:"%" content) then
@@ -498,10 +499,9 @@ let validate_directives file source_lines payload_lines =
           done);
       previous_line := Some line)
     source_lines;
-  if !pending && Array.length source_lines > 0 then
-    add
-      source_lines.(Array.length source_lines - 1)
-      "directive is not followed by a document";
+  Option.iter
+    (fun line -> add line "directive is not followed by a document")
+    !pending_directive;
   List.rev !problems
 
 let validate_inline_forms file source_lines payload_lines =
@@ -573,13 +573,12 @@ let validate_inline_forms file source_lines payload_lines =
                  && (Util.contains ~needle:"{" token
                     || Util.contains ~needle:"}" token))
         then add line "invalid tag token";
-        if
-          Util.starts_with ~prefix:"- !!" content
-          &&
-          match words content with
-          | _ :: tag :: _ -> tag.[String.length tag - 1] = ','
-          | _ -> false
-        then add line "tag cannot contain a block-context comma"))
+        (match words content with
+        | "-" :: tag :: _
+          when Util.starts_with ~prefix:"!!" tag
+               && Util.ends_with ~suffix:"," tag ->
+            add line "tag cannot contain a block-context comma"
+        | _ -> ())))
     source_lines;
   List.rev !problems
 
@@ -595,7 +594,6 @@ let validate_flow file source_lines payload_lines =
   let problems = ref []
   and stack = ref []
   and quote = ref None
-  and escaped = ref false
   and last_token = ref `None
   and comment_interrupted = ref false in
   let add line column message =
@@ -645,20 +643,20 @@ let validate_flow file source_lines payload_lines =
         while !index < String.length line.raw do
           let character = line.raw.[!index] in
           (match !quote with
-          | Some Double_quote ->
-              if !escaped then escaped := false
-              else if character = '\\' then escaped := true
+          | Some Flow_double_escape -> quote := Some Flow_double
+          | Some Flow_double ->
+              if character = '\\' then quote := Some Flow_double_escape
               else if character = '"' then (
                 quote := None;
                 last_token := `Other)
-          | Some Single_quote ->
+          | Some Flow_single ->
               if character = '\'' then (
                 quote := None;
                 last_token := `Other)
           | None -> (
-              if !stack <> [] && character = '"' then quote := Some Double_quote
+              if !stack <> [] && character = '"' then quote := Some Flow_double
               else if !stack <> [] && character = '\'' then
-                quote := Some Single_quote
+                quote := Some Flow_single
               else if
                 !stack <> [] && character = '#' && !index > 0
                 && line.raw.[!index - 1] = ','
@@ -837,29 +835,24 @@ let validate_layout file source_lines payload_lines =
            in
            if find_mapping_colons remainder <> [] then
              add line !first_non_space "tab cannot indent a block mapping");
-        if String.length content > 1 then
-          match content.[0] with
-          | '-' | '?' | ':' ->
-              let rec split_separation saw_tab = function
-                | ((' ' | '\t' | '\r' | '\n') as character) :: rest ->
-                    split_separation (saw_tab || character = '\t') rest
-                | rest -> (saw_tab, rest)
-              in
-              let saw_tab, remainder =
-                String.sub content 1 (String.length content - 1)
-                |> String.to_seq |> List.of_seq |> split_separation false
-              in
-              (match (saw_tab, remainder) with
-              | true, _ :: _ ->
+        let rec split_separation saw_tab = function
+          | ((' ' | '\t' | '\r' | '\n') as character) :: rest ->
+              split_separation (saw_tab || character = '\t') rest
+          | rest -> (saw_tab, rest)
+        in
+        match content |> String.to_seq |> List.of_seq with
+        | ('-' | '?' | ':') :: rest ->
+            let saw_tab, remainder = split_separation false rest in
+            (match (saw_tab, remainder) with
+            | true, _ :: _ ->
                 let remainder = remainder |> List.to_seq |> String.of_seq in
                 if
                   indicator '-' remainder || indicator '?' remainder
-                    || indicator ':' remainder
-                    || find_mapping_colons remainder <> []
-                then
-                  add line line.indent "tab cannot indent a nested block node"
-              | _ -> ())
-          | _ -> ()))
+                  || indicator ':' remainder
+                  || find_mapping_colons remainder <> []
+                then add line line.indent "tab cannot indent a nested block node"
+            | _ -> ())
+        | _ -> ()))
     source_lines;
   List.rev !problems
 

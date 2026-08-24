@@ -2193,7 +2193,7 @@ let yaml_edge_oracle () =
                 })) );
     ]
   |> fingerprint "yaml-edges"
-       "dfe979018f7ada7115d84cde23ec495f1c359aa34de5d35a268f393e8f269224"
+       "5f3381f83b90daac5600a4cf59dcf26c0e8740d07f2c5a72d8ac9f09e893e774"
 
 let rec yaml_suite_inputs root relative =
   let directory =
@@ -2227,7 +2227,7 @@ let yaml_suite_oracle () =
         inputs |> List.map yaml_tree_evidence |> fun trees ->
         Json.Array trees
         |> fingerprint "yaml-suite-layout"
-             "3c2625d8c7b163c9f1f599eadb611cc77ba43cca1e9690c22ed9758cc0cf658c"
+             "bcaf875a0699e06506b7d390730e92ebfdbe525c48107b5112c8b4cc77cabeef"
 
 let () =
   Printexc.record_backtrace true;

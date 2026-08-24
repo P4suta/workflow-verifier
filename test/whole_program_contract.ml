@@ -289,7 +289,19 @@ let ai_effect_semantics () =
     |> Verifier.verify ~persona:Verifier.Gate
   in
   expect "AI effects are semantic and do not depend on product naming"
-    ((property "WV-AI-001" result).state = Property.Violated)
+    ((property "WV-AI-001" result).state = Property.Violated);
+  let command_agent =
+    node ~kind:Ir.Command ~capabilities:[ Ir.Ai_tool; Ir.Network ]
+      ~effects:[ Ir.Ai_agent_execution; Ir.Network_request ] "ai-agent command"
+  in
+  let command_result =
+    graph [ prompt; command_agent ]
+      [ edge ~kind:Ir.Data prompt command_agent ]
+      [ command_agent ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "local AI agent commands share the call security boundary"
+    ((property "WV-AI-001" command_result).state = Property.Violated)
 
 let integrity_state_triple () =
   let deploy =

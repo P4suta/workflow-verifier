@@ -30,6 +30,26 @@ let product_domain_test () =
         (List.length values = 2)
   | _ -> fail "expected a finite string constant set"
 
+let provenance_operation_identity_test () =
+  let value operation =
+    Abstract_value.string_constant "same" ~trust:Abstract_value.Trusted
+      ~secrecy:Abstract_value.Public
+      ~provenance:
+        [
+          {
+            Abstract_value.origin = "same-origin";
+            span = Span.none;
+            operation;
+          };
+        ]
+  in
+  let joined = Abstract_value.join (value "checkout") (value "template") in
+  expect "provenance operations remain distinct at the same source span"
+    (List.map
+       (fun (item : Abstract_value.provenance) -> item.operation)
+       joined.provenance
+    = [ "checkout"; "template" ])
+
 let bounded_domain_test () =
   let values =
     List.init 12 (fun index ->
@@ -73,6 +93,11 @@ let boolean_json_test () =
   let encode value = Abstract_value.to_json value |> Json.to_string in
   expect "abstract true must remain true in machine-readable evidence"
     (Util.contains ~needle:"\"value\":true"
+       (value Abstract_value.Bool_type
+          (Abstract_value.Boolean Abstract_value.True)
+       |> encode));
+  expect "boolean type must retain its canonical name"
+    (Util.contains ~needle:"\"type\":\"bool\""
        (value Abstract_value.Bool_type
           (Abstract_value.Boolean Abstract_value.True)
        |> encode));
@@ -211,6 +236,8 @@ let phase_and_unknown_test () =
 let tests : test list =
   [
     ("product domain joins trust secrecy and provenance", product_domain_test);
+    ( "provenance identity includes its semantic operation",
+      provenance_operation_identity_test );
     ("finite constants widen deterministically", bounded_domain_test);
     ("finite constants retain the inclusive widening boundary", finite_domain_boundary_test);
     ("abstract booleans retain their JSON truth value", boolean_json_test);

@@ -88,3 +88,11 @@ after the first compatibility release.
   traces. Refactor the green implementation around domain-owned comparators,
   explicit parser state, caller-owned call provenance, and dedicated traversal
   sets so equivalent implementation detail no longer obscures semantic coverage.
+- Close the hosted survivor set with exact contracts for native-integer JSON
+  boundaries, UTF-8 BOM streams, full block-scalar spans, decorated aliases,
+  explicit flow-mapping keys, directive provenance, escaped quote transitions,
+  value-only uncertainty, AI command effects, canonical dataflow order, and
+  bounded cyclic graph traversal. Reuse the foundation SHA-256 identity
+  validator across config, lock, and sandbox protocols, and make a mutation
+  runner serial by default so Dune RPC infrastructure faults cannot masquerade
+  as detected mutants.

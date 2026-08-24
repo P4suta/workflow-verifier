@@ -15,8 +15,9 @@ let feasible_edge graph (edge : Ir.edge) =
 
 let shortest_path ?edge_kinds ?(avoid = []) graph source target =
   let visited = Hashtbl.create (List.length graph.Ir.nodes) in
-  let rec bfs = function
+  let rec bfs remaining = function
     | [] -> None
+    | _ when remaining = 0 -> None
     | (current, path) :: rest ->
         if current = target then
           Some
@@ -35,12 +36,13 @@ let shortest_path ?edge_kinds ?(avoid = []) graph source target =
             |> Util.deduplicate_strings
           in
           List.iter (fun id -> Hashtbl.replace visited id ()) next;
-          bfs (rest @ List.map (fun id -> (id, current :: path)) next)
+          bfs (pred remaining)
+            (rest @ List.map (fun id -> (id, current :: path)) next)
   in
   if List.mem source avoid || List.mem target avoid then None
   else (
     Hashtbl.replace visited source ();
-    bfs [ (source, []) ])
+    bfs (List.length graph.Ir.nodes) [ (source, []) ])
 
 let intersections sets =
   match sets with

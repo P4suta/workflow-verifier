@@ -194,11 +194,9 @@ let parse source =
       ()
     done;
     if !digits = 0 then fail "invalid number";
-    if
-      match peek () with
-      | Some ('.' | 'e' | 'E') -> true
-      | _ -> false
-    then fail "runner JSON permits integers only";
+    (match peek () with
+    | Some ('.' | 'e' | 'E') -> fail "runner JSON permits integers only"
+    | _ -> ());
     let raw = String.sub source start (!offset - start) in
     try
       let value = Int64.of_string raw in

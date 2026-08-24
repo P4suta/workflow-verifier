@@ -115,7 +115,10 @@ pinned runner creates the authoritative catalog. Hosted jobs receive disjoint
 sets of its immutable full IDs, and the campaign verifier checks each result's
 workspace, toolchain, profile, selection, and complete mutant metadata before
 proving that the report union is exactly the original catalog. Parallelism can
-change wall-clock order but cannot change the selected semantic surface. The
+change wall-clock order but cannot change the selected semantic surface. Each
+runner is single-worker and its Dune stages are declared non-parallel-safe;
+parallelism exists only between isolated hosted jobs. A process/RPC failure
+therefore remains infrastructure evidence instead of a mutant kill. The
 manifest verifier builds a hexadecimal prefix trie, rejects overlapping owners,
 and proves that every 64-digit mutant identity is covered. The hosted manifest
 uses 64 short-lived partitions under four-worker backpressure and refuses a

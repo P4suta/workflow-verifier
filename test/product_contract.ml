@@ -77,13 +77,45 @@ let config_and_policy_test () =
       "version = 1\n[sandbox]\nnetwork = \"allow\"\n";
       "version = 1\n[sandbox]\nunknown_control = true\n";
       "version = 1\n[sandbox]\nimage = \"unclosed\n";
+      "version = 1\n[sandbox]\nimage = \"sha256:abc\"\n";
+      "version = 1\n[sandbox]\nimage = \"not256:"
+      ^ String.make 64 'a' ^ "\"\n";
+      "version = 1\n[sandbox]\nimage = \"sha256:"
+      ^ String.make 63 'a' ^ "z\"\n";
       "version = 1\nfrontends = [\"github\", \"github\"]\n";
       "version = 1\nfrontends = [\"github\"x\n";
       "version = 1\nversion = 1\n";
       "version = 1\n[sandbox]\n[sandbox]\n";
       "version = 1\n[[rules]]\nid = \"BAD\"\nkind = \"forbid\"\nselector.capability = \"invalid\"\nmessage = \"bad\"\n";
+      "version = 1\n[[rules]]\nid = \"BAD\"\nkind = \"forbid\"\nselector.effect = \"unterminated\nmessage = \"bad\"\n";
     ]
   ;
+  let malformed_allowlist =
+    "version = 1\n[[allowlist]]\nkind = \"source\"\n"
+    ^ "value = \"unterminated\nreason = \"reviewed\"\n"
+  in
+  (match Config.parse malformed_allowlist with
+  | Ok _ -> fail "an unterminated allowlist value must fail"
+  | Error errors ->
+      expect "the failing quoted field must retain its root-cause diagnostic"
+        (List.exists
+           (Util.contains ~needle:"expected a quoted string: \"unterminated")
+           errors));
+  List.iter
+    (fun source ->
+      match Config.parse source with
+      | Ok _ -> fail "a one-sided quoted persona must fail"
+      | Error errors ->
+          expect "one-sided quotes retain the quoted-string root cause"
+            (List.exists
+               (Util.contains ~needle:"expected a quoted string:")
+               errors))
+    [ "version = 1\npersona = \"gate\n"; "version = 1\npersona = gate\"\n" ];
+  (match Config.parse "version = 1\n" with
+  | Error errors -> fail "%s" (String.concat "; " errors)
+  | Ok minimal ->
+      expect "security booleans default explicitly to true"
+        (minimal.offline && minimal.resolver.require_immutable));
   expect "an explicitly empty frontend set is a valid typed array"
     (Result.is_ok (Config.parse "version = 1\nfrontends = []\n"))
 

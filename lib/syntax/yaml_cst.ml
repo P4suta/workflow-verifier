@@ -200,6 +200,8 @@ let comment_index value =
   done;
   !result
 
+let utf8_bom = "\xef\xbb\xbf"
+
 let split_lines source =
   let length = String.length source in
   let rec loop number start accumulator =
@@ -239,6 +241,17 @@ let split_lines source =
         incr indent
       done;
       let unindented = String.sub raw !indent (String.length raw - !indent) in
+      let semantic_offset =
+        if
+          number = 1 && start = 0 && !indent = 0
+          && Util.starts_with ~prefix:utf8_bom unindented
+        then String.length utf8_bom
+        else 0
+      in
+      let unindented =
+        String.sub unindented semantic_offset
+          (String.length unindented - semantic_offset)
+      in
       let relative_comment = comment_index unindented in
       let content =
         match relative_comment with
@@ -253,9 +266,11 @@ let split_lines source =
           raw;
           indent = !indent;
           content;
-          content_byte = start + !indent;
+          content_byte = start + !indent + semantic_offset;
           comment_byte =
-            Option.map (fun offset -> start + !indent + offset) relative_comment;
+            Option.map
+              (fun offset -> start + !indent + semantic_offset + offset)
+              relative_comment;
         }
       in
       loop (number + 1) !cursor (line :: accumulator)
@@ -263,12 +278,9 @@ let split_lines source =
   loop 1 0 [] |> Array.of_list
 
 let without_bom value =
-  if
-    String.length value >= 3
-    && Char.code value.[0] = 0xef
-    && Char.code value.[1] = 0xbb
-    && Char.code value.[2] = 0xbf
-  then String.sub value 3 (String.length value - 3)
+  if Util.starts_with ~prefix:utf8_bom value then
+    String.sub value (String.length utf8_bom)
+      (String.length value - String.length utf8_bom)
   else value
 
 let has_document_indicator indicator line =
@@ -590,14 +602,22 @@ let join_escaped_lines lines =
   in
   loop [] lines
 
-let fold_quoted ~double value =
+type line_continuation =
+  | Preserve_backslashes
+  | Join_double_quoted_continuations
+
+let fold_scalar_lines continuation value =
   let value =
     value
     |> Util.replace_all ~needle:"\r\n" ~replacement:"\n"
     |> Util.replace_all ~needle:"\r" ~replacement:"\n"
   in
   let lines = String.split_on_char '\n' value in
-  let lines = if double then join_escaped_lines lines else lines in
+  let lines =
+    match continuation with
+    | Preserve_backslashes -> lines
+    | Join_double_quoted_continuations -> join_escaped_lines lines
+  in
   let last_content =
     List.fold_left
       (fun answer (index, line) ->
@@ -863,7 +883,7 @@ let rec parse_inline ?(implicit_flow_mapping = false) ~file ~line ~column ~byte
       then
         ( Single_quoted,
           String.sub body 1 (String.length body - 2)
-          |> fold_quoted ~double:false |> decode_single )
+          |> fold_scalar_lines Preserve_backslashes |> decode_single )
       else if
         String.length body >= 2
         && body.[0] = '"'
@@ -871,10 +891,11 @@ let rec parse_inline ?(implicit_flow_mapping = false) ~file ~line ~column ~byte
       then
         ( Double_quoted,
           String.sub body 1 (String.length body - 2)
-          |> fold_quoted ~double:true |> decode_double )
+          |> fold_scalar_lines Join_double_quoted_continuations |> decode_double )
       else
         ( Plain,
-          if String.contains body '\n' then fold_quoted ~double:false body
+          if String.contains body '\n' then
+            fold_scalar_lines Preserve_backslashes body
           else body )
     in
     Scalar { value; raw = trimmed; style; anchor; tag; span }
@@ -1062,7 +1083,7 @@ let parse ?(file = "<memory>") source =
         and chunks = ref []
         and finished = ref false
         and saw_non_blank = ref false
-        and content_span = ref None
+        and content_stop = ref None
         in
         while !cursor < limit && not !finished do
           let block_line = lines.(!cursor) in
@@ -1090,10 +1111,10 @@ let parse ?(file = "<memory>") source =
                     (text, String.contains text '\t')
               in
               chunks := (text, more_indented, had_break) :: !chunks;
-              content_span :=
+              content_stop :=
                 Some
-                  (span_of_range file block_line.number 1 block_line.start_byte
-                     (String.length block_line.raw + 1)
+                  (position_of_offset ~line:block_line.number
+                     ~column:(String.length block_line.raw + 1)
                      block_line.stop_byte);
               incr cursor)
             else (
@@ -1120,11 +1141,10 @@ let parse ?(file = "<memory>") source =
                        | _ -> false
                   in
                   chunks := (text, more_indented, had_break) :: !chunks;
-                  content_span :=
+                  content_stop :=
                     Some
-                      (span_of_range file block_line.number (required + 1)
-                         (block_line.start_byte + required)
-                         (String.length block_line.raw + 1)
+                      (position_of_offset ~line:block_line.number
+                         ~column:(String.length block_line.raw + 1)
                          block_line.stop_byte);
                   incr cursor)
         done;
@@ -1193,9 +1213,9 @@ let parse ?(file = "<memory>") source =
             (byte + String.length raw)
         in
         let span =
-          match !content_span with
+          match !content_stop with
           | None -> header_span
-          | Some content_span -> Span.merge header_span content_span
+          | Some stop -> Span.make ~file header_span.start stop
         in
         ( Scalar
             {

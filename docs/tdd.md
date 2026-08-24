@@ -20,7 +20,7 @@ naming refactor while the same test remains green.
 | Abstract domains | Generated semilattice/Boolean laws find a counterexample | Thousands of seeded laws pass deterministically | Minimize the domain fix, retain the counterexample |
 | Robustness | AFL seed smoke and malformed corpus | Nonempty executions, no crash or hang | Harness contains no production fallback |
 | Mutation | Incomplete or vacuous report is accepted | Every configured core prefix was actually mutated | Reviewed equivalents are explicit evidence |
-| Mutation evidence transport | Concurrent Dune stages report lock failures as killed mutants, invalid mutant output corrupts JSON, or long-lived hosted workers lose every shard to runner reclamation | Every managed stage has a private build root; strict JSON retains raw SHA-256 and encoding-error evidence; a complete 64-shard prefix trie runs under four-worker backpressure with a 96-mutant worker bound | Scheduling and byte sanitization live at the runner boundary, never in analyzer tests |
+| Mutation evidence transport | Concurrent Dune stages report RPC/lock failures as killed mutants, invalid mutant output corrupts JSON, or long-lived hosted workers lose every shard to runner reclamation | One runner executes mutants serially; every managed stage has a private build root; strict JSON retains raw SHA-256 and encoding-error evidence; a complete 64-shard prefix trie runs as isolated hosted jobs under four-worker backpressure with a 96-mutant worker bound | In-run serialization, hosted scheduling, and byte sanitization live at the runner boundary, never in analyzer tests |
 | Mutation survivor closure | A changed operator, boundary, traversal state, or provenance lookup preserves the old examples while changing semantics | The smallest public contract fails on the mutant and passes on the implementation; the selected survivor set reaches zero without weakening assertions | Move ordering to the owning domain, represent declaration and lexical state explicitly, carry ownership with graph values, and delete observationally irrelevant branches |
 | YAML conformance oracle | Artifact upload dereferences upstream alias symlinks and expands 402 cases into 1,954 inputs | Immutable Git projection contains 402 case directories, 1,887 regular files, and the pinned tree digest | One typed TOML pin owns source and export identity; workers only authenticate the canonical projection |
 | Evaluation | Bad precision/recall/performance fixture passes | 95%/100% and 10% gates reject it | Inputs are immutable and machine-readable |
@@ -48,7 +48,10 @@ replayable. Coverage-guided fuzzing is separately bounded by wall time, memory,
 output, and an execution-count check. Mutation testing runs a three-pass
 baseline before mutants and rejects empty catalogs, unexecuted mutants,
 unsubstantiated timeouts, uncovered source prefixes, and undocumented
-equivalent survivors.
+equivalent survivors. The checked-in runner configuration is deliberately
+single-worker and declares its test stages non-parallel-safe. Hosted throughput
+comes only from independent, catalog-reconciled jobs, never concurrent Dune RPC
+clients inside one evidence producer.
 
 No green test may be obtained by weakening an assertion from a semantic fact to
 mere output presence. When a test exposes an architectural mismatch, the

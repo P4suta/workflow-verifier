@@ -104,10 +104,32 @@ let injection_triple_test () =
     Verifier.verify ~persona:Verifier.Gate
       (graph [ unknown_command ] [] [ unknown_command ])
   in
-  match (property "WV-SEC-001" unknown_result).state with
+  (match (property "WV-SEC-001" unknown_result).state with
   | Property.Unknown reasons ->
       expect "Unknown must retain a reason" (reasons <> [])
-  | _ -> fail "dynamic command must remain Unknown"
+  | _ -> fail "dynamic command must remain Unknown");
+  let value_reason = Unknown.Dynamic_string "value-only dynamic script" in
+  let value_only_unknown : Abstract_value.t =
+    {
+      value_type = Abstract_value.Dynamic_type;
+      value = Abstract_value.Unknown_value [ value_reason ];
+      trust = Abstract_value.Trusted;
+      secrecy = Abstract_value.Public;
+      provenance = [];
+    }
+  in
+  let value_only_command =
+    node ~attributes:[ ("command", value_only_unknown) ]
+      ~capabilities:[ Ir.Shell ] "value-only dynamic shell"
+  in
+  let value_only_result =
+    Verifier.verify ~persona:Verifier.Gate
+      (graph [ value_only_command ] [] [ value_only_command ])
+  in
+  expect "value-level uncertainty survives known trust and secrecy"
+    (match (property "WV-SEC-001" value_only_result).state with
+    | Property.Unknown reasons -> List.mem value_reason reasons
+    | _ -> false)
 
 let injection_environment_binding_test () =
   let source =
@@ -227,6 +249,21 @@ let unknown_secret_network_effect_test () =
       (graph [ network_effect ] [] [ network_effect ])
   in
   expect "an observable value with unknown secrecy stays Unknown"
+    (match (property "WV-SEC-002" result).state with
+    | Property.Unknown reasons -> List.mem reason reasons
+    | _ -> false)
+
+let network_capability_uncertainty_test () =
+  let reason = Unknown.External_state "opaque network-capable implementation" in
+  let opaque =
+    node ~unknown:reason
+      ~attributes:[ ("command", value "write private state") ]
+      ~capabilities:[ Ir.Shell; Ir.Network ] "opaque network-capable command"
+  in
+  let result =
+    Verifier.verify ~persona:Verifier.Gate (graph [ opaque ] [] [ opaque ])
+  in
+  expect "uncertainty on a network-capable sink remains explicit"
     (match (property "WV-SEC-002" result).state with
     | Property.Unknown reasons -> List.mem reason reasons
     | _ -> false)
@@ -603,6 +640,26 @@ let script_adapter_test () =
   in
   expect "nested substitution redirection does not hide outer secret output"
     nested_substitution.secret_to_output;
+  let redirected_after_substitution =
+    Script_adapter.analyze Script_adapter.Bash
+      {|printf '%s' "$TOKEN" $(safe) > private.log|}
+  in
+  expect
+    "a closed substitution restores the following private redirection boundary"
+    (not redirected_after_substitution.secret_to_output);
+  let redirected_after_escaped_quote =
+    Script_adapter.analyze Script_adapter.Bash
+      {|printf '%s' "$TOKEN" "escaped\" quote" > private.log|}
+  in
+  expect "an escaped quote cannot hide a following private redirection"
+    (not redirected_after_escaped_quote.secret_to_output);
+  let quoted_subshell_command =
+    Script_adapter.analyze Script_adapter.Bash
+      {|("sh" -c 'echo $TOKEN'); printf safe > private.log|}
+  in
+  expect
+    "a quoted command name inside a subshell preserves the following sequence boundary"
+    quoted_subshell_command.secret_to_output;
   let unterminated_quote =
     Script_adapter.analyze Script_adapter.Bash "token\""
   in
@@ -810,13 +867,40 @@ let graph_algorithm_boundaries_test () =
     (not (Graph_algorithms.dominates diamond ~dominator:left.id ~node:merge.id)
     && not
          (Graph_algorithms.dominates diamond ~dominator:right.id ~node:merge.id));
-  let cycle_root = { (node "cycle root") with id = "cycle-root" }
-  and cycle_a = { (node "cycle a") with id = "cycle-a" }
-  and cycle_b = { (node "cycle b") with id = "cycle-b" } in
+  let penultimate = { (node "penultimate") with id = "e-penultimate" }
+  and target = { (node "target") with id = "f-target" } in
+  let converging =
+    graph [ root; left; right; merge; penultimate; target ]
+      [
+        edge root left;
+        edge root right;
+        edge left merge;
+        edge right merge;
+        edge merge penultimate;
+        edge penultimate target;
+      ]
+      [ root ]
+  in
+  expect "shortest-path search visits a diamond merge only once"
+    (match Graph_algorithms.shortest_path converging root.id target.id with
+    | Some path ->
+        List.length path = 5
+        && List.hd path = root
+        && List.hd (List.rev path) = target
+    | None -> false);
+  let cycle_root = { (node "cycle root") with id = "a-cycle-root" }
+  and cycle_a = { (node "cycle a") with id = "b-cycle-a" }
+  and cycle_b = { (node "cycle b") with id = "c-cycle-b" } in
   let cyclic =
-    graph [ cycle_root; cycle_a; cycle_b ]
+    let isolated = { (node "isolated") with id = "z-isolated" } in
+    let graph =
+      graph [ cycle_root; cycle_a; cycle_b; isolated ]
       [ edge cycle_root cycle_a; edge cycle_a cycle_b; edge cycle_b cycle_a ]
       [ cycle_root ]
+    in
+    expect "shortest-path search terminates when a cyclic target is unreachable"
+      (Graph_algorithms.shortest_path graph cycle_root.id isolated.id = None);
+    graph
   in
   match Graph_algorithms.control_cycles cyclic with
   | [ cycle ] ->
@@ -824,6 +908,30 @@ let graph_algorithm_boundaries_test () =
         (List.mem cycle_a.id cycle && List.mem cycle_b.id cycle
         && not (List.mem cycle_root.id cycle))
   | cycles -> fail "expected one control cycle, found %d" (List.length cycles)
+
+let dataflow_order_test () =
+  let ids =
+    [
+      "zeta";
+      "alpha";
+      "theta";
+      "beta";
+      "lambda";
+      "gamma";
+      "omega";
+      "delta";
+      "kappa";
+      "epsilon";
+      "sigma";
+      "eta";
+    ]
+  in
+  let nodes =
+    List.map (fun id -> { (node ("node " ^ id)) with id }) ids
+  in
+  let solution = Dataflow.solve (graph (List.rev nodes) [] nodes) in
+  expect "dataflow evidence follows canonical node identity order"
+    (List.map fst solution.values = List.sort String.compare ids)
 
 let property_order_test () =
   let property ?(id = "ORDER") ?(subject = None) ?(explanation = "same") state :
@@ -1046,6 +1154,8 @@ let tests : test list =
       secret_observability_boundaries_test );
     ( "unknown secrecy remains explicit at an observable network effect",
       unknown_secret_network_effect_test );
+    ( "network-capable sink uncertainty remains explicit",
+      network_capability_uncertainty_test );
     ("authorization gates must dominate privileged effects", dominance_test);
     ( "authorization distinguishes external Unknown and manual approval",
       authorization_unknown_and_manual_test );
@@ -1064,6 +1174,7 @@ let tests : test list =
     ( "credential candidates follow their own persistence edges",
       credential_candidate_boundaries_test );
     ("graph algorithms preserve path boundaries", graph_algorithm_boundaries_test);
+    ("dataflow evidence has canonical node ordering", dataflow_order_test);
     ("property proof states have a total order", property_order_test);
     ("correctness diagnostics retain issue evidence", correctness_evidence_test);
     ("local call references strip immutable suffixes", local_reference_suffix_test);

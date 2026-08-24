@@ -206,14 +206,6 @@ let valid_engine value =
          | _ -> false)
        value
 
-let valid_content_digest value =
-  String.length value = 71
-  && Util.starts_with ~prefix:"sha256:" value
-  && String.sub value 7 64
-     |> String.for_all (function
-       | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
-       | _ -> false)
-
 let validate_plan_arguments ~backend ~limits ~secret_names ~dependencies ~steps
     =
   if
@@ -288,7 +280,7 @@ let make_plan ~backend ~source_digest ~lock_digest ~controls ~limits
     |> List.concat_map (fun step ->
         (if step.supported then [] else [ "unsupported step: " ^ step.id ])
         @
-        if valid_content_digest step.image then []
+        if Dependency_identity.valid_content_digest step.image then []
         else [ "unresolved image: " ^ step.id ])
   in
   let reasons = dependency_reasons @ step_reasons |> Util.deduplicate_strings in

@@ -70,8 +70,12 @@ let solve graph =
             Hashtbl.replace queued edge.to_ ())))
   done;
   let values =
-    Hashtbl.to_seq table |> List.of_seq
-    |> List.sort (fun (left, _) (right, _) -> String.compare left right)
+    List.map
+      (fun (node : Ir.node) ->
+        ( node.id,
+          Option.value ~default:Abstract_value.bottom
+            (Hashtbl.find_opt table node.id) ))
+      nodes
   in
   { values; complete = true }
 

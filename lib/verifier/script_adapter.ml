@@ -212,6 +212,11 @@ type output_destination =
   | Private_file
   | Unknown_output of Unknown.reason
 
+type output_quote =
+  | Output_single
+  | Output_double
+  | Output_double_escape
+
 let output_destination shell source =
   match shell with
   | Python -> Standard_output
@@ -226,18 +231,22 @@ let output_destination shell source =
         else
           let character = source.[index] in
           match quote with
-          | Some (delimiter, escaped) ->
-              if escaped then
-                scan (index + 1) (Some (delimiter, false)) depth redirects
-              else if character = '\\' && delimiter = '"' then
-                scan (index + 1) (Some (delimiter, true)) depth redirects
-              else if character = delimiter then
+          | Some Output_double_escape ->
+              scan (index + 1) (Some Output_double) depth redirects
+          | Some Output_double ->
+              if character = '\\' then
+                scan (index + 1) (Some Output_double_escape) depth redirects
+              else if character = '"' then
+                scan (index + 1) None depth redirects
+              else scan (index + 1) quote depth redirects
+          | Some Output_single ->
+              if character = '\'' then
                 scan (index + 1) None depth redirects
               else scan (index + 1) quote depth redirects
           | None -> (
               match character with
-              | ('"' | '\'') as delimiter ->
-                  scan (index + 1) (Some (delimiter, false)) depth redirects
+              | '"' -> scan (index + 1) (Some Output_double) depth redirects
+              | '\'' -> scan (index + 1) (Some Output_single) depth redirects
               | '(' -> scan (index + 1) None (depth + 1) redirects
               | ')' -> scan (index + 1) None (max 0 (depth - 1)) redirects
               | '>' when depth = 0 ->

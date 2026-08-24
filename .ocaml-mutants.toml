@@ -17,7 +17,7 @@ exclude = ["**/_build/**", "**/test/**", "**/tests/**"]
 
 [test]
 baseline_runs = 3
-parallel_safe = true
+parallel_safe = false
 
 [[test.stages]]
 name = "algebraic-properties"
@@ -36,7 +36,7 @@ name = "full-contracts"
 command = ["dune", "runtest", "--force"]
 
 [execution]
-jobs = 4
+jobs = 1
 
 [cache]
 mode = "off"

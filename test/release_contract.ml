@@ -256,6 +256,8 @@ let () =
         fail "mutation configuration omits required surface: %s"
           required_surface)
     [
+      "parallel_safe = false";
+      "jobs = 1";
       "name = \"yaml-conformance\"";
       "@@test/mutation-yaml-conformance";
       "name = \"semantic-fingerprints\"";

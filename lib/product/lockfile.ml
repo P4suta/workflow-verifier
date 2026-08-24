@@ -47,25 +47,12 @@ let assemble schema entries =
   in
   { schema; entries; integrity }
 
-let valid_hex value =
-  String.length value > 0
-  && String.for_all
-       (function
-         | '0' .. '9' | 'a' .. 'f' -> true
-         | _ -> false)
-       (String.lowercase_ascii value)
-
-let valid_sha256 value =
-  Util.starts_with ~prefix:"sha256:" value
-  && String.length value = 71
-  && valid_hex (String.sub value 7 64)
-
 let validate_entry entry =
   if String.trim entry.reference = "" then
     Error "lock reference must not be empty"
   else if String.trim entry.revision = "" then
     Error "lock revision must not be empty"
-  else if not (valid_sha256 entry.digest) then
+  else if not (Dependency_identity.valid_content_digest entry.digest) then
     Error ("invalid SHA-256 digest for " ^ entry.reference)
   else if String.trim entry.source = "" then
     Error "lock source must not be empty"
