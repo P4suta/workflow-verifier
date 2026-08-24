@@ -65,7 +65,7 @@ let make ~invoke ~executable request =
           "--request";
           "GET";
           "--user-agent";
-          "workflow-verifier/0.1.0-dev";
+          "workflow-verifier/0.1.0";
         ]
         @ header_arguments @ [ "--url"; request.url ]
       in

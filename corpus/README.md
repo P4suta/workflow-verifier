@@ -29,8 +29,8 @@ missing, stale, duplicate, or rule-mismatched decisions before updating the
 manifest. `just corpus` then enforces provider counts, precision, recall,
 source/license digests, and known-vulnerability coverage.
 
-Copy the resulting passing `corpus-report-v1.json` into the candidate's
-`release-evidence/` directory and bind its exact SHA-256 digest and review URL
-in `release-evidence-v1.json`. The protected tag workflow independently checks
-all provider counts, precision, recall, known-vulnerability coverage, nested
-diagnostic results, and the digest before publication.
+Copy the resulting passing `corpus-report-v1.json` into evidence-only commit
+`E` and bind its exact SHA-256 digest in `release-evidence-v2.json`. The
+protected tag workflow checks all provider counts, precision, recall,
+known-vulnerability coverage, nested diagnostic results, and the digest before
+publication.

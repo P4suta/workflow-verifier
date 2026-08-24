@@ -1,0 +1,128 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/maintainer-security-attestation-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "dateOrNull": {
+      "anyOf": [
+        { "format": "date", "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "ownerOrNull": {
+      "anyOf": [
+        { "minLength": 1, "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "trackingOrNull": {
+      "anyOf": [
+        { "format": "uri", "pattern": "^https://", "type": "string" },
+        { "type": "null" }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "completed_at": { "format": "date-time", "type": "string" },
+    "decision": { "const": "approve" },
+    "findings": {
+      "items": {
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": { "properties": { "severity": { "enum": ["critical", "high"] } } },
+            "then": { "properties": { "status": { "const": "resolved" } } }
+          },
+          {
+            "if": { "properties": { "status": { "const": "resolved" } } },
+            "then": {
+              "properties": {
+                "due_date": { "type": "null" },
+                "owner": { "type": "null" },
+                "tracking_url": { "type": "null" }
+              }
+            },
+            "else": {
+              "properties": {
+                "due_date": { "format": "date", "type": "string" },
+                "owner": { "minLength": 1, "type": "string" },
+                "tracking_url": { "format": "uri", "pattern": "^https://", "type": "string" }
+              }
+            }
+          }
+        ],
+        "properties": {
+          "due_date": { "$ref": "#/$defs/dateOrNull" },
+          "id": { "minLength": 1, "type": "string" },
+          "owner": { "$ref": "#/$defs/ownerOrNull" },
+          "severity": { "enum": ["critical", "high", "medium", "low", "note"] },
+          "status": { "enum": ["resolved", "accepted", "open"] },
+          "summary": { "minLength": 8, "type": "string" },
+          "tracking_url": { "$ref": "#/$defs/trackingOrNull" }
+        },
+        "required": ["due_date", "id", "owner", "severity", "status", "summary", "tracking_url"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "maintainer": { "const": "P4suta" },
+    "planned_tag": {
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$",
+      "type": "string"
+    },
+    "residual_risks": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "description": { "minLength": 8, "type": "string" },
+          "due_date": { "format": "date", "type": "string" },
+          "id": { "minLength": 1, "type": "string" },
+          "owner": { "minLength": 1, "type": "string" },
+          "severity": { "enum": ["medium", "low", "note"] },
+          "tracking_url": { "format": "uri", "pattern": "^https://", "type": "string" }
+        },
+        "required": ["description", "due_date", "id", "owner", "severity", "tracking_url"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "review": {
+      "format": "uri",
+      "pattern": "^https://github\\.com/P4suta/workflow-verifier/(?:issues|pull)/[1-9][0-9]*(?:#.*)?$",
+      "type": "string"
+    },
+    "schema": { "const": "maintainer-security-attestation-v1" },
+    "scope": {
+      "items": {
+        "enum": [
+          "authorization-dominance",
+          "canonical-protocols-and-evidence-hash-chains",
+          "dependency-resolution-redirects-and-allowlists",
+          "fix-proof-obligations",
+          "native-containment-backends",
+          "untrusted-and-secret-dataflow",
+          "yaml-parser-and-expression-denial-of-service"
+        ]
+      },
+      "maxItems": 7,
+      "minItems": 7,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "subject_commit": { "pattern": "^[0-9a-f]{40}$", "type": "string" }
+  },
+  "required": [
+    "completed_at",
+    "decision",
+    "findings",
+    "maintainer",
+    "planned_tag",
+    "residual_risks",
+    "review",
+    "schema",
+    "scope",
+    "subject_commit"
+  ],
+  "title": "workflow-verifier sole-maintainer security attestation v1",
+  "type": "object"
+}

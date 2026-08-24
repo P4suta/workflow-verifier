@@ -236,9 +236,17 @@ let scan provider ~default_phase ~span source =
       | comparison -> comparison)
 
 let references_to_attributes references =
-  List.map
-    (fun reference -> ("reference:" ^ reference.name, reference.value))
-    references
+  references
+  |> List.fold_left
+       (fun attributes reference ->
+         let key = "reference:" ^ reference.name in
+         match List.assoc_opt key attributes with
+         | None -> (key, reference.value) :: attributes
+         | Some previous ->
+             (key, Abstract_value.join previous reference.value)
+             :: List.remove_assoc key attributes)
+       []
+  |> List.sort (fun (left, _) (right, _) -> String.compare left right)
 
 type literal =
   | Null

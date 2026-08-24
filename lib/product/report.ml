@@ -87,7 +87,7 @@ let make ~persona ~inputs ~graphs ~verifications ~policy_diagnostics =
   let provisional =
     {
       schema = "report-v1";
-      tool_version = "0.1.0-dev";
+      tool_version = "0.1.0";
       persona;
       inputs;
       graphs;

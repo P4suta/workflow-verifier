@@ -1,6 +1,6 @@
 (lang dune 3.21)
 (name workflow-verifier)
-(version 0.1.0-dev)
+(version 0.1.0)
 (generate_opam_files true)
 (source (github P4suta/workflow-verifier))
 (license "MIT OR Apache-2.0")

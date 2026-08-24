@@ -247,43 +247,23 @@ let node_fragment raw =
   in
   strip_properties value
 
-type block_header = Not_block | Valid_block | Invalid_block of int
-
 let classify_block_header raw =
   let fragment = node_fragment raw in
-  if fragment = "" || (fragment.[0] <> '|' && fragment.[0] <> '>') then
-    Not_block
+  Yaml_block_header.classify fragment
+
+let plain_scalar_head raw =
+  let fragment = node_fragment (without_separated_comment raw) |> String.trim in
+  if fragment = "" then false
   else
-    let cursor = ref 1 in
-    while
-      !cursor < String.length fragment
-      && (not (separation fragment.[!cursor]))
-      && fragment.[!cursor] <> '#'
-    do
-      incr cursor
-    done;
-    let token = String.sub fragment 0 !cursor in
-    let digit = ref false and chomp = ref false and valid = ref true in
-    String.iteri
-      (fun index character ->
-        if index > 0 then
-          match character with
-          | '1' .. '9' when not !digit -> digit := true
-          | ('+' | '-') when not !chomp -> chomp := true
-          | _ -> valid := false)
-      token;
-    let bad_suffix =
-      !cursor < String.length fragment && not (separation fragment.[!cursor])
-    in
-    let trailer =
-      String.sub fragment !cursor (String.length fragment - !cursor)
-      |> trim_left
-    in
-    let bad_trailer =
-      trailer <> "" && not (Util.starts_with ~prefix:"#" trailer)
-    in
-    if !valid && (not bad_suffix) && not bad_trailer then Valid_block
-    else Invalid_block (String.length token)
+    match (Yaml_block_header.classify fragment, fragment.[0]) with
+    | (Valid _ | Invalid _), _ -> false
+    | Not_block, ('\'' | '"' | '[' | '{' | ']' | '}' | '*' | '&' | '!' | '#') ->
+        false
+    | Not_block, _ ->
+        not
+          (Util.starts_with ~prefix:"---" fragment
+          || Util.starts_with ~prefix:"..." fragment
+          || Util.starts_with ~prefix:"%" fragment)
 
 let block_scalar_payload active_indent line =
   match !active_indent with
@@ -297,6 +277,7 @@ type block_analysis = { payload_lines : bool array; problems : issue list }
 
 let analyze_blocks file source_lines =
   let active_indent = ref None
+  and active_plain_indent = ref None
   and payload_lines = Array.make (Array.length source_lines) false
   and problems = ref [] in
   Array.iteri
@@ -305,14 +286,29 @@ let analyze_blocks file source_lines =
       else if block_scalar_payload active_indent line then
         payload_lines.(index) <- true
       else
-        match classify_block_header line.raw with
-        | Not_block -> ()
-        | Valid_block -> active_indent := Some line.indent
-        | Invalid_block token_length ->
+        let comment_only =
+          Util.starts_with ~prefix:"#" (String.trim line.raw)
+        in
+        let plain_continuation =
+          match !active_plain_indent with
+          | Some base_indent ->
+              line.indent > base_indent && not comment_only
+              && find_mapping_colons line.raw = []
+          | None -> false
+        in
+        if plain_continuation then ()
+        else (
+          active_plain_indent := None;
+          match classify_block_header line.raw with
+          | Not_block ->
+              if plain_scalar_head line.raw && not (has_separated_comment line.raw)
+              then active_plain_indent := Some line.indent
+          | Valid _ -> active_indent := Some line.indent
+          | Invalid token_length ->
             problems :=
               issue file line line.indent token_length
                 "invalid block scalar header"
-              :: !problems)
+              :: !problems))
     source_lines;
   { payload_lines; problems = List.rev !problems }
 

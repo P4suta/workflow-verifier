@@ -1,23 +1,39 @@
 # Release evidence bundle
 
-Publication requires a reviewed, digest-bound bundle committed in the exact
-release tag. Create `release-evidence-v1.json` according to the repository
-schema and place every referenced file below this directory. The manifest binds
-the candidate tag and commit to:
+`workflow-verifier` is maintained by one person. Publication therefore uses a
+signed, explicitly named maintainer self-attestation; it does not claim an
+independent review that did not occur.
 
-- a passing `corpus-report-v1` with at least 100 reviewed repositories and a
-  known-vulnerability expectation for each provider;
+Release evidence is created in two commits:
+
+1. Candidate commit `C` contains the code, version, changelog, and release
+   machinery.
+2. Its single child `E` changes only `release-evidence/**` and contains
+   measurements for `C`, `release-evidence-v2.json`, and the detached signed
+   `maintainer-security-attestation-v1.json`.
+3. The planned tag points to `E`. The verifier requires `E` to have exactly
+   one parent, `C`, and rejects any non-evidence change in `E`.
+
+The v2 manifest binds `C` and the planned tag to:
+
+- a passing 400-repository `corpus-report-v1`, with 100 repositories for each
+  supported provider and precision/recall of 1.0;
+- the deterministic pinned eight-repository `official-compat-v1` report;
 - passing cold, warm, and incremental comparisons against an independent
-  baseline on Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64; and
-- an approved independent security-review report plus its Sigstore bundle and
-  exact external signing identity.
+  baseline on Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64;
+- the sole-maintainer security attestation and its detached SSH signature.
 
-Run `just release-evidence REVISION TAG` before creating the protected tag.
-The tag workflow repeats the complete structural and digest validation, then
-uses pinned Cosign to verify the reviewer's signature. A missing manifest,
-tampered file, self-comparison, failed metric, local-project signing identity,
-or incomplete review stops publication before the publish job is eligible.
+The attestation must cover every security scope named by its schema. Critical
+and high findings must be resolved. Every accepted or open lower-severity item
+and every residual risk needs an HTTPS tracking URL, accountable owner, and
+non-overdue due date. The decision is fail-closed unless it is `approve`.
 
-No example passing manifest is committed: release evidence names real people,
-reviews, revisions, and measurements and must never be synthesized from sample
-values.
+The trusted public key is pinned in `maintainer-allowed-signers`. Sign the exact
+attestation bytes with namespace `workflow-verifier-release`, then run:
+
+```text
+just release-evidence E v0.1.0
+```
+
+No passing example manifest is committed in candidate commit `C`: real
+evidence is added only by commit `E`, after all measurements of `C` complete.

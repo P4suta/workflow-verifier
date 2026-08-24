@@ -1039,24 +1039,20 @@ let parse ?(file = "<memory>") source =
           (String.length (String.trim raw) - prefix_length)
         |> String.trim
     in
-    if body = "" || (body.[0] <> '|' && body.[0] <> '>') then None
-    else
-      let style = if body.[0] = '|' then Literal else Folded in
-      let chomping = ref `Clip
-      and indentation = ref None
-      and valid = ref true in
-      String.iteri
-        (fun index character ->
-          if index > 0 then
-            match character with
-            | '+' when !chomping = `Clip -> chomping := `Keep
-            | '-' when !chomping = `Clip -> chomping := `Strip
-            | '1' .. '9' when !indentation = None ->
-                indentation := Some (Char.code character - Char.code '0')
-            | _ -> valid := false)
-        body;
-      if !valid then Some (style, !chomping, !indentation, anchor, tag)
-      else None
+    match Yaml_block_header.classify body with
+    | Not_block | Invalid _ -> None
+    | Valid header ->
+        let style =
+          match header.style with
+          | Yaml_block_header.Literal -> Literal
+          | Yaml_block_header.Folded -> Folded
+        and chomping =
+          match header.chomping with
+          | Yaml_block_header.Clip -> `Clip
+          | Yaml_block_header.Keep -> `Keep
+          | Yaml_block_header.Strip -> `Strip
+        in
+        Some (style, chomping, header.indentation, anchor, tag)
   in
   let strip_trailing_newlines value =
     let stop = ref (String.length value) in

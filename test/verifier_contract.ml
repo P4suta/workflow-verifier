@@ -931,6 +931,217 @@ let graph_algorithm_boundaries_test () =
         && not (List.mem cycle_root.id cycle))
   | cycles -> fail "expected one control cycle, found %d" (List.length cycles)
 
+let graph_algorithm_differential_test () =
+  let matching kinds (candidate : Ir.edge) =
+    Option.fold ~none:true ~some:(fun values -> List.mem candidate.kind values) kinds
+  in
+  let feasible candidate (candidate_edge : Ir.edge) =
+    let node_condition id =
+      Ir.find_node candidate id
+      |> Option.fold ~none:Condition.false_ ~some:(fun (item : Ir.node) ->
+          item.condition)
+    in
+    Condition.and_ candidate_edge.condition
+      (Condition.and_ (node_condition candidate_edge.from_)
+         (node_condition candidate_edge.to_))
+    |> Condition.satisfiable
+  in
+  let naive_path ?edge_kinds ?(avoid = []) candidate source target =
+    let visited = Hashtbl.create (List.length candidate.Ir.nodes) in
+    let rec bfs remaining = function
+      | [] -> None
+      | _ when remaining = 0 -> None
+      | (current, path) :: rest ->
+          if current = target then
+            Some
+              (List.rev (current :: path)
+              |> List.filter_map (fun id -> Ir.find_node candidate id))
+          else
+            let next =
+              candidate.Ir.edges
+              |> List.filter (fun (candidate_edge : Ir.edge) ->
+                  candidate_edge.from_ = current
+                  && matching edge_kinds candidate_edge
+                  && feasible candidate candidate_edge)
+              |> List.map (fun candidate_edge -> candidate_edge.Ir.to_)
+              |> List.filter (fun id ->
+                  (not (Hashtbl.mem visited id)) && not (List.mem id avoid))
+              |> Util.deduplicate_strings
+            in
+            List.iter (fun id -> Hashtbl.replace visited id ()) next;
+            bfs (pred remaining)
+              (rest @ List.map (fun id -> (id, current :: path)) next)
+    in
+    if List.mem source avoid || List.mem target avoid then None
+    else (
+      Hashtbl.replace visited source ();
+      bfs (List.length candidate.Ir.nodes) [ (source, []) ])
+  in
+  let naive_dominates candidate ~dominator ~target =
+    let ids = List.map (fun (item : Ir.node) -> item.id) candidate.Ir.nodes in
+    let entries = candidate.entrypoints in
+    let table = Hashtbl.create (List.length ids) in
+    List.iter
+      (fun id ->
+        Hashtbl.replace table id (if List.mem id entries then [ id ] else ids))
+      ids;
+    let intersections = function
+      | [] -> []
+      | first :: rest ->
+          List.fold_left
+            (fun accumulator values ->
+              List.filter (fun item -> List.mem item values) accumulator)
+            first rest
+    in
+    let changed = ref true in
+    while !changed do
+      changed := false;
+      List.iter
+        (fun id ->
+          if not (List.mem id entries) then
+            let predecessors =
+              candidate.edges
+              |> List.filter (fun (candidate_edge : Ir.edge) ->
+                  candidate_edge.kind = Ir.Control
+                  && candidate_edge.to_ = id
+                  && feasible candidate candidate_edge)
+              |> List.map (fun candidate_edge -> candidate_edge.Ir.from_)
+            in
+            let updated =
+              if predecessors = [] then [ id ]
+              else
+                id
+                :: intersections
+                     (List.map
+                        (fun predecessor ->
+                          Option.value ~default:ids
+                            (Hashtbl.find_opt table predecessor))
+                        predecessors)
+                |> Util.deduplicate_strings
+            in
+            if Option.value ~default:[] (Hashtbl.find_opt table id) <> updated
+            then (
+              Hashtbl.replace table id updated;
+              changed := true))
+        ids
+    done;
+    Hashtbl.find_opt table target
+    |> Option.fold ~none:false ~some:(List.mem dominator)
+  in
+  let naive_cycles ?edge_kinds candidate =
+    let visited = Hashtbl.create (List.length candidate.Ir.nodes) in
+    let rec visit path visiting id cycles =
+      if List.mem id visiting then
+        (id :: Util.take_while (fun value -> value <> id) path |> List.rev)
+        :: cycles
+      else if Hashtbl.mem visited id then cycles
+      else
+        let successors =
+          candidate.Ir.edges
+          |> List.filter (fun (candidate_edge : Ir.edge) ->
+              candidate_edge.from_ = id
+              && matching edge_kinds candidate_edge
+              && feasible candidate candidate_edge)
+          |> List.map (fun candidate_edge -> candidate_edge.Ir.to_)
+          |> Util.deduplicate_strings
+        in
+        let cycles =
+          List.fold_left
+            (fun cycles child ->
+              visit (id :: path) (id :: visiting) child cycles)
+            cycles successors
+        in
+        Hashtbl.replace visited id ();
+        cycles
+    in
+    List.fold_left
+      (fun cycles (item : Ir.node) -> visit [] [] item.id cycles)
+      [] candidate.nodes
+    |> List.map Util.deduplicate_strings
+    |> Util.deduplicate_compare Stdlib.compare
+  in
+  let path_ids = Option.map (List.map (fun (item : Ir.node) -> item.id)) in
+  let state = Random.State.make [| 0x51a1e; 0x1d3e |] in
+  for iteration = 0 to 79 do
+    let count = 2 + Random.State.int state 8 in
+    let nodes =
+      List.init count (fun index ->
+          let item = node (Printf.sprintf "random-%02d-%02d" iteration index) in
+          {
+            item with
+            id = Printf.sprintf "n%02d" index;
+            condition =
+              (if Random.State.int state 9 = 0 then Condition.false_
+               else Condition.true_);
+          })
+    in
+    let kinds = [| Ir.Control; Ir.Data; Ir.Call_edge; Ir.Grant |] in
+    let edges =
+      List.init (count * 3) (fun edge_index ->
+          let source = List.nth nodes (Random.State.int state count)
+          and target = List.nth nodes (Random.State.int state count) in
+          Ir.make_edge
+            ~kind:kinds.(Random.State.int state (Array.length kinds))
+            ~from_:source.id ~to_:target.id
+            ~condition:
+              (if edge_index mod 11 = 0 then Condition.false_
+               else Condition.true_)
+            ~label:(Printf.sprintf "random-%d" edge_index) ())
+    in
+    let entries =
+      nodes
+      |> List.filteri (fun index _ ->
+          index = 0 || Random.State.int state 5 = 0)
+    in
+    let candidate = graph nodes edges entries in
+    let indexed = Graph_algorithms.index candidate in
+    List.iter
+      (fun (source : Ir.node) ->
+        let reachable =
+          Graph_algorithms.reachable_from_indexed indexed source.id
+          |> List.map (fun (item : Ir.node) -> item.id)
+        and expected_reachable =
+          candidate.nodes
+          |> List.filter (fun (target : Ir.node) ->
+              Option.is_some (naive_path candidate source.id target.id))
+          |> List.map (fun (item : Ir.node) -> item.id)
+        in
+        expect "indexed reachability differs from the naive contract"
+          (reachable = expected_reachable);
+        List.iter
+          (fun (target : Ir.node) ->
+            let avoid =
+              if Random.State.int state 4 = 0 then
+                [ (List.nth candidate.nodes (Random.State.int state count)).id ]
+              else []
+            in
+            List.iter
+              (fun edge_kinds ->
+                let expected =
+                  naive_path ~edge_kinds ~avoid candidate source.id target.id
+                  |> path_ids
+                and actual =
+                  Graph_algorithms.shortest_path_indexed ~edge_kinds ~avoid
+                    indexed source.id target.id
+                  |> path_ids
+                in
+                expect "indexed FIFO path differs from the naive contract"
+                  (actual = expected))
+              [ [ Ir.Control ]; [ Ir.Control; Ir.Data ]; Array.to_list kinds ];
+            expect "indexed dominance differs from the naive contract"
+              (Graph_algorithms.dominates_indexed indexed ~dominator:source.id
+                 ~node:target.id
+              = naive_dominates candidate ~dominator:source.id
+                  ~target:target.id))
+          candidate.nodes)
+      candidate.nodes;
+    expect "indexed cycle witnesses differ from the naive contract"
+      (Graph_algorithms.cycles_indexed indexed = naive_cycles candidate);
+    expect "indexed control cycles differ from the naive contract"
+      (Graph_algorithms.control_cycles_indexed indexed
+      = naive_cycles ~edge_kinds:[ Ir.Control ] candidate)
+  done
+
 let dataflow_order_test () =
   let ids =
     [
@@ -1197,6 +1408,8 @@ let tests : test list =
     ( "credential candidates follow their own persistence edges",
       credential_candidate_boundaries_test );
     ("graph algorithms preserve path boundaries", graph_algorithm_boundaries_test);
+    ( "indexed graph algorithms match the naive randomized contract",
+      graph_algorithm_differential_test );
     ("dataflow evidence has canonical node ordering", dataflow_order_test);
     ("property proof states have a total order", property_order_test);
     ("correctness diagnostics retain issue evidence", correctness_evidence_test);

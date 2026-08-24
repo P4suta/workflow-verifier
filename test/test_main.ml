@@ -811,6 +811,35 @@ let yaml_tests =
                    tree.problems)));
     };
     {
+      name = "block header validation preserves multiline plain shell scalars";
+      run =
+        (fun () ->
+          let source =
+            "verify:\n  script:\n    - dbus-run-session meson test ||\n      || exit_code=$?\n"
+          in
+          let tree = Yaml_cst.parse ~file:".gitlab-ci.yml" source in
+          expect_true
+            "a pipe at the start of a continued plain scalar is not a block header"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message = "invalid block scalar header")
+                  tree.problems)));
+    };
+    {
+      name = "shared block header classifier rejects malformed indicators";
+      run =
+        (fun () ->
+          [ "value: |0\n  data\n"; "value: |++\n  data\n"; "value: |2+ trailer\n  data\n" ]
+          |> List.iter (fun source ->
+                 let tree = Yaml_cst.parse source in
+                 expect_true "malformed block header must remain rejected"
+                   (List.exists
+                      (fun problem ->
+                        problem.Yaml_cst.message = "invalid block scalar header")
+                      tree.problems)));
+    };
+    {
       name = "validation resumes after a block scalar dedent";
       run =
         (fun () ->

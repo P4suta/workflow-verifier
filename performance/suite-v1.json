@@ -40,6 +40,42 @@
           "timeout_seconds": 60
         }
       }
+    },
+    {
+      "cwd": "test",
+      "id": "arcade-scale-analysis",
+      "modes": {
+        "cold": {
+          "before_each": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle", "--scenario", "arcade-scale"]
+          ],
+          "command": ["../_build/default/bin/main.exe", "check", "--no-cache", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"]
+          ],
+          "timeout_seconds": 60
+        },
+        "incremental": {
+          "before_each": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle", "--scenario", "arcade-scale"]
+          ],
+          "command": ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-arcade-incremental-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"],
+            ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-arcade-incremental-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
+          ],
+          "timeout_seconds": 60
+        },
+        "warm": {
+          "before_each": [],
+          "command": ["../_build/default/bin/main.exe", "check", "--cache", "../_build/performance-arcade-warm-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"],
+            ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-arcade-warm-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
+          ],
+          "timeout_seconds": 60
+        }
+      }
     }
   ],
   "schema": "performance-suite-v1"

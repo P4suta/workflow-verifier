@@ -13,6 +13,13 @@ machine-readable evidence.
 - `performance-comparison-v1` compares cold, warm, and incremental samples on an
   identical declared environment. An increase above 10% needs a substantive
   explanation and an HTTPS review reference.
+- `official-compat-v1` summarizes two fixed repositories for each provider.
+  Sparse acquisition authenticates the pinned commit and tree and copies only
+  selected CI definitions. Analysis then runs twice without network access,
+  allows security diagnostics, but rejects internal errors, provider drift,
+  `YAML-SYNTAX` on valid upstream input, nondeterministic bytes, or a repository
+  that exceeds its 60-second shared deadline. Public evidence retains counts
+  and digests, not diagnostic messages.
 - Each `mutation-gate-v1` authenticates one complete catalog-bound shard and
   binds its runner exit code and canonical `mutation-resource-guard-v1`
   attestation to the verified report. The same fail-closed Linux resource
@@ -55,13 +62,14 @@ The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,
 and partial source coverage. They write outputs atomically.
 
-The externally reviewed publication inputs are composed by
-`release-evidence-v1`. Its manifest binds the release tag and exact commit to
-the corpus report, four platform performance comparisons, and the independent
-review report and Sigstore bundle. `scripts/verify_release_evidence.py` verifies
-the nested proof states, recomputes every digest, rejects a performance
-self-comparison, and exposes only validated paths and certificate identities to
-the release workflow. Pinned Cosign then verifies the review signature.
+Publication inputs are composed by `release-evidence-v2`. Candidate commit `C`
+contains the release code and version; its single evidence-only child `E`
+contains measurements of `C` and is the future tag target. The manifest binds
+`C` and the planned tag to the corpus report, fixed official compatibility
+report, four platform performance comparisons, and signed sole-maintainer
+security attestation. `scripts/verify_release_evidence.py` validates the `E` to
+`C` parent relation and changed paths, nested proof states, every digest, the
+pinned maintainer SSH identity and namespace, and all fail-closed risk rules.
 
 ## Reviewed acquisition inputs
 
@@ -69,9 +77,9 @@ The public repository does not manufacture a 400-repository result or a
 performance baseline. `scripts/prepare_corpus.py acquire` performs explicit,
 credential-free source acquisition and records immutable source and permissive
 license evidence. Its separate `apply-review` phase requires every observed
-diagnostic to receive a reasoned `expected` or `allowed` decision. The
-independent security review remains separately signed release evidence; no
-missing input is converted into success.
+diagnostic to receive a reasoned `expected` or `allowed` decision. The security
+self-attestation remains separately signed release evidence; no missing input
+is converted into success.
 
 After analyzer changes, `scripts/prepare_corpus.py refresh` first verifies all
 recorded source digests and then reanalyzes those exact snapshots into a new
@@ -82,6 +90,7 @@ Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
 `just corpus-review`, `just corpus`, `just performance-measure`,
 `just performance-gate`, `just mutation-gate`, `just mutation-campaign`,
 `just determinism-probe`, and `just determinism-compare`.
-`just release-evidence REVISION TAG` closes the external-evidence composition
-gate. Equivalent `mise` tasks use the conventional `evaluation/`,
+`just official-fetch`, `just official-compat`, and
+`just release-evidence REVISION TAG` close the fixed compatibility and evidence
+composition gates. Equivalent `mise` tasks use the conventional `evaluation/`,
 `performance/`, `_build/`, and `release-evidence/` paths.

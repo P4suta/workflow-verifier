@@ -2,6 +2,12 @@ name: CI
 
 on:
   workflow_call:
+    inputs:
+      performance_baseline:
+        description: Exact revision used as the paired performance baseline
+        required: false
+        type: string
+        default: ''
   pull_request:
   push:
     branches: [main]
@@ -14,6 +20,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  task-surface:
+    name: Pinned task surface
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Just 1.57.0 from its locked crate graph
+        run: cargo install just --version 1.57.0 --locked
+      - name: Parse and dry-run the public task surface
+        run: python -B scripts/verify_task_surface.py
+
   ocaml:
     timeout-minutes: 60
     strategy:
@@ -161,6 +180,43 @@ jobs:
             _build/dogfood-v1.json
           if-no-files-found: warn
 
+  official-compat:
+    name: Pinned official projects
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+      - name: Build the analyzer
+        run: |
+          opam install . --deps-only --with-test --yes
+          opam exec -- dune build bin/main.exe
+      - name: Acquire only pinned upstream CI YAML
+        run: >-
+          python -B scripts/fetch_official_projects.py
+          --manifest official/official-projects-v1.json
+          --destination _build/official-projects
+          --mode pinned
+      - name: Analyze twice after acquisition with network-disabled resolver settings
+        run: >-
+          python -B scripts/official_compat.py
+          --manifest official/official-projects-v1.json
+          --snapshots _build/official-projects
+          --analyzer _build/default/bin/main.exe
+          --output _build/official-compat-v1.json
+          --expected official/official-compat-v1.json
+          --expected-digest official/official-compat-v1.sha256
+      - name: Upload count-and-digest-only compatibility evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: official-compat-v1
+          path: _build/official-compat-v1.json
+          if-no-files-found: error
+
   performance-regression:
     name: Performance ${{ matrix.platform }}
     timeout-minutes: 60
@@ -186,7 +242,7 @@ jobs:
         with:
           persist-credentials: false
           path: _performance-base
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.sha }}
+          ref: ${{ inputs.performance_baseline || (github.event_name == 'pull_request' && github.event.pull_request.base.sha) || (github.event_name == 'push' && github.event.before) || github.sha }}
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
@@ -202,6 +258,8 @@ jobs:
           cp scripts/benchmark_fixture.py _performance-base/scripts/benchmark_fixture.py
       - name: Period-balance identical workloads
         shell: bash
+        env:
+          WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM: ${{ matrix.platform }}
         run: |
           base_revision=$(git -C _performance-base rev-parse HEAD)
           head_revision=$(git rev-parse HEAD)
@@ -318,10 +376,12 @@ jobs:
     name: Required CI
     if: ${{ always() }}
     needs:
+      - task-surface
       - ocaml
       - native-helpers
       - linux-native-containment
       - live-dogfood
+      - official-compat
       - performance-regression
       - coverage-guided-yaml-fuzz
       - determinism-probe

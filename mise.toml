@@ -1,8 +1,12 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
+[settings]
+jobs = 1
+
 [tools]
 python = "3.13.7"
 rust = "1.98.0"
+just = "1.57.0"
 
 [tools.opam]
 version = "2.5.2"
@@ -78,6 +82,14 @@ run = "python -B scripts/prepare_corpus.py refresh --evaluation evaluation --ana
 description = "Apply exhaustive reviewed diagnostic classifications to the corpus"
 run = "python -B scripts/prepare_corpus.py apply-review --manifest evaluation/corpus-v1.json --reports-root evaluation/reports --review evaluation/review-v1.json"
 
+[tasks.official-fetch]
+description = "Acquire the eight pinned official CI snapshots without executing them"
+run = "python -B scripts/fetch_official_projects.py --manifest official/official-projects-v1.json --destination _build/official-projects --mode pinned"
+
+[tasks.official-compat]
+description = "Verify deterministic compatibility with the pinned official projects"
+run = "python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots _build/official-projects --analyzer _build/default/bin/main.exe --output _build/official-compat-v1.json --expected official/official-compat-v1.json --expected-digest official/official-compat-v1.sha256"
+
 [tasks.performance-measure]
 description = "Measure cold, warm, and incremental scenarios for WV_REVISION"
 run = "python -B scripts/measure_performance.py --suite performance/suite-v1.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-current.json"
@@ -103,8 +115,8 @@ description = "Verify every development version surface"
 run = "python -B scripts/verify_release_version.py --allow-development"
 
 [tasks.release-evidence]
-description = "Verify externally reviewed evidence for WV_RELEASE_TAG and WV_RELEASE_REVISION"
-run = "python -B scripts/verify_release_evidence.py --manifest release-evidence/release-evidence-v1.json --revision ${WV_RELEASE_REVISION} --tag ${WV_RELEASE_TAG}"
+description = "Verify two-commit evidence and the signed maintainer attestation"
+run = "python -B scripts/verify_release_evidence.py --manifest release-evidence/release-evidence-v2.json --revision ${WV_RELEASE_REVISION} --tag ${WV_RELEASE_TAG} --repository ."
 
 [tasks.architecture]
 description = "Enforce the one-way OCaml layer graph"
@@ -122,13 +134,17 @@ run = "python -B scripts/verify_licenses.py"
 description = "Verify the intentionally narrow install surface"
 run = "opam exec -- dune build @install && python -B scripts/verify_install_layout.py _build/install/default"
 
+[tasks.task-surface]
+description = "Verify the pinned Just parser and aligned Just/mise task names"
+run = "python -B scripts/verify_task_surface.py"
+
 [tasks.sbom]
 description = "Generate a deterministic SPDX SBOM and checksum manifest"
 run = "python -B scripts/generate_sbom.py --version ${WV_RELEASE_VERSION} --output dist/workflow-verifier.spdx.json --checksums dist/SHA256SUMS ${WV_RELEASE_ARTIFACTS}"
 
 [tasks.check]
 description = "Run the local release-readiness sequence"
-depends = ["build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "licenses", "install-check"]
+depends = ["task-surface", "build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "licenses", "install-check"]
 
 [tasks.dogfood]
 description = "Analyze workflow-verifier with its own audit persona"

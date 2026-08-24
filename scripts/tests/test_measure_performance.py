@@ -33,13 +33,15 @@ class MeasurePerformanceTests(unittest.TestCase):
             )
         self.assertEqual(
             [item["id"] for item in result["scenarios"]],
-            ["four-provider-analysis"],
+            ["arcade-scale-analysis", "four-provider-analysis"],
         )
-        self.assertEqual(
-            set(result["scenarios"][0]["modes"]),
-            {"cold", "incremental", "warm"},
+        self.assertTrue(
+            all(
+                set(scenario["modes"]) == {"cold", "incremental", "warm"}
+                for scenario in result["scenarios"]
+            )
         )
-        self.assertGreaterEqual(invoked.call_count, 8)
+        self.assertGreaterEqual(invoked.call_count, 16)
 
     def suite(self, root: Path, command: list[str]) -> Path:
         document = {

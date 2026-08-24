@@ -154,14 +154,15 @@ let effects (node : Ir.node) =
   if node.kind = Ir.Command then (Script_adapter.analyze Bash node.name).effects
   else []
 
-let gate_dominates graph (node : Ir.node) =
+let gate_dominates indexed (node : Ir.node) =
   List.exists
     (fun (gate : Ir.node) ->
       gate.kind = Ir.Gate
-      && Graph_algorithms.dominates graph ~dominator:gate.id ~node:node.Ir.id)
-    graph.Ir.nodes
+      && Graph_algorithms.dominates_indexed indexed ~dominator:gate.id
+           ~node:node.Ir.id)
+    (Graph_algorithms.nodes indexed)
 
-let predicate_matches graph (node : Ir.node) = function
+let predicate_matches indexed (node : Ir.node) = function
   | Provider provider -> node.Ir.provider = provider
   | Node_kind kind -> node.kind = kind
   | Path_prefix prefix ->
@@ -176,13 +177,13 @@ let predicate_matches graph (node : Ir.node) = function
   | Effect expected -> List.mem expected (effects node)
   | Capability expected -> List.mem expected node.capabilities
   | Dependency_mutability expected -> mutability node = expected
-  | Dominated_by_gate expected -> gate_dominates graph node = expected
+  | Dominated_by_gate expected -> gate_dominates indexed node = expected
 
-let selector_matches graph node = function
-  | All predicates -> List.for_all (predicate_matches graph node) predicates
-  | Any predicates -> List.exists (predicate_matches graph node) predicates
+let selector_matches indexed node = function
+  | All predicates -> List.for_all (predicate_matches indexed node) predicates
+  | Any predicates -> List.exists (predicate_matches indexed node) predicates
   | None_of predicates ->
-      not (List.exists (predicate_matches graph node) predicates)
+      not (List.exists (predicate_matches indexed node) predicates)
 
 let diagnostic rule (node : Ir.node) =
   Diagnostic.make ~rule_id:rule.id ~severity:rule.severity ~confidence:High
@@ -197,7 +198,7 @@ let diagnostic rule (node : Ir.node) =
       ]
     ()
 
-let path_diagnostics graph rule sinks =
+let path_diagnostics graph indexed rule sinks =
   let sources =
     List.filter
       (fun (node : Ir.node) -> Abstract_value.is_untrusted (joined_value node))
@@ -207,7 +208,7 @@ let path_diagnostics graph rule sinks =
   |> List.filter_map (fun (sink : Ir.node) ->
       sources
       |> List.filter_map (fun (source : Ir.node) ->
-          Graph_algorithms.shortest_path graph source.id sink.id)
+          Graph_algorithms.shortest_path_indexed indexed source.id sink.id)
       |> List.sort (fun left right ->
           Int.compare (List.length left) (List.length right))
       |> function
@@ -233,15 +234,15 @@ let path_diagnostics graph rule sinks =
                ~evidence:[ "feasible source-to-effect path" ]
                ()))
 
-let evaluate_rule graph rule =
+let evaluate_rule graph indexed rule =
   let matches =
     List.filter
-      (fun node -> selector_matches graph node rule.selector)
+      (fun node -> selector_matches indexed node rule.selector)
       graph.Ir.nodes
   in
   match rule.kind with
   | Forbid -> List.map (diagnostic rule) matches
-  | Forbid_path -> path_diagnostics graph rule matches
+  | Forbid_path -> path_diagnostics graph indexed rule matches
   | Require -> (
       match matches with
       | _ :: _ -> []
@@ -255,7 +256,9 @@ let evaluate_rule graph rule =
         (Util.take (max 0 (List.length matches - maximum)) matches)
 
 let evaluate rules graph =
-  List.concat_map (evaluate_rule graph) rules |> List.sort Diagnostic.compare
+  let indexed = Graph_algorithms.index graph in
+  List.concat_map (evaluate_rule graph indexed) rules
+  |> List.sort Diagnostic.compare
 
 let predicate_json = function
   | Provider value ->

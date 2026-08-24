@@ -1,0 +1,51 @@
+name: Official project drift
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 4 * * 2'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: official-project-drift
+  cancel-in-progress: false
+
+jobs:
+  latest-default-branches:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+      - name: Build current analyzer
+        run: |
+          opam install . --deps-only --with-test --yes
+          opam exec -- dune build bin/main.exe
+      - name: Observe current upstream default branches
+        run: >-
+          python -B scripts/fetch_official_projects.py
+          --manifest official/official-projects-v1.json
+          --destination _build/official-projects-latest
+          --mode latest
+      - name: Analyze drift without changing the pinned release gate
+        run: >-
+          python -B scripts/official_compat.py
+          --manifest official/official-projects-v1.json
+          --snapshots _build/official-projects-latest
+          --analyzer _build/default/bin/main.exe
+          --output _build/official-compat-latest.json
+          --allow-latest
+      - name: Upload drift observation
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: official-compat-latest
+          path: |
+            _build/official-projects-latest/acquisition-v1.json
+            _build/official-compat-latest.json
+          if-no-files-found: error

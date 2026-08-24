@@ -44,14 +44,14 @@ every production change follows red/green/refactor.
 
 ## Development status
 
-Version `0.1.0-dev` is **not a release candidate**. The implementation and
-automated gates are present, but publication additionally requires reviewed
-external evidence: the license-clear 400-repository corpus, an approved
-platform performance baseline, a completed independent security review, and
-successful mutation/native-containment runs on release infrastructure. Missing
-evidence is never represented as a passing result. The protected tag workflow
-requires a commit- and tag-bound `release-evidence-v1` bundle and verifies the
-external review's Sigstore signature before its publish job can run.
+The tree carries version `0.1.0` as the first release candidate. It is not a
+published release until the protected `v0.1.0` tag exists. Publication requires
+the license-clear 400-repository corpus, pinned official-project compatibility,
+an approved four-platform performance baseline, complete mutation and native
+containment runs, and a signed sole-maintainer security attestation. Missing
+evidence is never represented as a passing result. `release-evidence-v2` binds
+measurements to candidate commit `C` in an evidence-only child commit `E`; the
+future tag points to `E` only after the dry-run release workflow passes.
 
 ## Quick start
 

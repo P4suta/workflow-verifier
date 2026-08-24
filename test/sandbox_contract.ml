@@ -195,7 +195,7 @@ let backend_fail_closed_test () =
 
 let backend_probe_parse_test () =
   let source =
-    "{\"available\":true,\"controls\":[\"source_read_only\",\"network_deny\"],\"id\":\"oci:docker\",\"platform\":\"windows\",\"reasons\":[],\"schema\":\"backend-attestation-v1\",\"version\":\"0.1.0-dev\"}\n"
+    "{\"available\":true,\"controls\":[\"source_read_only\",\"network_deny\"],\"id\":\"oci:docker\",\"platform\":\"windows\",\"reasons\":[],\"schema\":\"backend-attestation-v1\",\"version\":\"0.1.0\"}\n"
   in
   let probe =
     match Sandbox_backend.parse_probe source with
@@ -293,7 +293,7 @@ let sandbox_audit_test () =
       (Evidence.Backend_attested
          {
            id = "oci:docker";
-           version = "0.1.0-dev";
+           version = "0.1.0";
            platform = "test";
            controls_digest = Sandbox_protocol.controls_digest plan.controls;
          })

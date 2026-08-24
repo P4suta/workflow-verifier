@@ -56,7 +56,7 @@ def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
         "properties": [],
         "schema": "report-v1",
         "summary": {"diagnostics": len(diagnostics)},
-        "tool": {"name": "workflow-verifier", "version": "0.1.0-dev"},
+        "tool": {"name": "workflow-verifier", "version": "0.1.0"},
     }
 
 

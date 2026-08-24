@@ -51,12 +51,6 @@ let minimal_for_path nodes =
        (fun capability -> List.mem capability privileged)
        (granted @ required))
 
-let reaches graph source target =
-  Option.is_some
-    (Graph_algorithms.shortest_path
-       ~edge_kinds:[ Ir.Control; Call_edge; Grant; Data; Persist; Read; Write ]
-       graph source target)
-
 let capability_matches capability effects =
   let required = List.concat_map required_by_effect effects in
   match capability with
@@ -69,18 +63,18 @@ let capability_matches capability effects =
   | Cache_read -> List.mem Ir.Cache_publish effects
   | capability -> List.mem capability required
 
-let declared_grants graph =
+let declared_grants_indexed indexed =
   let has_grant_edge (node : Ir.node) =
-    List.exists
-      (fun (edge : Ir.edge) ->
-        edge.kind = Ir.Grant && (edge.from_ = node.id || edge.to_ = node.id))
-      graph.Ir.edges
+    Graph_algorithms.has_incident_edge ~edge_kinds:[ Ir.Grant ] indexed node.id
   in
-  graph.Ir.nodes
+  Graph_algorithms.nodes indexed
   |> List.filter (fun (node : Ir.node) ->
       List.mem node.kind [ Ir.Workflow; Ir.Job ] || has_grant_edge node)
   |> List.concat_map (fun (node : Ir.node) ->
       List.map (fun capability -> (node, capability)) node.capabilities)
+
+let declared_grants graph =
+  declared_grants_indexed (Graph_algorithms.index graph)
 
 type demand = Required | Excessive | Unknown of Unknown.reason list
 
@@ -107,13 +101,21 @@ let node_unknowns (node : Ir.node) =
   @ List.concat_map (fun (_, value) -> value_unknowns value) node.attributes
   |> Util.deduplicate_compare Unknown.compare
 
-let grant_demands graph =
-  declared_grants graph
+let grant_demands_indexed indexed =
+  let reachable_by_owner =
+    Hashtbl.create (max 1 (List.length (Graph_algorithms.nodes indexed)))
+  in
+  let reachable (grant : Ir.node) =
+    match Hashtbl.find_opt reachable_by_owner grant.id with
+    | Some nodes -> nodes
+    | None ->
+        let nodes = Graph_algorithms.reachable_from_indexed indexed grant.id in
+        Hashtbl.replace reachable_by_owner grant.id nodes;
+        nodes
+  in
+  declared_grants_indexed indexed
   |> List.map (fun ((grant : Ir.node), capability) ->
-      let reachable =
-        graph.Ir.nodes
-        |> List.filter (fun (node : Ir.node) -> reaches graph grant.id node.id)
-      in
+      let reachable = reachable grant in
       let effects =
         reachable
         |> List.concat_map effects_of_node
@@ -131,8 +133,13 @@ let grant_demands graph =
       in
       ((grant, capability), demand))
 
-let excessive_grants graph =
-  grant_demands graph
+let grant_demands graph = grant_demands_indexed (Graph_algorithms.index graph)
+
+let excessive_grants_indexed indexed =
+  grant_demands_indexed indexed
   |> List.filter_map (function
     | grant, Excessive -> Some grant
     | _, (Required | Unknown _) -> None)
+
+let excessive_grants graph =
+  excessive_grants_indexed (Graph_algorithms.index graph)

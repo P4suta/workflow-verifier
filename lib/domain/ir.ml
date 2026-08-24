@@ -248,16 +248,20 @@ let validate graph =
   let add code message node_ids =
     issues := { code; message; node_ids } :: !issues
   in
-  let seen = ref [] in
+  let seen = Hashtbl.create (max 1 (List.length graph.nodes))
+  and nodes_by_id = Hashtbl.create (max 1 (List.length graph.nodes)) in
   List.iter
     (fun (node : node) ->
-      if List.mem node.id !seen then
+      if Hashtbl.mem seen node.id then
         add "IR-DUPLICATE-NODE" ("duplicate node ID " ^ node.id) [ node.id ];
-      seen := node.id :: !seen)
+      Hashtbl.replace seen node.id ();
+      if not (Hashtbl.mem nodes_by_id node.id) then
+        Hashtbl.add nodes_by_id node.id node)
     graph.nodes;
+  let indexed_node id = Hashtbl.find_opt nodes_by_id id in
   List.iter
     (fun (edge : edge) ->
-      match (find_node graph edge.from_, find_node graph edge.to_) with
+      match (indexed_node edge.from_, indexed_node edge.to_) with
       | None, _ | _, None ->
           add "IR-DANGLING-EDGE"
             ("edge " ^ edge.id ^ " has a missing endpoint")

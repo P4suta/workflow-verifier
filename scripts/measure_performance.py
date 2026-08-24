@@ -247,6 +247,11 @@ def measure(
         result_scenarios.append({"id": identifier, "modes": result_modes})
     environment = dict(raw_environment)
     environment["suite_digest"] = suite_digest
+    platform = os.environ.get("WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM")
+    if platform is not None:
+        if not IDENTIFIER.fullmatch(platform):
+            raise ValueError("performance platform identity is invalid")
+        environment["platform"] = platform
     return {
         "environment": dict(sorted(environment.items())),
         "regression_explanations": [],

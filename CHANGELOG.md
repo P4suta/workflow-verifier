@@ -3,7 +3,7 @@
 All notable changes are recorded here. The project follows Semantic Versioning
 after the first compatibility release.
 
-## 0.1.0-dev
+## 0.1.0 - 2026-08-24
 
 - Establish the lossless YAML CST, shared CI IR, four provider frontends,
   verifier, deterministic report formats, lockfile, policy language, semantic
@@ -48,8 +48,8 @@ after the first compatibility release.
   and a separate exhaustive, reason-required diagnostic review phase, plus
   digest-verified network-free reanalysis into a new transaction.
 - Period-balance baseline and candidate performance one sample at a time to
-  remove hosted runner order bias, and require a commit-bound external evidence
-  manifest plus a verified independent-review Sigstore identity before publication.
+  remove hosted runner order bias, and bind results to a two-commit release
+  evidence model plus a signed sole-maintainer security attestation.
 - Make subcommand help side-effect free, make tag publication depend on the full
   reusable CI and mutation gates, and eliminate parallel Windows AppContainer
   temporary-resource collisions with atomic runtime reservations.
@@ -109,3 +109,17 @@ after the first compatibility release.
   well as both operand orders, eliminating unobservable comparator mutations.
   Pin the initial flow-scalar escape state with a leading empty double-quoted
   element so separators following `""` remain observable collection boundaries.
+- Index executable graph edges, adjacency, node identities, entrypoints,
+  reachability, and dominators once per graph. Preserve deterministic path and
+  cycle ordering while removing repeated whole-graph scans from authorization,
+  capability, dataflow, validation, and resource linking.
+- Add a fixed eight-repository official compatibility suite, including GLib,
+  GitLab Runner, and .NET Arcade. Acquisition is sparse, commit/tree bound,
+  path-safe, and separated from network-free analysis; release artifacts retain
+  only diagnostic counts and digests.
+- Distinguish GitLab plain-scalar continuation lines from block-scalar headers,
+  reject malformed `|0` and duplicate indicators through one shared classifier,
+  and canonicalize repeated expression references to unique JSON attributes.
+- Pin Just 1.57.0, align Just and mise task names, validate the real parser and
+  dry-run task surface in CI, and add a publish-disabled release workflow dry
+  run that assembles all four packages, evidence, checksums, and SPDX SBOM.

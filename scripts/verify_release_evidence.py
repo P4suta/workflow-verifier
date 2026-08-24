@@ -1,22 +1,28 @@
 #!/usr/bin/env python3
-"""Fail closed unless externally reviewed publication evidence is complete."""
+"""Verify two-commit release evidence and signed maintainer attestation."""
 
 from __future__ import annotations
 
 import argparse
 from decimal import Decimal, InvalidOperation
+from datetime import date, datetime
 import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
 import re
 import stat
+import subprocess
 import sys
 from typing import Any
 
 
 PROVIDERS = ("github", "gitlab", "azure", "circleci")
 PLATFORMS = ("linux-x86_64", "windows-x86_64", "macos-arm64", "macos-x86_64")
+REQUIRED_PERFORMANCE_SCENARIOS = {
+    "arcade-scale-analysis",
+    "four-provider-analysis",
+}
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 REVISION = re.compile(r"^[0-9a-f]{40}$")
 TAG = re.compile(r"^v[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$")
@@ -24,24 +30,90 @@ HTTPS = re.compile(r"^https://[^\s]+$")
 REVIEW_URL = re.compile(
     r"^https://github\.com/P4suta/workflow-verifier/(?:issues|pull)/[1-9][0-9]*(?:#[^\s]+)?$"
 )
-GITHUB_WORKFLOW_IDENTITY = re.compile(
-    r"^https://github\.com/[^/]+/[^/]+/\.github/workflows/[^@]+@refs/tags/[^\s]+$"
-)
-ROOT_FIELDS = {"corpus", "performance", "revision", "schema", "security_review", "tag"}
-FILE_FIELDS = {"digest", "path", "review"}
-PERFORMANCE_FIELDS = FILE_FIELDS | {"platform"}
-SECURITY_FIELDS = {
-    "bundle_digest",
-    "bundle_path",
-    "certificate_identity",
-    "certificate_oidc_issuer",
-    "decision",
-    "independence",
-    "report_digest",
-    "report_path",
+ROOT_FIELDS = {
+    "corpus",
+    "maintainer",
+    "official_compat",
+    "performance",
+    "planned_tag",
     "review",
-    "reviewer",
+    "schema",
+    "security_attestation",
+    "subject_commit",
 }
+FILE_FIELDS = {"digest", "path"}
+PERFORMANCE_FIELDS = FILE_FIELDS | {"platform"}
+SECURITY_FIELDS = FILE_FIELDS | {"signature_digest", "signature_path"}
+MAINTAINER = "P4suta"
+MAINTAINER_EMAIL = "42543015+P4suta@users.noreply.github.com"
+SIGNATURE_NAMESPACE = "workflow-verifier-release"
+MAINTAINER_PUBLIC_KEY = (
+    "ssh-ed25519 "
+    "AAAAC3NzaC1lZDI1NTE5AAAAIIGLhVoqkzwA7KEiBKWh+6imgA8yphi5j+iD20y6zmg0"
+)
+REQUIRED_SECURITY_SCOPE = {
+    "authorization-dominance",
+    "canonical-protocols-and-evidence-hash-chains",
+    "dependency-resolution-redirects-and-allowlists",
+    "fix-proof-obligations",
+    "native-containment-backends",
+    "untrusted-and-secret-dataflow",
+    "yaml-parser-and-expression-denial-of-service",
+}
+FINDING_FIELDS = {
+    "due_date",
+    "id",
+    "owner",
+    "severity",
+    "status",
+    "summary",
+    "tracking_url",
+}
+RISK_FIELDS = {
+    "description",
+    "due_date",
+    "id",
+    "owner",
+    "severity",
+    "tracking_url",
+}
+ATTESTATION_FIELDS = {
+    "completed_at",
+    "decision",
+    "findings",
+    "maintainer",
+    "planned_tag",
+    "residual_risks",
+    "review",
+    "schema",
+    "scope",
+    "subject_commit",
+}
+OFFICIAL_FIELDS = {
+    "acquisition_digest",
+    "failures",
+    "manifest_digest",
+    "passed",
+    "projects",
+    "providers",
+    "repositories",
+    "schema",
+    "tool_version",
+}
+OFFICIAL_PROJECT_FIELDS = {
+    "diagnostics",
+    "files",
+    "graphs",
+    "id",
+    "inputs",
+    "provider",
+    "report_digest",
+    "report_sha256",
+    "revision",
+    "snapshot_digest",
+    "tree",
+}
+OFFICIAL_SEVERITIES = {"critical", "error", "note", "total", "warning"}
 CORPUS_FIELDS = {
     "failures",
     "manifest_digest",
@@ -136,11 +208,15 @@ def _safe_relative(value: Any, label: str) -> PurePosixPath:
     if not isinstance(value, str):
         raise ValueError(f"{label} must be a string")
     path = PurePosixPath(value)
+    raw_parts = value.split("/")
     if (
         not value
         or "\\" in value
+        or "\x00" in value
         or path.is_absolute()
-        or any(part in {"", ".", ".."} for part in path.parts)
+        or any(part in {"", ".", ".."} for part in raw_parts)
+        or ":" in raw_parts[0]
+        or any(ord(character) < 0x20 for character in value)
     ):
         raise ValueError(f"{label} must be a safe relative POSIX path")
     return path
@@ -197,7 +273,6 @@ def _publication_file(root: Path, value: Any, label: str) -> tuple[str, Path, di
     record = _exact(value, FILE_FIELDS, label)
     relative, path = _resolve_file(root, record["path"], f"{label}.path")
     _verify_digest(path, record["digest"], f"{label}.digest")
-    _expect_review(record["review"], f"{label}.review")
     return relative, path, record
 
 
@@ -291,6 +366,8 @@ def _verify_performance(path: Path, revision: str, platform: str) -> None:
         for key, value in environment.items()
     ):
         raise ValueError(f"performance report for {platform} has an invalid environment")
+    if environment.get("platform") != platform:
+        raise ValueError(f"performance report for {platform} has the wrong platform identity")
     comparisons = document["comparisons"]
     if not isinstance(comparisons, list) or not comparisons:
         raise ValueError(f"performance report for {platform} has no comparisons")
@@ -318,27 +395,298 @@ def _verify_performance(path: Path, revision: str, platform: str) -> None:
             if not isinstance(explanation["reason"], str) or not explanation["reason"].strip():
                 raise ValueError(f"{label}.explanation.reason is empty")
             _expect_https(explanation["review"], f"{label}.explanation.review")
+    if set(modes_by_scenario) != REQUIRED_PERFORMANCE_SCENARIOS:
+        raise ValueError(
+            f"performance report for {platform} must contain the required scenarios"
+        )
     if any(modes != {"cold", "incremental", "warm"} for modes in modes_by_scenario.values()):
         raise ValueError(f"performance report for {platform} omits a required mode")
 
 
-def verify(manifest_path: Path, *, revision: str, tag: str) -> dict[str, str]:
+def _verify_official(path: Path, tag: str) -> None:
+    document, _ = _load_json(path, "official compatibility report", limit=8 * 1024 * 1024)
+    _exact(document, OFFICIAL_FIELDS, "official compatibility report")
+    if document["schema"] != "official-compat-v1":
+        raise ValueError("official compatibility report schema must be official-compat-v1")
+    if document["passed"] is not True or document["failures"] != []:
+        raise ValueError("official compatibility report must pass with no failures")
+    _expect_digest(document["acquisition_digest"], "official acquisition_digest")
+    _expect_digest(document["manifest_digest"], "official manifest_digest")
+    if document["tool_version"] != tag.removeprefix("v"):
+        raise ValueError("official compatibility report targets the wrong tool version")
+    if document["repositories"] != 8:
+        raise ValueError("official compatibility report must contain exactly eight repositories")
+    providers = _exact(document["providers"], set(PROVIDERS), "official providers")
+    if any(providers[provider] != 2 for provider in PROVIDERS):
+        raise ValueError("official compatibility report must contain two repositories per provider")
+    projects = document["projects"]
+    if not isinstance(projects, list) or len(projects) != 8:
+        raise ValueError("official compatibility projects must contain exactly eight entries")
+    identities: set[str] = set()
+    counts = {provider: 0 for provider in PROVIDERS}
+    for index, raw in enumerate(projects):
+        label = f"official projects[{index}]"
+        project = _exact(raw, OFFICIAL_PROJECT_FIELDS, label)
+        identifier = project["id"]
+        provider = project["provider"]
+        if not isinstance(identifier, str) or not identifier or identifier in identities:
+            raise ValueError(f"{label}.id is empty or duplicated")
+        if provider not in counts:
+            raise ValueError(f"{label}.provider is unsupported")
+        identities.add(identifier)
+        counts[provider] += 1
+        for field in ("revision", "tree"):
+            if not isinstance(project[field], str) or not REVISION.fullmatch(project[field]):
+                raise ValueError(f"{label}.{field} is invalid")
+        for field in ("report_digest", "report_sha256", "snapshot_digest"):
+            _expect_digest(project[field], f"{label}.{field}")
+        for field in ("files", "graphs", "inputs"):
+            if type(project[field]) is not int or project[field] <= 0:
+                raise ValueError(f"{label}.{field} must be a positive integer")
+        diagnostics = _exact(project["diagnostics"], OFFICIAL_SEVERITIES, f"{label}.diagnostics")
+        if any(type(diagnostics[key]) is not int or diagnostics[key] < 0 for key in diagnostics):
+            raise ValueError(f"{label}.diagnostics must contain nonnegative integers")
+        if diagnostics["total"] != sum(
+            diagnostics[key] for key in ("critical", "error", "note", "warning")
+        ):
+            raise ValueError(f"{label}.diagnostics total is inconsistent")
+    if counts != {provider: 2 for provider in PROVIDERS}:
+        raise ValueError("official project provider counts are inconsistent")
+
+
+def _expect_due_date(value: Any, label: str, completed: date) -> None:
+    if not isinstance(value, str):
+        raise ValueError(f"{label} must be an ISO calendar date")
+    try:
+        parsed = date.fromisoformat(value)
+    except ValueError as error:
+        raise ValueError(f"{label} must be an ISO calendar date") from error
+    if parsed < completed:
+        raise ValueError(f"{label} is already overdue at attestation completion")
+
+
+def _tracked(record: dict[str, Any], label: str, completed: date) -> None:
+    _expect_https(record["tracking_url"], f"{label}.tracking_url")
+    if not isinstance(record["owner"], str) or not record["owner"].strip():
+        raise ValueError(f"{label}.owner must identify an accountable owner")
+    _expect_due_date(record["due_date"], f"{label}.due_date", completed)
+
+
+def _verify_attestation(
+    path: Path,
+    raw: bytes,
+    *,
+    subject_commit: str,
+    tag: str,
+    review: str,
+) -> None:
+    document = json.loads(raw.decode("utf-8"), object_pairs_hook=_strict_object)
+    _exact(document, ATTESTATION_FIELDS, "maintainer security attestation")
+    if document["schema"] != "maintainer-security-attestation-v1":
+        raise ValueError("security attestation schema must be maintainer-security-attestation-v1")
+    if document["subject_commit"] != subject_commit:
+        raise ValueError("security attestation targets the wrong subject commit")
+    if document["planned_tag"] != tag:
+        raise ValueError("security attestation targets the wrong planned tag")
+    if document["maintainer"] != MAINTAINER:
+        raise ValueError("security attestation maintainer must be P4suta")
+    if _expect_review(document["review"], "security attestation review") != review:
+        raise ValueError("security attestation review does not match the manifest")
+    completed_at = document["completed_at"]
+    if not isinstance(completed_at, str):
+        raise ValueError("security attestation completed_at must be an RFC 3339 timestamp")
+    try:
+        completed_timestamp = datetime.fromisoformat(completed_at.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError("security attestation completed_at must be an RFC 3339 timestamp") from error
+    if completed_timestamp.tzinfo is None:
+        raise ValueError("security attestation completed_at must include a UTC offset")
+    completed = completed_timestamp.date()
+    scope = _strings(document["scope"], "security attestation scope")
+    if len(scope) != len(set(scope)) or set(scope) != REQUIRED_SECURITY_SCOPE:
+        raise ValueError("security attestation scope must exactly cover every required security area")
+    findings = document["findings"]
+    if not isinstance(findings, list):
+        raise ValueError("security attestation findings must be an array")
+    finding_ids: set[str] = set()
+    for index, raw_finding in enumerate(findings):
+        label = f"security attestation findings[{index}]"
+        finding = _exact(raw_finding, FINDING_FIELDS, label)
+        identifier = finding["id"]
+        if not isinstance(identifier, str) or not identifier or identifier in finding_ids:
+            raise ValueError(f"{label}.id is empty or duplicated")
+        finding_ids.add(identifier)
+        severity = finding["severity"]
+        status = finding["status"]
+        if severity not in {"critical", "high", "medium", "low", "note"}:
+            raise ValueError(f"{label}.severity is invalid")
+        if status not in {"resolved", "accepted", "open"}:
+            raise ValueError(f"{label}.status is invalid")
+        if not isinstance(finding["summary"], str) or len(finding["summary"].strip()) < 8:
+            raise ValueError(f"{label}.summary is incomplete")
+        if severity in {"critical", "high"} and status != "resolved":
+            raise ValueError("critical and high security findings must be resolved")
+        if status == "resolved":
+            if any(finding[field] is not None for field in ("tracking_url", "owner", "due_date")):
+                raise ValueError(f"{label} resolved tracking fields must be null")
+        else:
+            _tracked(finding, label, completed)
+    risks = document["residual_risks"]
+    if not isinstance(risks, list):
+        raise ValueError("security attestation residual_risks must be an array")
+    risk_ids: set[str] = set()
+    for index, raw_risk in enumerate(risks):
+        label = f"security attestation residual_risks[{index}]"
+        risk = _exact(raw_risk, RISK_FIELDS, label)
+        identifier = risk["id"]
+        if not isinstance(identifier, str) or not identifier or identifier in risk_ids:
+            raise ValueError(f"{label}.id is empty or duplicated")
+        risk_ids.add(identifier)
+        if risk["severity"] not in {"medium", "low", "note"}:
+            raise ValueError("critical and high residual risks cannot be approved")
+        if not isinstance(risk["description"], str) or len(risk["description"].strip()) < 8:
+            raise ValueError(f"{label}.description is incomplete")
+        _tracked(risk, label, completed)
+    if document["decision"] != "approve":
+        raise ValueError("maintainer security attestation decision must be approve")
+    del path
+
+
+def _run(command: list[str], *, cwd: Path, input_data: bytes | None = None) -> bytes:
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=cwd,
+            input=input_data,
+            stdin=subprocess.DEVNULL if input_data is None else None,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=False,
+            timeout=30,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as error:
+        raise ValueError(f"cannot execute {' '.join(command[:2])}: {error}") from error
+    if completed.returncode != 0:
+        detail = completed.stderr.decode("utf-8", errors="replace").strip()
+        raise ValueError(f"{' '.join(command[:2])} failed: {detail}")
+    if len(completed.stdout) > 16 * 1024 * 1024:
+        raise ValueError(f"{' '.join(command[:2])} output exceeded its bound")
+    return completed.stdout
+
+
+def _verify_signature(root: Path, attestation_path: Path, signature_path: Path, raw: bytes) -> None:
+    allowed_signers = root / "maintainer-allowed-signers"
+    expected = f"{MAINTAINER_EMAIL} {MAINTAINER_PUBLIC_KEY}\n".encode("ascii")
+    try:
+        actual = allowed_signers.read_bytes()
+        metadata = allowed_signers.lstat()
+    except OSError as error:
+        raise ValueError(f"cannot read maintainer allowed signers: {error}") from error
+    if allowed_signers.is_symlink() or not stat.S_ISREG(metadata.st_mode) or actual != expected:
+        raise ValueError("maintainer allowed signers does not contain the pinned P4suta key")
+    if signature_path.suffix != ".sig":
+        raise ValueError("security attestation signature_path must end in .sig")
+    _run(
+        [
+            "ssh-keygen",
+            "-Y",
+            "verify",
+            "-f",
+            str(allowed_signers),
+            "-I",
+            MAINTAINER_EMAIL,
+            "-n",
+            SIGNATURE_NAMESPACE,
+            "-s",
+            str(signature_path),
+        ],
+        cwd=root,
+        input_data=raw,
+    )
+    del attestation_path
+
+
+def _git(repository: Path, arguments: list[str]) -> bytes:
+    return _run(
+        ["git", "-c", f"safe.directory={repository.resolve()}", *arguments],
+        cwd=repository,
+    )
+
+
+def _verify_repository_relation(
+    repository: Path, manifest_path: Path, evidence_commit: str, subject_commit: str
+) -> None:
+    top = Path(_git(repository, ["rev-parse", "--show-toplevel"]).decode("utf-8").strip()).resolve()
+    try:
+        manifest_relative = manifest_path.resolve(strict=True).relative_to(top).as_posix()
+    except (OSError, ValueError) as error:
+        raise ValueError("release evidence manifest must be inside the repository") from error
+    if not manifest_relative.startswith("release-evidence/"):
+        raise ValueError("release evidence manifest must be under release-evidence/")
+    resolved_evidence = _git(repository, ["rev-parse", "--verify", f"{evidence_commit}^{{commit}}"])
+    if resolved_evidence.decode("ascii").strip() != evidence_commit:
+        raise ValueError("release evidence commit did not resolve exactly")
+    parents = _git(repository, ["rev-list", "--parents", "-n", "1", evidence_commit])
+    fields = parents.decode("ascii").strip().split()
+    if fields != [evidence_commit, subject_commit]:
+        raise ValueError("release evidence commit must have subject_commit as its only parent")
+    names = _git(
+        repository,
+        ["diff-tree", "--no-commit-id", "--name-only", "-r", "-z", subject_commit, evidence_commit],
+    )
+    changed = [name.decode("utf-8") for name in names.split(b"\0") if name]
+    if not changed or any(
+        not name.startswith("release-evidence/")
+        or "\\" in name
+        or any(part in {"", ".", ".."} for part in name.split("/"))
+        for name in changed
+    ):
+        raise ValueError("release evidence commit may change only release-evidence/**")
+    commit = _git(repository, ["cat-file", "commit", evidence_commit])
+    headers = commit.split(b"\n\n", 1)[0]
+    if b"\ngpgsig " not in b"\n" + headers and b"\ngpgsig-sha256 " not in b"\n" + headers:
+        raise ValueError("release evidence commit must carry a cryptographic signature")
+    author = re.search(rb"(?m)^author [^\n<]+ <([^>]+)>", headers)
+    if author is None or author.group(1).decode("utf-8", errors="replace") != MAINTAINER_EMAIL:
+        raise ValueError("release evidence commit author must identify P4suta")
+
+
+def verify(
+    manifest_path: Path,
+    *,
+    revision: str,
+    tag: str,
+    repository: Path | None = Path("."),
+) -> dict[str, str]:
     if not REVISION.fullmatch(revision):
         raise ValueError("release revision must be a lowercase 40-character commit")
     if not TAG.fullmatch(tag) or tag.endswith("-dev"):
         raise ValueError("release tag must be a stable or prerelease semantic version")
     manifest, _ = _load_json(manifest_path, "release evidence manifest", limit=1024 * 1024)
     _exact(manifest, ROOT_FIELDS, "release evidence manifest")
-    if manifest["schema"] != "release-evidence-v1":
-        raise ValueError("release evidence schema must be release-evidence-v1")
-    if manifest["revision"] != revision:
-        raise ValueError("release evidence revision does not match the tagged commit")
-    if manifest["tag"] != tag:
-        raise ValueError("release evidence tag does not match the release tag")
+    if manifest["schema"] != "release-evidence-v2":
+        raise ValueError("release evidence schema must be release-evidence-v2")
+    subject_commit = manifest["subject_commit"]
+    if not isinstance(subject_commit, str) or not REVISION.fullmatch(subject_commit):
+        raise ValueError("release evidence subject_commit is invalid")
+    if subject_commit == revision:
+        raise ValueError("release evidence commit must be a child of subject_commit")
+    if manifest["planned_tag"] != tag:
+        raise ValueError("release evidence planned_tag does not match the release tag")
+    if manifest["maintainer"] != MAINTAINER:
+        raise ValueError("release evidence maintainer must be P4suta")
+    review = _expect_review(manifest["review"], "release evidence review")
     root = manifest_path.parent
+    if repository is not None:
+        _verify_repository_relation(repository, manifest_path, revision, subject_commit)
 
     _, corpus_path, _ = _publication_file(root, manifest["corpus"], "corpus evidence")
     _verify_corpus(corpus_path)
+    _, official_path, _ = _publication_file(
+        root, manifest["official_compat"], "official compatibility evidence"
+    )
+    _verify_official(official_path, tag)
 
     performance = manifest["performance"]
     if not isinstance(performance, list) or len(performance) != len(PLATFORMS):
@@ -351,50 +699,43 @@ def verify(manifest_path: Path, *, revision: str, tag: str) -> dict[str, str]:
         if platform not in PLATFORMS or platform in seen_platforms:
             raise ValueError(f"{label}.platform is unsupported or duplicated")
         seen_platforms.add(platform)
-        relative, path = _resolve_file(root, record["path"], f"{label}.path")
-        del relative
+        _, path = _resolve_file(root, record["path"], f"{label}.path")
         _verify_digest(path, record["digest"], f"{label}.digest")
-        _expect_review(record["review"], f"{label}.review")
-        _verify_performance(path, revision, platform)
+        _verify_performance(path, subject_commit, platform)
     if seen_platforms != set(PLATFORMS):
         raise ValueError("release evidence omits a required performance platform")
 
-    security = _exact(manifest["security_review"], SECURITY_FIELDS, "security review evidence")
-    if security["decision"] != "approved":
-        raise ValueError("independent security review decision must be approved")
-    reviewer = security["reviewer"]
-    independence = security["independence"]
-    if not isinstance(reviewer, str) or len(reviewer.strip()) < 3:
-        raise ValueError("security review reviewer identity is missing")
-    if not isinstance(independence, str) or len(independence.strip()) < 32:
-        raise ValueError("security review independence statement is incomplete")
-    _expect_review(security["review"], "security review evidence.review")
-    identity = _expect_https(security["certificate_identity"], "security review certificate_identity")
-    issuer = _expect_https(security["certificate_oidc_issuer"], "security review certificate_oidc_issuer")
-    if issuer != "https://token.actions.githubusercontent.com":
-        raise ValueError("security review certificate must use the GitHub Actions OIDC issuer")
-    if not GITHUB_WORKFLOW_IDENTITY.fullmatch(identity):
-        raise ValueError("security review certificate identity must be a tagged GitHub Actions workflow")
-    if identity.startswith("https://github.com/P4suta/workflow-verifier/"):
-        raise ValueError("security review signature must originate outside the implementation repository")
-
-    report_relative, report_path = _resolve_file(root, security["report_path"], "security review report_path")
-    bundle_relative, bundle_path = _resolve_file(root, security["bundle_path"], "security review bundle_path")
-    if not report_relative.endswith(".pdf"):
-        raise ValueError("security review report_path must end in .pdf")
-    if not bundle_relative.endswith(".sigstore.json"):
-        raise ValueError("security review bundle_path must end in .sigstore.json")
-    _verify_digest(report_path, security["report_digest"], "security review report_digest")
-    _verify_digest(bundle_path, security["bundle_digest"], "security review bundle_digest")
-    bundle, _ = _load_json(bundle_path, "security review Sigstore bundle", limit=16 * 1024 * 1024)
-    media_type = bundle.get("mediaType")
-    if not isinstance(media_type, str) or "sigstore.bundle" not in media_type:
-        raise ValueError("security review bundle is not a Sigstore bundle")
+    security = _exact(
+        manifest["security_attestation"], SECURITY_FIELDS, "security attestation evidence"
+    )
+    attestation_relative, attestation_path = _resolve_file(
+        root, security["path"], "security attestation evidence.path"
+    )
+    signature_relative, signature_path = _resolve_file(
+        root, security["signature_path"], "security attestation evidence.signature_path"
+    )
+    _verify_digest(attestation_path, security["digest"], "security attestation evidence.digest")
+    _verify_digest(
+        signature_path,
+        security["signature_digest"],
+        "security attestation evidence.signature_digest",
+    )
+    attestation, attestation_raw = _load_json(
+        attestation_path, "maintainer security attestation", limit=4 * 1024 * 1024
+    )
+    del attestation
+    _verify_attestation(
+        attestation_path,
+        attestation_raw,
+        subject_commit=subject_commit,
+        tag=tag,
+        review=review,
+    )
+    _verify_signature(root, attestation_path, signature_path, attestation_raw)
     return {
-        "bundle": bundle_relative,
-        "identity": identity,
-        "issuer": issuer,
-        "report": report_relative,
+        "attestation": attestation_relative,
+        "signature": signature_relative,
+        "subject_commit": subject_commit,
     }
 
 
@@ -404,7 +745,7 @@ def _append_github_output(path: Path, values: dict[str, str]) -> None:
         if path.is_symlink() or not stat.S_ISREG(metadata.st_mode):
             raise ValueError("GitHub output must be a regular non-symlink file")
         with path.open("a", encoding="utf-8", newline="\n") as stream:
-            for key in ("report", "bundle", "identity", "issuer"):
+            for key in ("attestation", "signature", "subject_commit"):
                 stream.write(f"{key}={values[key]}\n")
             stream.flush()
             os.fsync(stream.fileno())
@@ -417,16 +758,25 @@ def main() -> int:
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--revision", required=True)
     parser.add_argument("--tag", required=True)
+    parser.add_argument("--repository", type=Path, default=Path("."))
     parser.add_argument("--github-output", type=Path)
     arguments = parser.parse_args()
     try:
-        values = verify(arguments.manifest, revision=arguments.revision, tag=arguments.tag)
+        values = verify(
+            arguments.manifest,
+            revision=arguments.revision,
+            tag=arguments.tag,
+            repository=arguments.repository,
+        )
         if arguments.github_output is not None:
             _append_github_output(arguments.github_output, values)
     except ValueError as error:
         print(f"release evidence gate: {error}", file=sys.stderr)
         return 1
-    print("release evidence gate: corpus, four-platform performance, and independent review verified")
+    print(
+        "release evidence gate: two-commit relation, corpus, official compatibility, "
+        "four-platform performance, and signed maintainer attestation verified"
+    )
     return 0
 
 

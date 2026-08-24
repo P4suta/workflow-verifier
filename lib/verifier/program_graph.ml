@@ -93,31 +93,39 @@ let link_calls graphs graph =
                         graph))
        graph
 
-let resource_written graph (resource : Ir.node) =
-  List.exists
-    (fun (edge : Ir.edge) ->
-      edge.to_ = resource.id && List.mem edge.kind [ Ir.Write; Ir.Persist ])
-    graph.Ir.edges
+let resource_written indexed (resource : Ir.node) =
+  Graph_algorithms.edges_to ~edge_kinds:[ Ir.Write; Ir.Persist ] indexed
+    resource.id
+  <> []
 
-let resource_read graph (resource : Ir.node) =
-  List.exists
-    (fun (edge : Ir.edge) ->
-      edge.from_ = resource.id && List.mem edge.kind [ Ir.Read; Ir.Data ])
-    graph.Ir.edges
+let resource_read indexed (resource : Ir.node) =
+  Graph_algorithms.edges_from ~edge_kinds:[ Ir.Read; Ir.Data ] indexed resource.id
+  <> []
 
 let link_resources graph =
+  let indexed = Graph_algorithms.index graph in
   let resources =
     List.filter (fun (node : Ir.node) -> node.kind = Ir.Resource) graph.Ir.nodes
   in
+  let readers_by_name = Hashtbl.create (max 1 (List.length resources)) in
+  List.iter
+    (fun (resource : Ir.node) ->
+      if resource_read indexed resource then
+        let readers =
+          Option.value ~default:[]
+            (Hashtbl.find_opt readers_by_name resource.name)
+        in
+        Hashtbl.replace readers_by_name resource.name (resource :: readers))
+    (List.rev resources);
   resources
   |> List.fold_left
        (fun graph (writer : Ir.node) ->
-         if not (resource_written graph writer) then graph
+         if not (resource_written indexed writer) then graph
          else
-           resources
+           Option.value ~default:[]
+             (Hashtbl.find_opt readers_by_name writer.name)
            |> List.filter (fun (reader : Ir.node) ->
-               reader.Ir.id <> writer.id && reader.name = writer.name
-               && resource_read graph reader)
+               reader.Ir.id <> writer.id)
            |> List.fold_left
                 (fun graph (reader : Ir.node) ->
                   Ir.add_edge

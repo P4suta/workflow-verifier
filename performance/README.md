@@ -12,6 +12,12 @@ samples with equal time-position sums, predecessor counts, and first/last
 placement. The two aggregated `performance-v1` documents then enter the
 unchanged 10% comparison gate.
 
+The suite also generates an `arcade-scale-analysis` fixture with 64 repository
+resources, 128 variables, 48 protected-environment deployments, and paired
+artifact/cache consumers. Its graph shape and source size track the large .NET
+Arcade lock workflow that exposed repeated reachability and dominator scans;
+the generator is deterministic and changes one marker for incremental samples.
+
 Release baselines are platform-specific reviewed artifacts. They are not copied
 from synthetic timings. `scripts/performance_gate.py` requires an identical
 environment and scenario set, computes exact rational medians, and rejects an

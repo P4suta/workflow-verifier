@@ -19,17 +19,8 @@ let flows = function
   | Ir.Data | Read | Write | Persist -> true
   | Control | Call_edge | Grant -> false
 
-let feasible graph (edge : Ir.edge) =
-  let node_condition id =
-    Ir.find_node graph id
-    |> Option.fold ~none:Condition.false_ ~some:(fun (node : Ir.node) ->
-        node.condition)
-  in
-  Condition.and_ edge.condition
-    (Condition.and_ (node_condition edge.from_) (node_condition edge.to_))
-  |> Condition.satisfiable
-
-let solve graph =
+let solve_indexed indexed =
+  let graph = Graph_algorithms.graph indexed in
   let table = Hashtbl.create (List.length graph.Ir.nodes)
   and outgoing = Hashtbl.create (List.length graph.nodes)
   and queued = Hashtbl.create (List.length graph.nodes)
@@ -41,8 +32,8 @@ let solve graph =
       Queue.add node.id queue;
       Hashtbl.replace queued node.id ())
     nodes;
-  graph.edges
-  |> List.filter (fun edge -> flows edge.Ir.kind && feasible graph edge)
+  Graph_algorithms.feasible_edges indexed
+  |> List.filter (fun edge -> flows edge.Ir.kind)
   |> List.sort Ir.compare_edge
   |> List.iter (fun edge ->
       let edges =
@@ -78,5 +69,7 @@ let solve graph =
       nodes
   in
   { values; complete = true }
+
+let solve graph = solve_indexed (Graph_algorithms.index graph)
 
 let value_at solution id = value solution.values id

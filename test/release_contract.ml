@@ -9,6 +9,10 @@ let required =
     "../scripts/package_release.py";
     "../scripts/verify_release_version.py";
     "../scripts/verify_release_evidence.py";
+    "../scripts/stage_release_evidence.py";
+    "../scripts/verify_task_surface.py";
+    "../scripts/fetch_official_projects.py";
+    "../scripts/official_compat.py";
     "../scripts/fetch_yaml_test_suite.py";
     "../scripts/corpus_gate.py";
     "../scripts/prepare_corpus.py";
@@ -29,6 +33,7 @@ let required =
     "../.github/workflows/ci.yml";
     "../.github/workflows/mutation.yml";
     "../.github/workflows/release.yml";
+    "../.github/workflows/official-compat.yml";
     "../.gitlab-ci.yml";
     "../azure-pipelines.yml";
     "../.circleci/config.yml";
@@ -41,8 +46,13 @@ let required =
     "../schema/dogfood-v1.schema.json";
     "../schema/mutation-campaign-v1.schema.json";
     "../schema/corpus-review-v1.schema.json";
-    "../schema/release-evidence-v1.schema.json";
+    "../schema/release-evidence-v2.schema.json";
+    "../schema/maintainer-security-attestation-v1.schema.json";
+    "../official/official-projects-v1.json";
+    "../official/official-compat-v1.json";
+    "../official/official-compat-v1.sha256";
     "../release-evidence/README.md";
+    "../release-evidence/maintainer-allowed-signers";
   ]
 
 let fail format =
@@ -335,9 +345,15 @@ let () =
       "uses: ./.github/workflows/ci.yml";
       "uses: ./.github/workflows/mutation.yml";
       "verify_release_evidence.py";
-      "release-evidence/release-evidence-v1.json";
-      "cosign verify-blob";
-      "needs: [build, mutation, quality, release_evidence]";
+      "release-evidence/release-evidence-v2.json";
+      "stage_release_evidence.py";
+      "workflow_dispatch:";
+      "- 'v*'";
+      "fetch-depth: 2";
+      "performance_baseline: ${{ needs.release_evidence.outputs.subject_commit }}";
+      "github.event_name == 'push'";
+      "name: Assemble dry-run release bundle";
+      "needs: [assemble, mutation, quality, release_evidence]";
     ];
   let just = read_required "justfile" and mise = read_required "mise.toml" in
   List.iter
@@ -359,6 +375,8 @@ let () =
       "dogfood_gate.py";
       "verify_release_version.py --allow-development";
       "verify_release_evidence.py";
+      "fetch_official_projects.py";
+      "official_compat.py";
     ];
   let readme =
     match Util.read_file (Filename.concat source_root "README.md") with

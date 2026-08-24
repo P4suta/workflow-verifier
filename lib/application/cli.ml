@@ -21,7 +21,7 @@ type services = {
 }
 
 let help =
-  "workflow-verifier 0.1.0-dev\n\n"
+  "workflow-verifier 0.1.0\n\n"
   ^ "Usage: workflow-verifier <command> [options] [path]\n\n" ^ "Commands:\n"
   ^ "  check             run static analysis and policy gate\n"
   ^ "  resolve           resolve and lock remote dependencies\n"
@@ -383,7 +383,7 @@ let cache_context io arguments target =
                        ~default:
                          (path_join root ".workflow-verifier-cache-v1.json");
                 cache_key =
-                  Incremental_cache.key ~tool_version:"0.1.0-dev"
+                  Incremental_cache.key ~tool_version:"0.1.0"
                     ~config_digest:
                       ("sha256:" ^ Sha256.digest_string config_material)
                     ~lock_digest:lock.integrity
@@ -1305,7 +1305,7 @@ let run ~io ~services argv =
             io.stdout help;
             0
         | "--version" | "version" ->
-            io.stdout "workflow-verifier 0.1.0-dev\n";
+            io.stdout "workflow-verifier 0.1.0\n";
             0
         | "check" -> check io arguments
         | "explain" -> explain io arguments

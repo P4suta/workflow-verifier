@@ -44,6 +44,26 @@ class BenchmarkFixtureTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "symlink"):
                 prepare(workspace, "reset")
 
+    def test_arcade_scale_fixture_is_large_deterministic_and_single_delta(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory)
+            root = prepare(workspace, "reset", "arcade-scale")
+            pipeline = root / "azure-pipelines.yml"
+            before = pipeline.read_bytes()
+            self.assertGreater(len(before), 120_000)
+            self.assertEqual(before.count(b"repository: dependency_"), 64)
+            self.assertEqual(before.count(b"environment: production-"), 28)
+            self.assertEqual(before.count(b"- stage:"), 29)
+            prepare(workspace, "toggle", "arcade-scale")
+            after = pipeline.read_bytes()
+            self.assertEqual(len(before), len(after))
+            self.assertNotEqual(before, after)
+            prepare(workspace, "toggle", "arcade-scale")
+            self.assertEqual(pipeline.read_bytes(), before)
+
+            with self.assertRaisesRegex(ValueError, "scenario"):
+                prepare(workspace, "reset", "unknown")
+
 
 if __name__ == "__main__":
     unittest.main()

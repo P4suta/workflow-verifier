@@ -69,7 +69,13 @@ def validate(
     if f"workflow-verifier {version}\\n" not in cli:
         raise ValueError("CLI version does not match dune-project")
     changelog = _read(root, "CHANGELOG.md")
-    if re.search(rf"(?m)^##\s+{re.escape(version)}\s*$", changelog) is None:
+    if (
+        re.search(
+            rf"(?m)^##\s+{re.escape(version)}(?:\s+-\s+[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}})?\s*$",
+            changelog,
+        )
+        is None
+    ):
         raise ValueError("CHANGELOG has no exact release heading")
     curl_path = root / "lib" / "application" / "curl_transport.ml"
     if curl_path.is_file():

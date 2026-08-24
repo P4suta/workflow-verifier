@@ -1,4 +1,10 @@
 set dotenv-load := false
+set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
+
+bootstrap:
+    opam init --bare --no-setup --yes
+    opam switch create . ocaml-base-compiler.5.5.0 --yes
+    opam install . --deps-only --with-test --yes
 
 build:
     opam exec -- dune build @all
@@ -18,6 +24,8 @@ fetch-yaml-suite:
 
 helpers:
     cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
+
+helpers-lint:
     cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
     cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
 
@@ -46,7 +54,13 @@ corpus-refresh evaluation="evaluation" analyzer="_build/default/bin/main.exe" ou
 corpus-review review="evaluation/review-v1.json" manifest="evaluation/corpus-v1.json" reports_root="evaluation/reports":
     python -B scripts/prepare_corpus.py apply-review --manifest {{manifest}} --reports-root {{reports_root}} --review {{review}}
 
-performance-measure suite="performance/suite-v1.json" revision output="_build/performance-current.json" samples="7":
+official-fetch manifest="official/official-projects-v1.json" destination="_build/official-projects" mode="pinned":
+    python -B scripts/fetch_official_projects.py --manifest {{manifest}} --destination {{destination}} --mode {{mode}}
+
+official-compat analyzer="_build/default/bin/main.exe" snapshots="_build/official-projects" output="_build/official-compat-v1.json" expected="official/official-compat-v1.json" expected_digest="official/official-compat-v1.sha256":
+    python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots {{snapshots}} --analyzer {{analyzer}} --output {{output}} --expected {{expected}} --expected-digest {{expected_digest}}
+
+performance-measure revision suite="performance/suite-v1.json" output="_build/performance-current.json" samples="7":
     python -B scripts/measure_performance.py --suite {{suite}} --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
 
 performance-pair baseline_workspace baseline_revision current_revision suite="performance/suite-v1.json" output_dir="_build/performance-pair" samples="24":
@@ -65,8 +79,8 @@ determinism-compare linux windows macos_arm64 macos_x86_64 output="_build/determ
 version:
     python -B scripts/verify_release_version.py --allow-development
 
-release-evidence revision tag manifest="release-evidence/release-evidence-v1.json":
-    python -B scripts/verify_release_evidence.py --manifest {{manifest}} --revision {{revision}} --tag {{tag}}
+release-evidence revision tag manifest="release-evidence/release-evidence-v2.json":
+    python -B scripts/verify_release_evidence.py --manifest {{manifest}} --revision {{revision}} --tag {{tag}} --repository .
 
 architecture:
     python -B scripts/verify_architecture.py
@@ -81,10 +95,13 @@ install-check:
     opam exec -- dune build @install
     python -B scripts/verify_install_layout.py _build/install/default
 
+task-surface:
+    python -B scripts/verify_task_surface.py
+
 sbom version artifact1 artifact2 artifact3 artifact4:
     python -B scripts/generate_sbom.py --version {{version}} --output dist/workflow-verifier.spdx.json --checksums dist/SHA256SUMS {{artifact1}} {{artifact2}} {{artifact3}} {{artifact4}}
 
-check: build test yaml-conformance tooling architecture helpers purity licenses install-check
+check: task-surface build test yaml-conformance tooling architecture helpers helpers-lint purity licenses install-check
 
 dogfood:
     opam exec -- dune exec workflow-verifier -- check --persona audit .
