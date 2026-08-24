@@ -163,15 +163,13 @@ let shortest_path_indexed ?edge_kinds ?(avoid = []) indexed source target =
     if not !found then None
     else
       let rec reconstruct id path =
-        if id = source then source :: path
+        if id = source then Some (source :: path)
         else
-          match Hashtbl.find_opt parent id with
-          | Some previous -> reconstruct previous (id :: path)
-          | None -> id :: path
+          Option.bind (Hashtbl.find_opt parent id) (fun previous ->
+              reconstruct previous (id :: path))
       in
       reconstruct target []
-      |> List.filter_map (find_node indexed)
-      |> fun path -> Some path
+      |> Option.map (List.filter_map (find_node indexed))
 
 let shortest_path ?edge_kinds ?(avoid = []) graph source target =
   shortest_path_indexed ?edge_kinds ~avoid (index graph) source target

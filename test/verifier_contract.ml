@@ -546,6 +546,43 @@ let known_excessive_permission_test () =
   expect "a closed graph proves unrelated write grants excessive"
     (has_rule "WV-PERM-001" result)
 
+let declared_grants_public_contract_test () =
+  let workflow =
+    node ~kind:Ir.Workflow ~phase:Ir.Compile
+      ~capabilities:[ Ir.Repository_write; Ir.Token_write ] "workflow"
+  and job =
+    node ~kind:Ir.Job ~capabilities:[ Ir.Artifact_write ] "publish job"
+  and delegated =
+    node ~capabilities:[ Ir.Network ] "delegated network grant"
+  and command = node ~capabilities:[ Ir.Shell ] "ordinary command" in
+  let candidate =
+    graph
+      [ workflow; job; delegated; command ]
+      [ edge workflow job; edge ~kind:Ir.Grant job delegated ]
+      [ workflow ]
+  in
+  let actual = Capability_analysis.declared_grants candidate in
+  let indexed =
+    Capability_analysis.declared_grants_indexed
+      (Graph_algorithms.index candidate)
+  in
+  expect "the public grant API preserves indexed ordering" (actual = indexed);
+  let semantic_grants =
+    actual
+    |> List.map (fun ((owner : Ir.node), capability) ->
+        (owner.name, capability))
+    |> List.sort Stdlib.compare
+  in
+  expect "workflow, job, and explicit grant-edge owners are exposed"
+    (semantic_grants
+    = List.sort Stdlib.compare
+        [
+          ("workflow", Ir.Repository_write);
+          ("workflow", Ir.Token_write);
+          ("publish job", Ir.Artifact_write);
+          ("delegated network grant", Ir.Network);
+        ])
+
 let command_attribute_consumes_permission_test () =
   let workflow =
     node ~kind:Ir.Workflow ~phase:Ir.Compile
@@ -1402,6 +1439,8 @@ let tests : test list =
       supply_chain_and_permission_test );
     ( "least privilege diagnoses only closed excessive grants",
       known_excessive_permission_test );
+    ( "the public grant API exposes declared grant owners",
+      declared_grants_public_contract_test );
     ( "least privilege reads the canonical command source",
       command_attribute_consumes_permission_test );
     ( "inherent execution capabilities are not reducible grants",
