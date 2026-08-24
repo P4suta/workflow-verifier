@@ -415,16 +415,16 @@ let validate_directives file source_lines payload_lines =
         then (
           let previous_plain =
             !in_document
-            && Option.exists
+            && List.exists
                  (fun previous_line ->
-                let previous = String.trim previous_line.raw in
-                previous <> ""
-                && find_mapping_colons previous = []
-                && (not (has_separated_comment previous))
-                && (not (String.contains "!&'\"[{|>" previous.[0]))
-                && (not (Util.starts_with ~prefix:"---" previous))
-                && not (Util.starts_with ~prefix:"..." previous))
-                 !previous_line
+                   let previous = String.trim previous_line.raw in
+                   previous <> ""
+                   && find_mapping_colons previous = []
+                   && (not (has_separated_comment previous))
+                   && (not (String.contains "!&'\"[{|>" previous.[0]))
+                   && (not (Util.starts_with ~prefix:"---" previous))
+                   && not (Util.starts_with ~prefix:"..." previous))
+                 (Option.to_list !previous_line)
           in
           if not previous_plain then (
             if !in_document then
