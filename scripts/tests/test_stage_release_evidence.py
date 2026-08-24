@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -10,6 +12,24 @@ from scripts.tests.test_verify_release_evidence import fixture
 
 
 class StageReleaseEvidenceTests(unittest.TestCase):
+    def test_direct_script_entrypoint_resolves_its_sibling_module(self) -> None:
+        repository = Path(__file__).resolve().parents[2]
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-B",
+                "scripts/stage_release_evidence.py",
+                "--help",
+            ],
+            cwd=repository,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("--manifest", completed.stdout)
+        self.assertIn("--destination", completed.stdout)
+
     def test_stages_every_v2_evidence_file_under_canonical_names(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

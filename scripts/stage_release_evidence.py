@@ -11,14 +11,24 @@ import stat
 import tempfile
 from typing import Any
 
-from scripts.verify_release_evidence import (
-    PLATFORMS,
-    ROOT_FIELDS,
-    _exact,
-    _load_json,
-    _resolve_file,
-    _verify_digest,
-)
+try:
+    from scripts.verify_release_evidence import (
+        PLATFORMS,
+        ROOT_FIELDS,
+        _exact,
+        _load_json,
+        _resolve_file,
+        _verify_digest,
+    )
+except ModuleNotFoundError:  # Direct script execution from the repository root.
+    from verify_release_evidence import (  # type: ignore[no-redef]
+        PLATFORMS,
+        ROOT_FIELDS,
+        _exact,
+        _load_json,
+        _resolve_file,
+        _verify_digest,
+    )
 
 
 def _record(root: Path, value: Any, label: str) -> Path:
