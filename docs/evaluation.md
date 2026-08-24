@@ -14,7 +14,11 @@ machine-readable evidence.
   identical declared environment. An increase above 10% needs a substantive
   explanation and an HTTPS review reference.
 - Each `mutation-gate-v1` authenticates one complete catalog-bound shard and
-  binds its runner exit code to the verified report. Every survivor must be
+  binds its runner exit code and canonical `mutation-resource-guard-v1`
+  attestation to the verified report. The same fail-closed Linux resource
+  envelope wraps baseline measurements, every mutant test stage, and the
+  shard orchestrator; a baseline must therefore prove that unmodified tests fit
+  before exceeding the envelope can detect a mutant. Every survivor must be
   detected or reviewed as equivalent. A quality failure still emits the raw
   report and a machine-readable failed gate; it never discards the evidence.
 - `mutation-campaign-v1` binds those reports to one pinned-runner catalog and

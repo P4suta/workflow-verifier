@@ -17,8 +17,10 @@ import tomllib
 from typing import Any
 
 if __package__:
+    from scripts.mutation_resource_guard import contract as resource_guard_contract
     from scripts.verify_mutation_report import verify as verify_report
 else:
+    from mutation_resource_guard import contract as resource_guard_contract
     from verify_mutation_report import verify as verify_report
 
 
@@ -497,6 +499,7 @@ def verify_shard(
     shard_name: str,
     report_path: Path,
     *,
+    resource_guard_path: Path,
     runner_exit_code: int,
 ) -> dict[str, Any]:
     if type(runner_exit_code) is not int or runner_exit_code not in {0, 1}:
@@ -559,6 +562,9 @@ def verify_shard(
             f"does not match authenticated gate outcome "
             f"{expected_exit_code}"
         )
+    gate["resource_guard_digest"] = _resource_guard_attestation(
+        resource_guard_path, shard.name
+    )
     gate["runner_exit_code"] = runner_exit_code
     return gate
 
@@ -570,6 +576,22 @@ def _runner_exit_code(path: Path, shard_name: str) -> int:
             f"mutation shard {shard_name} runner exit must be exactly 0 or 1"
         )
     return int(raw[:1])
+
+
+def _resource_guard_attestation(path: Path, shard_name: str) -> str:
+    raw = _read_regular(
+        path, f"mutation shard {shard_name} resource guard attestation", maximum=4096
+    )
+    expected = (
+        json.dumps(resource_guard_contract(), sort_keys=True, separators=(",", ":"))
+        + "\n"
+    ).encode("utf-8")
+    if raw != expected:
+        raise CampaignError(
+            f"mutation shard {shard_name} resource guard attestation is not the "
+            "canonical enforced contract"
+        )
+    return "sha256:" + hashlib.sha256(raw).hexdigest()
 
 
 def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, Any]:
@@ -598,6 +620,24 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
         raise CampaignError(
             "mutation campaign has unexpected runner exits: " + ", ".join(extra_exits)
         )
+    expected_guard_names = {
+        f"mutation-resource-guard-{name}.json" for name in catalog.active_names
+    }
+    actual_guard_names = {
+        path.name for path in evidence_dir.glob("mutation-resource-guard-*.json")
+    }
+    missing_guards = sorted(expected_guard_names - actual_guard_names)
+    extra_guards = sorted(actual_guard_names - expected_guard_names)
+    if missing_guards:
+        raise CampaignError(
+            "mutation campaign is missing resource guard attestations: "
+            + ", ".join(missing_guards)
+        )
+    if extra_guards:
+        raise CampaignError(
+            "mutation campaign has unexpected resource guard attestations: "
+            + ", ".join(extra_guards)
+        )
     shards: list[dict[str, Any]] = []
     totals = {
         "detected": 0,
@@ -616,6 +656,9 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
             catalog_path,
             name,
             report_path,
+            resource_guard_path=(
+                evidence_dir / f"mutation-resource-guard-{name}.json"
+            ),
             runner_exit_code=runner_exit_code,
         )
         for field in totals:
@@ -630,6 +673,7 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
                 "name": name,
                 "passed": gate["passed"],
                 "report_digest": gate["report_digest"],
+                "resource_guard_digest": gate["resource_guard_digest"],
                 "runner_exit_code": runner_exit_code,
                 "unexpected_survivors": gate["unexpected_survivors"],
             }
@@ -645,6 +689,7 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
         "mutants": totals["mutants"],
         "passed": not failures,
         "profile": plan.profile,
+        "resource_guard": resource_guard_contract(),
         "schema": "mutation-campaign-v1",
         "shards": shards,
         "unexpected_survivors": totals["unexpected_survivors"],
@@ -709,6 +754,7 @@ def main() -> int:
     verify_parser.add_argument("--shard", required=True)
     verify_parser.add_argument("--report", required=True, type=Path)
     verify_parser.add_argument("--runner-exit", required=True, type=Path)
+    verify_parser.add_argument("--resource-guard", required=True, type=Path)
     verify_parser.add_argument("--output", required=True, type=Path)
     aggregate_parser = commands.add_parser("aggregate")
     _common(aggregate_parser)
@@ -740,6 +786,7 @@ def main() -> int:
                 arguments.catalog,
                 arguments.shard,
                 arguments.report,
+                resource_guard_path=arguments.resource_guard,
                 runner_exit_code=runner_exit_code,
             )
             _atomic_json(arguments.output, result)

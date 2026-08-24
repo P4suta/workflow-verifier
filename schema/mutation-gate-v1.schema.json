@@ -10,6 +10,7 @@
     "passed": { "type": "boolean" },
     "profile": { "enum": ["balanced", "strong", "all"] },
     "report_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "resource_guard_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
     "required_prefixes": {
       "items": { "minLength": 2, "pattern": "/$", "type": "string" },
       "minItems": 1,
@@ -29,6 +30,7 @@
     "passed",
     "profile",
     "report_digest",
+    "resource_guard_digest",
     "required_prefixes",
     "schema",
     "unexpected_survivors",

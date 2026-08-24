@@ -111,6 +111,8 @@ jobs:
           WORKFLOW_VERIFIER_YAML_SUITE: ${{ github.workspace }}/_build/upstream/yaml-test-suite-canonical-data-2022-01-17
         run: |
           mkdir -p _build
+          python3 -B scripts/mutation_resource_guard.py --check \
+            > "_build/mutation-resource-guard-${MUTATION_SHARD}.json"
           mapfile -t mutant_ids < <(python -B scripts/verify_mutation_campaign.py select \
             --manifest scripts/mutation-shards-v1.json \
             --config .ocaml-mutants.toml \
@@ -124,7 +126,8 @@ jobs:
             arguments+=(--mutant "$mutant_id")
           done
           set +e
-          opam exec -- ocaml-mutants run --fresh --json --jobs=1 \
+          python3 -B scripts/mutation_resource_guard.py -- \
+            opam exec -- ocaml-mutants run --fresh --json --jobs=1 \
             "${arguments[@]}" . \
             > "_build/mutation-report-${MUTATION_SHARD}.json" &
           runner_pid=$!
@@ -153,6 +156,7 @@ jobs:
             --shard "$MUTATION_SHARD" \
             --report "_build/mutation-report-${MUTATION_SHARD}.json" \
             --runner-exit "_build/mutation-runner-exit-${MUTATION_SHARD}.txt" \
+            --resource-guard "_build/mutation-resource-guard-${MUTATION_SHARD}.json" \
             --output "_build/mutation-gate-${MUTATION_SHARD}.json"
       - name: Upload complete shard evidence
         if: always()
@@ -163,6 +167,7 @@ jobs:
             _build/mutation-report-${{ matrix.shard }}.json
             _build/mutation-gate-${{ matrix.shard }}.json
             _build/mutation-runner-exit-${{ matrix.shard }}.txt
+            _build/mutation-resource-guard-${{ matrix.shard }}.json
           if-no-files-found: error
 
   aggregate:

@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 
+from scripts.mutation_resource_guard import contract as resource_guard_contract
 from scripts.verify_mutation_campaign import (
     CampaignError,
     aggregate,
@@ -193,6 +194,20 @@ operators = ["boolean-literal"]
         path = self.root / f"mutation-report-{name}.json"
         path.write_text(json.dumps(report(mutants)), encoding="utf-8")
         (self.root / f"mutation-runner-exit-{name}.txt").write_bytes(b"0\n")
+        self.write_resource_guard(name)
+        return path
+
+    def resource_guard_path(self, name: str) -> Path:
+        return self.root / f"mutation-resource-guard-{name}.json"
+
+    def write_resource_guard(self, name: str) -> Path:
+        path = self.resource_guard_path(name)
+        path.write_text(
+            json.dumps(resource_guard_contract(), sort_keys=True, separators=(",", ":"))
+            + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
         return path
 
     def write_surviving_report(
@@ -212,6 +227,7 @@ operators = ["boolean-literal"]
         path = self.root / f"mutation-report-{name}.json"
         path.write_text(json.dumps(document), encoding="utf-8")
         (self.root / f"mutation-runner-exit-{name}.txt").write_bytes(b"1\n")
+        self.write_resource_guard(name)
         return path
 
     def test_complete_catalog_partition_and_aggregate_pass(self) -> None:
@@ -220,7 +236,12 @@ operators = ["boolean-literal"]
         self.assertEqual(plan.names[-1], "hex-f")
         domain_report = self.write_report("hex-1", [self.domain])
         gate = verify_shard(
-            plan, self.catalog, "hex-1", domain_report, runner_exit_code=0
+            plan,
+            self.catalog,
+            "hex-1",
+            domain_report,
+            resource_guard_path=self.resource_guard_path("hex-1"),
+            runner_exit_code=0,
         )
         self.assertTrue(gate["passed"])
         self.assertEqual(gate["mutants"], 1)
@@ -229,14 +250,53 @@ operators = ["boolean-literal"]
         self.assertTrue(campaign["passed"])
         self.assertEqual(campaign["mutants"], 2)
         self.assertEqual(campaign["detected"], 2)
+        self.assertEqual(campaign["resource_guard"], resource_guard_contract())
+        self.assertTrue(
+            all(
+                item["resource_guard_digest"].startswith("sha256:")
+                for item in campaign["shards"]
+            )
+        )
         self.assertEqual([item["name"] for item in campaign["shards"]], ["hex-1", "hex-2"])
+
+    def test_missing_or_unexpected_resource_guard_attestation_fails_closed(self) -> None:
+        plan = load_plan(self.manifest, self.config, self.root)
+        self.write_report("hex-1", [self.domain])
+        self.write_report("hex-2", [self.verifier])
+        self.resource_guard_path("hex-1").unlink()
+        with self.assertRaisesRegex(CampaignError, "missing resource guard"):
+            aggregate(plan, self.catalog, self.root)
+
+        self.write_resource_guard("hex-1")
+        self.write_resource_guard("hex-f")
+        with self.assertRaisesRegex(CampaignError, "unexpected resource guard"):
+            aggregate(plan, self.catalog, self.root)
+
+    def test_modified_resource_guard_attestation_fails_closed(self) -> None:
+        plan = load_plan(self.manifest, self.config, self.root)
+        self.write_report("hex-1", [self.domain])
+        self.write_report("hex-2", [self.verifier])
+        modified = resource_guard_contract()
+        modified["processes"] = 257
+        self.resource_guard_path("hex-1").write_text(
+            json.dumps(modified, sort_keys=True, separators=(",", ":")) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        with self.assertRaisesRegex(CampaignError, "resource guard attestation"):
+            aggregate(plan, self.catalog, self.root)
 
     def test_missing_catalog_mutant_from_shard_fails_closed(self) -> None:
         plan = load_plan(self.manifest, self.config, self.root)
         empty = self.write_report("hex-1", [])
         with self.assertRaisesRegex(CampaignError, "catalog partition"):
             verify_shard(
-                plan, self.catalog, "hex-1", empty, runner_exit_code=0
+                plan,
+                self.catalog,
+                "hex-1",
+                empty,
+                resource_guard_path=self.resource_guard_path("hex-1"),
+                runner_exit_code=0,
             )
 
     def test_mutant_assigned_to_wrong_shard_fails_closed(self) -> None:
@@ -244,7 +304,12 @@ operators = ["boolean-literal"]
         wrong = self.write_report("hex-1", [self.verifier])
         with self.assertRaisesRegex(CampaignError, "catalog partition"):
             verify_shard(
-                plan, self.catalog, "hex-1", wrong, runner_exit_code=0
+                plan,
+                self.catalog,
+                "hex-1",
+                wrong,
+                resource_guard_path=self.resource_guard_path("hex-1"),
+                runner_exit_code=0,
             )
 
     def test_overlapping_manifest_selector_is_rejected(self) -> None:
@@ -353,14 +418,24 @@ operators = ["boolean-literal"]
         path.write_text(json.dumps(document), encoding="utf-8")
         with self.assertRaisesRegex(CampaignError, "workspace digest"):
             verify_shard(
-                plan, self.catalog, "hex-1", path, runner_exit_code=0
+                plan,
+                self.catalog,
+                "hex-1",
+                path,
+                resource_guard_path=self.resource_guard_path("hex-1"),
+                runner_exit_code=0,
             )
 
     def test_survivor_is_preserved_as_failed_shard_and_campaign_evidence(self) -> None:
         plan = load_plan(self.manifest, self.config, self.root)
         domain_report = self.write_surviving_report("hex-1", self.domain)
         gate = verify_shard(
-            plan, self.catalog, "hex-1", domain_report, runner_exit_code=1
+            plan,
+            self.catalog,
+            "hex-1",
+            domain_report,
+            resource_guard_path=self.resource_guard_path("hex-1"),
+            runner_exit_code=1,
         )
         self.assertFalse(gate["passed"])
         self.assertEqual(gate["runner_exit_code"], 1)
@@ -380,13 +455,23 @@ operators = ["boolean-literal"]
         passing = self.write_report("hex-1", [self.domain])
         with self.assertRaisesRegex(CampaignError, "runner exit code"):
             verify_shard(
-                plan, self.catalog, "hex-1", passing, runner_exit_code=1
+                plan,
+                self.catalog,
+                "hex-1",
+                passing,
+                resource_guard_path=self.resource_guard_path("hex-1"),
+                runner_exit_code=1,
             )
 
         failing = self.write_surviving_report("hex-1", self.domain)
         with self.assertRaisesRegex(CampaignError, "runner exit code"):
             verify_shard(
-                plan, self.catalog, "hex-1", failing, runner_exit_code=0
+                plan,
+                self.catalog,
+                "hex-1",
+                failing,
+                resource_guard_path=self.resource_guard_path("hex-1"),
+                runner_exit_code=0,
             )
 
     def test_catalog_mutant_metadata_is_strict(self) -> None:
@@ -451,6 +536,8 @@ operators = ["boolean-literal"]
                 str(report_path),
                 "--runner-exit",
                 str(self.root / "mutation-runner-exit-hex-1.txt"),
+                "--resource-guard",
+                str(self.resource_guard_path("hex-1")),
                 "--output",
                 str(output),
             ],
@@ -464,6 +551,7 @@ operators = ["boolean-literal"]
         gate = json.loads(output.read_text(encoding="utf-8"))
         self.assertFalse(gate["passed"])
         self.assertEqual(gate["runner_exit_code"], 1)
+        self.assertTrue(gate["resource_guard_digest"].startswith("sha256:"))
 
 
 if __name__ == "__main__":

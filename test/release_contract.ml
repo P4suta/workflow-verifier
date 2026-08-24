@@ -16,6 +16,7 @@ let required =
     "../scripts/measure_performance_pair.py";
     "../scripts/performance_gate.py";
     "../scripts/run_afl_fuzz.py";
+    "../scripts/mutation_resource_guard.py";
     "../scripts/verify_mutation_report.py";
     "../scripts/verify_mutation_campaign.py";
     "../scripts/mutation-shards-v1.json";
@@ -194,6 +195,7 @@ let () =
   let release = read_required ".github/workflows/release.yml" in
   let mutation = read_required ".github/workflows/mutation.yml" in
   let mutation_config = read_required ".ocaml-mutants.toml" in
+  let mutation_guard = read_required "scripts/mutation_resource_guard.py" in
   let test_build = read_required "test/dune" in
   List.iter
     (fun mutable_reference ->
@@ -229,6 +231,8 @@ let () =
       "ocaml-mutants list --json";
       "ocaml-mutants run --fresh --json";
       "--jobs=1";
+      "python3 -B scripts/mutation_resource_guard.py --check";
+      "python3 -B scripts/mutation_resource_guard.py --";
       "runner_pid=$!";
       "kill -0 \"$runner_pid\"";
       "mutation heartbeat";
@@ -246,7 +250,9 @@ let () =
       "continue-on-error: true";
       "if: always()";
       "--runner-exit";
+      "--resource-guard";
       "mutation-runner-exit-${{ matrix.shard }}.txt";
+      "mutation-resource-guard-${{ matrix.shard }}.json";
       "mutation-report-${{ matrix.shard }}.json";
       "mutation-campaign-v1.json";
     ];
@@ -258,10 +264,26 @@ let () =
     [
       "parallel_safe = false";
       "jobs = 1";
+      "scripts/mutation_resource_guard.py";
+      "--jobs=1";
       "name = \"yaml-conformance\"";
       "@@test/mutation-yaml-conformance";
       "name = \"semantic-fingerprints\"";
       "@@test/mutation-semantic-oracle";
+    ];
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface mutation_guard) then
+        fail "mutation resource guard omits required contract: %s"
+          required_surface)
+    [
+      "mutation-resource-guard-v1";
+      "RLIMIT_AS";
+      "RLIMIT_CORE";
+      "RLIMIT_FSIZE";
+      "RLIMIT_NOFILE";
+      "RLIMIT_NPROC";
+      "os.execvpe";
     ];
   if not (Util.contains ~needle:"(alias mutation-yaml-conformance)" test_build)
   then fail "test build omits the mutation YAML conformance alias";

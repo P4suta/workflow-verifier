@@ -21,19 +21,57 @@ parallel_safe = false
 
 [[test.stages]]
 name = "algebraic-properties"
-command = ["dune", "exec", "test/property_contract.exe"]
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "exec",
+  "--jobs=1",
+  "test/property_contract.exe",
+]
 
 [[test.stages]]
 name = "semantic-fingerprints"
-command = ["dune", "build", "--force", "@@test/mutation-semantic-oracle"]
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "build",
+  "--jobs=1",
+  "--force",
+  "@@test/mutation-semantic-oracle",
+]
 
 [[test.stages]]
 name = "yaml-conformance"
-command = ["dune", "build", "--force", "@@test/mutation-yaml-conformance"]
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "build",
+  "--jobs=1",
+  "--force",
+  "@@test/mutation-yaml-conformance",
+]
 
 [[test.stages]]
 name = "full-contracts"
-command = ["dune", "runtest", "--force"]
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "runtest",
+  "--jobs=1",
+  "--force",
+]
 
 [execution]
 jobs = 1

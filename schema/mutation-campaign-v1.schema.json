@@ -11,6 +11,26 @@
     "mutants": { "minimum": 1, "type": "integer" },
     "passed": { "type": "boolean" },
     "profile": { "enum": ["balanced", "strong", "all"] },
+    "resource_guard": {
+      "additionalProperties": false,
+      "properties": {
+        "address_space_bytes": { "const": 1610612736 },
+        "core_file_bytes": { "const": 0 },
+        "file_bytes": { "const": 268435456 },
+        "open_files": { "const": 1024 },
+        "processes": { "const": 256 },
+        "schema": { "const": "mutation-resource-guard-v1" }
+      },
+      "required": [
+        "address_space_bytes",
+        "core_file_bytes",
+        "file_bytes",
+        "open_files",
+        "processes",
+        "schema"
+      ],
+      "type": "object"
+    },
     "schema": { "const": "mutation-campaign-v1" },
     "shards": {
       "items": {
@@ -26,6 +46,7 @@
           "name": { "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "type": "string" },
           "passed": { "type": "boolean" },
           "report_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "resource_guard_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
           "runner_exit_code": { "enum": [0, 1] },
           "unexpected_survivors": { "minimum": 0, "type": "integer" }
         },
@@ -37,6 +58,7 @@
           "name",
           "passed",
           "report_digest",
+          "resource_guard_digest",
           "runner_exit_code",
           "unexpected_survivors"
         ],
@@ -75,6 +97,7 @@
     "mutants",
     "passed",
     "profile",
+    "resource_guard",
     "schema",
     "shards",
     "unexpected_survivors",
