@@ -62,29 +62,23 @@ let target_graph graphs reference =
          && Util.ends_with ~suffix:normalized (dirname source))
 
 let link_calls graphs graph =
-  let ownership =
+  let calls =
     graphs
-    |> List.concat_map (fun (source_graph : Ir.t) ->
-        List.map
-          (fun (node : Ir.node) -> (node.id, source_graph))
-          source_graph.nodes)
+    |> List.concat_map (fun (owner : Ir.t) ->
+        owner.nodes
+        |> List.filter_map (fun (node : Ir.node) ->
+            if node.kind = Ir.Call then Some (owner, node) else None))
   in
-  graph.Ir.nodes
-  |> List.filter (fun (node : Ir.node) -> node.kind = Ir.Call)
+  calls
   |> List.fold_left
-       (fun graph call ->
+       (fun graph (caller, call) ->
          match local_target call.Ir.name with
          | None -> graph
          | Some reference -> (
              match target_graph graphs reference with
              | None -> graph
              | Some target ->
-                 let caller_graph = List.assoc_opt call.id ownership in
-                 if
-                   Option.fold ~none:false
-                     ~some:(fun caller -> caller.Ir.source = target.source)
-                     caller_graph
-                 then graph
+                 if caller.Ir.source = target.source then graph
                  else
                    target.entrypoints
                    |> List.fold_left

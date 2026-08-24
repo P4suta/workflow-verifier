@@ -75,8 +75,99 @@ let config_and_policy_test () =
       "version = 2\n";
       "version = 1\noffline = false\n";
       "version = 1\n[sandbox]\nnetwork = \"allow\"\n";
+      "version = 1\n[sandbox]\nunknown_control = true\n";
+      "version = 1\n[sandbox]\nimage = \"unclosed\n";
       "version = 1\nfrontends = [\"github\", \"github\"]\n";
+      "version = 1\nfrontends = [\"github\"x\n";
+      "version = 1\nversion = 1\n";
+      "version = 1\n[sandbox]\n[sandbox]\n";
+      "version = 1\n[[rules]]\nid = \"BAD\"\nkind = \"forbid\"\nselector.capability = \"invalid\"\nmessage = \"bad\"\n";
     ]
+  ;
+  expect "an explicitly empty frontend set is a valid typed array"
+    (Result.is_ok (Config.parse "version = 1\nfrontends = []\n"))
+
+let policy_provider_test () =
+  let command = node "provider subject" in
+  let pipeline = graph [ command ] [] command in
+  let rule id provider : Policy.rule =
+    {
+      id;
+      kind = Forbid;
+      selector = All [ Provider provider ];
+      message = "provider match";
+      severity = Diagnostic.Warning;
+    }
+  in
+  let diagnostics =
+    Policy.evaluate
+      [ rule "GITHUB-ONLY" Ir.Github; rule "GITLAB-ONLY" Ir.Gitlab ]
+      pipeline
+  in
+  expect "provider selector must match the graph provider"
+    (List.exists
+       (fun item -> item.Diagnostic.rule_id = "GITHUB-ONLY")
+       diagnostics);
+  expect "provider selector must reject a different provider"
+    (not
+       (List.exists
+          (fun item -> item.Diagnostic.rule_id = "GITLAB-ONLY")
+          diagnostics))
+
+let shortest_policy_path_test () =
+  let untrusted name id =
+    {
+      (node
+         ~attributes:
+           [ ("value", string_value ~trust:Abstract_value.Untrusted name) ]
+         name) with
+      id;
+    }
+  in
+  let long_source = untrusted "long source" "a-long-source"
+  and short_source = untrusted "short source" "b-short-source"
+  and middle = { (node "middle") with id = "m-middle" }
+  and sink =
+    {
+      (node ~kind:Ir.Effect ~effects:[ Ir.Network_request ] "network sink") with
+      id = "z-network-sink";
+    }
+  in
+  let pipeline =
+    graph
+      [ long_source; short_source; middle; sink ]
+      [
+        edge long_source middle;
+        edge middle sink;
+        edge short_source sink;
+      ]
+      long_source
+  and rule : Policy.rule =
+    {
+      id = "PATH-SHORTEST";
+      kind = Forbid_path;
+      selector = All [ Effect Ir.Network_request ];
+      message = "reachable network effect";
+      severity = Diagnostic.Warning;
+    }
+  in
+  match Policy.evaluate [ rule ] pipeline with
+  | [ diagnostic ] ->
+      expect "forbid_path must report the globally shortest exploit trace"
+        (List.map (fun hop -> hop.Diagnostic.node_id) diagnostic.trace
+        = [ short_source.id; sink.id ])
+  | diagnostics ->
+      fail "expected one shortest-path diagnostic, found %d"
+        (List.length diagnostics)
+
+let diagnostic_confidence_json_test () =
+  let diagnostic =
+    Diagnostic.make ~rule_id:"CONFIDENCE" ~severity:Diagnostic.Warning
+      ~confidence:Diagnostic.Medium ~message:"fixture" ~span:Span.none ()
+  in
+  expect "medium confidence must remain explicit in diagnostic JSON"
+    (Util.contains ~needle:"\"confidence\":\"medium\""
+       (Diagnostic.to_json diagnostic |> Json.to_string))
 
 let policy_dependency_identity_test () =
   let matches ?(attributes = []) expected reference =
@@ -305,6 +396,9 @@ let tests : test list =
     ("typed config drives declarative policy", config_and_policy_test);
     ( "policy uses canonical dependency identities",
       policy_dependency_identity_test );
+    ("policy provider selectors are exact", policy_provider_test);
+    ("forbid_path selects the shortest exploit trace", shortest_policy_path_test);
+    ("diagnostic JSON preserves medium confidence", diagnostic_confidence_json_test);
     ("report-v1 and SARIF are deterministic", report_and_sarif_test);
     ("lockfile enables truly offline resolution", lockfile_and_resolver_test);
     ("legacy lock-v1 remains readable", legacy_lock_v1_compatibility_test);

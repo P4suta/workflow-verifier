@@ -376,16 +376,40 @@ let dominance_test () =
   in
   expect "approval gate dominates deployment"
     ((property "WV-AUTH-001" safe).state = Property.Proved);
+  let bypass_first = node ~kind:Ir.Step "bypass first"
+  and bypass_second = node ~kind:Ir.Step "bypass second" in
   let bypass =
-    graph [ workflow; gate; deploy ]
-      [ edge workflow gate; edge gate deploy; edge workflow deploy ]
+    graph [ workflow; gate; bypass_first; bypass_second; deploy ]
+      [
+        edge workflow gate;
+        edge gate deploy;
+        edge workflow bypass_first;
+        edge bypass_first bypass_second;
+        edge bypass_second deploy;
+      ]
       [ workflow ]
     |> Verifier.verify ~persona:Verifier.Gate
   in
   expect "a bypass path violates authorization dominance"
     ((property "WV-AUTH-001" bypass).state = Property.Violated);
   expect "bypass produces a deterministic witness"
-    (has_rule "WV-AUTH-001" bypass)
+    (has_rule "WV-AUTH-001" bypass);
+  let witness =
+    List.find
+      (fun diagnostic -> diagnostic.Diagnostic.rule_id = "WV-AUTH-001")
+      bypass.diagnostics
+  in
+  expect "the witness excludes the trusted gate and follows the real bypass"
+    (List.exists
+       (fun (hop : Diagnostic.trace_hop) -> hop.node_id = bypass_first.id)
+       witness.trace
+    && List.exists
+         (fun (hop : Diagnostic.trace_hop) -> hop.node_id = bypass_second.id)
+         witness.trace
+    && not
+         (List.exists
+            (fun (hop : Diagnostic.trace_hop) -> hop.node_id = gate.id)
+            witness.trace))
 
 let authorization_unknown_and_manual_test () =
   let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
@@ -527,6 +551,33 @@ let inherent_execution_capabilities_are_not_reducible_grants_test () =
     ((property "WV-PERM-001" result).state = Property.Not_applicable)
 
 let script_adapter_test () =
+  let named_command = node "curl https://example.invalid" in
+  expect "a command node without a command attribute uses its semantic name"
+    (Script_adapter.command_source named_command = "curl https://example.invalid");
+  expect "node-name fallback participates in effect inference"
+    (List.mem Ir.Network_request
+       (Script_adapter.analyze_node named_command).effects);
+  let unknown_command =
+    node ~attributes:[ ("command", Abstract_value.bottom) ]
+      "curl https://fallback.invalid"
+  in
+  expect "a non-finite command value falls back to the semantic node name"
+    (Script_adapter.command_source unknown_command
+    = "curl https://fallback.invalid");
+  let empty_commands : Abstract_value.t =
+    {
+      value_type = Abstract_value.String_type;
+      value = Abstract_value.String (Abstract_value.Constants []);
+      trust = Abstract_value.Trusted;
+      secrecy = Abstract_value.Public;
+      provenance = [];
+    }
+  in
+  let empty_command =
+    node ~attributes:[ ("command", empty_commands) ] "echo fallback"
+  in
+  expect "an empty finite command set falls back to the semantic node name"
+    (Script_adapter.command_source empty_command = "echo fallback");
   let cases =
     [
       (Script_adapter.Bash, "curl https://example.invalid");
@@ -545,7 +596,326 @@ let script_adapter_test () =
     Script_adapter.analyze Script_adapter.Bash "printf '%s' \"$TITLE\""
   in
   expect "tokenizer must retain quoted expansion context"
-    (List.exists (fun token -> token.Script_adapter.quoted) quoted.tokens)
+    (List.exists (fun token -> token.Script_adapter.quoted) quoted.tokens);
+  let nested_substitution =
+    Script_adapter.analyze Script_adapter.Bash
+      "printf '%s' \"$TOKEN\" $(printf $(value) > private.log)"
+  in
+  expect "nested substitution redirection does not hide outer secret output"
+    nested_substitution.secret_to_output;
+  let unterminated_quote =
+    Script_adapter.analyze Script_adapter.Bash "token\""
+  in
+  expect "an opening quote at the token boundary remains observable"
+    (List.exists
+       (fun (token : Script_adapter.token) -> token.quoted)
+       unterminated_quote.tokens);
+  let nested_group =
+    Script_adapter.analyze Script_adapter.Bash
+      "printf safe $(printf $(value); echo $TOKEN > private.log)"
+  in
+  expect "nested substitutions keep separators and redirects in their group"
+    nested_group.secret_to_output;
+  let closed_substitution =
+    Script_adapter.analyze Script_adapter.Bash
+      "echo $TOKEN $(value);printf safe > private.log"
+  in
+  expect "a closing substitution restores the following separator boundary"
+    closed_substitution.secret_to_output;
+  let closed_quote =
+    Script_adapter.analyze Script_adapter.Bash
+      "echo $TOKEN\"\";printf safe > private.log"
+  in
+  expect "a closing quote restores the following separator boundary"
+    closed_quote.secret_to_output;
+  let escaped_quote_context =
+    Script_adapter.analyze Script_adapter.Bash
+      "echo \"$TOKEN\" \"abc\\x > private.log\""
+  in
+  expect "a backslash keeps the following byte inside its double quote"
+    escaped_quote_context.secret_to_output;
+  let separator_quote_context =
+    Script_adapter.analyze Script_adapter.Bash
+      "printf safe;\"echo $TOKEN; literal\" > private.log"
+  in
+  expect "a separator begins the next quoted group without leaked escape state"
+    (not separator_quote_context.secret_to_output);
+  let empty_target =
+    Script_adapter.analyze Script_adapter.Bash "echo $TOKEN > \"\""
+  in
+  expect "an empty quoted redirect target remains observable output"
+    empty_target.secret_to_output;
+  let empty_argument_before_redirect =
+    Script_adapter.analyze Script_adapter.Bash
+      "echo \"$TOKEN\" \"\" > private.log"
+  in
+  expect "an empty quoted argument closes before a following redirect"
+    (not empty_argument_before_redirect.secret_to_output);
+  let unquoted_secret_before_empty_argument =
+    Script_adapter.analyze Script_adapter.Bash
+      "echo $TOKEN \"\" > private.log"
+  in
+  expect "an empty quote cannot hide the redirect that follows it"
+    (not unquoted_secret_before_empty_argument.secret_to_output);
+  let lone_cmd_marker = Script_adapter.analyze Script_adapter.Cmd "%" in
+  expect "a lone cmd marker is not an environment expansion"
+    (lone_cmd_marker.expansions = []);
+  let empty_pipeline = Script_adapter.analyze Script_adapter.Bash "|" in
+  expect "an empty pipeline has no observable secret flow"
+    ((not empty_pipeline.secret_to_output)
+    && not empty_pipeline.secret_to_network);
+  let tied_commands : Abstract_value.t =
+    {
+      value_type = Abstract_value.String_type;
+      value =
+        Abstract_value.String (Abstract_value.Constants [ "curl x"; "echo x" ]);
+      trust = Abstract_value.Trusted;
+      secrecy = Abstract_value.Public;
+      provenance = [];
+    }
+  in
+  let tied =
+    node ~attributes:[ ("command", tied_commands) ] "fallback"
+    |> Script_adapter.analyze_node
+  in
+  expect "equal-length command alternatives retain canonical first choice"
+    (List.mem Ir.Network_request tied.effects)
+
+let disconnected_capability_demand_test () =
+  let grant =
+    node ~kind:Ir.Workflow ~phase:Ir.Compile ~capabilities:[ Ir.Network ]
+      "network grant"
+  and disconnected =
+    node ~kind:Ir.Effect ~effects:[ Ir.Network_request ] "disconnected network"
+  in
+  match
+    Capability_analysis.grant_demands
+      (graph [ grant; disconnected ] [] [ grant ])
+  with
+  | [ ((owner, Ir.Network), Capability_analysis.Excessive) ] ->
+      expect "demand owner remains the declared grant" (owner.id = grant.id)
+  | _ -> fail "a disconnected effect must not justify a capability grant"
+
+let dynamic_gate_mechanism_test () =
+  let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
+  and mechanism : Abstract_value.t =
+    {
+      value_type = Abstract_value.String_type;
+      value = Abstract_value.String Abstract_value.Top;
+      trust = Abstract_value.Trusted;
+      secrecy = Abstract_value.Public;
+      provenance = [];
+    }
+  in
+  let gate =
+    node ~kind:Ir.Gate ~phase:Ir.Plan ~attributes:[ ("mechanism", mechanism) ]
+      "dynamic mechanism"
+  and deploy =
+    node ~kind:Ir.Effect ~effects:[ Ir.Deployment_change ]
+      ~capabilities:[ Ir.Deployment ] "deploy"
+  in
+  let result =
+    graph [ workflow; gate; deploy ]
+      [ edge workflow gate; edge gate deploy ]
+      [ workflow ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "a dynamic mechanism cannot be promoted to an authorization gate"
+    ((property "WV-AUTH-001" result).state = Property.Violated);
+  let conditional_gate =
+    {
+      (node ~kind:Ir.Gate ~phase:Ir.Plan "branch condition") with
+      condition = Condition.atom "branch-is-main";
+    }
+  in
+  let conditional =
+    graph [ workflow; conditional_gate; deploy ]
+      [ edge workflow conditional_gate; edge conditional_gate deploy ]
+      [ workflow ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "an unrelated condition is not a protected-reference gate"
+    ((property "WV-AUTH-001" conditional).state = Property.Violated);
+  let uncertain_gate =
+    node ~kind:Ir.Gate ~phase:Ir.Plan
+      ~attributes:
+        [
+          ("mechanism", value "approval");
+          ( "external",
+            Abstract_value.unknown (Unknown.External_state "review state") );
+        ]
+      "uncertain approval"
+  in
+  let uncertain =
+    graph [ workflow; uncertain_gate; deploy ]
+      [ edge workflow uncertain_gate; edge uncertain_gate deploy ]
+      [ workflow ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "Unknown gate values retain their evidence reasons"
+    (match (property "WV-AUTH-001" uncertain).state with
+    | Property.Unknown reasons -> reasons <> []
+    | _ -> false)
+
+let credential_candidate_boundaries_test () =
+  let secret =
+    node
+      ~attributes:
+        [
+          ( "credential",
+            value ~secrecy:Abstract_value.Secret "TOKEN" );
+        ]
+      "secret source"
+  and benign_call = node ~kind:Ir.Call "benign call"
+  and unrelated_writer = node ~kind:Ir.Step "unrelated writer"
+  and tail = node ~kind:Ir.Resource "runner state" in
+  let disconnected =
+    graph [ secret; benign_call; unrelated_writer; tail ]
+      [
+        edge ~kind:Ir.Data secret benign_call;
+        edge ~kind:Ir.Persist unrelated_writer tail;
+      ]
+      [ secret; unrelated_writer ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "an unrelated persist edge cannot turn another call into a candidate"
+    ((property "WV-CRED-001" disconnected).state = Property.Not_applicable);
+  let safe_candidate =
+    node ~kind:Ir.Call ~capabilities:[ Ir.Self_hosted_persistence ]
+      "safe persistent call"
+  in
+  let safe =
+    graph [ safe_candidate ] [] [ safe_candidate ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "a known-public persistence candidate proves credential safety"
+    ((property "WV-CRED-001" safe).state = Property.Proved)
+
+let graph_algorithm_boundaries_test () =
+  let root = { (node "root") with id = "a-root" }
+  and left = { (node "left") with id = "b-left" }
+  and right = { (node "right") with id = "c-right" }
+  and merge = { (node "merge") with id = "d-merge" } in
+  let diamond =
+    graph [ root; left; right; merge ]
+      [
+        edge root left;
+        edge root right;
+        edge left merge;
+        edge right merge;
+      ]
+      [ root ]
+  in
+  expect "neither branch of a diamond dominates its merge"
+    (not (Graph_algorithms.dominates diamond ~dominator:left.id ~node:merge.id)
+    && not
+         (Graph_algorithms.dominates diamond ~dominator:right.id ~node:merge.id));
+  let cycle_root = { (node "cycle root") with id = "cycle-root" }
+  and cycle_a = { (node "cycle a") with id = "cycle-a" }
+  and cycle_b = { (node "cycle b") with id = "cycle-b" } in
+  let cyclic =
+    graph [ cycle_root; cycle_a; cycle_b ]
+      [ edge cycle_root cycle_a; edge cycle_a cycle_b; edge cycle_b cycle_a ]
+      [ cycle_root ]
+  in
+  match Graph_algorithms.control_cycles cyclic with
+  | [ cycle ] ->
+      expect "cycle witnesses exclude the acyclic path prefix"
+        (List.mem cycle_a.id cycle && List.mem cycle_b.id cycle
+        && not (List.mem cycle_root.id cycle))
+  | cycles -> fail "expected one control cycle, found %d" (List.length cycles)
+
+let property_order_test () =
+  let property ?(id = "ORDER") ?(subject = None) ?(explanation = "same") state :
+      Property.t =
+    { id; state; subject; explanation }
+  in
+  expect "Proved sorts strictly before NotApplicable"
+    (Property.compare (property Property.Proved)
+       (property Property.Not_applicable)
+    < 0);
+  expect "Violated sorts strictly before Unknown"
+    (Property.compare (property Property.Violated)
+       (property (Property.Unknown [ Unknown.External_state "fixture" ]))
+    < 0);
+  expect "Unknown sorts strictly after Violated"
+    (Property.compare
+       (property (Property.Unknown [ Unknown.External_state "fixture" ]))
+       (property Property.Violated)
+    > 0);
+  expect "Unknown sorts strictly before NotApplicable"
+    (Property.compare
+       (property (Property.Unknown [ Unknown.External_state "fixture" ]))
+       (property Property.Not_applicable)
+    < 0);
+  expect "subjects are a stable comparison discriminator"
+    (Property.compare
+       (property ~subject:(Some "a") Property.Proved)
+       (property ~subject:(Some "b") Property.Proved)
+    < 0)
+
+let correctness_evidence_test () =
+  let compile = node ~kind:Ir.Parameter ~phase:Ir.Compile "compile value"
+  and runtime = node ~kind:Ir.Command ~phase:Ir.Run "runtime value" in
+  let result =
+    graph [ compile; runtime ] [ edge ~kind:Ir.Data runtime compile ] [ runtime ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  match
+    List.find_opt
+      (fun diagnostic -> diagnostic.Diagnostic.rule_id = "WV-CORRECT-001")
+      result.diagnostics
+  with
+  | Some diagnostic ->
+      expect "correctness diagnostics retain the machine issue code"
+        (List.mem "IR-PHASE-ORDER" diagnostic.evidence)
+  | None -> fail "phase-order violation did not produce a correctness diagnostic"
+
+let local_reference_suffix_test () =
+  let call = node ~kind:Ir.Call "./actions/build@deadbeef"
+  and entry = node ~kind:Ir.Step "local action entry" in
+  let caller =
+    Ir.empty Ir.Github ".github/workflows/ci.yml" |> Ir.add_node call
+    |> Ir.add_entrypoint call.id |> Ir.finalize
+  and target =
+    Ir.empty Ir.Github "actions/build/action.yml" |> Ir.add_node entry
+    |> Ir.add_entrypoint entry.id |> Ir.finalize
+  in
+  let program = Program_graph.compose [ caller; target ] in
+  expect "a local call suffix is stripped before target matching"
+    (List.exists
+       (fun (edge : Ir.edge) ->
+         edge.kind = Ir.Call_edge && edge.from_ = call.id && edge.to_ = entry.id)
+       program.edges);
+  let yaml_call = node ~kind:Ir.Call "actions/reusable.yaml@deadbeef"
+  and yaml_entry = node ~kind:Ir.Workflow "YAML reusable entry" in
+  let yaml_caller =
+    Ir.empty Ir.Github ".github/workflows/release.yml" |> Ir.add_node yaml_call
+    |> Ir.add_entrypoint yaml_call.id |> Ir.finalize
+  and yaml_target =
+    Ir.empty Ir.Github "actions/reusable.yaml" |> Ir.add_node yaml_entry
+    |> Ir.add_entrypoint yaml_entry.id |> Ir.finalize
+  in
+  let yaml_program = Program_graph.compose [ yaml_caller; yaml_target ] in
+  expect "a bare .yaml reference links as a local workflow"
+    (List.exists
+       (fun (edge : Ir.edge) ->
+         edge.kind = Ir.Call_edge && edge.from_ = yaml_call.id
+         && edge.to_ = yaml_entry.id)
+       yaml_program.edges);
+  let self_call = node ~kind:Ir.Call "workflows/self.yml"
+  and self_entry = node ~kind:Ir.Workflow "self entry" in
+  let self_graph =
+    Ir.empty Ir.Github "workflows/self.yml" |> Ir.add_node self_call
+    |> Ir.add_node self_entry |> Ir.add_entrypoint self_entry.id |> Ir.finalize
+  in
+  let self_program = Program_graph.compose [ self_graph ] in
+  expect "a local unit never creates a recursive call edge to itself"
+    (not
+       (List.exists
+          (fun (edge : Ir.edge) ->
+            edge.kind = Ir.Call_edge && edge.from_ = self_call.id)
+          self_program.edges))
 
 let github_end_to_end_test () =
   let path = Filename.concat (Sys.getcwd ()) "fixtures/github/workflow.yml" in
@@ -688,6 +1058,15 @@ let tests : test list =
     ( "inherent execution capabilities are not reducible grants",
       inherent_execution_capabilities_are_not_reducible_grants_test );
     ("script adapters infer effects and quote boundaries", script_adapter_test);
+    ( "capability demand follows reachable effects only",
+      disconnected_capability_demand_test );
+    ("dynamic gate mechanisms are not authorization", dynamic_gate_mechanism_test);
+    ( "credential candidates follow their own persistence edges",
+      credential_candidate_boundaries_test );
+    ("graph algorithms preserve path boundaries", graph_algorithm_boundaries_test);
+    ("property proof states have a total order", property_order_test);
+    ("correctness diagnostics retain issue evidence", correctness_evidence_test);
+    ("local call references strip immutable suffixes", local_reference_suffix_test);
     ( "GitHub frontend feeds whole-program security analysis",
       github_end_to_end_test );
     ( "protected release ref dominates deployment and repository effects",

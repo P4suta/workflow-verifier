@@ -113,6 +113,8 @@ let parse source =
   and allowlist_blocks = ref []
   and current = ref Root
   and current_fields = ref []
+  and resolver_declared = ref false
+  and sandbox_declared = ref false
   and errors = ref [] in
   let flush () =
     (match !current with
@@ -123,13 +125,9 @@ let parse source =
     | Allowlist when !current_fields <> [] ->
         allowlist_blocks := List.rev !current_fields :: !allowlist_blocks
     | Resolver when !current_fields <> [] ->
-        if !resolver_fields <> [] then
-          errors := "resolver section must occur at most once" :: !errors
-        else resolver_fields := List.rev !current_fields
+        resolver_fields := List.rev_append !current_fields !resolver_fields
     | Sandbox when !current_fields <> [] ->
-        if !sandbox_fields <> [] then
-          errors := "sandbox section must occur at most once" :: !errors
-        else sandbox_fields := List.rev !current_fields
+        sandbox_fields := List.rev_append !current_fields !sandbox_fields
     | _ -> ());
     current_fields := []
   in
@@ -148,9 +146,15 @@ let parse source =
         current := Allowlist)
       else if line = "[resolver]" then (
         flush ();
+        if !resolver_declared then
+          errors := "resolver section must occur at most once" :: !errors;
+        resolver_declared := true;
         current := Resolver)
       else if line = "[sandbox]" then (
         flush ();
+        if !sandbox_declared then
+          errors := "sandbox section must occur at most once" :: !errors;
+        sandbox_declared := true;
         current := Sandbox)
       else if Util.starts_with ~prefix:"[" line then (
         flush ();

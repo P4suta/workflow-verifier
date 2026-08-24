@@ -10,7 +10,7 @@ type t =
 type error = { offset : int; message : string }
 
 let escape_string value =
-  let buffer = Buffer.create (String.length value + 8) in
+  let buffer = Buffer.create 64 in
   String.iter
     (fun character ->
       match character with

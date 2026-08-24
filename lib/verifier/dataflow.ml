@@ -34,11 +34,7 @@ let solve graph =
   and outgoing = Hashtbl.create (List.length graph.nodes)
   and queued = Hashtbl.create (List.length graph.nodes)
   and queue = Queue.create () in
-  let nodes =
-    List.sort
-      (fun (left : Ir.node) right -> String.compare left.id right.id)
-      graph.nodes
-  in
+  let nodes = List.sort Ir.compare_node graph.nodes in
   List.iter
     (fun (node : Ir.node) ->
       Hashtbl.replace table node.id (initial node);
@@ -47,7 +43,7 @@ let solve graph =
     nodes;
   graph.edges
   |> List.filter (fun edge -> flows edge.Ir.kind && feasible graph edge)
-  |> List.sort (fun (left : Ir.edge) right -> String.compare left.id right.id)
+  |> List.sort Ir.compare_edge
   |> List.iter (fun edge ->
       let edges =
         Option.value ~default:[] (Hashtbl.find_opt outgoing edge.Ir.from_)

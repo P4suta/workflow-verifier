@@ -203,9 +203,8 @@ let sequence_separator source index =
   | _ -> None
 
 let pipeline_separator source index =
-  let length = String.length source in
   match source.[index] with
-  | '|' when index + 1 >= length || source.[index + 1] <> '|' -> Some 1
+  | '|' -> Some 1
   | _ -> None
 
 type output_destination =
@@ -313,21 +312,21 @@ let output_preserving_command source =
 
 let group_observability shell group =
   let stages = split_top_level pipeline_separator group in
-  let secret = List.exists secret_reference stages
-  and producer =
-    List.exists
-      (fun stage -> secret_reference stage && output_command stage)
-      stages
-  in
-  if not secret then (false, false, [])
-  else
+  match List.rev stages with
+  | [] -> (false, false, [])
+  | final_stage :: _ ->
+      let secret = List.exists secret_reference stages
+      and producer =
+        List.exists
+          (fun stage -> secret_reference stage && output_command stage)
+          stages
+      in
+      if not secret then (false, false, [])
+      else
     let network = List.exists network_command stages in
-    match List.rev stages with
-    | [] -> (network, false, [])
-    | final_stage :: _ -> (
-        if (not producer) || network then (network, false, [])
-        else
-          match output_destination shell final_stage with
+      if (not producer) || network then (network, false, [])
+      else
+        match output_destination shell final_stage with
           | Private_file -> (network, false, [])
           | Unknown_output reason -> (network, false, [ reason ])
           | Standard_output ->
@@ -343,7 +342,7 @@ let group_observability shell group =
                   [
                     Unknown.Unsupported_syntax
                       "unresolved pipeline stdout behavior";
-                  ] ))
+                  ] )
 
 let line_observability shell source =
   source |> String.lowercase_ascii |> String.split_on_char '\n'

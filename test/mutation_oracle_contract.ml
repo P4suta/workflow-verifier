@@ -309,7 +309,7 @@ let config_oracle () =
       ("suppressed", suppression_evidence);
     ]
   |> fingerprint "config"
-       "4856d1b02ac8e29e9d01890c5d97d3f4c3716c525c27648a08b62907b0aec728"
+       "b31505d44bd4ba4d8abcddba9b9baea9a861bfaa801db52d94c0c9010c76161b"
 
 let position index =
   Span.position ~byte:(index * 3) ~line:(index + 1) ~column:2 ()
@@ -2193,7 +2193,7 @@ let yaml_edge_oracle () =
                 })) );
     ]
   |> fingerprint "yaml-edges"
-       "8334b793b95c69b326eec137cccb2dc8a03b15c3878132159dc6f46b0cfcb866"
+       "dfe979018f7ada7115d84cde23ec495f1c359aa34de5d35a268f393e8f269224"
 
 let rec yaml_suite_inputs root relative =
   let directory =

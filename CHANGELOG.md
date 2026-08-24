@@ -81,3 +81,10 @@ after the first compatibility release.
   four-worker hosted backpressure with a declared 96-mutant worker bound;
   reject process-spawn or Dune-lock failures instead of counting infrastructure
   faults as detected mutants.
+- Close the mutation-derived semantic boundary set with regression contracts for
+  JSON escaping, YAML properties/directives/flow and block spans, singleton
+  configuration sections, shell pipeline observability, graph traversal,
+  dominance, local call linking, fixed-point propagation, and authorization
+  traces. Refactor the green implementation around domain-owned comparators,
+  explicit parser state, caller-owned call provenance, and dedicated traversal
+  sets so equivalent implementation detail no longer obscures semantic coverage.

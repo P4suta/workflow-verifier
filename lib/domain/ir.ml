@@ -83,6 +83,9 @@ type t = {
 
 type issue = { code : string; message : string; node_ids : string list }
 
+let compare_node (left : node) (right : node) = String.compare left.id right.id
+let compare_edge (left : edge) (right : edge) = String.compare left.id right.id
+
 let provider_name = function
   | Github -> "github"
   | Gitlab -> "gitlab"
@@ -210,14 +213,8 @@ let add_entrypoint id graph =
 let finalize graph =
   {
     graph with
-    nodes =
-      List.sort
-        (fun (left : node) (right : node) -> String.compare left.id right.id)
-        graph.nodes;
-    edges =
-      List.sort
-        (fun (left : edge) (right : edge) -> String.compare left.id right.id)
-        graph.edges;
+    nodes = List.sort compare_node graph.nodes;
+    edges = List.sort compare_edge graph.edges;
     entrypoints = Util.deduplicate_strings graph.entrypoints;
   }
 

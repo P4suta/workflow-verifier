@@ -687,14 +687,7 @@ let authorization_gate solution (node : Ir.node) =
   if (not authorization_evidence) || Abstract_value.is_untrusted value then
     Not_authorization_gate
   else
-    let reasons =
-      (reasons_of_value value
-      @
-      match node.unknown with
-      | Some reason -> [ reason ]
-      | None -> [])
-      |> Util.deduplicate_compare Unknown.compare
-    in
+    let reasons = reasons_of_value value in
     if reasons = [] then Trusted_gate else Unknown_gate reasons
 
 let environment_authorization_reasons graph (sink : Ir.node) =

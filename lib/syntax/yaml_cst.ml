@@ -350,22 +350,25 @@ let property_prefix_length value =
       | ' ' | '\t' -> skip_space (succ cursor)
       | _ -> cursor
   in
-  let rec scan cursor found =
-    if cursor >= length then if found then cursor else 0
+  let rec scan cursor =
+    if cursor >= length then cursor
     else
       match value.[cursor] with
-    | '&' | '!' ->
-        let rec token_end cursor =
-          if cursor >= length then cursor
-          else
-            match value.[cursor] with
-            | ' ' | '\t' -> cursor
-            | _ -> token_end (succ cursor)
-        in
-        scan (token_end cursor |> skip_space) true
-    | _ -> if found then cursor else 0
+      | '&' | '!' ->
+          let rec token_end cursor =
+            if cursor >= length then cursor
+            else
+              match value.[cursor] with
+              | ' ' | '\t' -> cursor
+              | _ -> token_end (succ cursor)
+          in
+          scan (token_end cursor |> skip_space)
+      | _ -> cursor
   in
-  scan (skip_space 0) false
+  let first = skip_space 0 in
+  if first < length && (value.[first] = '&' || value.[first] = '!') then
+    scan first
+  else 0
 
 let find_mapping_colon value =
   let quote = ref None
@@ -650,12 +653,10 @@ let fold_quoted ~double value =
           for _ = 1 to count - 1 do
             Buffer.add_char buffer '\n'
           done);
-      (match (Buffer.length buffer, List.length lines) with
-      | 0, 2 -> Buffer.add_char buffer ' '
-      | 0, count when count > 2 ->
-          for _ = 1 to count - 2 do
-            Buffer.add_char buffer '\n'
-          done
+      (match (Buffer.length buffer, lines) with
+      | 0, [ _; _ ] -> Buffer.add_char buffer ' '
+      | 0, _ :: _ :: rest ->
+          List.iter (fun _ -> Buffer.add_char buffer '\n') rest
       | _ -> ());
       Buffer.contents buffer
 
@@ -1296,12 +1297,11 @@ let parse ?(file = "<memory>") source =
                 cursor := significant;
                 None)
               else
-                let dash_in_line = String.index line.content '-' in
                 Some
                   ( significant,
                     line,
                     content,
-                    line.content_byte + dash_in_line,
+                    line.content_byte,
                     false )
       in
       match candidate with
@@ -1361,7 +1361,10 @@ let parse ?(file = "<memory>") source =
                 parse_block_scalar limit indent
                   (if synthetic then !cursor else significant + 1)
                   line rest_column rest_byte rest
-              else if prefix_length > 0 && prefix_body = "" then
+              else if
+                (Option.is_some prefix_anchor || Option.is_some prefix_tag)
+                && prefix_body = ""
+              then
                 let child_index =
                   next_significant lines limit
                     (if synthetic then !cursor else significant + 1)
@@ -1781,7 +1784,10 @@ let parse ?(file = "<memory>") source =
                     parse_block_scalar limit indent
                       (if synthetic then !cursor else !cursor + 1)
                       line value_column value_byte rest
-                  else if prefix_length > 0 && prefix_body = "" then
+                  else if
+                    (Option.is_some prefix_anchor || Option.is_some prefix_tag)
+                    && prefix_body = ""
+                  then
                     let child_index =
                       next_significant lines limit
                         (if synthetic then !cursor else !cursor + 1)

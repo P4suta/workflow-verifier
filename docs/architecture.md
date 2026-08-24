@@ -84,6 +84,14 @@ discard unsupported provider meaning, and runtime evidence cannot turn an
 unobserved effect into a proof of absence. Deterministic serialization uses
 domain-owned total orders, never filesystem enumeration order.
 
+Graph provenance is carried with graph values at construction boundaries. A
+linker iterates `(owner, call)` pairs rather than reconstructing ownership from
+globally shaped identifiers, and canonical node/edge comparisons are exported
+by the IR that defines identity. Traversals keep visited membership in dedicated
+sets, while paths remain ordered evidence values. These choices make ownership,
+identity, membership, and witness order separate concepts instead of accidental
+properties of one list representation.
+
 ## Architectural enforcement
 
 `scripts/verify_architecture.py` checks exact Dune dependency tuples,
@@ -92,6 +100,10 @@ library core with no assertion, partial collection lookup, unchecked Result,
 or exception-raising smart-constructor escape hatch. Closed state machines use
 variants, structured encoders construct field lists directly instead of
 downcasting a generic JSON value, and boundary validation stays in `Result`.
+Parser declaration and lexical state is explicit even when a section or token
+has no fields: empty duplicate singleton sections, YAML properties, quote
+transitions, and directive predecessors therefore cannot be inferred from an
+unrelated buffer length or source-line arithmetic.
 `scripts/verify_pure_ocaml.py` audits declared dependencies and linked artifacts
 so the analyzer cannot acquire a foreign stub or hidden linter subprocess. The
 install-layout gate independently restricts the public package to one analyzer

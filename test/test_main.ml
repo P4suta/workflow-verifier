@@ -42,6 +42,71 @@ let foundation_tests =
           | Ok _ -> fail "duplicate JSON keys must be rejected");
     };
     {
+      name = "JSON Unicode escapes retain nonzero decimal digits";
+      run =
+        (fun () ->
+          match Json.parse "\"\\u1234\"" with
+          | Ok (Json.String value) ->
+              expect_equal_string ~expected:"\xe1\x88\xb4" value
+          | Ok _ -> fail "Unicode escape did not produce a JSON string"
+          | Error error -> fail "Unicode escape failed: %s" error.message);
+    };
+    {
+      name = "JSON form-feed escapes retain their character";
+      run =
+        (fun () ->
+          match Json.parse "\"before\\fafter\"" with
+          | Ok (Json.String value) ->
+              expect_equal_string ~expected:"before\012after" value
+          | Ok _ -> fail "form-feed escape did not produce a JSON string"
+          | Error error -> fail "form-feed escape failed: %s" error.message);
+    };
+    {
+      name = "pretty JSON preserves empty and multi-element arrays";
+      run =
+        (fun () ->
+          expect_equal_string ~expected:"[]\n"
+            (Json.to_pretty_string (Json.Array []));
+          expect_equal_string ~expected:"{}\n"
+            (Json.to_pretty_string (Json.Object []));
+          expect_equal_string ~expected:"[\n  1,\n  2\n]\n"
+            (Json.to_pretty_string (Json.Array [ Json.Int 1; Json.Int 2 ]));
+          expect_equal_string ~expected:"[\n  [\n    1\n  ]\n]\n"
+            (Json.to_pretty_string
+               (Json.Array [ Json.Array [ Json.Int 1 ] ]));
+          expect_equal_string
+            ~expected:"{\n  \"a\": 1,\n  \"z\": [\n    2\n  ]\n}\n"
+            (Json.to_pretty_string
+               (Json.Object
+                  [ ("z", Json.Array [ Json.Int 2 ]); ("a", Json.Int 1) ])));
+    };
+    {
+      name = "JSON parser preserves escape and UTF-8 boundary values";
+      run =
+        (fun () ->
+          let expect_string source expected =
+            match Json.parse source with
+            | Ok (Json.String value) -> expect_equal_string ~expected value
+            | Ok _ -> fail "escape did not produce a JSON string: %s" source
+            | Error error -> fail "escape failed for %s: %s" source error.message
+          in
+          expect_string "\"\\\\\"" "\\";
+          expect_string "\"\\b\"" "\008";
+          expect_string "\"\\t\"" "\t";
+          expect_string "\"\\uABCD\"" "\xea\xaf\x8d";
+          expect_string "\"\\u00af\"" "\xc2\xaf";
+          expect_string "\"\\u007f\"" "\127";
+          expect_string "\"\\u07ff\"" "\xdf\xbf";
+          (match Json.parse "\"\\u12G4\"" with
+          | Error _ -> ()
+          | Ok _ -> fail "invalid hexadecimal Unicode digit must be rejected");
+          match Json.parse (string_of_int max_int) with
+          | Ok (Json.Int value) ->
+              expect_equal_int ~expected:max_int value
+          | Ok _ -> fail "max_int must retain the JSON Int representation"
+          | Error error -> fail "max_int failed to parse: %s" error.message);
+    };
+    {
       name = "pure OCaml SHA-256 matches the FIPS abc vector";
       run =
         (fun () ->
@@ -62,12 +127,52 @@ let yaml_source =
 let yaml_tests =
   [
     {
+      name = "YAML non-breaking-space escapes retain their Unicode value";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse ~file:"escape.yml" "value: \"\\_\"\n" in
+          let root = require_some "root" (Yaml_cst.root tree) in
+          let mapping = require_some "mapping" (Yaml_cst.as_mapping root) in
+          let value =
+            require_some "value" (Yaml_cst.mapping_find "value" mapping)
+            |> Yaml_cst.scalar_value |> require_some "escaped scalar"
+          in
+          expect_equal_string ~expected:"\xc2\xa0" value);
+    };
+    {
+      name = "YAML next-line escape retains its Unicode value";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse ~file:"escape.yml" "value: \"\\N\"\n" in
+          let value =
+            Yaml_cst.root tree |> fun node -> Option.bind node Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "escaped next-line scalar"
+          in
+          expect_equal_string ~expected:"\xc2\x85" value);
+    };
+    {
       name = "CRLF-terminated block scalar validation makes forward progress";
       run =
         (fun () ->
           let source = "literal: |\r\n  value\r\n" in
           let tree = Yaml_cst.parse ~file:"block.yml" source in
-          expect_equal_string ~expected:source (Yaml_cst.print tree));
+          expect_equal_string ~expected:source (Yaml_cst.print tree);
+          let adjacent =
+            Yaml_cst.parse ~file:"comments.yml"
+              "first: ok\r\nkey: \"\"#adjacent\r\n"
+          in
+          match
+            List.find_opt
+              (fun problem ->
+                problem.Yaml_cst.message
+                = "comment requires separation after a quoted scalar")
+              adjacent.problems
+          with
+          | Some problem ->
+              expect_equal_int ~expected:2 problem.span.start.line
+          | None -> fail "adjacent empty-scalar comment was not rejected");
     };
     {
       name = "lossless YAML print preserves comments styles and CRLF bytes";
@@ -91,7 +196,69 @@ let yaml_tests =
           expect_true "duplicate key must be diagnosed"
             (List.exists
                (fun problem -> problem.Yaml_cst.code = "YAML-DUPLICATE-KEY")
-               tree.problems));
+               tree.problems);
+          let flow = Yaml_cst.parse "{key: one, key: two}\n" in
+          let flow_entries =
+            Option.bind (Yaml_cst.root flow) Yaml_cst.as_mapping
+            |> require_some "flow mapping"
+          in
+          expect_true "duplicate flow keys must retain their duplicate marker"
+            ((List.nth flow_entries 1).duplicate));
+    };
+    {
+      name = "mapping entry lookup preserves the selected key and value";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "wanted: exact\nother: value\n" in
+          let entries =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> require_some "root mapping"
+          in
+          let entry =
+            Yaml_cst.mapping_find_entry "wanted" entries
+            |> require_some "wanted mapping entry"
+          in
+          expect_equal_string ~expected:"wanted" entry.key.value;
+          expect_equal_string ~expected:"exact"
+            (entry.value |> Yaml_cst.scalar_value
+            |> require_some "wanted mapping value");
+          let other =
+            Yaml_cst.mapping_find_entry "other" entries
+            |> require_some "other mapping entry"
+          in
+          expect_equal_string ~expected:"other" other.key.value;
+          let decorated = Yaml_cst.parse "key: &anchor value\n" in
+          let decorated_value =
+            Option.bind (Yaml_cst.root decorated) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "key")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "decorated scalar value"
+          in
+          expect_equal_string ~expected:"value" decorated_value);
+    };
+    {
+      name = "YAML structural equality compares sequence elements";
+      run =
+        (fun () ->
+          let left = Yaml_cst.parse "- one\n- two\n"
+          and same = Yaml_cst.parse "- one\n- two\n"
+          and changed = Yaml_cst.parse "- one\n- changed\n" in
+          expect_true "identical sequences must be structurally equal"
+            (Yaml_cst.structural_equal left same);
+          expect_true "same-length sequences with changed values are unequal"
+            (not (Yaml_cst.structural_equal left changed));
+          expect_true "a missing document root is not equal to a scalar root"
+            (not
+               (Yaml_cst.structural_equal (Yaml_cst.parse "")
+                  (Yaml_cst.parse "value\n")));
+          expect_true "flow sequence elements participate in structural equality"
+            (not
+               (Yaml_cst.structural_equal (Yaml_cst.parse "[one, two]\n")
+                  (Yaml_cst.parse "[one, changed]\n")));
+          expect_true "aliases with different targets are structurally unequal"
+            (not
+               (Yaml_cst.structural_equal (Yaml_cst.parse "*left\n")
+                  (Yaml_cst.parse "*right\n"))));
     };
     {
       name = "lossless YAML spans select the exact scalar bytes";
@@ -132,6 +299,25 @@ let yaml_tests =
             (require_some "name scalar" (Yaml_cst.scalar_value name)));
     };
     {
+      name = "block sequence dash spans use absolute source offsets";
+      run =
+        (fun () ->
+          let source = "prefix: ok\nitems:\n  - one\n  - two\n" in
+          let tree = Yaml_cst.parse ~file:"workflow.yml" source in
+          let root = require_some "document root" (Yaml_cst.root tree) in
+          let mapping = require_some "root mapping" (Yaml_cst.as_mapping root) in
+          let items =
+            Yaml_cst.mapping_find "items" mapping
+            |> fun node -> Option.bind node Yaml_cst.as_sequence
+            |> require_some "items sequence"
+          in
+          let second = List.nth items 1 in
+          let first_dash = String.index source '-' in
+          let second_dash = String.index_from source (first_dash + 1) '-' in
+          expect_equal_int ~expected:second_dash second.dash_span.start.byte;
+          expect_equal_int ~expected:(second_dash + 1) second.dash_span.stop.byte);
+    };
+    {
       name = "comment-preserving edits reject overlap and touch only the span";
       run =
         (fun () ->
@@ -156,7 +342,42 @@ let yaml_tests =
             | Ok value -> value
             | Error message -> fail "%s" message
           in
-          expect_equal_string ~expected:"key: new # keep\n" edited);
+          expect_equal_string ~expected:"key: new # keep\n" edited;
+          let compact = Yaml_cst.parse "abc" in
+          let composed =
+            Yaml_cst.apply_edits compact
+              [
+                { start_byte = 1; stop_byte = 1; replacement = "X" };
+                { start_byte = 1; stop_byte = 2; replacement = "Y" };
+              ]
+          in
+          (match composed with
+          | Ok value -> expect_equal_string ~expected:"aXYc" value
+          | Error message -> fail "same-boundary edits must compose: %s" message);
+          expect_true "an edit past the source boundary must be rejected"
+            (Result.is_error
+               (Yaml_cst.apply_edits compact
+                  [ { start_byte = 1; stop_byte = 4; replacement = "bad" } ])));
+    };
+    {
+      name = "invalid CST nodes retain structured JSON evidence";
+      run =
+        (fun () ->
+          let node =
+            Yaml_cst.Invalid
+              { raw = "["; reason = "unterminated"; span = Span.none }
+          in
+          let encoded = Yaml_cst.node_to_json node |> Json.to_string in
+          List.iter
+            (fun needle ->
+              expect_true ("invalid node JSON omits " ^ needle)
+                (Util.contains ~needle encoded))
+            [
+              "\"kind\":\"invalid\"";
+              "\"raw\":\"[\"";
+              "\"reason\":\"unterminated\"";
+              "\"span\"";
+            ]);
     };
     {
       name = "YAML event projection preserves document and collection style";
@@ -176,7 +397,29 @@ let yaml_tests =
                -MAP\n\
                -DOC ...\n\
                -STR\n"
-            (Yaml_event.of_cst tree |> Yaml_event.to_string));
+             (Yaml_event.of_cst tree |> Yaml_event.to_string));
+    };
+    {
+      name = "YAML tag percent decoding retains an incomplete trailing escape";
+      run =
+        (fun () ->
+          let events =
+            Yaml_cst.parse "--- !<tag:example,%A> value\n"
+            |> Yaml_event.of_cst |> Yaml_event.to_string
+          in
+          expect_true "incomplete percent escape must remain literal"
+            (Util.contains ~needle:"<tag:example,%A>" events));
+    };
+    {
+      name = "YAML event tags require both verbatim delimiters";
+      run =
+        (fun () ->
+          let events =
+            Yaml_cst.parse "value: !plain> data\n"
+            |> Yaml_event.of_cst |> Yaml_event.to_string
+          in
+          expect_true "a suffix angle bracket alone is not a verbatim tag"
+            (Util.contains ~needle:"<!plain>>" events));
     };
     {
       name = "document properties decorate an explicit-key mapping";
@@ -239,6 +482,58 @@ let yaml_tests =
           expect_equal_string ~expected:"a b\nc" value);
     };
     {
+      name = "plain multiline folding preserves a trailing backslash";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "plain: first\\\n second\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "plain")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "backslash plain scalar"
+          in
+          expect_equal_string ~expected:"first\\ second" value);
+    };
+    {
+      name = "plain scalars do not absorb trailing document blank lines";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "plain: value\n\n\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "plain")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "trailing blank plain scalar"
+          in
+          expect_equal_string ~expected:"value" value);
+    };
+    {
+      name = "single-quoted multiline folding preserves a trailing backslash";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: 'first\\\n  second'\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "single-quoted multiline scalar"
+          in
+          expect_equal_string ~expected:"first\\ second" value);
+    };
+    {
+      name = "quoted multiline folding preserves trailing blank paragraphs";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: 'text\n\n\n  '\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "quoted multiline trailing blanks"
+          in
+          expect_equal_string ~expected:"text\n\n" value);
+    };
+    {
       name = "GitHub expressions remain block-context plain scalars";
       run =
         (fun () ->
@@ -266,6 +561,34 @@ let yaml_tests =
             |> require_some "GitHub expression scalar"
           in
           expect_equal_string ~expected:"${{ github.repository }}" value);
+    };
+    {
+      name = "balanced flow with an empty quoted scalar ends on its own line";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: [\"\"]\nnext: ok\n" in
+          expect_true "balanced flow must not consume the following mapping"
+            (tree.problems = []);
+          let next =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "next")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "next scalar"
+          in
+          expect_equal_string ~expected:"ok" next);
+    };
+    {
+      name = "doubled single quotes keep hashes inside the scalar";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: 'it''s # data'\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "single-quoted scalar"
+          in
+          expect_equal_string ~expected:"it's # data" value);
     };
     {
       name = "flow validation ignores folded block scalar payloads";
@@ -314,8 +637,267 @@ let yaml_tests =
           expect_true "payload text must not be validated as YAML structure"
             (not
                (List.exists
+                   (fun problem -> problem.Yaml_cst.code = "YAML-SYNTAX")
+                   tree.problems)));
+    };
+    {
+      name = "validation resumes after a block scalar dedent";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "literal: |\n  body\nbroken: [\n" in
+          expect_true "dedented malformed YAML must not be hidden as payload"
+            (List.exists
+               (fun problem -> problem.Yaml_cst.code = "YAML-SYNTAX")
+               tree.problems));
+    };
+    {
+      name = "an unindented blank line remains block scalar payload";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "literal: |\n\n  body\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "literal")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "literal scalar"
+          in
+          expect_equal_string ~expected:"\nbody\n" value);
+    };
+    {
+      name = "block scalar at end of input stays within source bounds";
+      run =
+        (fun () ->
+          let source = "literal: |\n  body" in
+          let tree = Yaml_cst.parse source in
+          expect_equal_string ~expected:source (Yaml_cst.print tree));
+    };
+    {
+      name = "directives accept comments only after separated content";
+      run =
+        (fun () ->
+          let valid = Yaml_cst.parse "%YAML 1.2 # supported\n---\nvalue: ok\n" in
+          expect_true "a separated directive comment must be ignored"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message = "invalid YAML directive")
+                  valid.problems));
+          let misplaced =
+            Yaml_cst.parse "---\nplain\n# comment\n%YAML 1.2\n---\nnext\n"
+          in
+          expect_true "a leading comment cannot disguise an in-document directive"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message = "directive appears before document end")
+               misplaced.problems);
+          let trailing =
+            Yaml_cst.parse "---\nplain #\n%YAML 1.2\n---\nnext\n"
+          in
+          expect_true "a trailing separated comment must end the plain scalar"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message = "directive appears before document end")
+               trailing.problems));
+    };
+    {
+      name = "YAML directive versions require decimal major and minor digits";
+      run =
+        (fun () ->
+          let zero_minor = Yaml_cst.parse "%YAML 1.0\n---\nvalue: ok\n" in
+          expect_true "zero is a valid minor-version digit"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message = "invalid YAML directive")
+                  zero_minor.problems));
+          let upper_major = Yaml_cst.parse "%YAML 9.2\n---\nvalue: ok\n" in
+          expect_true "nine is a valid major-version digit"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message = "invalid YAML directive")
+                  upper_major.problems));
+          let tree = Yaml_cst.parse "%YAML :.2\n---\nvalue: ok\n" in
+          expect_true "a non-decimal major version must be rejected"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message = "invalid YAML directive")
+               tree.problems);
+          let high_minor = Yaml_cst.parse "%YAML 1.:\n---\nvalue: ok\n" in
+          expect_true "a minor version above nine must be rejected"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message = "invalid YAML directive")
+               high_minor.problems);
+          let malformed_tag = Yaml_cst.parse "%TAG !only!\n---\nvalue: ok\n" in
+          expect_true "a malformed TAG directive must be rejected"
+            (List.exists
+               (fun problem -> problem.Yaml_cst.message = "invalid directive")
+               malformed_tag.problems));
+    };
+    {
+      name = "escaped quotes do not close a flow scalar";
+      run =
+        (fun () ->
+          let tree =
+            Yaml_cst.parse
+              {|value: ["a\"b"]
+|}
+          in
+          expect_true "escaped flow quote must remain inside the scalar"
+            (not
+               (List.exists
                   (fun problem -> problem.Yaml_cst.code = "YAML-SYNTAX")
                   tree.problems)));
+    };
+    {
+      name = "quoted scalar comments require and accept separation";
+      run =
+        (fun () ->
+          let valid = Yaml_cst.parse "key: \"value\" # comment: ignored\n"
+          and invalid = Yaml_cst.parse "key: \"value\"#comment\n" in
+          let has_problem tree =
+            List.exists
+              (fun problem ->
+                problem.Yaml_cst.message
+                = "comment requires separation after a quoted scalar")
+              tree.Yaml_cst.problems
+          in
+          expect_true "separated comment must be accepted"
+            (not (has_problem valid) && valid.problems = []);
+          expect_true "adjacent comment must be rejected" (has_problem invalid);
+          let empty = Yaml_cst.parse "key: \"\" # trailing\n" in
+          let empty_value =
+            Option.bind (Yaml_cst.root empty) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "key")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "empty quoted scalar before comment"
+          in
+          expect_equal_string ~expected:"" empty_value;
+          let embedded =
+            Yaml_cst.parse "key: \"before # inside\"\nnext: value\n"
+          in
+          expect_true "a hash inside a quote cannot open a continuation"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message
+                    = "quoted mapping value continuation is not indented")
+                  embedded.problems));
+          let second_colon = Yaml_cst.parse "key: \"value\": extra\n" in
+          expect_true "a colon after a closed quoted value is structural"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message
+                 = "multiple mapping separators in a plain scalar")
+               second_colon.problems));
+    };
+    {
+      name = "node-property tokens and quote boundaries preserve mapping colons";
+      run =
+        (fun () ->
+          let property = Yaml_cst.parse "key: !tag: scalar\n" in
+          expect_true "a colon inside a node property is not a second mapping"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message
+                    = "multiple mapping separators in a plain scalar")
+                  property.problems));
+          let tagged_quote =
+            Yaml_cst.parse "key: !tag \"value: inside\"\n"
+          in
+          expect_true "a quoted scalar following a property hides inner colons"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message
+                    = "multiple mapping separators in a plain scalar")
+                  tagged_quote.problems));
+          let plain = Yaml_cst.parse "key: foo-\"bar: baz\"\n" in
+          expect_true "an adjacent shell quote does not hide a mapping colon"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message
+                 = "multiple mapping separators in a plain scalar")
+               plain.problems));
+    };
+    {
+      name = "flow-depth accounting opens and closes quote context exactly";
+      run =
+        (fun () ->
+          let inside = Yaml_cst.parse "flow: [key:\"value: inside\"]\n" in
+          expect_true "a quote after a flow colon must hide its inner colon"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message
+                    = "multiple mapping separators in a plain scalar")
+                  inside.problems));
+          let after = Yaml_cst.parse "key: [value]:\"hidden: colon\"\n" in
+          expect_true "a closed flow cannot leak quote context into block YAML"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message
+                 = "multiple mapping separators in a plain scalar")
+               after.problems));
+    };
+    {
+      name = "invalid tag tokens reject either unmatched flow brace";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "!bad{ value\n" in
+          expect_true "a tag containing an opening brace must be rejected"
+            (List.exists
+               (fun problem -> problem.Yaml_cst.message = "invalid tag token")
+               tree.problems);
+          let handles =
+            Yaml_cst.parse
+              "%TAG !ok! tag:example,\n---\n[!ok!one,!missing!two]\n"
+          in
+          expect_true "flow delimiters must expose each tag handle"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message = "undefined tag handle")
+               handles.problems));
+    };
+    {
+      name = "decorated scalar events retain their underlying value";
+      run =
+        (fun () ->
+          let events =
+            Yaml_cst.parse "&anchor scalar\n" |> Yaml_event.of_cst
+            |> Yaml_event.to_string
+          in
+          expect_true "decorated scalar must emit a value event"
+            (Util.contains ~needle:"=VAL &anchor :scalar" events));
+    };
+    {
+      name = "same-indent comments do not define block content indentation";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: |\n    \n# outside\nnext: ok\n" in
+          expect_true "same-indent comment must remain outside block indentation"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message
+                    = "leading block-scalar whitespace exceeds content indentation")
+                  tree.problems)));
+    };
+    {
+      name = "first indented block comment fixes the reference indentation";
+      run =
+        (fun () ->
+          let tree =
+            Yaml_cst.parse "value: |\n   \n  # first\n    # second\nnext: ok\n"
+          in
+          expect_true "later comments cannot replace the first indentation"
+            (List.exists
+               (fun problem ->
+                 problem.Yaml_cst.message
+                 = "leading block-scalar whitespace exceeds content indentation")
+               tree.problems));
     };
     {
       name = "inline comments do not add plain-scalar mapping separators";

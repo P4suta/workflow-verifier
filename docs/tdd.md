@@ -21,6 +21,7 @@ naming refactor while the same test remains green.
 | Robustness | AFL seed smoke and malformed corpus | Nonempty executions, no crash or hang | Harness contains no production fallback |
 | Mutation | Incomplete or vacuous report is accepted | Every configured core prefix was actually mutated | Reviewed equivalents are explicit evidence |
 | Mutation evidence transport | Concurrent Dune stages report lock failures as killed mutants, invalid mutant output corrupts JSON, or long-lived hosted workers lose every shard to runner reclamation | Every managed stage has a private build root; strict JSON retains raw SHA-256 and encoding-error evidence; a complete 64-shard prefix trie runs under four-worker backpressure with a 96-mutant worker bound | Scheduling and byte sanitization live at the runner boundary, never in analyzer tests |
+| Mutation survivor closure | A changed operator, boundary, traversal state, or provenance lookup preserves the old examples while changing semantics | The smallest public contract fails on the mutant and passes on the implementation; the selected survivor set reaches zero without weakening assertions | Move ordering to the owning domain, represent declaration and lexical state explicitly, carry ownership with graph values, and delete observationally irrelevant branches |
 | YAML conformance oracle | Artifact upload dereferences upstream alias symlinks and expands 402 cases into 1,954 inputs | Immutable Git projection contains 402 case directories, 1,887 regular files, and the pinned tree digest | One typed TOML pin owns source and export identity; workers only authenticate the canonical projection |
 | Evaluation | Bad precision/recall/performance fixture passes | 95%/100% and 10% gates reject it | Inputs are immutable and machine-readable |
 | Performance experiment | Sequential runner drift looks like a code regression | Paired period-balanced cycles retain 24 single-sample observations per revision and cancel linear drift | Measurement order is owned by the pair orchestrator; the 10% comparison gate is unchanged |
@@ -52,3 +53,7 @@ equivalent survivors.
 No green test may be obtained by weakening an assertion from a semantic fact to
 mere output presence. When a test exposes an architectural mismatch, the
 refactor moves responsibility to the owning layer before the next slice begins.
+Survivor triage follows the same rule: first preserve the mutant as a failing
+contract, then make the smallest semantic correction, then remove duplicated
+state or accidental observability while replaying both the focused mutant set
+and the complete deterministic contract suite.

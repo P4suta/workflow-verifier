@@ -14,7 +14,8 @@ let feasible_edge graph (edge : Ir.edge) =
   |> Condition.satisfiable
 
 let shortest_path ?edge_kinds ?(avoid = []) graph source target =
-  let rec bfs visited = function
+  let visited = Hashtbl.create (List.length graph.Ir.nodes) in
+  let rec bfs = function
     | [] -> None
     | (current, path) :: rest ->
         if current = target then
@@ -30,14 +31,16 @@ let shortest_path ?edge_kinds ?(avoid = []) graph source target =
                 && feasible_edge graph edge)
             |> List.map (fun edge -> edge.Ir.to_)
             |> List.filter (fun id ->
-                (not (List.mem id visited)) && not (List.mem id avoid))
+                (not (Hashtbl.mem visited id)) && not (List.mem id avoid))
             |> Util.deduplicate_strings
           in
-          bfs (next @ visited)
-            (rest @ List.map (fun id -> (id, current :: path)) next)
+          List.iter (fun id -> Hashtbl.replace visited id ()) next;
+          bfs (rest @ List.map (fun id -> (id, current :: path)) next)
   in
   if List.mem source avoid || List.mem target avoid then None
-  else bfs [ source ] [ (source, []) ]
+  else (
+    Hashtbl.replace visited source ();
+    bfs [ (source, []) ])
 
 let intersections sets =
   match sets with
@@ -50,18 +53,7 @@ let intersections sets =
 
 let dominates graph ~dominator ~node =
   let ids = List.map (fun (item : Ir.node) -> item.id) graph.Ir.nodes in
-  let entries =
-    if graph.entrypoints <> [] then graph.entrypoints
-    else
-      ids
-      |> List.filter (fun id ->
-          not
-            (List.exists
-               (fun (edge : Ir.edge) ->
-                 edge.kind = Ir.Control && edge.to_ = id
-                 && feasible_edge graph edge)
-               graph.edges))
-  in
+  let entries = graph.entrypoints in
   let table = Hashtbl.create (List.length ids) in
   List.iter
     (fun id ->
@@ -103,13 +95,14 @@ let dominates graph ~dominator ~node =
   | None -> false
 
 let cycles ?edge_kinds graph =
-  let rec visit path visiting visited id cycles =
+  let visited = Hashtbl.create (List.length graph.Ir.nodes) in
+  let rec visit path visiting id cycles =
     if List.mem id visiting then
       let cycle =
         id :: Util.take_while (fun value -> value <> id) path |> List.rev
       in
-      (visited, cycle :: cycles)
-    else if List.mem id visited then (visited, cycles)
+      cycle :: cycles
+    else if Hashtbl.mem visited id then cycles
     else
       let successors =
         graph.Ir.edges
@@ -120,20 +113,19 @@ let cycles ?edge_kinds graph =
         |> List.map (fun edge -> edge.Ir.to_)
         |> Util.deduplicate_strings
       in
-      let visited, cycles =
+      let cycles =
         List.fold_left
-          (fun (visited, cycles) child ->
-            visit (id :: path) (id :: visiting) visited child cycles)
-          (visited, cycles) successors
+          (fun cycles child ->
+            visit (id :: path) (id :: visiting) child cycles)
+          cycles successors
       in
-      (id :: visited, cycles)
+      Hashtbl.replace visited id ();
+      cycles
   in
-  let _, cycles =
+  let cycles =
     List.fold_left
-      (fun (visited, cycles) (node : Ir.node) ->
-        let visited, found = visit [] [] visited node.id [] in
-        (visited, found @ cycles))
-      ([], []) graph.nodes
+      (fun cycles (node : Ir.node) -> visit [] [] node.id cycles)
+      [] graph.nodes
   in
   cycles
   |> List.map Util.deduplicate_strings

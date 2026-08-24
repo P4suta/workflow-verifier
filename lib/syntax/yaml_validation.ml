@@ -132,13 +132,13 @@ let quote_starts_node value index =
     | ':' -> separated || flow_depth_before value index > 0
     | _ -> property_precedes value index previous
 
-let quoted_step ~skip_doubled_single value limit index quote =
+let quoted_step value limit index quote =
   let next = succ index in
   match (quote, value.[index]) with
   | Double_quote, '\\' -> (min limit (succ next), Some Double_quote)
   | Double_quote, '"' -> (next, None)
   | Single_quote, '\''
-    when next < limit && value.[next] = '\'' && skip_doubled_single ->
+    when next < limit && value.[next] = '\'' ->
       (succ next, Some Single_quote)
   | Single_quote, '\'' -> (next, None)
   | _ -> (next, Some quote)
@@ -150,9 +150,7 @@ let separated_comment_start value =
     else
       match quote with
       | Some quote ->
-          let next, quote =
-            quoted_step ~skip_doubled_single:true value limit index quote
-          in
+          let next, quote = quoted_step value limit index quote in
           loop next quote
       | None ->
           let character = value.[index] in
@@ -180,9 +178,7 @@ let find_mapping_colons value =
     else
       match quote with
       | Some quote ->
-          let next, quote =
-            quoted_step ~skip_doubled_single:false value limit index quote
-          in
+          let next, quote = quoted_step value limit index quote in
           loop next quote property_token depth answer
       | None ->
           let character = value.[index] in
@@ -205,7 +201,7 @@ let find_mapping_colons value =
               when depth = 0
                    && (succ index = String.length value
                       || separation value.[succ index]) ->
-                loop (succ index) None false depth (index :: answer)
+                loop (succ index) None property_token depth (index :: answer)
             | _ -> loop (succ index) None false depth answer
   in
   loop 0 None false 0 []
@@ -380,7 +376,7 @@ let validate_double_escapes file source source_lines payload_lines =
                if simple then incr index
                else
                  match hex_stop with
-                 | Some stop -> index := pred stop
+                  | Some _ -> ()
                  | None ->
                      problems :=
                        issue file source_lines.(!line_index)
@@ -397,7 +393,8 @@ let validate_directives file source_lines payload_lines =
   and pending = ref false
   and yaml_seen = ref false
   and pending_handles = ref []
-  and active_handles = ref [ "!!" ] in
+  and active_handles = ref [ "!!" ]
+  and previous_line = ref None in
   let add line message =
     problems :=
       issue file line line.indent (String.length line.raw) message :: !problems
@@ -415,15 +412,18 @@ let validate_directives file source_lines payload_lines =
           | _ -> false
         then (
           let previous_plain =
-            !in_document && line.number > 1
+            !in_document
             &&
-            let previous = source_lines.(line.number - 2).raw |> String.trim in
-            previous <> ""
-            && find_mapping_colons previous = []
-            && (not (has_separated_comment previous))
-            && (not (String.contains "!&'\"[{|>" previous.[0]))
-            && (not (Util.starts_with ~prefix:"---" previous))
-            && not (Util.starts_with ~prefix:"..." previous)
+            match !previous_line with
+            | None -> false
+            | Some previous_line ->
+                let previous = String.trim previous_line.raw in
+                previous <> ""
+                && find_mapping_colons previous = []
+                && (not (has_separated_comment previous))
+                && (not (String.contains "!&'\"[{|>" previous.[0]))
+                && (not (Util.starts_with ~prefix:"---" previous))
+                && not (Util.starts_with ~prefix:"..." previous)
           in
           if not previous_plain then (
             if !in_document then
@@ -433,13 +433,12 @@ let validate_directives file source_lines payload_lines =
               match String.index_opt content '#' with
               | Some index -> (
                   let prefix = String.sub content 0 index in
-                  match
-                    String.to_seq prefix
-                    |> Seq.fold_left (fun _ character -> Some character) None
-                  with
-                  | Some character when separation character ->
+                  if
+                    String.length prefix > 0
+                    && separation prefix.[String.length prefix - 1]
+                  then
                       String.trim prefix
-                  | _ -> content)
+                  else content)
               | None -> content
             in
             match words directive with
@@ -496,7 +495,8 @@ let validate_directives file source_lines payload_lines =
               | None -> ());
               cursor := !stop)
             else incr cursor
-          done))
+          done);
+      previous_line := Some line)
     source_lines;
   if !pending && Array.length source_lines > 0 then
     add
@@ -622,7 +622,7 @@ let validate_flow file source_lines payload_lines =
       if not payload_lines.(line_index) then (
         let trimmed = String.trim line.raw in
         (match top () with
-        | Some frame when line.number > frame.opened_line && trimmed <> "" ->
+        | Some frame when trimmed <> "" ->
             let begins_close =
               match trimmed.[0] with
               | ']' | '}' -> true
@@ -812,7 +812,6 @@ let validate_layout file source_lines payload_lines =
                       "content follows a quoted scalar"
                   else if
                     Util.starts_with ~prefix:"#" trimmed_tail
-                    && String.length tail > 0
                     && tail.[0] = '#'
                   then
                     add line
