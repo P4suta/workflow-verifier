@@ -265,7 +265,7 @@ let () =
       "parallel_safe = false";
       "jobs = 1";
       "scripts/mutation_resource_guard.py";
-      "--jobs=1";
+      "\"-j\"";
       "name = \"yaml-conformance\"";
       "@@test/mutation-yaml-conformance";
       "name = \"semantic-fingerprints\"";

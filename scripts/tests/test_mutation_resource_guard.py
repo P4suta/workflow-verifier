@@ -3,10 +3,14 @@ from __future__ import annotations
 from pathlib import Path
 import subprocess
 import sys
+import tomllib
 import unittest
 from unittest import mock
 
 from scripts import mutation_resource_guard
+
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 
 
 class FakeResource:
@@ -75,6 +79,29 @@ class MutationResourceGuardTests(unittest.TestCase):
             mutation_resource_guard.command_after_separator([])
         with self.assertRaisesRegex(ValueError, "separator"):
             mutation_resource_guard.command_after_separator(["true"])
+
+    def test_every_mutation_stage_is_guarded_and_single_job(self) -> None:
+        configuration = tomllib.loads(
+            (REPOSITORY_ROOT / ".ocaml-mutants.toml").read_text(encoding="utf-8")
+        )
+        stages = configuration["test"]["stages"]
+        self.assertGreaterEqual(len(stages), 1)
+        for stage in stages:
+            with self.subTest(stage=stage["name"]):
+                command = stage["command"]
+                self.assertEqual(
+                    command[:5],
+                    [
+                        "python3",
+                        "-B",
+                        "scripts/mutation_resource_guard.py",
+                        "--",
+                        "dune",
+                    ],
+                )
+                self.assertNotIn("--jobs=1", command)
+                jobs = command.index("-j")
+                self.assertEqual(command[jobs + 1], "1")
 
     def test_check_mode_applies_limits_before_attesting(self) -> None:
         resources = FakeResource()

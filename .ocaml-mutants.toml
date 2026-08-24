@@ -28,7 +28,8 @@ command = [
   "--",
   "dune",
   "exec",
-  "--jobs=1",
+  "-j",
+  "1",
   "test/property_contract.exe",
 ]
 
@@ -41,7 +42,8 @@ command = [
   "--",
   "dune",
   "build",
-  "--jobs=1",
+  "-j",
+  "1",
   "--force",
   "@@test/mutation-semantic-oracle",
 ]
@@ -55,7 +57,8 @@ command = [
   "--",
   "dune",
   "build",
-  "--jobs=1",
+  "-j",
+  "1",
   "--force",
   "@@test/mutation-yaml-conformance",
 ]
@@ -69,7 +72,8 @@ command = [
   "--",
   "dune",
   "runtest",
-  "--jobs=1",
+  "-j",
+  "1",
   "--force",
 ]
 
