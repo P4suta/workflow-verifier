@@ -8,9 +8,10 @@ summaries. `lock-v1` remains readable, but its digest-only entries retain a
 machine-readable missing-semantic-evidence state.
 
 Sandbox run/audit, backend attestation, VM image/request/observation, corpus,
-performance, mutation, and determinism documents are also strict versioned
-repository protocols. Their schemas travel with source and release evidence,
-but they are not additional analyzer configuration or report entry points.
+performance, mutation, determinism, and composed release-evidence documents are
+also strict versioned repository protocols. Their schemas travel with source
+and release evidence, but they are not additional analyzer configuration or
+report entry points.
 
 Canonical v1 objects are strict: producers and consumers reject unknown fields
 and unknown protocol versions. A field-set change therefore requires a new

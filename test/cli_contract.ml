@@ -5,6 +5,11 @@ exception Failed of string
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
 
+let lockfile entries =
+  match Lockfile.create entries with
+  | Ok lock -> lock
+  | Error message -> fail "%s" message
+
 type harness = {
   mutable files : (string * string) list;
   mutable stdout : string list;
@@ -173,6 +178,12 @@ let discovery_boundary_test () =
   state.files <-
     ("_build/default/.github/workflows/copied.yml", vulnerable_workflow)
     :: ("helpers/target/debug/.github/workflows/copied.yml", vulnerable_workflow)
+    :: ( "evaluation/corpus/github/example/.github/workflows/copied.yml",
+         vulnerable_workflow )
+    :: ("test/fixtures/.github/workflows/intentional.yml", vulnerable_workflow)
+    :: ("test/fixtures/.gitlab-ci.yml", "verify:\n  script: echo fixture\n")
+    :: ("test/fixtures/azure-pipelines.yml", "trigger: [main]\npool: hosted\n")
+    :: ("test/fixtures/.circleci/config.yml", "version: 2.1\nworkflows: {}\n")
     :: state.files;
   let code =
     Cli.run ~io:(io state) ~services:(services state)
@@ -187,8 +198,17 @@ let discovery_boundary_test () =
       |]
   in
   expect "audit succeeds" (code = 0);
-  expect "generated trees are not rediscovered as source inputs"
+  expect "only root provider entrypoints are discovered as source inputs"
     (Util.contains ~needle:"\"inputs\":1" (output state.stdout));
+  let system_paths = harness () in
+  system_paths.files <-
+    List.map (fun (path, source) -> ("./" ^ path, source)) system_paths.files;
+  let system_path_code =
+    Cli.run ~io:(io system_paths) ~services:(services system_paths)
+      [| "workflow-verifier"; "check"; "--persona"; "audit"; "." |]
+  in
+  expect "filesystem paths prefixed by the current directory are entrypoints"
+    (system_path_code = 0);
   let filtered = harness () in
   filtered.files <-
     ( ".workflow-verifier.toml",
@@ -238,7 +258,7 @@ let explicit_effects_test () =
     );
   let pinned = harness () in
   let lock =
-    Lockfile.make
+    lockfile
       [
         {
           Lockfile.provider = Ir.Github;
@@ -470,10 +490,20 @@ let sandbox_source_manifest_test () =
         ("README.md", "first\n"); ("_build/default/generated.txt", "volatile\n");
       ]
   in
+  let corpus_ignored =
+    plan_digest
+      [
+        ("README.md", "first\n");
+        ( "evaluation/corpus/github/example/.github/workflows/ci.yml",
+          vulnerable_workflow );
+      ]
+  in
   expect "every mounted source file contributes to the source digest"
     (first <> changed);
   expect "generated trees are excluded from the mounted source manifest"
-    (first = ignored)
+    (first = ignored);
+  expect "evaluation evidence is excluded from the project source manifest"
+    (first = corpus_ignored)
 
 let sandbox_reconciliation_cli_test () =
   let state = harness () in

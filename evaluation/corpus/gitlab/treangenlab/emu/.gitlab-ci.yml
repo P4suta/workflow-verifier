@@ -1,0 +1,26 @@
+image: continuumio/anaconda3:latest
+
+before_script:
+  #- conda update -n base conda
+  - if conda env list | grep -q 'custom-emu'; then
+  - conda env remove --name custom-emu
+  - fi;
+  - conda env create -f environment.yml
+  - source activate custom-emu
+  - export EMU_DATABASE_DIR=./emu_database
+
+test1:
+  stage: test
+  script:
+    - python emu abundance example/full_length.fa
+
+test2:
+  stage: test
+  script:
+    - python emu abundance --type sr example/short_read_f.fq example/short_read_r.fq
+
+test3:
+  stage: test
+  script:
+    - python emu abundance --type sr example/short_read_f.fq
+

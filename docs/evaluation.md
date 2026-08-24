@@ -13,11 +13,48 @@ machine-readable evidence.
 - `performance-comparison-v1` compares cold, warm, and incremental samples on an
   identical declared environment. An increase above 10% needs a substantive
   explanation and an HTTPS review reference.
-- `mutation-gate-v1` proves that the configured analyzer-core source prefixes
-  were actually mutated and that every survivor is either detected or reviewed
-  as equivalent.
+- `official-compat-v1` summarizes two fixed repositories for each provider.
+  Sparse acquisition authenticates the pinned commit and tree and copies only
+  selected CI definitions. Analysis then runs twice without network access,
+  allows security diagnostics, but rejects internal errors, provider drift,
+  `YAML-SYNTAX` on valid upstream input, nondeterministic bytes, or a repository
+  that exceeds its 60-second shared deadline. Public evidence retains counts
+  and digests, not diagnostic messages.
+- Each `mutation-gate-v1` authenticates one complete catalog-bound shard and
+  binds its runner exit code and canonical `mutation-resource-guard-v1`
+  attestation to the verified report. The same fail-closed Linux resource
+  envelope wraps baseline measurements, every mutant test stage, and the
+  shard orchestrator; a baseline must therefore prove that unmodified tests fit
+  before exceeding the envelope can detect a mutant. Every survivor must be
+  detected or reviewed as equivalent. A quality failure still emits the raw
+  report and a machine-readable failed gate; it never discards the evidence.
+- `mutation-campaign-v1` binds those reports to one pinned-runner catalog and
+  proves that their immutable full-ID union has no omission, duplication, or
+  metadata substitution. Both passing and complete-but-failing campaigns are
+  representable, while only a passing campaign can satisfy publication.
+  The mutation pipeline also runs the pinned 402-case yaml-test-suite through
+  each worker's private Dune build directory. One catalog job reads the exact
+  immutable Git tree, selects only real case directories containing regular
+  `in.yaml` blobs, and exports 1,887 regular files without dereferencing the
+  upstream `name/` and `tags/` symlink aliases. Every shard rejects the artifact
+  unless its case/file ledger and independently pinned tree SHA-256 recompute
+  exactly. The suite remains under the ignored build root outside the mutation
+  runner's source snapshot and crosses that boundary through one explicit
+  read-only path capability. Every runner-managed Dune stage also receives a
+  per-mutant build directory, so a lock collision cannot be counted as a kill.
+  Captured subprocess bytes retain a raw SHA-256; invalid UTF-8 is replaced at
+  the JSON evidence boundary with an explicit encoding-error count.
+  A separate semantic fingerprint stage covers typed configuration failures,
+  every policy selector and capability/effect name, cross-shell source/sink
+  boundaries, graph algorithms, fixed-point dataflow, and all verifier personas.
+  Fingerprint updates therefore require an intentional test review rather than
+  silently accepting changed behavior.
 - `determinism-comparison-v1` byte-compares report, lockfile, and fix output from
   Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64.
+- `dogfood-v1` requires zero diagnostics while analyzing the repository's real
+  GitHub, GitLab, Azure, and CircleCI entrypoints, exercises every public CLI
+  surface, recomputes the OCI evidence hash chain, and binds the verified audit
+  tail and static/runtime reconciliation to the execution plan.
 - The AFL campaign must execute a nonempty corpus and finish with no crash or
   hang artifact.
 
@@ -25,15 +62,35 @@ The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,
 and partial source coverage. They write outputs atomically.
 
-## Deliberately external inputs
+Publication inputs are composed by `release-evidence-v2`. Candidate commit `C`
+contains the release code and version; its single evidence-only child `E`
+contains measurements of `C` and is the future tag target. The manifest binds
+`C` and the planned tag to the corpus report, fixed official compatibility
+report, four platform performance comparisons, and signed sole-maintainer
+security attestation. `scripts/verify_release_evidence.py` validates the `E` to
+`C` parent relation and changed paths, nested proof states, every digest, the
+pinned maintainer SSH identity and namespace, and all fail-closed risk rules.
+
+## Reviewed acquisition inputs
 
 The public repository does not manufacture a 400-repository result or a
-performance baseline. Corpus selection, SPDX review, expected diagnostics, and
-the independent security review require human evidence. Release automation must
-be given those reviewed inputs; their absence is a failed publication gate, not
-an `Unknown` converted into success.
+performance baseline. `scripts/prepare_corpus.py acquire` performs explicit,
+credential-free source acquisition and records immutable source and permissive
+license evidence. Its separate `apply-review` phase requires every observed
+diagnostic to receive a reasoned `expected` or `allowed` decision. The security
+self-attestation remains separately signed release evidence; no missing input
+is converted into success.
 
-Local entry points are exposed by `just corpus`, `just performance-measure`,
-`just performance-gate`, `just mutation-gate`, `just determinism-probe`, and
-`just determinism-compare`. Equivalent `mise` tasks use the conventional
-`evaluation/`, `performance/`, and `_build/` paths.
+After analyzer changes, `scripts/prepare_corpus.py refresh` first verifies all
+recorded source digests and then reanalyzes those exact snapshots into a new
+transaction without network access. The source evaluation is immutable; the
+new reports receive a fresh exhaustive review before promotion.
+
+Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
+`just corpus-review`, `just corpus`, `just performance-measure`,
+`just performance-gate`, `just mutation-gate`, `just mutation-campaign`,
+`just determinism-probe`, and `just determinism-compare`.
+`just official-fetch`, `just official-compat`, and
+`just release-evidence REVISION TAG` close the fixed compatibility and evidence
+composition gates. Equivalent `mise` tasks use the conventional `evaluation/`,
+`performance/`, `_build/`, and `release-evidence/` paths.

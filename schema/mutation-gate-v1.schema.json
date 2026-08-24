@@ -10,12 +10,14 @@
     "passed": { "type": "boolean" },
     "profile": { "enum": ["balanced", "strong", "all"] },
     "report_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "resource_guard_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
     "required_prefixes": {
       "items": { "minLength": 2, "pattern": "/$", "type": "string" },
       "minItems": 1,
       "type": "array",
       "uniqueItems": true
     },
+    "runner_exit_code": { "enum": [0, 1] },
     "schema": { "const": "mutation-gate-v1" },
     "unexpected_survivors": { "minimum": 0, "type": "integer" },
     "workspace_digest": { "pattern": "^[0-9a-f]{64}$", "type": "string" }
@@ -28,10 +30,24 @@
     "passed",
     "profile",
     "report_digest",
+    "resource_guard_digest",
     "required_prefixes",
     "schema",
     "unexpected_survivors",
     "workspace_digest"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "passed": { "const": true } },
+        "required": ["runner_exit_code"]
+      },
+      "then": { "properties": { "runner_exit_code": { "const": 0 } } },
+      "else": {
+        "if": { "required": ["runner_exit_code"] },
+        "then": { "properties": { "runner_exit_code": { "const": 1 } } }
+      }
+    }
   ],
   "title": "workflow-verifier mutation gate result v1",
   "type": "object"

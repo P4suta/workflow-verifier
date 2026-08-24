@@ -24,37 +24,14 @@ let parse unit_ =
 
 let expand parsed = { Frontend_intf.parsed; expansion_unknowns = [] }
 
-let is_hex character =
-  match character with
-  | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
-  | _ -> false
-
-let immutable_revision reference =
-  match String.rindex_opt reference '@' with
-  | Some index ->
-      let revision =
-        String.sub reference (index + 1) (String.length reference - index - 1)
-      in
-      (String.length revision = 40 || String.length revision = 64)
-      && String.for_all is_hex revision
-      || Util.starts_with ~prefix:"sha256:" revision
-         && String.length revision = 71
-         && String.sub revision 7 64 |> String.for_all is_hex
-  | None -> false
-
 let dependency ?(kind = Frontend_intf.Unknown_dependency_kind)
     ?(locator = Frontend_intf.Direct_reference) provider reference span =
-  let local =
-    Util.starts_with ~prefix:"./" reference
-    || Util.starts_with ~prefix:"../" reference
-  in
   let mutability =
-    if local then Frontend_intf.Local
-    else if immutable_revision reference then Immutable
-    else if
-      String.contains reference '@' || Util.contains ~needle:"://" reference
-    then Mutable
-    else Unknown_mutability
+    match Dependency_identity.classify_reference reference with
+    | Dependency_identity.Local -> Frontend_intf.Local
+    | Dependency_identity.Immutable -> Immutable
+    | Dependency_identity.Mutable -> Mutable
+    | Dependency_identity.Unknown -> Unknown_mutability
   in
   let reason = Unknown.Unresolved_dependency reference in
   {

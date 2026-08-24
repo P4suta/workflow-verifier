@@ -1,0 +1,473 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:6f7e0c64c1fb920e7ae5ac9e3eeb86affc4b2930f3675ea204fdd8996f029fd3",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_b5caaf43acdca462d474",
+          "id": "wv_284bee201b4d775931ef",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ea0f085b1936011bba1c"
+        },
+        {
+          "condition": true,
+          "from": "wv_eccc40bcbc1c7d3af3bf",
+          "id": "wv_3bbcb07664c96d9cf4fc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b5caaf43acdca462d474"
+        },
+        {
+          "condition": true,
+          "from": "wv_a98e25821fdb92267ec1",
+          "id": "wv_6c014a986f831a9d0819",
+          "kind": "control",
+          "label": null,
+          "to": "wv_eccc40bcbc1c7d3af3bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_b5caaf43acdca462d474",
+          "id": "wv_7da703a3cc13f7ded235",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3bbb51b314ac59d0c5da"
+        },
+        {
+          "condition": true,
+          "from": "wv_eccc40bcbc1c7d3af3bf",
+          "id": "wv_9250c399a68891ed2e09",
+          "kind": "write",
+          "label": null,
+          "to": "wv_08f93879bada9070bed7"
+        },
+        {
+          "condition": true,
+          "from": "wv_3bbb51b314ac59d0c5da",
+          "id": "wv_d9bc31ac012a23d47d5b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_caf0c99fc1d0cb072e39"
+        },
+        {
+          "condition": true,
+          "from": "wv_a2d687294e7f3f590f10",
+          "id": "wv_eabe52e04797d8dc344d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a98e25821fdb92267ec1"
+        },
+        {
+          "condition": true,
+          "from": "wv_eccc40bcbc1c7d3af3bf",
+          "id": "wv_f9192f917daaffef9f95",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3bbb51b314ac59d0c5da"
+        }
+      ],
+      "entrypoints": [
+        "wv_a2d687294e7f3f590f10"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_08f93879bada9070bed7",
+          "kind": "resource",
+          "name": "artifact:build-application",
+          "phase": "post",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 233,
+              "column": 5,
+              "line": 18
+            },
+            "stop": {
+              "byte": 297,
+              "column": 16,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3bbb51b314ac59d0c5da",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 7,
+              "line": 16
+            },
+            "stop": {
+              "byte": 215,
+              "column": 24,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a2d687294e7f3f590f10",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 14,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 297,
+              "column": 16,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a98e25821fdb92267ec1",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 65,
+              "column": 3,
+              "line": 7
+            },
+            "stop": {
+              "byte": 72,
+              "column": 10,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b5caaf43acdca462d474",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 162,
+              "column": 7,
+              "line": 15
+            },
+            "stop": {
+              "byte": 191,
+              "column": 36,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 198,
+                      "column": 7,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 215,
+                      "column": 24,
+                      "line": 16
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "mvn clean package"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_caf0c99fc1d0cb072e39",
+          "kind": "command",
+          "name": "mvn clean package",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 198,
+              "column": 7,
+              "line": 16
+            },
+            "stop": {
+              "byte": 215,
+              "column": 24,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 162,
+                      "column": 7,
+                      "line": 15
+                    },
+                    "stop": {
+                      "byte": 191,
+                      "column": 36,
+                      "line": 15
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git rev-parse HEAD >> VERSION"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_ea0f085b1936011bba1c",
+          "kind": "command",
+          "name": "git rev-parse HEAD >> VERSION",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 162,
+              "column": 7,
+              "line": 15
+            },
+            "stop": {
+              "byte": 191,
+              "column": 36,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_eccc40bcbc1c7d3af3bf",
+          "kind": "job",
+          "name": "build-application",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/h5radar/radar/.gitlab-ci.yml",
+            "start": {
+              "byte": 92,
+              "column": 1,
+              "line": 10
+            },
+            "stop": {
+              "byte": 297,
+              "column": 16,
+              "line": 21
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/h5radar/radar/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:775a3ecd4abd27a72809c518c2cdcdc4640494f6807739c859fa14962aba7666",
+      "path": "gitlab/h5radar/radar/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

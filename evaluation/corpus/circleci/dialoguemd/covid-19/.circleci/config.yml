@@ -1,0 +1,86 @@
+version: 2.1
+
+orbs:
+  node: dialogue/node@1.1.0
+
+aliases:
+  - &executor
+    executor:
+      name: node/node
+      version: "10.24.1"
+
+workflows:
+  make-project:
+    jobs:
+      - node/run:
+          name: 🧹 lint
+          run: lint
+          <<: *executor
+          context: code-validator
+      
+      - node/test:
+          name: 🧪 test
+          <<: *executor
+          context: code-validator
+
+      - node/build:
+          name: 🛠👩‍💻🇨🇦 build-dev
+          build_command: build:dev
+          workspace_path: build-dev
+          <<: *executor
+          context: code-validator
+      
+      - node/deploy:
+          name: 🚀🥀🇨🇦 deploy-dev-ca-ephemeral
+          stage: dev
+          place: ca
+          ephemeral: yes
+          workspace_path: build-dev
+          context: static-cdn-deployer-dev-ca
+          requires:
+            - 🧪 test
+            - 🛠👩‍💻🇨🇦 build-dev
+          filters:
+            branches:
+              ignore:
+                - master
+      
+      - node/deploy:
+          name: 🚀👩‍💻🇨🇦 deploy-dev-ca
+          stage: dev
+          place: ca
+          workspace_path: build-dev
+          context: static-cdn-deployer-dev-ca
+          requires:
+            - 🧪 test
+            - 🛠👩‍💻🇨🇦 build-dev
+          filters:
+            branches:
+              only:
+                - master
+
+      - node/build:
+          name: 🛠🇨🇦 build-prod-ca
+          build_command: build
+          workspace_path: build-prod-ca
+          <<: *executor
+          context: code-validator
+          filters:
+            branches:
+              only:
+                - master
+      
+      - node/deploy:
+          name: 🚀🇨🇦 deploy-prod-ca
+          stage: prod
+          place: ca
+          context: static-cdn-deployer-prod-ca
+          cache_strategy: create-react
+          workspace_path: build-prod-ca
+          requires:
+            - 🧪 test
+            - 🛠🇨🇦 build-prod-ca
+          filters:
+            branches:
+              only:
+                - master

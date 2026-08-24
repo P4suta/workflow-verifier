@@ -306,15 +306,16 @@ let gitlab_component ~get ~allowed_sources reference =
   | Error _ as error -> error
   | Ok (identity, version) -> (
       match split_nonempty '/' identity with
-      | host :: rest when List.length rest >= 2 ->
-          let reversed = List.rev rest in
-          let component = List.hd reversed in
-          let project = List.rev (List.tl reversed) |> String.concat "/" in
-          if not (valid_name_component component) then
-            Error ("invalid GitLab component reference: " ^ reference)
-          else
-            gitlab_project ~get ~allowed_sources ~host ~project
-              ~requested:version ~path:("templates/" ^ component)
+      | host :: rest when List.length rest >= 2 -> (
+          match List.rev rest with
+          | component :: reversed_project ->
+              let project = List.rev reversed_project |> String.concat "/" in
+              if not (valid_name_component component) then
+                Error ("invalid GitLab component reference: " ^ reference)
+              else
+                gitlab_project ~get ~allowed_sources ~host ~project
+                  ~requested:version ~path:("templates/" ^ component)
+          | [] -> Error ("invalid GitLab component reference: " ^ reference))
       | _ -> Error ("invalid GitLab component reference: " ^ reference))
 
 let gitlab_repository_file ~get ~allowed_sources ~repository ~revision ~path =
@@ -583,7 +584,7 @@ let parse_image reference =
         && is_hex (String.sub digest 7 64)
       then Ok (`Pinned (name, String.lowercase_ascii digest))
       else Error ("invalid OCI image digest: " ^ reference)
-  | None ->
+  | None -> (
       let slash = String.rindex_opt reference '/' in
       let colon = String.rindex_opt reference ':' in
       let name, tag =
@@ -595,20 +596,20 @@ let parse_image reference =
         | _ -> (reference, "latest")
       in
       let components = split_nonempty '/' name in
-      if components = [] || tag = "" then
-        Error ("invalid OCI image: " ^ reference)
-      else
-        let first = List.hd components in
-        let explicit_registry =
-          String.contains first '.' || String.contains first ':'
-        in
-        if explicit_registry then
-          Ok (`Tagged (first, String.concat "/" (List.tl components), tag))
-        else
-          let repository =
-            if List.length components = 1 then "library/" ^ name else name
+      match components with
+      | [] -> Error ("invalid OCI image: " ^ reference)
+      | _ when tag = "" -> Error ("invalid OCI image: " ^ reference)
+      | first :: remaining ->
+          let explicit_registry =
+            String.contains first '.' || String.contains first ':'
           in
-          Ok (`Tagged ("registry-1.docker.io", repository, tag))
+          if explicit_registry then
+            Ok (`Tagged (first, String.concat "/" remaining, tag))
+          else
+            let repository =
+              if List.length components = 1 then "library/" ^ name else name
+            in
+            Ok (`Tagged ("registry-1.docker.io", repository, tag)))
 
 let bearer_token source =
   match json source with

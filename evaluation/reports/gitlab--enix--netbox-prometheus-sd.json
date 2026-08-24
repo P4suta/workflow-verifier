@@ -1,0 +1,1182 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_dce261aa1724d49a7e0e",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+        "start": {
+          "byte": 236,
+          "column": 5,
+          "line": 17
+        },
+        "stop": {
+          "byte": 297,
+          "column": 66,
+          "line": 17
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_322f41415f78437e537e",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 236,
+              "column": 5,
+              "line": 17
+            },
+            "stop": {
+              "byte": 297,
+              "column": 66,
+              "line": 17
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:dedb3905111fb84e6599d5702dd84f8d66e6d77bed59843f72348ee09c03197f",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_a775eb6add7487325e2e",
+          "id": "wv_03f872ff2a4121bd3d6c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0531291adc83c4f08bf9"
+        },
+        {
+          "condition": true,
+          "from": "wv_7fdf69243430680ecf2d",
+          "id": "wv_070c7102f2f0b58ec3fa",
+          "kind": "data",
+          "label": "CI_REGISTRY",
+          "to": "wv_322f41415f78437e537e"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d9c8f293c87a936a156",
+          "id": "wv_170c7e49d4340aea2c8b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_322f41415f78437e537e"
+        },
+        {
+          "condition": true,
+          "from": "wv_b32d8677030ae225f775",
+          "id": "wv_3e8ee96640cdae38f140",
+          "kind": "call",
+          "label": null,
+          "to": "wv_e27e39fd3a3422fec379"
+        },
+        {
+          "condition": true,
+          "from": "wv_26ac6e339ec8d2b8cf31",
+          "id": "wv_42c9c55aac9f78efe987",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a6514a2f72d95e383e5e"
+        },
+        {
+          "condition": true,
+          "from": "wv_0515edbf5df2101b74f1",
+          "id": "wv_4c77e3985bd9a6d63420",
+          "kind": "control",
+          "label": null,
+          "to": "wv_26ac6e339ec8d2b8cf31"
+        },
+        {
+          "condition": true,
+          "from": "wv_e632c6ce27d399ed2afc",
+          "id": "wv_5d2e835379fe345cda4f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c425cfffe71fb68255d8"
+        },
+        {
+          "condition": true,
+          "from": "wv_0515edbf5df2101b74f1",
+          "id": "wv_66e52fcbdeb56e7842e7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a6514a2f72d95e383e5e"
+        },
+        {
+          "condition": true,
+          "from": "wv_26ac6e339ec8d2b8cf31",
+          "id": "wv_6ef751f0e9db64c8500b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_98171aaf4694f4f570d9"
+        },
+        {
+          "condition": true,
+          "from": "wv_0531291adc83c4f08bf9",
+          "id": "wv_721bb452e624901418fb",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_fac204d1a139dbcc4b93"
+        },
+        {
+          "condition": true,
+          "from": "wv_b32d8677030ae225f775",
+          "id": "wv_782c09c2d1503fc0e878",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a775eb6add7487325e2e"
+        },
+        {
+          "condition": true,
+          "from": "wv_fac204d1a139dbcc4b93",
+          "id": "wv_93810c87cc653208a351",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e632c6ce27d399ed2afc"
+        },
+        {
+          "condition": true,
+          "from": "wv_a6514a2f72d95e383e5e",
+          "id": "wv_a4e68551dd46d26ef81a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f5e275470b6a9a1503dc"
+        },
+        {
+          "condition": true,
+          "from": "wv_d338d60c5046ae2ae0a6",
+          "id": "wv_b03c4d284ef36d8a6c7d",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_f5e275470b6a9a1503dc"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d9c8f293c87a936a156",
+          "id": "wv_b60a3310256905d1e8d7",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_26ac6e339ec8d2b8cf31"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ef761cd8604f2b72abe",
+          "id": "wv_c3081a734ff4539d5743",
+          "kind": "data",
+          "label": "CI_REGISTRY_IMAGE",
+          "to": "wv_98171aaf4694f4f570d9"
+        },
+        {
+          "condition": true,
+          "from": "wv_5654b7e09d634e80605f",
+          "id": "wv_c3aa98970cbb25297932",
+          "kind": "data",
+          "label": "DOCKER_DRIVER",
+          "to": "wv_b32d8677030ae225f775"
+        },
+        {
+          "condition": true,
+          "from": "wv_0515edbf5df2101b74f1",
+          "id": "wv_e851396fd70fbba094de",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0d9c8f293c87a936a156"
+        },
+        {
+          "condition": true,
+          "from": "wv_c102a10cff6afabeee9a",
+          "id": "wv_ec395d84b789db8037c0",
+          "kind": "data",
+          "label": "CI_JOB_TOKEN",
+          "to": "wv_322f41415f78437e537e"
+        },
+        {
+          "condition": true,
+          "from": "wv_fac204d1a139dbcc4b93",
+          "id": "wv_f9328025a0745f32ade4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0515edbf5df2101b74f1"
+        },
+        {
+          "condition": true,
+          "from": "wv_b32d8677030ae225f775",
+          "id": "wv_f9edd4cfa0183d3fd276",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e27e39fd3a3422fec379"
+        }
+      ],
+      "entrypoints": [
+        "wv_b32d8677030ae225f775"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0515edbf5df2101b74f1",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 200,
+              "column": 1,
+              "line": 14
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0531291adc83c4f08bf9",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0d9c8f293c87a936a156",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 236,
+              "column": 5,
+              "line": 17
+            },
+            "stop": {
+              "byte": 297,
+              "column": 66,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_26ac6e339ec8d2b8cf31",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 302,
+              "column": 5,
+              "line": 18
+            },
+            "stop": {
+              "byte": 338,
+              "column": 41,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 272,
+                      "column": 41,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 284,
+                      "column": 53,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 286,
+                      "column": 55,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 297,
+                      "column": 66,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 236,
+                      "column": 5,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 297,
+                      "column": 66,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN",
+                  "CI_REGISTRY",
+                  "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_322f41415f78437e537e",
+          "kind": "command",
+          "name": "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 236,
+              "column": 5,
+              "line": 17
+            },
+            "stop": {
+              "byte": 297,
+              "column": 66,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5654b7e09d634e80605f",
+          "kind": "resource",
+          "name": "variable:DOCKER_DRIVER",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 120,
+              "column": 3,
+              "line": 6
+            },
+            "stop": {
+              "byte": 143,
+              "column": 26,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 319,
+                      "column": 22,
+                      "line": 18
+                    },
+                    "stop": {
+                      "byte": 336,
+                      "column": 39,
+                      "line": 18
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7ef761cd8604f2b72abe",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 319,
+              "column": 22,
+              "line": 18
+            },
+            "stop": {
+              "byte": 336,
+              "column": 39,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 286,
+                      "column": 55,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 297,
+                      "column": 66,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7fdf69243430680ecf2d",
+          "kind": "resource",
+          "name": "CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 286,
+              "column": 55,
+              "line": 17
+            },
+            "stop": {
+              "byte": 297,
+              "column": 66,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 319,
+                      "column": 22,
+                      "line": 18
+                    },
+                    "stop": {
+                      "byte": 336,
+                      "column": 39,
+                      "line": 18
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 302,
+                      "column": 5,
+                      "line": 18
+                    },
+                    "stop": {
+                      "byte": 338,
+                      "column": 41,
+                      "line": 18
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE",
+                  "docker build -t $CI_REGISTRY_IMAGE ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_98171aaf4694f4f570d9",
+          "kind": "command",
+          "name": "docker build -t $CI_REGISTRY_IMAGE .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 302,
+              "column": 5,
+              "line": 18
+            },
+            "stop": {
+              "byte": 338,
+              "column": 41,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a6514a2f72d95e383e5e",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 343,
+              "column": 5,
+              "line": 19
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a775eb6add7487325e2e",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b32d8677030ae225f775",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_JOB_TOKEN",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 272,
+                      "column": 41,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 284,
+                      "column": 53,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_JOB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c102a10cff6afabeee9a",
+          "kind": "resource",
+          "name": "CI_JOB_TOKEN",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 272,
+              "column": 41,
+              "line": 17
+            },
+            "stop": {
+              "byte": 284,
+              "column": 53,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c425cfffe71fb68255d8",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 356,
+                      "column": 18,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 373,
+                      "column": 35,
+                      "line": 19
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d338d60c5046ae2ae0a6",
+          "kind": "resource",
+          "name": "CI_REGISTRY_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 356,
+              "column": 18,
+              "line": 19
+            },
+            "stop": {
+              "byte": 373,
+              "column": 35,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e27e39fd3a3422fec379",
+          "kind": "call",
+          "name": "docker:latest",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 7,
+              "column": 8,
+              "line": 1
+            },
+            "stop": {
+              "byte": 20,
+              "column": 21,
+              "line": 1
+            }
+          },
+          "unknown": {
+            "detail": "docker:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e632c6ce27d399ed2afc",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_IMAGE",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 356,
+                      "column": 18,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 373,
+                      "column": 35,
+                      "line": 19
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 343,
+                      "column": 5,
+                      "line": 19
+                    },
+                    "stop": {
+                      "byte": 380,
+                      "column": 42,
+                      "line": 19
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_IMAGE",
+                  "docker push $CI_REGISTRY_IMAGE:latest"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f5e275470b6a9a1503dc",
+          "kind": "command",
+          "name": "docker push $CI_REGISTRY_IMAGE:latest",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 343,
+              "column": 5,
+              "line": 19
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fac204d1a139dbcc4b93",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 380,
+              "column": 42,
+              "line": 19
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:bd7337befb89b07d42c781884b2982e3ebd2649215e765a9421954c8656b8d1b",
+      "path": "gitlab/enix/netbox-prometheus-sd/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "docker:latest",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

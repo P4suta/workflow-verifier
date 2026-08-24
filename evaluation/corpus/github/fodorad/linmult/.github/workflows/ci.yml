@@ -1,0 +1,76 @@
+name: CI
+on:
+  push:
+    branches: [main, dev, "feature/**"]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  test:
+    name: test (py${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Oldest supported (requires-python floor) through the latest stable release.
+        python-version: ["3.12", "3.13", "3.14"]
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        lfs: true
+        fetch-depth: 0  # required for hatch-vcs git describe
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v7
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+
+    - name: Install dependencies
+      run: uv sync --extra dev --extra docs
+
+    - name: Audit dependencies for vulnerabilities
+      run: uvx pip-audit
+      continue-on-error: true  # torch may have known CVEs; treat as warning
+
+    - name: Ruff Lint
+      run: uv run ruff check .
+
+    - name: Ruff Format
+      run: uv run ruff format --check .
+
+    - name: Type check (ty)
+      run: uv run ty check linmult
+
+    - name: Test & Coverage
+      run: |
+        uv run coverage run -m unittest discover -s tests -v
+        uv run coverage report
+        uv run coverage html
+        uv run coverage xml -o coverage.xml
+
+    - name: Upload coverage reports to Codecov
+      # Coverage is effectively identical across the matrix; upload once (from the
+      # floor version on Linux) to avoid duplicate/conflicting reports on Codecov.
+      if: matrix.python-version == '3.12' && matrix.os == 'ubuntu-latest'
+      uses: codecov/codecov-action@v7
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Upload coverage HTML
+      uses: actions/upload-artifact@v7
+      with:
+        name: coverage-report-${{ matrix.python-version }}-${{ matrix.os }}
+        path: coverage_html/
+      if: always()
+
+    - name: Build docs
+      run: uv run sphinx-build -b html docs/ site/
+      # Linux-only, floor Python version; other legs add cost without benefit.
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'

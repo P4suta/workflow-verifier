@@ -1,0 +1,434 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:5035f23f85300558641722d2f310cf93b139787d9b25ea71e02c4daacc3d0698",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_9e87d47a96ff3c8103a5",
+          "id": "wv_55bee5688bde3f433288",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2090066a848e697ce6a8"
+        },
+        {
+          "condition": true,
+          "from": "wv_9e87d47a96ff3c8103a5",
+          "id": "wv_89fef1186ab1d3d956c8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6141692b2df577886b8b"
+        },
+        {
+          "condition": true,
+          "from": "wv_9e87d47a96ff3c8103a5",
+          "id": "wv_9e4a354d8c13f10a8473",
+          "kind": "control",
+          "label": null,
+          "to": "wv_066e476bc508d1b9ed6c"
+        },
+        {
+          "condition": true,
+          "from": "wv_cab477cf63805eae5e5a",
+          "id": "wv_b6f423c6b7e792a956ec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_47937b058e4dcd4858b9"
+        },
+        {
+          "condition": true,
+          "from": "wv_9e87d47a96ff3c8103a5",
+          "id": "wv_db5a64675e7871230866",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f31dc21ef6af753412bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_cab477cf63805eae5e5a",
+          "id": "wv_ed074cfef7eb93434ab8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9e87d47a96ff3c8103a5"
+        },
+        {
+          "condition": true,
+          "from": "wv_cab477cf63805eae5e5a",
+          "id": "wv_ef3be9479bec9e4ce13e",
+          "kind": "call",
+          "label": null,
+          "to": "wv_47937b058e4dcd4858b9"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_2090066a848e697ce6a8",
+          "id": "wv_f7db1efb72e2b8657bf6",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_cd5bfd525c50b17b7c14"
+        }
+      ],
+      "entrypoints": [
+        "wv_cab477cf63805eae5e5a"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_066e476bc508d1b9ed6c",
+          "kind": "job",
+          "name": "linux_python_3.11",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 1239,
+              "column": 3,
+              "line": 55
+            },
+            "stop": {
+              "byte": 1371,
+              "column": 29,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+                    "start": {
+                      "byte": 176,
+                      "column": 13,
+                      "line": 12
+                    },
+                    "stop": {
+                      "byte": 206,
+                      "column": 25,
+                      "line": 13
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_2090066a848e697ce6a8",
+          "kind": "gate",
+          "name": "filter:test:linux_python_3.9",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 176,
+              "column": 13,
+              "line": 12
+            },
+            "stop": {
+              "byte": 206,
+              "column": 25,
+              "line": 13
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_47937b058e4dcd4858b9",
+          "kind": "call",
+          "name": "circleci/python:latest",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 454,
+              "column": 14,
+              "line": 26
+            },
+            "stop": {
+              "byte": 476,
+              "column": 36,
+              "line": 26
+            }
+          },
+          "unknown": {
+            "detail": "circleci/python:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6141692b2df577886b8b",
+          "kind": "job",
+          "name": "linux_python_3.8",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 842,
+              "column": 3,
+              "line": 40
+            },
+            "stop": {
+              "byte": 970,
+              "column": 26,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9e87d47a96ff3c8103a5",
+          "kind": "workflow",
+          "name": "test",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 38,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 377,
+              "column": 20,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cab477cf63805eae5e5a",
+          "kind": "workflow",
+          "name": "CircleCI config",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1371,
+              "column": 29,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cd5bfd525c50b17b7c14",
+          "kind": "job",
+          "name": "linux_python_3.9",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 973,
+              "column": 3,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1101,
+              "column": 26,
+              "line": 49
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f31dc21ef6af753412bb",
+          "kind": "job",
+          "name": "linux_python_3.10",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/menpo/cyvlfeat/.circleci/config.yml",
+            "start": {
+              "byte": 1104,
+              "column": 3,
+              "line": 50
+            },
+            "stop": {
+              "byte": 1236,
+              "column": 29,
+              "line": 54
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "circleci",
+      "source": "circleci/menpo/cyvlfeat/.circleci/config.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:b36d3460975eb087d690059a68fbca50e420ee31bc4435253c0eb07cc2f6078c",
+      "path": "circleci/menpo/cyvlfeat/.circleci/config.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "circleci/python:latest",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

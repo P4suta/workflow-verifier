@@ -1,0 +1,34 @@
+jobs:
+# Mac and Linux use the same template with different matrices
+- template: buildscripts/azure/azure-linux-macos.yml
+  parameters:
+    name: Linux
+    vmImage: ubuntu-22.04
+    matrix:
+      py310_np123_sp1_10:
+        PYTHON: '3.10'
+        NUMPY: '1.23'
+        SCIPY: '1.10'
+        CONDA_ENV: 'testenv'
+
+- template: buildscripts/azure/azure-linux-macos.yml
+  parameters:
+    name: macOS
+    vmImage: macOS-latest
+    matrix:
+      py310_np123_sp1_10:
+        PYTHON: '3.10'
+        NUMPY: '1.23'
+        SCIPY: '1.10'
+        CONDA_ENV: 'testenv'
+
+- template: buildscripts/azure/azure-windows.yml
+  parameters:
+    name: Windows
+    vmImage: windows-2019
+    matrix:
+      py310_np123_sp1_10:
+        PYTHON: '3.10'
+        NUMPY: '1.23'
+        SCIPY: '1.10'
+        CONDA_ENV: 'testenv'

@@ -1,0 +1,39 @@
+version: 2.1
+
+executors:
+  main:
+    docker:
+      - image: cimg/openjdk:17.0
+    resource_class: large
+
+jobs:
+  build:
+    executor: main
+    steps:
+      - checkout
+      - run:
+          name: Sanity
+          command: |
+            echo "Starting ..."
+      - restore_cache:
+          keys:
+            - profile-{{ checksum "./dev/profiles/apache-local.sh" }}
+      - run:
+          name: Prepare
+          command: |
+            ./dev/CI-apache-local.sh prepare
+      - save_cache:
+          key: profile-{{ checksum "./dev/profiles/apache-local.sh" }}
+          paths:
+            - ~/.ci
+      - run:
+          name: Run
+          command: |
+            ./dev/CI-apache-local.sh
+
+workflows:
+  main:
+    # Inside the workflow, you define the jobs you want to run.
+    # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
+    jobs:
+      - build

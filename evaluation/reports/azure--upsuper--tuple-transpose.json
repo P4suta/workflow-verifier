@@ -1,0 +1,304 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:2c388d9dfa9f3d4017692a34b475ce1d60545ec3708f2cf22a621c7c97520b2c",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_0a017568d5c5b19d80e6",
+          "id": "wv_0feaa3dfb2a4fce01975",
+          "kind": "call",
+          "label": null,
+          "to": "wv_81342330f5dfacda29e1"
+        },
+        {
+          "condition": true,
+          "from": "wv_0a017568d5c5b19d80e6",
+          "id": "wv_9287c106c39163946a69",
+          "kind": "read",
+          "label": null,
+          "to": "wv_beeb8f36386a4c370134"
+        },
+        {
+          "condition": true,
+          "from": "wv_beeb8f36386a4c370134",
+          "id": "wv_f1426b00d9d7c1da312d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_20aecd8db4ee5d77707c"
+        },
+        {
+          "condition": true,
+          "from": "wv_0a017568d5c5b19d80e6",
+          "id": "wv_f629d5d6fdd935958eb6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_81342330f5dfacda29e1"
+        },
+        {
+          "condition": true,
+          "from": "wv_184b236f977606652a3d",
+          "id": "wv_ff1b9556c02f4fd7e254",
+          "kind": "control",
+          "label": null,
+          "to": "wv_beeb8f36386a4c370134"
+        }
+      ],
+      "entrypoints": [
+        "wv_beeb8f36386a4c370134"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0a017568d5c5b19d80e6",
+          "kind": "resource",
+          "name": "repository:templates",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/upsuper/tuple-transpose/azure-pipelines.yml",
+            "start": {
+              "byte": 121,
+              "column": 7,
+              "line": 8
+            },
+            "stop": {
+              "byte": 222,
+              "column": 24,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_184b236f977606652a3d",
+          "kind": "trigger",
+          "name": "schedules",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/upsuper/tuple-transpose/azure-pipelines.yml",
+            "start": {
+              "byte": 237,
+              "column": 3,
+              "line": 14
+            },
+            "stop": {
+              "byte": 350,
+              "column": 17,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_20aecd8db4ee5d77707c",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/upsuper/tuple-transpose/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 350,
+              "column": 17,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_81342330f5dfacda29e1",
+          "kind": "call",
+          "name": "crate-ci/azure-pipelines",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/upsuper/tuple-transpose/azure-pipelines.yml",
+            "start": {
+              "byte": 121,
+              "column": 7,
+              "line": 8
+            },
+            "stop": {
+              "byte": 222,
+              "column": 24,
+              "line": 11
+            }
+          },
+          "unknown": {
+            "detail": "crate-ci/azure-pipelines",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_beeb8f36386a4c370134",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/upsuper/tuple-transpose/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 350,
+              "column": 17,
+              "line": 19
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/upsuper/tuple-transpose/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:25bbfbeb9c483819c7db263b31e9dcf0865d067ce48f0cc144ca2533a44be0c9",
+      "path": "azure/upsuper/tuple-transpose/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "crate-ci/azure-pipelines",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "crate-ci/azure-pipelines",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

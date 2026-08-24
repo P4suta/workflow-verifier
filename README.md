@@ -21,7 +21,11 @@ every production change follows red/green/refactor.
 
 - The lossless YAML CST retains spans, comments, scalar style, anchors, aliases,
   merge keys, duplicate keys, malformed regions, and exact source bytes. The
-  pinned MIT `yaml-test-suite` release is exercised across all 402 cases.
+  typed upstream pin projects the immutable MIT `yaml-test-suite` Git tree into
+  402 real case directories and 1,887 regular files. Symlink aliases and
+  non-case files are never followed; every worker authenticates the canonical
+  manifest and its independently pinned tree SHA-256 before exercising all
+  cases.
 - Four provider compilers produce common trigger, parameter, workflow, stage,
   job, step, call, command, gate, resource, effect, and opaque nodes. Referenced
   local actions, reusable workflows, includes, child pipelines, and templates
@@ -40,12 +44,14 @@ every production change follows red/green/refactor.
 
 ## Development status
 
-Version `0.1.0-dev` is **not a release candidate**. The implementation and
-automated gates are present, but publication additionally requires reviewed
-external evidence: the license-clear 400-repository corpus, an approved
-platform performance baseline, a completed independent security review, and
-successful mutation/native-containment runs on release infrastructure. Missing
-evidence is never represented as a passing result.
+The tree carries version `0.1.0` as the first release candidate. It is not a
+published release until the protected `v0.1.0` tag exists. Publication requires
+the license-clear 400-repository corpus, pinned official-project compatibility,
+an approved four-platform performance baseline, complete mutation and native
+containment runs, and a signed sole-maintainer security attestation. Missing
+evidence is never represented as a passing result. `release-evidence-v2` binds
+measurements to candidate commit `C` in an evidence-only child commit `E`; the
+future tag points to `E` only after the dry-run release workflow passes.
 
 ## Quick start
 
@@ -85,7 +91,8 @@ static effect; absence from a finite run never proves impossibility.
 tooling, architecture/purity audits, native helper checks, and install-surface
 verification. Property, AFL, mutation, corpus, performance, and determinism
 tasks are named separately because some require platform tools or reviewed
-evidence.
+evidence. Hosted CI also runs every public CLI command against all four real
+provider entrypoints and independently verifies the OCI runtime evidence chain.
 
 See [architecture](docs/architecture.md), [TDD ledger](docs/tdd.md),
 [policy language](docs/policy.md), [sandbox protocol](docs/sandbox-protocol.md),

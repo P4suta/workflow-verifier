@@ -1,0 +1,1283 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = Maven@3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+          "start": {
+            "byte": 68,
+            "column": 9,
+            "line": 8
+          },
+          "stop": {
+            "byte": 75,
+            "column": 16,
+            "line": 8
+          }
+        }
+      },
+      "id": "diag_fdbcac6e5bbd3329c6d1",
+      "message": "dependency is not pinned to immutable content: Maven@3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+        "start": {
+          "byte": 68,
+          "column": 9,
+          "line": 8
+        },
+        "stop": {
+          "byte": 75,
+          "column": 16,
+          "line": 8
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_d76c024f424c9ec172c4",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 68,
+              "column": 9,
+              "line": 8
+            },
+            "stop": {
+              "byte": 75,
+              "column": 16,
+              "line": 8
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+          "start": {
+            "byte": 300,
+            "column": 11,
+            "line": 17
+          },
+          "stop": {
+            "byte": 775,
+            "column": 42,
+            "line": 26
+          }
+        }
+      },
+      "id": "diag_040513ce47c65f3ba6af",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+        "start": {
+          "byte": 300,
+          "column": 11,
+          "line": 17
+        },
+        "stop": {
+          "byte": 775,
+          "column": 42,
+          "line": 26
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_95304da67e643a420328",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 549,
+              "column": 260,
+              "line": 17
+            },
+            "stop": {
+              "byte": 567,
+              "column": 278,
+              "line": 17
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_5899b59324823db06b1d",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 300,
+              "column": 11,
+              "line": 17
+            },
+            "stop": {
+              "byte": 775,
+              "column": 42,
+              "line": 26
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = PublishBuildArtifacts@1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+          "start": {
+            "byte": 990,
+            "column": 9,
+            "line": 31
+          },
+          "stop": {
+            "byte": 1013,
+            "column": 32,
+            "line": 31
+          }
+        }
+      },
+      "id": "diag_94650270f27697f62f05",
+      "message": "dependency is not pinned to immutable content: PublishBuildArtifacts@1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+        "start": {
+          "byte": 990,
+          "column": 9,
+          "line": 31
+        },
+        "stop": {
+          "byte": 1013,
+          "column": 32,
+          "line": 31
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_9df59ef469f616e11d80",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 990,
+              "column": 9,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1013,
+              "column": 32,
+              "line": 31
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:2739f7c7a73f5d83e54d3ad775208b378dadc39557f5226f59ea53b82566cb65",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_14813aa93a5143b9eca5",
+          "id": "wv_153c3261969c05ae1771",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9df59ef469f616e11d80"
+        },
+        {
+          "condition": true,
+          "from": "wv_14813aa93a5143b9eca5",
+          "id": "wv_33fd9c97b09f536d4344",
+          "kind": "call",
+          "label": null,
+          "to": "wv_9df59ef469f616e11d80"
+        },
+        {
+          "condition": true,
+          "from": "wv_95304da67e643a420328",
+          "id": "wv_38fd8f1ec3241071e3b5",
+          "kind": "data",
+          "label": "Build.SourceBranch",
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_f60cb033794c7ad2765d",
+          "id": "wv_647b2df678326c6b1d35",
+          "kind": "data",
+          "label": "GITHUB_TOKEN",
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_2a9088d4d5d2c6eaed6c",
+          "id": "wv_65298b80bfd55ba55787",
+          "kind": "data",
+          "label": "Build.ArtifactStagingDirectory",
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_cb2cdd43ddc343912bf2",
+          "id": "wv_6e4977258498325fd9b8",
+          "kind": "data",
+          "label": "Build.SourceVersion",
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_71929f5c2c017e68e3e1",
+          "id": "wv_70e550ba0dfad72b33d1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_14813aa93a5143b9eca5"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ea0889780131c14a290",
+          "id": "wv_71eedf687846f9635a86",
+          "kind": "call",
+          "label": null,
+          "to": "wv_d76c024f424c9ec172c4"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ea0889780131c14a290",
+          "id": "wv_73f43701f250afb6ebe0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_7e192ff6cc02ac61c144"
+        },
+        {
+          "condition": true,
+          "from": "wv_6a20baaaf0bb83b5918c",
+          "id": "wv_77ef6aed64ba05be0e2d",
+          "kind": "data",
+          "label": "Build.SourceVersion",
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_71929f5c2c017e68e3e1",
+          "id": "wv_828ea70a587ccac1e241",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7e192ff6cc02ac61c144"
+        },
+        {
+          "condition": true,
+          "from": "wv_7e192ff6cc02ac61c144",
+          "id": "wv_b48e29d06e6de6212810",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_a42a39e2b2609d23239b",
+          "id": "wv_c219b2f3d3cb2be88eef",
+          "kind": "data",
+          "label": "Build.SourcesDirectory",
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_51cda1db61888cb75ddc",
+          "id": "wv_c4b1947aea320ff2daf4",
+          "kind": "data",
+          "label": "Build.Repository.Uri",
+          "to": "wv_5899b59324823db06b1d"
+        },
+        {
+          "condition": true,
+          "from": "wv_7e192ff6cc02ac61c144",
+          "id": "wv_cef87347cc1912f2fab0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_14813aa93a5143b9eca5"
+        },
+        {
+          "condition": true,
+          "from": "wv_71929f5c2c017e68e3e1",
+          "id": "wv_e2a0c80d8ed5cf13d15a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7ea0889780131c14a290"
+        },
+        {
+          "condition": true,
+          "from": "wv_7ea0889780131c14a290",
+          "id": "wv_e5b527421c84efafe6b5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d76c024f424c9ec172c4"
+        },
+        {
+          "condition": true,
+          "from": "wv_75354d0d34dcdceeb76a",
+          "id": "wv_ea0e8c3e74a3641d977e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_71929f5c2c017e68e3e1"
+        },
+        {
+          "condition": true,
+          "from": "wv_82e2c417dbbe0ff1a6da",
+          "id": "wv_f297e6af20c1cd03543a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_75354d0d34dcdceeb76a"
+        }
+      ],
+      "entrypoints": [
+        "wv_75354d0d34dcdceeb76a"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_14813aa93a5143b9eca5",
+          "kind": "step",
+          "name": "Publish analysis logs",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 984,
+              "column": 3,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1204,
+              "column": 33,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.ArtifactStagingDirectory",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 617,
+                      "column": 328,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 647,
+                      "column": 358,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.ArtifactStagingDirectory"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2a9088d4d5d2c6eaed6c",
+          "kind": "resource",
+          "name": "Build.ArtifactStagingDirectory",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 617,
+              "column": 328,
+              "line": 17
+            },
+            "stop": {
+              "byte": 647,
+              "column": 358,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.Repository.Uri",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 428,
+                      "column": 139,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 448,
+                      "column": 159,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.Repository.Uri"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_51cda1db61888cb75ddc",
+          "kind": "resource",
+          "name": "Build.Repository.Uri",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 428,
+              "column": 139,
+              "line": 17
+            },
+            "stop": {
+              "byte": 448,
+              "column": 159,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.ArtifactStagingDirectory",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 617,
+                      "column": 328,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 647,
+                      "column": 358,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.Repository.Uri",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 428,
+                      "column": 139,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 448,
+                      "column": 159,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceBranch",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 549,
+                      "column": 260,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 567,
+                      "column": 278,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 381,
+                      "column": 92,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 400,
+                      "column": 111,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 472,
+                      "column": 183,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 491,
+                      "column": 202,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourcesDirectory",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 579,
+                      "column": 290,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 601,
+                      "column": 312,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_TOKEN",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 517,
+                      "column": 228,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 529,
+                      "column": 240,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 300,
+                      "column": 11,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 775,
+                      "column": 42,
+                      "line": 26
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.ArtifactStagingDirectory",
+                  "Build.Repository.Uri",
+                  "Build.SourceBranch",
+                  "Build.SourceVersion",
+                  "Build.SourcesDirectory",
+                  "GITHUB_TOKEN",
+                  "docker run -e \"WORKSPACE=https://github.com/ShiftLeftSecurity/tarpit-java/blob/$(Build.SourceVersion)\" \\\n  -e \"REPOSITORY_URL=$(Build.Repository.Uri)\" \\\n  -e \"COMMIT_SHA=$(Build.SourceVersion)\" \\\n  -e \"GITHUB_TOKEN=$(GITHUB_TOKEN)\" \\\n  -e \"BRANCH=$(Build.SourceBranch)\" \\\n  -v $(Build.SourcesDirectory):/app \\\n  -v $(Build.ArtifactStagingDirectory):/reports \\\n  shiftleft/sast-scan scan --src /app \\\n  --out_dir /reports/CodeAnalysisLogs\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_5899b59324823db06b1d",
+          "kind": "command",
+          "name": "docker run -e \"WORKSPACE=https://github.com/ShiftLeftSecurity/tarpit-java/blob/$(Build.SourceVersion)\" \\\n  -e \"REPOSITORY_URL=$(Build.Repository.Uri)\" \\\n  -e \"COMMIT_SHA=$(Build.SourceVersion)\" \\\n  -e \"GITHUB_TOKEN=$(GITHUB_TOKEN)\" \\\n  -e \"BRANCH=$(Build.SourceBranch)\" \\\n  -v $(Build.SourcesDirectory):/app \\\n  -v $(Build.ArtifactStagingDirectory):/reports \\\n  shiftleft/sast-scan scan --src /app \\\n  --out_dir /reports/CodeAnalysisLogs\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 300,
+              "column": 11,
+              "line": 17
+            },
+            "stop": {
+              "byte": 775,
+              "column": 42,
+              "line": 26
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 472,
+                      "column": 183,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 491,
+                      "column": 202,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourceVersion"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6a20baaaf0bb83b5918c",
+          "kind": "resource",
+          "name": "Build.SourceVersion",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 472,
+              "column": 183,
+              "line": 17
+            },
+            "stop": {
+              "byte": 491,
+              "column": 202,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_71929f5c2c017e68e3e1",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1204,
+              "column": 33,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_75354d0d34dcdceeb76a",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1204,
+              "column": 33,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7e192ff6cc02ac61c144",
+          "kind": "step",
+          "name": "Perform ShiftLeft scan",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 292,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 841,
+              "column": 26,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7ea0889780131c14a290",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 62,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 289,
+              "column": 21,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_82e2c417dbbe0ff1a6da",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 9,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 17,
+              "column": 9,
+              "line": 2
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceBranch",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 549,
+                      "column": 260,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 567,
+                      "column": 278,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourceBranch"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_95304da67e643a420328",
+          "kind": "resource",
+          "name": "Build.SourceBranch",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 549,
+              "column": 260,
+              "line": 17
+            },
+            "stop": {
+              "byte": 567,
+              "column": 278,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_9df59ef469f616e11d80",
+          "kind": "call",
+          "name": "PublishBuildArtifacts@1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 990,
+              "column": 9,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1013,
+              "column": 32,
+              "line": 31
+            }
+          },
+          "unknown": {
+            "detail": "PublishBuildArtifacts@1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourcesDirectory",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 579,
+                      "column": 290,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 601,
+                      "column": 312,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourcesDirectory"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a42a39e2b2609d23239b",
+          "kind": "resource",
+          "name": "Build.SourcesDirectory",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 579,
+              "column": 290,
+              "line": 17
+            },
+            "stop": {
+              "byte": 601,
+              "column": 312,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 381,
+                      "column": 92,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 400,
+                      "column": 111,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourceVersion"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cb2cdd43ddc343912bf2",
+          "kind": "resource",
+          "name": "Build.SourceVersion",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 381,
+              "column": 92,
+              "line": 17
+            },
+            "stop": {
+              "byte": 400,
+              "column": 111,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_d76c024f424c9ec172c4",
+          "kind": "call",
+          "name": "Maven@3",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 68,
+              "column": 9,
+              "line": 8
+            },
+            "stop": {
+              "byte": 75,
+              "column": 16,
+              "line": 8
+            }
+          },
+          "unknown": {
+            "detail": "Maven@3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_TOKEN",
+                  "span": {
+                    "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 517,
+                      "column": 228,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 529,
+                      "column": 240,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f60cb033794c7ad2765d",
+          "kind": "resource",
+          "name": "GITHUB_TOKEN",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/chessiie/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 517,
+              "column": 228,
+              "line": 17
+            },
+            "stop": {
+              "byte": 529,
+              "column": 240,
+              "line": 17
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/chessiie/tarpit-java/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:385e6b9df6ba7d33088410c758a3c11e2139ce9fa82d0c0f361191982e56f44f",
+      "path": "azure/chessiie/tarpit-java/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "shell script",
+          "kind": "unsupported_syntax"
+        },
+        {
+          "detail": "PublishBuildArtifacts@1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 3,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

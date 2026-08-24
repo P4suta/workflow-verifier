@@ -1,0 +1,448 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:d9bf7025525d2c0a125ccb0a25f084a7ac9e69026dc9186e515f046ea481401a",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_249963bbf70a10135e63",
+          "id": "wv_23fedb876ae010ce5f6a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_377fce07279285c5ff26"
+        },
+        {
+          "condition": true,
+          "from": "wv_bf7e24cc7a654eedcfa8",
+          "id": "wv_33284b2d375f15142655",
+          "kind": "control",
+          "label": null,
+          "to": "wv_81fa55d9d9b91fe503f5"
+        },
+        {
+          "condition": true,
+          "from": "wv_377fce07279285c5ff26",
+          "id": "wv_3dd3aad3892bea30146e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bf7e24cc7a654eedcfa8"
+        },
+        {
+          "condition": true,
+          "from": "wv_11097398d1caaea8c361",
+          "id": "wv_614b909bb42de8f5b93e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_45c31873f2a4345016bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_e1a4aa29981745956871",
+          "id": "wv_e15a5b948b21a3dda7cd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_11097398d1caaea8c361"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "succeeded()"
+          },
+          "from": "wv_81fa55d9d9b91fe503f5",
+          "id": "wv_f477cc590b96de2b5672",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_e1a4aa29981745956871"
+        },
+        {
+          "condition": true,
+          "from": "wv_d0ede815270b5d733468",
+          "id": "wv_f88cc19d07f8328ebae6",
+          "kind": "data",
+          "label": "remote_git",
+          "to": "wv_377fce07279285c5ff26"
+        }
+      ],
+      "entrypoints": [
+        "wv_377fce07279285c5ff26"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_11097398d1caaea8c361",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 519,
+              "column": 8,
+              "line": 24
+            },
+            "stop": {
+              "byte": 620,
+              "column": 109,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_249963bbf70a10135e63",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 192,
+              "column": 3,
+              "line": 7
+            },
+            "stop": {
+              "byte": 244,
+              "column": 16,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_377fce07279285c5ff26",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 181,
+              "column": 1,
+              "line": 6
+            },
+            "stop": {
+              "byte": 620,
+              "column": 109,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_45c31873f2a4345016bc",
+          "kind": "opaque",
+          "name": "unsupported Azure step step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 519,
+              "column": 8,
+              "line": 24
+            },
+            "stop": {
+              "byte": 620,
+              "column": 109,
+              "line": 24
+            }
+          },
+          "unknown": {
+            "detail": "Azure step kind",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+                    "start": {
+                      "byte": 457,
+                      "column": 16,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 468,
+                      "column": 27,
+                      "line": 20
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "succeeded()"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "succeeded()"
+          },
+          "effects": [],
+          "id": "wv_81fa55d9d9b91fe503f5",
+          "kind": "gate",
+          "name": "condition:job:Push_To_Cloudmanager",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 457,
+              "column": 16,
+              "line": 20
+            },
+            "stop": {
+              "byte": 468,
+              "column": 27,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bf7e24cc7a654eedcfa8",
+          "kind": "stage",
+          "name": "AEM_Cloud_Manager",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 354,
+              "column": 3,
+              "line": 16
+            },
+            "stop": {
+              "byte": 620,
+              "column": 109,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+                    "start": {
+                      "byte": 284,
+                      "column": 10,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 340,
+                      "column": 66,
+                      "line": 13
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "grasimindustries/GRASIMINDUSTRIESProgram-p94810-uk54102/"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d0ede815270b5d733468",
+          "kind": "resource",
+          "name": "variable:remote_git",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 258,
+              "column": 3,
+              "line": 12
+            },
+            "stop": {
+              "byte": 340,
+              "column": 66,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e1a4aa29981745956871",
+          "kind": "job",
+          "name": "Push_To_Cloudmanager",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml",
+            "start": {
+              "byte": 391,
+              "column": 5,
+              "line": 18
+            },
+            "stop": {
+              "byte": 620,
+              "column": 109,
+              "line": 24
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:fcc53a1e39663dffe1baef3da753b2b26bd41ed0e48a53c574100e8b6d0af9f7",
+      "path": "azure/kavyadadi/grasim-cms-aem-consumer/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

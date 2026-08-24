@@ -1,0 +1,883 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+          "start": {
+            "byte": 251,
+            "column": 15,
+            "line": 21
+          },
+          "stop": {
+            "byte": 270,
+            "column": 34,
+            "line": 21
+          }
+        }
+      },
+      "id": "diag_382005e381a34a1c3376",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+        "start": {
+          "byte": 251,
+          "column": 15,
+          "line": 21
+        },
+        "stop": {
+          "byte": 270,
+          "column": 34,
+          "line": 21
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_6b6024f6ddd9e3f5df36",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 251,
+              "column": 15,
+              "line": 21
+            },
+            "stop": {
+              "byte": 270,
+              "column": 34,
+              "line": 21
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:f621b05a3419358a9c2ee3f3cc937cc41026758c437db0b0e8a430d47593b313",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_da0c7464ebfb48d21972",
+          "id": "wv_05bdd45b22375efffc4c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5ea69304816ca3fb0ee4"
+        },
+        {
+          "condition": true,
+          "from": "wv_6334a74a6365093ee5fc",
+          "id": "wv_09a3b89c091d4caedb55",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6b6024f6ddd9e3f5df36"
+        },
+        {
+          "condition": true,
+          "from": "wv_5cfc60e11ad1f96a133a",
+          "id": "wv_26e52ba9a3b81ba2c9ea",
+          "kind": "control",
+          "label": null,
+          "to": "wv_893ee155077ff7a7a208"
+        },
+        {
+          "condition": true,
+          "from": "wv_f9467b9423c109b3269d",
+          "id": "wv_27e303ef4861fdc4a429",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_da0c7464ebfb48d21972"
+        },
+        {
+          "condition": true,
+          "from": "wv_6334a74a6365093ee5fc",
+          "id": "wv_32a016dd0e9586e2bb45",
+          "kind": "call",
+          "label": null,
+          "to": "wv_6b6024f6ddd9e3f5df36"
+        },
+        {
+          "condition": true,
+          "from": "wv_2cb3fd020b8fce4f0428",
+          "id": "wv_36fc8a736499b5abb77d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_170130a38ef0dfaf5b05"
+        },
+        {
+          "condition": true,
+          "from": "wv_2cb3fd020b8fce4f0428",
+          "id": "wv_511353f9aee86216fdad",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f9467b9423c109b3269d"
+        },
+        {
+          "condition": true,
+          "from": "wv_5ffaf5c69f5ba698ddc7",
+          "id": "wv_5204e9b3b84bc08b989e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_70f2b1e57fb79b269c50"
+        },
+        {
+          "condition": true,
+          "from": "wv_6334a74a6365093ee5fc",
+          "id": "wv_5ecf31ed2e0222604813",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_170130a38ef0dfaf5b05"
+        },
+        {
+          "condition": true,
+          "from": "wv_170130a38ef0dfaf5b05",
+          "id": "wv_610d4e55d2066a713e84",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b5bfa6ae7abd3546fd14"
+        },
+        {
+          "condition": true,
+          "from": "wv_2cb3fd020b8fce4f0428",
+          "id": "wv_640363469ff6bacdb66d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5ffaf5c69f5ba698ddc7"
+        },
+        {
+          "condition": true,
+          "from": "wv_2cb3fd020b8fce4f0428",
+          "id": "wv_72ecd9f915238179b0b8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6334a74a6365093ee5fc"
+        },
+        {
+          "condition": true,
+          "from": "wv_170130a38ef0dfaf5b05",
+          "id": "wv_9e9312101ab933bcc048",
+          "kind": "call",
+          "label": null,
+          "to": "wv_b5bfa6ae7abd3546fd14"
+        },
+        {
+          "condition": true,
+          "from": "wv_85faad32d176ac77f78d",
+          "id": "wv_aac282a0013a9591476b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_893ee155077ff7a7a208"
+        },
+        {
+          "condition": true,
+          "from": "wv_170130a38ef0dfaf5b05",
+          "id": "wv_ab7ed75d1bfe2abf27ce",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5ffaf5c69f5ba698ddc7"
+        },
+        {
+          "condition": true,
+          "from": "wv_2cb3fd020b8fce4f0428",
+          "id": "wv_c1d9dd13b46dd82de238",
+          "kind": "control",
+          "label": null,
+          "to": "wv_da0c7464ebfb48d21972"
+        },
+        {
+          "condition": true,
+          "from": "wv_0c9c95396f2cd7a3b75b",
+          "id": "wv_d77e6df31bab7bca94ce",
+          "kind": "control",
+          "label": null,
+          "to": "wv_893ee155077ff7a7a208"
+        },
+        {
+          "condition": true,
+          "from": "wv_893ee155077ff7a7a208",
+          "id": "wv_dd9e848e604ee3e5f443",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2cb3fd020b8fce4f0428"
+        },
+        {
+          "condition": true,
+          "from": "wv_f9467b9423c109b3269d",
+          "id": "wv_e930e06fa982b07450b9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_932e73fb0dc50eafe76d"
+        },
+        {
+          "condition": true,
+          "from": "wv_5ffaf5c69f5ba698ddc7",
+          "id": "wv_f2bf47878480a31638ae",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f9467b9423c109b3269d"
+        }
+      ],
+      "entrypoints": [
+        "wv_893ee155077ff7a7a208"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0c9c95396f2cd7a3b75b",
+          "kind": "trigger",
+          "name": "pull_request",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 125,
+              "column": 3,
+              "line": 11
+            },
+            "stop": {
+              "byte": 159,
+              "column": 21,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_170130a38ef0dfaf5b05",
+          "kind": "step",
+          "name": "step 2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 279,
+              "column": 9,
+              "line": 22
+            },
+            "stop": {
+              "byte": 396,
+              "column": 30,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "token_read"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2cb3fd020b8fce4f0428",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 191,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 494,
+              "column": 27,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5cfc60e11ad1f96a133a",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 163,
+              "column": 3,
+              "line": 14
+            },
+            "stop": {
+              "byte": 181,
+              "column": 21,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+                    "start": {
+                      "byte": 481,
+                      "column": 14,
+                      "line": 28
+                    },
+                    "stop": {
+                      "byte": 494,
+                      "column": 27,
+                      "line": 28
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun run build"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_5ea69304816ca3fb0ee4",
+          "kind": "command",
+          "name": "bun run build",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 481,
+              "column": 14,
+              "line": 28
+            },
+            "stop": {
+              "byte": 494,
+              "column": 27,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5ffaf5c69f5ba698ddc7",
+          "kind": "step",
+          "name": "step 3",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 405,
+              "column": 9,
+              "line": 25
+            },
+            "stop": {
+              "byte": 439,
+              "column": 43,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6334a74a6365093ee5fc",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 245,
+              "column": 9,
+              "line": 21
+            },
+            "stop": {
+              "byte": 270,
+              "column": 34,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_6b6024f6ddd9e3f5df36",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 251,
+              "column": 15,
+              "line": 21
+            },
+            "stop": {
+              "byte": 270,
+              "column": 34,
+              "line": 21
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+                    "start": {
+                      "byte": 410,
+                      "column": 14,
+                      "line": 25
+                    },
+                    "stop": {
+                      "byte": 439,
+                      "column": 43,
+                      "line": 25
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun install --frozen-lockfile"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_70f2b1e57fb79b269c50",
+          "kind": "command",
+          "name": "bun install --frozen-lockfile",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 410,
+              "column": 14,
+              "line": 25
+            },
+            "stop": {
+              "byte": 439,
+              "column": 43,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_85faad32d176ac77f78d",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 62,
+              "column": 3,
+              "line": 6
+            },
+            "stop": {
+              "byte": 122,
+              "column": 13,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "token_read"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_893ee155077ff7a7a208",
+          "kind": "workflow",
+          "name": "compile typescript",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 494,
+              "column": 27,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+                    "start": {
+                      "byte": 454,
+                      "column": 14,
+                      "line": 27
+                    },
+                    "stop": {
+                      "byte": 467,
+                      "column": 27,
+                      "line": 27
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bun run check"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_932e73fb0dc50eafe76d",
+          "kind": "command",
+          "name": "bun run check",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 454,
+              "column": 14,
+              "line": 27
+            },
+            "stop": {
+              "byte": 467,
+              "column": 27,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b5bfa6ae7abd3546fd14",
+          "kind": "call",
+          "name": "oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 285,
+              "column": 15,
+              "line": 22
+            },
+            "stop": {
+              "byte": 343,
+              "column": 73,
+              "line": 22
+            }
+          },
+          "unknown": {
+            "detail": "oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_da0c7464ebfb48d21972",
+          "kind": "step",
+          "name": "step 5",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 476,
+              "column": 9,
+              "line": 28
+            },
+            "stop": {
+              "byte": 494,
+              "column": 27,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f9467b9423c109b3269d",
+          "kind": "step",
+          "name": "step 4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml",
+            "start": {
+              "byte": 449,
+              "column": 9,
+              "line": 27
+            },
+            "stop": {
+              "byte": 467,
+              "column": 27,
+              "line": 27
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:884ecb507404afb2f77ccf52b17dce1eb18c174fc7a71a730674771cdb2ca6f1",
+      "path": "github/mikiymk/webapp-drive-player/.github/workflows/compile.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

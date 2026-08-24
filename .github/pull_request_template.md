@@ -21,5 +21,6 @@ Describe the user-visible semantic change and the architectural layer that owns 
 
 ## Compatibility and evidence
 
-List protocol, report, lockfile, policy, or CLI compatibility effects. State any
-platform or external evidence that could not be collected.
+List protocol, report, lockfile, policy, or CLI compatibility effects and link
+the corresponding evidence. Publication-affecting evidence must be complete;
+an absent platform or external result keeps the release gate closed.

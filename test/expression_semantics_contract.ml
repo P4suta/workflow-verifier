@@ -38,6 +38,17 @@ let gitlab () =
   expect "both GitLab variables are retained"
     (names expression = [ "CI_COMMIT_BRANCH"; "CI_PIPELINE_SOURCE" ])
 
+let repeated_reference_attributes () =
+  let expression =
+    parse Ir.Gitlab Ir.Plan
+      "$REPO_REBASE_BRANCHES != \"\" && $REPO_REBASE_BRANCHES != \"none\""
+  in
+  let attributes =
+    Expression.references expression |> Expression.references_to_attributes
+  in
+  expect "a repeated reference has one canonical JSON attribute"
+    (List.map fst attributes = [ "reference:REPO_REBASE_BRANCHES" ])
+
 let azure () =
   let expression =
     parse Ir.Azure Ir.Compile "and(succeeded(), eq(parameters.deploy, true))"
@@ -74,6 +85,7 @@ let tests =
   [
     ("GitHub expression AST", github);
     ("GitLab rule expression AST", gitlab);
+    ("repeated references have unique attributes", repeated_reference_attributes);
     ("Azure phase-aware expression AST", azure);
     ("CircleCI parameter expression AST", circleci);
     ("malformed expression diagnostics", malformed);

@@ -11,5 +11,6 @@ type result = {
 val persona_name : persona -> string
 val verify : persona:persona -> Ir.t -> result
 val verify_program : persona:persona -> Ir.t list -> result
+val observable_effects : Ir.t list -> Ir.observable_effect list
 val should_fail : persona -> result -> bool
 val to_json : result -> Json.t

@@ -1,0 +1,49 @@
+name: Host SDK CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  host:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
+      SDK_STANDALONE: ON
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y cmake ninja-build g++
+
+      - name: Initialize test submodule
+        run: ./scripts/init-submodules.sh --platform host --with-tests
+
+      # --------------------
+      # TEST BUILD
+      # --------------------
+      - name: Configure host (tests)
+        run: cmake --preset host-tests
+
+      - name: Build host (tests)
+        run: cmake --build --preset host-tests
+
+      - name: Run tests
+        run: ctest --preset host-tests
+
+      # --------------------
+      # RELEASE BUILD
+      # --------------------
+      - name: Configure host (release)
+        run: cmake --preset host-release
+
+      - name: Build host (release)
+        run: cmake --build --preset host-release

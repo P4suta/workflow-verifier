@@ -151,33 +151,33 @@ let status_json = function
           ("state", Json.String "incomplete");
         ]
 
-let unsigned_json plan =
-  Json.Object
-    [
-      ("backend", Json.String (backend_name plan.backend));
-      ( "controls",
-        Json.Array
-          (List.map
-             (fun value -> Json.String (control_name value))
-             plan.controls) );
-      ("dependencies", Json.Array (List.map dependency_json plan.dependencies));
-      ( "limits",
-        Json.Object
-          [
-            ("cpu_seconds", Json.Int plan.limits.cpu_seconds);
-            ("memory_mb", Json.Int plan.limits.memory_mb);
-            ("output_bytes", Json.Int plan.limits.output_bytes);
-            ("processes", Json.Int plan.limits.processes);
-          ] );
-      ("lock_digest", Json.String plan.lock_digest);
-      ("schema", Json.String plan.schema);
-      ( "secret_names",
-        Json.Array (List.map (fun value -> Json.String value) plan.secret_names)
-      );
-      ("source_digest", Json.String plan.source_digest);
-      ("status", status_json plan.status);
-      ("steps", Json.Array (List.map step_json plan.steps));
-    ]
+let unsigned_fields plan =
+  [
+    ("backend", Json.String (backend_name plan.backend));
+    ( "controls",
+      Json.Array
+        (List.map (fun value -> Json.String (control_name value)) plan.controls)
+    );
+    ("dependencies", Json.Array (List.map dependency_json plan.dependencies));
+    ( "limits",
+      Json.Object
+        [
+          ("cpu_seconds", Json.Int plan.limits.cpu_seconds);
+          ("memory_mb", Json.Int plan.limits.memory_mb);
+          ("output_bytes", Json.Int plan.limits.output_bytes);
+          ("processes", Json.Int plan.limits.processes);
+        ] );
+    ("lock_digest", Json.String plan.lock_digest);
+    ("schema", Json.String plan.schema);
+    ( "secret_names",
+      Json.Array (List.map (fun value -> Json.String value) plan.secret_names)
+    );
+    ("source_digest", Json.String plan.source_digest);
+    ("status", status_json plan.status);
+    ("steps", Json.Array (List.map step_json plan.steps));
+  ]
+
+let unsigned_json plan = Json.Object (unsigned_fields plan)
 
 let redact_environment secret_names environment =
   List.map
@@ -205,14 +205,6 @@ let valid_engine value =
          | 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '.' | '-' -> true
          | _ -> false)
        value
-
-let valid_content_digest value =
-  String.length value = 71
-  && Util.starts_with ~prefix:"sha256:" value
-  && String.sub value 7 64
-     |> String.for_all (function
-       | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
-       | _ -> false)
 
 let validate_plan_arguments ~backend ~limits ~secret_names ~dependencies ~steps
     =
@@ -288,7 +280,7 @@ let make_plan ~backend ~source_digest ~lock_digest ~controls ~limits
     |> List.concat_map (fun step ->
         (if step.supported then [] else [ "unsupported step: " ^ step.id ])
         @
-        if valid_content_digest step.image then []
+        if Dependency_identity.valid_content_digest step.image then []
         else [ "unresolved image: " ^ step.id ])
   in
   let reasons = dependency_reasons @ step_reasons |> Util.deduplicate_strings in
@@ -315,10 +307,7 @@ let make_plan ~backend ~source_digest ~lock_digest ~controls ~limits
   Ok { provisional with digest }
 
 let to_json plan =
-  match unsigned_json plan with
-  | Json.Object fields ->
-      Json.Object (("digest", Json.String plan.digest) :: fields)
-  | _ -> assert false
+  Json.Object (("digest", Json.String plan.digest) :: unsigned_fields plan)
 
 let to_canonical_json plan = Json.to_string (to_json plan) ^ "\n"
 

@@ -12,19 +12,16 @@ let region span =
       ("startLine", Json.Int span.start.line);
     ]
 
-let location span =
+let physical_location span =
   Json.Object
     [
-      ( "physicalLocation",
+      ( "artifactLocation",
         Json.Object
-          [
-            ( "artifactLocation",
-              Json.Object
-                [ ("uri", Json.String (Util.normalize_slashes span.Span.file)) ]
-            );
-            ("region", region span);
-          ] );
+          [ ("uri", Json.String (Util.normalize_slashes span.Span.file)) ] );
+      ("region", region span);
     ]
+
+let location span = Json.Object [ ("physicalLocation", physical_location span) ]
 
 let rule_descriptor diagnostic =
   Json.Object
@@ -42,10 +39,7 @@ let trace_location index (hop : Diagnostic.trace_hop) =
         Json.Object
           [
             ("message", Json.Object [ ("text", Json.String hop.label) ]);
-            ( "physicalLocation",
-              match location hop.span with
-              | Json.Object [ ("physicalLocation", value) ] -> value
-              | _ -> assert false );
+            ("physicalLocation", physical_location hop.span);
           ] );
       ("nestingLevel", Json.Int index);
     ]
@@ -158,8 +152,7 @@ let to_json report =
                           [
                             ( "informationUri",
                               Json.String
-                                "https://github.com/P4suta/workflow-verifier"
-                            );
+                                "https://github.com/P4suta/workflow-verifier" );
                             ("name", Json.String "workflow-verifier");
                             ("rules", Json.Array rules);
                             ("version", Json.String report.Report.tool_version);

@@ -1,0 +1,749 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+          "start": {
+            "byte": 326,
+            "column": 15,
+            "line": 16
+          },
+          "stop": {
+            "byte": 345,
+            "column": 34,
+            "line": 16
+          }
+        }
+      },
+      "id": "diag_1cba4de5640555a316ae",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+        "start": {
+          "byte": 326,
+          "column": 15,
+          "line": 16
+        },
+        "stop": {
+          "byte": 345,
+          "column": 34,
+          "line": 16
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_f5687740a2ec1c6f6243",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 326,
+              "column": 15,
+              "line": 16
+            },
+            "stop": {
+              "byte": 345,
+              "column": 34,
+              "line": 16
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = google-labs-code/jules-action@main"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+          "start": {
+            "byte": 438,
+            "column": 15,
+            "line": 21
+          },
+          "stop": {
+            "byte": 472,
+            "column": 49,
+            "line": 21
+          }
+        }
+      },
+      "id": "diag_6539d05c0530c8dcac4e",
+      "message": "dependency is not pinned to immutable content: google-labs-code/jules-action@main",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+        "start": {
+          "byte": 438,
+          "column": 15,
+          "line": 21
+        },
+        "stop": {
+          "byte": 472,
+          "column": 49,
+          "line": 21
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_628a299efd653f4f2dcf",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 438,
+              "column": 15,
+              "line": 21
+            },
+            "stop": {
+              "byte": 472,
+              "column": 49,
+              "line": 21
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:22fcebcf0c8b6ace0e12cc966332186c7fd9e0cbab31510efa4dbb42769f4f51",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_c713b22ab7f3dc82e21e",
+          "id": "wv_026de44b7a3c5fe6c7bf",
+          "kind": "data",
+          "label": "github.event.pull_request.draft",
+          "to": "wv_00bf41d0aec1521416f5"
+        },
+        {
+          "condition": true,
+          "from": "wv_cd3c01d1d477bb53de94",
+          "id": "wv_0906ffdb2b6ef99c9234",
+          "kind": "control",
+          "label": null,
+          "to": "wv_00bf41d0aec1521416f5"
+        },
+        {
+          "condition": true,
+          "from": "wv_e89df25800c4af806d1c",
+          "id": "wv_18dce8f42837a55dee7d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c60786d5ec071d120c28"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(github.event.pull_request.draft==false)"
+          },
+          "from": "wv_00bf41d0aec1521416f5",
+          "id": "wv_3ffd1884a437cbe7905b",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_e89df25800c4af806d1c"
+        },
+        {
+          "condition": true,
+          "from": "wv_6243d4f3e0aa6a30bd80",
+          "id": "wv_5cb6340da90c36438f5d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f5687740a2ec1c6f6243"
+        },
+        {
+          "condition": true,
+          "from": "wv_e89df25800c4af806d1c",
+          "id": "wv_73dfa9844916ffc0c711",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6243d4f3e0aa6a30bd80"
+        },
+        {
+          "condition": true,
+          "from": "wv_c60786d5ec071d120c28",
+          "id": "wv_77c8811d4b15055187dd",
+          "kind": "call",
+          "label": null,
+          "to": "wv_628a299efd653f4f2dcf"
+        },
+        {
+          "condition": true,
+          "from": "wv_96b7be3c6ad04a2c6a22",
+          "id": "wv_bcca2c196775d5a13c30",
+          "kind": "data",
+          "label": "secrets.GITHUB_TOKEN",
+          "to": "wv_628a299efd653f4f2dcf"
+        },
+        {
+          "condition": true,
+          "from": "wv_6243d4f3e0aa6a30bd80",
+          "id": "wv_f289f54f9ccad0aed530",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c60786d5ec071d120c28"
+        },
+        {
+          "condition": true,
+          "from": "wv_6243d4f3e0aa6a30bd80",
+          "id": "wv_f38389df3a4947d2bc49",
+          "kind": "call",
+          "label": null,
+          "to": "wv_f5687740a2ec1c6f6243"
+        },
+        {
+          "condition": true,
+          "from": "wv_e1112f56ab0350eceb16",
+          "id": "wv_f467ecb8ae4539d265c3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cd3c01d1d477bb53de94"
+        },
+        {
+          "condition": true,
+          "from": "wv_c60786d5ec071d120c28",
+          "id": "wv_ff0604a1684f1cb05a3b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_628a299efd653f4f2dcf"
+        }
+      ],
+      "entrypoints": [
+        "wv_cd3c01d1d477bb53de94"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+                    "start": {
+                      "byte": 167,
+                      "column": 9,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 207,
+                      "column": 49,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.pull_request.draft == false"
+                ]
+              }
+            },
+            "reference:github.event.pull_request.draft": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.pull_request.draft",
+                  "span": {
+                    "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+                    "start": {
+                      "byte": 167,
+                      "column": 9,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 198,
+                      "column": 40,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.pull_request.draft"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(github.event.pull_request.draft==false)"
+          },
+          "effects": [],
+          "id": "wv_00bf41d0aec1521416f5",
+          "kind": "gate",
+          "name": "if:job:jules_review",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 167,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 207,
+              "column": 49,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6243d4f3e0aa6a30bd80",
+          "kind": "step",
+          "name": "Checkout Code",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 292,
+              "column": 9,
+              "line": 15
+            },
+            "stop": {
+              "byte": 384,
+              "column": 25,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_628a299efd653f4f2dcf",
+          "kind": "call",
+          "name": "google-labs-code/jules-action@main",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 438,
+              "column": 15,
+              "line": 21
+            },
+            "stop": {
+              "byte": 472,
+              "column": 49,
+              "line": 21
+            }
+          },
+          "unknown": {
+            "detail": "google-labs-code/jules-action@main",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.GITHUB_TOKEN",
+                  "span": {
+                    "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+                    "start": {
+                      "byte": 588,
+                      "column": 29,
+                      "line": 24
+                    },
+                    "stop": {
+                      "byte": 608,
+                      "column": 49,
+                      "line": 24
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.GITHUB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_96b7be3c6ad04a2c6a22",
+          "kind": "resource",
+          "name": "secrets.GITHUB_TOKEN",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 588,
+              "column": 29,
+              "line": 24
+            },
+            "stop": {
+              "byte": 608,
+              "column": 49,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c60786d5ec071d120c28",
+          "kind": "step",
+          "name": "Run Jules Review Action",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 394,
+              "column": 9,
+              "line": 20
+            },
+            "stop": {
+              "byte": 1826,
+              "column": 151,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.pull_request.draft",
+                  "span": {
+                    "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+                    "start": {
+                      "byte": 167,
+                      "column": 9,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 198,
+                      "column": 40,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.pull_request.draft"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c713b22ab7f3dc82e21e",
+          "kind": "resource",
+          "name": "github.event.pull_request.draft",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 167,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 198,
+              "column": 40,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cd3c01d1d477bb53de94",
+          "kind": "workflow",
+          "name": "Jules AI Code Review",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1826,
+              "column": 151,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e1112f56ab0350eceb16",
+          "kind": "trigger",
+          "name": "pull_request",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 34,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 108,
+              "column": 61,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "repository_write",
+            "token_read",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e89df25800c4af806d1c",
+          "kind": "job",
+          "name": "jules_review",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 118,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 1826,
+              "column": 151,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_f5687740a2ec1c6f6243",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml",
+            "start": {
+              "byte": 326,
+              "column": 15,
+              "line": 16
+            },
+            "stop": {
+              "byte": 345,
+              "column": 34,
+              "line": 16
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        }
+      ],
+      "provider": "github",
+      "source": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:603d4b71439bd57ab9ca05d8dbc8c2000b84f9a23033ffb8319bb57321b8006c",
+      "path": "github/rvoidex7/julesctl/.github/workflows/jules-pr-review.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [
+        {
+          "detail": "actions/checkout@v4",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "google-labs-code/jules-action@main",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "google-labs-code/jules-action@main",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

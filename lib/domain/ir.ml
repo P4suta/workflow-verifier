@@ -83,6 +83,9 @@ type t = {
 
 type issue = { code : string; message : string; node_ids : string list }
 
+let compare_node (left : node) (right : node) = String.compare left.id right.id
+let compare_edge (left : edge) (right : edge) = String.compare left.id right.id
+
 let provider_name = function
   | Github -> "github"
   | Gitlab -> "gitlab"
@@ -210,14 +213,8 @@ let add_entrypoint id graph =
 let finalize graph =
   {
     graph with
-    nodes =
-      List.sort
-        (fun (left : node) (right : node) -> String.compare left.id right.id)
-        graph.nodes;
-    edges =
-      List.sort
-        (fun (left : edge) (right : edge) -> String.compare left.id right.id)
-        graph.edges;
+    nodes = List.sort compare_node graph.nodes;
+    edges = List.sort compare_edge graph.edges;
     entrypoints = Util.deduplicate_strings graph.entrypoints;
   }
 
@@ -251,16 +248,20 @@ let validate graph =
   let add code message node_ids =
     issues := { code; message; node_ids } :: !issues
   in
-  let seen = ref [] in
+  let seen = Hashtbl.create (max 1 (List.length graph.nodes))
+  and nodes_by_id = Hashtbl.create (max 1 (List.length graph.nodes)) in
   List.iter
     (fun (node : node) ->
-      if List.mem node.id !seen then
+      if Hashtbl.mem seen node.id then
         add "IR-DUPLICATE-NODE" ("duplicate node ID " ^ node.id) [ node.id ];
-      seen := node.id :: !seen)
+      Hashtbl.replace seen node.id ();
+      if not (Hashtbl.mem nodes_by_id node.id) then
+        Hashtbl.add nodes_by_id node.id node)
     graph.nodes;
+  let indexed_node id = Hashtbl.find_opt nodes_by_id id in
   List.iter
     (fun (edge : edge) ->
-      match (find_node graph edge.from_, find_node graph edge.to_) with
+      match (indexed_node edge.from_, indexed_node edge.to_) with
       | None, _ | _, None ->
           add "IR-DANGLING-EDGE"
             ("edge " ^ edge.id ^ " has a missing endpoint")

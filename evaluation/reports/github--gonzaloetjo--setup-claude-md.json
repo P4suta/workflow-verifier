@@ -1,0 +1,402 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = googleapis/release-please-action@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+          "start": {
+            "byte": 198,
+            "column": 15,
+            "line": 13
+          },
+          "stop": {
+            "byte": 233,
+            "column": 50,
+            "line": 13
+          }
+        }
+      },
+      "id": "diag_e0b3a7f54245a501a484",
+      "message": "dependency is not pinned to immutable content: googleapis/release-please-action@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+        "start": {
+          "byte": 198,
+          "column": 15,
+          "line": 13
+        },
+        "stop": {
+          "byte": 233,
+          "column": 50,
+          "line": 13
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_33395885663096357bc7",
+          "span": {
+            "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+            "start": {
+              "byte": 198,
+              "column": 15,
+              "line": 13
+            },
+            "stop": {
+              "byte": 233,
+              "column": 50,
+              "line": 13
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:afe04b349505648f88e0568f300d1e378aa23b0f49a0ef8dbc4b8491577b3faf",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_20e656592a146ffe10a2",
+          "id": "wv_8d0d3a166d164ee1e53c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1283d88f0c87f8eac592"
+        },
+        {
+          "condition": true,
+          "from": "wv_12e3d8552b45f8a8c4c4",
+          "id": "wv_a77276a6f7c80aba3c23",
+          "kind": "control",
+          "label": null,
+          "to": "wv_34089fbaa524c78f593b"
+        },
+        {
+          "condition": true,
+          "from": "wv_1283d88f0c87f8eac592",
+          "id": "wv_ab1015c01ab3191b98dd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_33395885663096357bc7"
+        },
+        {
+          "condition": true,
+          "from": "wv_1283d88f0c87f8eac592",
+          "id": "wv_b1744bfc6470b7ae0478",
+          "kind": "call",
+          "label": null,
+          "to": "wv_33395885663096357bc7"
+        },
+        {
+          "condition": true,
+          "from": "wv_f4d46a2759f6e6917a3d",
+          "id": "wv_bbf1c41690880e190241",
+          "kind": "control",
+          "label": null,
+          "to": "wv_34089fbaa524c78f593b"
+        },
+        {
+          "condition": true,
+          "from": "wv_34089fbaa524c78f593b",
+          "id": "wv_f2f02eb7b8d52935c37e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_20e656592a146ffe10a2"
+        }
+      ],
+      "entrypoints": [
+        "wv_34089fbaa524c78f593b"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1283d88f0c87f8eac592",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+            "start": {
+              "byte": 192,
+              "column": 9,
+              "line": 13
+            },
+            "stop": {
+              "byte": 278,
+              "column": 31,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_12e3d8552b45f8a8c4c4",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+            "start": {
+              "byte": 20,
+              "column": 3,
+              "line": 3
+            },
+            "stop": {
+              "byte": 46,
+              "column": 21,
+              "line": 4
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_20e656592a146ffe10a2",
+          "kind": "job",
+          "name": "release-please",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+            "start": {
+              "byte": 130,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 278,
+              "column": 31,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_33395885663096357bc7",
+          "kind": "call",
+          "name": "googleapis/release-please-action@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+            "start": {
+              "byte": 198,
+              "column": 15,
+              "line": 13
+            },
+            "stop": {
+              "byte": 233,
+              "column": 50,
+              "line": 13
+            }
+          },
+          "unknown": {
+            "detail": "googleapis/release-please-action@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_34089fbaa524c78f593b",
+          "kind": "workflow",
+          "name": "Release",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 278,
+              "column": 31,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f4d46a2759f6e6917a3d",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml",
+            "start": {
+              "byte": 49,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 67,
+              "column": 21,
+              "line": 5
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:63dcd095765c26b384b9803ea91f95da9d9cdebd69d6076557ca50059911a87f",
+      "path": "github/gonzaloetjo/setup-claude-md/.github/workflows/release.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [
+        {
+          "detail": "googleapis/release-please-action@v4",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "googleapis/release-please-action@v4",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

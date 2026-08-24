@@ -1,0 +1,719 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+          "start": {
+            "byte": 185,
+            "column": 15,
+            "line": 10
+          },
+          "stop": {
+            "byte": 204,
+            "column": 34,
+            "line": 10
+          }
+        }
+      },
+      "id": "diag_aca0b3d14e5fa6651d47",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+        "start": {
+          "byte": 185,
+          "column": 15,
+          "line": 10
+        },
+        "stop": {
+          "byte": 204,
+          "column": 34,
+          "line": 10
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_1851eb18161fe00719e8",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 185,
+              "column": 15,
+              "line": 10
+            },
+            "stop": {
+              "byte": 204,
+              "column": 34,
+              "line": 10
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:49f82087606c752172ace026f9f2bdf53fd212755787188a7f60493c04660669",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_e05792e27453b3f154ab",
+          "id": "wv_1f9a8143ca0985b168e2",
+          "kind": "call",
+          "label": null,
+          "to": "wv_1851eb18161fe00719e8"
+        },
+        {
+          "condition": true,
+          "from": "wv_e7b32e6446b1080cc035",
+          "id": "wv_28c68df3931161888a2c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e05792e27453b3f154ab"
+        },
+        {
+          "condition": true,
+          "from": "wv_f4e5bcf7adc4fb6ffe1b",
+          "id": "wv_41dd6b2ba8bdd819047e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2a2c070b6c5723164234"
+        },
+        {
+          "condition": true,
+          "from": "wv_e05792e27453b3f154ab",
+          "id": "wv_448d554fe92f297d346d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ff66d21973ba2932d3ff"
+        },
+        {
+          "condition": true,
+          "from": "wv_f709c7f05dac3a14711e",
+          "id": "wv_4971873e5fcda654fe70",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e7b32e6446b1080cc035"
+        },
+        {
+          "condition": true,
+          "from": "wv_e05792e27453b3f154ab",
+          "id": "wv_5311a2eb261f26e5185e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1851eb18161fe00719e8"
+        },
+        {
+          "condition": true,
+          "from": "wv_a044777ef9c9bc473a10",
+          "id": "wv_5951c42154fe0d9cbee1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e59c4b2a1852c174863c"
+        },
+        {
+          "condition": true,
+          "from": "wv_e7b32e6446b1080cc035",
+          "id": "wv_7d8bbccd45c01d2bb627",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f4e5bcf7adc4fb6ffe1b"
+        },
+        {
+          "condition": true,
+          "from": "wv_f4e5bcf7adc4fb6ffe1b",
+          "id": "wv_8f863c2e3ecca1304eb8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a044777ef9c9bc473a10"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff66d21973ba2932d3ff",
+          "id": "wv_aed78756677bb5f74aac",
+          "kind": "control",
+          "label": null,
+          "to": "wv_115e43a80890a5492ff8"
+        },
+        {
+          "condition": true,
+          "from": "wv_e7b32e6446b1080cc035",
+          "id": "wv_c24227337f2ca5b8c778",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a044777ef9c9bc473a10"
+        },
+        {
+          "condition": true,
+          "from": "wv_3a0675f5b45b5baf0f79",
+          "id": "wv_c522fe4156e08d3704f3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f709c7f05dac3a14711e"
+        },
+        {
+          "condition": true,
+          "from": "wv_e7b32e6446b1080cc035",
+          "id": "wv_c8a47f3207fdffbf97f6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ff66d21973ba2932d3ff"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff66d21973ba2932d3ff",
+          "id": "wv_d83758660d6de9053b35",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f4e5bcf7adc4fb6ffe1b"
+        }
+      ],
+      "entrypoints": [
+        "wv_f709c7f05dac3a14711e"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+                    "start": {
+                      "byte": 253,
+                      "column": 14,
+                      "line": 12
+                    },
+                    "stop": {
+                      "byte": 272,
+                      "column": 33,
+                      "line": 12
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pip install .[test]"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_115e43a80890a5492ff8",
+          "kind": "command",
+          "name": "pip install .[test]",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 253,
+              "column": 14,
+              "line": 12
+            },
+            "stop": {
+              "byte": 272,
+              "column": 33,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_1851eb18161fe00719e8",
+          "kind": "call",
+          "name": "actions/checkout@v2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 185,
+              "column": 15,
+              "line": 10
+            },
+            "stop": {
+              "byte": 204,
+              "column": 34,
+              "line": 10
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+                    "start": {
+                      "byte": 321,
+                      "column": 14,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 354,
+                      "column": 32,
+                      "line": 15
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pytest -v tests/small\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2a2c070b6c5723164234",
+          "kind": "command",
+          "name": "pytest -v tests/small\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 321,
+              "column": 14,
+              "line": 14
+            },
+            "stop": {
+              "byte": 354,
+              "column": 32,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3a0675f5b45b5baf0f79",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 20,
+              "column": 6,
+              "line": 2
+            },
+            "stop": {
+              "byte": 24,
+              "column": 10,
+              "line": 2
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a044777ef9c9bc473a10",
+          "kind": "step",
+          "name": "Run medium size tests",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 363,
+              "column": 9,
+              "line": 16
+            },
+            "stop": {
+              "byte": 438,
+              "column": 33,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e05792e27453b3f154ab",
+          "kind": "step",
+          "name": "Checkout source code",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 144,
+              "column": 9,
+              "line": 9
+            },
+            "stop": {
+              "byte": 204,
+              "column": 34,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+                    "start": {
+                      "byte": 404,
+                      "column": 14,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 438,
+                      "column": 33,
+                      "line": 18
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pytest -v tests/medium\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e59c4b2a1852c174863c",
+          "kind": "command",
+          "name": "pytest -v tests/medium\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 404,
+              "column": 14,
+              "line": 17
+            },
+            "stop": {
+              "byte": 438,
+              "column": 33,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e7b32e6446b1080cc035",
+          "kind": "job",
+          "name": "test-small",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 34,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 438,
+              "column": 33,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f4e5bcf7adc4fb6ffe1b",
+          "kind": "step",
+          "name": "Run small size tests",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 281,
+              "column": 9,
+              "line": 13
+            },
+            "stop": {
+              "byte": 354,
+              "column": 32,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f709c7f05dac3a14711e",
+          "kind": "workflow",
+          "name": "unittest",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 438,
+              "column": 33,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ff66d21973ba2932d3ff",
+          "kind": "step",
+          "name": "Install dependencies",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/colorfulscoop/tfdlg/.github/workflows/main.yml",
+            "start": {
+              "byte": 213,
+              "column": 9,
+              "line": 11
+            },
+            "stop": {
+              "byte": 272,
+              "column": 33,
+              "line": 12
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/colorfulscoop/tfdlg/.github/workflows/main.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:82cdb6e6942fcca4b8799ef094cbab8db3c3d2bb23a7ad3a159866031a21efdb",
+      "path": "github/colorfulscoop/tfdlg/.github/workflows/main.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

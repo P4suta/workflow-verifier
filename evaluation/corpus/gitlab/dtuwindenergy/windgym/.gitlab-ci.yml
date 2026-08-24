@@ -1,0 +1,180 @@
+##############################################
+#### GitLab CI Configuration for WindGym #####
+##############################################
+
+workflow:
+  rules:
+    # Do not run pipelines for these files
+    - if: $CI_PIPELINE_SOURCE == "push"
+      changes:
+        - "**/*.md"
+        - ".github/*"
+      when: never
+    - when: always
+
+default:
+  image: ghcr.io/prefix-dev/pixi:latest
+
+stages:
+  - sync      # New stage for auto-merge
+  - test
+  - build
+  - deploy
+
+.default_rules: &default_rules
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+.docs_rules: &docs_rules
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+
+auto_merge_main:
+  stage: sync
+  before_script:
+    - apt-get update && apt-get install -y git
+    - git config user.name "GitLab CI"
+    - git config user.email "ci@gitlab.com"
+  script:
+    - |
+      echo "Attempting to merge latest main into current branch..."
+      git fetch origin $CI_DEFAULT_BRANCH
+      
+      # Check if we're already up to date
+      if git merge-base --is-ancestor origin/$CI_DEFAULT_BRANCH HEAD; then
+        echo "✅ Branch is already up to date with $CI_DEFAULT_BRANCH"
+        exit 0
+      fi
+      
+      # Attempt to merge main into current branch
+      if git merge origin/$CI_DEFAULT_BRANCH --no-edit; then
+        echo "✅ Successfully merged $CI_DEFAULT_BRANCH into $CI_COMMIT_REF_NAME"
+        echo "No conflicts detected - pipeline will continue"
+      else
+        echo "❌ MERGE CONFLICTS detected when merging $CI_DEFAULT_BRANCH"
+        echo "Manual intervention required to resolve conflicts"
+        echo "Please:"
+        echo "1. Pull latest main: git pull origin $CI_DEFAULT_BRANCH"
+        echo "2. Resolve conflicts manually"
+        echo "3. Commit the resolution"
+        echo "4. Push to trigger pipeline again"
+        git merge --abort
+        exit 1
+      fi
+  <<: *docs_rules
+  tags:
+    - linux
+
+pre_commit:
+  stage: test
+  variables:
+    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+    GIT_CLEAN_FLAGS: -ffdx
+  before_script:
+    - apt-get update && apt-get install -y git
+    - rm -rf .pixi/
+    - echo "--- Checking Disk Space ---"
+    - df -h
+    # - echo "--- Checking Runner Cache Size ---"
+    # - du -sh /root/.cache || true
+    # - echo "--- End Debugging ---"
+    # - echo "Cleaning up runner-level pixi/uv caches..."
+    # - rm -rf /root/.cache/rattler || true
+    # - rm -rf /root/.cache/uv-cache || true
+  script:
+    # - pixi run pre-commit run --all-files
+    - pixi run --environment lint pre-commit run --all-files
+  cache:
+  - key: pre-commit-cache # Retains cache across all branches
+    paths:
+      - ${PRE_COMMIT_HOME}
+  - key:
+      files:
+        - pixi.lock  # Re-builds cache only if this file changes
+      prefix: pixi-lint-${CI_COMMIT_REF_SLUG}
+    paths:
+      - .pixi/
+    policy: pull-push # This job creates and updates the cache
+  tags:
+    - linux
+  <<: *default_rules
+
+test:
+  stage: test
+  needs:
+    - pre_commit
+  before_script:
+    - apt-get update && apt-get install -y git
+  script:
+    - pixi run pytest -v -n auto --cov=windgym --cov-report=html:htmlcov --cov-report=term
+  cache:
+      - key:
+          files:
+            - pixi.lock
+          prefix: pixi-default-${CI_COMMIT_REF_SLUG}
+        paths:
+          - .pixi/
+        policy: pull-push
+  artifacts:
+    paths:
+      - ./htmlcov
+    when: always
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  tags:
+    - linux
+  <<: *default_rules
+
+build_docs:
+  stage: build
+  image: ghcr.io/prefix-dev/pixi:latest # This image has Python, Pixi, and Conda/Mamba
+  needs:
+    - auto_merge_main  # Ensure sync happens first
+  before_script: # Use before_script to install Node.js once
+    - apt-get update -y
+    - apt-get install -y curl
+    - curl -fsSL https://deb.nodesource.com/setup_18.x | bash - # Install Node.js 18.x
+    - apt-get install -y nodejs # Install Node.js and npm
+    - apt-get install -y git
+  script:
+    - pixi install # Install all Python dependencies defined in dino_docs/pyproject.toml
+    # Now that both Python (via pixi) and Node.js (via apt) are set up
+    - cd Docs # Navigate into the Docs directory
+    - npm install # Install Node.js dependencies for Docusaurus
+    # Regenerate Docs/docs/api/ from docstrings via Sphinx, inside the default pixi env
+    # (so autodoc can import WindGym + numpy/xarray/gymnasium). build-api-docs.sh pip-installs
+    # the Sphinx toolchain from requirements-docs.txt into the env on first run.
+    - pixi run bash build-api-docs.sh
+    - npm run build # This will run prebuild.sh (which now finds python/jupyter from pixi env) and then the Docusaurus build
+  cache:
+      - key:
+          files:
+            - pixi.lock
+          prefix: pixi-default-${CI_COMMIT_REF_SLUG}
+        paths:
+          - .pixi/
+        policy: pull # This job only PULLS the default env cache
+  artifacts:
+    paths:
+      - Docs/build/
+    expire_in: 1 week
+  tags:
+    - linux
+  <<: *docs_rules
+
+pages:
+  stage: deploy
+  needs:
+    - build_docs
+  script:
+    - mkdir public
+    - cp -r Docs/build/* public/
+  artifacts:
+    paths:
+      - public
+  tags:
+    - linux
+  <<: *docs_rules

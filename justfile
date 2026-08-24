@@ -1,4 +1,10 @@
 set dotenv-load := false
+set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
+
+bootstrap:
+    opam init --bare --no-setup --yes
+    opam switch create . ocaml-base-compiler.5.5.0 --yes
+    opam install . --deps-only --with-test --yes
 
 build:
     opam exec -- dune build @all
@@ -18,11 +24,13 @@ fetch-yaml-suite:
 
 helpers:
     cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
+
+helpers-lint:
     cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
     cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
 
 tooling:
-    python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
+    python -B -m unittest discover -s scripts/tests -p "test_*.py" -v
 
 fuzz seconds="60" memory_mb="1024":
     opam exec -- dune build --profile afl test/yaml_fuzz.exe
@@ -31,11 +39,32 @@ fuzz seconds="60" memory_mb="1024":
 mutation-gate report="_build/mutation-report.json" output="_build/mutation-gate-v1.json":
     python -B scripts/verify_mutation_report.py --report {{report}} --output {{output}} --require-prefix lib/foundation/ --require-prefix lib/syntax/ --require-prefix lib/domain/ --require-prefix lib/verifier/ --require-prefix lib/product/
 
+mutation-campaign catalog="_build/mutation-evidence/mutation-catalog.json" evidence="_build/mutation-evidence" output="_build/mutation-evidence/mutation-campaign-v1.json":
+    python -B scripts/verify_mutation_campaign.py aggregate --manifest scripts/mutation-shards-v1.json --config .ocaml-mutants.toml --workspace . --catalog {{catalog}} --evidence-dir {{evidence}} --output {{output}}
+
 corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" reports_root="evaluation/reports" output="_build/corpus-report-v1.json":
     python -B scripts/corpus_gate.py --manifest {{manifest}} --corpus-root {{corpus_root}} --reports-root {{reports_root}} --output {{output}} --release
 
-performance-measure suite="performance/suite-v1.json" revision output="_build/performance-current.json" samples="7":
+corpus-acquire analyzer="_build/default/bin/main.exe" output="evaluation" pages="10" workers="8":
+    python -B scripts/prepare_corpus.py acquire --analyzer {{analyzer}} --output {{output}} --per-provider 100 --pages {{pages}} --workers {{workers}}
+
+corpus-refresh evaluation="evaluation" analyzer="_build/default/bin/main.exe" output="_build/evaluation-refreshed" workers="8":
+    python -B scripts/prepare_corpus.py refresh --evaluation {{evaluation}} --analyzer {{analyzer}} --output {{output}} --workers {{workers}}
+
+corpus-review review="evaluation/review-v1.json" manifest="evaluation/corpus-v1.json" reports_root="evaluation/reports":
+    python -B scripts/prepare_corpus.py apply-review --manifest {{manifest}} --reports-root {{reports_root}} --review {{review}}
+
+official-fetch manifest="official/official-projects-v1.json" destination="_build/official-projects" mode="pinned":
+    python -B scripts/fetch_official_projects.py --manifest {{manifest}} --destination {{destination}} --mode {{mode}}
+
+official-compat analyzer="_build/default/bin/main.exe" snapshots="_build/official-projects" output="_build/official-compat-v1.json" expected="official/official-compat-v1.json" expected_digest="official/official-compat-v1.sha256":
+    python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots {{snapshots}} --analyzer {{analyzer}} --output {{output}} --expected {{expected}} --expected-digest {{expected_digest}}
+
+performance-measure revision suite="performance/suite-v1.json" output="_build/performance-current.json" samples="7":
     python -B scripts/measure_performance.py --suite {{suite}} --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
+
+performance-pair baseline_workspace baseline_revision current_revision suite="performance/suite-v1.json" output_dir="_build/performance-pair" samples="24":
+    python -B scripts/measure_performance_pair.py --suite {{suite}} --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
 
 performance-gate baseline current="_build/performance-current.json" output="_build/performance-comparison-v1.json":
     python -B scripts/performance_gate.py --baseline {{baseline}} --current {{current}} --output {{output}}
@@ -50,20 +79,32 @@ determinism-compare linux windows macos_arm64 macos_x86_64 output="_build/determ
 version:
     python -B scripts/verify_release_version.py --allow-development
 
+release-evidence revision tag manifest="release-evidence/release-evidence-v2.json":
+    python -B scripts/verify_release_evidence.py --manifest {{manifest}} --revision {{revision}} --tag {{tag}} --repository .
+
 architecture:
     python -B scripts/verify_architecture.py
 
 purity:
     python -B scripts/verify_pure_ocaml.py
 
+licenses:
+    python -B scripts/verify_licenses.py
+
 install-check:
     opam exec -- dune build @install
     python -B scripts/verify_install_layout.py _build/install/default
 
+task-surface:
+    python -B scripts/verify_task_surface.py
+
 sbom version artifact1 artifact2 artifact3 artifact4:
     python -B scripts/generate_sbom.py --version {{version}} --output dist/workflow-verifier.spdx.json --checksums dist/SHA256SUMS {{artifact1}} {{artifact2}} {{artifact3}} {{artifact4}}
 
-check: build test yaml-conformance tooling architecture helpers purity install-check
+check: task-surface build test yaml-conformance tooling architecture helpers helpers-lint purity licenses install-check
 
 dogfood:
     opam exec -- dune exec workflow-verifier -- check --persona audit .
+
+dogfood-gate root="_dogfood" output="_build/dogfood-v1.json":
+    python -B scripts/dogfood_gate.py verify --root {{root}} --output {{output}}

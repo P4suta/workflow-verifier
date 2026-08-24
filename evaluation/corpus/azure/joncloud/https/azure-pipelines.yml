@@ -1,0 +1,73 @@
+trigger:
+- publish
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  shouldPublish: $[eq(variables['Build.SourceBranch'], 'refs/heads/publish')]
+
+steps:
+- task: UseDotNet@2
+  displayName: Use .NET (global.json)
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+
+- task: DotNetCoreCLI@2
+  displayName: Pack https
+  condition: eq(variables.shouldPublish, true)
+  inputs:
+    command: pack
+    publishWebProjects: false
+    packagesToPack: '**/https.csproj'
+    configuration: $(buildConfiguration)
+    packDirectory: $(build.ArtifactStagingDirectory)
+    versioningScheme: off
+
+- task: DotNetCoreCLI@2
+  displayName: Pack https
+  condition: eq(variables.shouldPublish, false)
+  inputs:
+    command: pack
+    publishWebProjects: false
+    packagesToPack: '**/https.csproj'
+    configuration: $(buildConfiguration)
+    packDirectory: $(build.ArtifactStagingDirectory)
+    versioningScheme: byPrereleaseNumber
+    majorVersion: 0
+    minorVersion: 2
+    patchVersion: 0
+
+- script: |
+    dotnet dev-certs https
+  displayName: Setup Tests
+
+- task: DotNetCoreCLI@2
+  displayName: Test https
+  inputs:
+    command: test
+    projects: '**/https.Tests.csproj'
+    arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura -- xunit.parallelizeAssembly=true xunit.parallelizeTestCollections=true'
+
+- script: |
+    dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+    ./tools/reportgenerator -reports:$(Build.SourcesDirectory)/tests/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:Cobertura
+  displayName: Generate Code Coverage Report
+
+- task: PublishCodeCoverageResults@1
+  displayName: Publish Code Coverage Report
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
+
+- task: PublishBuildArtifacts@1
+  displayName: Upload Artifacts
+  inputs:
+    PathtoPublish: '$(build.ArtifactStagingDirectory)'
+    ArtifactName: 'https'
+    Parallel: true
+

@@ -1,0 +1,1655 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:1775f2fea2857b37f12fafbc0713aea7a2ebb5dbdf246837feb8be682ed55030",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_5a74b13dc69b49023071",
+          "id": "wv_0232f39e378af0b6bb78",
+          "kind": "data",
+          "label": "ios",
+          "to": "wv_cca9def4e7d59437097b"
+        },
+        {
+          "condition": true,
+          "from": "wv_26d908b9c068a61171c1",
+          "id": "wv_040e1e2c70764a047581",
+          "kind": "control",
+          "label": null,
+          "to": "wv_62582863f9fb1c1b15cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_cca9def4e7d59437097b",
+          "id": "wv_07be4f0732cd05916cfa",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6dd0312faa44ef13019f"
+        },
+        {
+          "condition": true,
+          "from": "wv_714237e89d1d0d9e1097",
+          "id": "wv_0c62a57c47a3443c4fa0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cca9def4e7d59437097b"
+        },
+        {
+          "condition": true,
+          "from": "wv_26d908b9c068a61171c1",
+          "id": "wv_18846f3fd4967a0e1d4d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a104fa34693a853827c1"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"macos\")"
+          },
+          "from": "wv_b5a353f984ea55b39f48",
+          "id": "wv_1ec624f9dadc07a173cd",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_26d908b9c068a61171c1"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0b761c038567a823135",
+          "id": "wv_34a47d477a8c7baacecd",
+          "kind": "data",
+          "label": "variables.TARGET_PLATFORM",
+          "to": "wv_a104fa34693a853827c1"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"ios\")"
+          },
+          "from": "wv_b56918c61ba1e2d50486",
+          "id": "wv_53ee11d2c55a6aaded76",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_e4cf3e71110b21695419"
+        },
+        {
+          "condition": true,
+          "from": "wv_f40f0b1a6a46192fffa5",
+          "id": "wv_5561905dc4073a3465d9",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_b56918c61ba1e2d50486"
+        },
+        {
+          "condition": true,
+          "from": "wv_e2135362386f4ea60c16",
+          "id": "wv_69df0e67010efe4c8d47",
+          "kind": "data",
+          "label": "HOME",
+          "to": "wv_06f640c1057d90345805"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4cf3e71110b21695419",
+          "id": "wv_8263c2f7dee20527765d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_06f640c1057d90345805"
+        },
+        {
+          "condition": true,
+          "from": "wv_1f3900f48fb284f64cf2",
+          "id": "wv_8308babea1f3fd36b86a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_21645c196c2d2db3d3bb"
+        },
+        {
+          "condition": true,
+          "from": "wv_abc0de9e05ad3c793aaf",
+          "id": "wv_837eebe05a319e7fce95",
+          "kind": "control",
+          "label": null,
+          "to": "wv_51ff5936a67128dae7a5"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"macos\")"
+          },
+          "from": "wv_6dd0312faa44ef13019f",
+          "id": "wv_8770b33e8268e3284415",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_f40f0b1a6a46192fffa5"
+        },
+        {
+          "condition": true,
+          "from": "wv_f40f0b1a6a46192fffa5",
+          "id": "wv_87cc090d73e7be13a949",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ca7b649ed9f182f8d0fa"
+        },
+        {
+          "condition": true,
+          "from": "wv_abc0de9e05ad3c793aaf",
+          "id": "wv_87f1b3c0ec1a8e474ce2",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1f3900f48fb284f64cf2"
+        },
+        {
+          "condition": true,
+          "from": "wv_cca9def4e7d59437097b",
+          "id": "wv_8aecb5e1cf54c7932642",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b56918c61ba1e2d50486"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"ios\")"
+          },
+          "from": "wv_a104fa34693a853827c1",
+          "id": "wv_905738c54f943b3a27b0",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_abc0de9e05ad3c793aaf"
+        },
+        {
+          "condition": true,
+          "from": "wv_1f3900f48fb284f64cf2",
+          "id": "wv_9365b91284b081d018ca",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6dd0312faa44ef13019f"
+        },
+        {
+          "condition": true,
+          "from": "wv_cca9def4e7d59437097b",
+          "id": "wv_bae16172426300c4acd4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1f3900f48fb284f64cf2"
+        },
+        {
+          "condition": true,
+          "from": "wv_5a126bd5136c6438ca98",
+          "id": "wv_ca7139c5824497eb7482",
+          "kind": "data",
+          "label": "macos",
+          "to": "wv_cca9def4e7d59437097b"
+        },
+        {
+          "condition": true,
+          "from": "wv_cca9def4e7d59437097b",
+          "id": "wv_d01a7c6422ed9921753b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b5a353f984ea55b39f48"
+        },
+        {
+          "condition": true,
+          "from": "wv_cca9def4e7d59437097b",
+          "id": "wv_d1c09886ba4d7357213e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a104fa34693a853827c1"
+        },
+        {
+          "condition": true,
+          "from": "wv_d260521c8e4c8baea5dd",
+          "id": "wv_e3dbd329694befb78d2b",
+          "kind": "data",
+          "label": "variables.TARGET_PLATFORM",
+          "to": "wv_b5a353f984ea55b39f48"
+        },
+        {
+          "condition": true,
+          "from": "wv_f9dc01b315b61cbe6d31",
+          "id": "wv_eada58db0a710d69b5e9",
+          "kind": "data",
+          "label": "variables.TARGET_PLATFORM",
+          "to": "wv_6dd0312faa44ef13019f"
+        },
+        {
+          "condition": true,
+          "from": "wv_315b5a21b30f0373582a",
+          "id": "wv_eea9c09de440238fc7ef",
+          "kind": "data",
+          "label": "HOME",
+          "to": "wv_06f640c1057d90345805"
+        },
+        {
+          "condition": true,
+          "from": "wv_9474e628eab27bc7f3cf",
+          "id": "wv_ff243b434b8a61231bd7",
+          "kind": "data",
+          "label": "variables.TARGET_PLATFORM",
+          "to": "wv_b56918c61ba1e2d50486"
+        }
+      ],
+      "entrypoints": [
+        "wv_714237e89d1d0d9e1097"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "HOME",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 2365,
+                      "column": 558,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2369,
+                      "column": 562,
+                      "line": 68
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "HOME",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 2623,
+                      "column": 816,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2627,
+                      "column": 820,
+                      "line": 68
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1818,
+                      "column": 11,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2844,
+                      "column": 33,
+                      "line": 91
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "HOME",
+                  "mkdir -p ~/ros2_ios_ws/src\ncd ~/ros2_ios_ws\nwget https://raw.githubusercontent.com/esteve/ros2_objc/${BUILD_SOURCEBRANCHNAME}/ros2_objc_ios.repos\nvcs import ~/ros2_ios_ws/src < ros2_objc_ios.repos\ntouch ~/ros2_ios_ws/src/ruslo/polly/examples/01-executable/AMENT_IGNORE\ntouch ~/ros2_ios_ws/src/ruslo/polly/examples/02-library/AMENT_IGNORE\ntouch ~/ros2_ios_ws/src/ruslo/polly/examples/03-shared-link/AMENT_IGNORE\ncd ~/ros2_ios_ws/src/ros2_objc\nvcs custom --git --args checkout ${BUILD_SOURCEBRANCHNAME}\ncd ~/ros2_ios_ws\n\nexport XCODE_XCCONFIG_FILE=$HOME/ros2_ios_ws/src/ruslo/polly/scripts/NoCodeSign.xcconfig\n\nsrc/ament/ament_tools/scripts/ament.py build \\\n  --parallel \\\n  --use-xcode \\\n  --cmake-args \\\n  -DTHIRDPARTY=ON \\\n  -DINSTALL_EXAMPLES=OFF \\\n  -DBUILD_SHARED_LIBS=OFF \\\n  -DCMAKE_TOOLCHAIN_FILE=$HOME/ros2_ios_ws/src/ruslo/polly/ios-nocodesign.cmake \\\n  -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO -- \\\n  --make-flags -sdk iphoneos\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_06f640c1057d90345805",
+          "kind": "command",
+          "name": "mkdir -p ~/ros2_ios_ws/src\ncd ~/ros2_ios_ws\nwget https://raw.githubusercontent.com/esteve/ros2_objc/${BUILD_SOURCEBRANCHNAME}/ros2_objc_ios.repos\nvcs import ~/ros2_ios_ws/src < ros2_objc_ios.repos\ntouch ~/ros2_ios_ws/src/ruslo/polly/examples/01-executable/AMENT_IGNORE\ntouch ~/ros2_ios_ws/src/ruslo/polly/examples/02-library/AMENT_IGNORE\ntouch ~/ros2_ios_ws/src/ruslo/polly/examples/03-shared-link/AMENT_IGNORE\ncd ~/ros2_ios_ws/src/ros2_objc\nvcs custom --git --args checkout ${BUILD_SOURCEBRANCHNAME}\ncd ~/ros2_ios_ws\n\nexport XCODE_XCCONFIG_FILE=$HOME/ros2_ios_ws/src/ruslo/polly/scripts/NoCodeSign.xcconfig\n\nsrc/ament/ament_tools/scripts/ament.py build \\\n  --parallel \\\n  --use-xcode \\\n  --cmake-args \\\n  -DTHIRDPARTY=ON \\\n  -DINSTALL_EXAMPLES=OFF \\\n  -DBUILD_SHARED_LIBS=OFF \\\n  -DCMAKE_TOOLCHAIN_FILE=$HOME/ros2_ios_ws/src/ruslo/polly/ios-nocodesign.cmake \\\n  -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO -- \\\n  --make-flags -sdk iphoneos\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1818,
+              "column": 11,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2844,
+              "column": 33,
+              "line": 91
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1f3900f48fb284f64cf2",
+          "kind": "step",
+          "name": "Install log beautifier",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1118,
+              "column": 3,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1244,
+              "column": 40,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1126,
+                      "column": 11,
+                      "line": 48
+                    },
+                    "stop": {
+                      "byte": 1204,
+                      "column": 47,
+                      "line": 50
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sudo gem install xcpretty\nsudo gem install xcpretty-travis-formatter\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_21645c196c2d2db3d3bb",
+          "kind": "command",
+          "name": "sudo gem install xcpretty\nsudo gem install xcpretty-travis-formatter\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1126,
+              "column": 11,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1204,
+              "column": 47,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_26d908b9c068a61171c1",
+          "kind": "step",
+          "name": "Install dependencies for macOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 159,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 860,
+              "column": 52,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "HOME",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 2623,
+                      "column": 816,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2627,
+                      "column": 820,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "HOME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_315b5a21b30f0373582a",
+          "kind": "resource",
+          "name": "HOME",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 2623,
+              "column": 816,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2627,
+              "column": 820,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 872,
+                      "column": 11,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 1018,
+                      "column": 109,
+                      "line": 44
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "brew install cmake python3 wget\npython3 -m pip install argcomplete catkin_pkg colcon-common-extensions empy pyparsing setuptools vcstool\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_51ff5936a67128dae7a5",
+          "kind": "command",
+          "name": "brew install cmake python3 wget\npython3 -m pip install argcomplete catkin_pkg colcon-common-extensions empy pyparsing setuptools vcstool\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 872,
+              "column": 11,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1018,
+              "column": 109,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5a126bd5136c6438ca98",
+          "kind": "parameter",
+          "name": "matrix.macos",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 56,
+              "column": 5,
+              "line": 6
+            },
+            "stop": {
+              "byte": 93,
+              "column": 31,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5a74b13dc69b49023071",
+          "kind": "parameter",
+          "name": "matrix.ios",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 98,
+              "column": 5,
+              "line": 8
+            },
+            "stop": {
+              "byte": 131,
+              "column": 29,
+              "line": 9
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 167,
+                      "column": 11,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 760,
+                      "column": 14,
+                      "line": 38
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "brew install cmake cppcheck eigen pcre poco python3 tinyxml wget\nbrew install asio tinyxml2\nbrew install opencv\npython3 -m pip install \\\n  argcomplete \\\n  catkin_pkg \\\n  colcon-common-extensions \\\n  coverage \\\n  empy \\\n  flake8 \\\n  flake8-blind-except \\\n  flake8-builtins \\\n  flake8-class-newline \\\n  flake8-comprehensions \\\n  flake8-deprecated \\\n  flake8-docstrings \\\n  flake8-import-order \\\n  flake8-quotes \\\n  mock \\\n  nose \\\n  pep8 \\\n  pydocstyle \\\n  pyparsing \\\n  setuptools \\\n  vcstool\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_62582863f9fb1c1b15cb",
+          "kind": "command",
+          "name": "brew install cmake cppcheck eigen pcre poco python3 tinyxml wget\nbrew install asio tinyxml2\nbrew install opencv\npython3 -m pip install \\\n  argcomplete \\\n  catkin_pkg \\\n  colcon-common-extensions \\\n  coverage \\\n  empy \\\n  flake8 \\\n  flake8-blind-except \\\n  flake8-builtins \\\n  flake8-class-newline \\\n  flake8-comprehensions \\\n  flake8-deprecated \\\n  flake8-docstrings \\\n  flake8-import-order \\\n  flake8-quotes \\\n  mock \\\n  nose \\\n  pep8 \\\n  pydocstyle \\\n  pyparsing \\\n  setuptools \\\n  vcstool\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 167,
+              "column": 11,
+              "line": 13
+            },
+            "stop": {
+              "byte": 760,
+              "column": 14,
+              "line": 38
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1768,
+                      "column": 14,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 1806,
+                      "column": 52,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "eq(variables.TARGET_PLATFORM, 'macos')"
+                ]
+              }
+            },
+            "reference:variables.TARGET_PLATFORM": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1771,
+                      "column": 17,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 1796,
+                      "column": 42,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"macos\")"
+          },
+          "effects": [],
+          "id": "wv_6dd0312faa44ef13019f",
+          "kind": "gate",
+          "name": "condition:pipeline:Build ros2-objc for macOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1768,
+              "column": 14,
+              "line": 66
+            },
+            "stop": {
+              "byte": 1806,
+              "column": 52,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_714237e89d1d0d9e1097",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 2935,
+              "column": 50,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 2902,
+                      "column": 17,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 2927,
+                      "column": 42,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9474e628eab27bc7f3cf",
+          "kind": "resource",
+          "name": "variables.TARGET_PLATFORM",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 2902,
+              "column": 17,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2927,
+              "column": 42,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1078,
+                      "column": 14,
+                      "line": 46
+                    },
+                    "stop": {
+                      "byte": 1114,
+                      "column": 50,
+                      "line": 46
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "eq(variables.TARGET_PLATFORM, 'ios')"
+                ]
+              }
+            },
+            "reference:variables.TARGET_PLATFORM": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1081,
+                      "column": 17,
+                      "line": 46
+                    },
+                    "stop": {
+                      "byte": 1106,
+                      "column": 42,
+                      "line": 46
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"ios\")"
+          },
+          "effects": [],
+          "id": "wv_a104fa34693a853827c1",
+          "kind": "gate",
+          "name": "condition:pipeline:Install dependencies for iOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1078,
+              "column": 14,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1114,
+              "column": 50,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_abc0de9e05ad3c793aaf",
+          "kind": "step",
+          "name": "Install dependencies for iOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 864,
+              "column": 3,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1114,
+              "column": 50,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1081,
+                      "column": 17,
+                      "line": 46
+                    },
+                    "stop": {
+                      "byte": 1106,
+                      "column": 42,
+                      "line": 46
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b0b761c038567a823135",
+          "kind": "resource",
+          "name": "variables.TARGET_PLATFORM",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1081,
+              "column": 17,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1106,
+              "column": 42,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 2899,
+                      "column": 14,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 2935,
+                      "column": 50,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "eq(variables.TARGET_PLATFORM, 'ios')"
+                ]
+              }
+            },
+            "reference:variables.TARGET_PLATFORM": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 2902,
+                      "column": 17,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 2927,
+                      "column": 42,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"ios\")"
+          },
+          "effects": [],
+          "id": "wv_b56918c61ba1e2d50486",
+          "kind": "gate",
+          "name": "condition:pipeline:Build ros2-objc for iOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 2899,
+              "column": 14,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2935,
+              "column": 50,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 822,
+                      "column": 14,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 860,
+                      "column": 52,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "eq(variables.TARGET_PLATFORM, 'macos')"
+                ]
+              }
+            },
+            "reference:variables.TARGET_PLATFORM": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 825,
+                      "column": 17,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 850,
+                      "column": 42,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "eq(variables.TARGET_PLATFORM,\"macos\")"
+          },
+          "effects": [],
+          "id": "wv_b5a353f984ea55b39f48",
+          "kind": "gate",
+          "name": "condition:pipeline:Install dependencies for macOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 822,
+              "column": 14,
+              "line": 40
+            },
+            "stop": {
+              "byte": 860,
+              "column": 52,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1256,
+                      "column": 11,
+                      "line": 53
+                    },
+                    "stop": {
+                      "byte": 1711,
+                      "column": 22,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "mkdir -p ~/ros2_objc_ws/src\ncd ~/ros2_objc_ws\nwget https://raw.githubusercontent.com/esteve/ros2_objc/${BUILD_SOURCEBRANCHNAME}/ros2_objc_macos.repos\nvcs import ~/ros2_objc_ws/src < ros2_objc_macos.repos\ncd ~/ros2_objc_ws/src/ros2_objc\nvcs custom --git --args checkout ${BUILD_SOURCEBRANCHNAME}\ncd ~/ros2_objc_ws\nsrc/ament/ament_tools/scripts/ament.py build \\\n  --parallel \\\n  --cmake-args \\\n  -DTHIRDPARTY=ON\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_ca7b649ed9f182f8d0fa",
+          "kind": "command",
+          "name": "mkdir -p ~/ros2_objc_ws/src\ncd ~/ros2_objc_ws\nwget https://raw.githubusercontent.com/esteve/ros2_objc/${BUILD_SOURCEBRANCHNAME}/ros2_objc_macos.repos\nvcs import ~/ros2_objc_ws/src < ros2_objc_macos.repos\ncd ~/ros2_objc_ws/src/ros2_objc\nvcs custom --git --args checkout ${BUILD_SOURCEBRANCHNAME}\ncd ~/ros2_objc_ws\nsrc/ament/ament_tools/scripts/ament.py build \\\n  --parallel \\\n  --cmake-args \\\n  -DTHIRDPARTY=ON\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1256,
+              "column": 11,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1711,
+              "column": 22,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cca9def4e7d59437097b",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 2935,
+              "column": 50,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 825,
+                      "column": 17,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 850,
+                      "column": 42,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d260521c8e4c8baea5dd",
+          "kind": "resource",
+          "name": "variables.TARGET_PLATFORM",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 825,
+              "column": 17,
+              "line": 40
+            },
+            "stop": {
+              "byte": 850,
+              "column": 42,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "HOME",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 2365,
+                      "column": 558,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 2369,
+                      "column": 562,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "HOME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e2135362386f4ea60c16",
+          "kind": "resource",
+          "name": "HOME",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 2365,
+              "column": 558,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2369,
+              "column": 562,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e4cf3e71110b21695419",
+          "kind": "step",
+          "name": "Build ros2-objc for iOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1810,
+              "column": 3,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2935,
+              "column": 50,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f40f0b1a6a46192fffa5",
+          "kind": "step",
+          "name": "Build ros2-objc for macOS",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1248,
+              "column": 3,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1806,
+              "column": 52,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "variables.TARGET_PLATFORM",
+                  "span": {
+                    "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+                    "start": {
+                      "byte": 1771,
+                      "column": 17,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 1796,
+                      "column": 42,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "variables.TARGET_PLATFORM"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f9dc01b315b61cbe6d31",
+          "kind": "resource",
+          "name": "variables.TARGET_PLATFORM",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/esteve/ros2_objc/azure-pipelines.yml",
+            "start": {
+              "byte": 1771,
+              "column": 17,
+              "line": 66
+            },
+            "stop": {
+              "byte": 1796,
+              "column": 42,
+              "line": 66
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/esteve/ros2_objc/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:ca0850f6f9d8204f83eb92abd0ef3e2e14e32552df86389d03d4a6d8742838dd",
+      "path": "azure/esteve/ros2_objc/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

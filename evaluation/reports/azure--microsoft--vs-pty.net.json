@@ -1,0 +1,368 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:cf1ae153df928274e7a10a786956b1fce16ba5c94c8470f2e94c24d99f8c5ef0",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_1e038d44d0280a3b5500",
+          "id": "wv_259c5dc1be05a1888fb5",
+          "kind": "data",
+          "label": "TreatWarningsAsErrors",
+          "to": "wv_03213adf6d8615ec1e86"
+        },
+        {
+          "condition": true,
+          "from": "wv_68693c5481e244f91e90",
+          "id": "wv_3513431e0fad5e2191ed",
+          "kind": "data",
+          "label": "BuildConfiguration",
+          "to": "wv_03213adf6d8615ec1e86"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c5a61143fe4af56ab4e",
+          "id": "wv_58fbd1a623e9796bb0a0",
+          "kind": "data",
+          "label": "BuildPlatform",
+          "to": "wv_03213adf6d8615ec1e86"
+        },
+        {
+          "condition": true,
+          "from": "wv_7582e1479322c70a6279",
+          "id": "wv_b59525b9e21ec330d568",
+          "kind": "control",
+          "label": null,
+          "to": "wv_03213adf6d8615ec1e86"
+        }
+      ],
+      "entrypoints": [
+        "wv_03213adf6d8615ec1e86"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_03213adf6d8615ec1e86",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 243,
+              "column": 40,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+                    "start": {
+                      "byte": 189,
+                      "column": 18,
+                      "line": 14
+                    },
+                    "stop": {
+                      "byte": 196,
+                      "column": 25,
+                      "line": 14
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Any CPU"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1c5a61143fe4af56ab4e",
+          "kind": "resource",
+          "name": "variable:BuildPlatform",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+            "start": {
+              "byte": 174,
+              "column": 3,
+              "line": 14
+            },
+            "stop": {
+              "byte": 196,
+              "column": 25,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+                    "start": {
+                      "byte": 137,
+                      "column": 26,
+                      "line": 12
+                    },
+                    "stop": {
+                      "byte": 141,
+                      "column": 30,
+                      "line": 12
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "true"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1e038d44d0280a3b5500",
+          "kind": "resource",
+          "name": "variable:TreatWarningsAsErrors",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+            "start": {
+              "byte": 114,
+              "column": 3,
+              "line": 12
+            },
+            "stop": {
+              "byte": 141,
+              "column": 30,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+                    "start": {
+                      "byte": 164,
+                      "column": 23,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 171,
+                      "column": 30,
+                      "line": 13
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Release"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_68693c5481e244f91e90",
+          "kind": "resource",
+          "name": "variable:BuildConfiguration",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+            "start": {
+              "byte": 144,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 171,
+              "column": 30,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7582e1479322c70a6279",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/microsoft/vs-pty.net/azure-pipelines.yml",
+            "start": {
+              "byte": 11,
+              "column": 3,
+              "line": 2
+            },
+            "stop": {
+              "byte": 99,
+              "column": 13,
+              "line": 9
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/microsoft/vs-pty.net/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:69a9b823f6dca20fc3696f6d1069d6df9de993d9afe9528052b47537ce9cab58",
+      "path": "azure/microsoft/vs-pty.net/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

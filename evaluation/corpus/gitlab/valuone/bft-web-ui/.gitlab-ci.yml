@@ -1,0 +1,42 @@
+stages:
+  - lint
+  - build-dev
+  - build-prod
+
+eslint:
+  stage: lint
+  image: node:22-alpine
+  script:
+    - npm ci
+    - npx eslint --format gitlab . --ignore-pattern custom-theme
+  artifacts:
+    reports:
+      codequality: gl-codequality.json
+  allow_failure: false
+
+build-dev:
+  stage: build-dev
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    - /kaniko/executor
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $CI_REGISTRY_IMAGE:dev
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev" && $CI_PIPELINE_SOURCE == "push"
+
+build-prod:
+  stage: build-prod
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [ "" ]
+  script:
+    - /kaniko/executor
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $CI_REGISTRY_IMAGE:latest
+      --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  rules:
+    - if: $CI_COMMIT_BRANCH == "deploy" && $CI_PIPELINE_SOURCE == "push"

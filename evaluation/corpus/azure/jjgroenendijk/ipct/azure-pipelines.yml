@@ -1,0 +1,49 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
+
+strategy:
+  matrix:
+    x64:
+      arch: 'x64'
+    arm64:
+      arch: 'arm64'
+
+steps:
+  - task: Cache@2
+    displayName: 'Cache NuGet packages'
+    inputs:
+      key: 'nuget | "$(Agent.OS)" | src/**/*.csproj,installer/*.wixproj'
+      restoreKeys: |
+        nuget | "$(Agent.OS)"
+      path: $(NUGET_PACKAGES)
+
+  - task: UseDotNet@2
+    displayName: 'Setup .NET'
+    inputs:
+      packageType: 'sdk'
+      version: '8.0.x'
+
+  - script: dotnet tool install --global wix
+    displayName: 'Install WiX Toolset'
+
+  - powershell: |
+      $buildDate = (Get-Date).ToString("yyyy-MM-dd")
+      .\build.ps1 -Arch $(arch) -BuildDate $buildDate
+    displayName: 'Build and Package'
+
+  - powershell: |
+      Rename-Item -Path "installer/bin/$(arch)/Release/IPCTInstaller.msi" -NewName "IPCT-$(arch).msi"
+    displayName: 'Rename MSI'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Upload Artifact'
+    inputs:
+      targetPath: 'installer/bin/$(arch)/Release/IPCT-$(arch).msi'
+      artifact: 'msi-$(arch)'
+      publishLocation: 'pipeline'

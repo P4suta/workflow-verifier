@@ -40,25 +40,19 @@ let unsigned_json schema entries =
       ("schema", Json.String schema);
     ]
 
-let valid_hex value =
-  String.length value > 0
-  && String.for_all
-       (function
-         | '0' .. '9' | 'a' .. 'f' -> true
-         | _ -> false)
-       (String.lowercase_ascii value)
-
-let valid_sha256 value =
-  Util.starts_with ~prefix:"sha256:" value
-  && String.length value = 71
-  && valid_hex (String.sub value 7 64)
+let assemble schema entries =
+  let integrity =
+    "sha256:"
+    ^ Sha256.digest_string (Json.to_string (unsigned_json schema entries))
+  in
+  { schema; entries; integrity }
 
 let validate_entry entry =
   if String.trim entry.reference = "" then
     Error "lock reference must not be empty"
   else if String.trim entry.revision = "" then
     Error "lock revision must not be empty"
-  else if not (valid_sha256 entry.digest) then
+  else if not (Dependency_identity.valid_content_digest entry.digest) then
     Error ("invalid SHA-256 digest for " ^ entry.reference)
   else if String.trim entry.source = "" then
     Error "lock source must not be empty"
@@ -97,19 +91,10 @@ let create_with_schema schema entries =
     in
     match validate None [] entries with
     | Error _ as error -> error
-    | Ok entries ->
-        let integrity =
-          "sha256:"
-          ^ Sha256.digest_string (Json.to_string (unsigned_json schema entries))
-        in
-        Ok { schema; entries; integrity }
+    | Ok entries -> Ok (assemble schema entries)
 
 let create entries = create_with_schema "lock-v2" entries
-
-let make entries =
-  match create entries with
-  | Ok lock -> lock
-  | Error message -> invalid_arg message
+let empty = assemble "lock-v2" []
 
 let find lock provider reference =
   List.find_opt

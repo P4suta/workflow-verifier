@@ -1,0 +1,2564 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+          "start": {
+            "byte": 265,
+            "column": 13,
+            "line": 18
+          },
+          "stop": {
+            "byte": 284,
+            "column": 32,
+            "line": 18
+          }
+        }
+      },
+      "id": "diag_4e3cb97897a7f0b1f236",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+        "start": {
+          "byte": 265,
+          "column": 13,
+          "line": 18
+        },
+        "stop": {
+          "byte": 284,
+          "column": 32,
+          "line": 18
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_0e9c60b3bc1da9f25c35",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 265,
+              "column": 13,
+              "line": 18
+            },
+            "stop": {
+              "byte": 284,
+              "column": 32,
+              "line": 18
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/setup-python@v1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+          "start": {
+            "byte": 352,
+            "column": 13,
+            "line": 20
+          },
+          "stop": {
+            "byte": 375,
+            "column": 36,
+            "line": 20
+          }
+        }
+      },
+      "id": "diag_a838cc4be716feb2e7da",
+      "message": "dependency is not pinned to immutable content: actions/setup-python@v1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+        "start": {
+          "byte": 352,
+          "column": 13,
+          "line": 20
+        },
+        "stop": {
+          "byte": 375,
+          "column": 36,
+          "line": 20
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_97c56e29b3c2f3f102bf",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 352,
+              "column": 13,
+              "line": 20
+            },
+            "stop": {
+              "byte": 375,
+              "column": 36,
+              "line": 20
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = JamesIves/github-pages-deploy-action@4.1.3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+          "start": {
+            "byte": 2242,
+            "column": 13,
+            "line": 74
+          },
+          "stop": {
+            "byte": 2284,
+            "column": 55,
+            "line": 74
+          }
+        }
+      },
+      "id": "diag_ec601d49ff3cca151adf",
+      "message": "dependency is not pinned to immutable content: JamesIves/github-pages-deploy-action@4.1.3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+        "start": {
+          "byte": 2242,
+          "column": 13,
+          "line": 74
+        },
+        "stop": {
+          "byte": 2284,
+          "column": 55,
+          "line": 74
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_d2149bddf3e7eabb5832",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 2242,
+              "column": 13,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2284,
+              "column": 55,
+              "line": 74
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:c4727d08cf798dcd0209f1c8f729dae1a35d29506e6c501ba48b192d7af65b7a",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_0675ce1bea2cb40d91a9",
+          "id": "wv_05662d4732c3d03fb076",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4a03761e1fe686eac01c"
+        },
+        {
+          "condition": true,
+          "from": "wv_e77d89d7ad747056c51e",
+          "id": "wv_0dc8f2df1bbcd86b25b0",
+          "kind": "data",
+          "label": "git show -s --format=%ci $CURRENT_HASH",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_45485ed0303a39d441e5",
+          "id": "wv_100554b095639a1fdd3f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_da15b0b2c94d1a19b7fe"
+        },
+        {
+          "condition": true,
+          "from": "wv_4a03761e1fe686eac01c",
+          "id": "wv_123b3536b45d0e858bce",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_d244c230fa13c800c50d"
+        },
+        {
+          "condition": true,
+          "from": "wv_dead84450a8a6437fba0",
+          "id": "wv_138f2db888bf5860c9d9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d2149bddf3e7eabb5832"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_1ec900a7c9d63c09aad6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1a30fc11bd55c3d62648"
+        },
+        {
+          "condition": true,
+          "from": "wv_244504a7ca17d6c6ced8",
+          "id": "wv_23a1f1aeca23cc69d055",
+          "kind": "data",
+          "label": "CURRENT_DATE",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_4a03761e1fe686eac01c",
+          "id": "wv_29f9b96e1b4240bb9533",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d4ea1d75bb11ee620e88"
+        },
+        {
+          "condition": true,
+          "from": "wv_1a30fc11bd55c3d62648",
+          "id": "wv_2affc3ec692bc62af12f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0e9c60b3bc1da9f25c35"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_313623363504b6bd640f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4a03761e1fe686eac01c"
+        },
+        {
+          "condition": true,
+          "from": "wv_06b2de37d788c2fe434e",
+          "id": "wv_4142ecd2c1d099489bc0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_45c1b6e2cffd963ac525"
+        },
+        {
+          "condition": true,
+          "from": "wv_53bbdfdc475a5c633def",
+          "id": "wv_46999ffcc46356e5a905",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0675ce1bea2cb40d91a9"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_48703c4321588b0a9c6f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_53bbdfdc475a5c633def"
+        },
+        {
+          "condition": true,
+          "from": "wv_a339982cd5449b2ff0af",
+          "id": "wv_49c6a1119e782cbcd723",
+          "kind": "data",
+          "label": "github.sha",
+          "to": "wv_d2149bddf3e7eabb5832"
+        },
+        {
+          "condition": true,
+          "from": "wv_45485ed0303a39d441e5",
+          "id": "wv_4c47ef1c58a2875efe6d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a43547572c80beac49ad"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_50558fdd0a9365afab08",
+          "kind": "control",
+          "label": null,
+          "to": "wv_06b2de37d788c2fe434e"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_5a9bd49e7b8e148492d3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0675ce1bea2cb40d91a9"
+        },
+        {
+          "condition": true,
+          "from": "wv_36c736863abc8c93a6c2",
+          "id": "wv_6d96c79fd54273c8cca7",
+          "kind": "data",
+          "label": "CURRENT_VERSION",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_484b8fcedc0373a3c1cf",
+          "id": "wv_6f0320d8ccb4b3517ed6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_df8ecb0161898a35ee16"
+        },
+        {
+          "condition": true,
+          "from": "wv_da15b0b2c94d1a19b7fe",
+          "id": "wv_74a54b220bc30a660147",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1981f271f9dab3c229ec"
+        },
+        {
+          "condition": true,
+          "from": "wv_e942dd58cea6dc7f8039",
+          "id": "wv_8b7ec61e8bfcc1777e54",
+          "kind": "call",
+          "label": null,
+          "to": "wv_97c56e29b3c2f3f102bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_8c8aa7c3a15a37ee13fb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_da15b0b2c94d1a19b7fe"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_8f08c9222477c2509687",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e942dd58cea6dc7f8039"
+        },
+        {
+          "condition": true,
+          "from": "wv_85be8c6da7e2bab3501d",
+          "id": "wv_90b64f1146e84e2db5ab",
+          "kind": "data",
+          "label": "python -c 'from geoextent import __version__; print(__version__",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_06b2de37d788c2fe434e",
+          "id": "wv_957b8ffc2fd3eeacb56b",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_37010a157999d17340f2"
+        },
+        {
+          "condition": true,
+          "from": "wv_f48e2e0002e419fb855f",
+          "id": "wv_9a86b40a8032cbfefb48",
+          "kind": "data",
+          "label": "CURRENT_HASH",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_1a30fc11bd55c3d62648",
+          "id": "wv_a2b2a4afea92c918384f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e942dd58cea6dc7f8039"
+        },
+        {
+          "condition": true,
+          "from": "wv_da15b0b2c94d1a19b7fe",
+          "id": "wv_adbff69b735a92971b92",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_53bbdfdc475a5c633def"
+        },
+        {
+          "condition": true,
+          "from": "wv_53bbdfdc475a5c633def",
+          "id": "wv_b091ea84e353da9247cf",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c4f223167b27e5c7b77f"
+        },
+        {
+          "condition": true,
+          "from": "wv_0675ce1bea2cb40d91a9",
+          "id": "wv_b0aa888da692a35ab59c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_71c2b2d2df6ca8af43b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_bdce94257330f479d198",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d244c230fa13c800c50d"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_be26889ab260ea9b76ad",
+          "kind": "control",
+          "label": null,
+          "to": "wv_37010a157999d17340f2"
+        },
+        {
+          "condition": true,
+          "from": "wv_dd052a90c88731dcc41f",
+          "id": "wv_bf271ca6082a638c448b",
+          "kind": "data",
+          "label": "CURRENT_DATE",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_dead84450a8a6437fba0",
+          "id": "wv_d54c2adc70ea43aef36f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_d2149bddf3e7eabb5832"
+        },
+        {
+          "condition": true,
+          "from": "wv_3558a8f4d013749d0a22",
+          "id": "wv_d643cb2a5294b730a902",
+          "kind": "control",
+          "label": null,
+          "to": "wv_484b8fcedc0373a3c1cf"
+        },
+        {
+          "condition": true,
+          "from": "wv_e942dd58cea6dc7f8039",
+          "id": "wv_dbe405ede8aad726878d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_06b2de37d788c2fe434e"
+        },
+        {
+          "condition": true,
+          "from": "wv_d83927819708fa4db9c5",
+          "id": "wv_dcba17c7c8d668d8ef67",
+          "kind": "control",
+          "label": null,
+          "to": "wv_484b8fcedc0373a3c1cf"
+        },
+        {
+          "condition": true,
+          "from": "wv_119e1cb08a514f77fd1e",
+          "id": "wv_dd56b0a19d815679e3ed",
+          "kind": "data",
+          "label": "CURRENT_HASH",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_df8ecb0161898a35ee16",
+          "id": "wv_e419d4079e028986ed16",
+          "kind": "control",
+          "label": null,
+          "to": "wv_dead84450a8a6437fba0"
+        },
+        {
+          "condition": true,
+          "from": "wv_1a30fc11bd55c3d62648",
+          "id": "wv_eea221cb30fd3db71a89",
+          "kind": "call",
+          "label": null,
+          "to": "wv_0e9c60b3bc1da9f25c35"
+        },
+        {
+          "condition": true,
+          "from": "wv_9866251da65c61c4bf0f",
+          "id": "wv_eea5ea9285e647aae6e4",
+          "kind": "data",
+          "label": "runner.os",
+          "to": "wv_37010a157999d17340f2"
+        },
+        {
+          "condition": true,
+          "from": "wv_d244c230fa13c800c50d",
+          "id": "wv_f551128acf7ef3ff1484",
+          "kind": "control",
+          "label": null,
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_d244c230fa13c800c50d",
+          "id": "wv_f7964c21a203015db874",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_dead84450a8a6437fba0"
+        },
+        {
+          "condition": true,
+          "from": "wv_45d65bfaa91cf8358cb7",
+          "id": "wv_f7fca2831765ca907a40",
+          "kind": "data",
+          "label": "git log --pretty=format:'%h' -n 1",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_e76edbbd17efe4aee561",
+          "id": "wv_fa1a7dda75a157a5cadb",
+          "kind": "data",
+          "label": "env.GITHUB_REF_SLUG",
+          "to": "wv_d2149bddf3e7eabb5832"
+        },
+        {
+          "condition": true,
+          "from": "wv_e942dd58cea6dc7f8039",
+          "id": "wv_fb0ffba7da20dda479c5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_97c56e29b3c2f3f102bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_ce3663f8f97edcfab376",
+          "id": "wv_fcb096dad05f9eeb9f85",
+          "kind": "data",
+          "label": "CURRENT_VERSION",
+          "to": "wv_250d4ab511d92550ca0f"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(runner.os==\"Linux\")"
+          },
+          "from": "wv_37010a157999d17340f2",
+          "id": "wv_ffce128d45580c0dcfbb",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_45485ed0303a39d441e5"
+        }
+      ],
+      "entrypoints": [
+        "wv_484b8fcedc0373a3c1cf"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0675ce1bea2cb40d91a9",
+          "kind": "step",
+          "name": "Install dependencies",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1219,
+              "column": 7,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1356,
+              "column": 9,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_06b2de37d788c2fe434e",
+          "kind": "step",
+          "name": "Install system dependencies (Ubuntu)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 431,
+              "column": 7,
+              "line": 24
+            },
+            "stop": {
+              "byte": 687,
+              "column": 30,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_0e9c60b3bc1da9f25c35",
+          "kind": "call",
+          "name": "actions/checkout@v2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 265,
+              "column": 13,
+              "line": 18
+            },
+            "stop": {
+              "byte": 284,
+              "column": 32,
+              "line": 18
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_HASH",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1862,
+                      "column": 303,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1874,
+                      "column": 315,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CURRENT_HASH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_119e1cb08a514f77fd1e",
+          "kind": "resource",
+          "name": "CURRENT_HASH",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1862,
+              "column": 303,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1874,
+              "column": 315,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1041,
+                      "column": 12,
+                      "line": 38
+                    },
+                    "stop": {
+                      "byte": 1135,
+                      "column": 9,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "python -m pip install --upgrade pip\npip install -r requirements.txt\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1981f271f9dab3c229ec",
+          "kind": "command",
+          "name": "python -m pip install --upgrade pip\npip install -r requirements.txt\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1041,
+              "column": 12,
+              "line": 38
+            },
+            "stop": {
+              "byte": 1135,
+              "column": 9,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1a30fc11bd55c3d62648",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 259,
+              "column": 7,
+              "line": 18
+            },
+            "stop": {
+              "byte": 284,
+              "column": 32,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_DATE",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 2038,
+                      "column": 479,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 2050,
+                      "column": 491,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CURRENT_DATE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_244504a7ca17d6c6ced8",
+          "kind": "resource",
+          "name": "CURRENT_DATE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 2038,
+              "column": 479,
+              "line": 58
+            },
+            "stop": {
+              "byte": 2050,
+              "column": 491,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_DATE",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1876,
+                      "column": 317,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1888,
+                      "column": 329,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_DATE",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 2038,
+                      "column": 479,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 2050,
+                      "column": 491,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_HASH",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1862,
+                      "column": 303,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1874,
+                      "column": 315,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_HASH",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1978,
+                      "column": 419,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1990,
+                      "column": 431,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_VERSION",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1841,
+                      "column": 282,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1856,
+                      "column": 297,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_VERSION",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1920,
+                      "column": 361,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1935,
+                      "column": 376,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "git log --pretty=format:'%h' -n 1",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1745,
+                      "column": 186,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1778,
+                      "column": 219,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "git show -s --format=%ci $CURRENT_HASH",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1795,
+                      "column": 236,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1833,
+                      "column": 274,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "python -c 'from geoextent import __version__; print(__version__",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1663,
+                      "column": 104,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1726,
+                      "column": 167,
+                      "line": 58
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1572,
+                      "column": 13,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 2194,
+                      "column": 9,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CURRENT_DATE",
+                  "CURRENT_HASH",
+                  "CURRENT_VERSION",
+                  "cd docs\nmake html\ncd build/html\n# Replace current build version and date\nCURRENT_VERSION=$(python -c 'from geoextent import __version__; print(__version__)')\nCURRENT_HASH=$(git log --pretty=format:'%h' -n 1)\nCURRENT_DATE=$(git show -s --format=%ci $CURRENT_HASH)\necho $CURRENT_VERSION \"@\" $CURRENT_HASH $CURRENT_DATE\nsed -i \"s/PLACEHOLDER_VERSION/$CURRENT_VERSION/g\" index.html\nsed -i \"s/PLACEHOLDER_HASH/$CURRENT_HASH/g\" index.html\nsed -i \"s/PLACEHOLDER_TIMESTAMP/$CURRENT_DATE/g\" index.html\ncd ../../..\nls\n",
+                  "git log --pretty=format:'%h' -n 1",
+                  "git show -s --format=%ci $CURRENT_HASH",
+                  "python -c 'from geoextent import __version__; print(__version__"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_250d4ab511d92550ca0f",
+          "kind": "command",
+          "name": "cd docs\nmake html\ncd build/html\n# Replace current build version and date\nCURRENT_VERSION=$(python -c 'from geoextent import __version__; print(__version__)')\nCURRENT_HASH=$(git log --pretty=format:'%h' -n 1)\nCURRENT_DATE=$(git show -s --format=%ci $CURRENT_HASH)\necho $CURRENT_VERSION \"@\" $CURRENT_HASH $CURRENT_DATE\nsed -i \"s/PLACEHOLDER_VERSION/$CURRENT_VERSION/g\" index.html\nsed -i \"s/PLACEHOLDER_HASH/$CURRENT_HASH/g\" index.html\nsed -i \"s/PLACEHOLDER_TIMESTAMP/$CURRENT_DATE/g\" index.html\ncd ../../..\nls\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1572,
+              "column": 13,
+              "line": 58
+            },
+            "stop": {
+              "byte": 2194,
+              "column": 9,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3558a8f4d013749d0a22",
+          "kind": "trigger",
+          "name": "pull_request",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 148,
+              "column": 3,
+              "line": 9
+            },
+            "stop": {
+              "byte": 190,
+              "column": 15,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_VERSION",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1920,
+                      "column": 361,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1935,
+                      "column": 376,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CURRENT_VERSION"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_36c736863abc8c93a6c2",
+          "kind": "resource",
+          "name": "CURRENT_VERSION",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1920,
+              "column": 361,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1935,
+              "column": 376,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 749,
+                      "column": 11,
+                      "line": 30
+                    },
+                    "stop": {
+                      "byte": 769,
+                      "column": 31,
+                      "line": 30
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "runner.os == 'Linux'"
+                ]
+              }
+            },
+            "reference:runner.os": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "runner.os",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 749,
+                      "column": 11,
+                      "line": 30
+                    },
+                    "stop": {
+                      "byte": 758,
+                      "column": 20,
+                      "line": 30
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "runner.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(runner.os==\"Linux\")"
+          },
+          "effects": [],
+          "id": "wv_37010a157999d17340f2",
+          "kind": "gate",
+          "name": "if:build:Install pygdal Python package (Ubuntu)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 749,
+              "column": 11,
+              "line": 30
+            },
+            "stop": {
+              "byte": 769,
+              "column": 31,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_45485ed0303a39d441e5",
+          "kind": "step",
+          "name": "Install pygdal Python package (Ubuntu)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 694,
+              "column": 7,
+              "line": 29
+            },
+            "stop": {
+              "byte": 996,
+              "column": 9,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 485,
+                      "column": 12,
+                      "line": 25
+                    },
+                    "stop": {
+                      "byte": 687,
+                      "column": 30,
+                      "line": 28
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable\nsudo apt-get install -y libproj-dev libgeos-dev libspatialite-dev libgdal-dev gdal-bin netcdf-bin\ngdal-config --version\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_45c1b6e2cffd963ac525",
+          "kind": "command",
+          "name": "sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable\nsudo apt-get install -y libproj-dev libgeos-dev libspatialite-dev libgdal-dev gdal-bin netcdf-bin\ngdal-config --version\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 485,
+              "column": 12,
+              "line": 25
+            },
+            "stop": {
+              "byte": 687,
+              "column": 30,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git log --pretty=format:'%h' -n 1",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1745,
+                      "column": 186,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1778,
+                      "column": 219,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git log --pretty=format:'%h' -n 1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_45d65bfaa91cf8358cb7",
+          "kind": "resource",
+          "name": "git log --pretty=format:'%h' -n 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1745,
+              "column": 186,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1778,
+              "column": 219,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_484b8fcedc0373a3c1cf",
+          "kind": "workflow",
+          "name": "Build document",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 2649,
+              "column": 54,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4a03761e1fe686eac01c",
+          "kind": "step",
+          "name": "Install docs requirements",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1363,
+              "column": 7,
+              "line": 52
+            },
+            "stop": {
+              "byte": 1523,
+              "column": 25,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_53bbdfdc475a5c633def",
+          "kind": "step",
+          "name": "Install geoextent",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1142,
+              "column": 7,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1212,
+              "column": 9,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1258,
+                      "column": 13,
+                      "line": 47
+                    },
+                    "stop": {
+                      "byte": 1356,
+                      "column": 9,
+                      "line": 51
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sudo apt update\nsudo apt install -y graphviz\npip install -U tox\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_71c2b2d2df6ca8af43b2",
+          "kind": "command",
+          "name": "sudo apt update\nsudo apt install -y graphviz\npip install -U tox\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1258,
+              "column": 13,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1356,
+              "column": 9,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "python -c 'from geoextent import __version__; print(__version__",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1663,
+                      "column": 104,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1726,
+                      "column": 167,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "python -c 'from geoextent import __version__; print(__version__"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_85be8c6da7e2bab3501d",
+          "kind": "resource",
+          "name": "python -c 'from geoextent import __version__; print(__version__",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1663,
+              "column": 104,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1726,
+              "column": 167,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_97c56e29b3c2f3f102bf",
+          "kind": "call",
+          "name": "actions/setup-python@v1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 352,
+              "column": 13,
+              "line": 20
+            },
+            "stop": {
+              "byte": 375,
+              "column": 36,
+              "line": 20
+            }
+          },
+          "unknown": {
+            "detail": "actions/setup-python@v1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "runner.os",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 749,
+                      "column": 11,
+                      "line": 30
+                    },
+                    "stop": {
+                      "byte": 758,
+                      "column": 20,
+                      "line": 30
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "runner.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9866251da65c61c4bf0f",
+          "kind": "resource",
+          "name": "runner.os",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 749,
+              "column": 11,
+              "line": 30
+            },
+            "stop": {
+              "byte": 758,
+              "column": 20,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.sha",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 2479,
+                      "column": 45,
+                      "line": 78
+                    },
+                    "stop": {
+                      "byte": 2489,
+                      "column": 55,
+                      "line": 78
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.sha"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a339982cd5449b2ff0af",
+          "kind": "resource",
+          "name": "github.sha",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 2479,
+              "column": 45,
+              "line": 78
+            },
+            "stop": {
+              "byte": 2489,
+              "column": 55,
+              "line": 78
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 830,
+                      "column": 12,
+                      "line": 32
+                    },
+                    "stop": {
+                      "byte": 996,
+                      "column": 9,
+                      "line": 36
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "export CPLUS_INCLUDE_PATH=/usr/include/gdal\nexport C_INCLUDE_PATH=/usr/include/gdal\npip install pygdal==\"`gdal-config --version`.*\"\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a43547572c80beac49ad",
+          "kind": "command",
+          "name": "export CPLUS_INCLUDE_PATH=/usr/include/gdal\nexport C_INCLUDE_PATH=/usr/include/gdal\npip install pygdal==\"`gdal-config --version`.*\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 830,
+              "column": 12,
+              "line": 32
+            },
+            "stop": {
+              "byte": 996,
+              "column": 9,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1177,
+                      "column": 12,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1212,
+                      "column": 9,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pip install -e .\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c4f223167b27e5c7b77f",
+          "kind": "command",
+          "name": "pip install -e .\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1177,
+              "column": 12,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1212,
+              "column": 9,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_VERSION",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1841,
+                      "column": 282,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1856,
+                      "column": 297,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CURRENT_VERSION"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ce3663f8f97edcfab376",
+          "kind": "resource",
+          "name": "CURRENT_VERSION",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1841,
+              "column": 282,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1856,
+              "column": 297,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d2149bddf3e7eabb5832",
+          "kind": "call",
+          "name": "JamesIves/github-pages-deploy-action@4.1.3",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 2242,
+              "column": 13,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2284,
+              "column": 55,
+              "line": 74
+            }
+          },
+          "unknown": {
+            "detail": "JamesIves/github-pages-deploy-action@4.1.3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d244c230fa13c800c50d",
+          "kind": "step",
+          "name": "Build the documentation",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1530,
+              "column": 7,
+              "line": 57
+            },
+            "stop": {
+              "byte": 2194,
+              "column": 9,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1407,
+                      "column": 13,
+                      "line": 53
+                    },
+                    "stop": {
+                      "byte": 1523,
+                      "column": 25,
+                      "line": 56
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pip install -r docs/requirements-docs.txt\npip install -r requirements.txt\npip install -e .\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_d4ea1d75bb11ee620e88",
+          "kind": "command",
+          "name": "pip install -r docs/requirements-docs.txt\npip install -r requirements.txt\npip install -e .\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1407,
+              "column": 13,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1523,
+              "column": 25,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d83927819708fa4db9c5",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 111,
+              "column": 3,
+              "line": 6
+            },
+            "stop": {
+              "byte": 145,
+              "column": 15,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_da15b0b2c94d1a19b7fe",
+          "kind": "step",
+          "name": "Install dependencies",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1003,
+              "column": 7,
+              "line": 37
+            },
+            "stop": {
+              "byte": 1135,
+              "column": 9,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_DATE",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1876,
+                      "column": 317,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1888,
+                      "column": 329,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CURRENT_DATE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_dd052a90c88731dcc41f",
+          "kind": "resource",
+          "name": "CURRENT_DATE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1876,
+              "column": 317,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1888,
+              "column": 329,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_dead84450a8a6437fba0",
+          "kind": "step",
+          "name": "Deploy to Github pages",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 2201,
+              "column": 7,
+              "line": 73
+            },
+            "stop": {
+              "byte": 2649,
+              "column": 54,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_df8ecb0161898a35ee16",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 200,
+              "column": 3,
+              "line": 14
+            },
+            "stop": {
+              "byte": 2649,
+              "column": 54,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.GITHUB_REF_SLUG",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 2508,
+                      "column": 74,
+                      "line": 78
+                    },
+                    "stop": {
+                      "byte": 2527,
+                      "column": 93,
+                      "line": 78
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.GITHUB_REF_SLUG",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.GITHUB_REF_SLUG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e76edbbd17efe4aee561",
+          "kind": "resource",
+          "name": "env.GITHUB_REF_SLUG",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 2508,
+              "column": 74,
+              "line": 78
+            },
+            "stop": {
+              "byte": 2527,
+              "column": 93,
+              "line": 78
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git show -s --format=%ci $CURRENT_HASH",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1795,
+                      "column": 236,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1833,
+                      "column": 274,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git show -s --format=%ci $CURRENT_HASH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e77d89d7ad747056c51e",
+          "kind": "resource",
+          "name": "git show -s --format=%ci $CURRENT_HASH",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1795,
+              "column": 236,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1833,
+              "column": 274,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e942dd58cea6dc7f8039",
+          "kind": "step",
+          "name": "Set up Python ${{ matrix.python-version }}",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 291,
+              "column": 7,
+              "line": 19
+            },
+            "stop": {
+              "byte": 415,
+              "column": 28,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CURRENT_HASH",
+                  "span": {
+                    "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+                    "start": {
+                      "byte": 1978,
+                      "column": 419,
+                      "line": 58
+                    },
+                    "stop": {
+                      "byte": 1990,
+                      "column": 431,
+                      "line": 58
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CURRENT_HASH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f48e2e0002e419fb855f",
+          "kind": "resource",
+          "name": "CURRENT_HASH",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/o2r-project/geoextent/.github/workflows/documentation.yml",
+            "start": {
+              "byte": 1978,
+              "column": 419,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1990,
+              "column": 431,
+              "line": 58
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/o2r-project/geoextent/.github/workflows/documentation.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:902f7bbbc719aa3ec22e8523c91f1b95cde6932a5fe1241175b4dabd572462a7",
+      "path": "github/o2r-project/geoextent/.github/workflows/documentation.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "JamesIves/github-pages-deploy-action@4.1.3",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "actions/setup-python@v1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 3,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

@@ -5,6 +5,11 @@ exception Failed of string
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
 
+let lockfile entries =
+  match Lockfile.create entries with
+  | Ok lock -> lock
+  | Error message -> fail "%s" message
+
 let string_value ?(trust = Abstract_value.Trusted) text =
   Abstract_value.string_constant text ~trust ~secrecy:Abstract_value.Public
     ~provenance:[]
@@ -70,8 +75,163 @@ let config_and_policy_test () =
       "version = 2\n";
       "version = 1\noffline = false\n";
       "version = 1\n[sandbox]\nnetwork = \"allow\"\n";
+      "version = 1\n[sandbox]\nunknown_control = true\n";
+      "version = 1\n[sandbox]\nimage = \"unclosed\n";
+      "version = 1\n[sandbox]\nimage = \"sha256:abc\"\n";
+      "version = 1\n[sandbox]\nimage = \"not256:"
+      ^ String.make 64 'a' ^ "\"\n";
+      "version = 1\n[sandbox]\nimage = \"sha256:"
+      ^ String.make 63 'a' ^ "z\"\n";
       "version = 1\nfrontends = [\"github\", \"github\"]\n";
+      "version = 1\nfrontends = [\"github\"x\n";
+      "version = 1\nversion = 1\n";
+      "version = 1\n[sandbox]\n[sandbox]\n";
+      "version = 1\n[[rules]]\nid = \"BAD\"\nkind = \"forbid\"\nselector.capability = \"invalid\"\nmessage = \"bad\"\n";
+      "version = 1\n[[rules]]\nid = \"BAD\"\nkind = \"forbid\"\nselector.effect = \"unterminated\nmessage = \"bad\"\n";
     ]
+  ;
+  let malformed_allowlist =
+    "version = 1\n[[allowlist]]\nkind = \"source\"\n"
+    ^ "value = \"unterminated\nreason = \"reviewed\"\n"
+  in
+  (match Config.parse malformed_allowlist with
+  | Ok _ -> fail "an unterminated allowlist value must fail"
+  | Error errors ->
+      expect "the failing quoted field must retain its root-cause diagnostic"
+        (List.exists
+           (Util.contains ~needle:"expected a quoted string: \"unterminated")
+           errors));
+  List.iter
+    (fun source ->
+      match Config.parse source with
+      | Ok _ -> fail "a one-sided quoted persona must fail"
+      | Error errors ->
+          expect "one-sided quotes retain the quoted-string root cause"
+            (List.exists
+               (Util.contains ~needle:"expected a quoted string:")
+               errors))
+    [ "version = 1\npersona = \"gate\n"; "version = 1\npersona = gate\"\n" ];
+  (match Config.parse "version = 1\n" with
+  | Error errors -> fail "%s" (String.concat "; " errors)
+  | Ok minimal ->
+      expect "security booleans default explicitly to true"
+        (minimal.offline && minimal.resolver.require_immutable));
+  expect "an explicitly empty frontend set is a valid typed array"
+    (Result.is_ok (Config.parse "version = 1\nfrontends = []\n"))
+
+let policy_provider_test () =
+  let command = node "provider subject" in
+  let pipeline = graph [ command ] [] command in
+  let rule id provider : Policy.rule =
+    {
+      id;
+      kind = Forbid;
+      selector = All [ Provider provider ];
+      message = "provider match";
+      severity = Diagnostic.Warning;
+    }
+  in
+  let diagnostics =
+    Policy.evaluate
+      [ rule "GITHUB-ONLY" Ir.Github; rule "GITLAB-ONLY" Ir.Gitlab ]
+      pipeline
+  in
+  expect "provider selector must match the graph provider"
+    (List.exists
+       (fun item -> item.Diagnostic.rule_id = "GITHUB-ONLY")
+       diagnostics);
+  expect "provider selector must reject a different provider"
+    (not
+       (List.exists
+          (fun item -> item.Diagnostic.rule_id = "GITLAB-ONLY")
+          diagnostics))
+
+let shortest_policy_path_test () =
+  let untrusted name id =
+    {
+      (node
+         ~attributes:
+           [ ("value", string_value ~trust:Abstract_value.Untrusted name) ]
+         name) with
+      id;
+    }
+  in
+  let long_source = untrusted "long source" "a-long-source"
+  and short_source = untrusted "short source" "b-short-source"
+  and middle = { (node "middle") with id = "m-middle" }
+  and sink =
+    {
+      (node ~kind:Ir.Effect ~effects:[ Ir.Network_request ] "network sink") with
+      id = "z-network-sink";
+    }
+  in
+  let pipeline =
+    graph
+      [ long_source; short_source; middle; sink ]
+      [
+        edge long_source middle;
+        edge middle sink;
+        edge short_source sink;
+      ]
+      long_source
+  and rule : Policy.rule =
+    {
+      id = "PATH-SHORTEST";
+      kind = Forbid_path;
+      selector = All [ Effect Ir.Network_request ];
+      message = "reachable network effect";
+      severity = Diagnostic.Warning;
+    }
+  in
+  match Policy.evaluate [ rule ] pipeline with
+  | [ diagnostic ] ->
+      expect "forbid_path must report the globally shortest exploit trace"
+        (List.map (fun hop -> hop.Diagnostic.node_id) diagnostic.trace
+        = [ short_source.id; sink.id ])
+  | diagnostics ->
+      fail "expected one shortest-path diagnostic, found %d"
+        (List.length diagnostics)
+
+let diagnostic_confidence_json_test () =
+  let diagnostic =
+    Diagnostic.make ~rule_id:"CONFIDENCE" ~severity:Diagnostic.Warning
+      ~confidence:Diagnostic.Medium ~message:"fixture" ~span:Span.none ()
+  in
+  expect "medium confidence must remain explicit in diagnostic JSON"
+    (Util.contains ~needle:"\"confidence\":\"medium\""
+       (Diagnostic.to_json diagnostic |> Json.to_string))
+
+let policy_dependency_identity_test () =
+  let matches ?(attributes = []) expected reference =
+    let call = node ~kind:Ir.Call ~attributes reference in
+    let rule =
+      {
+        Policy.id = "IDENTITY";
+        kind = Forbid;
+        selector = All [ Dependency_mutability expected ];
+        message = "dependency identity";
+        severity = Diagnostic.Warning;
+      }
+    in
+    Policy.evaluate [ rule ] (graph [ call ] [] call) <> []
+  in
+  let digest value = [ ("dependency.digest", string_value value) ] in
+  let valid_digest = "sha256:" ^ String.make 64 'a' in
+  expect "a full hexadecimal revision is immutable"
+    (matches Frontend_intf.Immutable
+       ("owner/action@" ^ String.make 40 'b'));
+  expect "a non-hexadecimal forty-character revision remains mutable"
+    (matches Frontend_intf.Mutable
+       ("owner/action@" ^ String.make 39 'b' ^ "z"));
+  expect "a parent-relative dependency is local"
+    (matches Frontend_intf.Local "../action");
+  expect "a valid lock digest proves immutable identity"
+    (matches ~attributes:(digest valid_digest) Frontend_intf.Immutable
+       "owner/action@v4");
+  expect "an invalid lock digest cannot hide a mutable reference"
+    (matches
+       ~attributes:(digest ("sha256:" ^ String.make 63 'a' ^ "z"))
+       Frontend_intf.Mutable "owner/action@v4")
 
 let report_and_sarif_test () =
   let command =
@@ -155,7 +315,7 @@ let lockfile_and_resolver_test () =
       };
     ]
   in
-  let lock = Lockfile.make entries in
+  let lock = lockfile entries in
   let bytes = Lockfile.to_canonical_json lock in
   let reparsed =
     match Lockfile.parse bytes with
@@ -266,6 +426,11 @@ let safe_fix_test () =
 let tests : test list =
   [
     ("typed config drives declarative policy", config_and_policy_test);
+    ( "policy uses canonical dependency identities",
+      policy_dependency_identity_test );
+    ("policy provider selectors are exact", policy_provider_test);
+    ("forbid_path selects the shortest exploit trace", shortest_policy_path_test);
+    ("diagnostic JSON preserves medium confidence", diagnostic_confidence_json_test);
     ("report-v1 and SARIF are deterministic", report_and_sarif_test);
     ("lockfile enables truly offline resolution", lockfile_and_resolver_test);
     ("legacy lock-v1 remains readable", legacy_lock_v1_compatibility_test);

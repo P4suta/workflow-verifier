@@ -11,6 +11,7 @@ let generated_directories =
     "target";
   ]
 
+let evidence_directories = [ [ "evaluation"; "corpus" ] ]
 let normalize = Util.normalize_slashes
 
 let normalized_root root =
@@ -31,9 +32,24 @@ let relative_to ~root path =
            (String.length path - String.length prefix))
     else Error (Printf.sprintf "source path escapes manifest root: %s" path)
 
+let rec list_starts_with prefix values =
+  match (prefix, values) with
+  | [], _ -> true
+  | _, [] -> false
+  | expected :: prefix, actual :: values ->
+      expected = actual && list_starts_with prefix values
+
+let rec contains_sequence sequence = function
+  | [] -> false
+  | _ :: rest as segments ->
+      list_starts_with sequence segments || contains_sequence sequence rest
+
 let generated_relative path =
-  path |> String.lowercase_ascii |> String.split_on_char '/'
-  |> List.exists (fun segment -> List.mem segment generated_directories)
+  let segments = path |> String.lowercase_ascii |> String.split_on_char '/' in
+  List.exists (fun segment -> List.mem segment generated_directories) segments
+  || List.exists
+       (fun sequence -> contains_sequence sequence segments)
+       evidence_directories
 
 let is_generated ~root path =
   match relative_to ~root path with

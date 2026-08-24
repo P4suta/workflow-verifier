@@ -13,7 +13,7 @@ val key :
   (string * string) list ->
   string
 
-val make : key:string -> exit_code:int -> report:string -> t
+val create : key:string -> exit_code:int -> report:string -> (t, string) result
 val to_json : t -> Json.t
 val to_canonical_json : t -> string
 val parse : string -> (t, string) result

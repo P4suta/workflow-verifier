@@ -1,0 +1,122 @@
+version: 2.1
+
+jobs:
+  build_docs_pr:
+    docker:
+      - image: cimg/python:3.10.10
+    resource_class: xlarge
+    steps:
+      - checkout
+
+      - run:
+          name: Install ffmpeg dependency
+          command: |
+            sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - run:
+          name: Install the latest version of Poetry
+          command: |
+            curl -sSL https://install.python-poetry.org | python3 -
+
+      - run:
+          name: Install dependencies
+          command: |
+            poetry install --no-ansi
+
+      - run:
+          name: Install stride
+          command: |
+            poetry run pip install git+https://github.com/trustimaging/stride@2520c59
+
+      - restore_cache:
+          name: Restore docs cache
+          keys:
+            - docs-{{ epoch }}
+            - docs-
+
+      - run:
+          name: Build HTML
+          command: |
+            OFFLINE=true make docs
+
+      - save_cache:
+          key: docs-{{ epoch }}
+          paths:
+            - docs/generated
+
+      - store_artifacts:
+          path: site/
+          destination: html
+
+  build_docs_no_cache:
+    docker:
+      - image: cimg/python:3.10.10
+    resource_class: xlarge
+    steps:
+      - checkout
+
+      - run:
+          name: Install ffmpeg dependency
+          command: |
+            sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - run:
+          name: Install the latest version of Poetry
+          command: |
+            curl -sSL https://install.python-poetry.org | python3 -
+
+      - run:
+          name: Install dependencies
+          command: |
+            poetry install --no-ansi
+
+      - run:
+          name: Install stride
+          command: |
+            poetry run pip install git+https://github.com/trustimaging/stride@2520c59
+
+      - run:
+          name: Build docs
+          no_output_timeout: 30m
+          command: |
+            make docs
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - site
+
+  docs-deploy:
+    docker:
+      - image: amazon/aws-cli:2.17.20
+    steps:
+      - checkout
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip
+      - attach_workspace:
+          at: .
+      - run:
+          name: Sync to S3
+          command: |
+            aws s3 sync site/ s3://ndk-docs/
+
+workflows:
+  version: 2
+
+  generate_website_docs:
+    when:
+      equal: [main, << pipeline.git.branch >>]
+    jobs:
+      - build_docs_no_cache
+      - docs-deploy:
+          requires:
+            - build_docs_no_cache
+
+  default:
+    when:
+      not:
+        equal: [main, << pipeline.git.branch >>] # Not building on main branch
+    jobs:
+      - build_docs_pr

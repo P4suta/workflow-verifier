@@ -1,0 +1,73 @@
+name: CI pitstop API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Clona o repositório completamente, necessário para PRs
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn -B package -DskipTests
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Clona o repositório completamente
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Test with Maven
+        run: mvn test
+
+  docker:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - test
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Checkout code again for Docker
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Garantir que o código é clonado completamente para o build Docker
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .  # Diretório de contexto para o Docker
+          file: ./Dockerfile  # Caminho para o seu Dockerfile
+          push: true  # Realiza o push para o Docker Hub
+          tags: kauajuhrs/pitstop-api:latest

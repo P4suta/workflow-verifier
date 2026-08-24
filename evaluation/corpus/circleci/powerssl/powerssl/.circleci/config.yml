@@ -1,0 +1,648 @@
+# Don't edit .circleci/config.yml directly!
+# .circleci/config.yml is being split per service.
+# If you want to update .circleci/config.yml, update split files and run
+#
+# $ make generate-circleci-config
+#
+# and commit split files and .circleci/config.yml.
+# This header comment is managed at .circleci/config-header-comment.txt.
+#
+commands:
+  build:
+    parameters:
+      component:
+        type: string
+    steps:
+    - checkout
+    - go_modules_cache_restore:
+        component: << parameters.component >>
+    - run:
+        command: make bootstrap build
+        working_directory: << parameters.component >>
+    - persist_to_workspace:
+        paths:
+        - bin
+        root: .
+    - store_artifacts:
+        destination: bin
+        path: bin
+  check_scripts:
+    parameters:
+      component:
+        type: string
+    steps:
+    - checkout
+    - run: sudo apt-get install -y shellcheck
+    - run:
+        command: make check-scripts
+        working_directory: << parameters.component >>
+  download_dependencies:
+    parameters:
+      component:
+        type: string
+    steps:
+    - checkout
+    - go_modules_cache_restore:
+        component: << parameters.component >>
+    - run:
+        command: go mod download
+        name: go mod download
+        working_directory: << parameters.component >>
+    - run: git checkout -- << parameters.component >>/go.sum
+    - go_modules_cache_save:
+        component: << parameters.component >>
+  go_modules_cache_restore:
+    parameters:
+      component:
+        type: string
+    steps:
+    - restore_cache:
+        keys:
+        - go-mod-{{ arch }}-{{ checksum "<< parameters.component >>/go.sum" }}
+  go_modules_cache_save:
+    parameters:
+      component:
+        type: string
+    steps:
+    - save_cache:
+        key: go-mod-{{ arch }}-{{ checksum "<< parameters.component >>/go.sum" }}
+        paths:
+        - /go/pkg/mod
+  image:
+    parameters:
+      component:
+        type: string
+    steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        command: make image release-image
+        working_directory: << parameters.component >>
+  test:
+    parameters:
+      component:
+        type: string
+    steps:
+    - checkout
+    - go_modules_cache_restore:
+        component: <<parameters.component>>
+    - run:
+        command: make test
+        working_directory: << parameters.component >>
+  verify_generated:
+    parameters:
+      component:
+        type: string
+    steps:
+    - checkout
+    - go_modules_cache_restore:
+        component: << parameters.component >>
+    - run:
+        command: make bootstrap generate
+        working_directory: << parameters.component >>
+    - run: git diff --exit-code
+  vet:
+    parameters:
+      component:
+        type: string
+    steps:
+    - checkout
+    - go_modules_cache_restore:
+        component: << parameters.component >>
+    - run:
+        command: make vet
+        working_directory: << parameters.component >>
+executors:
+  golang-executor:
+    docker:
+    - image: circleci/golang:1.17
+  golang-node-executor:
+    docker:
+    - image: circleci/golang:1.17-node
+jobs:
+  build_agent:
+    executor: golang-executor
+    steps:
+    - build:
+        component: agent
+  build_apiserver:
+    executor: golang-executor
+    steps:
+    - build:
+        component: apiserver
+  build_auth:
+    executor: golang-executor
+    steps:
+    - build:
+        component: auth
+  build_controller:
+    executor: golang-executor
+    steps:
+    - build:
+        component: controller
+  build_grpcgateway:
+    executor: golang-executor
+    steps:
+    - build:
+        component: grpcgateway
+  build_temporal:
+    executor: golang-executor
+    steps:
+    - build:
+        component: temporal
+  build_webapp:
+    executor: golang-executor
+    steps:
+    - build:
+        component: webapp
+  build_worker:
+    executor: golang-executor
+    steps:
+    - build:
+        component: worker
+  check_scripts:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: .
+  check_scripts_agent:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: agent
+  check_scripts_apiserver:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: apiserver
+  check_scripts_auth:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: auth
+  check_scripts_controller:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: controller
+  check_scripts_grpcgateway:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: grpcgateway
+  check_scripts_temporal:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: temporal
+  check_scripts_webapp:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: webapp
+  check_scripts_worker:
+    executor: golang-executor
+    steps:
+    - check_scripts:
+        component: worker
+  download_dependencies_agent:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: agent
+  download_dependencies_apiserver:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: apiserver
+  download_dependencies_auth:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: auth
+  download_dependencies_controller:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: controller
+  download_dependencies_grpcgateway:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: grpcgateway
+  download_dependencies_temporal:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: temporal
+  download_dependencies_webapp:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: webapp
+  download_dependencies_worker:
+    executor: golang-executor
+    steps:
+    - download_dependencies:
+        component: worker
+  image_agent:
+    machine: true
+    steps:
+    - image:
+        component: agent
+  image_apiserver:
+    machine: true
+    steps:
+    - image:
+        component: apiserver
+  image_auth:
+    machine: true
+    steps:
+    - image:
+        component: auth
+  image_controller:
+    machine: true
+    steps:
+    - image:
+        component: controller
+  image_grpcgateway:
+    machine: true
+    steps:
+    - image:
+        component: grpcgateway
+  image_temporal:
+    machine: true
+    steps:
+    - image:
+        component: temporal
+  image_webapp:
+    machine: true
+    steps:
+    - image:
+        component: webapp
+  image_worker:
+    machine: true
+    steps:
+    - image:
+        component: worker
+  test_agent:
+    executor: golang-executor
+    steps:
+    - test:
+        component: agent
+  test_apiserver:
+    executor: golang-executor
+    steps:
+    - test:
+        component: apiserver
+  test_auth:
+    executor: golang-executor
+    steps:
+    - test:
+        component: auth
+  test_circleci_config:
+    executor: golang-executor
+    steps:
+    - checkout
+    - run:
+        command: |
+          sudo mkdir /tmp/circleci-config-merge
+          sudo wget -O /tmp/circleci-config-merge/circleci-config-merge.tar.gz https://github.com/suzuki-shunsuke/circleci-config-merge/releases/download/v1.0.0/circleci-config-merge_1.0.0_linux_amd64.tar.gz
+          sudo tar -zxvf /tmp/circleci-config-merge/circleci-config-merge.tar.gz -C /tmp/circleci-config-merge
+          sudo mv /tmp/circleci-config-merge/circleci-config-merge /usr/local/bin
+        name: Install circleci-config-merge
+    - run: make generate-circleci-config
+    - run: git diff --exit-code
+  test_controller:
+    executor: golang-executor
+    steps:
+    - test:
+        component: controller
+  test_grpcgateway:
+    executor: golang-executor
+    steps:
+    - test:
+        component: grpcgateway
+  test_temporal:
+    executor: golang-executor
+    steps:
+    - test:
+        component: temporal
+  test_webapp:
+    executor: golang-executor
+    steps:
+    - test:
+        component: webapp
+  test_worker:
+    executor: golang-executor
+    steps:
+    - test:
+        component: worker
+  verify_generated_agent:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: agent
+  verify_generated_apiserver:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: apiserver
+  verify_generated_auth:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: auth
+  verify_generated_controller:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: controller
+  verify_generated_grpcgateway:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: grpcgateway
+  verify_generated_temporal:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: temporal
+  verify_generated_webapp:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: webapp
+  verify_generated_worker:
+    executor: golang-executor
+    steps:
+    - verify_generated:
+        component: worker
+  vet_agent:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: agent
+  vet_apiserver:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: apiserver
+  vet_auth:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: auth
+  vet_controller:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: controller
+  vet_grpcgateway:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: grpcgateway
+  vet_temporal:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: temporal
+  vet_webapp:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: webapp
+  vet_worker:
+    executor: golang-executor
+    steps:
+    - vet:
+        component: worker
+orbs:
+  go: circleci/go@1.5.0
+version: 2.1
+workflows:
+  build:
+    jobs:
+    - build_agent:
+        requires:
+        - check_scripts_agent
+        - test_agent
+        - verify_generated_agent
+        - vet_agent
+    - build_apiserver:
+        requires:
+        - check_scripts_apiserver
+        - test_apiserver
+        - verify_generated_apiserver
+        - vet_apiserver
+    - build_auth:
+        requires:
+        - check_scripts_auth
+        - test_auth
+        - verify_generated_auth
+        - vet_auth
+    - build_controller:
+        requires:
+        - check_scripts_controller
+        - test_controller
+        - verify_generated_controller
+        - vet_controller
+    - build_grpcgateway:
+        requires:
+        - check_scripts_grpcgateway
+        - test_grpcgateway
+        - verify_generated_grpcgateway
+        - vet_grpcgateway
+    - build_temporal:
+        requires:
+        - check_scripts_temporal
+        - test_temporal
+        - verify_generated_temporal
+        - vet_temporal
+    - build_webapp:
+        requires:
+        - check_scripts_webapp
+        - test_webapp
+        - verify_generated_webapp
+        - vet_webapp
+    - build_worker:
+        requires:
+        - check_scripts_worker
+        - test_worker
+        - verify_generated_worker
+        - vet_worker
+    - check_scripts:
+        requires:
+        - test_circleci_config
+    - check_scripts_agent:
+        requires:
+        - check_scripts
+    - check_scripts_apiserver:
+        requires:
+        - check_scripts
+    - check_scripts_auth:
+        requires:
+        - check_scripts
+    - check_scripts_controller:
+        requires:
+        - check_scripts
+    - check_scripts_grpcgateway:
+        requires:
+        - check_scripts
+    - check_scripts_temporal:
+        requires:
+        - check_scripts
+    - check_scripts_webapp:
+        requires:
+        - check_scripts
+    - check_scripts_worker:
+        requires:
+        - check_scripts
+    - download_dependencies_agent:
+        requires:
+        - check_scripts
+    - download_dependencies_apiserver:
+        requires:
+        - check_scripts
+    - download_dependencies_auth:
+        requires:
+        - check_scripts
+    - download_dependencies_controller:
+        requires:
+        - check_scripts
+    - download_dependencies_grpcgateway:
+        requires:
+        - check_scripts
+    - download_dependencies_temporal:
+        requires:
+        - check_scripts
+    - download_dependencies_webapp:
+        requires:
+        - check_scripts
+    - download_dependencies_worker:
+        requires:
+        - check_scripts
+    - image_agent:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_agent
+    - image_apiserver:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_apiserver
+    - image_auth:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_auth
+    - image_controller:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_controller
+    - image_grpcgateway:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_grpcgateway
+    - image_temporal:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_temporal
+    - image_webapp:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_webapp
+    - image_worker:
+        filters:
+          branches:
+            only: main
+        requires:
+        - build_worker
+    - test_agent:
+        requires:
+        - download_dependencies_agent
+    - test_apiserver:
+        requires:
+        - download_dependencies_apiserver
+    - test_auth:
+        requires:
+        - download_dependencies_auth
+    - test_circleci_config
+    - test_controller:
+        requires:
+        - download_dependencies_controller
+    - test_grpcgateway:
+        requires:
+        - download_dependencies_grpcgateway
+    - test_temporal:
+        requires:
+        - download_dependencies_temporal
+    - test_webapp:
+        requires:
+        - download_dependencies_webapp
+    - test_worker:
+        requires:
+        - download_dependencies_worker
+    - verify_generated_agent:
+        requires:
+        - download_dependencies_agent
+    - verify_generated_apiserver:
+        requires:
+        - download_dependencies_apiserver
+    - verify_generated_auth:
+        requires:
+        - download_dependencies_auth
+    - verify_generated_controller:
+        requires:
+        - download_dependencies_controller
+    - verify_generated_grpcgateway:
+        requires:
+        - download_dependencies_grpcgateway
+    - verify_generated_temporal:
+        requires:
+        - download_dependencies_temporal
+    - verify_generated_webapp:
+        requires:
+        - download_dependencies_webapp
+    - verify_generated_worker:
+        requires:
+        - download_dependencies_worker
+    - vet_agent:
+        requires:
+        - download_dependencies_agent
+    - vet_apiserver:
+        requires:
+        - download_dependencies_apiserver
+    - vet_auth:
+        requires:
+        - download_dependencies_auth
+    - vet_controller:
+        requires:
+        - download_dependencies_controller
+    - vet_grpcgateway:
+        requires:
+        - download_dependencies_grpcgateway
+    - vet_temporal:
+        requires:
+        - download_dependencies_temporal
+    - vet_webapp:
+        requires:
+        - download_dependencies_webapp
+    - vet_worker:
+        requires:
+        - download_dependencies_worker
+  version: 2

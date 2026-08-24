@@ -1,0 +1,905 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+          "start": {
+            "byte": 166,
+            "column": 13,
+            "line": 13
+          },
+          "stop": {
+            "byte": 185,
+            "column": 32,
+            "line": 13
+          }
+        }
+      },
+      "id": "diag_e3ce80f9e11934fec4f5",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+        "start": {
+          "byte": 166,
+          "column": 13,
+          "line": 13
+        },
+        "stop": {
+          "byte": 185,
+          "column": 32,
+          "line": 13
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_620532f64b1c7ab4ef22",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 166,
+              "column": 13,
+              "line": 13
+            },
+            "stop": {
+              "byte": 185,
+              "column": 32,
+              "line": 13
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/setup-go@v5"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+          "start": {
+            "byte": 225,
+            "column": 13,
+            "line": 16
+          },
+          "stop": {
+            "byte": 244,
+            "column": 32,
+            "line": 16
+          }
+        }
+      },
+      "id": "diag_852a0951b3d049e9019b",
+      "message": "dependency is not pinned to immutable content: actions/setup-go@v5",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+        "start": {
+          "byte": 225,
+          "column": 13,
+          "line": 16
+        },
+        "stop": {
+          "byte": 244,
+          "column": 32,
+          "line": 16
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_b5abbb486983cc9822de",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 225,
+              "column": 13,
+              "line": 16
+            },
+            "stop": {
+              "byte": 244,
+              "column": 32,
+              "line": 16
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:2f54d38e7376db1db5cf4393f8946c113a4b4d28a932c6d0d06a0f809017cb39",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_bee3c76259d0d98a385f",
+          "id": "wv_071b12c7d09a7930bc3f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_620532f64b1c7ab4ef22"
+        },
+        {
+          "condition": true,
+          "from": "wv_7dfabdf103955eef4f0d",
+          "id": "wv_2c8be85686171aa27c8b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d5f08949d61d2e56b3d2"
+        },
+        {
+          "condition": true,
+          "from": "wv_31aecc23c780ebd51a9e",
+          "id": "wv_2e8a1b12cf9a836cb916",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7dfabdf103955eef4f0d"
+        },
+        {
+          "condition": true,
+          "from": "wv_2880567e56410de86ce3",
+          "id": "wv_440adb8f4065710f9ed1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b5abbb486983cc9822de"
+        },
+        {
+          "condition": true,
+          "from": "wv_9780fa91d84a5569d4d5",
+          "id": "wv_489903220dbb63c9b246",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9164cacb5152a8bc5318"
+        },
+        {
+          "condition": true,
+          "from": "wv_d5f08949d61d2e56b3d2",
+          "id": "wv_55afc8ac973a8091143d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2880567e56410de86ce3"
+        },
+        {
+          "condition": true,
+          "from": "wv_d5f08949d61d2e56b3d2",
+          "id": "wv_59364dc1b9e0ecdc6ae9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6b064ae67e4897c50cf5"
+        },
+        {
+          "condition": true,
+          "from": "wv_d5f08949d61d2e56b3d2",
+          "id": "wv_629d2caa32e51baa1d30",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9780fa91d84a5569d4d5"
+        },
+        {
+          "condition": true,
+          "from": "wv_80bd34b51d9790d1c6bc",
+          "id": "wv_6aa96856de5f5cb24d1f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ac393674c19a417fc038"
+        },
+        {
+          "condition": true,
+          "from": "wv_2880567e56410de86ce3",
+          "id": "wv_6ca3a9334ffcf8cc89c6",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6b064ae67e4897c50cf5"
+        },
+        {
+          "condition": true,
+          "from": "wv_d5f08949d61d2e56b3d2",
+          "id": "wv_7eca8369c50c2ce11c65",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bee3c76259d0d98a385f"
+        },
+        {
+          "condition": true,
+          "from": "wv_6b064ae67e4897c50cf5",
+          "id": "wv_7fcf04a5e62071bb8f30",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9780fa91d84a5569d4d5"
+        },
+        {
+          "condition": true,
+          "from": "wv_bee3c76259d0d98a385f",
+          "id": "wv_973695dd6d369f338ff8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_2880567e56410de86ce3"
+        },
+        {
+          "condition": true,
+          "from": "wv_6b064ae67e4897c50cf5",
+          "id": "wv_9d6ceaf681b3e5559629",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7f429a78c61798462150"
+        },
+        {
+          "condition": true,
+          "from": "wv_bee3c76259d0d98a385f",
+          "id": "wv_a564ce7698d5a4e4deb4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_620532f64b1c7ab4ef22"
+        },
+        {
+          "condition": true,
+          "from": "wv_eb5657b711b3ea9aa83c",
+          "id": "wv_abdc04a4095d5eb0bc36",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7dfabdf103955eef4f0d"
+        },
+        {
+          "condition": true,
+          "from": "wv_9780fa91d84a5569d4d5",
+          "id": "wv_da013ebe515c03a7c4b8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_80bd34b51d9790d1c6bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_d5f08949d61d2e56b3d2",
+          "id": "wv_dd14a1bb5d7adf019226",
+          "kind": "control",
+          "label": null,
+          "to": "wv_80bd34b51d9790d1c6bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_2880567e56410de86ce3",
+          "id": "wv_edf89457c364ff4f1329",
+          "kind": "call",
+          "label": null,
+          "to": "wv_b5abbb486983cc9822de"
+        }
+      ],
+      "entrypoints": [
+        "wv_7dfabdf103955eef4f0d"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2880567e56410de86ce3",
+          "kind": "step",
+          "name": "Set up Go",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 197,
+              "column": 7,
+              "line": 15
+            },
+            "stop": {
+              "byte": 290,
+              "column": 34,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_31aecc23c780ebd51a9e",
+          "kind": "trigger",
+          "name": "pull_request",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 55,
+              "column": 3,
+              "line": 6
+            },
+            "stop": {
+              "byte": 99,
+              "column": 31,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_620532f64b1c7ab4ef22",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 166,
+              "column": 13,
+              "line": 13
+            },
+            "stop": {
+              "byte": 185,
+              "column": 32,
+              "line": 13
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6b064ae67e4897c50cf5",
+          "kind": "step",
+          "name": "Run lint",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 306,
+              "column": 7,
+              "line": 20
+            },
+            "stop": {
+              "byte": 341,
+              "column": 21,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7dfabdf103955eef4f0d",
+          "kind": "workflow",
+          "name": "CI",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 446,
+              "column": 26,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+                    "start": {
+                      "byte": 332,
+                      "column": 12,
+                      "line": 21
+                    },
+                    "stop": {
+                      "byte": 341,
+                      "column": 21,
+                      "line": 21
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "make lint"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_7f429a78c61798462150",
+          "kind": "command",
+          "name": "make lint",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 332,
+              "column": 12,
+              "line": 21
+            },
+            "stop": {
+              "byte": 341,
+              "column": 21,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_80bd34b51d9790d1c6bc",
+          "kind": "step",
+          "name": "Run build",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 405,
+              "column": 7,
+              "line": 26
+            },
+            "stop": {
+              "byte": 446,
+              "column": 26,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+                    "start": {
+                      "byte": 382,
+                      "column": 12,
+                      "line": 24
+                    },
+                    "stop": {
+                      "byte": 391,
+                      "column": 21,
+                      "line": 24
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "make test"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9164cacb5152a8bc5318",
+          "kind": "command",
+          "name": "make test",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 382,
+              "column": 12,
+              "line": 24
+            },
+            "stop": {
+              "byte": 391,
+              "column": 21,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9780fa91d84a5569d4d5",
+          "kind": "step",
+          "name": "Run tests",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 355,
+              "column": 7,
+              "line": 23
+            },
+            "stop": {
+              "byte": 391,
+              "column": 21,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+                    "start": {
+                      "byte": 432,
+                      "column": 12,
+                      "line": 27
+                    },
+                    "stop": {
+                      "byte": 446,
+                      "column": 26,
+                      "line": 27
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "make build-bin"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_ac393674c19a417fc038",
+          "kind": "command",
+          "name": "make build-bin",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 432,
+              "column": 12,
+              "line": 27
+            },
+            "stop": {
+              "byte": 446,
+              "column": 26,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b5abbb486983cc9822de",
+          "kind": "call",
+          "name": "actions/setup-go@v5",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 225,
+              "column": 13,
+              "line": 16
+            },
+            "stop": {
+              "byte": 244,
+              "column": 32,
+              "line": 16
+            }
+          },
+          "unknown": {
+            "detail": "actions/setup-go@v5",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bee3c76259d0d98a385f",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 160,
+              "column": 7,
+              "line": 13
+            },
+            "stop": {
+              "byte": 185,
+              "column": 32,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d5f08949d61d2e56b3d2",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 109,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 446,
+              "column": 26,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_eb5657b711b3ea9aa83c",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/sha1n/dummy-loader/.github/workflows/ci.yml",
+            "start": {
+              "byte": 16,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 52,
+              "column": 31,
+              "line": 5
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/sha1n/dummy-loader/.github/workflows/ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:e09ad17e2be2f141ae5fb70cfedb2ecabb1bfe05593ccc691b4a17da9f481903",
+      "path": "github/sha1n/dummy-loader/.github/workflows/ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "actions/setup-go@v5",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

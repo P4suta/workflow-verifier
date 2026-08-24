@@ -33,6 +33,7 @@ let effects (node : Ir.node) =
   Util.deduplicate_compare Stdlib.compare (node.effects @ inferred)
 
 let attack_paths graph =
+  let indexed = Graph_algorithms.index graph in
   let sources =
     List.filter
       (fun (node : Ir.node) -> Abstract_value.is_untrusted (node_value node))
@@ -46,12 +47,12 @@ let attack_paths graph =
     (fun (source : Ir.node) ->
       sinks
       |> List.filter_map (fun ((sink : Ir.node), observable) ->
-          Graph_algorithms.shortest_path
+          Graph_algorithms.shortest_path_indexed
             ~edge_kinds:
               [
                 Ir.Data; Ir.Read; Ir.Write; Ir.Persist; Ir.Call_edge; Ir.Control;
               ]
-            graph source.id sink.id
+            indexed source.id sink.id
           |> Option.map (fun path ->
               {
                 source = source.id;

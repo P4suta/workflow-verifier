@@ -1,0 +1,347 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = circleci/maven@1.2.0"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+          "start": {
+            "byte": 29,
+            "column": 10,
+            "line": 4
+          },
+          "stop": {
+            "byte": 49,
+            "column": 30,
+            "line": 4
+          }
+        }
+      },
+      "id": "diag_769b1e4b3125c8b582c2",
+      "message": "dependency is not pinned to immutable content: circleci/maven@1.2.0",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+        "start": {
+          "byte": 29,
+          "column": 10,
+          "line": 4
+        },
+        "stop": {
+          "byte": 49,
+          "column": 30,
+          "line": 4
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_0b3e333ef36c80a38157",
+          "span": {
+            "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+            "start": {
+              "byte": 29,
+              "column": 10,
+              "line": 4
+            },
+            "stop": {
+              "byte": 49,
+              "column": 30,
+              "line": 4
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "frontend compiler"
+      ],
+      "fix": null,
+      "id": "diag_e871274fdcde08c4a211",
+      "message": "maven_test invokes unknown job maven/test",
+      "rule_id": "CC-UNKNOWN-JOB",
+      "severity": "error",
+      "span": {
+        "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+        "start": {
+          "byte": 94,
+          "column": 9,
+          "line": 9
+        },
+        "stop": {
+          "byte": 104,
+          "column": 19,
+          "line": 9
+        }
+      },
+      "trace": []
+    }
+  ],
+  "digest": "sha256:39b5e9be98790e692c474af2951c9a8ac0064ca5f3d8b2a39684abaa6e890621",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_10f11311527341e6bc78",
+          "id": "wv_35d30d43826235e891d1",
+          "kind": "call",
+          "label": null,
+          "to": "wv_0b3e333ef36c80a38157"
+        },
+        {
+          "condition": true,
+          "from": "wv_10f11311527341e6bc78",
+          "id": "wv_617f219c41d74edd9f82",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0b3e333ef36c80a38157"
+        },
+        {
+          "condition": true,
+          "from": "wv_10f11311527341e6bc78",
+          "id": "wv_bfc64ff98b9bfeaa8600",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cb91af343e5f816add35"
+        },
+        {
+          "condition": true,
+          "from": "wv_cb91af343e5f816add35",
+          "id": "wv_f7a828bc86af792578be",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1f4364118eeebad58b90"
+        }
+      ],
+      "entrypoints": [
+        "wv_10f11311527341e6bc78"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0b3e333ef36c80a38157",
+          "kind": "call",
+          "name": "circleci/maven@1.2.0",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+            "start": {
+              "byte": 29,
+              "column": 10,
+              "line": 4
+            },
+            "stop": {
+              "byte": 49,
+              "column": 30,
+              "line": 4
+            }
+          },
+          "unknown": {
+            "detail": "circleci/maven@1.2.0",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_10f11311527341e6bc78",
+          "kind": "workflow",
+          "name": "CircleCI config",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 104,
+              "column": 19,
+              "line": 9
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1f4364118eeebad58b90",
+          "kind": "opaque",
+          "name": "unknown-job:maven/test",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+            "start": {
+              "byte": 94,
+              "column": 9,
+              "line": 9
+            },
+            "stop": {
+              "byte": 104,
+              "column": 19,
+              "line": 9
+            }
+          },
+          "unknown": {
+            "detail": "maven/test",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cb91af343e5f816add35",
+          "kind": "workflow",
+          "name": "maven_test",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml",
+            "start": {
+              "byte": 64,
+              "column": 3,
+              "line": 7
+            },
+            "stop": {
+              "byte": 104,
+              "column": 19,
+              "line": 9
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "circleci",
+      "source": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:fb9f72230ee2732fc2e330f57a9ed02fa57eac1647dac55e1770887837a76c3d",
+      "path": "circleci/tiwariswapnil/apitests_junit5_restassured/.circleci/config.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

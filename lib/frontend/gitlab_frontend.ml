@@ -1,14 +1,17 @@
 let provider = Ir.Gitlab
 
-let detect ~path ~source =
+let path_identity ~path =
   let name = Filename.basename path |> String.lowercase_ascii in
   name = ".gitlab-ci.yml" || name = ".gitlab-ci.yaml"
+
+let detect ~path ~source =
+  path_identity ~path
   || Util.contains ~needle:"stages:" source
      && Util.contains ~needle:"script:" source
 
 let entrypoint ~path ~source =
-  let name = Filename.basename path |> String.lowercase_ascii in
-  detect ~path ~source && List.mem name [ ".gitlab-ci.yml"; ".gitlab-ci.yaml" ]
+  let path = Util.normalize_slashes path |> String.lowercase_ascii in
+  detect ~path ~source && List.mem path [ ".gitlab-ci.yml"; ".gitlab-ci.yaml" ]
 
 let parse = Frontend_common.parse
 let expand = Frontend_common.expand
@@ -185,15 +188,34 @@ let unresolved (resolved : Frontend_intf.resolved) reference =
       dependency.Frontend_intf.reference = reference)
   |> fun dependency -> Option.bind dependency dependency_unknown
 
-let rule_expression_nodes body =
-  match Frontend_common.field "rules" body with
+let effective_field templates name body =
+  let rec lookup visited body =
+    match Frontend_common.field name body with
+    | Some _ as value -> value
+    | None ->
+        Frontend_support.field_strings "extends" body
+        |> List.rev
+        |> List.find_map (fun template_name ->
+            if List.mem template_name visited then None
+            else
+              match List.assoc_opt template_name templates with
+              | None -> None
+              | Some template -> lookup (template_name :: visited) template)
+  in
+  lookup [] body
+
+let effective_field_scalar templates name body =
+  Option.bind (effective_field templates name body) Frontend_common.scalar
+
+let rule_expression_nodes templates body =
+  match effective_field templates "rules" body with
   | None -> []
   | Some rules ->
       Frontend_common.sequence_nodes rules
       |> List.filter_map (Frontend_common.field "if")
 
-let add_first_rule_gate graph (owner : Ir.node) prefix body =
-  match rule_expression_nodes body with
+let add_first_rule_gate templates graph (owner : Ir.node) prefix body =
+  match rule_expression_nodes templates body with
   | [] -> graph
   | expression_node :: _ ->
       Frontend_support.add_gate ~provider ~owner
@@ -201,8 +223,20 @@ let add_first_rule_gate graph (owner : Ir.node) prefix body =
         ~phase:owner.phase ~expression_node graph
       |> fst
 
-let needs body =
-  match Frontend_common.field "needs" body with
+let add_manual_gate templates graph (owner : Ir.node) body =
+  match effective_field templates "when" body with
+  | Some expression_node
+    when Option.value ~default:"" (Frontend_common.scalar expression_node)
+         |> String.lowercase_ascii = "manual" ->
+      Frontend_support.add_static_gate ~provider ~owner
+        ~name:("manual:" ^ owner.name) ~phase:owner.phase
+        ~span:(Yaml_cst.node_span expression_node)
+        ~mechanism:"manual" graph
+      |> fst
+  | Some _ | None -> graph
+
+let needs templates body =
+  match effective_field templates "needs" body with
   | None -> []
   | Some node ->
       Frontend_common.sequence_nodes node
@@ -211,10 +245,10 @@ let needs body =
           | Some name -> Some name
           | None -> Frontend_common.field_scalar "job" item)
 
-let add_matrix graph (job : Ir.node) body =
+let add_matrix templates graph (job : Ir.node) body =
   match
     Option.bind
-      (Frontend_common.field "parallel" body)
+      (effective_field templates "parallel" body)
       (Frontend_common.field "matrix")
   with
   | None -> graph
@@ -250,26 +284,15 @@ let add_matrix graph (job : Ir.node) body =
            graph
 
 let script_nodes root templates body =
-  let fields node =
-    [ "before_script"; "script"; "after_script" ]
-    |> List.concat_map (fun key ->
-        match Frontend_common.field key node with
-        | None -> []
-        | Some value -> Frontend_common.sequence_nodes value)
-  in
-  let inherited =
-    Frontend_support.field_strings "extends" body
-    |> List.concat_map (fun name ->
-        templates
-        |> List.find_opt (fun (template_name, _) -> template_name = name)
-        |> Option.fold ~none:[] ~some:(fun (_, template) -> fields template))
-  in
-  let defaults =
-    match Frontend_common.field "default" root with
-    | None -> []
-    | Some node -> fields node
-  in
-  defaults @ inherited @ fields body
+  let defaults = Frontend_common.field "default" root in
+  [ "before_script"; "script"; "after_script" ]
+  |> List.concat_map (fun key ->
+      let value =
+        match effective_field templates key body with
+        | Some _ as value -> value
+        | None -> Option.bind defaults (Frontend_common.field key)
+      in
+      value |> Option.fold ~none:[] ~some:Frontend_common.sequence_nodes)
 
 let add_scripts root templates graph (job : Ir.node) body =
   let records =
@@ -316,7 +339,7 @@ let add_variable_resources graph (owner : Ir.node) variables =
          let resource =
            Ir.make_node ~provider ~kind:Ir.Resource
              ~name:("variable:" ^ entry.key.value)
-             ~phase:Ir.Plan ~span:entry.span ()
+             ~phase:owner.phase ~span:entry.span ()
          in
          graph |> Ir.add_node resource
          |> Ir.add_edge
@@ -324,14 +347,14 @@ let add_variable_resources graph (owner : Ir.node) variables =
                  ~label:entry.key.value ()))
        graph
 
-let add_job_resources graph (job : Ir.node) body =
+let add_job_resources templates graph (job : Ir.node) body =
   let graph =
-    match Frontend_common.field "variables" body with
+    match effective_field templates "variables" body with
     | None -> graph
     | Some variables -> add_variable_resources graph job variables
   in
   let graph =
-    match Frontend_common.field "environment" body with
+    match effective_field templates "environment" body with
     | None -> graph
     | Some environment ->
         let name =
@@ -343,12 +366,12 @@ let add_job_resources graph (job : Ir.node) body =
         Frontend_support.add_resource ~provider ~owner:job
           ~name:("environment:" ^ name) ~phase:Ir.Run
           ~span:(Yaml_cst.node_span environment)
-          ~capabilities:[ Ir.Deployment ] ~effects:[ Ir.Deployment_change ]
-          ~edge_kind:Ir.Grant ~resource_to_owner:true graph
+          ~capabilities:[ Ir.Deployment ] ~edge_kind:Ir.Grant
+          ~resource_to_owner:true graph
         |> fst
   in
   let graph =
-    match Frontend_common.field "cache" body with
+    match effective_field templates "cache" body with
     | None -> graph
     | Some cache ->
         let graph, resource =
@@ -362,7 +385,7 @@ let add_job_resources graph (job : Ir.node) body =
           (Ir.make_edge ~kind:Ir.Read ~from_:resource.id ~to_:job.id ())
           graph
   in
-  match Frontend_common.field "artifacts" body with
+  match effective_field templates "artifacts" body with
   | None -> graph
   | Some artifacts ->
       Frontend_support.add_resource ~provider ~owner:job
@@ -418,7 +441,7 @@ let lower resolved =
       | None -> ()
       | Some workflow_body ->
           graph :=
-            add_first_rule_gate !graph workflow "workflow-rule" workflow_body);
+            add_first_rule_gate [] !graph workflow "workflow-rule" workflow_body);
       let root_entries = Frontend_common.mapping root in
       let templates =
         root_entries
@@ -451,7 +474,7 @@ let lower resolved =
         job_entries
         |> List.map (fun (entry : Yaml_cst.mapping_entry) ->
             Option.value ~default:"test"
-              (Frontend_common.field_scalar "stage" entry.value))
+              (effective_field_scalar templates "stage" entry.value))
       in
       let stage_names =
         if explicit_stages <> [] then Util.deduplicate_strings explicit_stages
@@ -486,7 +509,8 @@ let lower resolved =
         List.map
           (fun (entry : Yaml_cst.mapping_entry) ->
             let environment =
-              Option.is_some (Frontend_common.field "environment" entry.value)
+              Option.is_some
+                (effective_field templates "environment" entry.value)
             in
             let job =
               Ir.make_node ~provider ~kind:Ir.Job ~name:entry.key.value
@@ -498,7 +522,7 @@ let lower resolved =
             graph := Ir.add_node job !graph;
             let stage_name =
               Option.value ~default:"test"
-                (Frontend_common.field_scalar "stage" entry.value)
+                (effective_field_scalar templates "stage" entry.value)
             in
             (match
                List.find_opt (fun stage -> stage.Ir.name = stage_name) stages
@@ -523,7 +547,7 @@ let lower resolved =
           ~dependencies:
             (List.map
                (fun ((entry : Yaml_cst.mapping_entry), job) ->
-                 (job.Ir.name, needs entry.value, entry.span))
+                 (job.Ir.name, needs templates entry.value, entry.span))
                jobs)
           !graph
       in
@@ -532,7 +556,8 @@ let lower resolved =
       List.iter
         (fun ((entry : Yaml_cst.mapping_entry), job) ->
           let body = entry.value in
-          graph := add_first_rule_gate !graph job "rule" body;
+          graph := add_first_rule_gate templates !graph job "rule" body;
+          graph := add_manual_gate templates !graph job body;
           Frontend_support.field_strings "extends" body
           |> List.iter (fun template_name ->
               if
@@ -555,7 +580,7 @@ let lower resolved =
               in
               graph :=
                 !graph |> Ir.add_node call |> Frontend_common.add_call job call);
-          (match Frontend_common.field "trigger" body with
+          (match effective_field templates "trigger" body with
           | None -> ()
           | Some trigger -> (
               match child_reference trigger with
@@ -565,15 +590,14 @@ let lower resolved =
                     Ir.make_node ~provider ~kind:Ir.Call
                       ~name:("child:" ^ reference) ~phase:Ir.Compile
                       ~span:(Yaml_cst.node_span trigger)
-                      ~effects:[ Ir.Workflow_change ]
                       ?unknown:(unresolved resolved reference)
                       ()
                   in
                   graph :=
                     !graph |> Ir.add_node call
                     |> Frontend_common.add_call job call));
-          graph := add_matrix !graph job body;
-          graph := add_job_resources !graph job body;
+          graph := add_matrix templates !graph job body;
+          graph := add_job_resources templates !graph job body;
           graph := add_scripts root templates !graph job body)
         jobs;
       (Ir.finalize !graph, List.rev !problems)

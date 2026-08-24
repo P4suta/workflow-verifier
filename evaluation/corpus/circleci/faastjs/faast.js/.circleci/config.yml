@@ -1,0 +1,140 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+
+orbs:
+    codecov: codecov/codecov@6.0.0
+
+executors:
+    node16:
+        docker:
+            - image: cimg/node:24.19.0
+        working_directory: ~/repo
+
+jobs:
+    build_and_test:
+        description: "build faast.js"
+        parameters:
+            nodeVersion:
+                type: string
+            executor:
+                type: executor
+            target:
+                type: string
+        executor: << parameters.executor >>
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - <<parameters.nodeVersion>>-{{ checksum "package.json" }}
+                      - <<parameters.nodeVersion>>
+            - run: npm install
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: <<parameters.nodeVersion>>-{{ checksum "package.json" }}
+            - run: npm run build
+            - run: npx c8 npm run <<parameters.target>>
+            - run: if [ -s coverage/lcov.info ]; then echo "coverage found"; else echo "no coverage information!"; exit 1; fi
+            - codecov/upload
+        parallelism: 2
+        resource_class: large
+
+    examples:
+        description: "test examples repository"
+        parameters:
+            nodeVersion:
+                type: string
+            executor:
+                type: executor
+        executor: << parameters.executor >>
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - <<parameters.nodeVersion>>-{{ checksum "package.json" }}
+                      - <<parameters.nodeVersion>>
+            - run: npm install
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: <<parameters.nodeVersion>>-{{ checksum "package.json" }}
+            - run: npm run build
+            - run: npm pack
+            - run: mkdir ~/tmp
+            - run: cd ~/tmp && git clone https://github.com/faastjs/examples
+            - run: cp faastjs-0.0.0-semantic-release.tgz ~/tmp/examples
+            - run: cd ~/tmp/examples && node test-examples.js faastjs-0.0.0-semantic-release.tgz
+        parallelism: 1
+        resource_class: large
+
+    release:
+        description: "semantic release"
+        executor: node16
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - node16-{{ checksum "package.json" }}
+                      - node16
+            - run: npm install --no-save
+            - run: npm run build
+            - run: npm run test-git-status
+            - run: npm run test-release
+            - run: npm run semantic-release
+        parallelism: 1
+        resource_class: large
+
+    cleanup:
+        description: "cleanup cloud accounts"
+        executor: node16
+        steps:
+            - checkout
+            - run: npm install
+            - run: npm run build
+            - run: npm run cleanup-cloud
+        parallelism: 1
+
+workflows:
+    version: 2
+    faastjs:
+        jobs:
+            - build_and_test:
+                  name: "aws-node16"
+                  nodeVersion: "node16"
+                  executor: node16
+                  target: "test-aws"
+            # - examples:
+            #       nodeVersion: "node16"
+            #       executor: node16
+            - release:
+                  requires:
+                      - aws-node16
+                      - examples
+                  filters:
+                      branches:
+                          only: master
+    nightly_cleanup:
+        triggers:
+            - schedule:
+                  cron: "0 10 * * *"
+                  filters:
+                      branches:
+                          only:
+                              - master
+        jobs:
+            - cleanup
+            - build_and_test:
+                  name: "aws-node16"
+                  nodeVersion: "node16"
+                  executor: node16
+                  target: "test-aws"
+                  requires:
+                      - cleanup
+            # - examples:
+            #       nodeVersion: "node16"
+            #       executor: node16
+            #       requires:
+            #           - cleanup

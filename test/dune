@@ -3,6 +3,10 @@
  (libraries wv_foundation wv_syntax))
 
 (test
+ (name dependency_identity_contract)
+ (libraries wv_foundation))
+
+(test
  (name domain_contract)
  (libraries wv_foundation wv_domain))
 
@@ -126,3 +130,37 @@
  (name yaml_conformance)
  (modules yaml_conformance)
  (libraries wv_foundation wv_syntax))
+
+(rule
+ (alias mutation-yaml-conformance)
+ (deps
+  yaml_conformance.exe
+  (env_var WORKFLOW_VERIFIER_YAML_SUITE))
+ (action
+  (run
+   %{exe:yaml_conformance.exe}
+   --suite
+   %{env:WORKFLOW_VERIFIER_YAML_SUITE=})))
+
+(executable
+ (name mutation_oracle_contract)
+ (modules mutation_oracle_contract)
+ (libraries
+  wv_foundation
+  wv_syntax
+  wv_domain
+  wv_frontend
+  wv_verifier
+  wv_product))
+
+(rule
+ (alias runtest)
+ (deps mutation_oracle_contract.exe)
+ (action
+  (run %{exe:mutation_oracle_contract.exe})))
+
+(rule
+ (alias mutation-semantic-oracle)
+ (deps mutation_oracle_contract.exe)
+ (action
+  (run %{exe:mutation_oracle_contract.exe})))

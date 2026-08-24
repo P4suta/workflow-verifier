@@ -6,6 +6,21 @@ command in cold, warm, and incremental modes. The measurement runner fixes
 locale and timezone, bounds time and output, records positive nanosecond samples,
 and writes `performance-v1` atomically.
 
+CI measures the baseline (`A`) and candidate (`B`) one sample at a time in
+paired `A-B-B-A-B-A-A-B` / `B-A-A-B-A-B-B-A` cycles. Each side receives 24
+samples with equal time-position sums, predecessor counts, and first/last
+placement. The two aggregated `performance-v1` documents then enter the
+unchanged 10% comparison gate.
+
+The suite also generates an `arcade-scale-analysis` fixture with 64 repository
+resources, 778 variables, two protected-environment deployments, and paired
+artifact/cache consumers. The many inert resources retain a roughly 900-node
+graph while the grant/gate density tracks the large .NET Arcade lock workflow
+that exposed repeated reachability and dominator scans. Azure-native `bash`
+steps keep provider detection unambiguous for both sides of a historical
+comparison. The generator is deterministic and changes one marker for
+incremental samples.
+
 Release baselines are platform-specific reviewed artifacts. They are not copied
 from synthetic timings. `scripts/performance_gate.py` requires an identical
 environment and scenario set, computes exact rational medians, and rejects an

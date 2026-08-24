@@ -33,6 +33,8 @@ let schemas =
       "https://workflow-verifier.dev/schema/corpus-v1.json" );
     ( "corpus-report-v1.schema.json",
       "https://workflow-verifier.dev/schema/corpus-report-v1.json" );
+    ( "corpus-review-v1.schema.json",
+      "https://workflow-verifier.dev/schema/corpus-review-v1.json" );
     ( "performance-v1.schema.json",
       "https://workflow-verifier.dev/schema/performance-v1.json" );
     ( "performance-comparison-v1.schema.json",
@@ -41,10 +43,18 @@ let schemas =
       "https://workflow-verifier.dev/schema/performance-suite-v1.json" );
     ( "mutation-gate-v1.schema.json",
       "https://workflow-verifier.dev/schema/mutation-gate-v1.json" );
+    ( "mutation-campaign-v1.schema.json",
+      "https://workflow-verifier.dev/schema/mutation-campaign-v1.json" );
     ( "determinism-v1.schema.json",
       "https://workflow-verifier.dev/schema/determinism-v1.json" );
     ( "determinism-comparison-v1.schema.json",
       "https://workflow-verifier.dev/schema/determinism-comparison-v1.json" );
+    ( "dogfood-v1.schema.json",
+      "https://workflow-verifier.dev/schema/dogfood-v1.json" );
+    ( "release-evidence-v2.schema.json",
+      "https://workflow-verifier.dev/schema/release-evidence-v2.json" );
+    ( "maintainer-security-attestation-v1.schema.json",
+      "https://workflow-verifier.dev/schema/maintainer-security-attestation-v1.json" );
   ]
 
 let schema_root =

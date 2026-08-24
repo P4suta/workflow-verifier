@@ -5,6 +5,7 @@ profile = "balanced"
 include = [
   "lib/foundation/json.ml",
   "lib/foundation/sha256.ml",
+  "lib/foundation/dependency_identity.ml",
   "lib/syntax/**/*.ml",
   "lib/domain/abstract_value.ml",
   "lib/domain/condition.ml",
@@ -16,18 +17,68 @@ exclude = ["**/_build/**", "**/test/**", "**/tests/**"]
 
 [test]
 baseline_runs = 3
-parallel_safe = true
+parallel_safe = false
 
 [[test.stages]]
 name = "algebraic-properties"
-command = ["dune", "exec", "test/property_contract.exe"]
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "exec",
+  "-j",
+  "1",
+  "test/property_contract.exe",
+]
+
+[[test.stages]]
+name = "semantic-fingerprints"
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "build",
+  "-j",
+  "1",
+  "--force",
+  "@@test/mutation-semantic-oracle",
+]
+
+[[test.stages]]
+name = "yaml-conformance"
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "build",
+  "-j",
+  "1",
+  "--force",
+  "@@test/mutation-yaml-conformance",
+]
 
 [[test.stages]]
 name = "full-contracts"
-command = ["dune", "runtest", "--force"]
+command = [
+  "python3",
+  "-B",
+  "scripts/mutation_resource_guard.py",
+  "--",
+  "dune",
+  "runtest",
+  "-j",
+  "1",
+  "--force",
+]
 
 [execution]
-jobs = 4
+jobs = 1
 
 [cache]
 mode = "off"

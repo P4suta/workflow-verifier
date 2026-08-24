@@ -192,7 +192,7 @@ let to_hex bytes =
       Bytes.set output (index * 2) alphabet.[value lsr 4];
       Bytes.set output ((index * 2) + 1) alphabet.[value land 0xf])
     bytes;
-  Bytes.unsafe_to_string output
+  Bytes.to_string output
 
 let digest_string value = digest_bytes (Bytes.of_string value) |> to_hex
 

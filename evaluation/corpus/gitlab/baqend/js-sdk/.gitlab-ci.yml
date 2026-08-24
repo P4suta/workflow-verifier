@@ -1,0 +1,179 @@
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    # run pipeline only on MRs and main branches
+    - if: $CI_COMMIT_REF_PROTECTED
+
+default:
+  tags:
+    - glexecutor-docker
+  image: public.ecr.aws/docker/library/node:18
+  cache: # Cache modules in between jobs, update also the build-job job!
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - .npm/
+      - node_modules/
+    policy: pull
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+
+variables:
+  FF_NETWORK_PER_BUILD: "true"
+  CI_DEBUG_SERVICES: "true"
+  ORESTES_BRANCH: "master"
+  AWS_ACCESS_KEY_ID: "localstack"
+  AWS_SECRET_ACCESS_KEY: "localstack"
+
+stages:
+  - build
+  - validate
+  - test
+  - release
+
+build-job:
+  stage: build
+  cache: # Cache modules in between jobs, update als the default job!
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - .npm/
+      - node_modules/
+    policy: pull-push
+  script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run dist
+  artifacts:
+    paths:
+      - dist
+      - commonjs
+    expire_in: 30 mins
+
+lint-job:
+  stage: validate
+  script:
+    # prepare linting for the cli
+    - npm link .
+    - npm run lint
+  allow_failure: true
+
+commitlint:
+  image: public.ecr.aws/docker/library/node:18
+  cache: []
+  stage: validate
+  before_script:
+    - npm install -g @commitlint/{config-conventional,cli}
+  script:
+    - commitlint --from="$CI_MERGE_REQUEST_DIFF_BASE_SHA" --verbose
+  rules:
+    - if: $CI_MERGE_REQUEST_IID != null
+
+.test-template:
+  stage: test
+  tags:
+    - singletask
+  dependencies:
+    - build-job
+  variables:
+    TEST_SERVER: "https://local.baqend.com:8443/v1"
+    ORESTES_HTTP_HTTP2: "true"
+    ORESTES_TOKEN: $ORESTES_NODE_TESTING_TOKEN
+  services:
+    - name: public.ecr.aws/docker/library/mongo:4
+      alias: mongo
+    - public.ecr.aws/docker/library/redis:5.0
+    - name: public.ecr.aws/localstack/localstack:4.12
+      alias: localstack
+      variables:
+        SERVICES: s3,sns
+    - name: public.ecr.aws/aws-cli/aws-cli:latest
+      entrypoint:
+        - '/bin/bash'
+        - '-c'
+        - |
+          curl --retry 12 --retry-all-errors --retry-max-time 120 http://localstack:4566; # wait for localstack to come up
+          aws --endpoint-url=http://localstack:4566 s3 mb s3://asset-files;
+          aws --endpoint-url=http://localstack:4566 s3api put-object --bucket=asset-files --key status;
+      command: ["--endpoint-url=http://localstack:4566", "s3api", "put-object", "s3://asset-files"]
+      alias: orestes-init
+    - name: "${CI_REGISTRY}/team-backend/orestes/orestes-server/node:22-${ORESTES_BRANCH}"
+      alias: node
+      variables:
+        ORESTES_HOST: "http://local.baqend.com:8080/v1"
+        DEBUG: "true"
+        TOKEN: "${ORESTES_TOKEN}"
+      pull_policy: [always, if-not-present]
+    - name: "${CI_REGISTRY}/team-backend/orestes/orestes-server:${ORESTES_BRANCH}"
+      alias: local.baqend.com
+      pull_policy: [always, if-not-present]
+      variables:
+        ORESTES_MONGO_ENABLED: "true"
+        ORESTES_MONGO_SERVERS: "tcp://mongo:27017"
+        AWS_ACCESS_KEY_ID: anykey
+        AWS_SECRET_ACCESS_KEY: anysecret
+        ORESTES_AWS_S3_ENABLED: "true"
+        ORESTES_AWS_S3_ENDPOINT: http://localstack:4566
+        ORESTES_AWS_S3_BUCKET: asset-files
+        ORESTES_STATE_LOCATION: memory:/
+        ORESTES_BLOOMFILTER_LOCATION: memory:/
+        ORESTES_AWS_SNS_ENABLED: "true"
+        ORESTES_AWS_SNS_ENDPOINT: "http://localstack:4566"
+        ORESTES_NODE_ADDRESS: "http://node:3000"
+        ORESTES_HTTP_HTTP2: $ORESTES_HTTP_HTTP2
+  artifacts:
+    when: always
+
+node-test-job:
+  extends: .test-template
+  image: public.ecr.aws/docker/library/node:$NODE_VERSION
+  parallel:
+    matrix:
+      - NODE_VERSION: [ 18, 20, 22 ]
+  script:
+    - env
+    - npm run test:node
+  artifacts:
+    reports:
+      junit:
+        - ./node-result.xml
+
+
+web-test-job:
+  extends: .test-template
+  image: mcr.microsoft.com/playwright:v1.38.0-jammy
+  variables:
+    # DEBUG: pw:api
+    ORESTES_HTTP_HTTP2: "false" # we need to disabled http2, otherwise the query spec "should allow large query" and the code spec "should accept blob parameter" are failing in webkit
+  parallel:
+    matrix:
+      - BROWSER: [ Chromium, Firefox, Webkit ]
+  script:
+    - npm run test:playwright -- --debug
+  artifacts:
+    reports:
+      junit:
+        - ./playwright-result.xml
+
+release:
+  image: public.ecr.aws/docker/library/node:lts
+  stage: release
+  cache: []
+  variables:
+    GIT_AUTHOR_NAME: ci@baqend.com
+    GIT_AUTHOR_EMAIL: Baqend CI
+    GIT_COMMITTER_EMAIL: ci@baqend.com
+    GIT_COMMITTER_NAME: Baqend CI
+  before_script:
+    - export GITLAB_TOKEN=$SEMANTIC_RELEASE
+    - git remote set-url origin "https://oauth2:${SEMANTIC_RELEASE}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+    - apt-get update
+    - apt-get install -y awscli
+    - npm install -g semantic-release @semantic-release/{gitlab,changelog,git,exec} conventional-changelog-conventionalcommits
+    - npm ci
+  script:
+    - semantic-release --repository-url "${CI_PROJECT_URL}.git"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "prerelease"

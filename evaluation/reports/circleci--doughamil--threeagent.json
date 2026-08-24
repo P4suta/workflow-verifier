@@ -1,0 +1,3315 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = onimur/github-changelog-generator@2.1.9"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+          "start": {
+            "byte": 167,
+            "column": 14,
+            "line": 10
+          },
+          "stop": {
+            "byte": 206,
+            "column": 53,
+            "line": 10
+          }
+        }
+      },
+      "id": "diag_71d8ca8399a17d89fab1",
+      "message": "dependency is not pinned to immutable content: onimur/github-changelog-generator@2.1.9",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+        "start": {
+          "byte": 167,
+          "column": 14,
+          "line": 10
+        },
+        "stop": {
+          "byte": 206,
+          "column": 53,
+          "line": 10
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_fbff50304657daac970a",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 167,
+              "column": 14,
+              "line": 10
+            },
+            "stop": {
+              "byte": 206,
+              "column": 53,
+              "line": 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "frontend compiler"
+      ],
+      "fix": null,
+      "id": "diag_246da84301013c447508",
+      "message": "changelog invokes unknown job changelog/changelog-default",
+      "rule_id": "CC-UNKNOWN-JOB",
+      "severity": "error",
+      "span": {
+        "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+        "start": {
+          "byte": 2499,
+          "column": 9,
+          "line": 100
+        },
+        "stop": {
+          "byte": 2917,
+          "column": 39,
+          "line": 113
+        }
+      },
+      "trace": []
+    }
+  ],
+  "digest": "sha256:4a0e5e1c2a87bfcbd6ea19c7cf6a5d715a4078cf93ffd407f377ffd82f4c396c",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_8c54c8015c0b0688991e",
+          "id": "wv_00be077510c3cb31cf0f",
+          "kind": "data",
+          "label": "GPG_KEY",
+          "to": "wv_cb852df697d411d245f7"
+        },
+        {
+          "condition": true,
+          "from": "wv_f7d349e00d5af6a76099",
+          "id": "wv_01a3231ac2cde5de06ed",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a2dea5819c27c9318840"
+        },
+        {
+          "condition": true,
+          "from": "wv_45b6b03115612cdf8273",
+          "id": "wv_035b322ce8494d4d6f9e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_91e179e2c2f9bdc83e4d"
+        },
+        {
+          "condition": true,
+          "from": "wv_458c20f0196635408519",
+          "id": "wv_0455f0f65b7c339ecbf6",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a225ddde553abed65e05"
+        },
+        {
+          "condition": true,
+          "from": "wv_f7d349e00d5af6a76099",
+          "id": "wv_075b6693bd3e580545ab",
+          "kind": "control",
+          "label": null,
+          "to": "wv_513392eef5140d5e4fa0"
+        },
+        {
+          "condition": true,
+          "from": "wv_a07ca1f7a0730cee799c",
+          "id": "wv_0a75f96be1fa51bc91d8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a3eab1ea9520e1f19826"
+        },
+        {
+          "condition": true,
+          "from": "wv_45b6b03115612cdf8273",
+          "id": "wv_0c6e5eb70cdbb65eb26d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_75eeaa176d5fa9c4c12e"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_d72e723e1b4b69281897",
+          "id": "wv_133b77b4384449a3ae8d",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_da86c2582cba93a99fda"
+        },
+        {
+          "condition": true,
+          "from": "wv_5ed2066b347c53568575",
+          "id": "wv_137ffe515902015367e2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_39db3de4f6fdce260d22"
+        },
+        {
+          "condition": true,
+          "from": "wv_a379e531d4f5b2f7d25d",
+          "id": "wv_15384cab2c0d75de0f1e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a175f8782135a0cf5e35"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa893798f1a7fbbe47d",
+          "id": "wv_172a7e65b978105b972d",
+          "kind": "call",
+          "label": null,
+          "to": "wv_be7ec2fcb504e1a1ad66"
+        },
+        {
+          "condition": true,
+          "from": "wv_f7d349e00d5af6a76099",
+          "id": "wv_1871feb40bde290a5a40",
+          "kind": "call",
+          "label": null,
+          "to": "wv_513392eef5140d5e4fa0"
+        },
+        {
+          "condition": true,
+          "from": "wv_19d7c87edf05a3098ad3",
+          "id": "wv_1a3f1eff3b8e939b5653",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5ed2066b347c53568575"
+        },
+        {
+          "condition": true,
+          "from": "wv_ad950e78ca49b2bf09db",
+          "id": "wv_1b418f5f56c6e280700e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a2dea5819c27c9318840"
+        },
+        {
+          "condition": true,
+          "from": "wv_8db7b28a9ec3fb05b82c",
+          "id": "wv_1bfb193a95484d27d867",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b8dbbd5c02a045867beb"
+        },
+        {
+          "condition": true,
+          "from": "wv_ad950e78ca49b2bf09db",
+          "id": "wv_2070c177fde8a839746f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a379e531d4f5b2f7d25d"
+        },
+        {
+          "condition": true,
+          "from": "wv_8db7b28a9ec3fb05b82c",
+          "id": "wv_22763b2f48ea59f6d71a",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_45b6b03115612cdf8273"
+        },
+        {
+          "condition": true,
+          "from": "wv_3928bc76aa41fb6e3ec6",
+          "id": "wv_23ae0dfe63fa315a07b7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c6882710c8cc0567e796"
+        },
+        {
+          "condition": true,
+          "from": "wv_b8dbbd5c02a045867beb",
+          "id": "wv_25bd6f328e0b7f1db7db",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3de7fe5d60be9e52bfe9"
+        },
+        {
+          "condition": true,
+          "from": "wv_a1d19eaba1318a5031fa",
+          "id": "wv_25d6ad90668b3fffff5d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2b4676852717ba7f8673"
+        },
+        {
+          "condition": true,
+          "from": "wv_a225ddde553abed65e05",
+          "id": "wv_25fb7dab13bbaac2089f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_e0d05a6696cb86e7f404"
+        },
+        {
+          "condition": true,
+          "from": "wv_77266eb20d0e3c589b3d",
+          "id": "wv_26cfe0019ac6ad986c77",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_b8dbbd5c02a045867beb"
+        },
+        {
+          "condition": true,
+          "from": "wv_458c20f0196635408519",
+          "id": "wv_27355abda4d3861eb91b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a204ffaf79dddc929f80"
+        },
+        {
+          "condition": true,
+          "from": "wv_c7a92cbdb24d3910caac",
+          "id": "wv_2b6723cead563363f1af",
+          "kind": "control",
+          "label": null,
+          "to": "wv_17a0444be4cac7098e90"
+        },
+        {
+          "condition": true,
+          "from": "wv_45b6b03115612cdf8273",
+          "id": "wv_2c2fb0c073113b77fed1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_458c20f0196635408519"
+        },
+        {
+          "condition": true,
+          "from": "wv_a2dea5819c27c9318840",
+          "id": "wv_2c8b36353ec1509fa79c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a379e531d4f5b2f7d25d"
+        },
+        {
+          "condition": true,
+          "from": "wv_5f3e3af6f461b71b1478",
+          "id": "wv_2eecd1fd6dfbe1bc67d5",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c7a92cbdb24d3910caac"
+        },
+        {
+          "condition": true,
+          "from": "wv_8b9556e894f1a4c6d297",
+          "id": "wv_30ab55e0aaddc97c11b9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5f3e3af6f461b71b1478"
+        },
+        {
+          "condition": true,
+          "from": "wv_5f3e3af6f461b71b1478",
+          "id": "wv_30f2bcad0c2e34ac3404",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cb852df697d411d245f7"
+        },
+        {
+          "condition": true,
+          "from": "wv_8db7b28a9ec3fb05b82c",
+          "id": "wv_31035c429086a3f95441",
+          "kind": "control",
+          "label": null,
+          "to": "wv_56e276ff7faaf86274cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_ad950e78ca49b2bf09db",
+          "id": "wv_39def8f1a4fed58d233b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6871b991bd102383f450"
+        },
+        {
+          "condition": true,
+          "from": "wv_8b9556e894f1a4c6d297",
+          "id": "wv_39fd60c60effb66e1982",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c7a92cbdb24d3910caac"
+        },
+        {
+          "condition": true,
+          "from": "wv_91e179e2c2f9bdc83e4d",
+          "id": "wv_3a22f863deeebb2e12c5",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ee72bd88a0da53ef2f4f"
+        },
+        {
+          "condition": true,
+          "from": "wv_75eeaa176d5fa9c4c12e",
+          "id": "wv_3cabfe7a343960488209",
+          "kind": "read",
+          "label": null,
+          "to": "wv_cf6614913f7e7c0d5eec"
+        },
+        {
+          "condition": true,
+          "from": "wv_9675d9d97e42ad408bee",
+          "id": "wv_3e18c682d97fbd08a7b5",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a07ca1f7a0730cee799c"
+        },
+        {
+          "condition": true,
+          "from": "wv_77266eb20d0e3c589b3d",
+          "id": "wv_3e3a76d057effb8549a5",
+          "kind": "read",
+          "label": null,
+          "to": "wv_270fac55d817d8fdb187"
+        },
+        {
+          "condition": true,
+          "from": "wv_882eefe3d0d60506ea6e",
+          "id": "wv_41da8238b8fc835722df",
+          "kind": "read",
+          "label": null,
+          "to": "wv_19d7c87edf05a3098ad3"
+        },
+        {
+          "condition": true,
+          "from": "wv_8434464e7ddce34e7a89",
+          "id": "wv_423da3674abeaa4c9530",
+          "kind": "call",
+          "label": null,
+          "to": "wv_5e2eb832b96d7d744651"
+        },
+        {
+          "condition": true,
+          "from": "wv_882eefe3d0d60506ea6e",
+          "id": "wv_53df6db4811c01c887a2",
+          "kind": "read",
+          "label": null,
+          "to": "wv_8db7b28a9ec3fb05b82c"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_41dadc37e7150584669b",
+          "id": "wv_54e519fe415887a679e3",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_8b9556e894f1a4c6d297"
+        },
+        {
+          "condition": true,
+          "from": "wv_a379e531d4f5b2f7d25d",
+          "id": "wv_553d0f35899f61d788ac",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6871b991bd102383f450"
+        },
+        {
+          "condition": true,
+          "from": "wv_a07ca1f7a0730cee799c",
+          "id": "wv_5923361cb7dab7e37349",
+          "kind": "call",
+          "label": null,
+          "to": "wv_a3eab1ea9520e1f19826"
+        },
+        {
+          "condition": true,
+          "from": "wv_ad950e78ca49b2bf09db",
+          "id": "wv_5a0d433f97386f8dc0e2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0c23e7fb634e287d356b"
+        },
+        {
+          "condition": true,
+          "from": "wv_a1d19eaba1318a5031fa",
+          "id": "wv_5b9ba3a3c8222b74edd7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8db7b28a9ec3fb05b82c"
+        },
+        {
+          "condition": true,
+          "from": "wv_8db7b28a9ec3fb05b82c",
+          "id": "wv_603e46d57bdb54c49fa3",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_19d7c87edf05a3098ad3"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_4360159b1f02cf55b1aa",
+          "id": "wv_621ee7bb3eba55659ca1",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_b061d160a5b7ce31d06e"
+        },
+        {
+          "condition": true,
+          "from": "wv_3de7fe5d60be9e52bfe9",
+          "id": "wv_63f8fbfdc65d587d7f14",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_56e276ff7faaf86274cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_45b6b03115612cdf8273",
+          "id": "wv_670d0dfa4bd40d7e3a78",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ee72bd88a0da53ef2f4f"
+        },
+        {
+          "condition": true,
+          "from": "wv_19d7c87edf05a3098ad3",
+          "id": "wv_67e1e52f0a7522151829",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8434464e7ddce34e7a89"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa893798f1a7fbbe47d",
+          "id": "wv_72087540f9901eba0ebe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_becb83739aef2f44191e"
+        },
+        {
+          "condition": true,
+          "from": "wv_a1d19eaba1318a5031fa",
+          "id": "wv_725941184ff3c744a4b2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4360159b1f02cf55b1aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_6871b991bd102383f450",
+          "id": "wv_741d5b2240491c4ceb9a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0c23e7fb634e287d356b"
+        },
+        {
+          "condition": true,
+          "from": "wv_8b9556e894f1a4c6d297",
+          "id": "wv_754289b2f386b893defe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3928bc76aa41fb6e3ec6"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa893798f1a7fbbe47d",
+          "id": "wv_773068b5be7c49ee0a2f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fbff50304657daac970a"
+        },
+        {
+          "condition": true,
+          "from": "wv_91e179e2c2f9bdc83e4d",
+          "id": "wv_78b523372bcf062229fa",
+          "kind": "call",
+          "label": null,
+          "to": "wv_377fdc80571f19b9a5e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_91e179e2c2f9bdc83e4d",
+          "id": "wv_78e75583bddac1c3c014",
+          "kind": "control",
+          "label": null,
+          "to": "wv_377fdc80571f19b9a5e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_3928bc76aa41fb6e3ec6",
+          "id": "wv_7dadce3c84794b7b9ac8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5f3e3af6f461b71b1478"
+        },
+        {
+          "condition": true,
+          "from": "wv_19d7c87edf05a3098ad3",
+          "id": "wv_7eb45a34bbc11eacabc1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a07ca1f7a0730cee799c"
+        },
+        {
+          "condition": true,
+          "from": "wv_a1d19eaba1318a5031fa",
+          "id": "wv_8006605928e3ef7c368f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_41dadc37e7150584669b"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "from": "wv_2b4676852717ba7f8673",
+          "id": "wv_833ffcdb1b2f9d863dc7",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_ad950e78ca49b2bf09db"
+        },
+        {
+          "condition": true,
+          "from": "wv_882eefe3d0d60506ea6e",
+          "id": "wv_83d7cb8ea597cf264fd6",
+          "kind": "read",
+          "label": null,
+          "to": "wv_45b6b03115612cdf8273"
+        },
+        {
+          "condition": true,
+          "from": "wv_56e276ff7faaf86274cb",
+          "id": "wv_85869225da767063272c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c2ed1f306be38de0e8c3"
+        },
+        {
+          "condition": true,
+          "from": "wv_77266eb20d0e3c589b3d",
+          "id": "wv_86c1707f6de6b41f2229",
+          "kind": "control",
+          "label": null,
+          "to": "wv_270fac55d817d8fdb187"
+        },
+        {
+          "condition": true,
+          "from": "wv_3928bc76aa41fb6e3ec6",
+          "id": "wv_8f21679aa9950d698594",
+          "kind": "read",
+          "label": null,
+          "to": "wv_c6882710c8cc0567e796"
+        },
+        {
+          "condition": true,
+          "from": "wv_882eefe3d0d60506ea6e",
+          "id": "wv_934f34e8fd6f9fef231a",
+          "kind": "read",
+          "label": null,
+          "to": "wv_ad950e78ca49b2bf09db"
+        },
+        {
+          "condition": true,
+          "from": "wv_b8dbbd5c02a045867beb",
+          "id": "wv_97cd60cd12ff0f7f4c1d",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3e06219a33308e036699"
+        },
+        {
+          "condition": true,
+          "from": "wv_5ed2066b347c53568575",
+          "id": "wv_98f449084ccfe19b5b27",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9675d9d97e42ad408bee"
+        },
+        {
+          "condition": true,
+          "from": "wv_8e1e470b91cd0d64835c",
+          "id": "wv_9be696db8f0d4977c230",
+          "kind": "data",
+          "label": "GPG_KEY",
+          "to": "wv_a175f8782135a0cf5e35"
+        },
+        {
+          "condition": true,
+          "from": "wv_56e276ff7faaf86274cb",
+          "id": "wv_a37f2a2e4caaabcaffa8",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c2ed1f306be38de0e8c3"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa893798f1a7fbbe47d",
+          "id": "wv_a41911d814ce7978e319",
+          "kind": "control",
+          "label": null,
+          "to": "wv_882eefe3d0d60506ea6e"
+        },
+        {
+          "condition": true,
+          "from": "wv_a1d19eaba1318a5031fa",
+          "id": "wv_a44b73ed48f0390b4486",
+          "kind": "control",
+          "label": null,
+          "to": "wv_19d7c87edf05a3098ad3"
+        },
+        {
+          "condition": true,
+          "from": "wv_0c23e7fb634e287d356b",
+          "id": "wv_a4e1a38a43f4a0775163",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f32aacd9a2b438f13c8e"
+        },
+        {
+          "condition": true,
+          "from": "wv_a225ddde553abed65e05",
+          "id": "wv_aa2ba5b22172003634f7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e0d05a6696cb86e7f404"
+        },
+        {
+          "condition": true,
+          "from": "wv_75eeaa176d5fa9c4c12e",
+          "id": "wv_adbf5d4d7986673c4884",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cf6614913f7e7c0d5eec"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa893798f1a7fbbe47d",
+          "id": "wv_ae08a0c7f59e54a0f2b1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_be7ec2fcb504e1a1ad66"
+        },
+        {
+          "condition": true,
+          "from": "wv_a2dea5819c27c9318840",
+          "id": "wv_af1bd9dd007001771b76",
+          "kind": "read",
+          "label": null,
+          "to": "wv_f9474251b1bf3b45c14c"
+        },
+        {
+          "condition": true,
+          "from": "wv_8db7b28a9ec3fb05b82c",
+          "id": "wv_b44c864b789e3a20e29d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3de7fe5d60be9e52bfe9"
+        },
+        {
+          "condition": true,
+          "from": "wv_2f4c669fa478c27e821b",
+          "id": "wv_b624e3896352d8c42763",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ec875adb9bcbf2483eb8"
+        },
+        {
+          "condition": true,
+          "from": "wv_3de7fe5d60be9e52bfe9",
+          "id": "wv_b98384d45c009f150934",
+          "kind": "control",
+          "label": null,
+          "to": "wv_66a3c07c64097b0bbdf2"
+        },
+        {
+          "condition": true,
+          "from": "wv_9675d9d97e42ad408bee",
+          "id": "wv_bb3d2a195f66f6362e5e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f1ff21f4ea2891b167d4"
+        },
+        {
+          "condition": true,
+          "from": "wv_8434464e7ddce34e7a89",
+          "id": "wv_bb4b03b2093282b006d7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5e2eb832b96d7d744651"
+        },
+        {
+          "condition": true,
+          "from": "wv_b8dbbd5c02a045867beb",
+          "id": "wv_bf82c7b662b58ac96901",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3e06219a33308e036699"
+        },
+        {
+          "condition": true,
+          "from": "wv_19d7c87edf05a3098ad3",
+          "id": "wv_c45209a2eca35b8df078",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_41dadc37e7150584669b"
+        },
+        {
+          "condition": true,
+          "from": "wv_8db7b28a9ec3fb05b82c",
+          "id": "wv_c45dee573093c45e79bb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_77266eb20d0e3c589b3d"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa893798f1a7fbbe47d",
+          "id": "wv_c72d646948764ca23e23",
+          "kind": "call",
+          "label": null,
+          "to": "wv_fbff50304657daac970a"
+        },
+        {
+          "condition": true,
+          "from": "wv_2f4c669fa478c27e821b",
+          "id": "wv_ca35a0d88d01c9adc6a4",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_8434464e7ddce34e7a89"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee72bd88a0da53ef2f4f",
+          "id": "wv_cbaf740cc1a08f6e3e65",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c466d5c31cb61358fbc2"
+        },
+        {
+          "condition": true,
+          "from": "wv_a2dea5819c27c9318840",
+          "id": "wv_cdb6a685f636381bae7f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f9474251b1bf3b45c14c"
+        },
+        {
+          "condition": true,
+          "from": "wv_becb83739aef2f44191e",
+          "id": "wv_d29e776e5147fb82c7fe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d72e723e1b4b69281897"
+        },
+        {
+          "condition": true,
+          "from": "wv_19d7c87edf05a3098ad3",
+          "id": "wv_d2b79a86ef17424ab927",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_4360159b1f02cf55b1aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee72bd88a0da53ef2f4f",
+          "id": "wv_d81c124f190d9038e638",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_458c20f0196635408519"
+        },
+        {
+          "condition": true,
+          "from": "wv_8434464e7ddce34e7a89",
+          "id": "wv_d82e1696e2e0344c70c2",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5ed2066b347c53568575"
+        },
+        {
+          "condition": true,
+          "from": "wv_a1d19eaba1318a5031fa",
+          "id": "wv_d84e8d94a668ee4f221e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_45b6b03115612cdf8273"
+        },
+        {
+          "condition": true,
+          "from": "wv_b061d160a5b7ce31d06e",
+          "id": "wv_d89e31a4949ca4f5beb1",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_2b4676852717ba7f8673"
+        },
+        {
+          "condition": true,
+          "from": "wv_19d7c87edf05a3098ad3",
+          "id": "wv_ddfd97f8294d9e4f3961",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2f4c669fa478c27e821b"
+        },
+        {
+          "condition": true,
+          "from": "wv_6871b991bd102383f450",
+          "id": "wv_dea09d65abb2a8effdcc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c66be7f7b412eb9c6695"
+        },
+        {
+          "condition": true,
+          "from": "wv_2f4c669fa478c27e821b",
+          "id": "wv_e278648a24d1306604c4",
+          "kind": "read",
+          "label": null,
+          "to": "wv_ec875adb9bcbf2483eb8"
+        },
+        {
+          "condition": true,
+          "from": "wv_ad950e78ca49b2bf09db",
+          "id": "wv_e4714887db27468542ae",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f7d349e00d5af6a76099"
+        },
+        {
+          "condition": true,
+          "from": "wv_45b6b03115612cdf8273",
+          "id": "wv_e899e59e7a9895022c21",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_41dadc37e7150584669b"
+        },
+        {
+          "condition": true,
+          "from": "wv_19d7c87edf05a3098ad3",
+          "id": "wv_ea194698ca36411cbc54",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9675d9d97e42ad408bee"
+        },
+        {
+          "condition": true,
+          "from": "wv_45b6b03115612cdf8273",
+          "id": "wv_ef6b52361ad9802a9593",
+          "kind": "control",
+          "label": "requires",
+          "to": "wv_4360159b1f02cf55b1aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_882eefe3d0d60506ea6e",
+          "id": "wv_efdd7814b22c1952a978",
+          "kind": "read",
+          "label": null,
+          "to": "wv_8b9556e894f1a4c6d297"
+        },
+        {
+          "condition": true,
+          "from": "wv_45b6b03115612cdf8273",
+          "id": "wv_f87101dd274cb0ed342f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a225ddde553abed65e05"
+        },
+        {
+          "condition": true,
+          "from": "wv_8aa893798f1a7fbbe47d",
+          "id": "wv_fe77542fd3e07779b8b6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a1d19eaba1318a5031fa"
+        },
+        {
+          "condition": true,
+          "from": "wv_75eeaa176d5fa9c4c12e",
+          "id": "wv_ff2c02d81eb1ee2ff8d5",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_91e179e2c2f9bdc83e4d"
+        }
+      ],
+      "entrypoints": [
+        "wv_8aa893798f1a7fbbe47d"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0c23e7fb634e287d356b",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2385,
+              "column": 9,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2455,
+              "column": 39,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 1789,
+                      "column": 20,
+                      "line": 75
+                    },
+                    "stop": {
+                      "byte": 1800,
+                      "column": 31,
+                      "line": 75
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "lein deploy"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_17a0444be4cac7098e90",
+          "kind": "command",
+          "name": "Deploying to clojars",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1789,
+              "column": 20,
+              "line": 75
+            },
+            "stop": {
+              "byte": 1800,
+              "column": 31,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_19d7c87edf05a3098ad3",
+          "kind": "job",
+          "name": "test",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 591,
+              "column": 3,
+              "line": 29
+            },
+            "stop": {
+              "byte": 1057,
+              "column": 24,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_270fac55d817d8fdb187",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 268,
+              "column": 9,
+              "line": 16
+            },
+            "stop": {
+              "byte": 276,
+              "column": 17,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 3483,
+                      "column": 13,
+                      "line": 145
+                    },
+                    "stop": {
+                      "byte": 3524,
+                      "column": 32,
+                      "line": 146
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_2b4676852717ba7f8673",
+          "kind": "gate",
+          "name": "filter:build-test-deploy:release",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 3483,
+              "column": 13,
+              "line": 145
+            },
+            "stop": {
+              "byte": 3524,
+              "column": 32,
+              "line": 146
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2f4c669fa478c27e821b",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 700,
+              "column": 9,
+              "line": 34
+            },
+            "stop": {
+              "byte": 708,
+              "column": 17,
+              "line": 34
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_write",
+            "cache_read"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_377fdc80571f19b9a5e2",
+          "kind": "call",
+          "name": "builtin:restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1194,
+              "column": 9,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1296,
+              "column": 19,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3928bc76aa41fb6e3ec6",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1645,
+              "column": 9,
+              "line": 70
+            },
+            "stop": {
+              "byte": 1653,
+              "column": 17,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 882,
+                      "column": 20,
+                      "line": 41
+                    },
+                    "stop": {
+                      "byte": 908,
+                      "column": 46,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npx shadow-cljs compile ci"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_39db3de4f6fdce260d22",
+          "kind": "command",
+          "name": "Building cljs",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 882,
+              "column": 20,
+              "line": 41
+            },
+            "stop": {
+              "byte": 908,
+              "column": 46,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3de7fe5d60be9e52bfe9",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 396,
+              "column": 9,
+              "line": 21
+            },
+            "stop": {
+              "byte": 467,
+              "column": 31,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_write",
+            "cache_read"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_3e06219a33308e036699",
+          "kind": "call",
+          "name": "builtin:restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 285,
+              "column": 9,
+              "line": 17
+            },
+            "stop": {
+              "byte": 387,
+              "column": 19,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 3137,
+                      "column": 13,
+                      "line": 128
+                    },
+                    "stop": {
+                      "byte": 3191,
+                      "column": 25,
+                      "line": 130
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_41dadc37e7150584669b",
+          "kind": "gate",
+          "name": "filter:build-test-deploy:deploy_snapshot",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 3137,
+              "column": 13,
+              "line": 128
+            },
+            "stop": {
+              "byte": 3191,
+              "column": 25,
+              "line": 130
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 3303,
+                      "column": 13,
+                      "line": 137
+                    },
+                    "stop": {
+                      "byte": 3344,
+                      "column": 32,
+                      "line": 138
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_4360159b1f02cf55b1aa",
+          "kind": "gate",
+          "name": "filter:build-test-deploy:hold",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 3303,
+              "column": 13,
+              "line": 137
+            },
+            "stop": {
+              "byte": 3344,
+              "column": 32,
+              "line": 138
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_458c20f0196635408519",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1403,
+              "column": 9,
+              "line": 61
+            },
+            "stop": {
+              "byte": 1496,
+              "column": 51,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_45b6b03115612cdf8273",
+          "kind": "job",
+          "name": "render_test",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1061,
+              "column": 3,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1579,
+              "column": 58,
+              "line": 65
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_513392eef5140d5e4fa0",
+          "kind": "call",
+          "name": "builtin:add_ssh_keys",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1858,
+              "column": 9,
+              "line": 80
+            },
+            "stop": {
+              "byte": 1959,
+              "column": 64,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_56e276ff7faaf86274cb",
+          "kind": "step",
+          "name": "save_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 476,
+              "column": 9,
+              "line": 24
+            },
+            "stop": {
+              "byte": 587,
+              "column": 29,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_write",
+            "cache_read"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_5e2eb832b96d7d744651",
+          "kind": "call",
+          "name": "builtin:restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 717,
+              "column": 9,
+              "line": 35
+            },
+            "stop": {
+              "byte": 819,
+              "column": 19,
+              "line": 38
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5ed2066b347c53568575",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 828,
+              "column": 9,
+              "line": 39
+            },
+            "stop": {
+              "byte": 908,
+              "column": 46,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5f3e3af6f461b71b1478",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1662,
+              "column": 9,
+              "line": 71
+            },
+            "stop": {
+              "byte": 1719,
+              "column": 53,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 456,
+                      "column": 20,
+                      "line": 23
+                    },
+                    "stop": {
+                      "byte": 467,
+                      "column": 31,
+                      "line": 23
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm install"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_66a3c07c64097b0bbdf2",
+          "kind": "command",
+          "name": "Installing npm deps",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 456,
+              "column": 20,
+              "line": 23
+            },
+            "stop": {
+              "byte": 467,
+              "column": 31,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6871b991bd102383f450",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2051,
+              "column": 9,
+              "line": 86
+            },
+            "stop": {
+              "byte": 2376,
+              "column": 82,
+              "line": 92
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_75eeaa176d5fa9c4c12e",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1177,
+              "column": 9,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1185,
+              "column": 17,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_77266eb20d0e3c589b3d",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 268,
+              "column": 9,
+              "line": 16
+            },
+            "stop": {
+              "byte": 276,
+              "column": 17,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8434464e7ddce34e7a89",
+          "kind": "step",
+          "name": "restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 717,
+              "column": 9,
+              "line": 35
+            },
+            "stop": {
+              "byte": 819,
+              "column": 19,
+              "line": 38
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_882eefe3d0d60506ea6e",
+          "kind": "resource",
+          "name": "executor:my-executor",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 27,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 146,
+              "column": 38,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8aa893798f1a7fbbe47d",
+          "kind": "workflow",
+          "name": "CircleCI config",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 3563,
+              "column": 19,
+              "line": 148
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8b9556e894f1a4c6d297",
+          "kind": "job",
+          "name": "deploy_snapshot",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1583,
+              "column": 3,
+              "line": 67
+            },
+            "stop": {
+              "byte": 1800,
+              "column": 31,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GPG_KEY",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 1696,
+                      "column": 30,
+                      "line": 72
+                    },
+                    "stop": {
+                      "byte": 1703,
+                      "column": 37,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GPG_KEY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8c54c8015c0b0688991e",
+          "kind": "resource",
+          "name": "GPG_KEY",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1696,
+              "column": 30,
+              "line": 72
+            },
+            "stop": {
+              "byte": 1703,
+              "column": 37,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8db7b28a9ec3fb05b82c",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 216,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 587,
+              "column": 29,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GPG_KEY",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 2019,
+                      "column": 30,
+                      "line": 85
+                    },
+                    "stop": {
+                      "byte": 2026,
+                      "column": 37,
+                      "line": 85
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GPG_KEY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8e1e470b91cd0d64835c",
+          "kind": "resource",
+          "name": "GPG_KEY",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2019,
+              "column": 30,
+              "line": 85
+            },
+            "stop": {
+              "byte": 2026,
+              "column": 37,
+              "line": 85
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_91e179e2c2f9bdc83e4d",
+          "kind": "step",
+          "name": "restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1194,
+              "column": 9,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1296,
+              "column": 19,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9675d9d97e42ad408bee",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 917,
+              "column": 9,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1005,
+              "column": 48,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a07ca1f7a0730cee799c",
+          "kind": "step",
+          "name": "store_test_results",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1014,
+              "column": 9,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1057,
+              "column": 24,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GPG_KEY",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 2019,
+                      "column": 30,
+                      "line": 85
+                    },
+                    "stop": {
+                      "byte": 2026,
+                      "column": 37,
+                      "line": 85
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 2009,
+                      "column": 20,
+                      "line": 85
+                    },
+                    "stop": {
+                      "byte": 2042,
+                      "column": 53,
+                      "line": 85
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GPG_KEY",
+                  "echo -e \"$GPG_KEY\" | gpg --import"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a175f8782135a0cf5e35",
+          "kind": "command",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2009,
+              "column": 20,
+              "line": 85
+            },
+            "stop": {
+              "byte": 2042,
+              "column": 53,
+              "line": 85
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a1d19eaba1318a5031fa",
+          "kind": "workflow",
+          "name": "build-test-deploy",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2921,
+              "column": 3,
+              "line": 115
+            },
+            "stop": {
+              "byte": 3563,
+              "column": 19,
+              "line": 148
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 1465,
+                      "column": 20,
+                      "line": 63
+                    },
+                    "stop": {
+                      "byte": 1496,
+                      "column": 51,
+                      "line": 63
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "node ./tests/render_test/run.js"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a204ffaf79dddc929f80",
+          "kind": "command",
+          "name": "Running render test",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1465,
+              "column": 20,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1496,
+              "column": 51,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a225ddde553abed65e05",
+          "kind": "step",
+          "name": "store_artifacts",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1505,
+              "column": 9,
+              "line": 64
+            },
+            "stop": {
+              "byte": 1579,
+              "column": 58,
+              "line": 65
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a2dea5819c27c9318840",
+          "kind": "step",
+          "name": "checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1968,
+              "column": 9,
+              "line": 83
+            },
+            "stop": {
+              "byte": 1976,
+              "column": 17,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a379e531d4f5b2f7d25d",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1985,
+              "column": 9,
+              "line": 84
+            },
+            "stop": {
+              "byte": 2042,
+              "column": 53,
+              "line": 85
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_a3eab1ea9520e1f19826",
+          "kind": "call",
+          "name": "builtin:store_test_results",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1014,
+              "column": 9,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1057,
+              "column": 24,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ad950e78ca49b2bf09db",
+          "kind": "job",
+          "name": "release",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1804,
+              "column": 3,
+              "line": 77
+            },
+            "stop": {
+              "byte": 2455,
+              "column": 39,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:approval:hold"
+          },
+          "effects": [],
+          "id": "wv_b061d160a5b7ce31d06e",
+          "kind": "gate",
+          "name": "approval:hold",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 3266,
+              "column": 9,
+              "line": 135
+            },
+            "stop": {
+              "byte": 3434,
+              "column": 19,
+              "line": 142
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b8dbbd5c02a045867beb",
+          "kind": "step",
+          "name": "restore_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 285,
+              "column": 9,
+              "line": 17
+            },
+            "stop": {
+              "byte": 387,
+              "column": 19,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_be7ec2fcb504e1a1ad66",
+          "kind": "call",
+          "name": "cimg/clojure:1.11.4-openjdk-21.0-browsers",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 67,
+              "column": 16,
+              "line": 6
+            },
+            "stop": {
+              "byte": 108,
+              "column": 57,
+              "line": 6
+            }
+          },
+          "unknown": {
+            "detail": "cimg/clojure:1.11.4-openjdk-21.0-browsers",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_becb83739aef2f44191e",
+          "kind": "workflow",
+          "name": "changelog",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2470,
+              "column": 3,
+              "line": 98
+            },
+            "stop": {
+              "byte": 2917,
+              "column": 39,
+              "line": 113
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_c2ed1f306be38de0e8c3",
+          "kind": "call",
+          "name": "builtin:save_cache",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 476,
+              "column": 9,
+              "line": 24
+            },
+            "stop": {
+              "byte": 587,
+              "column": 29,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 1359,
+                      "column": 20,
+                      "line": 60
+                    },
+                    "stop": {
+                      "byte": 1394,
+                      "column": 55,
+                      "line": 60
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npx shadow-cljs compile render-test"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c466d5c31cb61358fbc2",
+          "kind": "command",
+          "name": "Building cljs",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1359,
+              "column": 20,
+              "line": 60
+            },
+            "stop": {
+              "byte": 1394,
+              "column": 55,
+              "line": 60
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 2102,
+                      "column": 20,
+                      "line": 88
+                    },
+                    "stop": {
+                      "byte": 2376,
+                      "column": 82,
+                      "line": 92
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config --global user.email \"doug.hamil@gmail.com\"\ngit config --global user.name \"CircleCI Release Script\"\ngit config --global user.signingkey C89350FC\ngit remote set-url origin https://github.com/DougHamil/threeagent.git\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c66be7f7b412eb9c6695",
+          "kind": "command",
+          "name": "Git Config",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2102,
+              "column": 20,
+              "line": 88
+            },
+            "stop": {
+              "byte": 2376,
+              "column": 82,
+              "line": 92
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_c6882710c8cc0567e796",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1645,
+              "column": 9,
+              "line": 70
+            },
+            "stop": {
+              "byte": 1653,
+              "column": 17,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c7a92cbdb24d3910caac",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1728,
+              "column": 9,
+              "line": 73
+            },
+            "stop": {
+              "byte": 1800,
+              "column": 31,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GPG_KEY",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 1696,
+                      "column": 30,
+                      "line": 72
+                    },
+                    "stop": {
+                      "byte": 1703,
+                      "column": 37,
+                      "line": 72
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 1686,
+                      "column": 20,
+                      "line": 72
+                    },
+                    "stop": {
+                      "byte": 1719,
+                      "column": 53,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GPG_KEY",
+                  "echo -e \"$GPG_KEY\" | gpg --import"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_cb852df697d411d245f7",
+          "kind": "command",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1686,
+              "column": 20,
+              "line": 72
+            },
+            "stop": {
+              "byte": 1719,
+              "column": 53,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_cf6614913f7e7c0d5eec",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1177,
+              "column": 9,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1185,
+              "column": 17,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 2824,
+                      "column": 13,
+                      "line": 110
+                    },
+                    "stop": {
+                      "byte": 2917,
+                      "column": 39,
+                      "line": 113
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "<opaque condition>"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "circleci:<opaque condition>"
+          },
+          "effects": [],
+          "id": "wv_d72e723e1b4b69281897",
+          "kind": "gate",
+          "name": "filter:changelog:changelog/changelog-default",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2824,
+              "column": 13,
+              "line": 110
+            },
+            "stop": {
+              "byte": 2917,
+              "column": 39,
+              "line": 113
+            }
+          },
+          "unknown": {
+            "detail": "condition expression",
+            "kind": "unsupported_syntax"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_da86c2582cba93a99fda",
+          "kind": "opaque",
+          "name": "unknown-job:changelog/changelog-default",
+          "phase": "plan",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2499,
+              "column": 9,
+              "line": 100
+            },
+            "stop": {
+              "byte": 2917,
+              "column": 39,
+              "line": 113
+            }
+          },
+          "unknown": {
+            "detail": "changelog/changelog-default",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_e0d05a6696cb86e7f404",
+          "kind": "call",
+          "name": "builtin:store_artifacts",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1505,
+              "column": 9,
+              "line": 64
+            },
+            "stop": {
+              "byte": 1579,
+              "column": 58,
+              "line": 65
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_ec875adb9bcbf2483eb8",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 700,
+              "column": 9,
+              "line": 34
+            },
+            "stop": {
+              "byte": 708,
+              "column": 17,
+              "line": 34
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ee72bd88a0da53ef2f4f",
+          "kind": "step",
+          "name": "run",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1305,
+              "column": 9,
+              "line": 58
+            },
+            "stop": {
+              "byte": 1394,
+              "column": 55,
+              "line": 60
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 977,
+                      "column": 20,
+                      "line": 44
+                    },
+                    "stop": {
+                      "byte": 1005,
+                      "column": 48,
+                      "line": 44
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npx karma start --single-run"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f1ff21f4ea2891b167d4",
+          "kind": "command",
+          "name": "Running karma tests",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 977,
+              "column": 20,
+              "line": 44
+            },
+            "stop": {
+              "byte": 1005,
+              "column": 48,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+                    "start": {
+                      "byte": 2436,
+                      "column": 20,
+                      "line": 95
+                    },
+                    "stop": {
+                      "byte": 2455,
+                      "column": 39,
+                      "line": 95
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "lein release :patch"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f32aacd9a2b438f13c8e",
+          "kind": "command",
+          "name": "Release rc",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 2436,
+              "column": 20,
+              "line": 95
+            },
+            "stop": {
+              "byte": 2455,
+              "column": 39,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f7d349e00d5af6a76099",
+          "kind": "step",
+          "name": "add_ssh_keys",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1858,
+              "column": 9,
+              "line": 80
+            },
+            "stop": {
+              "byte": 1959,
+              "column": 64,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_f9474251b1bf3b45c14c",
+          "kind": "call",
+          "name": "builtin:checkout",
+          "phase": "run",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 1968,
+              "column": 9,
+              "line": 83
+            },
+            "stop": {
+              "byte": 1976,
+              "column": 17,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_fbff50304657daac970a",
+          "kind": "call",
+          "name": "onimur/github-changelog-generator@2.1.9",
+          "phase": "compile",
+          "provider": "circleci",
+          "span": {
+            "file": "circleci/doughamil/threeagent/.circleci/config.yml",
+            "start": {
+              "byte": 167,
+              "column": 14,
+              "line": 10
+            },
+            "stop": {
+              "byte": 206,
+              "column": 53,
+              "line": 10
+            }
+          },
+          "unknown": {
+            "detail": "onimur/github-changelog-generator@2.1.9",
+            "kind": "unresolved_dependency"
+          }
+        }
+      ],
+      "provider": "circleci",
+      "source": "circleci/doughamil/threeagent/.circleci/config.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:15d4b0859d5c31c27706877ab4aa41726ba273899450018f4ce3d0971e7b5734",
+      "path": "circleci/doughamil/threeagent/.circleci/config.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 2,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

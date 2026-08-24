@@ -1,0 +1,46 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/corpus-review-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "diagnostic": {
+      "additionalProperties": false,
+      "properties": {
+        "classification": { "enum": ["allowed", "expected"] },
+        "id": { "pattern": "^diag_[0-9a-f]{20}$", "type": "string" },
+        "reason": { "minLength": 20, "type": "string" },
+        "rule_id": {
+          "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",
+          "type": "string"
+        }
+      },
+      "required": ["classification", "id", "reason", "rule_id"],
+      "type": "object"
+    },
+    "repository": {
+      "additionalProperties": false,
+      "properties": {
+        "diagnostics": {
+          "items": { "$ref": "#/$defs/diagnostic" },
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[a-z0-9](?:[a-z0-9._/-]*[a-z0-9])?$",
+          "type": "string"
+        }
+      },
+      "required": ["diagnostics", "id"],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "repositories": {
+      "items": { "$ref": "#/$defs/repository" },
+      "type": "array"
+    },
+    "schema": { "const": "corpus-review-v1" }
+  },
+  "required": ["repositories", "schema"],
+  "title": "workflow-verifier exhaustive corpus diagnostic review v1",
+  "type": "object"
+}

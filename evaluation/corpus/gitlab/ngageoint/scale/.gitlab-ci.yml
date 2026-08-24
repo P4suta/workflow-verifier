@@ -1,0 +1,52 @@
+# Environment variables that must be set in Gitlab CI/CD Pipeline variables
+# ALPINE_IMAGE
+# CENTOS_IMAGE
+# DOCKER_DEV_ORG
+# DOCKER_DEV_PASS
+# DOCKER_DEV_USER
+# DOCKER_ORG
+# DOCKER_PASS
+# DOCKER_USER
+# DOCKER_IMAGE
+# DIND_IMAGE
+# GOSU_URL
+# FLUENTD_IMAGE
+# REGISTRY
+# VAULT_ZIP
+
+variables:
+  GIT_DEPTH: "1"
+  IMAGE_PREFIX: "scale"
+  EPEL_INSTALL: "0"
+
+image: ${DOCKER_IMAGE}
+
+services:
+  - ${DIND_IMAGE}
+
+stages:
+  - package
+
+fluentd:
+  stage: package
+  script:
+    - ./build-support.sh ${FLUENTD_IMAGE} fluentd
+  only:
+    - master
+    - tags
+
+scale:
+  stage: package
+  script:
+    - ./build-scale.sh
+  only:
+    - master
+    - tags
+
+vault:
+  stage: package
+  script:
+    - ./build-support.sh ${ALPINE_IMAGE} vault
+  only:
+    - master
+    - tags

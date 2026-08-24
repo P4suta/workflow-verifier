@@ -1,0 +1,590 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = Bash@3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+          "start": {
+            "byte": 229,
+            "column": 11,
+            "line": 17
+          },
+          "stop": {
+            "byte": 235,
+            "column": 17,
+            "line": 17
+          }
+        }
+      },
+      "id": "diag_e74514d95bddf50968bf",
+      "message": "dependency is not pinned to immutable content: Bash@3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+        "start": {
+          "byte": 229,
+          "column": 11,
+          "line": 17
+        },
+        "stop": {
+          "byte": 235,
+          "column": 17,
+          "line": 17
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_1428cf134f444926d7e3",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 229,
+              "column": 11,
+              "line": 17
+            },
+            "stop": {
+              "byte": 235,
+              "column": 17,
+              "line": 17
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:6196af6f15ce038cacac2984394b991bc3923fb723ec60f4b4bb13e86a783b0b",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_e57db6c6108527a10281",
+          "id": "wv_0171437397f08edc33c3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f81551f2d4b480d3c432"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff395976f49c7bd46a00",
+          "id": "wv_10fd3b8c29556897b56b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bca47540066bcbc020a6"
+        },
+        {
+          "condition": true,
+          "from": "wv_01bf9a089248814ef8af",
+          "id": "wv_47978aac3eab576c86f4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1428cf134f444926d7e3"
+        },
+        {
+          "condition": true,
+          "from": "wv_9793d75160521692c004",
+          "id": "wv_5a00c22ab5980e499fb9",
+          "kind": "data",
+          "label": "System.PullRequest.PullRequestNumber",
+          "to": "wv_bca47540066bcbc020a6"
+        },
+        {
+          "condition": true,
+          "from": "wv_01bf9a089248814ef8af",
+          "id": "wv_5f3aa96668a2d0ac0cb1",
+          "kind": "call",
+          "label": null,
+          "to": "wv_1428cf134f444926d7e3"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff395976f49c7bd46a00",
+          "id": "wv_73686030e9c704d7a02d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_01bf9a089248814ef8af"
+        },
+        {
+          "condition": true,
+          "from": "wv_590c2b9e722b8c31bff4",
+          "id": "wv_82538685f03cefc5e20b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f81551f2d4b480d3c432"
+        },
+        {
+          "condition": true,
+          "from": "wv_aca217b274a127ce1dbe",
+          "id": "wv_8603d1eef95791f48c05",
+          "kind": "control",
+          "label": null,
+          "to": "wv_01bf9a089248814ef8af"
+        },
+        {
+          "condition": true,
+          "from": "wv_aca217b274a127ce1dbe",
+          "id": "wv_b8aeabe79ad40451928b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ff395976f49c7bd46a00"
+        },
+        {
+          "condition": true,
+          "from": "wv_f81551f2d4b480d3c432",
+          "id": "wv_f0cb1d2ab82b49409fe1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_aca217b274a127ce1dbe"
+        }
+      ],
+      "entrypoints": [
+        "wv_f81551f2d4b480d3c432"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_01bf9a089248814ef8af",
+          "kind": "step",
+          "name": "Queue Validation Build and Monitor Status",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 223,
+              "column": 5,
+              "line": 17
+            },
+            "stop": {
+              "byte": 520,
+              "column": 59,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1428cf134f444926d7e3",
+          "kind": "call",
+          "name": "Bash@3",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 229,
+              "column": 11,
+              "line": 17
+            },
+            "stop": {
+              "byte": 235,
+              "column": 17,
+              "line": 17
+            }
+          },
+          "unknown": {
+            "detail": "Bash@3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_590c2b9e722b8c31bff4",
+          "kind": "trigger",
+          "name": "pr",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 19,
+              "column": 1,
+              "line": 4
+            },
+            "stop": {
+              "byte": 27,
+              "column": 9,
+              "line": 4
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "System.PullRequest.PullRequestNumber",
+                  "span": {
+                    "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+                    "start": {
+                      "byte": 142,
+                      "column": 18,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 178,
+                      "column": 54,
+                      "line": 13
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "System.PullRequest.PullRequestNumber"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9793d75160521692c004",
+          "kind": "resource",
+          "name": "System.PullRequest.PullRequestNumber",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 142,
+              "column": 18,
+              "line": 13
+            },
+            "stop": {
+              "byte": 178,
+              "column": 54,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_aca217b274a127ce1dbe",
+          "kind": "job",
+          "name": "queue_azdo",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 76,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 520,
+              "column": 59,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "System.PullRequest.PullRequestNumber",
+                  "span": {
+                    "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+                    "start": {
+                      "byte": 142,
+                      "column": 18,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 178,
+                      "column": 54,
+                      "line": 13
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+                    "start": {
+                      "byte": 135,
+                      "column": 11,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 187,
+                      "column": 51,
+                      "line": 14
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "System.PullRequest.PullRequestNumber",
+                  "echo $(System.PullRequest.PullRequestNumber)\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bash"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_bca47540066bcbc020a6",
+          "kind": "command",
+          "name": "echo $(System.PullRequest.PullRequestNumber)\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 135,
+              "column": 11,
+              "line": 13
+            },
+            "stop": {
+              "byte": 187,
+              "column": 51,
+              "line": 14
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e57db6c6108527a10281",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 9,
+              "column": 10,
+              "line": 1
+            },
+            "stop": {
+              "byte": 13,
+              "column": 14,
+              "line": 1
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f81551f2d4b480d3c432",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 520,
+              "column": 59,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ff395976f49c7bd46a00",
+          "kind": "step",
+          "name": "Print PR Num",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/azure/azhpc-images/azure-pipelines.yml",
+            "start": {
+              "byte": 129,
+              "column": 5,
+              "line": 13
+            },
+            "stop": {
+              "byte": 217,
+              "column": 30,
+              "line": 15
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/azure/azhpc-images/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:65d7fff5cf8fe25430cfbc045ea5e92a828443a9c020db0222e1b5600e642637",
+      "path": "azure/azure/azhpc-images/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

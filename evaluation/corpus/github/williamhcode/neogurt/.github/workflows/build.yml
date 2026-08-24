@@ -1,0 +1,120 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      nightly:
+        description: 'Build nightly version'
+        required: false
+        default: 'true'
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-15]
+        include:
+          - os: macos-15
+            os-name: macos
+            arch: arm64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    # - name: Install LLVM and Clang
+    #   uses: KyleMayes/install-llvm-action@v2
+    #   with:
+    #     version: "19.1"
+
+    - name: Install dependencies on macOS
+      run: |
+        brew install llvm
+        brew install boost
+        brew install ninja
+
+    - name: Configure CMake
+      run: >
+        cmake -B build/release
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo
+        -GNinja
+        -DCMAKE_C_COMPILER="$(brew --prefix llvm)/bin/clang"
+        -DCMAKE_CXX_COMPILER="$(brew --prefix llvm)/bin/clang++"
+        -DCMAKE_OSX_SYSROOT="$(xcrun --show-sdk-path)"
+        -DSDL_SHARED=OFF
+        -DSDL_STATIC=ON
+        -DBLEND2D_STATIC=ON
+        $([[ "${{ github.event.inputs.nightly }}" == "true" ]] && echo "-DDEV_BUILD=ON" || echo "")
+
+    - name: Build neogurt
+      run: cmake --build build/release --target neogurt
+
+    - name: Build and run tests
+      run: |
+        cmake --build build/release --target tests
+        ctest --test-dir build/release --output-on-failure -V
+
+    - name: Generate package
+      run: make package
+
+    - name: Prepare artifacts
+      run: |
+        cd build/release
+
+        DMG_NAME=$(ls Neogurt*.dmg)
+        BASENAME="${DMG_NAME%.dmg}"
+        DSYM_NAME="${BASENAME}.dSYM.tar.gz"
+
+        echo "DMG_NAME=$DMG_NAME" >> $GITHUB_ENV
+        echo "DSYM_NAME=$DSYM_NAME" >> $GITHUB_ENV
+
+        dsymutil neogurt.app/Contents/MacOS/neogurt
+        mv neogurt.app/Contents/MacOS/neogurt.dSYM ./
+        tar -czf "$DSYM_NAME" neogurt.dSYM
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Neogurt-${{ matrix.arch }}
+        path: build/release/${{ env.DMG_NAME }}
+
+    - name: Upload dSYM artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Neogurt-dSYM-${{ matrix.arch }}
+        path: build/release/${{ env.DSYM_NAME }}
+
+  create-release:
+    if: ${{ github.event.inputs.nightly == 'true' }}
+    needs: build
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Create release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release delete nightly --yes || true
+        git push origin :nightly || true
+
+        ls -al artifacts/
+
+        gh release create nightly artifacts/*/* \
+          --title "Neogurt dev build" \
+          --notes "Dev build for commit ${{ github.sha }}" \
+          --prerelease

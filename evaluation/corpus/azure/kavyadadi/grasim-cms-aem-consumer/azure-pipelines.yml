@@ -1,0 +1,29 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - qa_master
+variables:
+- name: remote_git
+  value: grasimindustries/GRASIMINDUSTRIESProgram-p94810-uk54102/
+  
+stages:
+- stage: AEM_Cloud_Manager
+  jobs:
+  - job: Push_To_Cloudmanager
+    timeoutInMinutes: 10
+    condition: succeeded()
+    workspace:
+      clean: all
+    steps:
+       git clone https://git.cloudmanager.adobe.com/grasimindustries/GRASIMINDUSTRIESProgram-p94810-uk54102/
+       
+
+
+
+

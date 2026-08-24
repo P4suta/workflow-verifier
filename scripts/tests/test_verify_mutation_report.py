@@ -130,6 +130,18 @@ class VerifyMutationReportTests(unittest.TestCase):
             self.assertFalse(result["passed"])
             self.assertEqual(result["failures"], ["one unexpected mutant survived"])
 
+    def test_infrastructure_failure_cannot_count_as_a_kill(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            killed = mutant("6", "lib/domain/condition.ml", "killed")
+            killed["stderr"]["contents"] = (
+                "Error: Another Dune instance is currently running "
+                "in the same build directory."
+            )
+            killed["stderr"]["total_bytes"] = len(killed["stderr"]["contents"])
+            with self.assertRaisesRegex(ValueError, "infrastructure failure"):
+                verify(self.write(root, report([killed])), ["lib/domain/"])
+
     def test_partial_inconsistent_or_vacuous_reports_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

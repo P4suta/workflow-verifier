@@ -35,7 +35,7 @@ def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
     return {
         "schema": "report-v1",
         "digest": DIGEST,
-        "tool": {"name": "workflow-verifier", "version": "0.1.0-dev"},
+        "tool": {"name": "workflow-verifier", "version": "0.1.0"},
         "persona": "audit",
         "inputs": [],
         "graphs": [],

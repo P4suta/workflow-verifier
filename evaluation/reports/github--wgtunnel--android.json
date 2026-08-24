@@ -1,0 +1,3137 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v7"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/wgtunnel/android/.github/workflows/build.yml",
+          "start": {
+            "byte": 1733,
+            "column": 15,
+            "line": 75
+          },
+          "stop": {
+            "byte": 1752,
+            "column": 34,
+            "line": 75
+          }
+        }
+      },
+      "id": "diag_d2a24d68e00362b144ff",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v7",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/wgtunnel/android/.github/workflows/build.yml",
+        "start": {
+          "byte": 1733,
+          "column": 15,
+          "line": 75
+        },
+        "stop": {
+          "byte": 1752,
+          "column": 34,
+          "line": 75
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_b66a1d7b9dfc9a34cf7d",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1733,
+              "column": 15,
+              "line": 75
+            },
+            "stop": {
+              "byte": 1752,
+              "column": 34,
+              "line": 75
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/setup-java@v5"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/wgtunnel/android/.github/workflows/build.yml",
+          "start": {
+            "byte": 1866,
+            "column": 15,
+            "line": 80
+          },
+          "stop": {
+            "byte": 1887,
+            "column": 36,
+            "line": 80
+          }
+        }
+      },
+      "id": "diag_f2d3f7a7a829789dbbd8",
+      "message": "dependency is not pinned to immutable content: actions/setup-java@v5",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/wgtunnel/android/.github/workflows/build.yml",
+        "start": {
+          "byte": 1866,
+          "column": 15,
+          "line": 80
+        },
+        "stop": {
+          "byte": 1887,
+          "column": 36,
+          "line": 80
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_d37d7f370c47aca40d27",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1866,
+              "column": 15,
+              "line": 80
+            },
+            "stop": {
+              "byte": 1887,
+              "column": 36,
+              "line": 80
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = timheuer/base64-to-file@v2.0"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/wgtunnel/android/.github/workflows/build.yml",
+          "start": {
+            "byte": 2142,
+            "column": 15,
+            "line": 89
+          },
+          "stop": {
+            "byte": 2170,
+            "column": 43,
+            "line": 89
+          }
+        }
+      },
+      "id": "diag_e83ea506b940b131f5e5",
+      "message": "dependency is not pinned to immutable content: timheuer/base64-to-file@v2.0",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/wgtunnel/android/.github/workflows/build.yml",
+        "start": {
+          "byte": 2142,
+          "column": 15,
+          "line": 89
+        },
+        "stop": {
+          "byte": 2170,
+          "column": 43,
+          "line": 89
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_5c46579832a65a089992",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2142,
+              "column": 15,
+              "line": 89
+            },
+            "stop": {
+              "byte": 2170,
+              "column": 43,
+              "line": 89
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/wgtunnel/android/.github/workflows/build.yml",
+          "start": {
+            "byte": 2608,
+            "column": 14,
+            "line": 101
+          },
+          "stop": {
+            "byte": 3046,
+            "column": 15,
+            "line": 114
+          }
+        }
+      },
+      "id": "diag_6a5eac3b47bf7c961d0b",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/wgtunnel/android/.github/workflows/build.yml",
+        "start": {
+          "byte": 2608,
+          "column": 14,
+          "line": 101
+        },
+        "stop": {
+          "byte": 3046,
+          "column": 15,
+          "line": 114
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_c4c9f0019727b9484acd",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2651,
+              "column": 57,
+              "line": 101
+            },
+            "stop": {
+              "byte": 2668,
+              "column": 74,
+              "line": 101
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_6ed218b7d5cb6f82fb15",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2608,
+              "column": 14,
+              "line": 101
+            },
+            "stop": {
+              "byte": 3046,
+              "column": 15,
+              "line": 114
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/wgtunnel/android/.github/workflows/build.yml",
+          "start": {
+            "byte": 3223,
+            "column": 14,
+            "line": 120
+          },
+          "stop": {
+            "byte": 3378,
+            "column": 169,
+            "line": 120
+          }
+        }
+      },
+      "id": "diag_eeb967e12897beba7ea4",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/wgtunnel/android/.github/workflows/build.yml",
+        "start": {
+          "byte": 3223,
+          "column": 14,
+          "line": 120
+        },
+        "stop": {
+          "byte": 3378,
+          "column": 169,
+          "line": 120
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_319a3ab02b333b74dc38",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3298,
+              "column": 89,
+              "line": 120
+            },
+            "stop": {
+              "byte": 3315,
+              "column": 106,
+              "line": 120
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_83296633884b7cbbfcbd",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3223,
+              "column": 14,
+              "line": 120
+            },
+            "stop": {
+              "byte": 3378,
+              "column": 169,
+              "line": 120
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/upload-artifact@v7"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/wgtunnel/android/.github/workflows/build.yml",
+          "start": {
+            "byte": 3432,
+            "column": 15,
+            "line": 122
+          },
+          "stop": {
+            "byte": 3458,
+            "column": 41,
+            "line": 122
+          }
+        }
+      },
+      "id": "diag_daf47ed47bac4d7633bc",
+      "message": "dependency is not pinned to immutable content: actions/upload-artifact@v7",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/wgtunnel/android/.github/workflows/build.yml",
+        "start": {
+          "byte": 3432,
+          "column": 15,
+          "line": 122
+        },
+        "stop": {
+          "byte": 3458,
+          "column": 41,
+          "line": 122
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_d5d434f639732c7c6c58",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3432,
+              "column": 15,
+              "line": 122
+            },
+            "stop": {
+              "byte": 3458,
+              "column": 41,
+              "line": 122
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:135391e48f8a8a7ebd5928b076a70a12eb75bcf432b5b838db292f0e1a00838f",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_0cac6da68960ad64f851",
+          "kind": "control",
+          "label": null,
+          "to": "wv_98e8007e05237bd417ac"
+        },
+        {
+          "condition": true,
+          "from": "wv_98e8007e05237bd417ac",
+          "id": "wv_0fc8b4ac29f1c9e2d583",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4229ec5c295766b9454a"
+        },
+        {
+          "condition": true,
+          "from": "wv_5d2695f08d3b1291b498",
+          "id": "wv_1848d1498ff57ae66d82",
+          "kind": "data",
+          "label": "inputs.flavor",
+          "to": "wv_83296633884b7cbbfcbd"
+        },
+        {
+          "condition": true,
+          "from": "wv_d6fcaf626bef745b2b38",
+          "id": "wv_1a60f948be568f6717d2",
+          "kind": "data",
+          "label": "env.KEY_STORE_FILE",
+          "to": "wv_5c46579832a65a089992"
+        },
+        {
+          "condition": true,
+          "from": "wv_22a08744bb4f8ea013d7",
+          "id": "wv_1f87f4fa00a04c868c7e",
+          "kind": "data",
+          "label": "GITHUB_ENV",
+          "to": "wv_bc530e9b0f0155c65237"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(inputs.build_type!=\"debug\")"
+          },
+          "from": "wv_a6f6fd9c25a6848f7324",
+          "id": "wv_204cba16d31d7ca151e2",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_270dff7ddd75479c46b9"
+        },
+        {
+          "condition": true,
+          "from": "wv_5f5833bf8d1e82e7a6df",
+          "id": "wv_22397055301e523d27ec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f8a6c0d6b6364455bc8a"
+        },
+        {
+          "condition": true,
+          "from": "wv_c332f4125cc4619d9501",
+          "id": "wv_22498282859a80129b59",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a6f6fd9c25a6848f7324"
+        },
+        {
+          "condition": true,
+          "from": "wv_319a3ab02b333b74dc38",
+          "id": "wv_24f8279aed3ec31d16ba",
+          "kind": "data",
+          "label": "inputs.build_type",
+          "to": "wv_83296633884b7cbbfcbd"
+        },
+        {
+          "condition": true,
+          "from": "wv_582e4c4cd64da58c51ac",
+          "id": "wv_2549129ade06e82dc5a9",
+          "kind": "call",
+          "label": null,
+          "to": "wv_d37d7f370c47aca40d27"
+        },
+        {
+          "condition": true,
+          "from": "wv_c332f4125cc4619d9501",
+          "id": "wv_28c16e79d2a33fc15256",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5c46579832a65a089992"
+        },
+        {
+          "condition": true,
+          "from": "wv_105f83f2069bc2665ff9",
+          "id": "wv_2c89b05d9e091d41324e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d5d434f639732c7c6c58"
+        },
+        {
+          "condition": true,
+          "from": "wv_038b6fc3c6aa2ede7998",
+          "id": "wv_2e5d43cea1e5ffbcfe8b",
+          "kind": "data",
+          "label": "github.sha",
+          "to": "wv_ab8dd816464bf37396b2"
+        },
+        {
+          "condition": true,
+          "from": "wv_32d042d4309288104969",
+          "id": "wv_31cc17ba13fdbfaeeef5",
+          "kind": "data",
+          "label": "env.KEY_STORE_LOCATION",
+          "to": "wv_bc530e9b0f0155c65237"
+        },
+        {
+          "condition": true,
+          "from": "wv_4229ec5c295766b9454a",
+          "id": "wv_3473853cd3a03438a5cf",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_105f83f2069bc2665ff9"
+        },
+        {
+          "condition": true,
+          "from": "wv_42fa917a6db8b3210cb1",
+          "id": "wv_39906260653eff842583",
+          "kind": "control",
+          "label": null,
+          "to": "wv_86ccb48c5cbc56c5c83c"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_3e9595a0bbd0d7de436e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_582e4c4cd64da58c51ac"
+        },
+        {
+          "condition": true,
+          "from": "wv_abf76585aa56038afa57",
+          "id": "wv_3f8e8e5b3c2798eb79fa",
+          "kind": "data",
+          "label": "env.UPLOAD_DIR_ANDROID",
+          "to": "wv_d58c7b507ea38a79cb88"
+        },
+        {
+          "condition": true,
+          "from": "wv_762178bb942c62bd3335",
+          "id": "wv_42000b4f00dcd784a0db",
+          "kind": "data",
+          "label": "secrets.KEYSTORE",
+          "to": "wv_5c46579832a65a089992"
+        },
+        {
+          "condition": true,
+          "from": "wv_582e4c4cd64da58c51ac",
+          "id": "wv_438370968137d5a1e088",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5f5833bf8d1e82e7a6df"
+        },
+        {
+          "condition": true,
+          "from": "wv_e11ca555bad87a7ea5c4",
+          "id": "wv_4a7171a5094236b387dc",
+          "kind": "data",
+          "label": "inputs.build_type",
+          "to": "wv_a6f6fd9c25a6848f7324"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_4bb073e1af4c9642eb48",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5f5833bf8d1e82e7a6df"
+        },
+        {
+          "condition": true,
+          "from": "wv_61df28c857adce475c85",
+          "id": "wv_59eb9ca1db43262926ad",
+          "kind": "data",
+          "label": "github.run_number",
+          "to": "wv_9fcdbbd05855f677195e"
+        },
+        {
+          "condition": true,
+          "from": "wv_c332f4125cc4619d9501",
+          "id": "wv_674ee7a74fc0aadf7c6f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_5c46579832a65a089992"
+        },
+        {
+          "condition": true,
+          "from": "wv_cb6fef74fbf0deab4aaa",
+          "id": "wv_68f6db579a989962174e",
+          "kind": "data",
+          "label": "env.KEY_STORE_FILE",
+          "to": "wv_bc530e9b0f0155c65237"
+        },
+        {
+          "condition": true,
+          "from": "wv_c6ec6f04147b0391a50f",
+          "id": "wv_69a46f161cbf03b87296",
+          "kind": "data",
+          "label": "inputs.flavor",
+          "to": "wv_6ed218b7d5cb6f82fb15"
+        },
+        {
+          "condition": true,
+          "from": "wv_c4b5dd7e3e546d5ec34a",
+          "id": "wv_6b103d7c82a13f918698",
+          "kind": "call",
+          "label": null,
+          "to": "wv_b66a1d7b9dfc9a34cf7d"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_6e79f8647b1dd62f5ea4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a6f6fd9c25a6848f7324"
+        },
+        {
+          "condition": true,
+          "from": "wv_e6ce9ed2250d89089e83",
+          "id": "wv_7aed5519a41003c38d31",
+          "kind": "data",
+          "label": "env.KEY_STORE_LOCATION",
+          "to": "wv_5c46579832a65a089992"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_80bb2089a27f46918864",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4229ec5c295766b9454a"
+        },
+        {
+          "condition": true,
+          "from": "wv_81de391f42aa6dd91779",
+          "id": "wv_8381ccf93e2cb6b8bccd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_42fa917a6db8b3210cb1"
+        },
+        {
+          "condition": true,
+          "from": "wv_ab8dd816464bf37396b2",
+          "id": "wv_93bd96ca2dfa24f3daa9",
+          "kind": "data",
+          "label": "GITHUB_SHA",
+          "to": "wv_6ed218b7d5cb6f82fb15"
+        },
+        {
+          "condition": true,
+          "from": "wv_1dcf918753bb21cfa282",
+          "id": "wv_95480f5d0791e51bd976",
+          "kind": "data",
+          "label": "GITHUB_OUTPUT",
+          "to": "wv_83296633884b7cbbfcbd"
+        },
+        {
+          "condition": true,
+          "from": "wv_270dff7ddd75479c46b9",
+          "id": "wv_957844899b302aff18b6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bc530e9b0f0155c65237"
+        },
+        {
+          "condition": true,
+          "from": "wv_bee31ac84d1101e20768",
+          "id": "wv_97a76ed23c59eb8936e3",
+          "kind": "data",
+          "label": "inputs.flavor",
+          "to": "wv_d5d434f639732c7c6c58"
+        },
+        {
+          "condition": true,
+          "from": "wv_c4b5dd7e3e546d5ec34a",
+          "id": "wv_982f8dea48a812d0e337",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_582e4c4cd64da58c51ac"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_a007ca291b2d0d2c6dba",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c4b5dd7e3e546d5ec34a"
+        },
+        {
+          "condition": true,
+          "from": "wv_582e4c4cd64da58c51ac",
+          "id": "wv_a2f16aaeae4289225683",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d37d7f370c47aca40d27"
+        },
+        {
+          "condition": true,
+          "from": "wv_d373c3ba6b66668097fe",
+          "id": "wv_a756b44ed9f1c57130a9",
+          "kind": "data",
+          "label": "find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2",
+          "to": "wv_83296633884b7cbbfcbd"
+        },
+        {
+          "condition": true,
+          "from": "wv_593569a39cc48bdc7bb5",
+          "id": "wv_ac72134a9a4d160a60d3",
+          "kind": "data",
+          "label": "inputs.flavor",
+          "to": "wv_d5d434f639732c7c6c58"
+        },
+        {
+          "condition": true,
+          "from": "wv_105f83f2069bc2665ff9",
+          "id": "wv_ad03d47754c7f0d25b2d",
+          "kind": "call",
+          "label": null,
+          "to": "wv_d5d434f639732c7c6c58"
+        },
+        {
+          "condition": true,
+          "from": "wv_c4b5dd7e3e546d5ec34a",
+          "id": "wv_b13ce1a8d3a7fcec4f28",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b66a1d7b9dfc9a34cf7d"
+        },
+        {
+          "condition": true,
+          "from": "wv_4229ec5c295766b9454a",
+          "id": "wv_b8c18376cc0b0581235d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_83296633884b7cbbfcbd"
+        },
+        {
+          "condition": true,
+          "from": "wv_b8513dd9d6b7ce0509e0",
+          "id": "wv_bd932d49094e367bfa95",
+          "kind": "data",
+          "label": "inputs.build_type",
+          "to": "wv_d5d434f639732c7c6c58"
+        },
+        {
+          "condition": true,
+          "from": "wv_c4c9f0019727b9484acd",
+          "id": "wv_c5c09353d8b0017a78ef",
+          "kind": "data",
+          "label": "inputs.build_type",
+          "to": "wv_6ed218b7d5cb6f82fb15"
+        },
+        {
+          "condition": true,
+          "from": "wv_98e8007e05237bd417ac",
+          "id": "wv_ca397934531763734832",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6ed218b7d5cb6f82fb15"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_cb67b808251ad31f8c27",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c332f4125cc4619d9501"
+        },
+        {
+          "condition": true,
+          "from": "wv_5f5833bf8d1e82e7a6df",
+          "id": "wv_d5cccaee763d4ed21bf8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c332f4125cc4619d9501"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_d6e65f01e44c1432e3f2",
+          "kind": "write",
+          "label": null,
+          "to": "wv_d58c7b507ea38a79cb88"
+        },
+        {
+          "condition": true,
+          "from": "wv_4a61acafef4d75d0924d",
+          "id": "wv_e9c1abdc0d3e3f2cee70",
+          "kind": "control",
+          "label": null,
+          "to": "wv_42fa917a6db8b3210cb1"
+        },
+        {
+          "condition": true,
+          "from": "wv_270dff7ddd75479c46b9",
+          "id": "wv_ecbe401f2c3ff0a66ebc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_98e8007e05237bd417ac"
+        },
+        {
+          "condition": true,
+          "from": "wv_86ccb48c5cbc56c5c83c",
+          "id": "wv_f997dda1f4aea3d618d4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_105f83f2069bc2665ff9"
+        },
+        {
+          "condition": true,
+          "from": "wv_9fcdbbd05855f677195e",
+          "id": "wv_faae2d7e387c2c859e54",
+          "kind": "data",
+          "label": "GITHUB_RUN_NUMBER",
+          "to": "wv_6ed218b7d5cb6f82fb15"
+        }
+      ],
+      "entrypoints": [
+        "wv_42fa917a6db8b3210cb1"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.sha",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3086,
+                      "column": 27,
+                      "line": 116
+                    },
+                    "stop": {
+                      "byte": 3096,
+                      "column": 37,
+                      "line": 116
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.sha"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_038b6fc3c6aa2ede7998",
+          "kind": "resource",
+          "name": "github.sha",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3086,
+              "column": 27,
+              "line": 116
+            },
+            "stop": {
+              "byte": 3096,
+              "column": 37,
+              "line": 116
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_105f83f2069bc2665ff9",
+          "kind": "step",
+          "name": "Upload All APK Artifacts",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3387,
+              "column": 9,
+              "line": 121
+            },
+            "stop": {
+              "byte": 3694,
+              "column": 34,
+              "line": 128
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3365,
+                      "column": 156,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3378,
+                      "column": 169,
+                      "line": 120
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1dcf918753bb21cfa282",
+          "kind": "resource",
+          "name": "GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3365,
+              "column": 156,
+              "line": 120
+            },
+            "stop": {
+              "byte": 3378,
+              "column": 169,
+              "line": 120
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2537,
+                      "column": 118,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2547,
+                      "column": 128,
+                      "line": 96
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_22a08744bb4f8ea013d7",
+          "kind": "resource",
+          "name": "GITHUB_ENV",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2537,
+              "column": 118,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2547,
+              "column": 128,
+              "line": 96
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_270dff7ddd75479c46b9",
+          "kind": "step",
+          "name": "Create keystore path env var",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2337,
+              "column": 9,
+              "line": 94
+            },
+            "stop": {
+              "byte": 2570,
+              "column": 1,
+              "line": 99
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.build_type",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3298,
+                      "column": 89,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3315,
+                      "column": 106,
+                      "line": 120
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.build_type"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_319a3ab02b333b74dc38",
+          "kind": "resource",
+          "name": "inputs.build_type",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3298,
+              "column": 89,
+              "line": 120
+            },
+            "stop": {
+              "byte": 3315,
+              "column": 106,
+              "line": 120
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.KEY_STORE_LOCATION",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2448,
+                      "column": 29,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2470,
+                      "column": 51,
+                      "line": 96
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.KEY_STORE_LOCATION",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.KEY_STORE_LOCATION"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_32d042d4309288104969",
+          "kind": "resource",
+          "name": "env.KEY_STORE_LOCATION",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2448,
+              "column": 29,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2470,
+              "column": 51,
+              "line": 96
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4229ec5c295766b9454a",
+          "kind": "step",
+          "name": "Get release apk path",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3162,
+              "column": 9,
+              "line": 118
+            },
+            "stop": {
+              "byte": 3378,
+              "column": 169,
+              "line": 120
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "token_read"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_42fa917a6db8b3210cb1",
+          "kind": "workflow",
+          "name": "build",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 3694,
+              "column": 34,
+              "line": 128
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4a61acafef4d75d0924d",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 49,
+              "column": 3,
+              "line": 6
+            },
+            "stop": {
+              "byte": 712,
+              "column": 24,
+              "line": 35
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_582e4c4cd64da58c51ac",
+          "kind": "step",
+          "name": "Set up JDK 21",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1832,
+              "column": 9,
+              "line": 79
+            },
+            "stop": {
+              "byte": 1988,
+              "column": 24,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.flavor",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3511,
+                      "column": 39,
+                      "line": 124
+                    },
+                    "stop": {
+                      "byte": 3524,
+                      "column": 52,
+                      "line": 124
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.flavor"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_593569a39cc48bdc7bb5",
+          "kind": "resource",
+          "name": "inputs.flavor",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3511,
+              "column": 39,
+              "line": 124
+            },
+            "stop": {
+              "byte": 3524,
+              "column": 52,
+              "line": 124
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5c46579832a65a089992",
+          "kind": "call",
+          "name": "timheuer/base64-to-file@v2.0",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2142,
+              "column": 15,
+              "line": 89
+            },
+            "stop": {
+              "byte": 2170,
+              "column": 43,
+              "line": 89
+            }
+          },
+          "unknown": {
+            "detail": "timheuer/base64-to-file@v2.0",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.flavor",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3277,
+                      "column": 68,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3290,
+                      "column": 81,
+                      "line": 120
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.flavor"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5d2695f08d3b1291b498",
+          "kind": "resource",
+          "name": "inputs.flavor",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3277,
+              "column": 68,
+              "line": 120
+            },
+            "stop": {
+              "byte": 3290,
+              "column": 81,
+              "line": 120
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5f5833bf8d1e82e7a6df",
+          "kind": "step",
+          "name": "Grant execute permission for gradlew",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1997,
+              "column": 9,
+              "line": 85
+            },
+            "stop": {
+              "byte": 2069,
+              "column": 30,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.run_number",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3133,
+                      "column": 34,
+                      "line": 117
+                    },
+                    "stop": {
+                      "byte": 3150,
+                      "column": 51,
+                      "line": 117
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.run_number"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_61df28c857adce475c85",
+          "kind": "resource",
+          "name": "github.run_number",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3133,
+              "column": 34,
+              "line": 117
+            },
+            "stop": {
+              "byte": 3150,
+              "column": 51,
+              "line": 117
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.build_type",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2651,
+                      "column": 57,
+                      "line": 101
+                    },
+                    "stop": {
+                      "byte": 2668,
+                      "column": 74,
+                      "line": 101
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.flavor",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2619,
+                      "column": 25,
+                      "line": 101
+                    },
+                    "stop": {
+                      "byte": 2632,
+                      "column": 38,
+                      "line": 101
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2608,
+                      "column": 14,
+                      "line": 101
+                    },
+                    "stop": {
+                      "byte": 3046,
+                      "column": 15,
+                      "line": 114
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "flavor=${{ inputs.flavor }}\nbuild_type=${{ inputs.build_type }}\ncase $build_type in\n  \"release\")\n    ./gradlew :app:assemble${flavor^}Release --info\n    ;;\n  \"nightly\")\n    ./gradlew :app:assemble${flavor^}Nightly --info\n    ;;\n  \"debug\")\n    ./gradlew :app:assemble${flavor^}Debug --stacktrace\n    ;;\nesac\n",
+                  "inputs.build_type",
+                  "inputs.flavor"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6ed218b7d5cb6f82fb15",
+          "kind": "command",
+          "name": "flavor=${{ inputs.flavor }}\nbuild_type=${{ inputs.build_type }}\ncase $build_type in\n  \"release\")\n    ./gradlew :app:assemble${flavor^}Release --info\n    ;;\n  \"nightly\")\n    ./gradlew :app:assemble${flavor^}Nightly --info\n    ;;\n  \"debug\")\n    ./gradlew :app:assemble${flavor^}Debug --stacktrace\n    ;;\nesac\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2608,
+              "column": 14,
+              "line": 101
+            },
+            "stop": {
+              "byte": 3046,
+              "column": 15,
+              "line": 114
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.KEYSTORE",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2309,
+                      "column": 30,
+                      "line": 93
+                    },
+                    "stop": {
+                      "byte": 2325,
+                      "column": 46,
+                      "line": 93
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.KEYSTORE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_762178bb942c62bd3335",
+          "kind": "resource",
+          "name": "secrets.KEYSTORE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2309,
+              "column": 30,
+              "line": 93
+            },
+            "stop": {
+              "byte": 2325,
+              "column": 46,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_81de391f42aa6dd91779",
+          "kind": "trigger",
+          "name": "workflow_call",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 715,
+              "column": 3,
+              "line": 36
+            },
+            "stop": {
+              "byte": 1241,
+              "column": 24,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_OUTPUT",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3365,
+                      "column": 156,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3378,
+                      "column": 169,
+                      "line": 120
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3236,
+                      "column": 27,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3358,
+                      "column": 149,
+                      "line": 120
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.build_type",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3298,
+                      "column": 89,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3315,
+                      "column": 106,
+                      "line": 120
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.flavor",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3277,
+                      "column": 68,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3290,
+                      "column": 81,
+                      "line": 120
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3223,
+                      "column": 14,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3378,
+                      "column": 169,
+                      "line": 120
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_OUTPUT",
+                  "echo \"path=$(find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2)\" >> $GITHUB_OUTPUT",
+                  "find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2",
+                  "inputs.build_type",
+                  "inputs.flavor"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_83296633884b7cbbfcbd",
+          "kind": "command",
+          "name": "echo \"path=$(find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2)\" >> $GITHUB_OUTPUT",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3223,
+              "column": 14,
+              "line": 120
+            },
+            "stop": {
+              "byte": 3378,
+              "column": 169,
+              "line": 120
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "token_read"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_86ccb48c5cbc56c5c83c",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1297,
+              "column": 3,
+              "line": 64
+            },
+            "stop": {
+              "byte": 3694,
+              "column": 34,
+              "line": 128
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_98e8007e05237bd417ac",
+          "kind": "step",
+          "name": "Build APK",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2579,
+              "column": 9,
+              "line": 100
+            },
+            "stop": {
+              "byte": 3153,
+              "column": 54,
+              "line": 117
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_RUN_NUMBER"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9fcdbbd05855f677195e",
+          "kind": "resource",
+          "name": "env:GITHUB_RUN_NUMBER",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3110,
+              "column": 11,
+              "line": 117
+            },
+            "stop": {
+              "byte": 3153,
+              "column": 54,
+              "line": 117
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2384,
+                      "column": 13,
+                      "line": 95
+                    },
+                    "stop": {
+                      "byte": 2419,
+                      "column": 48,
+                      "line": 95
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ inputs.build_type != 'debug' }}"
+                ]
+              }
+            },
+            "reference:inputs.build_type": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.build_type",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2388,
+                      "column": 17,
+                      "line": 95
+                    },
+                    "stop": {
+                      "byte": 2405,
+                      "column": 34,
+                      "line": 95
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.build_type"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(inputs.build_type!=\"debug\")"
+          },
+          "effects": [],
+          "id": "wv_a6f6fd9c25a6848f7324",
+          "kind": "gate",
+          "name": "if:build:Create keystore path env var",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2384,
+              "column": 13,
+              "line": 95
+            },
+            "stop": {
+              "byte": 2419,
+              "column": 48,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_SHA"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ab8dd816464bf37396b2",
+          "kind": "resource",
+          "name": "env:GITHUB_SHA",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3070,
+              "column": 11,
+              "line": 116
+            },
+            "stop": {
+              "byte": 3099,
+              "column": 40,
+              "line": 116
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.UPLOAD_DIR_ANDROID",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 1682,
+                      "column": 31,
+                      "line": 73
+                    },
+                    "stop": {
+                      "byte": 1704,
+                      "column": 53,
+                      "line": 73
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.UPLOAD_DIR_ANDROID",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.UPLOAD_DIR_ANDROID"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_abf76585aa56038afa57",
+          "kind": "resource",
+          "name": "env.UPLOAD_DIR_ANDROID",
+          "phase": "post",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1682,
+              "column": 31,
+              "line": 73
+            },
+            "stop": {
+              "byte": 1704,
+              "column": 53,
+              "line": 73
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_b66a1d7b9dfc9a34cf7d",
+          "kind": "call",
+          "name": "actions/checkout@v7",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1733,
+              "column": 15,
+              "line": 75
+            },
+            "stop": {
+              "byte": 1752,
+              "column": 34,
+              "line": 75
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v7",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.build_type",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3591,
+                      "column": 64,
+                      "line": 125
+                    },
+                    "stop": {
+                      "byte": 3608,
+                      "column": 81,
+                      "line": 125
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.build_type"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b8513dd9d6b7ce0509e0",
+          "kind": "resource",
+          "name": "inputs.build_type",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3591,
+              "column": 64,
+              "line": 125
+            },
+            "stop": {
+              "byte": 3608,
+              "column": 81,
+              "line": 125
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_ENV",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2537,
+                      "column": 118,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2547,
+                      "column": 128,
+                      "line": 96
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "env.KEY_STORE_FILE",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2477,
+                      "column": 58,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2495,
+                      "column": 76,
+                      "line": 96
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "env.KEY_STORE_LOCATION",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2448,
+                      "column": 29,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2470,
+                      "column": 51,
+                      "line": 96
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2433,
+                      "column": 14,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2570,
+                      "column": 1,
+                      "line": 99
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.KEY_STORE_FILE",
+                    "kind": "dynamic_string"
+                  },
+                  {
+                    "detail": "unresolved GitHub dataflow value env.KEY_STORE_LOCATION",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_ENV",
+                  "env.KEY_STORE_FILE",
+                  "env.KEY_STORE_LOCATION",
+                  "store_path=${{ env.KEY_STORE_LOCATION }}${{ env.KEY_STORE_FILE }}\necho \"KEY_STORE_PATH=$store_path\" >> $GITHUB_ENV\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_bc530e9b0f0155c65237",
+          "kind": "command",
+          "name": "store_path=${{ env.KEY_STORE_LOCATION }}${{ env.KEY_STORE_FILE }}\necho \"KEY_STORE_PATH=$store_path\" >> $GITHUB_ENV\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2433,
+              "column": 14,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2570,
+              "column": 1,
+              "line": 99
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.flavor",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3570,
+                      "column": 43,
+                      "line": 125
+                    },
+                    "stop": {
+                      "byte": 3583,
+                      "column": 56,
+                      "line": 125
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.flavor"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bee31ac84d1101e20768",
+          "kind": "resource",
+          "name": "inputs.flavor",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3570,
+              "column": 43,
+              "line": 125
+            },
+            "stop": {
+              "byte": 3583,
+              "column": 56,
+              "line": 125
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c332f4125cc4619d9501",
+          "kind": "step",
+          "name": "Decode Keystore",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2078,
+              "column": 9,
+              "line": 87
+            },
+            "stop": {
+              "byte": 2328,
+              "column": 49,
+              "line": 93
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c4b5dd7e3e546d5ec34a",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1727,
+              "column": 9,
+              "line": 75
+            },
+            "stop": {
+              "byte": 1823,
+              "column": 32,
+              "line": 78
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.build_type",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2651,
+                      "column": 57,
+                      "line": 101
+                    },
+                    "stop": {
+                      "byte": 2668,
+                      "column": 74,
+                      "line": 101
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.build_type"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c4c9f0019727b9484acd",
+          "kind": "resource",
+          "name": "inputs.build_type",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2651,
+              "column": 57,
+              "line": 101
+            },
+            "stop": {
+              "byte": 2668,
+              "column": 74,
+              "line": 101
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.flavor",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2619,
+                      "column": 25,
+                      "line": 101
+                    },
+                    "stop": {
+                      "byte": 2632,
+                      "column": 38,
+                      "line": 101
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.flavor"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c6ec6f04147b0391a50f",
+          "kind": "resource",
+          "name": "inputs.flavor",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2619,
+              "column": 25,
+              "line": 101
+            },
+            "stop": {
+              "byte": 2632,
+              "column": 38,
+              "line": 101
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.KEY_STORE_FILE",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2477,
+                      "column": 58,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2495,
+                      "column": 76,
+                      "line": 96
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.KEY_STORE_FILE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.KEY_STORE_FILE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cb6fef74fbf0deab4aaa",
+          "kind": "resource",
+          "name": "env.KEY_STORE_FILE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2477,
+              "column": 58,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2495,
+              "column": 76,
+              "line": 96
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 3236,
+                      "column": 27,
+                      "line": 120
+                    },
+                    "stop": {
+                      "byte": 3358,
+                      "column": 149,
+                      "line": 120
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d373c3ba6b66668097fe",
+          "kind": "resource",
+          "name": "find . -regex '^.*/build/outputs/apk/${{ inputs.flavor }}/${{ inputs.build_type }}/.*\\.apk$' -type f | head -1 | tail -c+2",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3236,
+              "column": 27,
+              "line": 120
+            },
+            "stop": {
+              "byte": 3358,
+              "column": 149,
+              "line": 120
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d37d7f370c47aca40d27",
+          "kind": "call",
+          "name": "actions/setup-java@v5",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1866,
+              "column": 15,
+              "line": 80
+            },
+            "stop": {
+              "byte": 1887,
+              "column": 36,
+              "line": 80
+            }
+          },
+          "unknown": {
+            "detail": "actions/setup-java@v5",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d58c7b507ea38a79cb88",
+          "kind": "resource",
+          "name": "output:build.UPLOAD_DIR_ANDROID",
+          "phase": "post",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 1658,
+              "column": 7,
+              "line": 73
+            },
+            "stop": {
+              "byte": 1707,
+              "column": 56,
+              "line": 73
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "network_request",
+            "artifact_publish"
+          ],
+          "id": "wv_d5d434f639732c7c6c58",
+          "kind": "call",
+          "name": "actions/upload-artifact@v7",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 3432,
+              "column": 15,
+              "line": 122
+            },
+            "stop": {
+              "byte": 3458,
+              "column": 41,
+              "line": 122
+            }
+          },
+          "unknown": {
+            "detail": "actions/upload-artifact@v7",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.KEY_STORE_FILE",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2209,
+                      "column": 25,
+                      "line": 91
+                    },
+                    "stop": {
+                      "byte": 2227,
+                      "column": 43,
+                      "line": 91
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.KEY_STORE_FILE",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.KEY_STORE_FILE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d6fcaf626bef745b2b38",
+          "kind": "resource",
+          "name": "env.KEY_STORE_FILE",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2209,
+              "column": 25,
+              "line": 91
+            },
+            "stop": {
+              "byte": 2227,
+              "column": 43,
+              "line": 91
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "inputs.build_type",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2388,
+                      "column": 17,
+                      "line": 95
+                    },
+                    "stop": {
+                      "byte": 2405,
+                      "column": 34,
+                      "line": 95
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "inputs.build_type"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e11ca555bad87a7ea5c4",
+          "kind": "resource",
+          "name": "inputs.build_type",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2388,
+              "column": 17,
+              "line": 95
+            },
+            "stop": {
+              "byte": 2405,
+              "column": 34,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "env.KEY_STORE_LOCATION",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2254,
+                      "column": 24,
+                      "line": 92
+                    },
+                    "stop": {
+                      "byte": 2276,
+                      "column": 46,
+                      "line": 92
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "unresolved GitHub dataflow value env.KEY_STORE_LOCATION",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "string",
+              "value": {
+                "constants": [
+                  "env.KEY_STORE_LOCATION"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e6ce9ed2250d89089e83",
+          "kind": "resource",
+          "name": "env.KEY_STORE_LOCATION",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2254,
+              "column": 24,
+              "line": 92
+            },
+            "stop": {
+              "byte": 2276,
+              "column": 46,
+              "line": 92
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/wgtunnel/android/.github/workflows/build.yml",
+                    "start": {
+                      "byte": 2053,
+                      "column": 14,
+                      "line": 86
+                    },
+                    "stop": {
+                      "byte": 2069,
+                      "column": 30,
+                      "line": 86
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "chmod +x gradlew"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f8a6c0d6b6364455bc8a",
+          "kind": "command",
+          "name": "chmod +x gradlew",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/wgtunnel/android/.github/workflows/build.yml",
+            "start": {
+              "byte": 2053,
+              "column": 14,
+              "line": 86
+            },
+            "stop": {
+              "byte": 2069,
+              "column": 30,
+              "line": 86
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/wgtunnel/android/.github/workflows/build.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:11082b66986616fb4cf7eadc7962d0e04ab939e1d4ac0897f802abcacdfa18de",
+      "path": "github/wgtunnel/android/.github/workflows/build.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "actions/setup-java@v5",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "actions/upload-artifact@v7",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "timheuer/base64-to-file@v2.0",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 6,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

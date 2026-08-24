@@ -1,0 +1,126 @@
+
+references:
+
+  build-settings: &build-settings
+    machine:
+      image: ubuntu-2404:current
+
+  no_filters: &no_filters
+    filters:
+      tags:
+        only: /.*/
+
+jobs:
+  ubuntu1804-gcc7:
+    <<: *build-settings
+    steps:
+      - restore_cache:
+          keys:
+            - ubuntu1804-gcc7-assets-
+      - checkout
+      - run:
+         name: ubuntu1804-gcc7 build
+         command: |
+           docker load -i ~/docker/ubuntu1804-gcc7.tar > /dev/null 2>&1 || true
+           docker pull ubuntu:18.04
+           make ubuntu1804-gcc7
+           mkdir -p ~/docker
+           docker save -o ~/docker/ubuntu1804-gcc7.tar dockbuild/ubuntu1804-gcc7:latest dockbuild/ubuntu1804:latest
+      - run:
+         name: ubuntu1804-gcc7 test
+         command: |
+           make ubuntu1804-gcc7.test
+      - save_cache:
+          key: ubuntu1804-gcc7-assets-{{ .Revision }}
+          paths: ~/docker/ubuntu1804-gcc7.tar
+  ubuntu2004-gcc9:
+    <<: *build-settings
+    steps:
+      - restore_cache:
+          keys:
+            - ubuntu2004-gcc9-assets-
+      - checkout
+      - run:
+         name: ubuntu2004-gcc9 build
+         command: |
+           docker load -i ~/docker/ubuntu2004-gcc9.tar > /dev/null 2>&1 || true
+           docker pull ubuntu:20.04
+           make ubuntu2004-gcc9
+           mkdir -p ~/docker
+           docker save -o ~/docker/ubuntu2004-gcc9.tar dockbuild/ubuntu2004-gcc9:latest dockbuild/ubuntu2004:latest
+      - run:
+         name: ubuntu2004-gcc9 test
+         command: |
+           make ubuntu2004-gcc9.test
+      - save_cache:
+          key: ubuntu2004-gcc9-assets-{{ .Revision }}
+          paths: ~/docker/ubuntu2004-gcc9.tar
+  almalinux8-devtoolset14-gcc14:
+    <<: *build-settings
+    steps:
+      - restore_cache:
+          keys:
+            - almalinux8-devtoolset14-gcc14-assets-
+      - checkout
+      - run:
+         name: almalinux8-devtoolset14-gcc14 build
+         command: |
+           docker load -i ~/docker/almalinux8-devtoolset14-gcc14.tar > /dev/null 2>&1 || true
+           docker pull amd64/almalinux:8
+           make almalinux8-devtoolset14-gcc14
+           mkdir -p ~/docker
+           docker save -o ~/docker/almalinux8-devtoolset14-gcc14.tar dockbuild/almalinux8-devtoolset14-gcc14:latest
+      - run:
+         name: almalinux8-devtoolset14-gcc14 test
+         command: |
+           make almalinux8-devtoolset14-gcc14.test
+      - save_cache:
+          key: almalinux8-devtoolset14-gcc14-assets-{{ .Revision }}
+          paths: ~/docker/almalinux8-devtoolset14-gcc14.tar
+  deploy-master:
+    <<: *build-settings
+    steps:
+      - restore_cache:
+          key: ubuntu1804-gcc7-assets-{{ .Revision }}
+      - deploy:
+          name: Deploy ubuntu1804-gcc7
+          command: |
+            docker load -i ~/docker/ubuntu1804-gcc7.tar
+            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+            docker push dockbuild/ubuntu1804:latest
+            docker push dockbuild/ubuntu1804-gcc7:latest
+      - restore_cache:
+          key: ubuntu2004-gcc9-assets-{{ .Revision }}
+      - deploy:
+          name: Deploy ubuntu2004-gcc9
+          command: |
+            docker load -i ~/docker/ubuntu2004-gcc9.tar
+            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+            docker push dockbuild/ubuntu2004:latest
+            docker push dockbuild/ubuntu2004-gcc9:latest
+      - restore_cache:
+          key: almalinux8-devtoolset14-gcc14-assets-{{ .Revision }}
+      - deploy:
+          name: Deploy almalinux8-devtoolset14-gcc14
+          command: |
+            docker load -i ~/docker/almalinux8-devtoolset14-gcc14.tar
+            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+            docker push dockbuild/almalinux8-devtoolset14-gcc14:latest
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - ubuntu1804-gcc7:
+          <<: *no_filters
+      - ubuntu2004-gcc9:
+          <<: *no_filters
+      - almalinux8-devtoolset14-gcc14:
+          <<: *no_filters
+      - deploy-master:
+          requires:
+            - ubuntu1804-gcc7
+            - ubuntu2004-gcc9
+            - almalinux8-devtoolset14-gcc14
+          filters:
+            branches:
+              only: master

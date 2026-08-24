@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+    - '*'
+  paths:
+    exclude:
+    - '**/*.md'
+
+jobs:
+- job: CI
+  displayName: CI Build
+  timeoutInMinutes: 10
+  pool:
+    vmImage: windows-latest
+  steps:
+  - checkout: self
+    displayName: Checkout
+  - task: UseDotNet@2
+    displayName: Setup .NET
+    inputs:
+      packageType: 'sdk'
+      useGlobalJson: true
+      workingDirectory: 'Source/CLI'
+  - task: PowerShell@2
+    displayName: Build
+    inputs:
+      filePath: 'Source/CLI/Build-Artifact.ps1'
+      pwsh: true
+      workingDirectory: 'Source/CLI'
+  - task: PublishPipelineArtifact@1
+    displayName: Publish
+    inputs:
+      targetPath: 'Source/CLI/artifact'
+      artifactName: Auto Arknights CLI

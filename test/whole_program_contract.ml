@@ -219,6 +219,7 @@ let call_recursion () =
 let authorization_semantics () =
   let workflow = node ~kind:Ir.Workflow ~phase:Ir.Compile "workflow"
   and ordinary = node ~kind:Ir.Gate ~phase:Ir.Plan "success condition"
+  and misleading = node ~kind:Ir.Gate ~phase:Ir.Plan "branch naming check"
   and approval = node ~kind:Ir.Gate ~phase:Ir.Plan "environment approval"
   and deploy =
     node ~kind:Ir.Effect ~effects:[ Ir.Deployment_change ]
@@ -233,6 +234,15 @@ let authorization_semantics () =
   in
   expect "an ordinary success condition is not authorization"
     ((property "WV-AUTH-001" ordinary_result).state = Property.Violated);
+  let misleading_result =
+    graph
+      [ workflow; misleading; deploy ]
+      [ edge workflow misleading; edge misleading deploy ]
+      [ workflow ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "an authorization keyword in a gate label is not evidence"
+    ((property "WV-AUTH-001" misleading_result).state = Property.Violated);
   let approved_result =
     graph
       [ workflow; approval; deploy ]
@@ -279,7 +289,19 @@ let ai_effect_semantics () =
     |> Verifier.verify ~persona:Verifier.Gate
   in
   expect "AI effects are semantic and do not depend on product naming"
-    ((property "WV-AI-001" result).state = Property.Violated)
+    ((property "WV-AI-001" result).state = Property.Violated);
+  let command_agent =
+    node ~kind:Ir.Command ~capabilities:[ Ir.Ai_tool; Ir.Network ]
+      ~effects:[ Ir.Ai_agent_execution; Ir.Network_request ] "ai-agent command"
+  in
+  let command_result =
+    graph [ prompt; command_agent ]
+      [ edge ~kind:Ir.Data prompt command_agent ]
+      [ command_agent ]
+    |> Verifier.verify ~persona:Verifier.Gate
+  in
+  expect "local AI agent commands share the call security boundary"
+    ((property "WV-AI-001" command_result).state = Property.Violated)
 
 let integrity_state_triple () =
   let deploy =

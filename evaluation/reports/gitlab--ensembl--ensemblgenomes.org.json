@@ -1,0 +1,2378 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_4d783a8b891d26673edb",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+        "start": {
+          "byte": 743,
+          "column": 7,
+          "line": 37
+        },
+        "stop": {
+          "byte": 814,
+          "column": 78,
+          "line": 37
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_11865736e7029ba6c50d",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 743,
+              "column": 7,
+              "line": 37
+            },
+            "stop": {
+              "byte": 814,
+              "column": 78,
+              "line": 37
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:9e3084f92b2ea3aa626771ef5a2ad5b0aecd3392774d0e876c6818398cbcc967",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_70ebd163c091a46ed63c",
+          "id": "wv_03b7f947b302f57113e5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_16ae4c30a61af97e05de"
+        },
+        {
+          "condition": true,
+          "from": "wv_70ebd163c091a46ed63c",
+          "id": "wv_03b7f947b302f57113e5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_16ae4c30a61af97e05de"
+        },
+        {
+          "condition": true,
+          "from": "wv_687d4ee96b241a6f6312",
+          "id": "wv_08f8dd6e73c62eb7bab5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_53b4104e43aab1d1fc7f"
+        },
+        {
+          "condition": true,
+          "from": "wv_2c729e33e524b5586bde",
+          "id": "wv_0b6e9bf1b2467285bce3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4f4ce2d9edf0bd5dc645"
+        },
+        {
+          "condition": true,
+          "from": "wv_3a30f27e3f75a70aa54b",
+          "id": "wv_0f337e3c7cbb2dcf1428",
+          "kind": "grant",
+          "label": null,
+          "to": "wv_b936b0105f5c6829acf6"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cfbc12c5860e88266c6",
+          "id": "wv_1036565906b163cda135",
+          "kind": "call",
+          "label": null,
+          "to": "wv_8dfa726279c2a2f820bd"
+        },
+        {
+          "condition": true,
+          "from": "wv_70ebd163c091a46ed63c",
+          "id": "wv_173563752fcef51423c0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ca32085ddfc1851d96bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_70ebd163c091a46ed63c",
+          "id": "wv_173563752fcef51423c0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ca32085ddfc1851d96bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_b228ee572083e8f284a2",
+          "id": "wv_18f41c4a92ff3f1da3a1",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6fcecc795786ee9ca9c8"
+        },
+        {
+          "condition": true,
+          "from": "wv_6fcecc795786ee9ca9c8",
+          "id": "wv_190bb8a2c7ef81625d5e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ded560b6537583f05316"
+        },
+        {
+          "condition": true,
+          "from": "wv_ded560b6537583f05316",
+          "id": "wv_1d26db37b16cb4fcb04d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b936b0105f5c6829acf6"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cfbc12c5860e88266c6",
+          "id": "wv_1e5e7a2d8f62b01519a4",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c0d255a78ce4be7579e5"
+        },
+        {
+          "condition": true,
+          "from": "wv_b228ee572083e8f284a2",
+          "id": "wv_20a34c2c36ae6954b961",
+          "kind": "control",
+          "label": null,
+          "to": "wv_687d4ee96b241a6f6312"
+        },
+        {
+          "condition": true,
+          "from": "wv_687d4ee96b241a6f6312",
+          "id": "wv_2253a6f25b3cf5b355e3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9977c55f19f56fc1babd"
+        },
+        {
+          "condition": true,
+          "from": "wv_506687250237f63cd827",
+          "id": "wv_2acd8c266475f85f64dd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_11865736e7029ba6c50d"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cfbc12c5860e88266c6",
+          "id": "wv_358ac7068e85c6fd9f66",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8dfa726279c2a2f820bd"
+        },
+        {
+          "condition": true,
+          "from": "wv_b936b0105f5c6829acf6",
+          "id": "wv_3b89e5a6e4a24c456091",
+          "kind": "control",
+          "label": null,
+          "to": "wv_70ebd163c091a46ed63c"
+        },
+        {
+          "condition": true,
+          "from": "wv_57b14a38b529ad007ee4",
+          "id": "wv_3def66ec210802630edf",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5ce4006d97fc513d7149"
+        },
+        {
+          "condition": true,
+          "from": "wv_20e3455a08556c71f337",
+          "id": "wv_3e35a0a0f333e4f33fcf",
+          "kind": "data",
+          "label": "EG_DOCKER_IMAGE",
+          "to": "wv_7cfbc12c5860e88266c6"
+        },
+        {
+          "condition": true,
+          "from": "wv_4b416254c3b0a0739a0d",
+          "id": "wv_3e947dc432a29c09b1ec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_70ebd163c091a46ed63c"
+        },
+        {
+          "condition": true,
+          "from": "wv_ea7ca00727ef11b9d27e",
+          "id": "wv_4037c065eafe54495c80",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b131db0d59e794f903b8"
+        },
+        {
+          "condition": true,
+          "from": "wv_53b4104e43aab1d1fc7f",
+          "id": "wv_5008927489033eb33e7c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fd9bcc3f1132e50ce12e"
+        },
+        {
+          "condition": true,
+          "from": "wv_2c729e33e524b5586bde",
+          "id": "wv_50f8a49ca193ba525558",
+          "kind": "write",
+          "label": null,
+          "to": "wv_f900c2dba5785d9aef69"
+        },
+        {
+          "condition": true,
+          "from": "wv_687d4ee96b241a6f6312",
+          "id": "wv_54a1e3e5803cc56504a0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_506687250237f63cd827"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cfbc12c5860e88266c6",
+          "id": "wv_5d4c34a35d92fd5238a2",
+          "kind": "call",
+          "label": null,
+          "to": "wv_644bf97267109458a0c5"
+        },
+        {
+          "condition": true,
+          "from": "wv_4f4ce2d9edf0bd5dc645",
+          "id": "wv_6257fc03ee0c3eb6d204",
+          "kind": "control",
+          "label": null,
+          "to": "wv_611775ef807f6426aa2d"
+        },
+        {
+          "condition": true,
+          "from": "wv_ea7ca00727ef11b9d27e",
+          "id": "wv_6a85d1cad882e29b5c45",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9977c55f19f56fc1babd"
+        },
+        {
+          "condition": true,
+          "from": "wv_9977c55f19f56fc1babd",
+          "id": "wv_6c79af166ba848aada7a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_53b4104e43aab1d1fc7f"
+        },
+        {
+          "condition": true,
+          "from": "wv_4b416254c3b0a0739a0d",
+          "id": "wv_6ce1aee2a903e2e3eee5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ca32085ddfc1851d96bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_687d4ee96b241a6f6312",
+          "id": "wv_725f62444cda35a73e9d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c248a3a10ff48b10ec80"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cfbc12c5860e88266c6",
+          "id": "wv_74a19fe5b44ace696466",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c0d255a78ce4be7579e5"
+        },
+        {
+          "condition": true,
+          "from": "wv_ca32085ddfc1851d96bc",
+          "id": "wv_75aa3cb8faac77929dc2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f47cac841bc6969b6704"
+        },
+        {
+          "condition": true,
+          "from": "wv_ca32085ddfc1851d96bc",
+          "id": "wv_75aa3cb8faac77929dc2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f47cac841bc6969b6704"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cfbc12c5860e88266c6",
+          "id": "wv_76c8ef5127a18c8374bc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_644bf97267109458a0c5"
+        },
+        {
+          "condition": true,
+          "from": "wv_4b416254c3b0a0739a0d",
+          "id": "wv_87e26e0c38f96e4c6674",
+          "kind": "control",
+          "label": null,
+          "to": "wv_775826e88b33e8dfe6e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_ded560b6537583f05316",
+          "id": "wv_aa0cc4d7c5d234ca6c9c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4b416254c3b0a0739a0d"
+        },
+        {
+          "condition": true,
+          "from": "wv_8462f7938a734a58dfee",
+          "id": "wv_b2266d991cdd80ab36b3",
+          "kind": "data",
+          "label": "CI_REGISTRY_PASSWORD",
+          "to": "wv_11865736e7029ba6c50d"
+        },
+        {
+          "condition": true,
+          "from": "wv_2e053984c5e8ad837a4c",
+          "id": "wv_ba1a1ff6ee11d8635284",
+          "kind": "data",
+          "label": "CI_REGISTRY",
+          "to": "wv_bc16e8e35de963001122"
+        },
+        {
+          "condition": true,
+          "from": "wv_9977c55f19f56fc1babd",
+          "id": "wv_ba7b6610a63785b1357e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e7abafb66282ec04ed80"
+        },
+        {
+          "condition": true,
+          "from": "wv_d53665cb0245d79ed933",
+          "id": "wv_bb34624695f4890fc608",
+          "kind": "grant",
+          "label": null,
+          "to": "wv_4b416254c3b0a0739a0d"
+        },
+        {
+          "condition": true,
+          "from": "wv_b936b0105f5c6829acf6",
+          "id": "wv_c33cdf0c71d37ddbecc0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_51540ea34a371149f5ee"
+        },
+        {
+          "condition": true,
+          "from": "wv_2c729e33e524b5586bde",
+          "id": "wv_c48b2fd055fe68066bc5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_57b14a38b529ad007ee4"
+        },
+        {
+          "condition": true,
+          "from": "wv_4b416254c3b0a0739a0d",
+          "id": "wv_c8c2752d0110c00713ff",
+          "kind": "call",
+          "label": null,
+          "to": "wv_775826e88b33e8dfe6e2"
+        },
+        {
+          "condition": true,
+          "from": "wv_53b4104e43aab1d1fc7f",
+          "id": "wv_d786156f6b5a24b4e15a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c248a3a10ff48b10ec80"
+        },
+        {
+          "condition": true,
+          "from": "wv_b936b0105f5c6829acf6",
+          "id": "wv_dc3905e280fe53293558",
+          "kind": "call",
+          "label": null,
+          "to": "wv_51540ea34a371149f5ee"
+        },
+        {
+          "condition": true,
+          "from": "wv_6fcecc795786ee9ca9c8",
+          "id": "wv_e0119ad7cd394f516722",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2c729e33e524b5586bde"
+        },
+        {
+          "condition": true,
+          "from": "wv_57b14a38b529ad007ee4",
+          "id": "wv_e16d3445e1c5422ee30b",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4f4ce2d9edf0bd5dc645"
+        },
+        {
+          "condition": true,
+          "from": "wv_b936b0105f5c6829acf6",
+          "id": "wv_e1912337086c49301d61",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ca32085ddfc1851d96bc"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cfbc12c5860e88266c6",
+          "id": "wv_e40f6ecc89ceff10ba76",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b228ee572083e8f284a2"
+        },
+        {
+          "condition": true,
+          "from": "wv_c248a3a10ff48b10ec80",
+          "id": "wv_e5730e81a9269a93d0d4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bc16e8e35de963001122"
+        },
+        {
+          "condition": true,
+          "from": "wv_2c9335a3055191092827",
+          "id": "wv_e6e6b1e715acf8bd7f72",
+          "kind": "data",
+          "label": "CI_REGISTRY",
+          "to": "wv_11865736e7029ba6c50d"
+        },
+        {
+          "condition": true,
+          "from": "wv_9079f06524bdc5048b8e",
+          "id": "wv_eb9aa8e170b4fb4687ba",
+          "kind": "data",
+          "label": "CI_REGISTRY_USER",
+          "to": "wv_11865736e7029ba6c50d"
+        },
+        {
+          "condition": true,
+          "from": "wv_506687250237f63cd827",
+          "id": "wv_f938c9b78712184ceb6f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ea7ca00727ef11b9d27e"
+        },
+        {
+          "condition": true,
+          "from": "wv_687d4ee96b241a6f6312",
+          "id": "wv_fb740005e8dc3fcc03c3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ea7ca00727ef11b9d27e"
+        }
+      ],
+      "entrypoints": [
+        "wv_7cfbc12c5860e88266c6"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 803,
+                      "column": 67,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 814,
+                      "column": 78,
+                      "line": 37
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_PASSWORD",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 781,
+                      "column": 45,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 801,
+                      "column": 65,
+                      "line": 37
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_USER",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 760,
+                      "column": 24,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 776,
+                      "column": 40,
+                      "line": 37
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 743,
+                      "column": 7,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 814,
+                      "column": 78,
+                      "line": 37
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY",
+                  "CI_REGISTRY_PASSWORD",
+                  "CI_REGISTRY_USER",
+                  "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_11865736e7029ba6c50d",
+          "kind": "command",
+          "name": "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 743,
+              "column": 7,
+              "line": 37
+            },
+            "stop": {
+              "byte": 814,
+              "column": 78,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 346,
+                      "column": 7,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 423,
+                      "column": 84,
+                      "line": 16
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sed -i \"s#<DOCKER_IMAGE>#${EG_DOCKER_IMAGE}#g\" ensemblgenomes_deployment.yaml"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_16ae4c30a61af97e05de",
+          "kind": "command",
+          "name": "sed -i \"s#<DOCKER_IMAGE>#${EG_DOCKER_IMAGE}#g\" ensemblgenomes_deployment.yaml",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 346,
+              "column": 7,
+              "line": 16
+            },
+            "stop": {
+              "byte": 423,
+              "column": 84,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 346,
+                      "column": 7,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 423,
+                      "column": 84,
+                      "line": 16
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sed -i \"s#<DOCKER_IMAGE>#${EG_DOCKER_IMAGE}#g\" ensemblgenomes_deployment.yaml"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_16ae4c30a61af97e05de",
+          "kind": "command",
+          "name": "sed -i \"s#<DOCKER_IMAGE>#${EG_DOCKER_IMAGE}#g\" ensemblgenomes_deployment.yaml",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 346,
+              "column": 7,
+              "line": 16
+            },
+            "stop": {
+              "byte": 423,
+              "column": 84,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_20e3455a08556c71f337",
+          "kind": "resource",
+          "name": "variable:EG_DOCKER_IMAGE",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 182,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 242,
+              "column": 63,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2c729e33e524b5586bde",
+          "kind": "job",
+          "name": "Build-Static",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 479,
+              "column": 1,
+              "line": 19
+            },
+            "stop": {
+              "byte": 636,
+              "column": 12,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 803,
+                      "column": 67,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 814,
+                      "column": 78,
+                      "line": 37
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2c9335a3055191092827",
+          "kind": "resource",
+          "name": "CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 803,
+              "column": 67,
+              "line": 37
+            },
+            "stop": {
+              "byte": 814,
+              "column": 78,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 992,
+                      "column": 22,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 1003,
+                      "column": 33,
+                      "line": 42
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2e053984c5e8ad837a4c",
+          "kind": "resource",
+          "name": "CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 992,
+              "column": 22,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1003,
+              "column": 33,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3a30f27e3f75a70aa54b",
+          "kind": "resource",
+          "name": "environment:wp40-hl-static",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 1097,
+              "column": 5,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1118,
+              "column": 26,
+              "line": 48
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [
+            "deployment_change"
+          ],
+          "id": "wv_4b416254c3b0a0739a0d",
+          "kind": "job",
+          "name": "Deploy:WP41:HX",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 1178,
+              "column": 1,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1272,
+              "column": 11,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4f4ce2d9edf0bd5dc645",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 562,
+              "column": 7,
+              "line": 24
+            },
+            "stop": {
+              "byte": 575,
+              "column": 20,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_506687250237f63cd827",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 743,
+              "column": 7,
+              "line": 37
+            },
+            "stop": {
+              "byte": 814,
+              "column": 78,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_51540ea34a371149f5ee",
+          "kind": "call",
+          "name": "extends:.deploy",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 1043,
+              "column": 1,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1137,
+              "column": 11,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_53b4104e43aab1d1fc7f",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 941,
+              "column": 7,
+              "line": 41
+            },
+            "stop": {
+              "byte": 970,
+              "column": 36,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_57b14a38b529ad007ee4",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 549,
+              "column": 7,
+              "line": 23
+            },
+            "stop": {
+              "byte": 555,
+              "column": 13,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 549,
+                      "column": 7,
+                      "line": 23
+                    },
+                    "stop": {
+                      "byte": 555,
+                      "column": 13,
+                      "line": 23
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm ci"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_5ce4006d97fc513d7149",
+          "kind": "command",
+          "name": "npm ci",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 549,
+              "column": 7,
+              "line": 23
+            },
+            "stop": {
+              "byte": 555,
+              "column": 13,
+              "line": 23
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 562,
+                      "column": 7,
+                      "line": 24
+                    },
+                    "stop": {
+                      "byte": 575,
+                      "column": 20,
+                      "line": 24
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run build"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_611775ef807f6426aa2d",
+          "kind": "command",
+          "name": "npm run build",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 562,
+              "column": 7,
+              "line": 24
+            },
+            "stop": {
+              "byte": 575,
+              "column": 20,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_644bf97267109458a0c5",
+          "kind": "call",
+          "name": "dockerhub.ebi.ac.uk/ensembl-web/deploy-tools:latest",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 278,
+              "column": 10,
+              "line": 14
+            },
+            "stop": {
+              "byte": 329,
+              "column": 61,
+              "line": 14
+            }
+          },
+          "unknown": {
+            "detail": "dockerhub.ebi.ac.uk/ensembl-web/deploy-tools:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_687d4ee96b241a6f6312",
+          "kind": "job",
+          "name": "Docker-Image",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 638,
+              "column": 1,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1003,
+              "column": 33,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6fcecc795786ee9ca9c8",
+          "kind": "stage",
+          "name": "build_static",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 125,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 167,
+              "column": 11,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_70ebd163c091a46ed63c",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 346,
+              "column": 7,
+              "line": 16
+            },
+            "stop": {
+              "byte": 423,
+              "column": 84,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_70ebd163c091a46ed63c",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 346,
+              "column": 7,
+              "line": 16
+            },
+            "stop": {
+              "byte": 423,
+              "column": 84,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_775826e88b33e8dfe6e2",
+          "kind": "call",
+          "name": "extends:.deploy",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 1178,
+              "column": 1,
+              "line": 53
+            },
+            "stop": {
+              "byte": 1272,
+              "column": 11,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7cfbc12c5860e88266c6",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 115,
+              "column": 1,
+              "line": 4
+            },
+            "stop": {
+              "byte": 1272,
+              "column": 11,
+              "line": 58
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_PASSWORD",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 781,
+                      "column": 45,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 801,
+                      "column": 65,
+                      "line": 37
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8462f7938a734a58dfee",
+          "kind": "resource",
+          "name": "CI_REGISTRY_PASSWORD",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 781,
+              "column": 45,
+              "line": 37
+            },
+            "stop": {
+              "byte": 801,
+              "column": 65,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8dfa726279c2a2f820bd",
+          "kind": "call",
+          "name": "docker",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 683,
+              "column": 10,
+              "line": 33
+            },
+            "stop": {
+              "byte": 689,
+              "column": 16,
+              "line": 33
+            }
+          },
+          "unknown": {
+            "detail": "docker",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY_USER",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 760,
+                      "column": 24,
+                      "line": 37
+                    },
+                    "stop": {
+                      "byte": 776,
+                      "column": 40,
+                      "line": 37
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY_USER"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9079f06524bdc5048b8e",
+          "kind": "resource",
+          "name": "CI_REGISTRY_USER",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 760,
+              "column": 24,
+              "line": 37
+            },
+            "stop": {
+              "byte": 776,
+              "column": 40,
+              "line": 37
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9977c55f19f56fc1babd",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 904,
+              "column": 7,
+              "line": 40
+            },
+            "stop": {
+              "byte": 934,
+              "column": 37,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 831,
+                      "column": 7,
+                      "line": 39
+                    },
+                    "stop": {
+                      "byte": 897,
+                      "column": 73,
+                      "line": 39
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker build -t ${EG_DOCKER_IMAGE} -f Dockerfile.prod --no-cache ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b131db0d59e794f903b8",
+          "kind": "command",
+          "name": "docker build -t ${EG_DOCKER_IMAGE} -f Dockerfile.prod --no-cache .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 831,
+              "column": 7,
+              "line": 39
+            },
+            "stop": {
+              "byte": 897,
+              "column": 73,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b228ee572083e8f284a2",
+          "kind": "stage",
+          "name": "build_docker",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 125,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 167,
+              "column": 11,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [
+            "deployment_change"
+          ],
+          "id": "wv_b936b0105f5c6829acf6",
+          "kind": "job",
+          "name": "Deploy:WP40:HL",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 1043,
+              "column": 1,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1137,
+              "column": 11,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_REGISTRY",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 992,
+                      "column": 22,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 1003,
+                      "column": 33,
+                      "line": 42
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 977,
+                      "column": 7,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 1003,
+                      "column": 33,
+                      "line": 42
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_REGISTRY",
+                  "docker logout $CI_REGISTRY"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_bc16e8e35de963001122",
+          "kind": "command",
+          "name": "docker logout $CI_REGISTRY",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 977,
+              "column": 7,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1003,
+              "column": 33,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c0d255a78ce4be7579e5",
+          "kind": "call",
+          "name": "node:lts",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 524,
+              "column": 10,
+              "line": 21
+            },
+            "stop": {
+              "byte": 532,
+              "column": 18,
+              "line": 21
+            }
+          },
+          "unknown": {
+            "detail": "node:lts",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c248a3a10ff48b10ec80",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 977,
+              "column": 7,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1003,
+              "column": 33,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c679ec51df86a30da79d",
+          "kind": "resource",
+          "name": "template:.deploy",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 255,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 477,
+              "column": 54,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ca32085ddfc1851d96bc",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 430,
+              "column": 7,
+              "line": 17
+            },
+            "stop": {
+              "byte": 477,
+              "column": 54,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ca32085ddfc1851d96bc",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 430,
+              "column": 7,
+              "line": 17
+            },
+            "stop": {
+              "byte": 477,
+              "column": 54,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "deployment"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d53665cb0245d79ed933",
+          "kind": "resource",
+          "name": "environment:wp41-hx-static",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 1232,
+              "column": 5,
+              "line": 56
+            },
+            "stop": {
+              "byte": 1253,
+              "column": 26,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ded560b6537583f05316",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 125,
+              "column": 3,
+              "line": 5
+            },
+            "stop": {
+              "byte": 167,
+              "column": 11,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 904,
+                      "column": 7,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 934,
+                      "column": 37,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker push ${EG_DOCKER_IMAGE}"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e7abafb66282ec04ed80",
+          "kind": "command",
+          "name": "docker push ${EG_DOCKER_IMAGE}",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 904,
+              "column": 7,
+              "line": 40
+            },
+            "stop": {
+              "byte": 934,
+              "column": 37,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ea7ca00727ef11b9d27e",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 831,
+              "column": 7,
+              "line": 39
+            },
+            "stop": {
+              "byte": 897,
+              "column": 73,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 430,
+                      "column": 7,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 477,
+                      "column": 54,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "kubectl apply -f ensemblgenomes_deployment.yaml"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f47cac841bc6969b6704",
+          "kind": "command",
+          "name": "kubectl apply -f ensemblgenomes_deployment.yaml",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 430,
+              "column": 7,
+              "line": 17
+            },
+            "stop": {
+              "byte": 477,
+              "column": 54,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 430,
+                      "column": 7,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 477,
+                      "column": 54,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "kubectl apply -f ensemblgenomes_deployment.yaml"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f47cac841bc6969b6704",
+          "kind": "command",
+          "name": "kubectl apply -f ensemblgenomes_deployment.yaml",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 430,
+              "column": 7,
+              "line": 17
+            },
+            "stop": {
+              "byte": 477,
+              "column": 54,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_f900c2dba5785d9aef69",
+          "kind": "resource",
+          "name": "artifact:Build-Static",
+          "phase": "post",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 594,
+              "column": 5,
+              "line": 27
+            },
+            "stop": {
+              "byte": 636,
+              "column": 12,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 941,
+                      "column": 7,
+                      "line": 41
+                    },
+                    "stop": {
+                      "byte": 970,
+                      "column": 36,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker rmi ${EG_DOCKER_IMAGE}"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fd9bcc3f1132e50ce12e",
+          "kind": "command",
+          "name": "docker rmi ${EG_DOCKER_IMAGE}",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml",
+            "start": {
+              "byte": 941,
+              "column": 7,
+              "line": 41
+            },
+            "stop": {
+              "byte": 970,
+              "column": 36,
+              "line": 41
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:c5134f1bc4c1294aa11eec38acb6be8cc4ea8ea32d905e4d5f41d4f260f48495",
+      "path": "gitlab/ensembl/ensemblgenomes.org/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [
+        {
+          "detail": "protection rules for environment:wp40-hl-static",
+          "kind": "external_state"
+        },
+        {
+          "detail": "protection rules for environment:wp41-hx-static",
+          "kind": "external_state"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "docker",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "dockerhub.ebi.ac.uk/ensembl-web/deploy-tools:latest",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "extends:.deploy",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "node:lts",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

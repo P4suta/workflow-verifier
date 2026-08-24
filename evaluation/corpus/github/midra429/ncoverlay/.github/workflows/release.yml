@@ -1,0 +1,104 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: "v[major].[minor].[patch]"
+        required: true
+        type: choice
+        default: "patch"
+        options: [major, minor, patch, none]
+      submit_chrome:
+        description: "Chrome Web Store"
+        type: boolean
+        default: true
+      submit_edge:
+        description: "Edge Add-ons"
+        type: boolean
+        default: true
+      submit_firefox:
+        description: "Firefox Add-ons"
+        type: boolean
+        default: true
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+
+    env:
+      IS_RELEASE: ${{ inputs.bump_type != 'none' }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Bunをインストール
+        uses: oven-sh/setup-bun@v2
+
+      - name: 依存関係をインストール
+        run: |
+          bun install --frozen-lockfile
+          bun run pre
+
+      - name: Gitのユーザーを設定
+        if: ${{ env.IS_RELEASE == 'true' }}
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: バージョンを更新
+        if: ${{ env.IS_RELEASE == 'true' }}
+        run: |
+          bun pm version ${{ inputs.bump_type }} -m "v%s"
+          echo VERSION=$(bun -e "console.log(require('./package.json').version)") >> $GITHUB_ENV
+
+      - name: 拡張機能をビルド (Chrome / Edge)
+        if: ${{ env.IS_RELEASE == 'true' || inputs.submit_chrome || inputs.submit_edge }}
+        run: bun run zip:chrome
+
+      - name: 拡張機能をビルド (Firefox)
+        if: ${{ env.IS_RELEASE == 'true' || inputs.submit_firefox }}
+        run: bun run zip:firefox
+
+      - name: GitHubへリリース
+        if: ${{ env.IS_RELEASE == 'true' }}
+        run: |
+          gh release create "v${VERSION}" \
+            ./dist/*-chrome.zip \
+            ./dist/*-firefox.zip \
+            -t "$(bun -e "console.log(require('./package.json').displayName)") v${VERSION}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Chrome Web Storeへ提出
+        if: ${{ inputs.submit_chrome }}
+        run: |
+          bun run publish-extension \
+            --chrome-zip ./dist/*-chrome.zip
+        env:
+          CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL }}
+          CHROME_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.CHROME_SERVICE_ACCOUNT_PRIVATE_KEY }}
+        continue-on-error: true
+
+      - name: Edge Add-onsへ提出
+        if: ${{ inputs.submit_edge }}
+        run: |
+          bun run publish-extension \
+            --edge-zip ./dist/*-chrome.zip
+        env:
+          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
+        continue-on-error: true
+
+      - name: Firefox Add-onsへ提出
+        if: ${{ inputs.submit_firefox }}
+        run: |
+          bun run publish-extension \
+            --firefox-zip ./dist/*-firefox.zip \
+            --firefox-sources-zip ./dist/*-sources.zip
+        env:
+          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
+        continue-on-error: true

@@ -1,0 +1,15 @@
+pool:
+  vmImage: 'windows-2019'
+trigger:
+- master
+steps:
+  - task: NodeTool@0
+    displayName: 'Install Node'
+    inputs:
+      versionSpec: '12.x'
+  - task: Bash@3
+    displayName: 'Build'
+    inputs:
+      targetType: filePath
+      filePath: build.sh
+      arguments: '--target=Deploy-CI'

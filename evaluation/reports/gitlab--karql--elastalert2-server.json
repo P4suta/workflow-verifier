@@ -1,0 +1,5049 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_743eb97cd7da0a9967ee",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+        "start": {
+          "byte": 739,
+          "column": 7,
+          "line": 52
+        },
+        "stop": {
+          "byte": 838,
+          "column": 106,
+          "line": 52
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_08c8654c9f672defcd46",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 739,
+              "column": 7,
+              "line": 52
+            },
+            "stop": {
+              "byte": 838,
+              "column": 106,
+              "line": 52
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_37a1e854751b4c0a9c92",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+        "start": {
+          "byte": 1327,
+          "column": 7,
+          "line": 68
+        },
+        "stop": {
+          "byte": 1426,
+          "column": 106,
+          "line": 68
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_7c4c3c4bf68dc9643f1f",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1327,
+              "column": 7,
+              "line": 68
+            },
+            "stop": {
+              "byte": 1426,
+              "column": 106,
+              "line": 68
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_ce24e6457656b8b19efd",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+        "start": {
+          "byte": 1701,
+          "column": 7,
+          "line": 81
+        },
+        "stop": {
+          "byte": 1774,
+          "column": 80,
+          "line": 81
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_f115dc95f1af86d0ff88",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1701,
+              "column": 7,
+              "line": 81
+            },
+            "stop": {
+              "byte": 1774,
+              "column": 80,
+              "line": 81
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_7d9e0e496eb850ef0073",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+        "start": {
+          "byte": 2173,
+          "column": 7,
+          "line": 96
+        },
+        "stop": {
+          "byte": 2246,
+          "column": 80,
+          "line": 96
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_48411406f739db097f18",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2173,
+              "column": 7,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2246,
+              "column": 80,
+              "line": 96
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:5d2223c98f7bf400d45c91a04891ea95e2904bf0ebc3c9addd4fa81cc796bf35",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_08bf6a8ffd770e5058fb",
+          "id": "wv_04e3d5102cb047533a4b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_45ed9c7b7c6a3536db9e"
+        },
+        {
+          "condition": true,
+          "from": "wv_9a0d0e13ded8a0a1ebc3",
+          "id": "wv_067fd799dd2c542fbd66",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e4717f6df39c22c4e989"
+        },
+        {
+          "condition": true,
+          "from": "wv_d316e1ede4f5e933a4dc",
+          "id": "wv_0a0b06fcd7fbf3008d33",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9d40c9707664ddefa30f"
+        },
+        {
+          "condition": true,
+          "from": "wv_005d5f7fa6a059f3db05",
+          "id": "wv_0a50899af9b1452828e1",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4162803e679a8f2178b3"
+        },
+        {
+          "condition": true,
+          "from": "wv_befd86b17d0c2c20fcb9",
+          "id": "wv_0d2c2015268f080cae54",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9177a21f12d0ac36ef1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_9317f77951e79cd67132",
+          "id": "wv_1219ba075ae8eb813582",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1c191fd00b15146e801e"
+        },
+        {
+          "condition": true,
+          "from": "wv_9527f6626d3adc39d6fd",
+          "id": "wv_129278aca20d60997f68",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8d8a5b1005ff65c6a4a6"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_147eb7a9ba141f84aa66",
+          "kind": "control",
+          "label": null,
+          "to": "wv_86132f3920264a18820f"
+        },
+        {
+          "condition": true,
+          "from": "wv_91edc65e1f75bab3c5de",
+          "id": "wv_166feb95afc5cf00b36e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_39c0f45d43eba9a9c916"
+        },
+        {
+          "condition": true,
+          "from": "wv_237052a98a6db405b080",
+          "id": "wv_17812b7dbd30424afd10",
+          "kind": "data",
+          "label": "DOCKER_USERNAME",
+          "to": "wv_f115dc95f1af86d0ff88"
+        },
+        {
+          "condition": true,
+          "from": "wv_9317f77951e79cd67132",
+          "id": "wv_1a7901ff85f44c327b94",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a92a85aff8fc9d011294"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4717f6df39c22c4e989",
+          "id": "wv_1d3e8059010907e3974c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9527f6626d3adc39d6fd"
+        },
+        {
+          "condition": true,
+          "from": "wv_a92a85aff8fc9d011294",
+          "id": "wv_202ff243ee2a8b8a5d9d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_931608bcdaf96be8030d"
+        },
+        {
+          "condition": true,
+          "from": "wv_f96fc579416e86a90c1b",
+          "id": "wv_23c0364c858af506bda9",
+          "kind": "data",
+          "label": "git describe --abbrev=0",
+          "to": "wv_931608bcdaf96be8030d"
+        },
+        {
+          "condition": true,
+          "from": "wv_befd86b17d0c2c20fcb9",
+          "id": "wv_254c21a63f5ffdd02116",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ae35e570039b07168bb8"
+        },
+        {
+          "condition": true,
+          "from": "wv_32e94c8cdc4e01ebe5ba",
+          "id": "wv_2a65a5a20eff30713593",
+          "kind": "data",
+          "label": "BITSENSOR_USERNAME",
+          "to": "wv_08c8654c9f672defcd46"
+        },
+        {
+          "condition": true,
+          "from": "wv_befd86b17d0c2c20fcb9",
+          "id": "wv_2c9f7f1619413a8bbbd8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_91edc65e1f75bab3c5de"
+        },
+        {
+          "condition": true,
+          "from": "wv_b572c687a0bb682bef90",
+          "id": "wv_2cce31572a48819a79d6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8f8867982eac21a54521"
+        },
+        {
+          "condition": true,
+          "from": "wv_9527f6626d3adc39d6fd",
+          "id": "wv_30d12525445021c39e37",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0baf0bd6334549a7640b"
+        },
+        {
+          "condition": true,
+          "from": "wv_05941b4865fe4d254ff8",
+          "id": "wv_31f4dafdda796c617607",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4da1259ce1e3b2601a6c"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_32ebb6275ea97eecfa81",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a92a85aff8fc9d011294"
+        },
+        {
+          "condition": true,
+          "from": "wv_a5b9f1d008d6bec292b1",
+          "id": "wv_35d4f0d6932b633f7080",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9317f77951e79cd67132"
+        },
+        {
+          "condition": true,
+          "from": "wv_befd86b17d0c2c20fcb9",
+          "id": "wv_35f8203b5da12c0fe14b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b0b4424dd49362149ef8"
+        },
+        {
+          "condition": true,
+          "from": "wv_9527f6626d3adc39d6fd",
+          "id": "wv_37030cea6157cf9ade38",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5db1fd562705267c1ddc"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_3734a754db9180f76dbb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9317f77951e79cd67132"
+        },
+        {
+          "condition": true,
+          "from": "wv_bc1b7a43b66a22dbd582",
+          "id": "wv_3c252d22ed365f4e0a61",
+          "kind": "data",
+          "label": "BITSENSOR_PASSWORD",
+          "to": "wv_08c8654c9f672defcd46"
+        },
+        {
+          "condition": true,
+          "from": "wv_4cce928822eceb7e214e",
+          "id": "wv_3c495ebf1a0565096cc9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_48411406f739db097f18"
+        },
+        {
+          "condition": true,
+          "from": "wv_f7e3c440b28346e4af50",
+          "id": "wv_3e7eb80680a9bebfb5b8",
+          "kind": "data",
+          "label": "BITSENSOR_PASSWORD",
+          "to": "wv_7c4c3c4bf68dc9643f1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_3eb0ccc7bbfd6a4b2adb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a5b9f1d008d6bec292b1"
+        },
+        {
+          "condition": true,
+          "from": "wv_d316e1ede4f5e933a4dc",
+          "id": "wv_4330c621680b13237dff",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f28959643fc4d299cfe0"
+        },
+        {
+          "condition": true,
+          "from": "wv_9527f6626d3adc39d6fd",
+          "id": "wv_4587ca56ff39ff2d82c5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4da1259ce1e3b2601a6c"
+        },
+        {
+          "condition": true,
+          "from": "wv_9177a21f12d0ac36ef1f",
+          "id": "wv_4593829d0b3df16f63a7",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_08bf6a8ffd770e5058fb"
+        },
+        {
+          "condition": true,
+          "from": "wv_9527f6626d3adc39d6fd",
+          "id": "wv_45c2bb7cd436a3fe42ec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_05941b4865fe4d254ff8"
+        },
+        {
+          "condition": true,
+          "from": "wv_d447baff3c4a02fc6ab6",
+          "id": "wv_4b7027c997b5e5735215",
+          "kind": "data",
+          "label": "git describe --abbrev=0",
+          "to": "wv_8b82af6ea9a3f364c292"
+        },
+        {
+          "condition": true,
+          "from": "wv_4162803e679a8f2178b3",
+          "id": "wv_4cc37950f061d50f3d05",
+          "kind": "control",
+          "label": null,
+          "to": "wv_51e692df36b3af1d1044"
+        },
+        {
+          "condition": true,
+          "from": "wv_91edc65e1f75bab3c5de",
+          "id": "wv_4d8642f964f5915368cd",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_b0b4424dd49362149ef8"
+        },
+        {
+          "condition": true,
+          "from": "wv_2b403525a9e3fc64177f",
+          "id": "wv_4ee423aef76000f19bf3",
+          "kind": "data",
+          "label": "DOCKER_USERNAME",
+          "to": "wv_48411406f739db097f18"
+        },
+        {
+          "condition": true,
+          "from": "wv_9d40c9707664ddefa30f",
+          "id": "wv_51dff54aae6e6067d57b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0e97cf5f9186dcbf85bf"
+        },
+        {
+          "condition": true,
+          "from": "wv_3cc038b32f0cf9d0caae",
+          "id": "wv_52a5eeb963d091d51b6d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_8d8a5b1005ff65c6a4a6"
+        },
+        {
+          "condition": true,
+          "from": "wv_8f8867982eac21a54521",
+          "id": "wv_5650131b3ebb030340ab",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e4cb30f34287fdb05034"
+        },
+        {
+          "condition": true,
+          "from": "wv_8d8a5b1005ff65c6a4a6",
+          "id": "wv_5b31dcbbabd0845c4bed",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8b82af6ea9a3f364c292"
+        },
+        {
+          "condition": true,
+          "from": "wv_a5b9f1d008d6bec292b1",
+          "id": "wv_6018a3f2eba2b3dfbc93",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b2f2d814042732ad8e8a"
+        },
+        {
+          "condition": true,
+          "from": "wv_cd13487c480e7ba01de7",
+          "id": "wv_62677b8d51ea0aff6c65",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0baf0bd6334549a7640b"
+        },
+        {
+          "condition": true,
+          "from": "wv_f7236d5792093781bcbb",
+          "id": "wv_687bdc3c82b34ccbd678",
+          "kind": "control",
+          "label": null,
+          "to": "wv_27a1f406e921ec11ce55"
+        },
+        {
+          "condition": true,
+          "from": "wv_0baf0bd6334549a7640b",
+          "id": "wv_69d9ceec90af9a83d175",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_5db1fd562705267c1ddc"
+        },
+        {
+          "condition": true,
+          "from": "wv_2d8c5812cae001a62b6b",
+          "id": "wv_6c36deba76221ff21043",
+          "kind": "control",
+          "label": null,
+          "to": "wv_eb72c38c08499f0d6498"
+        },
+        {
+          "condition": true,
+          "from": "wv_0def44b9ecd50c496289",
+          "id": "wv_6cd96289e6b88b3abf5f",
+          "kind": "data",
+          "label": "DOCKER_PASSWORD",
+          "to": "wv_48411406f739db097f18"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4717f6df39c22c4e989",
+          "id": "wv_6d35aac2564e396cdd3e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ec7aaea75633d2bd190d"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_6e4d5fa97e2b1dfe27e5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2d8c5812cae001a62b6b"
+        },
+        {
+          "condition": true,
+          "from": "wv_0cc0e436f80d68b542dd",
+          "id": "wv_726b63309f576926f791",
+          "kind": "data",
+          "label": "DOCKER_PASSWORD",
+          "to": "wv_f115dc95f1af86d0ff88"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0b4424dd49362149ef8",
+          "id": "wv_79fde140a7cd67ab9117",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9177a21f12d0ac36ef1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_005d5f7fa6a059f3db05",
+          "id": "wv_7bc5afa9fd4a464b2a38",
+          "kind": "control",
+          "label": null,
+          "to": "wv_472930aef37f45a99b3c"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0b4424dd49362149ef8",
+          "id": "wv_7c980f9d72f3f412c8d3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7c4c3c4bf68dc9643f1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae5e4037050064d860e9",
+          "id": "wv_7fc3a6da302227186f40",
+          "kind": "control",
+          "label": null,
+          "to": "wv_43c55b1cce91fcbe306a"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4717f6df39c22c4e989",
+          "id": "wv_81628933f7721f2a258d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_18b235c468e5ee745d27"
+        },
+        {
+          "condition": true,
+          "from": "wv_9527f6626d3adc39d6fd",
+          "id": "wv_82b100bb64f688b9e8f1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cd13487c480e7ba01de7"
+        },
+        {
+          "condition": true,
+          "from": "wv_2cf8e661467c9f12d8ea",
+          "id": "wv_83ffab3128ba68b5fa56",
+          "kind": "data",
+          "label": "BITSENSOR_USERNAME",
+          "to": "wv_7c4c3c4bf68dc9643f1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_43c55b1cce91fcbe306a",
+          "id": "wv_85dcd45753a2769b7015",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_d316e1ede4f5e933a4dc"
+        },
+        {
+          "condition": true,
+          "from": "wv_86132f3920264a18820f",
+          "id": "wv_898a4dc84c42ca7efc2b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_53eb5c68577ae97e6258"
+        },
+        {
+          "condition": true,
+          "from": "wv_05941b4865fe4d254ff8",
+          "id": "wv_8b997a94aafc9906b788",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d18b1e079aa3361cae2b"
+        },
+        {
+          "condition": true,
+          "from": "wv_9527f6626d3adc39d6fd",
+          "id": "wv_91a78facdffdc1d570b3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3cc038b32f0cf9d0caae"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae5e4037050064d860e9",
+          "id": "wv_9249ae9e450b5e8eb631",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6dd33ff6d321ddf6273f"
+        },
+        {
+          "condition": true,
+          "from": "wv_385821d57e2a0a5c2117",
+          "id": "wv_992e8f74f305f4b13e21",
+          "kind": "control",
+          "label": null,
+          "to": "wv_08c8654c9f672defcd46"
+        },
+        {
+          "condition": true,
+          "from": "wv_581e1cc71dc9a25227ca",
+          "id": "wv_9973fef198f62bb294dc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_94ab2e120df3f80833be"
+        },
+        {
+          "condition": true,
+          "from": "wv_5db1fd562705267c1ddc",
+          "id": "wv_99e54368d14d4fceeb3b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2f41fd5a60b943ca2b59"
+        },
+        {
+          "condition": true,
+          "from": "wv_f3f217ea626a06648898",
+          "id": "wv_9b114ff3e5c2560d539d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_91edc65e1f75bab3c5de"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d22bc7a6d744a65d636",
+          "id": "wv_9da48c399358e7ae99cc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f742210d1d82dcfd2b48"
+        },
+        {
+          "condition": true,
+          "from": "wv_dce2cedc756bf6f434c8",
+          "id": "wv_9eae0defc35f9ddd8bd2",
+          "kind": "data",
+          "label": "git describe --abbrev=0",
+          "to": "wv_912786bc136fea6ace45"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae5e4037050064d860e9",
+          "id": "wv_9fe606836777e3e5fc5d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d316e1ede4f5e933a4dc"
+        },
+        {
+          "condition": true,
+          "from": "wv_08bf6a8ffd770e5058fb",
+          "id": "wv_a0842c095c51a66820b4",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ae35e570039b07168bb8"
+        },
+        {
+          "condition": true,
+          "from": "wv_6dd33ff6d321ddf6273f",
+          "id": "wv_a0fb45cb6c1794f84cb7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_60018c08eefa20160263"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4717f6df39c22c4e989",
+          "id": "wv_a56809147ab684195299",
+          "kind": "control",
+          "label": null,
+          "to": "wv_befd86b17d0c2c20fcb9"
+        },
+        {
+          "condition": true,
+          "from": "wv_86132f3920264a18820f",
+          "id": "wv_a667afecfe79a92ea286",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_385821d57e2a0a5c2117"
+        },
+        {
+          "condition": true,
+          "from": "wv_18b235c468e5ee745d27",
+          "id": "wv_aafa0a6cbc0207a51662",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cbf92e9a5a62c1f5b32b"
+        },
+        {
+          "condition": true,
+          "from": "wv_f3f217ea626a06648898",
+          "id": "wv_ab6b11e158ae25503d11",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2c0b022d0551aec0b444"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d22bc7a6d744a65d636",
+          "id": "wv_ac3dc9abba1c3da54507",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9a0d0e13ded8a0a1ebc3"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae5e4037050064d860e9",
+          "id": "wv_b19d3c870a4d70200bb7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4cce928822eceb7e214e"
+        },
+        {
+          "condition": true,
+          "from": "wv_acae5a89046457252b66",
+          "id": "wv_b23eea14678171468360",
+          "kind": "control",
+          "label": null,
+          "to": "wv_912786bc136fea6ace45"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_b54edde69ba8eedb8cc1",
+          "kind": "control",
+          "label": null,
+          "to": "wv_acae5a89046457252b66"
+        },
+        {
+          "condition": true,
+          "from": "wv_f61949dce9b5134e7379",
+          "id": "wv_b562b959adea28442d89",
+          "kind": "data",
+          "label": "git describe --abbrev=0",
+          "to": "wv_2f41fd5a60b943ca2b59"
+        },
+        {
+          "condition": true,
+          "from": "wv_5db1fd562705267c1ddc",
+          "id": "wv_bf387879ea2964fc07b4",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_3cc038b32f0cf9d0caae"
+        },
+        {
+          "condition": true,
+          "from": "wv_cbf92e9a5a62c1f5b32b",
+          "id": "wv_c8fddb968501de189bec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4162803e679a8f2178b3"
+        },
+        {
+          "condition": true,
+          "from": "wv_3cc038b32f0cf9d0caae",
+          "id": "wv_c98d5206ca7a280dbb55",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3aa68b39dc934eb0a6b5"
+        },
+        {
+          "condition": true,
+          "from": "wv_385821d57e2a0a5c2117",
+          "id": "wv_ca011c89c6c53bc371cc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a5b9f1d008d6bec292b1"
+        },
+        {
+          "condition": true,
+          "from": "wv_a92a85aff8fc9d011294",
+          "id": "wv_cec37e94d8ac2054d79f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f7236d5792093781bcbb"
+        },
+        {
+          "condition": true,
+          "from": "wv_cbf92e9a5a62c1f5b32b",
+          "id": "wv_cfe69fe78b00a95defa8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_005d5f7fa6a059f3db05"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_d40edd409362b64ae402",
+          "kind": "control",
+          "label": null,
+          "to": "wv_385821d57e2a0a5c2117"
+        },
+        {
+          "condition": true,
+          "from": "wv_8f8867982eac21a54521",
+          "id": "wv_d56ac282f1e4bf474b10",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_581e1cc71dc9a25227ca"
+        },
+        {
+          "condition": true,
+          "from": "wv_0baf0bd6334549a7640b",
+          "id": "wv_d70598857954480f6d82",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2f8d2ad1848708d46bd9"
+        },
+        {
+          "condition": true,
+          "from": "wv_cd13487c480e7ba01de7",
+          "id": "wv_d764658cefad5904df1a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9f3b4684d9cc0fea6dcf"
+        },
+        {
+          "condition": true,
+          "from": "wv_e4717f6df39c22c4e989",
+          "id": "wv_da47539c3b37823ec275",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ae5e4037050064d860e9"
+        },
+        {
+          "condition": true,
+          "from": "wv_4cce928822eceb7e214e",
+          "id": "wv_daaa2565b3c0f8b3769d",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_43c55b1cce91fcbe306a"
+        },
+        {
+          "condition": true,
+          "from": "wv_9a0d0e13ded8a0a1ebc3",
+          "id": "wv_df098da9a9cdd1ef89e0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b572c687a0bb682bef90"
+        },
+        {
+          "condition": true,
+          "from": "wv_9177a21f12d0ac36ef1f",
+          "id": "wv_e013d45b69a34a6d1c8c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9f2a97502ded9d9fac58"
+        },
+        {
+          "condition": true,
+          "from": "wv_43c55b1cce91fcbe306a",
+          "id": "wv_e3ea95540834d122bb44",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b069bf97d4774805e92f"
+        },
+        {
+          "condition": true,
+          "from": "wv_befd86b17d0c2c20fcb9",
+          "id": "wv_eb4ecfd57dcc96f11c7e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_08bf6a8ffd770e5058fb"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae5e4037050064d860e9",
+          "id": "wv_ebb211f1bef0e9fd6d7c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9d40c9707664ddefa30f"
+        },
+        {
+          "condition": true,
+          "from": "wv_6dd33ff6d321ddf6273f",
+          "id": "wv_f0852f727701fd15a068",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4cce928822eceb7e214e"
+        },
+        {
+          "condition": true,
+          "from": "wv_4da1259ce1e3b2601a6c",
+          "id": "wv_f1b477ea1a78f398fa24",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f115dc95f1af86d0ff88"
+        },
+        {
+          "condition": true,
+          "from": "wv_2d8c5812cae001a62b6b",
+          "id": "wv_f25fc302ed9f4cb630ea",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_86132f3920264a18820f"
+        },
+        {
+          "condition": true,
+          "from": "wv_f7236d5792093781bcbb",
+          "id": "wv_f8a630c09c1c8df34b41",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_acae5a89046457252b66"
+        },
+        {
+          "condition": true,
+          "from": "wv_b572c687a0bb682bef90",
+          "id": "wv_f8bb4155bbb2194c188a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_581e1cc71dc9a25227ca"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d22bc7a6d744a65d636",
+          "id": "wv_f9d1b2c45cb1f8550547",
+          "kind": "call",
+          "label": null,
+          "to": "wv_f742210d1d82dcfd2b48"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae35e570039b07168bb8",
+          "id": "wv_fc89eafdb7829ed72ee3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6eefce48d90f4dee12a4"
+        },
+        {
+          "condition": true,
+          "from": "wv_ec7aaea75633d2bd190d",
+          "id": "wv_fdacff8d987a78b14f69",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f7236d5792093781bcbb"
+        },
+        {
+          "condition": true,
+          "from": "wv_4da1259ce1e3b2601a6c",
+          "id": "wv_ff6716cd3b6c2b951125",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_cd13487c480e7ba01de7"
+        },
+        {
+          "condition": true,
+          "from": "wv_befd86b17d0c2c20fcb9",
+          "id": "wv_ff81a54bc49a3b943162",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f3f217ea626a06648898"
+        }
+      ],
+      "entrypoints": [
+        "wv_3d22bc7a6d744a65d636"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_005d5f7fa6a059f3db05",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 584,
+              "column": 7,
+              "line": 44
+            },
+            "stop": {
+              "byte": 603,
+              "column": 26,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_05941b4865fe4d254ff8",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1683,
+              "column": 7,
+              "line": 80
+            },
+            "stop": {
+              "byte": 1694,
+              "column": 18,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_08bf6a8ffd770e5058fb",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1468,
+              "column": 7,
+              "line": 70
+            },
+            "stop": {
+              "byte": 1529,
+              "column": 68,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 745,
+                      "column": 13,
+                      "line": 52
+                    },
+                    "stop": {
+                      "byte": 763,
+                      "column": 31,
+                      "line": 52
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 783,
+                      "column": 51,
+                      "line": 52
+                    },
+                    "stop": {
+                      "byte": 801,
+                      "column": 69,
+                      "line": 52
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 739,
+                      "column": 7,
+                      "line": 52
+                    },
+                    "stop": {
+                      "byte": 838,
+                      "column": 106,
+                      "line": 52
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "BITSENSOR_PASSWORD",
+                  "BITSENSOR_USERNAME",
+                  "echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin docker.bitsensor.io"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_08c8654c9f672defcd46",
+          "kind": "command",
+          "name": "echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin docker.bitsensor.io",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 739,
+              "column": 7,
+              "line": 52
+            },
+            "stop": {
+              "byte": 838,
+              "column": 106,
+              "line": 52
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0baf0bd6334549a7640b",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1816,
+              "column": 7,
+              "line": 83
+            },
+            "stop": {
+              "byte": 1865,
+              "column": 56,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1707,
+                      "column": 13,
+                      "line": 81
+                    },
+                    "stop": {
+                      "byte": 1722,
+                      "column": 28,
+                      "line": 81
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0cc0e436f80d68b542dd",
+          "kind": "resource",
+          "name": "DOCKER_PASSWORD",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1707,
+              "column": 13,
+              "line": 81
+            },
+            "stop": {
+              "byte": 1722,
+              "column": 28,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2179,
+                      "column": 13,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2194,
+                      "column": 28,
+                      "line": 96
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0def44b9ecd50c496289",
+          "kind": "resource",
+          "name": "DOCKER_PASSWORD",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2179,
+              "column": 13,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2194,
+              "column": 28,
+              "line": 96
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2346,
+                      "column": 7,
+                      "line": 99
+                    },
+                    "stop": {
+                      "byte": 2387,
+                      "column": 48,
+                      "line": 99
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker push bitsensor/elastalert:snapshot"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_0e97cf5f9186dcbf85bf",
+          "kind": "command",
+          "name": "docker push bitsensor/elastalert:snapshot",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2346,
+              "column": 7,
+              "line": 99
+            },
+            "stop": {
+              "byte": 2387,
+              "column": 48,
+              "line": 99
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_18b235c468e5ee745d27",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 330,
+              "column": 3,
+              "line": 23
+            },
+            "stop": {
+              "byte": 357,
+              "column": 11,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_19ef9ec6858185cf7062",
+          "kind": "resource",
+          "name": "template:.push-cache",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 108,
+              "column": 14,
+              "line": 7
+            },
+            "stop": {
+              "byte": 168,
+              "column": 17,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 880,
+                      "column": 7,
+                      "line": 54
+                    },
+                    "stop": {
+                      "byte": 939,
+                      "column": 66,
+                      "line": 54
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker tag elastalert docker.bitsensor.io/elastalert:latest"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1c191fd00b15146e801e",
+          "kind": "command",
+          "name": "docker tag elastalert docker.bitsensor.io/elastalert:latest",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 880,
+              "column": 7,
+              "line": 54
+            },
+            "stop": {
+              "byte": 939,
+              "column": 66,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1742,
+                      "column": 48,
+                      "line": 81
+                    },
+                    "stop": {
+                      "byte": 1757,
+                      "column": 63,
+                      "line": 81
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_237052a98a6db405b080",
+          "kind": "resource",
+          "name": "DOCKER_USERNAME",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1742,
+              "column": 48,
+              "line": 81
+            },
+            "stop": {
+              "byte": 1757,
+              "column": 63,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1032,
+                      "column": 7,
+                      "line": 56
+                    },
+                    "stop": {
+                      "byte": 1081,
+                      "column": 56,
+                      "line": 56
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker push docker.bitsensor.io/elastalert:latest"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_27a1f406e921ec11ce55",
+          "kind": "command",
+          "name": "docker push docker.bitsensor.io/elastalert:latest",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1032,
+              "column": 7,
+              "line": 56
+            },
+            "stop": {
+              "byte": 1081,
+              "column": 56,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2214,
+                      "column": 48,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2229,
+                      "column": 63,
+                      "line": 96
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2b403525a9e3fc64177f",
+          "kind": "resource",
+          "name": "DOCKER_USERNAME",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2214,
+              "column": 48,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2229,
+              "column": 63,
+              "line": 96
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1255,
+                      "column": 7,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 1302,
+                      "column": 54,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sh scripts/replace_templates.sh ${CI_JOB_TOKEN}"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2c0b022d0551aec0b444",
+          "kind": "command",
+          "name": "sh scripts/replace_templates.sh ${CI_JOB_TOKEN}",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1255,
+              "column": 7,
+              "line": 66
+            },
+            "stop": {
+              "byte": 1302,
+              "column": 54,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2ca4ce8d2492be1b96d2",
+          "kind": "resource",
+          "name": "template:.default-cache",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 33,
+              "column": 17,
+              "line": 2
+            },
+            "stop": {
+              "byte": 93,
+              "column": 19,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1371,
+                      "column": 51,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1389,
+                      "column": 69,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "BITSENSOR_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2cf8e661467c9f12d8ea",
+          "kind": "resource",
+          "name": "BITSENSOR_USERNAME",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1371,
+              "column": 51,
+              "line": 68
+            },
+            "stop": {
+              "byte": 1389,
+              "column": 69,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2d8c5812cae001a62b6b",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 667,
+              "column": 7,
+              "line": 50
+            },
+            "stop": {
+              "byte": 714,
+              "column": 54,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1917,
+                      "column": 52,
+                      "line": 84
+                    },
+                    "stop": {
+                      "byte": 1940,
+                      "column": 75,
+                      "line": 84
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1872,
+                      "column": 7,
+                      "line": 84
+                    },
+                    "stop": {
+                      "byte": 1941,
+                      "column": 76,
+                      "line": 84
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker tag elastalert bitsensor/elastalert:$(git describe --abbrev=0)",
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2f41fd5a60b943ca2b59",
+          "kind": "command",
+          "name": "docker tag elastalert bitsensor/elastalert:$(git describe --abbrev=0)",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1872,
+              "column": 7,
+              "line": 84
+            },
+            "stop": {
+              "byte": 1941,
+              "column": 76,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1816,
+                      "column": 7,
+                      "line": 83
+                    },
+                    "stop": {
+                      "byte": 1865,
+                      "column": 56,
+                      "line": 83
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker tag elastalert bitsensor/elastalert:latest"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2f8d2ad1848708d46bd9",
+          "kind": "command",
+          "name": "docker tag elastalert bitsensor/elastalert:latest",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1816,
+              "column": 7,
+              "line": 83
+            },
+            "stop": {
+              "byte": 1865,
+              "column": 56,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 783,
+                      "column": 51,
+                      "line": 52
+                    },
+                    "stop": {
+                      "byte": 801,
+                      "column": 69,
+                      "line": 52
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "BITSENSOR_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_32e94c8cdc4e01ebe5ba",
+          "kind": "resource",
+          "name": "BITSENSOR_USERNAME",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 783,
+              "column": 51,
+              "line": 52
+            },
+            "stop": {
+              "byte": 801,
+              "column": 69,
+              "line": 52
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_385821d57e2a0a5c2117",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 739,
+              "column": 7,
+              "line": 52
+            },
+            "stop": {
+              "byte": 838,
+              "column": 106,
+              "line": 52
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1309,
+                      "column": 7,
+                      "line": 67
+                    },
+                    "stop": {
+                      "byte": 1320,
+                      "column": 18,
+                      "line": 67
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker info"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_39c0f45d43eba9a9c916",
+          "kind": "command",
+          "name": "docker info",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1309,
+              "column": 7,
+              "line": 67
+            },
+            "stop": {
+              "byte": 1320,
+              "column": 18,
+              "line": 67
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1948,
+                      "column": 7,
+                      "line": 85
+                    },
+                    "stop": {
+                      "byte": 1987,
+                      "column": 46,
+                      "line": 85
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker push bitsensor/elastalert:latest"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_3aa68b39dc934eb0a6b5",
+          "kind": "command",
+          "name": "docker push bitsensor/elastalert:latest",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1948,
+              "column": 7,
+              "line": 85
+            },
+            "stop": {
+              "byte": 1987,
+              "column": 46,
+              "line": 85
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3cc038b32f0cf9d0caae",
+          "kind": "step",
+          "name": "script:6",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1948,
+              "column": 7,
+              "line": 85
+            },
+            "stop": {
+              "byte": 1987,
+              "column": 46,
+              "line": 85
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3d22bc7a6d744a65d636",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 17,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 2430,
+              "column": 13,
+              "line": 103
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4162803e679a8f2178b3",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 610,
+              "column": 7,
+              "line": 45
+            },
+            "stop": {
+              "byte": 618,
+              "column": 15,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_43c55b1cce91fcbe306a",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2253,
+              "column": 7,
+              "line": 97
+            },
+            "stop": {
+              "byte": 2281,
+              "column": 35,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1468,
+                      "column": 7,
+                      "line": 70
+                    },
+                    "stop": {
+                      "byte": 1529,
+                      "column": 68,
+                      "line": 70
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker tag elastalert docker.bitsensor.io/elastalert:snapshot"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_45ed9c7b7c6a3536db9e",
+          "kind": "command",
+          "name": "docker tag elastalert docker.bitsensor.io/elastalert:snapshot",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1468,
+              "column": 7,
+              "line": 70
+            },
+            "stop": {
+              "byte": 1529,
+              "column": 68,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 584,
+                      "column": 7,
+                      "line": 44
+                    },
+                    "stop": {
+                      "byte": 603,
+                      "column": 26,
+                      "line": 44
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm install --quiet"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_472930aef37f45a99b3c",
+          "kind": "command",
+          "name": "npm install --quiet",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 584,
+              "column": 7,
+              "line": 44
+            },
+            "stop": {
+              "byte": 603,
+              "column": 26,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2179,
+                      "column": 13,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2194,
+                      "column": 28,
+                      "line": 96
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2214,
+                      "column": 48,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2229,
+                      "column": 63,
+                      "line": 96
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2173,
+                      "column": 7,
+                      "line": 96
+                    },
+                    "stop": {
+                      "byte": 2246,
+                      "column": 80,
+                      "line": 96
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_PASSWORD",
+                  "DOCKER_USERNAME",
+                  "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_48411406f739db097f18",
+          "kind": "command",
+          "name": "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2173,
+              "column": 7,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2246,
+              "column": 80,
+              "line": 96
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4cce928822eceb7e214e",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2173,
+              "column": 7,
+              "line": 96
+            },
+            "stop": {
+              "byte": 2246,
+              "column": 80,
+              "line": 96
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4da1259ce1e3b2601a6c",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1701,
+              "column": 7,
+              "line": 81
+            },
+            "stop": {
+              "byte": 1774,
+              "column": 80,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 610,
+                      "column": 7,
+                      "line": 45
+                    },
+                    "stop": {
+                      "byte": 618,
+                      "column": 15,
+                      "line": 45
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm test"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_51e692df36b3af1d1044",
+          "kind": "command",
+          "name": "npm test",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 610,
+              "column": 7,
+              "line": 45
+            },
+            "stop": {
+              "byte": 618,
+              "column": 15,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 721,
+                      "column": 7,
+                      "line": 51
+                    },
+                    "stop": {
+                      "byte": 732,
+                      "column": 18,
+                      "line": 51
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker info"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_53eb5c68577ae97e6258",
+          "kind": "command",
+          "name": "docker info",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 721,
+              "column": 7,
+              "line": 51
+            },
+            "stop": {
+              "byte": 732,
+              "column": 18,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_581e1cc71dc9a25227ca",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 530,
+              "column": 7,
+              "line": 39
+            },
+            "stop": {
+              "byte": 543,
+              "column": 20,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5db1fd562705267c1ddc",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1872,
+              "column": 7,
+              "line": 84
+            },
+            "stop": {
+              "byte": 1941,
+              "column": 76,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2155,
+                      "column": 7,
+                      "line": 95
+                    },
+                    "stop": {
+                      "byte": 2166,
+                      "column": 18,
+                      "line": 95
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker info"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_60018c08eefa20160263",
+          "kind": "command",
+          "name": "docker info",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2155,
+              "column": 7,
+              "line": 95
+            },
+            "stop": {
+              "byte": 2166,
+              "column": 18,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6dd33ff6d321ddf6273f",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2155,
+              "column": 7,
+              "line": 95
+            },
+            "stop": {
+              "byte": 2166,
+              "column": 18,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6eccc6a3e4c8834af821",
+          "kind": "resource",
+          "name": "template:.node_test",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 257,
+              "column": 13,
+              "line": 17
+            },
+            "stop": {
+              "byte": 318,
+              "column": 14,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1536,
+                      "column": 7,
+                      "line": 71
+                    },
+                    "stop": {
+                      "byte": 1587,
+                      "column": 58,
+                      "line": 71
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker push docker.bitsensor.io/elastalert:snapshot"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6eefce48d90f4dee12a4",
+          "kind": "command",
+          "name": "docker push docker.bitsensor.io/elastalert:snapshot",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1536,
+              "column": 7,
+              "line": 71
+            },
+            "stop": {
+              "byte": 1587,
+              "column": 58,
+              "line": 71
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7bb0cd1baac7adbaa1e0",
+          "kind": "resource",
+          "name": "template:.pull-cache",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 183,
+              "column": 14,
+              "line": 12
+            },
+            "stop": {
+              "byte": 243,
+              "column": 17,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1333,
+                      "column": 13,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1351,
+                      "column": 31,
+                      "line": 68
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1371,
+                      "column": 51,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1389,
+                      "column": 69,
+                      "line": 68
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1327,
+                      "column": 7,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1426,
+                      "column": 106,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "BITSENSOR_PASSWORD",
+                  "BITSENSOR_USERNAME",
+                  "echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin docker.bitsensor.io"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_7c4c3c4bf68dc9643f1f",
+          "kind": "command",
+          "name": "echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin docker.bitsensor.io",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1327,
+              "column": 7,
+              "line": 68
+            },
+            "stop": {
+              "byte": 1426,
+              "column": 106,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_86132f3920264a18820f",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 721,
+              "column": 7,
+              "line": 51
+            },
+            "stop": {
+              "byte": 732,
+              "column": 18,
+              "line": 51
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2029,
+                      "column": 42,
+                      "line": 86
+                    },
+                    "stop": {
+                      "byte": 2052,
+                      "column": 65,
+                      "line": 86
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1994,
+                      "column": 7,
+                      "line": 86
+                    },
+                    "stop": {
+                      "byte": 2053,
+                      "column": 66,
+                      "line": 86
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker push bitsensor/elastalert:$(git describe --abbrev=0)",
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_8b82af6ea9a3f364c292",
+          "kind": "command",
+          "name": "docker push bitsensor/elastalert:$(git describe --abbrev=0)",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1994,
+              "column": 7,
+              "line": 86
+            },
+            "stop": {
+              "byte": 2053,
+              "column": 66,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8d8a5b1005ff65c6a4a6",
+          "kind": "step",
+          "name": "script:7",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1994,
+              "column": 7,
+              "line": 86
+            },
+            "stop": {
+              "byte": 2053,
+              "column": 66,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8f8867982eac21a54521",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 504,
+              "column": 7,
+              "line": 38
+            },
+            "stop": {
+              "byte": 523,
+              "column": 26,
+              "line": 38
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1133,
+                      "column": 52,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1156,
+                      "column": 75,
+                      "line": 57
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1088,
+                      "column": 7,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1157,
+                      "column": 76,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker push docker.bitsensor.io/elastalert:$(git describe --abbrev=0)",
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_912786bc136fea6ace45",
+          "kind": "command",
+          "name": "docker push docker.bitsensor.io/elastalert:$(git describe --abbrev=0)",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1088,
+              "column": 7,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1157,
+              "column": 76,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9177a21f12d0ac36ef1f",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1433,
+              "column": 7,
+              "line": 69
+            },
+            "stop": {
+              "byte": 1461,
+              "column": 35,
+              "line": 69
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_91edc65e1f75bab3c5de",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1309,
+              "column": 7,
+              "line": 67
+            },
+            "stop": {
+              "byte": 1320,
+              "column": 18,
+              "line": 67
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1001,
+                      "column": 62,
+                      "line": 55
+                    },
+                    "stop": {
+                      "byte": 1024,
+                      "column": 85,
+                      "line": 55
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 946,
+                      "column": 7,
+                      "line": 55
+                    },
+                    "stop": {
+                      "byte": 1025,
+                      "column": 86,
+                      "line": 55
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker tag elastalert docker.bitsensor.io/elastalert:$(git describe --abbrev=0)",
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_931608bcdaf96be8030d",
+          "kind": "command",
+          "name": "docker tag elastalert docker.bitsensor.io/elastalert:$(git describe --abbrev=0)",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 946,
+              "column": 7,
+              "line": 55
+            },
+            "stop": {
+              "byte": 1025,
+              "column": 86,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9317f77951e79cd67132",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 880,
+              "column": 7,
+              "line": 54
+            },
+            "stop": {
+              "byte": 939,
+              "column": 66,
+              "line": 54
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 530,
+                      "column": 7,
+                      "line": 39
+                    },
+                    "stop": {
+                      "byte": 543,
+                      "column": 20,
+                      "line": 39
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run build"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_94ab2e120df3f80833be",
+          "kind": "command",
+          "name": "npm run build",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 530,
+              "column": 7,
+              "line": 39
+            },
+            "stop": {
+              "byte": 543,
+              "column": 20,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9527f6626d3adc39d6fd",
+          "kind": "job",
+          "name": "deploy:docker-hub",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1632,
+              "column": 1,
+              "line": 77
+            },
+            "stop": {
+              "byte": 2093,
+              "column": 13,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9a0d0e13ded8a0a1ebc3",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 330,
+              "column": 3,
+              "line": 23
+            },
+            "stop": {
+              "byte": 357,
+              "column": 11,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9d40c9707664ddefa30f",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2346,
+              "column": 7,
+              "line": 99
+            },
+            "stop": {
+              "byte": 2387,
+              "column": 48,
+              "line": 99
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1433,
+                      "column": 7,
+                      "line": 69
+                    },
+                    "stop": {
+                      "byte": 1461,
+                      "column": 35,
+                      "line": 69
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker build -t elastalert ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9f2a97502ded9d9fac58",
+          "kind": "command",
+          "name": "docker build -t elastalert .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1433,
+              "column": 7,
+              "line": 69
+            },
+            "stop": {
+              "byte": 1461,
+              "column": 35,
+              "line": 69
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1781,
+                      "column": 7,
+                      "line": 82
+                    },
+                    "stop": {
+                      "byte": 1809,
+                      "column": 35,
+                      "line": 82
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker build -t elastalert ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9f3b4684d9cc0fea6dcf",
+          "kind": "command",
+          "name": "docker build -t elastalert .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1781,
+              "column": 7,
+              "line": 82
+            },
+            "stop": {
+              "byte": 1809,
+              "column": 35,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a5b9f1d008d6bec292b1",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 845,
+              "column": 7,
+              "line": 53
+            },
+            "stop": {
+              "byte": 873,
+              "column": 35,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a92a85aff8fc9d011294",
+          "kind": "step",
+          "name": "script:6",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 946,
+              "column": 7,
+              "line": 55
+            },
+            "stop": {
+              "byte": 1025,
+              "column": 86,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_acae5a89046457252b66",
+          "kind": "step",
+          "name": "script:8",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1088,
+              "column": 7,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1157,
+              "column": 76,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ae35e570039b07168bb8",
+          "kind": "step",
+          "name": "script:6",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1536,
+              "column": 7,
+              "line": 71
+            },
+            "stop": {
+              "byte": 1587,
+              "column": 58,
+              "line": 71
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ae5e4037050064d860e9",
+          "kind": "job",
+          "name": "deploy:docker-hub:snapshot",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2095,
+              "column": 1,
+              "line": 92
+            },
+            "stop": {
+              "byte": 2430,
+              "column": 13,
+              "line": 103
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2253,
+                      "column": 7,
+                      "line": 97
+                    },
+                    "stop": {
+                      "byte": 2281,
+                      "column": 35,
+                      "line": 97
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker build -t elastalert ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b069bf97d4774805e92f",
+          "kind": "command",
+          "name": "docker build -t elastalert .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2253,
+              "column": 7,
+              "line": 97
+            },
+            "stop": {
+              "byte": 2281,
+              "column": 35,
+              "line": 97
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b0b4424dd49362149ef8",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1327,
+              "column": 7,
+              "line": 68
+            },
+            "stop": {
+              "byte": 1426,
+              "column": 106,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 845,
+                      "column": 7,
+                      "line": 53
+                    },
+                    "stop": {
+                      "byte": 873,
+                      "column": 35,
+                      "line": 53
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker build -t elastalert ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b2f2d814042732ad8e8a",
+          "kind": "command",
+          "name": "docker build -t elastalert .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 845,
+              "column": 7,
+              "line": 53
+            },
+            "stop": {
+              "byte": 873,
+              "column": 35,
+              "line": 53
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b572c687a0bb682bef90",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 429,
+              "column": 1,
+              "line": 33
+            },
+            "stop": {
+              "byte": 543,
+              "column": 20,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 745,
+                      "column": 13,
+                      "line": 52
+                    },
+                    "stop": {
+                      "byte": 763,
+                      "column": 31,
+                      "line": 52
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "BITSENSOR_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bc1b7a43b66a22dbd582",
+          "kind": "resource",
+          "name": "BITSENSOR_PASSWORD",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 745,
+              "column": 13,
+              "line": 52
+            },
+            "stop": {
+              "byte": 763,
+              "column": 31,
+              "line": 52
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_befd86b17d0c2c20fcb9",
+          "kind": "job",
+          "name": "deploy:docker:snapshot",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1199,
+              "column": 1,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1630,
+              "column": 13,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cbf92e9a5a62c1f5b32b",
+          "kind": "job",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 545,
+              "column": 1,
+              "line": 41
+            },
+            "stop": {
+              "byte": 618,
+              "column": 15,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cd13487c480e7ba01de7",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1781,
+              "column": 7,
+              "line": 82
+            },
+            "stop": {
+              "byte": 1809,
+              "column": 35,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1683,
+                      "column": 7,
+                      "line": 80
+                    },
+                    "stop": {
+                      "byte": 1694,
+                      "column": 18,
+                      "line": 80
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker info"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_d18b1e079aa3361cae2b",
+          "kind": "command",
+          "name": "docker info",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1683,
+              "column": 7,
+              "line": 80
+            },
+            "stop": {
+              "byte": 1694,
+              "column": 18,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d316e1ede4f5e933a4dc",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2288,
+              "column": 7,
+              "line": 98
+            },
+            "stop": {
+              "byte": 2339,
+              "column": 58,
+              "line": 98
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2029,
+                      "column": 42,
+                      "line": 86
+                    },
+                    "stop": {
+                      "byte": 2052,
+                      "column": 65,
+                      "line": 86
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d447baff3c4a02fc6ab6",
+          "kind": "resource",
+          "name": "git describe --abbrev=0",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2029,
+              "column": 42,
+              "line": 86
+            },
+            "stop": {
+              "byte": 2052,
+              "column": 65,
+              "line": 86
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1133,
+                      "column": 52,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1156,
+                      "column": 75,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_dce2cedc756bf6f434c8",
+          "kind": "resource",
+          "name": "git describe --abbrev=0",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1133,
+              "column": 52,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1156,
+              "column": 75,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e4717f6df39c22c4e989",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 330,
+              "column": 3,
+              "line": 23
+            },
+            "stop": {
+              "byte": 357,
+              "column": 11,
+              "line": 25
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 504,
+                      "column": 7,
+                      "line": 38
+                    },
+                    "stop": {
+                      "byte": 523,
+                      "column": 26,
+                      "line": 38
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm install --quiet"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e4cb30f34287fdb05034",
+          "kind": "command",
+          "name": "npm install --quiet",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 504,
+              "column": 7,
+              "line": 38
+            },
+            "stop": {
+              "byte": 523,
+              "column": 26,
+              "line": 38
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 667,
+                      "column": 7,
+                      "line": 50
+                    },
+                    "stop": {
+                      "byte": 714,
+                      "column": 54,
+                      "line": 50
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "sh scripts/replace_templates.sh ${CI_JOB_TOKEN}"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_eb72c38c08499f0d6498",
+          "kind": "command",
+          "name": "sh scripts/replace_templates.sh ${CI_JOB_TOKEN}",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 667,
+              "column": 7,
+              "line": 50
+            },
+            "stop": {
+              "byte": 714,
+              "column": 54,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ec7aaea75633d2bd190d",
+          "kind": "job",
+          "name": "deploy:docker",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 620,
+              "column": 1,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1197,
+              "column": 13,
+              "line": 61
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1707,
+                      "column": 13,
+                      "line": 81
+                    },
+                    "stop": {
+                      "byte": 1722,
+                      "column": 28,
+                      "line": 81
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_USERNAME",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1742,
+                      "column": 48,
+                      "line": 81
+                    },
+                    "stop": {
+                      "byte": 1757,
+                      "column": 63,
+                      "line": 81
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1701,
+                      "column": 7,
+                      "line": 81
+                    },
+                    "stop": {
+                      "byte": 1774,
+                      "column": 80,
+                      "line": 81
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_PASSWORD",
+                  "DOCKER_USERNAME",
+                  "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f115dc95f1af86d0ff88",
+          "kind": "command",
+          "name": "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1701,
+              "column": 7,
+              "line": 81
+            },
+            "stop": {
+              "byte": 1774,
+              "column": 80,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2288,
+                      "column": 7,
+                      "line": 98
+                    },
+                    "stop": {
+                      "byte": 2339,
+                      "column": 58,
+                      "line": 98
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "docker tag elastalert bitsensor/elastalert:snapshot"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f28959643fc4d299cfe0",
+          "kind": "command",
+          "name": "docker tag elastalert bitsensor/elastalert:snapshot",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 2288,
+              "column": 7,
+              "line": 98
+            },
+            "stop": {
+              "byte": 2339,
+              "column": 58,
+              "line": 98
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f3f217ea626a06648898",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1255,
+              "column": 7,
+              "line": 66
+            },
+            "stop": {
+              "byte": 1302,
+              "column": 54,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1917,
+                      "column": 52,
+                      "line": 84
+                    },
+                    "stop": {
+                      "byte": 1940,
+                      "column": 75,
+                      "line": 84
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f61949dce9b5134e7379",
+          "kind": "resource",
+          "name": "git describe --abbrev=0",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1917,
+              "column": 52,
+              "line": 84
+            },
+            "stop": {
+              "byte": 1940,
+              "column": 75,
+              "line": 84
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f7236d5792093781bcbb",
+          "kind": "step",
+          "name": "script:7",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1032,
+              "column": 7,
+              "line": 56
+            },
+            "stop": {
+              "byte": 1081,
+              "column": 56,
+              "line": 56
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f742210d1d82dcfd2b48",
+          "kind": "call",
+          "name": "node:slim",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 463,
+              "column": 10,
+              "line": 35
+            },
+            "stop": {
+              "byte": 472,
+              "column": 19,
+              "line": 35
+            }
+          },
+          "unknown": {
+            "detail": "node:slim",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "BITSENSOR_PASSWORD",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1333,
+                      "column": 13,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1351,
+                      "column": 31,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "BITSENSOR_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f7e3c440b28346e4af50",
+          "kind": "resource",
+          "name": "BITSENSOR_PASSWORD",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1333,
+              "column": 13,
+              "line": 68
+            },
+            "stop": {
+              "byte": 1351,
+              "column": 31,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "git describe --abbrev=0",
+                  "span": {
+                    "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1001,
+                      "column": 62,
+                      "line": 55
+                    },
+                    "stop": {
+                      "byte": 1024,
+                      "column": 85,
+                      "line": 55
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git describe --abbrev=0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f96fc579416e86a90c1b",
+          "kind": "resource",
+          "name": "git describe --abbrev=0",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/karql/elastalert2-server/.gitlab-ci.yml",
+            "start": {
+              "byte": 1001,
+              "column": 62,
+              "line": 55
+            },
+            "stop": {
+              "byte": 1024,
+              "column": 85,
+              "line": 55
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/karql/elastalert2-server/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:6b100bc3f9dcd0401e9f21056280536366928ca1d780dc9b731d0ea8288e5c5b",
+      "path": "gitlab/karql/elastalert2-server/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "node:slim",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 4,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

@@ -1,0 +1,1283 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = Maven@3"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+          "start": {
+            "byte": 68,
+            "column": 9,
+            "line": 8
+          },
+          "stop": {
+            "byte": 75,
+            "column": 16,
+            "line": 8
+          }
+        }
+      },
+      "id": "diag_5d34252292393c06ab07",
+      "message": "dependency is not pinned to immutable content: Maven@3",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+        "start": {
+          "byte": 68,
+          "column": 9,
+          "line": 8
+        },
+        "stop": {
+          "byte": 75,
+          "column": 16,
+          "line": 8
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_315a8ee12fbef4a4d1e9",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 68,
+              "column": 9,
+              "line": 8
+            },
+            "stop": {
+              "byte": 75,
+              "column": 16,
+              "line": 8
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+          "start": {
+            "byte": 300,
+            "column": 11,
+            "line": 17
+          },
+          "stop": {
+            "byte": 775,
+            "column": 42,
+            "line": 26
+          }
+        }
+      },
+      "id": "diag_0f06d61d3a5c935597a4",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+        "start": {
+          "byte": 300,
+          "column": 11,
+          "line": 17
+        },
+        "stop": {
+          "byte": 775,
+          "column": 42,
+          "line": 26
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_54ffe7f3cb44653418b5",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 549,
+              "column": 260,
+              "line": 17
+            },
+            "stop": {
+              "byte": 567,
+              "column": 278,
+              "line": 17
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_03d77d548ce952b8602e",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 300,
+              "column": 11,
+              "line": 17
+            },
+            "stop": {
+              "byte": 775,
+              "column": 42,
+              "line": 26
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = PublishBuildArtifacts@1"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+          "start": {
+            "byte": 990,
+            "column": 9,
+            "line": 31
+          },
+          "stop": {
+            "byte": 1013,
+            "column": 32,
+            "line": 31
+          }
+        }
+      },
+      "id": "diag_7878ea3f846db5e2a868",
+      "message": "dependency is not pinned to immutable content: PublishBuildArtifacts@1",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+        "start": {
+          "byte": 990,
+          "column": 9,
+          "line": 31
+        },
+        "stop": {
+          "byte": 1013,
+          "column": 32,
+          "line": 31
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_c05a646c5befaf2cc92b",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 990,
+              "column": 9,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1013,
+              "column": 32,
+              "line": 31
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:48a6dc9a81cd7ded927e476b1a167621d5d0d9b92bf40701fabc0edd1a5a9738",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_da625e437a5133950825",
+          "id": "wv_08aa4e85867bd970bc83",
+          "kind": "control",
+          "label": null,
+          "to": "wv_04e93d0b4622fc2e2733"
+        },
+        {
+          "condition": true,
+          "from": "wv_0dce3e31972e08f3fe1f",
+          "id": "wv_168835c78297b7844019",
+          "kind": "data",
+          "label": "Build.SourceVersion",
+          "to": "wv_03d77d548ce952b8602e"
+        },
+        {
+          "condition": true,
+          "from": "wv_347c4817a645834f6a76",
+          "id": "wv_4590b637d3ba1a982d20",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_0d9f8a3da566a3925fb5"
+        },
+        {
+          "condition": true,
+          "from": "wv_347c4817a645834f6a76",
+          "id": "wv_4911fe8199f2a8c69b26",
+          "kind": "control",
+          "label": null,
+          "to": "wv_315a8ee12fbef4a4d1e9"
+        },
+        {
+          "condition": true,
+          "from": "wv_59cc977281477b0510de",
+          "id": "wv_4b240b5986af1dc84b73",
+          "kind": "data",
+          "label": "Build.Repository.Uri",
+          "to": "wv_03d77d548ce952b8602e"
+        },
+        {
+          "condition": true,
+          "from": "wv_0cb0763e9730e639d310",
+          "id": "wv_4d666b43a975134cc5ed",
+          "kind": "data",
+          "label": "Build.SourcesDirectory",
+          "to": "wv_03d77d548ce952b8602e"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d9f8a3da566a3925fb5",
+          "id": "wv_4f3b316085258440d475",
+          "kind": "control",
+          "label": null,
+          "to": "wv_03d77d548ce952b8602e"
+        },
+        {
+          "condition": true,
+          "from": "wv_8c53099666766e56a7f3",
+          "id": "wv_5acc1c2a4bada50b1e90",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0d9f8a3da566a3925fb5"
+        },
+        {
+          "condition": true,
+          "from": "wv_0713a77649193b466680",
+          "id": "wv_75d60b26610c8431fabb",
+          "kind": "data",
+          "label": "GITHUB_TOKEN",
+          "to": "wv_03d77d548ce952b8602e"
+        },
+        {
+          "condition": true,
+          "from": "wv_f8d4cd2b482ff0310031",
+          "id": "wv_847b79620e7d8cd624fa",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c05a646c5befaf2cc92b"
+        },
+        {
+          "condition": true,
+          "from": "wv_8c53099666766e56a7f3",
+          "id": "wv_854b3bc91234716d002b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f8d4cd2b482ff0310031"
+        },
+        {
+          "condition": true,
+          "from": "wv_04e93d0b4622fc2e2733",
+          "id": "wv_888186b335093744e15a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8c53099666766e56a7f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d9f8a3da566a3925fb5",
+          "id": "wv_92aecffa1a9ddc918cef",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f8d4cd2b482ff0310031"
+        },
+        {
+          "condition": true,
+          "from": "wv_098410e7c15ecf954add",
+          "id": "wv_acc2a47e51fe43b10aa8",
+          "kind": "data",
+          "label": "Build.ArtifactStagingDirectory",
+          "to": "wv_03d77d548ce952b8602e"
+        },
+        {
+          "condition": true,
+          "from": "wv_f8d4cd2b482ff0310031",
+          "id": "wv_b2495c07e1ae00af63ba",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c05a646c5befaf2cc92b"
+        },
+        {
+          "condition": true,
+          "from": "wv_347c4817a645834f6a76",
+          "id": "wv_c119c73fe34c854aa69f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_315a8ee12fbef4a4d1e9"
+        },
+        {
+          "condition": true,
+          "from": "wv_8c53099666766e56a7f3",
+          "id": "wv_df296b16941107c9543d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_347c4817a645834f6a76"
+        },
+        {
+          "condition": true,
+          "from": "wv_3c36d9c14d2bb34120b8",
+          "id": "wv_e148c6daa7724bba54fd",
+          "kind": "data",
+          "label": "Build.SourceVersion",
+          "to": "wv_03d77d548ce952b8602e"
+        },
+        {
+          "condition": true,
+          "from": "wv_54ffe7f3cb44653418b5",
+          "id": "wv_ed6f33fb80876ccd8eb2",
+          "kind": "data",
+          "label": "Build.SourceBranch",
+          "to": "wv_03d77d548ce952b8602e"
+        }
+      ],
+      "entrypoints": [
+        "wv_04e93d0b4622fc2e2733"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.ArtifactStagingDirectory",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 617,
+                      "column": 328,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 647,
+                      "column": 358,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.Repository.Uri",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 428,
+                      "column": 139,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 448,
+                      "column": 159,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceBranch",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 549,
+                      "column": 260,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 567,
+                      "column": 278,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 381,
+                      "column": 92,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 400,
+                      "column": 111,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 472,
+                      "column": 183,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 491,
+                      "column": 202,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourcesDirectory",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 579,
+                      "column": 290,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 601,
+                      "column": 312,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_TOKEN",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 517,
+                      "column": 228,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 529,
+                      "column": 240,
+                      "line": 17
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 300,
+                      "column": 11,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 775,
+                      "column": 42,
+                      "line": 26
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.ArtifactStagingDirectory",
+                  "Build.Repository.Uri",
+                  "Build.SourceBranch",
+                  "Build.SourceVersion",
+                  "Build.SourcesDirectory",
+                  "GITHUB_TOKEN",
+                  "docker run -e \"WORKSPACE=https://github.com/ShiftLeftSecurity/tarpit-java/blob/$(Build.SourceVersion)\" \\\n  -e \"REPOSITORY_URL=$(Build.Repository.Uri)\" \\\n  -e \"COMMIT_SHA=$(Build.SourceVersion)\" \\\n  -e \"GITHUB_TOKEN=$(GITHUB_TOKEN)\" \\\n  -e \"BRANCH=$(Build.SourceBranch)\" \\\n  -v $(Build.SourcesDirectory):/app \\\n  -v $(Build.ArtifactStagingDirectory):/reports \\\n  shiftleft/sast-scan scan --src /app \\\n  --out_dir /reports/CodeAnalysisLogs\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_03d77d548ce952b8602e",
+          "kind": "command",
+          "name": "docker run -e \"WORKSPACE=https://github.com/ShiftLeftSecurity/tarpit-java/blob/$(Build.SourceVersion)\" \\\n  -e \"REPOSITORY_URL=$(Build.Repository.Uri)\" \\\n  -e \"COMMIT_SHA=$(Build.SourceVersion)\" \\\n  -e \"GITHUB_TOKEN=$(GITHUB_TOKEN)\" \\\n  -e \"BRANCH=$(Build.SourceBranch)\" \\\n  -v $(Build.SourcesDirectory):/app \\\n  -v $(Build.ArtifactStagingDirectory):/reports \\\n  shiftleft/sast-scan scan --src /app \\\n  --out_dir /reports/CodeAnalysisLogs\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 300,
+              "column": 11,
+              "line": 17
+            },
+            "stop": {
+              "byte": 775,
+              "column": 42,
+              "line": 26
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_04e93d0b4622fc2e2733",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1204,
+              "column": 33,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "GITHUB_TOKEN",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 517,
+                      "column": 228,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 529,
+                      "column": 240,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0713a77649193b466680",
+          "kind": "resource",
+          "name": "GITHUB_TOKEN",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 517,
+              "column": 228,
+              "line": 17
+            },
+            "stop": {
+              "byte": 529,
+              "column": 240,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.ArtifactStagingDirectory",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 617,
+                      "column": 328,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 647,
+                      "column": 358,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.ArtifactStagingDirectory"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_098410e7c15ecf954add",
+          "kind": "resource",
+          "name": "Build.ArtifactStagingDirectory",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 617,
+              "column": 328,
+              "line": 17
+            },
+            "stop": {
+              "byte": 647,
+              "column": 358,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourcesDirectory",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 579,
+                      "column": 290,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 601,
+                      "column": 312,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourcesDirectory"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0cb0763e9730e639d310",
+          "kind": "resource",
+          "name": "Build.SourcesDirectory",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 579,
+              "column": 290,
+              "line": 17
+            },
+            "stop": {
+              "byte": 601,
+              "column": 312,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0d9f8a3da566a3925fb5",
+          "kind": "step",
+          "name": "Perform ShiftLeft scan",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 292,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 841,
+              "column": 26,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 472,
+                      "column": 183,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 491,
+                      "column": 202,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourceVersion"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0dce3e31972e08f3fe1f",
+          "kind": "resource",
+          "name": "Build.SourceVersion",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 472,
+              "column": 183,
+              "line": 17
+            },
+            "stop": {
+              "byte": 491,
+              "column": 202,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_315a8ee12fbef4a4d1e9",
+          "kind": "call",
+          "name": "Maven@3",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 68,
+              "column": 9,
+              "line": 8
+            },
+            "stop": {
+              "byte": 75,
+              "column": 16,
+              "line": 8
+            }
+          },
+          "unknown": {
+            "detail": "Maven@3",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_347c4817a645834f6a76",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 62,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 289,
+              "column": 21,
+              "line": 16
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceVersion",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 381,
+                      "column": 92,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 400,
+                      "column": 111,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourceVersion"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3c36d9c14d2bb34120b8",
+          "kind": "resource",
+          "name": "Build.SourceVersion",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 381,
+              "column": 92,
+              "line": 17
+            },
+            "stop": {
+              "byte": 400,
+              "column": 111,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.SourceBranch",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 549,
+                      "column": 260,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 567,
+                      "column": 278,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.SourceBranch"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_54ffe7f3cb44653418b5",
+          "kind": "resource",
+          "name": "Build.SourceBranch",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 549,
+              "column": 260,
+              "line": 17
+            },
+            "stop": {
+              "byte": 567,
+              "column": 278,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "Build.Repository.Uri",
+                  "span": {
+                    "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+                    "start": {
+                      "byte": 428,
+                      "column": 139,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 448,
+                      "column": 159,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Build.Repository.Uri"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_59cc977281477b0510de",
+          "kind": "resource",
+          "name": "Build.Repository.Uri",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 428,
+              "column": 139,
+              "line": 17
+            },
+            "stop": {
+              "byte": 448,
+              "column": 159,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8c53099666766e56a7f3",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1204,
+              "column": 33,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_c05a646c5befaf2cc92b",
+          "kind": "call",
+          "name": "PublishBuildArtifacts@1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 990,
+              "column": 9,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1013,
+              "column": 32,
+              "line": 31
+            }
+          },
+          "unknown": {
+            "detail": "PublishBuildArtifacts@1",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_da625e437a5133950825",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 9,
+              "column": 1,
+              "line": 2
+            },
+            "stop": {
+              "byte": 17,
+              "column": 9,
+              "line": 2
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f8d4cd2b482ff0310031",
+          "kind": "step",
+          "name": "Publish analysis logs",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml",
+            "start": {
+              "byte": 984,
+              "column": 3,
+              "line": 31
+            },
+            "stop": {
+              "byte": 1204,
+              "column": 33,
+              "line": 36
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:385e6b9df6ba7d33088410c758a3c11e2139ce9fa82d0c0f361191982e56f44f",
+      "path": "azure/shiftleftsecurity/tarpit-java/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "shell script",
+          "kind": "unsupported_syntax"
+        },
+        {
+          "detail": "PublishBuildArtifacts@1",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 3,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

@@ -1,0 +1,7 @@
+name: policy-dogfood
+on: push
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl https://example.invalid

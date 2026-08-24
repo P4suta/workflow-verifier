@@ -1,0 +1,40 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# Defines that a commit to the master branch should trigger this build
+trigger:
+- master
+
+# Defines that PRs against this branch should also trigger this build
+pr:
+- master
+
+# The type of machine this build should run on and what software should be on it
+pool:
+  name: Hosted VS2017
+  demands: msbuild
+
+
+# The different steps in our build
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.9.3'
+  inputs:
+    versionSpec: 4.9.3
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: 'AwaitablePopups/AwaitablePopups.csproj'
+    feedsToUse: 'select'
+    vstsFeed: 'fe37826d-ecb5-4994-91d9-32b0f52b8fd0'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'AwaitablePopups/AwaitablePopups.csproj'
+    arguments: '--configuration Release'

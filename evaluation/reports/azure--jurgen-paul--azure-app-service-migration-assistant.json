@@ -1,0 +1,446 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:813ea8b94c954f72da3658e0c65bd81ca2032dae95a413981bb86c63284c2286",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_5351d729cfbdd886a460",
+          "id": "wv_34fd785d517b9e3d14fa",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a521d06c2966982cfe1c"
+        },
+        {
+          "condition": true,
+          "from": "wv_6ed955ed4d6bbaa09de8",
+          "id": "wv_6dc1eab677078c4249e8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6bcf457ab855fbcd6979"
+        },
+        {
+          "condition": true,
+          "from": "wv_b1e2298debb96d123f86",
+          "id": "wv_79e3d5de2d9e45e77d3b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_5351d729cfbdd886a460"
+        },
+        {
+          "condition": true,
+          "from": "wv_edddedf459508022e766",
+          "id": "wv_7d55077c4793a39f1d87",
+          "kind": "control",
+          "label": null,
+          "to": "wv_beeb82fec10498a66ad7"
+        },
+        {
+          "condition": true,
+          "from": "wv_a521d06c2966982cfe1c",
+          "id": "wv_ce287c972ddfdfe765f3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_edddedf459508022e766"
+        },
+        {
+          "condition": true,
+          "from": "wv_a521d06c2966982cfe1c",
+          "id": "wv_ebd019c5d7dc615f39fc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6ed955ed4d6bbaa09de8"
+        },
+        {
+          "condition": true,
+          "from": "wv_edddedf459508022e766",
+          "id": "wv_f263866693fb325cc8d8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6ed955ed4d6bbaa09de8"
+        }
+      ],
+      "entrypoints": [
+        "wv_5351d729cfbdd886a460"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5351d729cfbdd886a460",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+            "start": {
+              "byte": 181,
+              "column": 1,
+              "line": 6
+            },
+            "stop": {
+              "byte": 484,
+              "column": 41,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+                    "start": {
+                      "byte": 343,
+                      "column": 11,
+                      "line": 16
+                    },
+                    "stop": {
+                      "byte": 443,
+                      "column": 33,
+                      "line": 18
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo Add other tasks to build, test, and deploy your project.\necho See https://aka.ms/yaml\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_6bcf457ab855fbcd6979",
+          "kind": "command",
+          "name": "echo Add other tasks to build, test, and deploy your project.\necho See https://aka.ms/yaml\n",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+            "start": {
+              "byte": 343,
+              "column": 11,
+              "line": 16
+            },
+            "stop": {
+              "byte": 443,
+              "column": 33,
+              "line": 18
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6ed955ed4d6bbaa09de8",
+          "kind": "step",
+          "name": "Run a multi-line script",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+            "start": {
+              "byte": 335,
+              "column": 3,
+              "line": 16
+            },
+            "stop": {
+              "byte": 484,
+              "column": 41,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a521d06c2966982cfe1c",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+            "start": {
+              "byte": 181,
+              "column": 1,
+              "line": 6
+            },
+            "stop": {
+              "byte": 484,
+              "column": 41,
+              "line": 19
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b1e2298debb96d123f86",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+            "start": {
+              "byte": 190,
+              "column": 1,
+              "line": 7
+            },
+            "stop": {
+              "byte": 223,
+              "column": 34,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+                    "start": {
+                      "byte": 274,
+                      "column": 11,
+                      "line": 13
+                    },
+                    "stop": {
+                      "byte": 292,
+                      "column": 29,
+                      "line": 13
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo Hello, world!"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_beeb82fec10498a66ad7",
+          "kind": "command",
+          "name": "echo Hello, world!",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+            "start": {
+              "byte": 274,
+              "column": 11,
+              "line": 13
+            },
+            "stop": {
+              "byte": 292,
+              "column": 29,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_edddedf459508022e766",
+          "kind": "step",
+          "name": "Run a one-line script",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml",
+            "start": {
+              "byte": 266,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 331,
+              "column": 39,
+              "line": 14
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:4d9f0b50aa6ed04d81711b5796a1625431e924aa1677fca8223bba6ede58860f",
+      "path": "azure/jurgen-paul/azure-app-service-migration-assistant/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

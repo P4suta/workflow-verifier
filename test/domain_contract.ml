@@ -30,6 +30,26 @@ let product_domain_test () =
         (List.length values = 2)
   | _ -> fail "expected a finite string constant set"
 
+let provenance_operation_identity_test () =
+  let value operation =
+    Abstract_value.string_constant "same" ~trust:Abstract_value.Trusted
+      ~secrecy:Abstract_value.Public
+      ~provenance:
+        [
+          {
+            Abstract_value.origin = "same-origin";
+            span = Span.none;
+            operation;
+          };
+        ]
+  in
+  let joined = Abstract_value.join (value "checkout") (value "template") in
+  expect "provenance operations remain distinct at the same source span"
+    (List.map
+       (fun (item : Abstract_value.provenance) -> item.operation)
+       joined.provenance
+    = [ "checkout"; "template" ])
+
 let bounded_domain_test () =
   let values =
     List.init 12 (fun index ->
@@ -44,6 +64,103 @@ let bounded_domain_test () =
   | Abstract_value.String Abstract_value.Top -> ()
   | _ -> fail "a growing constant set must widen to Top"
 
+let finite_domain_boundary_test () =
+  let values =
+    List.init 8 (fun index ->
+        Abstract_value.string_constant (string_of_int index)
+          ~trust:Abstract_value.Trusted ~secrecy:Abstract_value.Public
+          ~provenance:[])
+  in
+  let joined =
+    List.fold_left Abstract_value.join Abstract_value.bottom values
+  in
+  match joined.value with
+  | Abstract_value.String (Abstract_value.Constants constants) ->
+      expect "the finite constant domain includes its eighth value"
+        (List.length constants = 8)
+  | _ -> fail "eight constants must remain below the widening boundary"
+
+let boolean_json_test () =
+  let value value_type value : Abstract_value.t =
+    {
+      value_type;
+      value;
+      trust = Abstract_value.Trusted;
+      secrecy = Abstract_value.Public;
+      provenance = [];
+    }
+  in
+  let encode value = Abstract_value.to_json value |> Json.to_string in
+  expect "abstract true must remain true in machine-readable evidence"
+    (Util.contains ~needle:"\"value\":true"
+       (value Abstract_value.Bool_type
+          (Abstract_value.Boolean Abstract_value.True)
+       |> encode));
+  expect "boolean type must retain its canonical name"
+    (Util.contains ~needle:"\"type\":\"bool\""
+       (value Abstract_value.Bool_type
+          (Abstract_value.Boolean Abstract_value.True)
+       |> encode));
+  expect "abstract false must remain false in machine-readable evidence"
+    (Util.contains ~needle:"\"value\":false"
+       (value Abstract_value.Bool_type
+          (Abstract_value.Boolean Abstract_value.False)
+       |> encode));
+  let interval : Abstract_value.interval =
+    { minimum = Some 1L; maximum = Some 2L }
+  in
+  let number =
+    value Abstract_value.Number_type (Abstract_value.Number interval) |> encode
+  in
+  expect "number type must retain its canonical name"
+    (Util.contains ~needle:"\"type\":\"number\"" number);
+  expect "number bounds must remain structured"
+    (Util.contains ~needle:"\"maximum\":2" number
+    && Util.contains ~needle:"\"minimum\":1" number);
+  let object_ =
+    value Abstract_value.Object_type (Abstract_value.Object (Some [])) |> encode
+  in
+  expect "object type must retain its canonical name"
+    (Util.contains ~needle:"\"type\":\"object\"" object_);
+  let null = value Abstract_value.Null_type Abstract_value.Null |> encode in
+  expect "null type must retain its canonical name"
+    (Util.contains ~needle:"\"type\":\"null\"" null)
+
+let affix_join_test () =
+  let affix prefix suffix : Abstract_value.t =
+    {
+      value_type = Abstract_value.String_type;
+      value = Abstract_value.String (Abstract_value.Affix { prefix; suffix });
+      trust = Abstract_value.Trusted;
+      secrecy = Abstract_value.Public;
+      provenance = [];
+    }
+  in
+  let joined left right = (Abstract_value.join left right).value in
+  (match
+     joined
+       (affix (Some "alpha") (Some "same-end"))
+       (affix (Some "beta") (Some "same-end"))
+   with
+  | Abstract_value.String
+      (Abstract_value.Affix { prefix = None; suffix = Some "same-end" }) -> ()
+  | _ -> fail "a shared suffix must survive when prefixes diverge");
+  (match
+     joined
+       (affix (Some "same-prefix") (Some "left-a"))
+       (affix (Some "same-prefix") (Some "right-b"))
+   with
+  | Abstract_value.String
+      (Abstract_value.Affix { prefix = Some "same-prefix"; suffix = None }) ->
+      ()
+  | _ -> fail "a shared prefix must survive when suffixes diverge");
+  match
+    joined (affix (Some "alpha") (Some "left-a"))
+      (affix (Some "beta") (Some "right-b"))
+  with
+  | Abstract_value.String Abstract_value.Top -> ()
+  | _ -> fail "fully divergent affixes must widen to Top"
+
 let robdd_test () =
   let open Condition in
   let a = atom "authorized" and b = atom "fork" in
@@ -53,7 +170,38 @@ let robdd_test () =
   expect "a and not a must be unsatisfiable"
     (not (satisfiable (and_ a (not_ a))));
   expect "unknown input evaluates to Unknown"
-    (evaluate (fun _ -> None) a = Condition.Unknown)
+    (evaluate (fun _ -> None) a = Condition.Unknown);
+  expect "false condition has a stable canonical string"
+    (to_string false_ = "false");
+  expect "an atom retains its variable in canonical strings"
+    (to_string a = "authorized");
+  expect "a compound ROBDD has one canonical explanatory formula"
+    (to_string (and_ a b)
+    = "((not authorized and false) or (authorized and fork))")
+
+let robdd_variable_order_test () =
+  let open Condition in
+  let alpha = atom "alpha" and omega = atom "omega" in
+  let conjunction = and_ alpha omega and reverse = and_ omega alpha in
+  expect "ROBDD variable order is independent of operand order"
+    (equal conjunction reverse);
+  expect "ROBDD variable order is strictly lexical"
+    (to_json conjunction
+    = Json.Object
+        [
+          ( "high",
+            Json.Object
+              [
+                ("high", Json.Bool true);
+                ("low", Json.Bool false);
+                ("variable", Json.String "omega");
+              ] );
+          ("low", Json.Bool false);
+          ("variable", Json.String "alpha");
+        ]);
+  let disjunction = or_ alpha omega in
+  expect "an equal ROBDD variable is merged before either order branch"
+    (equal (and_ alpha disjunction) alpha)
 
 let node provider name start_byte =
   let start =
@@ -115,8 +263,14 @@ let phase_and_unknown_test () =
 let tests : test list =
   [
     ("product domain joins trust secrecy and provenance", product_domain_test);
+    ( "provenance identity includes its semantic operation",
+      provenance_operation_identity_test );
     ("finite constants widen deterministically", bounded_domain_test);
+    ("finite constants retain the inclusive widening boundary", finite_domain_boundary_test);
+    ("abstract booleans retain their JSON truth value", boolean_json_test);
+    ("abstract affix joins preserve one-sided information", affix_join_test);
     ("ROBDD canonicalizes and decides implication", robdd_test);
+    ("ROBDD uses one strict total variable order", robdd_variable_order_test);
     ("IR identity and serialization are deterministic", deterministic_ir_test);
     ("phase availability and Unknown are explicit", phase_and_unknown_test);
   ]

@@ -1,23 +1,50 @@
-# Independent security review gate
+# Sole-maintainer security attestation
 
-An independent security review is a publication gate, not a self-attestation.
-No release may be described as reviewed until a reviewer outside the
-implementation team signs a report covering the commit and artifact digests.
+`workflow-verifier` has one maintainer, `P4suta`. The release gate records that
+fact directly: the maintainer performs and signs a security self-attestation.
+No second reviewer is implied.
 
-The review scope is the parser and expression denial-of-service boundary,
-untrusted/secret dataflow, authorization dominance, dependency resolution and
-redirect/allowlist behavior, fix proof obligations, canonical protocol parsing,
-evidence hash chains, and every native backend. The containment attack suite
-must cover filesystem write and escape, network and loopback access, child
-process escape, resource exhaustion, output/secret leakage, source races,
-tampered plans, helpers, and VM images.
+The required scope is closed and machine checked:
 
-The review record must state the reviewed commit, release tag, `SHA256SUMS`
-digest, reviewer identity and independence, methodology, environments and OS
-versions, every finding with severity and disposition, residual risks, and a
-clear approve/reject decision. Accepted residual risks require a maintainer,
-expiry, and tracking issue. The signed report is attached to the release; its
-digest is added to the release notes and review issue.
+- YAML parser and expression denial-of-service boundaries;
+- untrusted and secret dataflow;
+- authorization dominance;
+- dependency resolution, redirects, and allowlists;
+- fix proof obligations;
+- canonical protocols and evidence hash chains; and
+- OCI, Linux, Windows, and macOS native containment backends.
 
-The current development tree includes the review scope and reproducible attack
-fixtures, but it does not claim that the required external review has occurred.
+Containment review includes filesystem write and escape, network and loopback
+access, child-process escape, resource exhaustion, output and secret leakage,
+source races, tampered plans, helpers, and VM images. Static and live dogfood,
+the four-platform determinism comparison, the complete mutation catalog, AFL,
+the 400-repository corpus, and the pinned official-project suite are inputs to
+the decision.
+
+`maintainer-security-attestation-v1.json` records candidate commit `C`, the
+planned tag, maintainer, public review URL, completion timestamp, the complete
+scope, findings, residual risks, and an `approve` or `reject` decision. Critical
+and high findings must be resolved. Every accepted or open lower-severity
+finding and every residual risk requires an HTTPS tracking URL, accountable
+owner, and non-overdue due date. The verifier fails closed on missing fields,
+unknown fields, duplicate identifiers, incomplete scope, or a non-`approve`
+decision.
+
+The exact canonical JSON bytes are signed with the maintainer SSH key and the
+dedicated namespace:
+
+```text
+ssh-keygen -Y sign -f MAINTAINER_KEY -n workflow-verifier-release \
+  release-evidence/maintainer-security-attestation-v1.json
+```
+
+The public key and signing identity are pinned in
+`release-evidence/maintainer-allowed-signers`. The v2 verifier checks the
+detached signature with `ssh-keygen -Y verify`; substituting the allowed-signers
+file, identity, namespace, attestation bytes, or signature is a hard failure.
+
+Potential upstream findings are rechecked against the provider specification
+and the actual input boundary. Confirmed confidential issues use the upstream
+private security channel. Confirmed non-confidential issues use an existing or
+new public issue after duplicate search. Unconfirmed diagnostics are not sent
+upstream and remain local analysis data.

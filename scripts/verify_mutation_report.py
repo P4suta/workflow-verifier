@@ -54,6 +54,13 @@ SUMMARY_FIELDS = {
 }
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 HEX20 = re.compile(r"^[0-9a-f]{20}$")
+INFRASTRUCTURE_FAILURE_MARKERS = (
+    "another dune instance is currently running",
+    "waiting for build directory lock",
+    "failed to acquire dune build lock",
+    "runner failed during spawnchild",
+    "createprocessasuserw failed",
+)
 
 
 def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -117,6 +124,19 @@ def _counter(summary: dict[str, Any], name: str) -> int:
     if type(value) is not int or value < 0:
         raise ValueError(f"mutation summary {name} must be a nonnegative integer")
     return value
+
+
+def _result_evidence_text(result: dict[str, Any], label: str) -> str:
+    chunks: list[str] = []
+    error = result.get("error")
+    if error is not None:
+        chunks.append(json.dumps(error, ensure_ascii=False, sort_keys=True))
+    for stream_name in ("stdout", "stderr"):
+        stream = result.get(stream_name)
+        if not isinstance(stream, dict) or not isinstance(stream.get("contents"), str):
+            raise ValueError(f"{label}.{stream_name} is malformed")
+        chunks.append(stream["contents"])
+    return "\n".join(chunks).casefold()
 
 
 def verify(report_path: Path, required_prefixes: list[str]) -> dict[str, Any]:
@@ -185,6 +205,12 @@ def verify(report_path: Path, required_prefixes: list[str]) -> dict[str, Any]:
         outcome = result.get("outcome")
         if outcome not in actual:
             raise ValueError(f"{label} has an invalid outcome")
+        evidence_text = _result_evidence_text(result, label)
+        for marker in INFRASTRUCTURE_FAILURE_MARKERS:
+            if marker in evidence_text:
+                raise ValueError(
+                    f"{label} records an infrastructure failure marker: {marker}"
+                )
         actual[outcome] += 1
         expected = result.get("expected_survivor")
         if type(expected) is not bool:

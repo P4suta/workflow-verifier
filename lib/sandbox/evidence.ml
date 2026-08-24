@@ -83,13 +83,15 @@ let body_json = function
           ("kind", Json.String "backend_error"); ("message", Json.String message);
         ]
 
+let unsigned_event_fields sequence previous_digest body =
+  [
+    ("body", body_json body);
+    ("previous_digest", Json.String previous_digest);
+    ("sequence", Json.Int sequence);
+  ]
+
 let unsigned_event sequence previous_digest body =
-  Json.Object
-    [
-      ("body", body_json body);
-      ("previous_digest", Json.String previous_digest);
-      ("sequence", Json.Int sequence);
-    ]
+  Json.Object (unsigned_event_fields sequence previous_digest body)
 
 let append body evidence =
   let sequence = List.length evidence.events in
@@ -137,7 +139,7 @@ let effects_of_body = function
         [ Ir.File_write ]
       else [ Ir.File_read ]
   | Network_attempt _ -> [ Ir.Network_request ]
-  | Artifact_recorded _ -> [ Ir.Artifact_publish ]
+  | Artifact_recorded _ -> []
   | Backend_attested _
   | Control_attested _
   | Process_exited _
@@ -153,10 +155,9 @@ let observes_effect observable evidence =
   List.mem observable (observed_effects evidence)
 
 let event_json event =
-  match unsigned_event event.sequence event.previous_digest event.body with
-  | Json.Object fields ->
-      Json.Object (("digest", Json.String event.digest) :: fields)
-  | _ -> assert false
+  Json.Object
+    (("digest", Json.String event.digest)
+    :: unsigned_event_fields event.sequence event.previous_digest event.body)
 
 let to_json evidence =
   Json.Object

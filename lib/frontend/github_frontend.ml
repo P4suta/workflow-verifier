@@ -4,19 +4,33 @@ let has_top_level key source =
   Util.starts_with ~prefix:(key ^ ":") source
   || Util.contains ~needle:("\n" ^ key ^ ":") source
 
-let detect ~path ~source =
+let path_identity ~path =
   let path = Util.normalize_slashes path |> String.lowercase_ascii in
   Util.contains ~needle:"/.github/workflows/" path
   || Util.starts_with ~prefix:".github/workflows/" path
   || List.exists
        (fun suffix -> Util.ends_with ~suffix path)
        [ "/action.yml"; "/action.yaml" ]
-     && Util.contains ~needle:"runs:" source
+  || List.mem path [ "action.yml"; "action.yaml" ]
+
+let detect ~path ~source =
+  path_identity ~path
   || (has_top_level "on" source && has_top_level "jobs" source)
 
 let entrypoint ~path ~source =
-  let name = Filename.basename path |> String.lowercase_ascii in
-  detect ~path ~source && not (List.mem name [ "action.yml"; "action.yaml" ])
+  let path = Util.normalize_slashes path |> String.lowercase_ascii in
+  let prefix = ".github/workflows/" in
+  if not (Util.starts_with ~prefix path) then false
+  else
+    let name =
+      String.sub path (String.length prefix)
+        (String.length path - String.length prefix)
+    in
+    detect ~path ~source
+    && (not (String.contains name '/'))
+    && List.exists
+         (fun suffix -> Util.ends_with ~suffix name)
+         [ ".yml"; ".yaml" ]
 
 let parse = Frontend_common.parse
 let expand = Frontend_common.expand
@@ -86,8 +100,8 @@ let access_capabilities name access =
   if access = "none" then []
   else if name = "id-token" && access = "write" then [ Ir.Oidc ]
   else if name = "models" then [ Ir.Ai_tool; Ir.Network ]
-  else if name = "attestations" then
-    [ Ir.Artifact_read; Ir.Artifact_write; Ir.Token_write ]
+  else if name = "attestations" || name = "artifact-metadata" then
+    if access = "write" then [ Ir.Artifact_write ] else [ Ir.Artifact_read ]
   else if name = "deployments" || name = "pages" then
     if access = "write" then [ Ir.Deployment; Ir.Token_write ]
     else [ Ir.Repository_read; Ir.Token_read ]
@@ -132,6 +146,20 @@ let call_profile reference =
   then ([], [])
   else if Util.contains ~needle:"actions/checkout" lower then
     ([ Ir.Repository_read; Ir.Filesystem_write ], [ Ir.File_write ])
+  else if Util.contains ~needle:"actions/attest@" lower then
+    ( [
+        Ir.Oidc;
+        Ir.Artifact_write;
+        Ir.Filesystem_read;
+        Ir.Filesystem_write;
+        Ir.Network;
+      ],
+      [
+        Ir.Credential_use;
+        Ir.Artifact_publish;
+        Ir.File_write;
+        Ir.Network_request;
+      ] )
   else if Util.contains ~needle:"upload-artifact" lower then
     ( [ Ir.Artifact_write; Ir.Filesystem_read; Ir.Network ],
       [ Ir.Artifact_publish; Ir.Network_request ] )
@@ -236,6 +264,32 @@ let add_embedded_references target container graph =
              Frontend_common.add_references provider target references graph)
        graph
 
+let add_environment_bindings (target : Ir.node) environment graph =
+  Frontend_common.mapping environment
+  |> List.fold_left
+       (fun graph (entry : Yaml_cst.mapping_entry) ->
+         let binding =
+           Ir.make_node ~provider ~kind:Ir.Resource
+             ~name:("env:" ^ entry.key.value) ~phase:target.phase
+             ~span:entry.span
+             ~attributes:
+               [
+                 ( "environment.name",
+                   Abstract_value.string_constant entry.key.value
+                     ~trust:Abstract_value.Trusted
+                     ~secrecy:Abstract_value.Public ~provenance:[] );
+               ]
+             ()
+         in
+         let graph =
+           graph |> Ir.add_node binding
+           |> Ir.add_edge
+                (Ir.make_edge ~kind:Ir.Data ~from_:binding.id ~to_:target.id
+                   ~label:entry.key.value ())
+         in
+         add_embedded_references binding entry.value graph)
+       graph
+
 let environment_name body =
   match Frontend_common.field "environment" body with
   | None -> None
@@ -254,8 +308,8 @@ let add_job_resources graph (job : Ir.node) body =
     | Some (name, span) ->
         Frontend_support.add_resource ~provider ~owner:job
           ~name:("environment:" ^ name) ~phase:Ir.Run ~span
-          ~capabilities:[ Ir.Deployment ] ~effects:[ Ir.Deployment_change ]
-          ~edge_kind:Ir.Grant ~resource_to_owner:true graph
+          ~capabilities:[ Ir.Deployment ] ~edge_kind:Ir.Grant
+          ~resource_to_owner:true graph
         |> fst
   in
   match Frontend_common.field "outputs" body with
@@ -386,7 +440,7 @@ let add_steps resolved graph (job : Ir.node) body =
                   in
                   match Frontend_common.field "env" record.body with
                   | None -> graph
-                  | Some env -> add_embedded_references command env graph)))
+                  | Some env -> add_environment_bindings command env graph)))
         graph records
 
 let lower_action resolved root (workflow : Ir.node) =

@@ -1,0 +1,597 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = UseDotNet@2"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+          "start": {
+            "byte": 165,
+            "column": 9,
+            "line": 10
+          },
+          "stop": {
+            "byte": 176,
+            "column": 20,
+            "line": 10
+          }
+        }
+      },
+      "id": "diag_3e53408ea804c8f02c98",
+      "message": "dependency is not pinned to immutable content: UseDotNet@2",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+        "start": {
+          "byte": 165,
+          "column": 9,
+          "line": 10
+        },
+        "stop": {
+          "byte": 176,
+          "column": 20,
+          "line": 10
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_789d9f1c76a4460f6747",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 165,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 176,
+              "column": 20,
+              "line": 10
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:ae534dffc003f4ed3c883e0c99ef5bbfd52b8973431c828793538237162f6d5c",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_059c2618c9f1db9e860c",
+          "id": "wv_03c818265e2d3a39e304",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f97799e49e15e262ef8f"
+        },
+        {
+          "condition": true,
+          "from": "wv_f97799e49e15e262ef8f",
+          "id": "wv_0626eb664788aff36a8f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_71e9c9eaa0929dbee451"
+        },
+        {
+          "condition": true,
+          "from": "wv_059c2618c9f1db9e860c",
+          "id": "wv_2e6ea7b820bf8b358191",
+          "kind": "call",
+          "label": null,
+          "to": "wv_789d9f1c76a4460f6747"
+        },
+        {
+          "condition": true,
+          "from": "wv_678f9605405487b0d984",
+          "id": "wv_2fd7864756b88574639b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9c2ce7daa065047c6edc"
+        },
+        {
+          "condition": true,
+          "from": "wv_678f9605405487b0d984",
+          "id": "wv_6344fca0a0f7153773ac",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f97799e49e15e262ef8f"
+        },
+        {
+          "condition": true,
+          "from": "wv_059c2618c9f1db9e860c",
+          "id": "wv_6599591e4471a4cd042e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_789d9f1c76a4460f6747"
+        },
+        {
+          "condition": true,
+          "from": "wv_9c2ce7daa065047c6edc",
+          "id": "wv_709e0f661d5dd9d03f17",
+          "kind": "control",
+          "label": null,
+          "to": "wv_efb084aefb5b3f92147a"
+        },
+        {
+          "condition": true,
+          "from": "wv_1069337a28459b3b1365",
+          "id": "wv_7895fe844ba7d6447ba4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3ed73c63e0f4ba6aa14c"
+        },
+        {
+          "condition": true,
+          "from": "wv_3ed73c63e0f4ba6aa14c",
+          "id": "wv_964a2366eba49da861cf",
+          "kind": "control",
+          "label": null,
+          "to": "wv_678f9605405487b0d984"
+        },
+        {
+          "condition": true,
+          "from": "wv_678f9605405487b0d984",
+          "id": "wv_9bb870890fb38f3cddf4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_059c2618c9f1db9e860c"
+        },
+        {
+          "condition": true,
+          "from": "wv_f97799e49e15e262ef8f",
+          "id": "wv_e5d0df1e6043913a0298",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_9c2ce7daa065047c6edc"
+        }
+      ],
+      "entrypoints": [
+        "wv_3ed73c63e0f4ba6aa14c"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_059c2618c9f1db9e860c",
+          "kind": "step",
+          "name": "Use .NET sdk",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 159,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 290,
+              "column": 33,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1069337a28459b3b1365",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 11,
+              "column": 3,
+              "line": 2
+            },
+            "stop": {
+              "byte": 43,
+              "column": 10,
+              "line": 4
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3ed73c63e0f4ba6aa14c",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 487,
+              "column": 40,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_678f9605405487b0d984",
+          "kind": "job",
+          "name": "pipeline",
+          "phase": "plan",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 487,
+              "column": 40,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+                    "start": {
+                      "byte": 302,
+                      "column": 11,
+                      "line": 17
+                    },
+                    "stop": {
+                      "byte": 315,
+                      "column": 24,
+                      "line": 17
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "dotnet --info"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "script"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_71e9c9eaa0929dbee451",
+          "kind": "command",
+          "name": "dotnet --info",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 302,
+              "column": 11,
+              "line": 17
+            },
+            "stop": {
+              "byte": 315,
+              "column": 24,
+              "line": 17
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_789d9f1c76a4460f6747",
+          "kind": "call",
+          "name": "UseDotNet@2",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 165,
+              "column": 9,
+              "line": 10
+            },
+            "stop": {
+              "byte": 176,
+              "column": 20,
+              "line": 10
+            }
+          },
+          "unknown": {
+            "detail": "UseDotNet@2",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9c2ce7daa065047c6edc",
+          "kind": "step",
+          "name": "Powershell Script",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 348,
+              "column": 3,
+              "line": 20
+            },
+            "stop": {
+              "byte": 487,
+              "column": 40,
+              "line": 24
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+                    "start": {
+                      "byte": 360,
+                      "column": 15,
+                      "line": 20
+                    },
+                    "stop": {
+                      "byte": 371,
+                      "column": 26,
+                      "line": 20
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "./build.ps1"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "powershell"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_efb084aefb5b3f92147a",
+          "kind": "command",
+          "name": "./build.ps1",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 360,
+              "column": 15,
+              "line": 20
+            },
+            "stop": {
+              "byte": 371,
+              "column": 26,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f97799e49e15e262ef8f",
+          "kind": "step",
+          "name": "dotnet info",
+          "phase": "run",
+          "provider": "azure",
+          "span": {
+            "file": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml",
+            "start": {
+              "byte": 294,
+              "column": 3,
+              "line": 17
+            },
+            "stop": {
+              "byte": 344,
+              "column": 29,
+              "line": 18
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:0ae74a82944e9efbb58621595b9cca2bc84ddb28c4a1e74f58a8a6d4169cb0c1",
+      "path": "azure/weihanli/weihanli.entityframework/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

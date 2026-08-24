@@ -59,12 +59,12 @@ let strip_comment line =
 
 let unquote value =
   let value = String.trim value in
-  if
-    String.length value >= 2
-    && value.[0] = '"'
-    && value.[String.length value - 1] = '"'
-  then Ok (String.sub value 1 (String.length value - 2))
-  else Error ("expected a quoted string: " ^ value)
+  match String.length value with
+  | length when length >= 2 -> (
+      match (value.[0], value.[length - 1]) with
+      | '"', '"' -> Ok (String.sub value 1 (length - 2))
+      | _ -> Error ("expected a quoted string: " ^ value))
+  | _ -> Error ("expected a quoted string: " ^ value)
 
 let string_array value =
   let value = String.trim value in
@@ -113,6 +113,8 @@ let parse source =
   and allowlist_blocks = ref []
   and current = ref Root
   and current_fields = ref []
+  and resolver_declared = ref false
+  and sandbox_declared = ref false
   and errors = ref [] in
   let flush () =
     (match !current with
@@ -123,13 +125,9 @@ let parse source =
     | Allowlist when !current_fields <> [] ->
         allowlist_blocks := List.rev !current_fields :: !allowlist_blocks
     | Resolver when !current_fields <> [] ->
-        if !resolver_fields <> [] then
-          errors := "resolver section must occur at most once" :: !errors
-        else resolver_fields := List.rev !current_fields
+        resolver_fields := List.rev_append !current_fields !resolver_fields
     | Sandbox when !current_fields <> [] ->
-        if !sandbox_fields <> [] then
-          errors := "sandbox section must occur at most once" :: !errors
-        else sandbox_fields := List.rev !current_fields
+        sandbox_fields := List.rev_append !current_fields !sandbox_fields
     | _ -> ());
     current_fields := []
   in
@@ -148,9 +146,15 @@ let parse source =
         current := Allowlist)
       else if line = "[resolver]" then (
         flush ();
+        if !resolver_declared then
+          errors := "resolver section must occur at most once" :: !errors;
+        resolver_declared := true;
         current := Resolver)
       else if line = "[sandbox]" then (
         flush ();
+        if !sandbox_declared then
+          errors := "sandbox section must occur at most once" :: !errors;
+        sandbox_declared := true;
         current := Sandbox)
       else if Util.starts_with ~prefix:"[" line then (
         flush ();
@@ -184,14 +188,15 @@ let parse source =
         | None ->
             errors := (key ^ " must be an integer") :: !errors;
             default)
-  and parse_bool key default fields =
+  and parse_true_by_default key fields =
     match lookup key fields with
-    | None -> default
-    | Some "true" -> true
-    | Some "false" -> false
-    | Some _ ->
-        errors := (key ^ " must be true or false") :: !errors;
-        default
+    | None -> true
+    | Some value -> (
+        match bool_of_string_opt value with
+        | Some value -> value
+        | None ->
+            errors := (key ^ " must be true or false") :: !errors;
+            true)
   in
   let known_root = [ "version"; "persona"; "frontends"; "offline" ] in
   let root_keys = List.map fst !root_fields in
@@ -203,13 +208,19 @@ let parse source =
         errors := ("unknown configuration key: " ^ key) :: !errors)
     !root_fields;
   let persona =
-    match lookup "persona" !root_fields |> Option.map unquote with
-    | None | Some (Ok "gate") -> Verifier.Gate
-    | Some (Ok "audit") -> Audit
-    | Some (Ok "paranoid") -> Paranoid
-    | Some _ ->
-        errors := "persona must be gate, audit, or paranoid" :: !errors;
-        Gate
+    match lookup "persona" !root_fields with
+    | None -> Verifier.Gate
+    | Some raw -> (
+        match unquote raw with
+        | Ok "gate" -> Gate
+        | Ok "audit" -> Audit
+        | Ok "paranoid" -> Paranoid
+        | Ok _ ->
+            errors := "persona must be gate, audit, or paranoid" :: !errors;
+            Gate
+        | Error message ->
+            errors := message :: !errors;
+            Gate)
   in
   let frontends =
     match lookup "frontends" !root_fields with
@@ -267,7 +278,7 @@ let parse source =
       then errors := ("unknown sandbox key: " ^ key) :: !errors)
     !sandbox_fields;
   let require_immutable =
-    parse_bool "require_immutable" true !resolver_fields
+    parse_true_by_default "require_immutable" !resolver_fields
   in
   if not require_immutable then
     errors := "resolver.require_immutable must remain true" :: !errors;
@@ -304,8 +315,7 @@ let parse source =
     errors := "sandbox.backend is not a supported backend identity" :: !errors;
   if
     image <> "sha256:unresolved"
-    && (String.length image <> 71
-       || not (Util.starts_with ~prefix:"sha256:" image))
+    && not (Dependency_identity.valid_content_digest image)
   then errors := "sandbox.image must be a sha256 content digest" :: !errors;
   if network <> "deny" then
     errors :=
@@ -478,7 +488,7 @@ let parse source =
     List.rev !allowlist_blocks |> List.filter_map parse_allowlist
   in
   let version = parse_int "version" 1 !root_fields
-  and offline = parse_bool "offline" true !root_fields in
+  and offline = parse_true_by_default "offline" !root_fields in
   if version <> 1 then errors := "configuration version must be 1" :: !errors;
   if not offline then
     errors := "offline must remain true; network is a command opt-in" :: !errors;

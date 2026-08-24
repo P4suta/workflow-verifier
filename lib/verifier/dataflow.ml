@@ -19,47 +19,30 @@ let flows = function
   | Ir.Data | Read | Write | Persist -> true
   | Control | Call_edge | Grant -> false
 
-let feasible graph (edge : Ir.edge) =
-  let node_condition id =
-    Ir.find_node graph id
-    |> Option.fold ~none:Condition.false_ ~some:(fun (node : Ir.node) ->
-        node.condition)
-  in
-  Condition.and_ edge.condition
-    (Condition.and_ (node_condition edge.from_) (node_condition edge.to_))
-  |> Condition.satisfiable
-
-let solve graph =
+let solve_indexed indexed =
+  let graph = Graph_algorithms.graph indexed in
   let table = Hashtbl.create (List.length graph.Ir.nodes)
   and outgoing = Hashtbl.create (List.length graph.nodes)
   and queued = Hashtbl.create (List.length graph.nodes)
   and queue = Queue.create () in
-  let nodes =
-    List.sort
-      (fun (left : Ir.node) right -> String.compare left.id right.id)
-      graph.nodes
-  in
+  let nodes = List.sort Ir.compare_node graph.nodes in
   List.iter
     (fun (node : Ir.node) ->
       Hashtbl.replace table node.id (initial node);
       Queue.add node.id queue;
-      Hashtbl.replace queued node.id true)
+      Hashtbl.replace queued node.id ())
     nodes;
-  graph.edges
-  |> List.filter (fun edge -> flows edge.Ir.kind && feasible graph edge)
-  |> List.sort (fun (left : Ir.edge) right -> String.compare left.id right.id)
+  Graph_algorithms.feasible_edges indexed
+  |> List.filter (fun edge -> flows edge.Ir.kind)
+  |> List.sort Ir.compare_edge
   |> List.iter (fun edge ->
       let edges =
         Option.value ~default:[] (Hashtbl.find_opt outgoing edge.Ir.from_)
       in
       Hashtbl.replace outgoing edge.from_ (edge :: edges));
-  let updates = ref 0
-  and limit =
-    max 64 ((List.length graph.nodes + 1) * (List.length graph.edges + 1) * 16)
-  in
-  while (not (Queue.is_empty queue)) && !updates < limit do
+  while not (Queue.is_empty queue) do
     let source = Queue.take queue in
-    Hashtbl.replace queued source false;
+    Hashtbl.remove queued source;
     let source_value =
       Option.value ~default:Abstract_value.bottom
         (Hashtbl.find_opt table source)
@@ -72,19 +55,21 @@ let solve graph =
         in
         let after = Abstract_value.join before source_value in
         if before <> after then (
-          incr updates;
           Hashtbl.replace table edge.to_ after;
-          if
-            not (Option.value ~default:false (Hashtbl.find_opt queued edge.to_))
-          then (
+          if not (Hashtbl.mem queued edge.to_) then (
             Queue.add edge.to_ queue;
-            Hashtbl.replace queued edge.to_ true)))
+            Hashtbl.replace queued edge.to_ ())))
   done;
-  let complete = Queue.is_empty queue in
   let values =
-    Hashtbl.to_seq table |> List.of_seq
-    |> List.sort (fun (left, _) (right, _) -> String.compare left right)
+    List.map
+      (fun (node : Ir.node) ->
+        ( node.id,
+          Option.value ~default:Abstract_value.bottom
+            (Hashtbl.find_opt table node.id) ))
+      nodes
   in
-  { values; complete }
+  { values; complete = true }
+
+let solve graph = solve_indexed (Graph_algorithms.index graph)
 
 let value_at solution id = value solution.values id

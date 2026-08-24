@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import pathlib
+import tempfile
 import unittest
 
 
@@ -49,6 +50,42 @@ class DuneArchitectureTests(unittest.TestCase):
             "wv_domain": ("wv_foundation",),
         }
         self.assertTrue(any("cycle" in error for error in checker.graph_errors(actual)))
+
+    def test_partial_assertions_are_rejected_from_analyzer_libraries(self) -> None:
+        checker = load_checker()
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            source = root / "lib" / "example.ml"
+            source.parent.mkdir(parents=True)
+            source.write_text(
+                "let decode = function Some value -> value | None -> assert false\n",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(
+                checker.partial_expression_errors(root),
+                ["lib/example.ml contains partial expression 'assert false'"],
+            )
+
+    def test_partial_stdlib_and_exception_escapes_are_rejected(self) -> None:
+        checker = load_checker()
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            source = root / "lib" / "example.ml"
+            source.parent.mkdir(parents=True)
+            source.write_text(
+                "let first values = List.hd values\n"
+                "let require value = invalid_arg value\n",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(
+                checker.partial_expression_errors(root),
+                [
+                    "lib/example.ml contains partial expression 'List.hd'",
+                    "lib/example.ml contains partial expression 'invalid_arg'",
+                ],
+            )
 
 
 if __name__ == "__main__":

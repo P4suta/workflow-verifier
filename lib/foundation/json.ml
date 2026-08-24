@@ -10,7 +10,7 @@ type t =
 type error = { offset : int; message : string }
 
 let escape_string value =
-  let buffer = Buffer.create (String.length value + 8) in
+  let buffer = Buffer.create 64 in
   String.iter
     (fun character ->
       match character with
@@ -194,11 +194,9 @@ let parse source =
       ()
     done;
     if !digits = 0 then fail "invalid number";
-    if
-      match peek () with
-      | Some ('.' | 'e' | 'E') -> true
-      | _ -> false
-    then fail "runner JSON permits integers only";
+    (match peek () with
+    | Some ('.' | 'e' | 'E') -> fail "runner JSON permits integers only"
+    | _ -> ());
     let raw = String.sub source start (!offset - start) in
     try
       let value = Int64.of_string raw in

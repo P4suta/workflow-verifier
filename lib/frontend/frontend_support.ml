@@ -22,6 +22,38 @@ let condition provider source =
         (Ir.provider_name provider ^ ":"
         ^ (source |> String.trim |> String.lowercase_ascii))
 
+let insert_gate ~(owner : Ir.node) (gate : Ir.node) graph =
+  let incoming, retained =
+    List.partition
+      (fun (edge : Ir.edge) -> edge.kind = Ir.Control && edge.to_ = owner.id)
+      graph.Ir.edges
+  in
+  let graph = { graph with Ir.edges = retained } in
+  let graph =
+    {
+      graph with
+      Ir.entrypoints =
+        List.map
+          (fun entrypoint ->
+            if entrypoint = owner.id then gate.id else entrypoint)
+          graph.entrypoints;
+    }
+  in
+  let graph = Ir.add_node gate graph in
+  let graph =
+    List.fold_left
+      (fun graph (edge : Ir.edge) ->
+        Ir.add_edge
+          (Ir.make_edge ~kind:Ir.Control ~from_:edge.from_ ~to_:gate.id
+             ~condition:edge.condition ?label:edge.label ())
+          graph)
+      graph incoming
+  in
+  Ir.add_edge
+    (Ir.make_edge ~kind:Ir.Control ~from_:gate.id ~to_:owner.id
+       ~condition:gate.condition ~label:"gate" ())
+    graph
+
 let add_gate ~provider ~(owner : Ir.node) ~name ~phase ~expression_node graph =
   let expression =
     Option.value ~default:"<opaque condition>"
@@ -66,40 +98,25 @@ let add_gate ~provider ~(owner : Ir.node) ~name ~phase ~expression_node graph =
         :: Expression.references_to_attributes references)
       ?unknown:phase_unknown ()
   in
-  let incoming, retained =
-    List.partition
-      (fun (edge : Ir.edge) -> edge.kind = Ir.Control && edge.to_ = owner.id)
-      graph.Ir.edges
-  in
-  let graph = { graph with Ir.edges = retained } in
-  let graph =
-    {
-      graph with
-      Ir.entrypoints =
-        List.map
-          (fun entrypoint ->
-            if entrypoint = owner.id then gate.id else entrypoint)
-          graph.entrypoints;
-    }
-  in
-  let graph = Ir.add_node gate graph in
-  let graph =
-    List.fold_left
-      (fun graph (edge : Ir.edge) ->
-        Ir.add_edge
-          (Ir.make_edge ~kind:Ir.Control ~from_:edge.from_ ~to_:gate.id
-             ~condition:edge.condition ?label:edge.label ())
-          graph)
-      graph incoming
-  in
-  let graph =
-    Ir.add_edge
-      (Ir.make_edge ~kind:Ir.Control ~from_:gate.id ~to_:owner.id
-         ~condition:predicate ~label:"gate" ())
-      graph
-  in
+  let graph = insert_gate ~owner gate graph in
   let graph = Frontend_common.add_references provider gate references graph in
   (graph, gate)
+
+let add_static_gate ~provider ~(owner : Ir.node) ~name ~phase ~span ~mechanism
+    graph =
+  let gate =
+    Ir.make_node ~provider ~kind:Ir.Gate ~name ~phase ~span
+      ~attributes:
+        [
+          ( "mechanism",
+            Abstract_value.string_constant mechanism
+              ~trust:Abstract_value.Trusted ~secrecy:Abstract_value.Public
+              ~provenance:
+                [ { origin = mechanism; span; operation = "static gate" } ] );
+        ]
+      ()
+  in
+  (insert_gate ~owner gate graph, gate)
 
 let add_resource ~provider ~(owner : Ir.node) ~name ~phase ~span
     ?(attributes = []) ?(capabilities = []) ?(effects = [])

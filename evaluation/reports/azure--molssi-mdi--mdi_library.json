@@ -1,0 +1,494 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:0fd4cecc40eabca7168cac8e93983df95ffa9bcdc057b215403510bb7a1f4ba0",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_58d1a260321a625b6421",
+          "id": "wv_175f8b3069f6def230a0",
+          "kind": "data",
+          "label": "python.version",
+          "to": "wv_4745435c7c998264f713"
+        },
+        {
+          "condition": true,
+          "from": "wv_db9d36712ff1b9096d07",
+          "id": "wv_1bf674b33d3891838d2f",
+          "kind": "data",
+          "label": "llvm.version",
+          "to": "wv_4745435c7c998264f713"
+        },
+        {
+          "condition": true,
+          "from": "wv_528a93b1bdc39c18d0ff",
+          "id": "wv_37130b78275060525c7c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4745435c7c998264f713"
+        },
+        {
+          "condition": true,
+          "from": "wv_44aa0f40b118ee044361",
+          "id": "wv_80cfb0289ae83a786a46",
+          "kind": "data",
+          "label": "mkl.version",
+          "to": "wv_4745435c7c998264f713"
+        },
+        {
+          "condition": true,
+          "from": "wv_3b9de27b66663b7a8025",
+          "id": "wv_831761761b675b6f6996",
+          "kind": "data",
+          "label": "conda.build_type",
+          "to": "wv_4745435c7c998264f713"
+        },
+        {
+          "condition": true,
+          "from": "wv_9c9089213d83b28be4e1",
+          "id": "wv_cc48e4b76d502b7ab925",
+          "kind": "data",
+          "label": "conda.build",
+          "to": "wv_4745435c7c998264f713"
+        }
+      ],
+      "entrypoints": [
+        "wv_4745435c7c998264f713"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+                    "start": {
+                      "byte": 222,
+                      "column": 21,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 227,
+                      "column": 26,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Debug"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3b9de27b66663b7a8025",
+          "kind": "resource",
+          "name": "variable:conda.build_type",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+            "start": {
+              "byte": 204,
+              "column": 3,
+              "line": 11
+            },
+            "stop": {
+              "byte": 227,
+              "column": 26,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+                    "start": {
+                      "byte": 172,
+                      "column": 16,
+                      "line": 9
+                    },
+                    "stop": {
+                      "byte": 180,
+                      "column": 24,
+                      "line": 9
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2019.1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_44aa0f40b118ee044361",
+          "kind": "resource",
+          "name": "variable:mkl.version",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+            "start": {
+              "byte": 159,
+              "column": 3,
+              "line": 9
+            },
+            "stop": {
+              "byte": 180,
+              "column": 24,
+              "line": 9
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4745435c7c998264f713",
+          "kind": "workflow",
+          "name": "Azure pipeline",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 350,
+              "column": 56,
+              "line": 15
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_528a93b1bdc39c18d0ff",
+          "kind": "trigger",
+          "name": "trigger",
+          "phase": "source",
+          "provider": "azure",
+          "span": {
+            "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+            "start": {
+              "byte": 11,
+              "column": 3,
+              "line": 2
+            },
+            "stop": {
+              "byte": 43,
+              "column": 10,
+              "line": 4
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+                    "start": {
+                      "byte": 74,
+                      "column": 19,
+                      "line": 7
+                    },
+                    "stop": {
+                      "byte": 77,
+                      "column": 22,
+                      "line": 7
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3.6"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_58d1a260321a625b6421",
+          "kind": "resource",
+          "name": "variable:python.version",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+            "start": {
+              "byte": 58,
+              "column": 3,
+              "line": 7
+            },
+            "stop": {
+              "byte": 77,
+              "column": 22,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+                    "start": {
+                      "byte": 196,
+                      "column": 16,
+                      "line": 10
+                    },
+                    "stop": {
+                      "byte": 201,
+                      "column": 21,
+                      "line": 10
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "false"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9c9089213d83b28be4e1",
+          "kind": "resource",
+          "name": "variable:conda.build",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+            "start": {
+              "byte": 183,
+              "column": 3,
+              "line": 10
+            },
+            "stop": {
+              "byte": 201,
+              "column": 21,
+              "line": 10
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "value",
+                  "origin": "Azure YAML",
+                  "span": {
+                    "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+                    "start": {
+                      "byte": 94,
+                      "column": 17,
+                      "line": 8
+                    },
+                    "stop": {
+                      "byte": 101,
+                      "column": 24,
+                      "line": 8
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "7.0.1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_db9d36712ff1b9096d07",
+          "kind": "resource",
+          "name": "variable:llvm.version",
+          "phase": "compile",
+          "provider": "azure",
+          "span": {
+            "file": "azure/molssi-mdi/mdi_library/azure-pipelines.yml",
+            "start": {
+              "byte": 80,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 101,
+              "column": 24,
+              "line": 8
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "azure",
+      "source": "azure/molssi-mdi/mdi_library/azure-pipelines.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:f447a678784d39121dd6a8dd37a2a01be02b7782f2a3fab214ba755b31239f37",
+      "path": "azure/molssi-mdi/mdi_library/azure-pipelines.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 0
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

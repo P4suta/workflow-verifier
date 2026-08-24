@@ -32,7 +32,7 @@ let probe_contract () =
       {
         Helper_client.exit_code = 0;
         stdout =
-          "{\"available\":true,\"controls\":[\"source_read_only\",\"scratch_overlay\",\"network_deny\",\"process_isolation\",\"resource_limits\",\"secret_redaction\"],\"id\":\"oci:docker\",\"platform\":\"windows\",\"reasons\":[],\"schema\":\"backend-attestation-v1\",\"version\":\"0.1.0-dev\"}\n";
+          "{\"available\":true,\"controls\":[\"source_read_only\",\"scratch_overlay\",\"network_deny\",\"process_isolation\",\"resource_limits\",\"secret_redaction\"],\"id\":\"oci:docker\",\"platform\":\"windows\",\"reasons\":[],\"schema\":\"backend-attestation-v1\",\"version\":\"0.1.0\"}\n";
         stderr = "";
       }
   in

@@ -1,0 +1,53 @@
+name: Release
+# Tag-triggered release. Build on a clean runner, validate, then publish to PyPI via
+# TRUSTED PUBLISHING (OIDC) — no long-lived API token stored anywhere.
+#
+# One-time setup by the maintainer (see RELEASING.md):
+#   1) On PyPI: add a Trusted Publisher for this repo (workflow: release.yml, env: pypi).
+#   2) On GitHub: create an environment named `pypi` (optionally with required reviewers).
+# Then: bump the version, tag `vX.Y.Z`, push the tag — this workflow does the rest.
+on:
+  push:
+    tags: [ "v*" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build + validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build wheel + sdist
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+          twine check dist/*
+      - name: Smoke-test the built wheel
+        run: |
+          python -m venv /tmp/rel
+          /tmp/rel/bin/pip install dist/*.whl
+          /tmp/rel/bin/mathhead --version
+          /tmp/rel/bin/mathhead entail -p "p" -p "implies(p, q)" -c "q"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+
+  publish:
+    name: publish to PyPI (trusted publishing)
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write        # OIDC — this is what authorizes the trusted publish
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore test project dependencies
+        run: dotnet restore ./LlamaFleece.Tests/LlamaFleece.Tests.csproj
+
+      - name: Build app in Release
+        run: dotnet build ./LlamaFleece/LlamaFleece.csproj --configuration Release --no-restore
+
+      - name: Run full test suite in Release
+        run: dotnet test ./LlamaFleece.Tests/LlamaFleece.Tests.csproj --configuration Release --no-restore

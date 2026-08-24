@@ -1,0 +1,124 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'        # Triggers on tags like v1.0.0
+  workflow_dispatch:     # Allows manual triggering
+
+permissions:
+  contents: write        # Grants necessary permissions
+
+jobs:
+  build:
+    name: Build and Package
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            runtime: linux-x64
+          - os: windows-latest
+            runtime: win-x64
+          - os: macos-latest
+            runtime: osx-x64
+          - os: macos-latest
+            runtime: osx-arm64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.os == 'Windows' && 'C:\\Users\\runneradmin\\.nuget\\packages' || '~/.nuget/packages' }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies with retry
+        shell: bash
+        run: |
+          set -e
+          for i in {1..5}; do
+            dotnet restore && break
+            echo "Restore failed, retrying in 10 seconds..."
+            sleep 10
+          done
+
+      - name: Build single file executable
+        run: |
+          echo "Building for runtime: ${{ matrix.runtime }}"
+          dotnet publish ./SharpLoadTester.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishTrimmed=true -p:TrimMode=link -p:PublishSingleFile=true -o ./artifacts/${{ matrix.runtime }}
+          echo "Contents of the build directory:"
+          ls -R ./artifacts/${{ matrix.runtime }}
+
+      - name: Create zip archive
+        if: matrix.os != 'windows-latest'
+        shell: bash
+        run: |
+          echo "Creating zip archive for runtime: ${{ matrix.runtime }}"
+          zip -j "./artifacts/SharpLoadTester-${{ github.ref_name }}-${{ matrix.runtime }}.zip" ./artifacts/${{ matrix.runtime }}/*
+          echo "Successfully created zip file."
+
+      - name: Create zip archive (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Write-Output "Creating zip archive for runtime: ${{ matrix.runtime }}"
+          Compress-Archive -Path ./artifacts/${{ matrix.runtime }}\* -DestinationPath ./artifacts/SharpLoadTester-${{ github.ref_name }}-${{ matrix.runtime }}.zip
+          Write-Output "Successfully created zip file."
+
+      - name: Upload binaries as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.runtime }}
+          path: ./artifacts/SharpLoadTester-${{ github.ref_name }}-${{ matrix.runtime }}.zip
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifact ZIP files
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: List downloaded artifacts
+        run: |
+          echo "Downloaded artifacts:"
+          find ./artifacts -name "*.zip" -type f
+          ls -la ./artifacts/
+
+      - name: Create GitHub Release with assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Create release
+          gh release create ${{ github.ref_name }} \
+            --title "Release ${{ github.ref_name }}" \
+            --notes "Automated release for ${{ github.ref_name }}" \
+            --latest
+
+          # Upload all ZIP files as assets
+          for zip_file in ./artifacts/*/SharpLoadTester-${{ github.ref_name }}-*.zip; do
+            if [ -f "$zip_file" ]; then
+              echo "Uploading: $zip_file"
+              gh release upload ${{ github.ref_name }} "$zip_file" --clobber
+            fi
+          done

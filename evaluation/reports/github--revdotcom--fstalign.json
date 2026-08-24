@@ -1,0 +1,406 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = fpicalausa/remove-stale-branches@v2.4.0"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+          "start": {
+            "byte": 571,
+            "column": 15,
+            "line": 23
+          },
+          "stop": {
+            "byte": 610,
+            "column": 54,
+            "line": 23
+          }
+        }
+      },
+      "id": "diag_84fd5ff6da5f5d53a08e",
+      "message": "dependency is not pinned to immutable content: fpicalausa/remove-stale-branches@v2.4.0",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+        "start": {
+          "byte": 571,
+          "column": 15,
+          "line": 23
+        },
+        "stop": {
+          "byte": 610,
+          "column": 54,
+          "line": 23
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_4b0fc6691864e16a904b",
+          "span": {
+            "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+            "start": {
+              "byte": 571,
+              "column": 15,
+              "line": 23
+            },
+            "stop": {
+              "byte": 610,
+              "column": 54,
+              "line": 23
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:7aa77b2d22cab0fd95272265193a592df5674f4193054c1ccfb383ed15025b3d",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_c2c117112960f777c9ed",
+          "id": "wv_2c4d9eea6deab97bcc52",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4b0fc6691864e16a904b"
+        },
+        {
+          "condition": true,
+          "from": "wv_512c595e2f71327c489b",
+          "id": "wv_44c807082282e2b03338",
+          "kind": "control",
+          "label": null,
+          "to": "wv_17a2380b3d8df4199cbe"
+        },
+        {
+          "condition": true,
+          "from": "wv_17a2380b3d8df4199cbe",
+          "id": "wv_5b7a4a3cb1094b52aa74",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f9c8d19f7f5cb6f8246f"
+        },
+        {
+          "condition": true,
+          "from": "wv_c2c117112960f777c9ed",
+          "id": "wv_7c38cf85fc50e2735a34",
+          "kind": "call",
+          "label": null,
+          "to": "wv_4b0fc6691864e16a904b"
+        },
+        {
+          "condition": true,
+          "from": "wv_a4e0e10dcbd57706252c",
+          "id": "wv_c6bcd634c78f9048d39f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_17a2380b3d8df4199cbe"
+        },
+        {
+          "condition": true,
+          "from": "wv_f9c8d19f7f5cb6f8246f",
+          "id": "wv_db196d2e7dfc6265e802",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c2c117112960f777c9ed"
+        }
+      ],
+      "entrypoints": [
+        "wv_17a2380b3d8df4199cbe"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "repository_write",
+            "token_read",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_17a2380b3d8df4199cbe",
+          "kind": "workflow",
+          "name": "Stale Branches",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+            "start": {
+              "byte": 240,
+              "column": 1,
+              "line": 7
+            },
+            "stop": {
+              "byte": 935,
+              "column": 34,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4b0fc6691864e16a904b",
+          "kind": "call",
+          "name": "fpicalausa/remove-stale-branches@v2.4.0",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+            "start": {
+              "byte": 571,
+              "column": 15,
+              "line": 23
+            },
+            "stop": {
+              "byte": 610,
+              "column": 54,
+              "line": 23
+            }
+          },
+          "unknown": {
+            "detail": "fpicalausa/remove-stale-branches@v2.4.0",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_512c595e2f71327c489b",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+            "start": {
+              "byte": 366,
+              "column": 3,
+              "line": 12
+            },
+            "stop": {
+              "byte": 384,
+              "column": 21,
+              "line": 12
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a4e0e10dcbd57706252c",
+          "kind": "trigger",
+          "name": "schedule",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+            "start": {
+              "byte": 269,
+              "column": 3,
+              "line": 9
+            },
+            "stop": {
+              "byte": 363,
+              "column": 28,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c2c117112960f777c9ed",
+          "kind": "step",
+          "name": "step 1",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+            "start": {
+              "byte": 565,
+              "column": 9,
+              "line": 23
+            },
+            "stop": {
+              "byte": 935,
+              "column": 34,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "repository_write",
+            "token_read",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f9c8d19f7f5cb6f8246f",
+          "kind": "job",
+          "name": "remove-stale-branches",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml",
+            "start": {
+              "byte": 471,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 935,
+              "column": 34,
+              "line": 30
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:da5e4bbf1dd369fb3849cd49c94258329f2b64d68deb9d474a0b0deac63d56e6",
+      "path": "github/revdotcom/fstalign/.github/workflows/stale-branches.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [
+        {
+          "detail": "fpicalausa/remove-stale-branches@v2.4.0",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "fpicalausa/remove-stale-branches@v2.4.0",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 2
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

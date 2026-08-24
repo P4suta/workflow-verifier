@@ -1,0 +1,4019 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+          "start": {
+            "byte": 1186,
+            "column": 7,
+            "line": 43
+          },
+          "stop": {
+            "byte": 2210,
+            "column": 9,
+            "line": 67
+          }
+        }
+      },
+      "id": "diag_b0f6ef70daeca3dc8561",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+        "start": {
+          "byte": 1186,
+          "column": 7,
+          "line": 43
+        },
+        "stop": {
+          "byte": 2210,
+          "column": 9,
+          "line": 67
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_d8c9554a22627d734662",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1625,
+              "column": 446,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1643,
+              "column": 464,
+              "line": 43
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_1f008e10211c68cf65f3",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1186,
+              "column": 7,
+              "line": 43
+            },
+            "stop": {
+              "byte": 2210,
+              "column": 9,
+              "line": 67
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:1beb46f98ec6ff6e53eb1c4f334e9d2b6cc0885ca2eb71682fb60f2adcfe9616",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_3d61151e3c8a13a45c60",
+          "id": "wv_005a9df083e228257c7f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2b974b65e891883a83ed"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_015c1084d0d91fb9beba",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e150d15aaecb4c55a96e"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff0c77d4b36584228123",
+          "id": "wv_01be6061951b0ceba506",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c9a0eb85605d9428e357"
+        },
+        {
+          "condition": true,
+          "from": "wv_2d9a76f6807018280f0a",
+          "id": "wv_06d1ac818634e42d018f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_931f929ab258dcbcbcf7"
+        },
+        {
+          "condition": true,
+          "from": "wv_083305745bc6ddb03222",
+          "id": "wv_098a5639e3a00dab7ee0",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_875278a6e188f526c741"
+        },
+        {
+          "condition": true,
+          "from": "wv_7dea9602e3f976167f16",
+          "id": "wv_0991437f6e3c28303e5f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_72bae4ef287a9f82376e"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c82c965764bc74e6e",
+          "id": "wv_0a6a8c6be757bdbb49cc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_10076bf9c116d70b8340"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d61151e3c8a13a45c60",
+          "id": "wv_0cffdeab3b4225379174",
+          "kind": "write",
+          "label": null,
+          "to": "wv_f7c54cd0781686507379"
+        },
+        {
+          "condition": true,
+          "from": "wv_931f929ab258dcbcbcf7",
+          "id": "wv_13135b427981e3591caa",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_2f22a2597ae79a664722"
+        },
+        {
+          "condition": true,
+          "from": "wv_f83cf2846e344efb59c0",
+          "id": "wv_18e4af31020cf5485ccc",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fbcecf5ec75e1b5638cb"
+        },
+        {
+          "condition": true,
+          "from": "wv_a9c565a3ab4d55a9b5ed",
+          "id": "wv_194db9c1eda471713f15",
+          "kind": "read",
+          "label": null,
+          "to": "wv_3d61151e3c8a13a45c60"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_1ec55145f5d6830b2556",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1af6c42ea7a8d30932d7"
+        },
+        {
+          "condition": true,
+          "from": "wv_24c3fd12b685b18d5b66",
+          "id": "wv_1f7bfbd13c5fb68e8203",
+          "kind": "control",
+          "label": null,
+          "to": "wv_42abb69e299a75a53eeb"
+        },
+        {
+          "condition": true,
+          "from": "wv_19f6784f028af05965ee",
+          "id": "wv_290f5f1fb5f607b726bb",
+          "kind": "read",
+          "label": null,
+          "to": "wv_e15677066ab568e9e45d"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_2a1a0d2a0e1cf5798af5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_13bcf60442ab0fd70f23"
+        },
+        {
+          "condition": true,
+          "from": "wv_bbc77ae70894770b775c",
+          "id": "wv_3279549b4a6dea9562d1",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_13bcf60442ab0fd70f23"
+        },
+        {
+          "condition": true,
+          "from": "wv_7dea9602e3f976167f16",
+          "id": "wv_3e291bf76e933504e2f4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3d61151e3c8a13a45c60"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee60c0d598d4e51eeba9",
+          "id": "wv_3e38009990c292405027",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8259229473e58f054b95"
+        },
+        {
+          "condition": true,
+          "from": "wv_2b974b65e891883a83ed",
+          "id": "wv_42d745915202aabf55a6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c4ca18623cecafb5665f"
+        },
+        {
+          "condition": true,
+          "from": "wv_2f22a2597ae79a664722",
+          "id": "wv_4477a29c2344a4c374a6",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7b57493d38d687b4abf3"
+        },
+        {
+          "condition": true,
+          "from": "wv_8259229473e58f054b95",
+          "id": "wv_4491c495842e3edc1108",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e15677066ab568e9e45d"
+        },
+        {
+          "condition": true,
+          "from": "wv_8259229473e58f054b95",
+          "id": "wv_44966eecfb93b6ec172b",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_96638d6bcde08a195743"
+        },
+        {
+          "condition": true,
+          "from": "wv_83f8c56131eccf1fc965",
+          "id": "wv_44af67477ca5832afa42",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6d56fa6cf2a32621ec1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d61151e3c8a13a45c60",
+          "id": "wv_4a014a8de17ff0e734bd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f83cf2846e344efb59c0"
+        },
+        {
+          "condition": true,
+          "from": "wv_6f587f577199b69b7b34",
+          "id": "wv_4e8b8ec5579294882d35",
+          "kind": "data",
+          "label": "CI_DEFAULT_BRANCH",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee60c0d598d4e51eeba9",
+          "id": "wv_54492d87a71a9e06c4d9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_715155e2cf9bcadcdc20"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_57da0f19dd7c13b3d15d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_6d56fa6cf2a32621ec1f"
+        },
+        {
+          "condition": true,
+          "from": "wv_ff0c77d4b36584228123",
+          "id": "wv_580a444c45ff30803b2f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e36c8ecc4e1b06e7e460"
+        },
+        {
+          "condition": true,
+          "from": "wv_72bae4ef287a9f82376e",
+          "id": "wv_58a9e7e8830afa392984",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7fab4285fc96b249fb3d"
+        },
+        {
+          "condition": true,
+          "from": "wv_72bae4ef287a9f82376e",
+          "id": "wv_5a2ca9179cd230368fb2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2d9a76f6807018280f0a"
+        },
+        {
+          "condition": true,
+          "from": "wv_f79b212712c0f4fb3661",
+          "id": "wv_5a998fa75af872cd361d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4eb4cad3cbc34ca4283f"
+        },
+        {
+          "condition": true,
+          "from": "wv_bbc77ae70894770b775c",
+          "id": "wv_5ea68db66ef00f8b130a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2ad41b7fe42a8737a546"
+        },
+        {
+          "condition": true,
+          "from": "wv_c9a0eb85605d9428e357",
+          "id": "wv_66597ce1f2782628dceb",
+          "kind": "control",
+          "label": null,
+          "to": "wv_d9f937956decb7fa4152"
+        },
+        {
+          "condition": true,
+          "from": "wv_96638d6bcde08a195743",
+          "id": "wv_6863d892f92eaa6cdcdc",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4d8a85187a8e77823947"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee60c0d598d4e51eeba9",
+          "id": "wv_6ac2de81bd7e624cb029",
+          "kind": "call",
+          "label": null,
+          "to": "wv_715155e2cf9bcadcdc20"
+        },
+        {
+          "condition": true,
+          "from": "wv_72bae4ef287a9f82376e",
+          "id": "wv_6c725a07642ff34abf91",
+          "kind": "write",
+          "label": null,
+          "to": "wv_4c790f02757e5521c876"
+        },
+        {
+          "condition": true,
+          "from": "wv_ce445cb0545e41175d34",
+          "id": "wv_6cf496484d279ed0b252",
+          "kind": "data",
+          "label": "CI_DEFAULT_BRANCH",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_2b974b65e891883a83ed",
+          "id": "wv_6edbb9657b2f755bf3f8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f83cf2846e344efb59c0"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_7011afc01c54c92702ea",
+          "kind": "control",
+          "label": null,
+          "to": "wv_875278a6e188f526c741"
+        },
+        {
+          "condition": true,
+          "from": "wv_c59b46c4d68f091c7fb1",
+          "id": "wv_7014cd1ee35af6285fd4",
+          "kind": "data",
+          "label": "CI_DEFAULT_BRANCH",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_7fab4285fc96b249fb3d",
+          "id": "wv_783f620e120fe16657ad",
+          "kind": "control",
+          "label": null,
+          "to": "wv_40c12373456e62981307"
+        },
+        {
+          "condition": true,
+          "from": "wv_a275853e90474fc9f424",
+          "id": "wv_7b6dcd1fae6cb6a0e36c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a86cbfa1488983436340"
+        },
+        {
+          "condition": true,
+          "from": "wv_1af6c42ea7a8d30932d7",
+          "id": "wv_7d17c0c10a6d96c3bf62",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_83f8c56131eccf1fc965"
+        },
+        {
+          "condition": true,
+          "from": "wv_e150d15aaecb4c55a96e",
+          "id": "wv_7d77686f5c7132352088",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_083305745bc6ddb03222"
+        },
+        {
+          "condition": true,
+          "from": "wv_f9fffe0a575187d19141",
+          "id": "wv_81184abaf357b919d076",
+          "kind": "data",
+          "label": "CI_PIPELINE_SOURCE",
+          "to": "wv_b87b226a12f4a9ea5b6b"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c82c965764bc74e6e",
+          "id": "wv_82895600693333961ae9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c9a0eb85605d9428e357"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0b330e8ec63c7ba9399",
+          "id": "wv_8bbdc64c4a3e66f2ff42",
+          "kind": "data",
+          "label": "GIT_CLEAN_FLAGS",
+          "to": "wv_72bae4ef287a9f82376e"
+        },
+        {
+          "condition": true,
+          "from": "wv_72bae4ef287a9f82376e",
+          "id": "wv_8efcdd050ac21a7cef90",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f79b212712c0f4fb3661"
+        },
+        {
+          "condition": true,
+          "from": "wv_72bae4ef287a9f82376e",
+          "id": "wv_91c29262e08d380f2b99",
+          "kind": "control",
+          "label": null,
+          "to": "wv_931f929ab258dcbcbcf7"
+        },
+        {
+          "condition": true,
+          "from": "wv_0d68b416065b876f9053",
+          "id": "wv_94c6b0ff70f0db94847d",
+          "kind": "data",
+          "label": "CI_DEFAULT_BRANCH",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_875278a6e188f526c741",
+          "id": "wv_95d2891c8ad1c4fe7bf1",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_24c3fd12b685b18d5b66"
+        },
+        {
+          "condition": true,
+          "from": "wv_875278a6e188f526c741",
+          "id": "wv_9ecaf2bc437b06b7d511",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7c3ff80b3b0f14aef13b"
+        },
+        {
+          "condition": true,
+          "from": "wv_083305745bc6ddb03222",
+          "id": "wv_9fadcb0382e3814d6ea9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f8a508a86bd5112945f9"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c82c965764bc74e6e",
+          "id": "wv_a3ff896e28295c50c145",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ff0c77d4b36584228123"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(CI_PIPELINE_SOURCE==\"push\")"
+          },
+          "from": "wv_b87b226a12f4a9ea5b6b",
+          "id": "wv_a4f5ebe584ea491e2059",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_ee60c0d598d4e51eeba9"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_a7a25f28aa694dbfa795",
+          "kind": "write",
+          "label": null,
+          "to": "wv_19f6784f028af05965ee"
+        },
+        {
+          "condition": true,
+          "from": "wv_72bae4ef287a9f82376e",
+          "id": "wv_a7bc722ab68c8aea3922",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2f22a2597ae79a664722"
+        },
+        {
+          "condition": true,
+          "from": "wv_7fab4285fc96b249fb3d",
+          "id": "wv_a8e5db1b5b968034c023",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_2d9a76f6807018280f0a"
+        },
+        {
+          "condition": true,
+          "from": "wv_4d8a85187a8e77823947",
+          "id": "wv_ab6a0f2e28bb555d9f48",
+          "kind": "control",
+          "label": null,
+          "to": "wv_124c82c965764bc74e6e"
+        },
+        {
+          "condition": true,
+          "from": "wv_e3126fb85686dbc0db46",
+          "id": "wv_ad57d394fa58e8775d1d",
+          "kind": "data",
+          "label": "PRE_COMMIT_HOME",
+          "to": "wv_72bae4ef287a9f82376e"
+        },
+        {
+          "condition": true,
+          "from": "wv_4c790f02757e5521c876",
+          "id": "wv_ad69dcb00dc1eda81f02",
+          "kind": "read",
+          "label": null,
+          "to": "wv_72bae4ef287a9f82376e"
+        },
+        {
+          "condition": true,
+          "from": "wv_7a1435452df6ff90715c",
+          "id": "wv_ae9d688b5b2b68e828c6",
+          "kind": "data",
+          "label": "CI_DEFAULT_BRANCH",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_aea2c8e65b0c44a154b0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_083305745bc6ddb03222"
+        },
+        {
+          "condition": true,
+          "from": "wv_24c3fd12b685b18d5b66",
+          "id": "wv_af89e0bc7283a1164e60",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1af6c42ea7a8d30932d7"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_b13067775a09fb353bc5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_24c3fd12b685b18d5b66"
+        },
+        {
+          "condition": true,
+          "from": "wv_13bcf60442ab0fd70f23",
+          "id": "wv_b2ac8131122338468621",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e150d15aaecb4c55a96e"
+        },
+        {
+          "condition": true,
+          "from": "wv_b88392c30d56a510cc48",
+          "id": "wv_b369a72033fd485f46f7",
+          "kind": "data",
+          "label": "CI_DEFAULT_BRANCH",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_c9a0eb85605d9428e357",
+          "id": "wv_b4f49931df5ad3089282",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_4978f6d3bcdc85500960"
+        },
+        {
+          "condition": true,
+          "from": "wv_4d8a85187a8e77823947",
+          "id": "wv_b84139e40bcbc0213467",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_7dea9602e3f976167f16"
+        },
+        {
+          "condition": true,
+          "from": "wv_10076bf9c116d70b8340",
+          "id": "wv_b883e3da674ba72f29f8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2d03565eee6314e69913"
+        },
+        {
+          "condition": true,
+          "from": "wv_2d9a76f6807018280f0a",
+          "id": "wv_be2461fa71669d760d29",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7a591833239408b67761"
+        },
+        {
+          "condition": true,
+          "from": "wv_d8c9554a22627d734662",
+          "id": "wv_bfee3c5b14fe8ccc66f7",
+          "kind": "data",
+          "label": "CI_COMMIT_REF_NAME",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_3d61151e3c8a13a45c60",
+          "id": "wv_c0015aaa7f944471d46e",
+          "kind": "write",
+          "label": null,
+          "to": "wv_a9c565a3ab4d55a9b5ed"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_c0ef8bfaba1c8b508d88",
+          "kind": "control",
+          "label": null,
+          "to": "wv_83f8c56131eccf1fc965"
+        },
+        {
+          "condition": true,
+          "from": "wv_e52e98d095f9f3a1cbe2",
+          "id": "wv_cae42c14a4255b425bb9",
+          "kind": "data",
+          "label": "CI_DEFAULT_BRANCH",
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_13bcf60442ab0fd70f23",
+          "id": "wv_ce25f34d97e10dc0b395",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cd823000a2307e601800"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_cf62c7f8878fc0389840",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a275853e90474fc9f424"
+        },
+        {
+          "condition": true,
+          "from": "wv_1af6c42ea7a8d30932d7",
+          "id": "wv_cff75caf761b2553104d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a342a1e16bd95ee87a0f"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c82c965764bc74e6e",
+          "id": "wv_d2bc1a834cedce9cff25",
+          "kind": "control",
+          "label": null,
+          "to": "wv_4978f6d3bcdc85500960"
+        },
+        {
+          "condition": true,
+          "from": "wv_931f929ab258dcbcbcf7",
+          "id": "wv_d42da45661ece74125ec",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8f141f00dd03b352cc1e"
+        },
+        {
+          "condition": true,
+          "from": "wv_e150d15aaecb4c55a96e",
+          "id": "wv_d9e56a4594d826d1e9b5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fef8b7395dbf4a16c775"
+        },
+        {
+          "condition": true,
+          "from": "wv_10076bf9c116d70b8340",
+          "id": "wv_da27c615786bddd40d74",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ff0c77d4b36584228123"
+        },
+        {
+          "condition": true,
+          "from": "wv_83f8c56131eccf1fc965",
+          "id": "wv_df363f67d17a8583bf03",
+          "kind": "control",
+          "label": null,
+          "to": "wv_facc389a0866eafa3bc5"
+        },
+        {
+          "condition": true,
+          "from": "wv_f79b212712c0f4fb3661",
+          "id": "wv_e1e636ba53cf9cb58b3f",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_7fab4285fc96b249fb3d"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c82c965764bc74e6e",
+          "id": "wv_e5b8ba672252cb8d9746",
+          "kind": "control",
+          "label": "needs",
+          "to": "wv_e15677066ab568e9e45d"
+        },
+        {
+          "condition": true,
+          "from": "wv_6d56fa6cf2a32621ec1f",
+          "id": "wv_ee72355017710768d281",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a275853e90474fc9f424"
+        },
+        {
+          "condition": true,
+          "from": "wv_72bae4ef287a9f82376e",
+          "id": "wv_f0ff48164cc22f76ac1e",
+          "kind": "control",
+          "label": "needs",
+          "to": "wv_3d61151e3c8a13a45c60"
+        },
+        {
+          "condition": true,
+          "from": "wv_4978f6d3bcdc85500960",
+          "id": "wv_f11332eb84934ebef9fa",
+          "kind": "control",
+          "label": null,
+          "to": "wv_1f008e10211c68cf65f3"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_fa86c79980305351d57c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bbc77ae70894770b775c"
+        },
+        {
+          "condition": true,
+          "from": "wv_e15677066ab568e9e45d",
+          "id": "wv_fb083722a3ffac781d00",
+          "kind": "write",
+          "label": null,
+          "to": "wv_49b3ff3540095e4a63cd"
+        },
+        {
+          "condition": true,
+          "from": "wv_6d56fa6cf2a32621ec1f",
+          "id": "wv_fd161f186905c38840f8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b1b59c07b1834ca6ae40"
+        }
+      ],
+      "entrypoints": [
+        "wv_b87b226a12f4a9ea5b6b"
+      ],
+      "nodes": [
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_083305745bc6ddb03222",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4206,
+              "column": 7,
+              "line": 140
+            },
+            "stop": {
+              "byte": 4231,
+              "column": 32,
+              "line": 140
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1361,
+                      "column": 182,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1378,
+                      "column": 199,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_DEFAULT_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0d68b416065b876f9053",
+          "kind": "resource",
+          "name": "CI_DEFAULT_BRANCH",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1361,
+              "column": 182,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1378,
+              "column": 199,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_10076bf9c116d70b8340",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1046,
+              "column": 7,
+              "line": 39
+            },
+            "stop": {
+              "byte": 1086,
+              "column": 47,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_124c82c965764bc74e6e",
+          "kind": "job",
+          "name": "auto_merge_main",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 992,
+              "column": 1,
+              "line": 36
+            },
+            "stop": {
+              "byte": 2248,
+              "column": 12,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_13bcf60442ab0fd70f23",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4089,
+              "column": 7,
+              "line": 138
+            },
+            "stop": {
+              "byte": 4112,
+              "column": 30,
+              "line": 138
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_19f6784f028af05965ee",
+          "kind": "resource",
+          "name": "cache:build_docs",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 5012,
+              "column": 7,
+              "line": 153
+            },
+            "stop": {
+              "byte": 5167,
+              "column": 21,
+              "line": 159
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1af6c42ea7a8d30932d7",
+          "kind": "step",
+          "name": "script:7",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4463,
+              "column": 7,
+              "line": 145
+            },
+            "stop": {
+              "byte": 4470,
+              "column": 14,
+              "line": 145
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_REF_NAME",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1625,
+                      "column": 446,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1643,
+                      "column": 464,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1266,
+                      "column": 87,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1283,
+                      "column": 104,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1361,
+                      "column": 182,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1378,
+                      "column": 199,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1437,
+                      "column": 258,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1454,
+                      "column": 275,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1534,
+                      "column": 355,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1551,
+                      "column": 372,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1601,
+                      "column": 422,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1618,
+                      "column": 439,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1757,
+                      "column": 578,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1774,
+                      "column": 595,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1898,
+                      "column": 719,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1915,
+                      "column": 736,
+                      "line": 43
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1186,
+                      "column": 7,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 2210,
+                      "column": 9,
+                      "line": 67
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_REF_NAME",
+                  "CI_DEFAULT_BRANCH",
+                  "echo \"Attempting to merge latest main into current branch...\"\ngit fetch origin $CI_DEFAULT_BRANCH\n\n# Check if we're already up to date\nif git merge-base --is-ancestor origin/$CI_DEFAULT_BRANCH HEAD; then\n  echo \"✅ Branch is already up to date with $CI_DEFAULT_BRANCH\"\n  exit 0\nfi\n\n# Attempt to merge main into current branch\nif git merge origin/$CI_DEFAULT_BRANCH --no-edit; then\n  echo \"✅ Successfully merged $CI_DEFAULT_BRANCH into $CI_COMMIT_REF_NAME\"\n  echo \"No conflicts detected - pipeline will continue\"\nelse\n  echo \"❌ MERGE CONFLICTS detected when merging $CI_DEFAULT_BRANCH\"\n  echo \"Manual intervention required to resolve conflicts\"\n  echo \"Please:\"\n  echo \"1. Pull latest main: git pull origin $CI_DEFAULT_BRANCH\"\n  echo \"2. Resolve conflicts manually\"\n  echo \"3. Commit the resolution\"\n  echo \"4. Push to trigger pipeline again\"\n  git merge --abort\n  exit 1\nfi\n"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_1f008e10211c68cf65f3",
+          "kind": "command",
+          "name": "echo \"Attempting to merge latest main into current branch...\"\ngit fetch origin $CI_DEFAULT_BRANCH\n\n# Check if we're already up to date\nif git merge-base --is-ancestor origin/$CI_DEFAULT_BRANCH HEAD; then\n  echo \"✅ Branch is already up to date with $CI_DEFAULT_BRANCH\"\n  exit 0\nfi\n\n# Attempt to merge main into current branch\nif git merge origin/$CI_DEFAULT_BRANCH --no-edit; then\n  echo \"✅ Successfully merged $CI_DEFAULT_BRANCH into $CI_COMMIT_REF_NAME\"\n  echo \"No conflicts detected - pipeline will continue\"\nelse\n  echo \"❌ MERGE CONFLICTS detected when merging $CI_DEFAULT_BRANCH\"\n  echo \"Manual intervention required to resolve conflicts\"\n  echo \"Please:\"\n  echo \"1. Pull latest main: git pull origin $CI_DEFAULT_BRANCH\"\n  echo \"2. Resolve conflicts manually\"\n  echo \"3. Commit the resolution\"\n  echo \"4. Push to trigger pipeline again\"\n  git merge --abort\n  exit 1\nfi\n",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1186,
+              "column": 7,
+              "line": 43
+            },
+            "stop": {
+              "byte": 2210,
+              "column": 9,
+              "line": 67
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_24c3fd12b685b18d5b66",
+          "kind": "step",
+          "name": "script:6",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4303,
+              "column": 7,
+              "line": 143
+            },
+            "stop": {
+              "byte": 4315,
+              "column": 19,
+              "line": 143
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4065,
+                      "column": 7,
+                      "line": 137
+                    },
+                    "stop": {
+                      "byte": 4082,
+                      "column": 24,
+                      "line": 137
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "apt-get update -y"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2ad41b7fe42a8737a546",
+          "kind": "command",
+          "name": "apt-get update -y",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4065,
+              "column": 7,
+              "line": 137
+            },
+            "stop": {
+              "byte": 4082,
+              "column": 24,
+              "line": 137
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2b974b65e891883a83ed",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3337,
+              "column": 7,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3377,
+              "column": 47,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1046,
+                      "column": 7,
+                      "line": 39
+                    },
+                    "stop": {
+                      "byte": 1086,
+                      "column": 47,
+                      "line": 39
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "apt-get update && apt-get install -y git"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2d03565eee6314e69913",
+          "kind": "command",
+          "name": "apt-get update && apt-get install -y git",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1046,
+              "column": 7,
+              "line": 39
+            },
+            "stop": {
+              "byte": 1086,
+              "column": 47,
+              "line": 39
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2d9a76f6807018280f0a",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2463,
+              "column": 7,
+              "line": 80
+            },
+            "stop": {
+              "byte": 2497,
+              "column": 41,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2f22a2597ae79a664722",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2840,
+              "column": 7,
+              "line": 90
+            },
+            "stop": {
+              "byte": 2894,
+              "column": 61,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3d61151e3c8a13a45c60",
+          "kind": "job",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3268,
+              "column": 1,
+              "line": 106
+            },
+            "stop": {
+              "byte": 3822,
+              "column": 21,
+              "line": 129
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2443,
+                      "column": 7,
+                      "line": 79
+                    },
+                    "stop": {
+                      "byte": 2456,
+                      "column": 20,
+                      "line": 79
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "rm -rf .pixi/"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_40c12373456e62981307",
+          "kind": "command",
+          "name": "rm -rf .pixi/",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2443,
+              "column": 7,
+              "line": 79
+            },
+            "stop": {
+              "byte": 2456,
+              "column": 20,
+              "line": 79
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4303,
+                      "column": 7,
+                      "line": 143
+                    },
+                    "stop": {
+                      "byte": 4315,
+                      "column": 19,
+                      "line": 143
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pixi install"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_42abb69e299a75a53eeb",
+          "kind": "command",
+          "name": "pixi install",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4303,
+              "column": 7,
+              "line": 143
+            },
+            "stop": {
+              "byte": 4315,
+              "column": 19,
+              "line": 143
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4978f6d3bcdc85500960",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1186,
+              "column": 7,
+              "line": 43
+            },
+            "stop": {
+              "byte": 2210,
+              "column": 9,
+              "line": 67
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_49b3ff3540095e4a63cd",
+          "kind": "resource",
+          "name": "artifact:build_docs",
+          "phase": "post",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 5229,
+              "column": 5,
+              "line": 161
+            },
+            "stop": {
+              "byte": 5277,
+              "column": 22,
+              "line": 163
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_4c790f02757e5521c876",
+          "kind": "resource",
+          "name": "cache:pre_commit",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2906,
+              "column": 3,
+              "line": 92
+            },
+            "stop": {
+              "byte": 3184,
+              "column": 22,
+              "line": 101
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4d8a85187a8e77823947",
+          "kind": "stage",
+          "name": "sync",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 399,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 467,
+              "column": 11,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2396,
+                      "column": 7,
+                      "line": 78
+                    },
+                    "stop": {
+                      "byte": 2436,
+                      "column": 47,
+                      "line": 78
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "apt-get update && apt-get install -y git"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_4eb4cad3cbc34ca4283f",
+          "kind": "command",
+          "name": "apt-get update && apt-get install -y git",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2396,
+              "column": 7,
+              "line": 78
+            },
+            "stop": {
+              "byte": 2436,
+              "column": 47,
+              "line": 78
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_655a6370646fc30c0ae6",
+          "kind": "resource",
+          "name": "template:.default_rules",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 485,
+              "column": 17,
+              "line": 24
+            },
+            "stop": {
+              "byte": 782,
+              "column": 82,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6d56fa6cf2a32621ec1f",
+          "kind": "step",
+          "name": "script:9",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4840,
+              "column": 7,
+              "line": 150
+            },
+            "stop": {
+              "byte": 4871,
+              "column": 38,
+              "line": 150
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1757,
+                      "column": 578,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1774,
+                      "column": 595,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_DEFAULT_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6f587f577199b69b7b34",
+          "kind": "resource",
+          "name": "CI_DEFAULT_BRANCH",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1757,
+              "column": 578,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1774,
+              "column": 595,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_715155e2cf9bcadcdc20",
+          "kind": "call",
+          "name": "ghcr.io/prefix-dev/pixi:latest",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3860,
+              "column": 10,
+              "line": 133
+            },
+            "stop": {
+              "byte": 3890,
+              "column": 40,
+              "line": 133
+            }
+          },
+          "unknown": {
+            "detail": "ghcr.io/prefix-dev/pixi:latest",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_72bae4ef287a9f82376e",
+          "kind": "job",
+          "name": "pre_commit",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2250,
+              "column": 1,
+              "line": 72
+            },
+            "stop": {
+              "byte": 3266,
+              "column": 21,
+              "line": 104
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1601,
+                      "column": 422,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1618,
+                      "column": 439,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_DEFAULT_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7a1435452df6ff90715c",
+          "kind": "resource",
+          "name": "CI_DEFAULT_BRANCH",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1601,
+              "column": 422,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1618,
+              "column": 439,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2463,
+                      "column": 7,
+                      "line": 80
+                    },
+                    "stop": {
+                      "byte": 2497,
+                      "column": 41,
+                      "line": 80
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"--- Checking Disk Space ---\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_7a591833239408b67761",
+          "kind": "command",
+          "name": "echo \"--- Checking Disk Space ---\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2463,
+              "column": 7,
+              "line": 80
+            },
+            "stop": {
+              "byte": 2497,
+              "column": 41,
+              "line": 80
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2840,
+                      "column": 7,
+                      "line": 90
+                    },
+                    "stop": {
+                      "byte": 2894,
+                      "column": 61,
+                      "line": 90
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pixi run --environment lint pre-commit run --all-files"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_7b57493d38d687b4abf3",
+          "kind": "command",
+          "name": "pixi run --environment lint pre-commit run --all-files",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2840,
+              "column": 7,
+              "line": 90
+            },
+            "stop": {
+              "byte": 2894,
+              "column": 61,
+              "line": 90
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4264,
+                      "column": 7,
+                      "line": 141
+                    },
+                    "stop": {
+                      "byte": 4286,
+                      "column": 29,
+                      "line": 141
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "apt-get install -y git"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_7c3ff80b3b0f14aef13b",
+          "kind": "command",
+          "name": "apt-get install -y git",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4264,
+              "column": 7,
+              "line": 141
+            },
+            "stop": {
+              "byte": 4286,
+              "column": 29,
+              "line": 141
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7dea9602e3f976167f16",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 399,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 467,
+              "column": 11,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7fab4285fc96b249fb3d",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2443,
+              "column": 7,
+              "line": 79
+            },
+            "stop": {
+              "byte": 2456,
+              "column": 20,
+              "line": 79
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8259229473e58f054b95",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 399,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 467,
+              "column": 11,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_83f8c56131eccf1fc965",
+          "kind": "step",
+          "name": "script:8",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4512,
+              "column": 7,
+              "line": 146
+            },
+            "stop": {
+              "byte": 4523,
+              "column": 18,
+              "line": 146
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_875278a6e188f526c741",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4264,
+              "column": 7,
+              "line": 141
+            },
+            "stop": {
+              "byte": 4286,
+              "column": 29,
+              "line": 141
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 2504,
+                      "column": 7,
+                      "line": 81
+                    },
+                    "stop": {
+                      "byte": 2509,
+                      "column": 12,
+                      "line": 81
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "df -h"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_8f141f00dd03b352cc1e",
+          "kind": "command",
+          "name": "df -h",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2504,
+              "column": 7,
+              "line": 81
+            },
+            "stop": {
+              "byte": 2509,
+              "column": 12,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_931f929ab258dcbcbcf7",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2504,
+              "column": 7,
+              "line": 81
+            },
+            "stop": {
+              "byte": 2509,
+              "column": 12,
+              "line": 81
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_96638d6bcde08a195743",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 399,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 467,
+              "column": 11,
+              "line": 22
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a275853e90474fc9f424",
+          "kind": "step",
+          "name": "script:10",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4878,
+              "column": 7,
+              "line": 151
+            },
+            "stop": {
+              "byte": 4891,
+              "column": 20,
+              "line": 151
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4463,
+                      "column": 7,
+                      "line": 145
+                    },
+                    "stop": {
+                      "byte": 4470,
+                      "column": 14,
+                      "line": 145
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "cd Docs"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a342a1e16bd95ee87a0f",
+          "kind": "command",
+          "name": "cd Docs",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4463,
+              "column": 7,
+              "line": 145
+            },
+            "stop": {
+              "byte": 4470,
+              "column": 14,
+              "line": 145
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4878,
+                      "column": 7,
+                      "line": 151
+                    },
+                    "stop": {
+                      "byte": 4891,
+                      "column": 20,
+                      "line": 151
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm run build"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_a86cbfa1488983436340",
+          "kind": "command",
+          "name": "npm run build",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4878,
+              "column": 7,
+              "line": 151
+            },
+            "stop": {
+              "byte": 4891,
+              "column": 20,
+              "line": 151
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_a9c565a3ab4d55a9b5ed",
+          "kind": "resource",
+          "name": "cache:test",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3494,
+              "column": 7,
+              "line": 115
+            },
+            "stop": {
+              "byte": 3654,
+              "column": 26,
+              "line": 121
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b0b330e8ec63c7ba9399",
+          "kind": "resource",
+          "name": "variable:GIT_CLEAN_FLAGS",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2350,
+              "column": 5,
+              "line": 76
+            },
+            "stop": {
+              "byte": 2372,
+              "column": 27,
+              "line": 76
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4840,
+                      "column": 7,
+                      "line": 150
+                    },
+                    "stop": {
+                      "byte": 4871,
+                      "column": 38,
+                      "line": 150
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pixi run bash build-api-docs.sh"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_b1b59c07b1834ca6ae40",
+          "kind": "command",
+          "name": "pixi run bash build-api-docs.sh",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4840,
+              "column": 7,
+              "line": 150
+            },
+            "stop": {
+              "byte": 4871,
+              "column": 38,
+              "line": 150
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 214,
+                      "column": 11,
+                      "line": 8
+                    },
+                    "stop": {
+                      "byte": 243,
+                      "column": 40,
+                      "line": 8
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "$CI_PIPELINE_SOURCE == \"push\""
+                ]
+              }
+            },
+            "reference:CI_PIPELINE_SOURCE": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_PIPELINE_SOURCE",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 214,
+                      "column": 11,
+                      "line": 8
+                    },
+                    "stop": {
+                      "byte": 233,
+                      "column": 30,
+                      "line": 8
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_PIPELINE_SOURCE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(CI_PIPELINE_SOURCE==\"push\")"
+          },
+          "effects": [],
+          "id": "wv_b87b226a12f4a9ea5b6b",
+          "kind": "gate",
+          "name": "workflow-rule:GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 214,
+              "column": 11,
+              "line": 8
+            },
+            "stop": {
+              "byte": 243,
+              "column": 40,
+              "line": 8
+            }
+          },
+          "unknown": {
+            "detail": "CI_PIPELINE_SOURCE is unavailable during compile",
+            "kind": "phase_unavailable"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1534,
+                      "column": 355,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1551,
+                      "column": 372,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_DEFAULT_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b88392c30d56a510cc48",
+          "kind": "resource",
+          "name": "CI_DEFAULT_BRANCH",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1534,
+              "column": 355,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1551,
+              "column": 372,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bbc77ae70894770b775c",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4065,
+              "column": 7,
+              "line": 137
+            },
+            "stop": {
+              "byte": 4082,
+              "column": 24,
+              "line": 137
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 3337,
+                      "column": 7,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3377,
+                      "column": 47,
+                      "line": 111
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "apt-get update && apt-get install -y git"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c4ca18623cecafb5665f",
+          "kind": "command",
+          "name": "apt-get update && apt-get install -y git",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3337,
+              "column": 7,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3377,
+              "column": 47,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1437,
+                      "column": 258,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1454,
+                      "column": 275,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_DEFAULT_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c59b46c4d68f091c7fb1",
+          "kind": "resource",
+          "name": "CI_DEFAULT_BRANCH",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1437,
+              "column": 258,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1454,
+              "column": 275,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c9a0eb85605d9428e357",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1132,
+              "column": 7,
+              "line": 41
+            },
+            "stop": {
+              "byte": 1169,
+              "column": 44,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4089,
+                      "column": 7,
+                      "line": 138
+                    },
+                    "stop": {
+                      "byte": 4112,
+                      "column": 30,
+                      "line": 138
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "apt-get install -y curl"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_cd823000a2307e601800",
+          "kind": "command",
+          "name": "apt-get install -y curl",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4089,
+              "column": 7,
+              "line": 138
+            },
+            "stop": {
+              "byte": 4112,
+              "column": 30,
+              "line": 138
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1266,
+                      "column": 87,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1283,
+                      "column": 104,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_DEFAULT_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ce445cb0545e41175d34",
+          "kind": "resource",
+          "name": "CI_DEFAULT_BRANCH",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1266,
+              "column": 87,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1283,
+              "column": 104,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_REF_NAME",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1625,
+                      "column": 446,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1643,
+                      "column": 464,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_REF_NAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d8c9554a22627d734662",
+          "kind": "resource",
+          "name": "CI_COMMIT_REF_NAME",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1625,
+              "column": 446,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1643,
+              "column": 464,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1132,
+                      "column": 7,
+                      "line": 41
+                    },
+                    "stop": {
+                      "byte": 1169,
+                      "column": 44,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config user.email \"ci@gitlab.com\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_d9f937956decb7fa4152",
+          "kind": "command",
+          "name": "git config user.email \"ci@gitlab.com\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1132,
+              "column": 7,
+              "line": 41
+            },
+            "stop": {
+              "byte": 1169,
+              "column": 44,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e150d15aaecb4c55a96e",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4119,
+              "column": 7,
+              "line": 139
+            },
+            "stop": {
+              "byte": 4176,
+              "column": 64,
+              "line": 139
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e15677066ab568e9e45d",
+          "kind": "job",
+          "name": "build_docs",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3824,
+              "column": 1,
+              "line": 131
+            },
+            "stop": {
+              "byte": 5315,
+              "column": 18,
+              "line": 166
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e3126fb85686dbc0db46",
+          "kind": "resource",
+          "name": "variable:PRE_COMMIT_HOME",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2293,
+              "column": 5,
+              "line": 75
+            },
+            "stop": {
+              "byte": 2345,
+              "column": 57,
+              "line": 75
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1093,
+                      "column": 7,
+                      "line": 40
+                    },
+                    "stop": {
+                      "byte": 1125,
+                      "column": 39,
+                      "line": 40
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "git config user.name \"GitLab CI\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_e36c8ecc4e1b06e7e460",
+          "kind": "command",
+          "name": "git config user.name \"GitLab CI\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1093,
+              "column": 7,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1125,
+              "column": 39,
+              "line": 40
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_DEFAULT_BRANCH",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1898,
+                      "column": 719,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1915,
+                      "column": 736,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_DEFAULT_BRANCH"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e52e98d095f9f3a1cbe2",
+          "kind": "resource",
+          "name": "CI_DEFAULT_BRANCH",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1898,
+              "column": 719,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1915,
+              "column": 736,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ee60c0d598d4e51eeba9",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 142,
+              "column": 1,
+              "line": 5
+            },
+            "stop": {
+              "byte": 5504,
+              "column": 18,
+              "line": 180
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ef1e44963d08fcd8ea28",
+          "kind": "resource",
+          "name": "template:.docs_rules",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 797,
+              "column": 14,
+              "line": 31
+            },
+            "stop": {
+              "byte": 990,
+              "column": 84,
+              "line": 34
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f79b212712c0f4fb3661",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 2396,
+              "column": 7,
+              "line": 78
+            },
+            "stop": {
+              "byte": 2436,
+              "column": 47,
+              "line": 78
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "artifact_publish"
+          ],
+          "id": "wv_f7c54cd0781686507379",
+          "kind": "resource",
+          "name": "artifact:test",
+          "phase": "post",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3672,
+              "column": 5,
+              "line": 123
+            },
+            "stop": {
+              "byte": 3713,
+              "column": 17,
+              "line": 125
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f83cf2846e344efb59c0",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3394,
+              "column": 7,
+              "line": 113
+            },
+            "stop": {
+              "byte": 3478,
+              "column": 91,
+              "line": 113
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4206,
+                      "column": 7,
+                      "line": 140
+                    },
+                    "stop": {
+                      "byte": 4231,
+                      "column": 32,
+                      "line": 140
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "apt-get install -y nodejs"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_f8a508a86bd5112945f9",
+          "kind": "command",
+          "name": "apt-get install -y nodejs",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4206,
+              "column": 7,
+              "line": 140
+            },
+            "stop": {
+              "byte": 4231,
+              "column": 32,
+              "line": 140
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_PIPELINE_SOURCE",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 214,
+                      "column": 11,
+                      "line": 8
+                    },
+                    "stop": {
+                      "byte": 233,
+                      "column": 30,
+                      "line": 8
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_PIPELINE_SOURCE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f9fffe0a575187d19141",
+          "kind": "resource",
+          "name": "CI_PIPELINE_SOURCE",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 214,
+              "column": 11,
+              "line": 8
+            },
+            "stop": {
+              "byte": 233,
+              "column": 30,
+              "line": 8
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4512,
+                      "column": 7,
+                      "line": 146
+                    },
+                    "stop": {
+                      "byte": 4523,
+                      "column": 18,
+                      "line": 146
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "npm install"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_facc389a0866eafa3bc5",
+          "kind": "command",
+          "name": "npm install",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4512,
+              "column": 7,
+              "line": 146
+            },
+            "stop": {
+              "byte": 4523,
+              "column": 18,
+              "line": 146
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 3394,
+                      "column": 7,
+                      "line": 113
+                    },
+                    "stop": {
+                      "byte": 3478,
+                      "column": 91,
+                      "line": 113
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pixi run pytest -v -n auto --cov=windgym --cov-report=html:htmlcov --cov-report=term"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fbcecf5ec75e1b5638cb",
+          "kind": "command",
+          "name": "pixi run pytest -v -n auto --cov=windgym --cov-report=html:htmlcov --cov-report=term",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 3394,
+              "column": 7,
+              "line": 113
+            },
+            "stop": {
+              "byte": 3478,
+              "column": 91,
+              "line": 113
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 4119,
+                      "column": 7,
+                      "line": 139
+                    },
+                    "stop": {
+                      "byte": 4176,
+                      "column": 64,
+                      "line": 139
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "curl -fsSL https://deb.nodesource.com/setup_18.x | bash -"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_fef8b7395dbf4a16c775",
+          "kind": "command",
+          "name": "curl -fsSL https://deb.nodesource.com/setup_18.x | bash -",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 4119,
+              "column": 7,
+              "line": 139
+            },
+            "stop": {
+              "byte": 4176,
+              "column": 64,
+              "line": 139
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ff0c77d4b36584228123",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml",
+            "start": {
+              "byte": 1093,
+              "column": 7,
+              "line": 40
+            },
+            "stop": {
+              "byte": 1125,
+              "column": 39,
+              "line": 40
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:1c3c4d3e6c0d355fd89d323d42a82f0042619544a83ea5963e69cc7c32b86498",
+      "path": "gitlab/dtuwindenergy/windgym/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "ghcr.io/prefix-dev/pixi:latest",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

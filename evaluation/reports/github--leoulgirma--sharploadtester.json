@@ -1,0 +1,4705 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 636,
+            "column": 15,
+            "line": 31
+          },
+          "stop": {
+            "byte": 655,
+            "column": 34,
+            "line": 31
+          }
+        }
+      },
+      "id": "diag_0d3ad660f7751bd1c686",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 636,
+          "column": 15,
+          "line": 31
+        },
+        "stop": {
+          "byte": 655,
+          "column": 34,
+          "line": 31
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_782ae4b078813372c9ea",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 636,
+              "column": 15,
+              "line": 31
+            },
+            "stop": {
+              "byte": 655,
+              "column": 34,
+              "line": 31
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/setup-dotnet@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 700,
+            "column": 15,
+            "line": 34
+          },
+          "stop": {
+            "byte": 723,
+            "column": 38,
+            "line": 34
+          }
+        }
+      },
+      "id": "diag_f5c45e075f1c05dc3c4d",
+      "message": "dependency is not pinned to immutable content: actions/setup-dotnet@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 700,
+          "column": 15,
+          "line": 34
+        },
+        "stop": {
+          "byte": 723,
+          "column": 38,
+          "line": 34
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_c316486d4d558c208f7a",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 700,
+              "column": 15,
+              "line": 34
+            },
+            "stop": {
+              "byte": 723,
+              "column": 38,
+              "line": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/cache@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 822,
+            "column": 15,
+            "line": 39
+          },
+          "stop": {
+            "byte": 838,
+            "column": 31,
+            "line": 39
+          }
+        }
+      },
+      "id": "diag_5974b3984c7f6f02130a",
+      "message": "dependency is not pinned to immutable content: actions/cache@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 822,
+          "column": 15,
+          "line": 39
+        },
+        "stop": {
+          "byte": 838,
+          "column": 31,
+          "line": 39
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_3a9c4d40b2e9bac1633a",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 822,
+              "column": 15,
+              "line": 39
+            },
+            "stop": {
+              "byte": 838,
+              "column": 31,
+              "line": 39
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 1902,
+            "column": 14,
+            "line": 66
+          },
+          "stop": {
+            "byte": 2157,
+            "column": 1,
+            "line": 70
+          }
+        }
+      },
+      "id": "diag_f0e7edf125e9cd639b72",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 1902,
+          "column": 14,
+          "line": 66
+        },
+        "stop": {
+          "byte": 2157,
+          "column": 1,
+          "line": 70
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_24927f9ec7e111ed1f7b",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2005,
+              "column": 117,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2020,
+              "column": 132,
+              "line": 66
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_63e078e6473aa3f7dfdb",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1902,
+              "column": 14,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2157,
+              "column": 1,
+              "line": 70
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 2276,
+            "column": 14,
+            "line": 74
+          },
+          "stop": {
+            "byte": 2578,
+            "column": 1,
+            "line": 78
+          }
+        }
+      },
+      "id": "diag_c16bf6383a515ec2f820",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 2276,
+          "column": 14,
+          "line": 74
+        },
+        "stop": {
+          "byte": 2578,
+          "column": 1,
+          "line": 78
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_a80282eab1a873ac3de9",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2455,
+              "column": 193,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2470,
+              "column": 208,
+              "line": 74
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_cce84245ac680a13ad69",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2276,
+              "column": 14,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2578,
+              "column": 1,
+              "line": 78
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/upload-artifact@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 2636,
+            "column": 15,
+            "line": 80
+          },
+          "stop": {
+            "byte": 2662,
+            "column": 41,
+            "line": 80
+          }
+        }
+      },
+      "id": "diag_638ca0085e54497cb99c",
+      "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 2636,
+          "column": 15,
+          "line": 80
+        },
+        "stop": {
+          "byte": 2662,
+          "column": 41,
+          "line": 80
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_fd45752a70ab9b0b35aa",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2636,
+              "column": 15,
+              "line": 80
+            },
+            "stop": {
+              "byte": 2662,
+              "column": 41,
+              "line": 80
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/checkout@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 2999,
+            "column": 15,
+            "line": 95
+          },
+          "stop": {
+            "byte": 3018,
+            "column": 34,
+            "line": 95
+          }
+        }
+      },
+      "id": "diag_1c3033945e3defa6c1ae",
+      "message": "dependency is not pinned to immutable content: actions/checkout@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 2999,
+          "column": 15,
+          "line": 95
+        },
+        "stop": {
+          "byte": 3018,
+          "column": 34,
+          "line": 95
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_3adf05445608f1ed0a06",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2999,
+              "column": 15,
+              "line": 95
+            },
+            "stop": {
+              "byte": 3018,
+              "column": 34,
+              "line": 95
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/download-artifact@v4"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 3080,
+            "column": 15,
+            "line": 98
+          },
+          "stop": {
+            "byte": 3108,
+            "column": 43,
+            "line": 98
+          }
+        }
+      },
+      "id": "diag_298994291668910f6326",
+      "message": "dependency is not pinned to immutable content: actions/download-artifact@v4",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 3080,
+          "column": 15,
+          "line": 98
+        },
+        "stop": {
+          "byte": 3108,
+          "column": 43,
+          "line": 98
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_c46298f4779c23cfefbf",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3080,
+              "column": 15,
+              "line": 98
+            },
+            "stop": {
+              "byte": 3108,
+              "column": 43,
+              "line": 98
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "filesystem_read",
+        "filesystem_write",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "dominator set contains no Gate node"
+      ],
+      "fix": null,
+      "id": "diag_d28eb6db50b25586fe7d",
+      "message": "a privileged effect is reachable without a dominating authorization gate",
+      "rule_id": "WV-AUTH-001",
+      "severity": "error",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 3452,
+          "column": 14,
+          "line": 111
+        },
+        "stop": {
+          "byte": 4000,
+          "column": 15,
+          "line": 124
+        }
+      },
+      "trace": [
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_31ef259bd8a620a0ee49",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_b0774b8a64ed22ae859b",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2820,
+              "column": 3,
+              "line": 85
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_84e61b3d239b075df3f6",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3334,
+              "column": 9,
+              "line": 108
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          }
+        },
+        {
+          "label": "authorization bypass",
+          "node_id": "wv_036ba4b9640cae504a38",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3452,
+              "column": 14,
+              "line": 111
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          }
+        }
+      ]
+    },
+    {
+      "capabilities": [
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract trust = untrusted",
+        "script boundary = unquoted or provider-substituted"
+      ],
+      "fix": {
+        "description": "pass the value through an environment variable and quote it in the target shell",
+        "kind": "environment-boundary",
+        "replacement": null,
+        "span": {
+          "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+          "start": {
+            "byte": 3452,
+            "column": 14,
+            "line": 111
+          },
+          "stop": {
+            "byte": 4000,
+            "column": 15,
+            "line": 124
+          }
+        }
+      },
+      "id": "diag_887bb76b97fded6ba4fd",
+      "message": "untrusted workflow data reaches a shell command boundary",
+      "rule_id": "WV-SEC-001",
+      "severity": "error",
+      "span": {
+        "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+        "start": {
+          "byte": 3452,
+          "column": 14,
+          "line": 111
+        },
+        "stop": {
+          "byte": 4000,
+          "column": 15,
+          "line": 124
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node_id": "wv_13c5c00a19f030e76bd5",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3491,
+              "column": 53,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3506,
+              "column": 68,
+              "line": 111
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node_id": "wv_036ba4b9640cae504a38",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3452,
+              "column": 14,
+              "line": 111
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:946a926bbedade370ab85f561d9ae24a3bf0fdb0fcf237ff834b58654cedc701",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_879114ac621f184818be",
+          "id": "wv_009e9e87c5e1f52ecda8",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_63e078e6473aa3f7dfdb"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0774b8a64ed22ae859b",
+          "id": "wv_014da5a5ef72f56ce935",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f285877b046da7791932"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0774b8a64ed22ae859b",
+          "id": "wv_046c89fdeed87f236ff5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cf6c951beb77c2b519fc"
+        },
+        {
+          "condition": true,
+          "from": "wv_c575d77d5ecf7ecef84d",
+          "id": "wv_04d1d9225ce66292a161",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f37d584866f6c59729e8"
+        },
+        {
+          "condition": true,
+          "from": "wv_64e6240a03e57cc67b5b",
+          "id": "wv_0728d2733d9eb7971641",
+          "kind": "data",
+          "label": "runner.os",
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_0af28c3a7bf28544f46d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_170f26c09da75a0179f5"
+        },
+        {
+          "condition": true,
+          "from": "wv_472c211eac67eb9565f2",
+          "id": "wv_0cd302c5544c28799f24",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_036ba4b9640cae504a38"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c4584d2fb5f1afaa4",
+          "id": "wv_0ceaaeb8e09b971bcb13",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_cf6c951beb77c2b519fc"
+        },
+        {
+          "condition": true,
+          "from": "wv_d7569f1ebed0460c1cb7",
+          "id": "wv_1318ba297627de0abb9f",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_63e078e6473aa3f7dfdb"
+        },
+        {
+          "condition": true,
+          "from": "wv_170f26c09da75a0179f5",
+          "id": "wv_133e9b111380cde4d3d8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_c575d77d5ecf7ecef84d"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0774b8a64ed22ae859b",
+          "id": "wv_15ed8b6f84fe41287903",
+          "kind": "control",
+          "label": null,
+          "to": "wv_84e61b3d239b075df3f6"
+        },
+        {
+          "condition": true,
+          "from": "wv_b6b3116439cc11acfc62",
+          "id": "wv_18a6844f3f388e73930a",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_35fd3452fbb3cc277acf"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_250ae66190a72d78b969",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f2aef833af13a372319d"
+        },
+        {
+          "condition": true,
+          "from": "wv_b0774b8a64ed22ae859b",
+          "id": "wv_28e29fa8f4e5dd87e5a9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_124c4584d2fb5f1afaa4"
+        },
+        {
+          "condition": true,
+          "from": "wv_a80282eab1a873ac3de9",
+          "id": "wv_29cafdc1b68accd8ae50",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_cce84245ac680a13ad69"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf6c951beb77c2b519fc",
+          "id": "wv_2c51430092b6f597fdd0",
+          "kind": "control",
+          "label": null,
+          "to": "wv_2561d92323adfabfefaa"
+        },
+        {
+          "condition": true,
+          "from": "wv_f285877b046da7791932",
+          "id": "wv_2c7630f8638c0b904bcb",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3adf05445608f1ed0a06"
+        },
+        {
+          "condition": true,
+          "from": "wv_1d9c7189103ad9662264",
+          "id": "wv_2dfdc5f7309434c12598",
+          "kind": "data",
+          "label": ".nuget",
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": true,
+          "from": "wv_9fb024ead4fc0250f160",
+          "id": "wv_2f155cb730d9e5a743d6",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f2aef833af13a372319d"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_343076a91dcf6aaf214b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f9172b717cf946aa6b8a"
+        },
+        {
+          "condition": true,
+          "from": "wv_6bd43890911a6f62f7a6",
+          "id": "wv_39ecdb2a4d6697106a3c",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_036ba4b9640cae504a38"
+        },
+        {
+          "condition": true,
+          "from": "wv_84e61b3d239b075df3f6",
+          "id": "wv_3a63c1127233dba8508e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_036ba4b9640cae504a38"
+        },
+        {
+          "condition": true,
+          "from": "wv_99e25b8809e209729423",
+          "id": "wv_3bc30aa3ab8d49d3eed6",
+          "kind": "data",
+          "label": "matrix.os",
+          "to": "wv_299cd4175eccc8bc00e6"
+        },
+        {
+          "condition": true,
+          "from": "wv_31ef259bd8a620a0ee49",
+          "id": "wv_3cd23063b73bcf96a7f8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cf534ab7a417443c867b"
+        },
+        {
+          "condition": true,
+          "from": "wv_f37d584866f6c59729e8",
+          "id": "wv_3e9f036c8f055b3fc83b",
+          "kind": "control",
+          "label": null,
+          "to": "wv_35fd3452fbb3cc277acf"
+        },
+        {
+          "condition": true,
+          "from": "wv_31ef259bd8a620a0ee49",
+          "id": "wv_4e19a721cabbd44b67b7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_b0774b8a64ed22ae859b"
+        },
+        {
+          "condition": true,
+          "from": "wv_4020409f6a1323a07ca5",
+          "id": "wv_50d55b69f50db5099b73",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_fd45752a70ab9b0b35aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c4584d2fb5f1afaa4",
+          "id": "wv_51856154908afff56e23",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c46298f4779c23cfefbf"
+        },
+        {
+          "condition": true,
+          "from": "wv_170f26c09da75a0179f5",
+          "id": "wv_529d24195242ceae7320",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_534a44d750646d8523f7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c575d77d5ecf7ecef84d"
+        },
+        {
+          "condition": true,
+          "from": "wv_8f09aae19572b389178b",
+          "id": "wv_55737cf108ca664fc37c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_cce84245ac680a13ad69"
+        },
+        {
+          "condition": true,
+          "from": "wv_1c42613cadc5e99071a0",
+          "id": "wv_5c55231500749c36cb0d",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_35fd3452fbb3cc277acf"
+        },
+        {
+          "condition": true,
+          "from": "wv_307f6aa2398f18c2bd77",
+          "id": "wv_5d12f6e003923fba2c8a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_f9172b717cf946aa6b8a"
+        },
+        {
+          "condition": true,
+          "from": "wv_9bae297cdb71afcdb6ca",
+          "id": "wv_654ad71c5fb54e50b112",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_cce84245ac680a13ad69"
+        },
+        {
+          "condition": true,
+          "from": "wv_5e65e601b8470f52965b",
+          "id": "wv_664e84b4bdd474ea8a2e",
+          "kind": "data",
+          "label": "runner.os",
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": true,
+          "from": "wv_72429173e8a3bc037fe3",
+          "id": "wv_706369f09ee20196b00d",
+          "kind": "data",
+          "label": "matrix.os",
+          "to": "wv_f9172b717cf946aa6b8a"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_719a5c5497f9e0fdb047",
+          "kind": "control",
+          "label": null,
+          "to": "wv_239f4a98a96f40a353d6"
+        },
+        {
+          "condition": true,
+          "from": "wv_11c7c7d4d14aab514c13",
+          "id": "wv_781941344612243971df",
+          "kind": "data",
+          "label": ".csproj",
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": true,
+          "from": "wv_a6b24ca03ea36ff64f26",
+          "id": "wv_7c2c5ca69f47e6dc7804",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_036ba4b9640cae504a38"
+        },
+        {
+          "condition": true,
+          "from": "wv_f37d584866f6c59729e8",
+          "id": "wv_80596ebc36b1b05f82b2",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_299cd4175eccc8bc00e6"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_8105025a96dacdd72e4e",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9fb024ead4fc0250f160"
+        },
+        {
+          "condition": true,
+          "from": "wv_436db2cd407bdff4c1ba",
+          "id": "wv_8215ebcf8d49dcdbdcad",
+          "kind": "control",
+          "label": null,
+          "to": "wv_31ef259bd8a620a0ee49"
+        },
+        {
+          "condition": true,
+          "from": "wv_ddff16b6744fdcaf515a",
+          "id": "wv_8227cb2a891ff59c5940",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_fd45752a70ab9b0b35aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_bb9f3022f885daaee2c4",
+          "id": "wv_83bcae30b9c4e6167e1d",
+          "kind": "data",
+          "label": "secrets.GITHUB_TOKEN",
+          "to": "wv_c9b3d7565484f13dbafc"
+        },
+        {
+          "condition": true,
+          "from": "wv_239f4a98a96f40a353d6",
+          "id": "wv_84a193695663fa26b782",
+          "kind": "call",
+          "label": null,
+          "to": "wv_fd45752a70ab9b0b35aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_22e50a2cdb9fc44c6a60",
+          "id": "wv_8570d33e66dc36da6240",
+          "kind": "data",
+          "label": "include",
+          "to": "wv_cf534ab7a417443c867b"
+        },
+        {
+          "condition": true,
+          "from": "wv_307f6aa2398f18c2bd77",
+          "id": "wv_86a87cfdfb365e672130",
+          "kind": "control",
+          "label": null,
+          "to": "wv_63e078e6473aa3f7dfdb"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf6c951beb77c2b519fc",
+          "id": "wv_871ee2ee2c8916ed171c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_84e61b3d239b075df3f6"
+        },
+        {
+          "condition": true,
+          "from": "wv_239f4a98a96f40a353d6",
+          "id": "wv_9007845adb97767199b9",
+          "kind": "control",
+          "label": null,
+          "to": "wv_fd45752a70ab9b0b35aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_124c4584d2fb5f1afaa4",
+          "id": "wv_922992f3a87b71910f0f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c46298f4779c23cfefbf"
+        },
+        {
+          "condition": true,
+          "from": "wv_4ad4ca4ea78351eba774",
+          "id": "wv_9414ff8a8d09a41c5a58",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_036ba4b9640cae504a38"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_96a5e559fb577b36bfc7",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f37d584866f6c59729e8"
+        },
+        {
+          "condition": true,
+          "from": "wv_99298a58b691f7f08c32",
+          "id": "wv_9c98e021925e53502366",
+          "kind": "control",
+          "label": null,
+          "to": "wv_31ef259bd8a620a0ee49"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(matrix.os!=\"windows-latest\")"
+          },
+          "from": "wv_299cd4175eccc8bc00e6",
+          "id": "wv_9cb3c4553211bfac771f",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_307f6aa2398f18c2bd77"
+        },
+        {
+          "condition": true,
+          "from": "wv_52f3a0a2cfd1a1a77124",
+          "id": "wv_a092953059360de6598a",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_cce84245ac680a13ad69"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_a194c96c3daefd8eeb3e",
+          "kind": "control",
+          "label": "needs",
+          "to": "wv_b0774b8a64ed22ae859b"
+        },
+        {
+          "condition": true,
+          "from": "wv_13c5c00a19f030e76bd5",
+          "id": "wv_a1efa9b79ba49d74130e",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_036ba4b9640cae504a38"
+        },
+        {
+          "condition": true,
+          "from": "wv_f2aef833af13a372319d",
+          "id": "wv_a7227dccc010438887b9",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_170f26c09da75a0179f5"
+        },
+        {
+          "condition": true,
+          "from": "wv_dac1721876f550eba88b",
+          "id": "wv_b23a4756d1e7a46f10d8",
+          "kind": "data",
+          "label": "runner.os",
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": true,
+          "from": "wv_c575d77d5ecf7ecef84d",
+          "id": "wv_b51cae749da116075954",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9d3ea754fc8e10c685ce"
+        },
+        {
+          "condition": true,
+          "from": "wv_f2aef833af13a372319d",
+          "id": "wv_b8921e298d0d49085f0f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c316486d4d558c208f7a"
+        },
+        {
+          "condition": true,
+          "from": "wv_9fb024ead4fc0250f160",
+          "id": "wv_b9e85322eaef59a5b43a",
+          "kind": "call",
+          "label": null,
+          "to": "wv_782ae4b078813372c9ea"
+        },
+        {
+          "condition": true,
+          "from": "wv_c9b3d7565484f13dbafc",
+          "id": "wv_c611d89bb875b6b9e418",
+          "kind": "data",
+          "label": "GITHUB_TOKEN",
+          "to": "wv_036ba4b9640cae504a38"
+        },
+        {
+          "condition": true,
+          "from": "wv_d597476bdf5983e81bf4",
+          "id": "wv_c9010b19713347078a8a",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_cce84245ac680a13ad69"
+        },
+        {
+          "condition": true,
+          "from": "wv_cf534ab7a417443c867b",
+          "id": "wv_ca651e6a11114f3e3514",
+          "kind": "control",
+          "label": null,
+          "to": "wv_299cd4175eccc8bc00e6"
+        },
+        {
+          "condition": true,
+          "from": "wv_2f17d90d2ea331d4e7a4",
+          "id": "wv_cdb0b82f09c05605f9a3",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_35fd3452fbb3cc277acf"
+        },
+        {
+          "condition": true,
+          "from": "wv_7cf8faa7ad687aeee9a2",
+          "id": "wv_cea334edbe3eb8207df3",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_63e078e6473aa3f7dfdb"
+        },
+        {
+          "condition": true,
+          "from": "wv_170f26c09da75a0179f5",
+          "id": "wv_d55001723903711ba045",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(matrix.os==\"windows-latest\")"
+          },
+          "from": "wv_f9172b717cf946aa6b8a",
+          "id": "wv_d88fcdb0ab0c590b82ad",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_8f09aae19572b389178b"
+        },
+        {
+          "condition": true,
+          "from": "wv_8f09aae19572b389178b",
+          "id": "wv_d8ba62f8d7e5cd349a0a",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_239f4a98a96f40a353d6"
+        },
+        {
+          "condition": true,
+          "from": "wv_9fb024ead4fc0250f160",
+          "id": "wv_dafa0f420efe4e1435be",
+          "kind": "control",
+          "label": null,
+          "to": "wv_782ae4b078813372c9ea"
+        },
+        {
+          "condition": true,
+          "from": "wv_100174326b031277250a",
+          "id": "wv_e4400636580d1cd4ab91",
+          "kind": "data",
+          "label": ".nuget",
+          "to": "wv_3a9c4d40b2e9bac1633a"
+        },
+        {
+          "condition": true,
+          "from": "wv_f285877b046da7791932",
+          "id": "wv_eb1d7d9e3ec22f9f85a8",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_124c4584d2fb5f1afaa4"
+        },
+        {
+          "condition": true,
+          "from": "wv_58a641dbe9a64ada7c87",
+          "id": "wv_f10ae57e17b27f1cee39",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_fd45752a70ab9b0b35aa"
+        },
+        {
+          "condition": true,
+          "from": "wv_f2aef833af13a372319d",
+          "id": "wv_f3f83c43cfb40ae4c62c",
+          "kind": "call",
+          "label": null,
+          "to": "wv_c316486d4d558c208f7a"
+        },
+        {
+          "condition": true,
+          "from": "wv_24927f9ec7e111ed1f7b",
+          "id": "wv_f4aeb363373266e9f5d5",
+          "kind": "data",
+          "label": "github.ref_name",
+          "to": "wv_63e078e6473aa3f7dfdb"
+        },
+        {
+          "condition": true,
+          "from": "wv_f285877b046da7791932",
+          "id": "wv_f64580b2d015d1e2833c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3adf05445608f1ed0a06"
+        },
+        {
+          "condition": true,
+          "from": "wv_31e77d71b0157473b37b",
+          "id": "wv_fdf0fa6f93a5ac45ba34",
+          "kind": "data",
+          "label": "matrix.runtime",
+          "to": "wv_35fd3452fbb3cc277acf"
+        }
+      ],
+      "entrypoints": [
+        "wv_31ef259bd8a620a0ee49"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3491,
+                      "column": 53,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3506,
+                      "column": 68,
+                      "line": 111
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3535,
+                      "column": 97,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3550,
+                      "column": 112,
+                      "line": 111
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3594,
+                      "column": 156,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3609,
+                      "column": 171,
+                      "line": 111
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3711,
+                      "column": 273,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3726,
+                      "column": 288,
+                      "line": 111
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3828,
+                      "column": 390,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3843,
+                      "column": 405,
+                      "line": 111
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3452,
+                      "column": 14,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 4000,
+                      "column": 15,
+                      "line": 124
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "# Create release\ngh release create ${{ github.ref_name }} \\\n  --title \"Release ${{ github.ref_name }}\" \\\n  --notes \"Automated release for ${{ github.ref_name }}\" \\\n  --latest\n\n# Upload all ZIP files as assets\nfor zip_file in ./artifacts/*/SharpLoadTester-${{ github.ref_name }}-*.zip; do\n  if [ -f \"$zip_file\" ]; then\n    echo \"Uploading: $zip_file\"\n    gh release upload ${{ github.ref_name }} \"$zip_file\" --clobber\n  fi\ndone\n",
+                  "github.ref_name"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_036ba4b9640cae504a38",
+          "kind": "command",
+          "name": "# Create release\ngh release create ${{ github.ref_name }} \\\n  --title \"Release ${{ github.ref_name }}\" \\\n  --notes \"Automated release for ${{ github.ref_name }}\" \\\n  --latest\n\n# Upload all ZIP files as assets\nfor zip_file in ./artifacts/*/SharpLoadTester-${{ github.ref_name }}-*.zip; do\n  if [ -f \"$zip_file\" ]; then\n    echo \"Uploading: $zip_file\"\n    gh release upload ${{ github.ref_name }} \"$zip_file\" --clobber\n  fi\ndone\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3452,
+              "column": 14,
+              "line": 111
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": ".nuget",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 948,
+                      "column": 96,
+                      "line": 41
+                    },
+                    "stop": {
+                      "byte": 954,
+                      "column": 102,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  ".nuget"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_100174326b031277250a",
+          "kind": "resource",
+          "name": ".nuget",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 948,
+              "column": 96,
+              "line": 41
+            },
+            "stop": {
+              "byte": 954,
+              "column": 102,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": ".csproj",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1025,
+                      "column": 58,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 1032,
+                      "column": 65,
+                      "line": 42
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  ".csproj"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_11c7c7d4d14aab514c13",
+          "kind": "resource",
+          "name": ".csproj",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1025,
+              "column": 58,
+              "line": 42
+            },
+            "stop": {
+              "byte": 1032,
+              "column": 65,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_124c4584d2fb5f1afaa4",
+          "kind": "step",
+          "name": "Download all artifact ZIP files",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3028,
+              "column": 9,
+              "line": 97
+            },
+            "stop": {
+              "byte": 3150,
+              "column": 28,
+              "line": 100
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3491,
+                      "column": 53,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3506,
+                      "column": 68,
+                      "line": 111
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_13c5c00a19f030e76bd5",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3491,
+              "column": 53,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3506,
+              "column": 68,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_170f26c09da75a0179f5",
+          "kind": "step",
+          "name": "Cache NuGet packages",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 781,
+              "column": 9,
+              "line": 38
+            },
+            "stop": {
+              "byte": 1100,
+              "column": 1,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1653,
+                      "column": 248,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1667,
+                      "column": 262,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1c42613cadc5e99071a0",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1653,
+              "column": 248,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1667,
+              "column": 262,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": ".nuget",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 924,
+                      "column": 72,
+                      "line": 41
+                    },
+                    "stop": {
+                      "byte": 930,
+                      "column": 78,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  ".nuget"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1d9c7189103ad9662264",
+          "kind": "resource",
+          "name": ".nuget",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 924,
+              "column": 72,
+              "line": 41
+            },
+            "stop": {
+              "byte": 930,
+              "column": 78,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [],
+              "secrecy": {
+                "reasons": [
+                  {
+                    "detail": "include",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "trust": {
+                "reasons": [
+                  {
+                    "detail": "include",
+                    "kind": "dynamic_string"
+                  }
+                ],
+                "state": "unknown"
+              },
+              "type": "dynamic",
+              "value": {
+                "unknown": [
+                  {
+                    "detail": "include",
+                    "kind": "dynamic_string"
+                  }
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_22e50a2cdb9fc44c6a60",
+          "kind": "parameter",
+          "name": "matrix.include",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 334,
+              "column": 9,
+              "line": 19
+            },
+            "stop": {
+              "byte": 581,
+              "column": 31,
+              "line": 27
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_239f4a98a96f40a353d6",
+          "kind": "step",
+          "name": "Upload binaries as artifacts",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2587,
+              "column": 9,
+              "line": 79
+            },
+            "stop": {
+              "byte": 2816,
+              "column": 93,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2005,
+                      "column": 117,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 2020,
+                      "column": 132,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_24927f9ec7e111ed1f7b",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2005,
+              "column": 117,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2020,
+              "column": 132,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3205,
+                      "column": 14,
+                      "line": 103
+                    },
+                    "stop": {
+                      "byte": 3325,
+                      "column": 1,
+                      "line": 107
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"Downloaded artifacts:\"\nfind ./artifacts -name \"*.zip\" -type f\nls -la ./artifacts/\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_2561d92323adfabfefaa",
+          "kind": "command",
+          "name": "echo \"Downloaded artifacts:\"\nfind ./artifacts -name \"*.zip\" -type f\nls -la ./artifacts/\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3205,
+              "column": 14,
+              "line": 103
+            },
+            "stop": {
+              "byte": 3325,
+              "column": 1,
+              "line": 107
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1839,
+                      "column": 13,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 1868,
+                      "column": 42,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.os != 'windows-latest'"
+                ]
+              }
+            },
+            "reference:matrix.os": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.os",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1839,
+                      "column": 13,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 1848,
+                      "column": 22,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(matrix.os!=\"windows-latest\")"
+          },
+          "effects": [],
+          "id": "wv_299cd4175eccc8bc00e6",
+          "kind": "gate",
+          "name": "if:build:Create zip archive",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1839,
+              "column": 13,
+              "line": 64
+            },
+            "stop": {
+              "byte": 1868,
+              "column": 42,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1528,
+                      "column": 123,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1542,
+                      "column": 137,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2f17d90d2ea331d4e7a4",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1528,
+              "column": 123,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1542,
+              "column": 137,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_307f6aa2398f18c2bd77",
+          "kind": "step",
+          "name": "Create zip archive",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1802,
+              "column": 9,
+              "line": 63
+            },
+            "stop": {
+              "byte": 2157,
+              "column": 1,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1451,
+                      "column": 46,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1465,
+                      "column": 60,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_31e77d71b0157473b37b",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1451,
+              "column": 46,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1465,
+              "column": 60,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_31ef259bd8a620a0ee49",
+          "kind": "workflow",
+          "name": "Release Workflow",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1451,
+                      "column": 46,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1465,
+                      "column": 60,
+                      "line": 57
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1528,
+                      "column": 123,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1542,
+                      "column": 137,
+                      "line": 57
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1653,
+                      "column": 248,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1667,
+                      "column": 262,
+                      "line": 57
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1733,
+                      "column": 328,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1747,
+                      "column": 342,
+                      "line": 57
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1419,
+                      "column": 14,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1793,
+                      "column": 1,
+                      "line": 62
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"Building for runtime: ${{ matrix.runtime }}\"\ndotnet publish ./SharpLoadTester.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishTrimmed=true -p:TrimMode=link -p:PublishSingleFile=true -o ./artifacts/${{ matrix.runtime }}\necho \"Contents of the build directory:\"\nls -R ./artifacts/${{ matrix.runtime }}\n",
+                  "matrix.runtime"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "default"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_35fd3452fbb3cc277acf",
+          "kind": "command",
+          "name": "echo \"Building for runtime: ${{ matrix.runtime }}\"\ndotnet publish ./SharpLoadTester.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishTrimmed=true -p:TrimMode=link -p:PublishSingleFile=true -o ./artifacts/${{ matrix.runtime }}\necho \"Contents of the build directory:\"\nls -R ./artifacts/${{ matrix.runtime }}\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1419,
+              "column": 14,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1793,
+              "column": 1,
+              "line": 62
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "cache_read",
+            "cache_write"
+          ],
+          "condition": true,
+          "effects": [
+            "cache_publish"
+          ],
+          "id": "wv_3a9c4d40b2e9bac1633a",
+          "kind": "call",
+          "name": "actions/cache@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 822,
+              "column": 15,
+              "line": 39
+            },
+            "stop": {
+              "byte": 838,
+              "column": 31,
+              "line": 39
+            }
+          },
+          "unknown": {
+            "detail": "actions/cache@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_3adf05445608f1ed0a06",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2999,
+              "column": 15,
+              "line": 95
+            },
+            "stop": {
+              "byte": 3018,
+              "column": 34,
+              "line": 95
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2706,
+                      "column": 30,
+                      "line": 82
+                    },
+                    "stop": {
+                      "byte": 2720,
+                      "column": 44,
+                      "line": 82
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4020409f6a1323a07ca5",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2706,
+              "column": 30,
+              "line": 82
+            },
+            "stop": {
+              "byte": 2720,
+              "column": 44,
+              "line": 82
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_436db2cd407bdff4c1ba",
+          "kind": "trigger",
+          "name": "workflow_dispatch",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 103,
+              "column": 3,
+              "line": 7
+            },
+            "stop": {
+              "byte": 121,
+              "column": 21,
+              "line": 7
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3535,
+                      "column": 97,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3550,
+                      "column": 112,
+                      "line": 111
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_472c211eac67eb9565f2",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3535,
+              "column": 97,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3550,
+              "column": 112,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3711,
+                      "column": 273,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3726,
+                      "column": 288,
+                      "line": 111
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4ad4ca4ea78351eba774",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3711,
+              "column": 273,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3726,
+              "column": 288,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2478,
+                      "column": 216,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2492,
+                      "column": 230,
+                      "line": 74
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_52f3a0a2cfd1a1a77124",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2478,
+              "column": 216,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2492,
+              "column": 230,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2795,
+                      "column": 72,
+                      "line": 83
+                    },
+                    "stop": {
+                      "byte": 2809,
+                      "column": 86,
+                      "line": 83
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_58a641dbe9a64ada7c87",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2795,
+              "column": 72,
+              "line": 83
+            },
+            "stop": {
+              "byte": 2809,
+              "column": 86,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "runner.os",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 987,
+                      "column": 20,
+                      "line": 42
+                    },
+                    "stop": {
+                      "byte": 996,
+                      "column": 29,
+                      "line": 42
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "runner.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5e65e601b8470f52965b",
+          "kind": "resource",
+          "name": "runner.os",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 987,
+              "column": 20,
+              "line": 42
+            },
+            "stop": {
+              "byte": 996,
+              "column": 29,
+              "line": 42
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2005,
+                      "column": 117,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 2020,
+                      "column": 132,
+                      "line": 66
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1946,
+                      "column": 58,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 1960,
+                      "column": 72,
+                      "line": 66
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2028,
+                      "column": 140,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 2042,
+                      "column": 154,
+                      "line": 66
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2067,
+                      "column": 179,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 2081,
+                      "column": 193,
+                      "line": 66
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1902,
+                      "column": 14,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 2157,
+                      "column": 1,
+                      "line": 70
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"Creating zip archive for runtime: ${{ matrix.runtime }}\"\nzip -j \"./artifacts/SharpLoadTester-${{ github.ref_name }}-${{ matrix.runtime }}.zip\" ./artifacts/${{ matrix.runtime }}/*\necho \"Successfully created zip file.\"\n",
+                  "github.ref_name",
+                  "matrix.runtime"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bash"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_63e078e6473aa3f7dfdb",
+          "kind": "command",
+          "name": "echo \"Creating zip archive for runtime: ${{ matrix.runtime }}\"\nzip -j \"./artifacts/SharpLoadTester-${{ github.ref_name }}-${{ matrix.runtime }}.zip\" ./artifacts/${{ matrix.runtime }}/*\necho \"Successfully created zip file.\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1902,
+              "column": 14,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2157,
+              "column": 1,
+              "line": 70
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "runner.os",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 873,
+                      "column": 21,
+                      "line": 41
+                    },
+                    "stop": {
+                      "byte": 882,
+                      "column": 30,
+                      "line": 41
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "runner.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_64e6240a03e57cc67b5b",
+          "kind": "resource",
+          "name": "runner.os",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 873,
+              "column": 21,
+              "line": 41
+            },
+            "stop": {
+              "byte": 882,
+              "column": 30,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3594,
+                      "column": 156,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3609,
+                      "column": 171,
+                      "line": 111
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6bd43890911a6f62f7a6",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3594,
+              "column": 156,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3609,
+              "column": 171,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.os",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2213,
+                      "column": 13,
+                      "line": 72
+                    },
+                    "stop": {
+                      "byte": 2222,
+                      "column": 22,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_72429173e8a3bc037fe3",
+          "kind": "resource",
+          "name": "matrix.os",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2213,
+              "column": 13,
+              "line": 72
+            },
+            "stop": {
+              "byte": 2222,
+              "column": 22,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_read",
+            "filesystem_write"
+          ],
+          "condition": true,
+          "effects": [
+            "file_write"
+          ],
+          "id": "wv_782ae4b078813372c9ea",
+          "kind": "call",
+          "name": "actions/checkout@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 636,
+              "column": 15,
+              "line": 31
+            },
+            "stop": {
+              "byte": 655,
+              "column": 34,
+              "line": 31
+            }
+          },
+          "unknown": {
+            "detail": "actions/checkout@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1946,
+                      "column": 58,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 1960,
+                      "column": 72,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7cf8faa7ad687aeee9a2",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1946,
+              "column": 58,
+              "line": 66
+            },
+            "stop": {
+              "byte": 1960,
+              "column": 72,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_84e61b3d239b075df3f6",
+          "kind": "step",
+          "name": "Create GitHub Release with assets",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3334,
+              "column": 9,
+              "line": 108
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2028,
+                      "column": 140,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 2042,
+                      "column": 154,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_879114ac621f184818be",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2028,
+              "column": 140,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2042,
+              "column": 154,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_8f09aae19572b389178b",
+          "kind": "step",
+          "name": "Create zip archive (Windows)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2166,
+              "column": 9,
+              "line": 71
+            },
+            "stop": {
+              "byte": 2578,
+              "column": 1,
+              "line": 78
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_99298a58b691f7f08c32",
+          "kind": "trigger",
+          "name": "push",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 30,
+              "column": 3,
+              "line": 4
+            },
+            "stop": {
+              "byte": 62,
+              "column": 17,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.os",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1839,
+                      "column": 13,
+                      "line": 64
+                    },
+                    "stop": {
+                      "byte": 1848,
+                      "column": 22,
+                      "line": 64
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_99e25b8809e209729423",
+          "kind": "resource",
+          "name": "matrix.os",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1839,
+              "column": 13,
+              "line": 64
+            },
+            "stop": {
+              "byte": 1848,
+              "column": 22,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2328,
+                      "column": 66,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2342,
+                      "column": 80,
+                      "line": 74
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9bae297cdb71afcdb6ca",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2328,
+              "column": 66,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2342,
+              "column": 80,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1180,
+                      "column": 14,
+                      "line": 48
+                    },
+                    "stop": {
+                      "byte": 1362,
+                      "column": 1,
+                      "line": 55
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "set -e\nfor i in {1..5}; do\n  dotnet restore && break\n  echo \"Restore failed, retrying in 10 seconds...\"\n  sleep 10\ndone\n"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "bash"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9d3ea754fc8e10c685ce",
+          "kind": "command",
+          "name": "set -e\nfor i in {1..5}; do\n  dotnet restore && break\n  echo \"Restore failed, retrying in 10 seconds...\"\n  sleep 10\ndone\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1180,
+              "column": 14,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1362,
+              "column": 1,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9fb024ead4fc0250f160",
+          "kind": "step",
+          "name": "Checkout code",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 602,
+              "column": 9,
+              "line": 30
+            },
+            "stop": {
+              "byte": 655,
+              "column": 34,
+              "line": 31
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3828,
+                      "column": 390,
+                      "line": 111
+                    },
+                    "stop": {
+                      "byte": 3843,
+                      "column": 405,
+                      "line": 111
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a6b24ca03ea36ff64f26",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3828,
+              "column": 390,
+              "line": 111
+            },
+            "stop": {
+              "byte": 3843,
+              "column": 405,
+              "line": 111
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2455,
+                      "column": 193,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2470,
+                      "column": 208,
+                      "line": 74
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a80282eab1a873ac3de9",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2455,
+              "column": 193,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2470,
+              "column": 208,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b0774b8a64ed22ae859b",
+          "kind": "job",
+          "name": "release",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2820,
+              "column": 3,
+              "line": 85
+            },
+            "stop": {
+              "byte": 4000,
+              "column": 15,
+              "line": 124
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1733,
+                      "column": 328,
+                      "line": 57
+                    },
+                    "stop": {
+                      "byte": 1747,
+                      "column": 342,
+                      "line": 57
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b6b3116439cc11acfc62",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1733,
+              "column": 328,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1747,
+              "column": 342,
+              "line": 57
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "secrets.GITHUB_TOKEN",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 3415,
+                      "column": 29,
+                      "line": 110
+                    },
+                    "stop": {
+                      "byte": 3435,
+                      "column": 49,
+                      "line": 110
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "secrets.GITHUB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_bb9f3022f885daaee2c4",
+          "kind": "resource",
+          "name": "secrets.GITHUB_TOKEN",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3415,
+              "column": 29,
+              "line": 110
+            },
+            "stop": {
+              "byte": 3435,
+              "column": 49,
+              "line": 110
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c316486d4d558c208f7a",
+          "kind": "call",
+          "name": "actions/setup-dotnet@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 700,
+              "column": 15,
+              "line": 34
+            },
+            "stop": {
+              "byte": 723,
+              "column": 38,
+              "line": 34
+            }
+          },
+          "unknown": {
+            "detail": "actions/setup-dotnet@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "filesystem_write",
+            "artifact_read"
+          ],
+          "condition": true,
+          "effects": [
+            "network_request",
+            "file_write"
+          ],
+          "id": "wv_c46298f4779c23cfefbf",
+          "kind": "call",
+          "name": "actions/download-artifact@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3080,
+              "column": 15,
+              "line": 98
+            },
+            "stop": {
+              "byte": 3108,
+              "column": 43,
+              "line": 98
+            }
+          },
+          "unknown": {
+            "detail": "actions/download-artifact@v4",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c575d77d5ecf7ecef84d",
+          "kind": "step",
+          "name": "Restore dependencies with retry",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1109,
+              "column": 9,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1362,
+              "column": 1,
+              "line": 55
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "environment.name": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "GITHUB_TOKEN"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c9b3d7565484f13dbafc",
+          "kind": "resource",
+          "name": "env:GITHUB_TOKEN",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3397,
+              "column": 11,
+              "line": 110
+            },
+            "stop": {
+              "byte": 3438,
+              "column": 52,
+              "line": 110
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2455,
+                      "column": 193,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2470,
+                      "column": 208,
+                      "line": 74
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2328,
+                      "column": 66,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2342,
+                      "column": 80,
+                      "line": 74
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2386,
+                      "column": 124,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2400,
+                      "column": 138,
+                      "line": 74
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2478,
+                      "column": 216,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2492,
+                      "column": 230,
+                      "line": 74
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2276,
+                      "column": 14,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2578,
+                      "column": 1,
+                      "line": 78
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "Write-Output \"Creating zip archive for runtime: ${{ matrix.runtime }}\"\nCompress-Archive -Path ./artifacts/${{ matrix.runtime }}\\* -DestinationPath ./artifacts/SharpLoadTester-${{ github.ref_name }}-${{ matrix.runtime }}.zip\nWrite-Output \"Successfully created zip file.\"\n",
+                  "github.ref_name",
+                  "matrix.runtime"
+                ]
+              }
+            },
+            "shell": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "pwsh"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_cce84245ac680a13ad69",
+          "kind": "command",
+          "name": "Write-Output \"Creating zip archive for runtime: ${{ matrix.runtime }}\"\nCompress-Archive -Path ./artifacts/${{ matrix.runtime }}\\* -DestinationPath ./artifacts/SharpLoadTester-${{ github.ref_name }}-${{ matrix.runtime }}.zip\nWrite-Output \"Successfully created zip file.\"\n",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2276,
+              "column": 14,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2578,
+              "column": 1,
+              "line": 78
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "repository_write",
+            "token_write"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cf534ab7a417443c867b",
+          "kind": "job",
+          "name": "build",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 232,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 2816,
+              "column": 93,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_cf6c951beb77c2b519fc",
+          "kind": "step",
+          "name": "List downloaded artifacts",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 3160,
+              "column": 9,
+              "line": 102
+            },
+            "stop": {
+              "byte": 3325,
+              "column": 1,
+              "line": 107
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2386,
+                      "column": 124,
+                      "line": 74
+                    },
+                    "stop": {
+                      "byte": 2400,
+                      "column": 138,
+                      "line": 74
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d597476bdf5983e81bf4",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2386,
+              "column": 124,
+              "line": 74
+            },
+            "stop": {
+              "byte": 2400,
+              "column": 138,
+              "line": 74
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.runtime",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2067,
+                      "column": 179,
+                      "line": 66
+                    },
+                    "stop": {
+                      "byte": 2081,
+                      "column": 193,
+                      "line": 66
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.runtime"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d7569f1ebed0460c1cb7",
+          "kind": "resource",
+          "name": "matrix.runtime",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2067,
+              "column": 179,
+              "line": 66
+            },
+            "stop": {
+              "byte": 2081,
+              "column": 193,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "runner.os",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 1066,
+                      "column": 29,
+                      "line": 43
+                    },
+                    "stop": {
+                      "byte": 1075,
+                      "column": 38,
+                      "line": 43
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "runner.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_dac1721876f550eba88b",
+          "kind": "resource",
+          "name": "runner.os",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1066,
+              "column": 29,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1075,
+              "column": 38,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.ref_name",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2772,
+                      "column": 49,
+                      "line": 83
+                    },
+                    "stop": {
+                      "byte": 2787,
+                      "column": 64,
+                      "line": 83
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.ref_name"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ddff16b6744fdcaf515a",
+          "kind": "resource",
+          "name": "github.ref_name",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2772,
+              "column": 49,
+              "line": 83
+            },
+            "stop": {
+              "byte": 2787,
+              "column": 64,
+              "line": 83
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f285877b046da7791932",
+          "kind": "step",
+          "name": "Checkout code",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2965,
+              "column": 9,
+              "line": 94
+            },
+            "stop": {
+              "byte": 3018,
+              "column": 34,
+              "line": 95
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f2aef833af13a372319d",
+          "kind": "step",
+          "name": "Setup .NET SDK",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 665,
+              "column": 9,
+              "line": 33
+            },
+            "stop": {
+              "byte": 771,
+              "column": 34,
+              "line": 36
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f37d584866f6c59729e8",
+          "kind": "step",
+          "name": "Build single file executable",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 1371,
+              "column": 9,
+              "line": 56
+            },
+            "stop": {
+              "byte": 1793,
+              "column": 1,
+              "line": 62
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2213,
+                      "column": 13,
+                      "line": 72
+                    },
+                    "stop": {
+                      "byte": 2242,
+                      "column": 42,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.os == 'windows-latest'"
+                ]
+              }
+            },
+            "reference:matrix.os": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "matrix.os",
+                  "span": {
+                    "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+                    "start": {
+                      "byte": 2213,
+                      "column": 13,
+                      "line": 72
+                    },
+                    "stop": {
+                      "byte": 2222,
+                      "column": 22,
+                      "line": 72
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "matrix.os"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(matrix.os==\"windows-latest\")"
+          },
+          "effects": [],
+          "id": "wv_f9172b717cf946aa6b8a",
+          "kind": "gate",
+          "name": "if:build:Create zip archive (Windows)",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2213,
+              "column": 13,
+              "line": 72
+            },
+            "stop": {
+              "byte": 2242,
+              "column": 42,
+              "line": 72
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network",
+            "filesystem_read",
+            "artifact_write"
+          ],
+          "condition": true,
+          "effects": [
+            "network_request",
+            "artifact_publish"
+          ],
+          "id": "wv_fd45752a70ab9b0b35aa",
+          "kind": "call",
+          "name": "actions/upload-artifact@v4",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/leoulgirma/sharploadtester/.github/workflows/release.yml",
+            "start": {
+              "byte": 2636,
+              "column": 15,
+              "line": 80
+            },
+            "stop": {
+              "byte": 2662,
+              "column": 41,
+              "line": 80
+            }
+          },
+          "unknown": {
+            "detail": "actions/upload-artifact@v4",
+            "kind": "unresolved_dependency"
+          }
+        }
+      ],
+      "provider": "github",
+      "source": "github/leoulgirma/sharploadtester/.github/workflows/release.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:b5115fc23b40c05a5211a6b27f05c0852ddbc36124489eb703816742234a45d7",
+      "path": "github/leoulgirma/sharploadtester/.github/workflows/release.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "shell default",
+          "kind": "unsupported_syntax"
+        },
+        {
+          "detail": "actions/download-artifact@v4",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "actions/setup-dotnet@v4",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "actions/upload-artifact@v4",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 10,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

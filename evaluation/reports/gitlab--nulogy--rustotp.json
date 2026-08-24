@@ -1,0 +1,555 @@
+{
+  "diagnostics": [],
+  "digest": "sha256:d1e4fb17cb3c102a1192f9c437bfa57b83ec0c710a7433ca7ed7f5f0077990f0",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_112f13d73cb8a2c53730",
+          "id": "wv_014b6c04ef4fa7e80ac5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_179b88a12d674676db63"
+        },
+        {
+          "condition": true,
+          "from": "wv_e760417e1e542b718c18",
+          "id": "wv_2c2a3e9e43706f485a15",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_a507e46467c8b45df67a"
+        },
+        {
+          "condition": true,
+          "from": "wv_89ae4808f60edf75fb88",
+          "id": "wv_2d40981b8a91e7625f8c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_9075c1f244d035681085"
+        },
+        {
+          "condition": true,
+          "from": "wv_67c8b16d3cd627b9113b",
+          "id": "wv_3696808424300a32f734",
+          "kind": "control",
+          "label": null,
+          "to": "wv_89ae4808f60edf75fb88"
+        },
+        {
+          "condition": true,
+          "from": "wv_a507e46467c8b45df67a",
+          "id": "wv_54851c08327f1b425eed",
+          "kind": "control",
+          "label": null,
+          "to": "wv_67c8b16d3cd627b9113b"
+        },
+        {
+          "condition": true,
+          "from": "wv_112f13d73cb8a2c53730",
+          "id": "wv_64b966a7dfa971843149",
+          "kind": "call",
+          "label": null,
+          "to": "wv_179b88a12d674676db63"
+        },
+        {
+          "condition": true,
+          "from": "wv_112f13d73cb8a2c53730",
+          "id": "wv_6d96da5b7a0d1b4c90b3",
+          "kind": "control",
+          "label": null,
+          "to": "wv_06f50abbb4eee5b48528"
+        },
+        {
+          "condition": true,
+          "from": "wv_6b4f30f767f3954193ae",
+          "id": "wv_81de7dee066d3a8a6a9c",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e760417e1e542b718c18"
+        },
+        {
+          "condition": true,
+          "from": "wv_06f50abbb4eee5b48528",
+          "id": "wv_99400dda00d0620f0705",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_1f2c6cc00ceb5139b1ab"
+        },
+        {
+          "condition": true,
+          "from": "wv_1f2c6cc00ceb5139b1ab",
+          "id": "wv_b4f43412fb340f509267",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_6b4f30f767f3954193ae"
+        }
+      ],
+      "entrypoints": [
+        "wv_112f13d73cb8a2c53730"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_06f50abbb4eee5b48528",
+          "kind": "stage",
+          "name": ".post",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_112f13d73cb8a2c53730",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_179b88a12d674676db63",
+          "kind": "call",
+          "name": "jimmycuadra/rust",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 7,
+              "column": 8,
+              "line": 1
+            },
+            "stop": {
+              "byte": 23,
+              "column": 24,
+              "line": 1
+            }
+          },
+          "unknown": {
+            "detail": "jimmycuadra/rust",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_1f2c6cc00ceb5139b1ab",
+          "kind": "stage",
+          "name": ".pre",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_67c8b16d3cd627b9113b",
+          "kind": "job",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 25,
+              "column": 1,
+              "line": 3
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "2"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6b4f30f767f3954193ae",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_89ae4808f60edf75fb88",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 7,
+              "line": 5
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 47,
+                      "column": 7,
+                      "line": 5
+                    },
+                    "stop": {
+                      "byte": 63,
+                      "column": 23,
+                      "line": 5
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "cargo test --all"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_9075c1f244d035681085",
+          "kind": "command",
+          "name": "cargo test --all",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 47,
+              "column": 7,
+              "line": 5
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "4"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_a507e46467c8b45df67a",
+          "kind": "stage",
+          "name": "test",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "3"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e760417e1e542b718c18",
+          "kind": "stage",
+          "name": "deploy",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/nulogy/rustotp/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 63,
+              "column": 23,
+              "line": 5
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/nulogy/rustotp/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:4a8028592bdb2fa9295d6ab836ebc3cbe7f4eb51aff13d8e7998caa677b2d29b",
+      "path": "gitlab/nulogy/rustotp/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "jimmycuadra/rust",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 0,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

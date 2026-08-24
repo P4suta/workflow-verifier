@@ -5,6 +5,11 @@ exception Failed of string
 let fail format = Printf.ksprintf (fun value -> raise (Failed value)) format
 let expect message condition = if not condition then fail "%s" message
 
+let lockfile entries =
+  match Lockfile.create entries with
+  | Ok lock -> lock
+  | Error message -> fail "%s" message
+
 let string_value ?(trust = Abstract_value.Trusted) value =
   Abstract_value.string_constant value ~trust ~secrecy:Abstract_value.Public
     ~provenance:[ { origin = "fixture"; span = Span.none; operation = "test" } ]
@@ -174,11 +179,45 @@ let lock_and_resolver_integrity_test () =
     }
   in
   let result =
-    Resolver.resolve ~network:(Some network) ~lock:(Lockfile.make [])
-      [ dependency ]
+    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty [ dependency ]
   in
   expect "mutable fetched revisions never enter the lock" (result.locked = []);
   expect "resolver exposes the integrity failure" (result.errors <> [])
+
+let resolver_rejects_invalid_lock_entry_test () =
+  let dependency =
+    {
+      Frontend_intf.provider = Ir.Github;
+      kind = Action;
+      reference = "owner/action@v1";
+      locator = Direct_reference;
+      span = Span.none;
+      mutability = Mutable;
+      status = Unresolved (Unknown.Unresolved_dependency "owner/action@v1");
+    }
+  in
+  let network =
+    {
+      Resolver.fetch =
+        (fun _ ->
+          Ok
+            {
+              Resolver.revision = String.make 40 'a';
+              content = "payload";
+              source = "";
+              semantic_source = None;
+            });
+    }
+  in
+  let result =
+    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty [ dependency ]
+  in
+  expect
+    "invalid fetched entries remain unresolved without escaping an exception"
+    (result.locked = []
+    && result.unresolved = [ dependency ]
+    && result.errors <> []
+    && result.lockfile.entries = [])
 
 let semantic_program_diff_test () =
   let safe = node "echo safe" in
@@ -282,14 +321,21 @@ let incremental_cache_test () =
   expect "cache key is order independent" (first = reordered);
   expect "cache key includes configuration" (first <> changed);
   let entry =
-    Incremental_cache.make ~key:first ~exit_code:1
-      ~report:"{\"schema\":\"report-v1\"}\n"
+    match
+      Incremental_cache.create ~key:first ~exit_code:1
+        ~report:"{\"schema\":\"report-v1\"}\n"
+    with
+    | Ok entry -> entry
+    | Error message -> fail "%s" message
   in
   let bytes = Incremental_cache.to_canonical_json entry in
   expect "cache entries round trip with integrity"
     (match Incremental_cache.parse bytes with
     | Ok parsed -> parsed.key = first && parsed.report = entry.report
-    | Error _ -> false)
+    | Error _ -> false);
+  expect "cache exit codes are checked without raising"
+    (Result.is_error
+       (Incremental_cache.create ~key:first ~exit_code:6 ~report:"{}\n"))
 
 let locked_program_test () =
   let source =
@@ -322,7 +368,7 @@ let locked_program_test () =
       summary = None;
     }
   in
-  let locked = Locked_program.apply (Lockfile.make [ entry ]) compilation in
+  let locked = Locked_program.apply (lockfile [ entry ]) compilation in
   expect "dependency status is upgraded from lock evidence"
     (List.for_all
        (fun dependency ->
@@ -444,8 +490,7 @@ let resolver_local_dependency_test () =
     }
   in
   let result =
-    Resolver.resolve ~network:(Some network) ~lock:(Lockfile.make [])
-      [ dependency ]
+    Resolver.resolve ~network:(Some network) ~lock:Lockfile.empty [ dependency ]
   in
   expect "local dependency evidence is complete without a lockfile entry"
     (result.unresolved = [] && result.errors = []
@@ -498,7 +543,7 @@ let missing_local_dependency_test () =
                  incr calls;
                  Error "must stay offline");
            })
-      ~lock:(Lockfile.make []) [ dependency ]
+      ~lock:Lockfile.empty [ dependency ]
   in
   expect "missing workspace units are incomplete without network access"
     (!calls = 0 && result.errors = [] && result.unresolved = [ dependency ])
@@ -618,6 +663,8 @@ let tests : test list =
     ("forbid_path means reachable source-to-effect path", forbid_path_test);
     ( "lock and resolver reject mutable identities",
       lock_and_resolver_integrity_test );
+    ( "resolver rejects invalid lock entries without exceptions",
+      resolver_rejects_invalid_lock_entry_test );
     ("semantic diff composes the full program", semantic_program_diff_test);
     ("safe fixes compose atomically", composite_fix_test);
     ("incremental cache is content addressed", incremental_cache_test);

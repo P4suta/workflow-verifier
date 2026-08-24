@@ -21,7 +21,7 @@ type services = {
 }
 
 let help =
-  "workflow-verifier 0.1.0-dev\n\n"
+  "workflow-verifier 0.1.0\n\n"
   ^ "Usage: workflow-verifier <command> [options] [path]\n\n" ^ "Commands:\n"
   ^ "  check             run static analysis and policy gate\n"
   ^ "  resolve           resolve and lock remote dependencies\n"
@@ -111,12 +111,17 @@ let yaml_path path =
 
 let relative_to root path =
   let root = normalize root and path = normalize path in
+  let rec without_current_directory path =
+    if Util.starts_with ~prefix:"./" path then
+      without_current_directory (String.sub path 2 (String.length path - 2))
+    else path
+  in
   let root =
     if Util.ends_with ~suffix:"/" root then
       String.sub root 0 (String.length root - 1)
     else root
   in
-  if root = "." || root = "" then path
+  if root = "." || root = "" then without_current_directory path
   else
     let prefix = root ^ "/" in
     if Util.starts_with ~prefix path then
@@ -145,7 +150,9 @@ let discover io target =
         match Frontend.detect ~path ~source with
         | None -> false
         | Some provider ->
-            (not directory) || Frontend.entrypoint ~provider ~path ~source)
+            (not directory)
+            || Frontend.entrypoint ~provider ~path:(relative_to target path)
+                 ~source)
   in
   { candidates; entrypoints }
 
@@ -171,7 +178,7 @@ let persona_of_string = function
   | _ -> None
 
 let load_lock io path =
-  if not (io.exists path) then Ok (Lockfile.make [])
+  if not (io.exists path) then Ok Lockfile.empty
   else
     match io.read_file path with
     | Error _ as error -> error
@@ -376,7 +383,7 @@ let cache_context io arguments target =
                        ~default:
                          (path_join root ".workflow-verifier-cache-v1.json");
                 cache_key =
-                  Incremental_cache.key ~tool_version:"0.1.0-dev"
+                  Incremental_cache.key ~tool_version:"0.1.0"
                     ~config_digest:
                       ("sha256:" ^ Sha256.digest_string config_material)
                     ~lock_digest:lock.integrity
@@ -457,16 +464,19 @@ let check io arguments =
                   | Some context
                     when has "--write-cache" arguments
                          && String.lowercase_ascii format = "json" -> (
-                      let entry =
-                        Incremental_cache.make ~key:context.cache_key ~exit_code
-                          ~report:text
-                      in
                       match
-                        io.write_file context.cache_path
-                          (Incremental_cache.to_canonical_json entry)
+                        Incremental_cache.create ~key:context.cache_key
+                          ~exit_code ~report:text
                       with
-                      | Ok () -> ()
-                      | Error message -> io.stderr ("cache: " ^ message ^ "\n"))
+                      | Error message -> io.stderr ("cache: " ^ message ^ "\n")
+                      | Ok entry -> (
+                          match
+                            io.write_file context.cache_path
+                              (Incremental_cache.to_canonical_json entry)
+                          with
+                          | Ok () -> ()
+                          | Error message ->
+                              io.stderr ("cache: " ^ message ^ "\n")))
                   | _ -> ());
                   exit_code)))
 
@@ -1295,7 +1305,7 @@ let run ~io ~services argv =
             io.stdout help;
             0
         | "--version" | "version" ->
-            io.stdout "workflow-verifier 0.1.0-dev\n";
+            io.stdout "workflow-verifier 0.1.0\n";
             0
         | "check" -> check io arguments
         | "explain" -> explain io arguments

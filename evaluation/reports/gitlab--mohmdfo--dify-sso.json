@@ -1,0 +1,2750 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [
+        "secret_access",
+        "network",
+        "shell"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "fix": null,
+      "id": "diag_77991caada152616ab64",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+        "start": {
+          "byte": 270,
+          "column": 7,
+          "line": 11
+        },
+        "stop": {
+          "byte": 335,
+          "column": 72,
+          "line": 11
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node_id": "wv_c670644dac626c7af648",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 270,
+              "column": 7,
+              "line": 11
+            },
+            "stop": {
+              "byte": 335,
+              "column": 72,
+              "line": 11
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:1707db8b0cce5a064c3f295e9f8f4de4ccaefb2db9419dae15c12f0328aeb104",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_52cdd3a8dce1649f24d3",
+          "id": "wv_0b3cb036b6ebbf7a454d",
+          "kind": "data",
+          "label": "GITOPS_CI_TRIGGER",
+          "to": "wv_366abfecc2b7b3c7dbf4"
+        },
+        {
+          "condition": true,
+          "from": "wv_69f9bc38aa19c810c97c",
+          "id": "wv_28aff686d0d9c3f508e2",
+          "kind": "call",
+          "label": null,
+          "to": "wv_3ade1ab8e5f9acbce563"
+        },
+        {
+          "condition": true,
+          "from": "wv_f1d32ca54c54d3407cd5",
+          "id": "wv_28d25f17c53d6f079892",
+          "kind": "data",
+          "label": "GITOPS_ENVIRONMENT",
+          "to": "wv_69f9bc38aa19c810c97c"
+        },
+        {
+          "condition": true,
+          "from": "wv_663368975976e74200a6",
+          "id": "wv_2d21185e1e4762aa0764",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_97125fda0488a22e772d"
+        },
+        {
+          "condition": true,
+          "from": "wv_97125fda0488a22e772d",
+          "id": "wv_2d863dc1cc6731d58af5",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_e365cea354506876aff2"
+        },
+        {
+          "condition": true,
+          "from": "wv_b5ffcf3e0e237ed14e30",
+          "id": "wv_2ef0d56e1efbd6845741",
+          "kind": "data",
+          "label": "GITOPS_CI_DOCKER_IMAGE",
+          "to": "wv_69f9bc38aa19c810c97c"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(CI_COMMIT_TAG=~/^v[0-9]+(?:\\.[0-9]+)+-rc\\.[0-9]+$/)"
+          },
+          "from": "wv_01c3ea9962ad0b235a15",
+          "id": "wv_335db28f1c1defe6fa95",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_69f9bc38aa19c810c97c"
+        },
+        {
+          "condition": true,
+          "from": "wv_75337b953e44b713ebf0",
+          "id": "wv_35dcad64171595b23c43",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_ae11b7b41a799db29630"
+        },
+        {
+          "condition": true,
+          "from": "wv_e365cea354506876aff2",
+          "id": "wv_3d12eafe15d580cb173c",
+          "kind": "control",
+          "label": null,
+          "to": "wv_685f56b47a36f32d5756"
+        },
+        {
+          "condition": true,
+          "from": "wv_23fb9471a93b175a12d2",
+          "id": "wv_450c88a01f55a27bfe9f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_e365cea354506876aff2"
+        },
+        {
+          "condition": true,
+          "from": "wv_53c59687927d2ac5f19b",
+          "id": "wv_47511e337bb127d1e3b5",
+          "kind": "data",
+          "label": "GITOPS_CI_IMAGE_NAMESPACE",
+          "to": "wv_69f9bc38aa19c810c97c"
+        },
+        {
+          "condition": true,
+          "from": "wv_f8f29a4c61be2399cbc6",
+          "id": "wv_483771e6864669ff8e46",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_658724655f45b8ab1b6b"
+        },
+        {
+          "condition": true,
+          "from": "wv_c031b576645206cb4373",
+          "id": "wv_4a4c95851d25555c6ea6",
+          "kind": "data",
+          "label": "DOCKER_IMAGE",
+          "to": "wv_8c8ec359b7ebcba25596"
+        },
+        {
+          "condition": true,
+          "from": "wv_6460e23f755dab866fc8",
+          "id": "wv_4a983b844d0913b46ec0",
+          "kind": "data",
+          "label": "NEXUS_PASSWORD",
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_6460e23f755dab866fc8",
+          "id": "wv_4a983b844d0913b46ec0",
+          "kind": "data",
+          "label": "NEXUS_PASSWORD",
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_658724655f45b8ab1b6b",
+          "id": "wv_4b43f15c96a8f984a094",
+          "kind": "control",
+          "label": null,
+          "to": "wv_01c3ea9962ad0b235a15"
+        },
+        {
+          "condition": true,
+          "from": "wv_d025c5ba369618e7ae22",
+          "id": "wv_4d1b23e5568006da2fe0",
+          "kind": "data",
+          "label": "GITOPS_CI_IMAGE_NAME",
+          "to": "wv_366abfecc2b7b3c7dbf4"
+        },
+        {
+          "condition": true,
+          "from": "wv_366abfecc2b7b3c7dbf4",
+          "id": "wv_62f8fb2fc32a7d17af2a",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c6035a7e5fa239b3389c"
+        },
+        {
+          "condition": true,
+          "from": "wv_3431104499cdf6a47dc6",
+          "id": "wv_6820256c58a6e07da649",
+          "kind": "data",
+          "label": "GITOPS_CI_IMAGE_NAME",
+          "to": "wv_69f9bc38aa19c810c97c"
+        },
+        {
+          "condition": true,
+          "from": "wv_663368975976e74200a6",
+          "id": "wv_689f675f519ad816f9cd",
+          "kind": "control",
+          "label": null,
+          "to": "wv_8c8ec359b7ebcba25596"
+        },
+        {
+          "condition": true,
+          "from": "wv_12b2a08757c9a13fddd1",
+          "id": "wv_6a095e8e2c2bb8878959",
+          "kind": "data",
+          "label": "NEXUS_URL",
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_12b2a08757c9a13fddd1",
+          "id": "wv_6a095e8e2c2bb8878959",
+          "kind": "data",
+          "label": "NEXUS_URL",
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_69f9bc38aa19c810c97c",
+          "id": "wv_6c313065271d601e0175",
+          "kind": "control",
+          "label": null,
+          "to": "wv_3ade1ab8e5f9acbce563"
+        },
+        {
+          "condition": true,
+          "from": "wv_e52e420258dad2f5b5e1",
+          "id": "wv_736a5189c4daf298b22a",
+          "kind": "data",
+          "label": "GITOPS_CI_TRIGGER",
+          "to": "wv_69f9bc38aa19c810c97c"
+        },
+        {
+          "condition": true,
+          "from": "wv_7948204d86f89e86b750",
+          "id": "wv_7907f97fc06b29a2b957",
+          "kind": "control",
+          "label": null,
+          "to": "wv_63e84859d03fa15fcef7"
+        },
+        {
+          "condition": true,
+          "from": "wv_97125fda0488a22e772d",
+          "id": "wv_7bf258d73af0e6d7e2ac",
+          "kind": "control",
+          "label": null,
+          "to": "wv_7e9fa8bfd0fd4c831762"
+        },
+        {
+          "condition": true,
+          "from": "wv_23fb9471a93b175a12d2",
+          "id": "wv_881688188e4638ab5bd8",
+          "kind": "control",
+          "label": null,
+          "to": "wv_ae11b7b41a799db29630"
+        },
+        {
+          "condition": true,
+          "from": "wv_df294a6a34a283aff75f",
+          "id": "wv_8b985936aeb9bb5eb5aa",
+          "kind": "data",
+          "label": "DOCKER_IMAGE",
+          "to": "wv_685f56b47a36f32d5756"
+        },
+        {
+          "condition": true,
+          "from": "wv_5b65232c380df92d2289",
+          "id": "wv_8d6e14309a9f7b33ddb1",
+          "kind": "data",
+          "label": "GITOPS_ENVIRONMENT",
+          "to": "wv_366abfecc2b7b3c7dbf4"
+        },
+        {
+          "condition": true,
+          "from": "wv_366abfecc2b7b3c7dbf4",
+          "id": "wv_97f4e323d1a1a0d735fe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_93533f4f5160bf38b124"
+        },
+        {
+          "condition": true,
+          "from": "wv_4374a9b605a6c3b8bf66",
+          "id": "wv_98fd17e5c61632ee160e",
+          "kind": "data",
+          "label": "NEXUS_USERNAME",
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_4374a9b605a6c3b8bf66",
+          "id": "wv_98fd17e5c61632ee160e",
+          "kind": "data",
+          "label": "NEXUS_USERNAME",
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_2546ab6ed8c6079ec833",
+          "id": "wv_99618d108a4cdcd870a7",
+          "kind": "data",
+          "label": "GITOPS_CI_IMAGE_NAMESPACE",
+          "to": "wv_366abfecc2b7b3c7dbf4"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae11b7b41a799db29630",
+          "id": "wv_a32bb31b8c5dceec95f4",
+          "kind": "control",
+          "label": null,
+          "to": "wv_10a60ee8a817f291f59c"
+        },
+        {
+          "condition": true,
+          "from": "wv_ae11b7b41a799db29630",
+          "id": "wv_a450d9c7e0c77821fd6e",
+          "kind": "control",
+          "label": "sequence",
+          "to": "wv_663368975976e74200a6"
+        },
+        {
+          "condition": true,
+          "from": "wv_658724655f45b8ab1b6b",
+          "id": "wv_acc9c426eb43f5f6c4ff",
+          "kind": "control",
+          "label": null,
+          "to": "wv_a6df68d7cca9b96f3ed7"
+        },
+        {
+          "condition": true,
+          "from": "wv_5c9daff9162b0694442d",
+          "id": "wv_c2d3ea98a84d62172d0d",
+          "kind": "data",
+          "label": "DOCKER_IMAGE",
+          "to": "wv_10a60ee8a817f291f59c"
+        },
+        {
+          "condition": true,
+          "from": "wv_e47b9c9073496911d9f0",
+          "id": "wv_c36b828a780ffc2e5a63",
+          "kind": "data",
+          "label": "GITOPS_CI_DOCKER_IMAGE",
+          "to": "wv_366abfecc2b7b3c7dbf4"
+        },
+        {
+          "condition": true,
+          "from": "wv_c027b7850be1b3bcca99",
+          "id": "wv_c3900641af4853466d91",
+          "kind": "data",
+          "label": "GITOPS_CI_IMAGE_TAG",
+          "to": "wv_366abfecc2b7b3c7dbf4"
+        },
+        {
+          "condition": true,
+          "from": "wv_60854acce801459c91dc",
+          "id": "wv_c40a50afa1529d131c8a",
+          "kind": "data",
+          "label": "CI_COMMIT_TAG",
+          "to": "wv_a6df68d7cca9b96f3ed7"
+        },
+        {
+          "condition": true,
+          "from": "wv_366abfecc2b7b3c7dbf4",
+          "id": "wv_cc7cf7d54399bafce0c0",
+          "kind": "call",
+          "label": null,
+          "to": "wv_93533f4f5160bf38b124"
+        },
+        {
+          "condition": true,
+          "from": "wv_87e310e1b66672b88b79",
+          "id": "wv_cd6cd765c62ce7e6c6f7",
+          "kind": "data",
+          "label": "CI_COMMIT_TAG",
+          "to": "wv_01c3ea9962ad0b235a15"
+        },
+        {
+          "condition": true,
+          "from": "wv_23fb9471a93b175a12d2",
+          "id": "wv_d26c3ec31b022dd99909",
+          "kind": "control",
+          "label": null,
+          "to": "wv_663368975976e74200a6"
+        },
+        {
+          "condition": true,
+          "from": "wv_7948204d86f89e86b750",
+          "id": "wv_d76fbedc8859bf5267db",
+          "kind": "control",
+          "label": null,
+          "to": "wv_f8f29a4c61be2399cbc6"
+        },
+        {
+          "condition": true,
+          "from": "wv_f8f29a4c61be2399cbc6",
+          "id": "wv_d8de8d4e3c2dd73c04e2",
+          "kind": "control",
+          "label": null,
+          "to": "wv_23fb9471a93b175a12d2"
+        },
+        {
+          "condition": true,
+          "from": "wv_511126588514876fdfa0",
+          "id": "wv_d9cc31e5bfabe365b30d",
+          "kind": "data",
+          "label": "DOCKER_IMAGE",
+          "to": "wv_7948204d86f89e86b750"
+        },
+        {
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(CI_COMMIT_TAG=~/^v[0-9]+(\\.[0-9]+){0,2}$/)"
+          },
+          "from": "wv_a6df68d7cca9b96f3ed7",
+          "id": "wv_e0d2bb4d9a2fb03cefaa",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_366abfecc2b7b3c7dbf4"
+        },
+        {
+          "condition": true,
+          "from": "wv_69f9bc38aa19c810c97c",
+          "id": "wv_e21efc8eb67cb5bb4c59",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c6035a7e5fa239b3389c"
+        },
+        {
+          "condition": true,
+          "from": "wv_23fb9471a93b175a12d2",
+          "id": "wv_e39951960f5917157bfe",
+          "kind": "control",
+          "label": null,
+          "to": "wv_97125fda0488a22e772d"
+        },
+        {
+          "condition": true,
+          "from": "wv_7948204d86f89e86b750",
+          "id": "wv_eb448a0cab6d066ee391",
+          "kind": "call",
+          "label": null,
+          "to": "wv_63e84859d03fa15fcef7"
+        },
+        {
+          "condition": true,
+          "from": "wv_c6035a7e5fa239b3389c",
+          "id": "wv_ef8f352875ba7d0a1c85",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_c6035a7e5fa239b3389c",
+          "id": "wv_ef8f352875ba7d0a1c85",
+          "kind": "control",
+          "label": null,
+          "to": "wv_c670644dac626c7af648"
+        },
+        {
+          "condition": true,
+          "from": "wv_23fb9471a93b175a12d2",
+          "id": "wv_f51d087a1418196fe494",
+          "kind": "control",
+          "label": null,
+          "to": "wv_75337b953e44b713ebf0"
+        },
+        {
+          "condition": true,
+          "from": "wv_6fe4ed3d44dba53bc7b0",
+          "id": "wv_fa27c073dba35b6461de",
+          "kind": "data",
+          "label": "GITOPS_CI_IMAGE_TAG",
+          "to": "wv_69f9bc38aa19c810c97c"
+        },
+        {
+          "condition": true,
+          "from": "wv_75337b953e44b713ebf0",
+          "id": "wv_fbc555771d230ce81d7d",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0b4bd65a077b25eac0e0"
+        }
+      ],
+      "entrypoints": [
+        "wv_7948204d86f89e86b750"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1249,
+                      "column": 11,
+                      "line": 50
+                    },
+                    "stop": {
+                      "byte": 1304,
+                      "column": 66,
+                      "line": 50
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "$CI_COMMIT_TAG =~ /^v[0-9]+(?:\\.[0-9]+)+-rc\\.[0-9]+$/"
+                ]
+              }
+            },
+            "reference:CI_COMMIT_TAG": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_TAG",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1249,
+                      "column": 11,
+                      "line": 50
+                    },
+                    "stop": {
+                      "byte": 1263,
+                      "column": 25,
+                      "line": 50
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(CI_COMMIT_TAG=~/^v[0-9]+(?:\\.[0-9]+)+-rc\\.[0-9]+$/)"
+          },
+          "effects": [],
+          "id": "wv_01c3ea9962ad0b235a15",
+          "kind": "gate",
+          "name": "rule:release-candidate-gitops",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1249,
+              "column": 11,
+              "line": 50
+            },
+            "stop": {
+              "byte": 1304,
+              "column": 66,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 544,
+                      "column": 17,
+                      "line": 26
+                    },
+                    "stop": {
+                      "byte": 544,
+                      "column": 17,
+                      "line": 26
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  ""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_0b4bd65a077b25eac0e0",
+          "kind": "command",
+          "name": "",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 544,
+              "column": 17,
+              "line": 26
+            },
+            "stop": {
+              "byte": 544,
+              "column": 17,
+              "line": 26
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_IMAGE",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 588,
+                      "column": 32,
+                      "line": 28
+                    },
+                    "stop": {
+                      "byte": 600,
+                      "column": 44,
+                      "line": 28
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 563,
+                      "column": 7,
+                      "line": 28
+                    },
+                    "stop": {
+                      "byte": 601,
+                      "column": 45,
+                      "line": 28
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_IMAGE",
+                  "echo \"Building image:\" \"$DOCKER_IMAGE\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_10a60ee8a817f291f59c",
+          "kind": "command",
+          "name": "echo \"Building image:\" \"$DOCKER_IMAGE\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 563,
+              "column": 7,
+              "line": 28
+            },
+            "stop": {
+              "byte": 601,
+              "column": 45,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_URL",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 326,
+                      "column": 63,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 72,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_URL"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_12b2a08757c9a13fddd1",
+          "kind": "resource",
+          "name": "NEXUS_URL",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 326,
+              "column": 63,
+              "line": 11
+            },
+            "stop": {
+              "byte": 335,
+              "column": 72,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_URL",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 326,
+                      "column": 63,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 72,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_URL"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_12b2a08757c9a13fddd1",
+          "kind": "resource",
+          "name": "NEXUS_URL",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 326,
+              "column": 63,
+              "line": 11
+            },
+            "stop": {
+              "byte": 335,
+              "column": 72,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_23fb9471a93b175a12d2",
+          "kind": "job",
+          "name": "build-image",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 473,
+              "column": 1,
+              "line": 22
+            },
+            "stop": {
+              "byte": 777,
+              "column": 47,
+              "line": 33
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_2546ab6ed8c6079ec833",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_IMAGE_NAMESPACE",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1453,
+              "column": 5,
+              "line": 61
+            },
+            "stop": {
+              "byte": 1503,
+              "column": 55,
+              "line": 61
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3431104499cdf6a47dc6",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_IMAGE_NAME",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1036,
+              "column": 5,
+              "line": 44
+            },
+            "stop": {
+              "byte": 1076,
+              "column": 45,
+              "line": 44
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_366abfecc2b7b3c7dbf4",
+          "kind": "job",
+          "name": "production-gitops",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1312,
+              "column": 1,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1768,
+              "column": 57,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_3ade1ab8e5f9acbce563",
+          "kind": "call",
+          "name": "child:platform/aip-gitops",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 843,
+              "column": 5,
+              "line": 39
+            },
+            "stop": {
+              "byte": 911,
+              "column": 21,
+              "line": 41
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_USERNAME",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 288,
+                      "column": 25,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 302,
+                      "column": 39,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4374a9b605a6c3b8bf66",
+          "kind": "resource",
+          "name": "NEXUS_USERNAME",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 288,
+              "column": 25,
+              "line": 11
+            },
+            "stop": {
+              "byte": 302,
+              "column": 39,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_USERNAME",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 288,
+                      "column": 25,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 302,
+                      "column": 39,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_USERNAME"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_4374a9b605a6c3b8bf66",
+          "kind": "resource",
+          "name": "NEXUS_USERNAME",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 288,
+              "column": 25,
+              "line": 11
+            },
+            "stop": {
+              "byte": 302,
+              "column": 39,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_511126588514876fdfa0",
+          "kind": "resource",
+          "name": "variable:DOCKER_IMAGE",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 351,
+              "column": 3,
+              "line": 13
+            },
+            "stop": {
+              "byte": 429,
+              "column": 81,
+              "line": 13
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_52cdd3a8dce1649f24d3",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_TRIGGER",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1643,
+              "column": 5,
+              "line": 65
+            },
+            "stop": {
+              "byte": 1668,
+              "column": 30,
+              "line": 65
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_53c59687927d2ac5f19b",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_IMAGE_NAMESPACE",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 980,
+              "column": 5,
+              "line": 43
+            },
+            "stop": {
+              "byte": 1030,
+              "column": 55,
+              "line": 43
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5b65232c380df92d2289",
+          "kind": "resource",
+          "name": "variable:GITOPS_ENVIRONMENT",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1674,
+              "column": 5,
+              "line": 66
+            },
+            "stop": {
+              "byte": 1700,
+              "column": 31,
+              "line": 66
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_IMAGE",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 588,
+                      "column": 32,
+                      "line": 28
+                    },
+                    "stop": {
+                      "byte": 600,
+                      "column": 44,
+                      "line": 28
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_5c9daff9162b0694442d",
+          "kind": "resource",
+          "name": "DOCKER_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 588,
+              "column": 32,
+              "line": 28
+            },
+            "stop": {
+              "byte": 600,
+              "column": 44,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_TAG",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1722,
+                      "column": 11,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1736,
+                      "column": 25,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_60854acce801459c91dc",
+          "kind": "resource",
+          "name": "CI_COMMIT_TAG",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1722,
+              "column": 11,
+              "line": 68
+            },
+            "stop": {
+              "byte": 1736,
+              "column": 25,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_63e84859d03fa15fcef7",
+          "kind": "call",
+          "name": "proxy.ai-lab.ir/docker:25.0",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 19,
+              "column": 10,
+              "line": 2
+            },
+            "stop": {
+              "byte": 46,
+              "column": 37,
+              "line": 2
+            }
+          },
+          "unknown": {
+            "detail": "proxy.ai-lab.ir/docker:25.0",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_PASSWORD",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 309,
+                      "column": 46,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 323,
+                      "column": 60,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6460e23f755dab866fc8",
+          "kind": "resource",
+          "name": "NEXUS_PASSWORD",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 309,
+              "column": 46,
+              "line": 11
+            },
+            "stop": {
+              "byte": 323,
+              "column": 60,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_PASSWORD",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 309,
+                      "column": 46,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 323,
+                      "column": 60,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_PASSWORD"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6460e23f755dab866fc8",
+          "kind": "resource",
+          "name": "NEXUS_PASSWORD",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 309,
+              "column": 46,
+              "line": 11
+            },
+            "stop": {
+              "byte": 323,
+              "column": 60,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "1"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_658724655f45b8ab1b6b",
+          "kind": "stage",
+          "name": "update",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 450,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 469,
+              "column": 11,
+              "line": 20
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_663368975976e74200a6",
+          "kind": "step",
+          "name": "script:3",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 609,
+              "column": 7,
+              "line": 29
+            },
+            "stop": {
+              "byte": 661,
+              "column": 59,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_IMAGE",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 708,
+                      "column": 20,
+                      "line": 31
+                    },
+                    "stop": {
+                      "byte": 720,
+                      "column": 32,
+                      "line": 31
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 695,
+                      "column": 7,
+                      "line": 31
+                    },
+                    "stop": {
+                      "byte": 720,
+                      "column": 32,
+                      "line": 31
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_IMAGE",
+                  "docker push $DOCKER_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_685f56b47a36f32d5756",
+          "kind": "command",
+          "name": "docker push $DOCKER_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 695,
+              "column": 7,
+              "line": 31
+            },
+            "stop": {
+              "byte": 720,
+              "column": 32,
+              "line": 31
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_69f9bc38aa19c810c97c",
+          "kind": "job",
+          "name": "release-candidate-gitops",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 783,
+              "column": 1,
+              "line": 36
+            },
+            "stop": {
+              "byte": 1304,
+              "column": 66,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_6fe4ed3d44dba53bc7b0",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_IMAGE_TAG",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1082,
+              "column": 5,
+              "line": 45
+            },
+            "stop": {
+              "byte": 1119,
+              "column": 42,
+              "line": 45
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_75337b953e44b713ebf0",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 544,
+              "column": 17,
+              "line": 26
+            },
+            "stop": {
+              "byte": 544,
+              "column": 17,
+              "line": 26
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_7948204d86f89e86b750",
+          "kind": "workflow",
+          "name": "GitLab pipeline",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 1768,
+              "column": 57,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 669,
+                      "column": 7,
+                      "line": 30
+                    },
+                    "stop": {
+                      "byte": 687,
+                      "column": 25,
+                      "line": 30
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "echo \"Push image:\""
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_7e9fa8bfd0fd4c831762",
+          "kind": "command",
+          "name": "echo \"Push image:\"",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 669,
+              "column": 7,
+              "line": 30
+            },
+            "stop": {
+              "byte": 687,
+              "column": 25,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_TAG",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1249,
+                      "column": 11,
+                      "line": 50
+                    },
+                    "stop": {
+                      "byte": 1263,
+                      "column": 25,
+                      "line": 50
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_87e310e1b66672b88b79",
+          "kind": "resource",
+          "name": "CI_COMMIT_TAG",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1249,
+              "column": 11,
+              "line": 50
+            },
+            "stop": {
+              "byte": 1263,
+              "column": 25,
+              "line": 50
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_IMAGE",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 647,
+                      "column": 45,
+                      "line": 29
+                    },
+                    "stop": {
+                      "byte": 659,
+                      "column": 57,
+                      "line": 29
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 609,
+                      "column": 7,
+                      "line": 29
+                    },
+                    "stop": {
+                      "byte": 661,
+                      "column": 59,
+                      "line": 29
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_IMAGE",
+                  "docker build -f Dockerfile.Deploy -t $DOCKER_IMAGE ."
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_8c8ec359b7ebcba25596",
+          "kind": "command",
+          "name": "docker build -f Dockerfile.Deploy -t $DOCKER_IMAGE .",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 609,
+              "column": 7,
+              "line": 29
+            },
+            "stop": {
+              "byte": 661,
+              "column": 59,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_93533f4f5160bf38b124",
+          "kind": "call",
+          "name": "child:platform/aip-gitops",
+          "phase": "compile",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1365,
+              "column": 5,
+              "line": 57
+            },
+            "stop": {
+              "byte": 1433,
+              "column": 21,
+              "line": 59
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_97125fda0488a22e772d",
+          "kind": "step",
+          "name": "script:4",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 669,
+              "column": 7,
+              "line": 30
+            },
+            "stop": {
+              "byte": 687,
+              "column": 25,
+              "line": 30
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1722,
+                      "column": 11,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1768,
+                      "column": 57,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "$CI_COMMIT_TAG =~ /^v[0-9]+(\\.[0-9]+){0,2}$/"
+                ]
+              }
+            },
+            "reference:CI_COMMIT_TAG": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "CI_COMMIT_TAG",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 1722,
+                      "column": 11,
+                      "line": 68
+                    },
+                    "stop": {
+                      "byte": 1736,
+                      "column": 25,
+                      "line": 68
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "CI_COMMIT_TAG"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": true,
+            "low": false,
+            "variable": "(CI_COMMIT_TAG=~/^v[0-9]+(\\.[0-9]+){0,2}$/)"
+          },
+          "effects": [],
+          "id": "wv_a6df68d7cca9b96f3ed7",
+          "kind": "gate",
+          "name": "rule:production-gitops",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1722,
+              "column": 11,
+              "line": 68
+            },
+            "stop": {
+              "byte": 1768,
+              "column": 57,
+              "line": 68
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ae11b7b41a799db29630",
+          "kind": "step",
+          "name": "script:2",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 563,
+              "column": 7,
+              "line": 28
+            },
+            "stop": {
+              "byte": 601,
+              "column": 45,
+              "line": 28
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_b5ffcf3e0e237ed14e30",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_DOCKER_IMAGE",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1125,
+              "column": 5,
+              "line": 46
+            },
+            "stop": {
+              "byte": 1164,
+              "column": 44,
+              "line": 46
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c027b7850be1b3bcca99",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_IMAGE_TAG",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1555,
+              "column": 5,
+              "line": 63
+            },
+            "stop": {
+              "byte": 1592,
+              "column": 42,
+              "line": 63
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_IMAGE",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 647,
+                      "column": 45,
+                      "line": 29
+                    },
+                    "stop": {
+                      "byte": 659,
+                      "column": 57,
+                      "line": 29
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c031b576645206cb4373",
+          "kind": "resource",
+          "name": "DOCKER_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 647,
+              "column": 45,
+              "line": 29
+            },
+            "stop": {
+              "byte": 659,
+              "column": 57,
+              "line": 29
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c6035a7e5fa239b3389c",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 270,
+              "column": 7,
+              "line": 11
+            },
+            "stop": {
+              "byte": 335,
+              "column": 72,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_c6035a7e5fa239b3389c",
+          "kind": "step",
+          "name": "script:1",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 270,
+              "column": 7,
+              "line": 11
+            },
+            "stop": {
+              "byte": 335,
+              "column": 72,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_PASSWORD",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 309,
+                      "column": 46,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 323,
+                      "column": 60,
+                      "line": 11
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_URL",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 326,
+                      "column": 63,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 72,
+                      "line": 11
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_USERNAME",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 288,
+                      "column": 25,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 302,
+                      "column": 39,
+                      "line": 11
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 270,
+                      "column": 7,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 72,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_PASSWORD",
+                  "NEXUS_URL",
+                  "NEXUS_USERNAME",
+                  "docker login -u \"$NEXUS_USERNAME\" -p \"$NEXUS_PASSWORD\" $NEXUS_URL"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c670644dac626c7af648",
+          "kind": "command",
+          "name": "docker login -u \"$NEXUS_USERNAME\" -p \"$NEXUS_PASSWORD\" $NEXUS_URL",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 270,
+              "column": 7,
+              "line": 11
+            },
+            "stop": {
+              "byte": 335,
+              "column": 72,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "command": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_PASSWORD",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 309,
+                      "column": 46,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 323,
+                      "column": 60,
+                      "line": 11
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_URL",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 326,
+                      "column": 63,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 72,
+                      "line": 11
+                    }
+                  }
+                },
+                {
+                  "operation": "expression reference",
+                  "origin": "NEXUS_USERNAME",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 288,
+                      "column": 25,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 302,
+                      "column": 39,
+                      "line": 11
+                    }
+                  }
+                },
+                {
+                  "operation": "command",
+                  "origin": "workflow source",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 270,
+                      "column": 7,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 335,
+                      "column": 72,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "secret",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "NEXUS_PASSWORD",
+                  "NEXUS_URL",
+                  "NEXUS_USERNAME",
+                  "docker login -u \"$NEXUS_USERNAME\" -p \"$NEXUS_PASSWORD\" $NEXUS_URL"
+                ]
+              }
+            }
+          },
+          "capabilities": [
+            "filesystem_read",
+            "filesystem_write",
+            "shell"
+          ],
+          "condition": true,
+          "effects": [
+            "command_execution"
+          ],
+          "id": "wv_c670644dac626c7af648",
+          "kind": "command",
+          "name": "docker login -u \"$NEXUS_USERNAME\" -p \"$NEXUS_PASSWORD\" $NEXUS_URL",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 270,
+              "column": 7,
+              "line": 11
+            },
+            "stop": {
+              "byte": 335,
+              "column": 72,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_d025c5ba369618e7ae22",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_IMAGE_NAME",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1509,
+              "column": 5,
+              "line": 62
+            },
+            "stop": {
+              "byte": 1549,
+              "column": 45,
+              "line": 62
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "DOCKER_IMAGE",
+                  "span": {
+                    "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+                    "start": {
+                      "byte": 708,
+                      "column": 20,
+                      "line": 31
+                    },
+                    "stop": {
+                      "byte": 720,
+                      "column": 32,
+                      "line": 31
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "DOCKER_IMAGE"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_df294a6a34a283aff75f",
+          "kind": "resource",
+          "name": "DOCKER_IMAGE",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 708,
+              "column": 20,
+              "line": 31
+            },
+            "stop": {
+              "byte": 720,
+              "column": 32,
+              "line": 31
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e365cea354506876aff2",
+          "kind": "step",
+          "name": "script:5",
+          "phase": "run",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 695,
+              "column": 7,
+              "line": 31
+            },
+            "stop": {
+              "byte": 720,
+              "column": 32,
+              "line": 31
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e47b9c9073496911d9f0",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_DOCKER_IMAGE",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1598,
+              "column": 5,
+              "line": 64
+            },
+            "stop": {
+              "byte": 1637,
+              "column": 44,
+              "line": 64
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_e52e420258dad2f5b5e1",
+          "kind": "resource",
+          "name": "variable:GITOPS_CI_TRIGGER",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1170,
+              "column": 5,
+              "line": 47
+            },
+            "stop": {
+              "byte": 1195,
+              "column": 30,
+              "line": 47
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f1d32ca54c54d3407cd5",
+          "kind": "resource",
+          "name": "variable:GITOPS_ENVIRONMENT",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 1201,
+              "column": 5,
+              "line": 48
+            },
+            "stop": {
+              "byte": 1227,
+              "column": 31,
+              "line": 48
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "order": {
+              "provenance": [],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "0"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_f8f29a4c61be2399cbc6",
+          "kind": "stage",
+          "name": "build",
+          "phase": "plan",
+          "provider": "gitlab",
+          "span": {
+            "file": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml",
+            "start": {
+              "byte": 450,
+              "column": 3,
+              "line": 19
+            },
+            "stop": {
+              "byte": 469,
+              "column": 11,
+              "line": 20
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "gitlab",
+      "source": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:835570fdb15f70c36c188663a6a29f3b158f96d75a701f4ff87f69c3dd4b7ef3",
+      "path": "gitlab/mohmdfo/dify-sso/.gitlab-ci.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [
+        {
+          "detail": "child:platform/aip-gitops",
+          "kind": "unresolved_dependency"
+        },
+        {
+          "detail": "proxy.ai-lab.ir/docker:25.0",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

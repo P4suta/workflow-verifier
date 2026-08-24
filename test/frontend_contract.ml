@@ -67,6 +67,23 @@ let detection_test () =
       (".gitlab-ci.yml", "stages: [test]\n", Some Ir.Gitlab);
       ("azure-pipelines.yaml", "pool: default\nsteps: []\n", Some Ir.Azure);
       (".circleci/config.yml", "version: 2.1\nworkflows: {}\n", Some Ir.Circleci);
+      ( ".github/workflows/adversarial.yml",
+        "stages: [test]\nbuild:\n  script: echo github\n",
+        Some Ir.Github );
+      ( ".gitlab-ci.yml",
+        "trigger: [main]\npool: hosted\nstages: [test]\n",
+        Some Ir.Gitlab );
+      ( "nested/azure-pipelines.yml",
+        "stages:\n\
+        \  - stage: Verify\n\
+        \    jobs:\n\
+        \      - job: test\n\
+        \        steps:\n\
+        \          - script: echo azure\n",
+        Some Ir.Azure );
+      ( ".circleci/config.yml",
+        "on: push\njobs: {}\nversion: 2.1\nworkflows: {}\n",
+        Some Ir.Circleci );
       ("notes.yml", "title: notes\n", None);
     ]
   in
@@ -134,7 +151,51 @@ let expression_contract_test () =
        (fun reference ->
          reference.Expression.name = "parameters.image"
          && reference.phase = Ir.Compile)
-       azure)
+       azure);
+  let github =
+    Expression.scan Ir.Github ~default_phase:Ir.Run ~span
+      "${{ env.COMMIT_MESSAGE }} ${{ steps.issue-parser.outputs.repo }} ${{ \
+       github.event_name }} ${{ inputs.tag_name }}"
+  in
+  let trust name =
+    match
+      List.find_opt (fun reference -> reference.Expression.name = name) github
+    with
+    | Some reference -> reference.value.trust
+    | None -> fail "missing GitHub trust fixture %s" name
+  in
+  expect "an unresolved environment value remains Unknown"
+    (match trust "env.COMMIT_MESSAGE" with
+    | Abstract_value.Unknown_trust _ -> true
+    | _ -> false);
+  expect "an unresolved step output remains Unknown"
+    (match trust "steps.issue-parser.outputs.repo" with
+    | Abstract_value.Unknown_trust _ -> true
+    | _ -> false);
+  expect "the provider event-name enum is trusted"
+    (trust "github.event_name" = Abstract_value.Trusted);
+  expect "workflow-dispatch inputs are untrusted"
+    (trust "inputs.tag_name" = Abstract_value.Untrusted);
+  let safe_identifiers =
+    [
+      ( Ir.Gitlab,
+        "$CI_MERGE_REQUEST_DIFF_BASE_SHA",
+        "CI_MERGE_REQUEST_DIFF_BASE_SHA" );
+      ( Ir.Azure,
+        "$(System.PullRequest.PullRequestNumber)",
+        "System.PullRequest.PullRequestNumber" );
+    ]
+  in
+  List.iter
+    (fun (provider, source, name) ->
+      let reference =
+        Expression.scan provider ~default_phase:Ir.Run ~span source
+        |> List.find (fun reference -> reference.Expression.name = name)
+      in
+      expect
+        (name ^ " has a provider-enforced shell-safe shape")
+        (reference.value.trust = Abstract_value.Trusted))
+    safe_identifiers
 
 let unresolved_dependency_test () =
   let cases =

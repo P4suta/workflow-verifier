@@ -1,0 +1,25 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  image: node:14.16.1
+  tags:
+    - misakey_js
+  script:
+    - yarn install
+    - yarn build
+
+publish:
+  stage: deploy
+  image: node:14.16.1
+  tags:
+    - misakey_js
+  script:
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - yarn install
+    - yarn build
+    - npm publish
+  only:
+    - master

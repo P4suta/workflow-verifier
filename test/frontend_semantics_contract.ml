@@ -147,7 +147,11 @@ jobs:
     && not (List.mem Ir.Repository_write workflow.capabilities));
   expect "self-hosted runner persistence is explicit"
     (List.mem Ir.Self_hosted_persistence deploy.capabilities);
-  ignore (require Ir.Resource "environment:production" graph);
+  let environment = require Ir.Resource "environment:production" graph in
+  expect "an environment grants deployment without duplicating its effect"
+    (environment.effects = []
+    && List.mem Ir.Deployment environment.capabilities
+    && List.mem Ir.Deployment_change deploy.effects);
   ignore (require Ir.Resource "output:deploy.digest" graph);
   expect "matrix is planned explicitly"
     (Option.is_some (named Ir.Parameter "matrix.target" graph));
@@ -155,11 +159,36 @@ jobs:
     (dependency_kind Frontend_intf.Action result);
   expect_valid graph
 
+let github_attestation_profile () =
+  let revision = String.make 40 'a' in
+  let reference = "actions/attest@" ^ revision in
+  let source =
+    "on: workflow_dispatch\n" ^ "jobs:\n  attest:\n    runs-on: ubuntu-latest\n"
+    ^ "    permissions:\n      id-token: write\n"
+    ^ "      attestations: write\n      artifact-metadata: write\n"
+    ^ "    steps:\n      - uses: " ^ reference ^ "\n"
+    ^ "        with:\n          subject-checksums: dist/SHA256SUMS\n"
+  in
+  let result = compile Ir.Github ".github/workflows/attest.yml" source in
+  let call = require Ir.Call reference result.graph
+  and job = require Ir.Job "attest" result.graph in
+  expect "attestation permissions lower to artifact and OIDC capabilities"
+    (List.mem Ir.Oidc job.capabilities
+    && List.mem Ir.Artifact_write job.capabilities
+    && not (List.mem Ir.Repository_write job.capabilities));
+  expect "actions/attest publishes an artifact using an OIDC credential"
+    (List.mem Ir.Artifact_publish call.effects
+    && List.mem Ir.Credential_use call.effects
+    && List.mem Ir.Network_request call.effects);
+  expect_valid result.graph
+
 let gitlab_semantics () =
   let source =
     {|
 include:
   - component: gitlab.example/components/build@1.2
+variables:
+  GLOBAL_MODE: strict
 workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -196,8 +225,12 @@ child:
     (dependency_reaches "needs" lint deploy graph);
   expect "rules become gates" (List.length (nodes Ir.Gate graph) >= 2);
   ignore (require Ir.Call "extends:.base" graph);
-  ignore (require Ir.Call "child:child.yml" graph);
-  ignore (require Ir.Resource "environment:production" graph);
+  let child = require Ir.Call "child:child.yml" graph in
+  expect "invoking a child pipeline does not rewrite its workflow definition"
+    (not (List.mem Ir.Workflow_change child.effects));
+  let environment = require Ir.Resource "environment:production" graph in
+  expect "GitLab environment effects occur on the deployment job"
+    (environment.effects = [] && List.mem Ir.Deployment_change deploy.effects);
   ignore (require Ir.Resource "cache:deploy" graph);
   ignore (require Ir.Resource "artifact:deploy" graph);
   expect "hidden templates are not executable jobs"
@@ -205,6 +238,25 @@ child:
   expect "GitLab component includes retain their dependency kind"
     (dependency_kind Frontend_intf.Component result);
   expect_valid graph
+
+let gitlab_inherited_stage_semantics () =
+  let source =
+    {|stages: [build, deploy]
+.deployment:
+  stage: deploy
+  script: publish
+production:
+  extends: .deployment
+|}
+  in
+  let result = compile Ir.Gitlab ".gitlab-ci.yml" source in
+  let stage = require Ir.Stage "deploy" result.graph
+  and job = require Ir.Job "production" result.graph in
+  expect "a local extends chain supplies the effective stage"
+    (edge Ir.Control stage job result.graph);
+  expect "an inherited declared stage is not reported as unknown"
+    (not (problem "GL-UNKNOWN-STAGE" result));
+  expect_valid result.graph
 
 let azure_semantics () =
   let source =
@@ -256,7 +308,11 @@ stages:
   expect "stage condition is a gate" (List.length (nodes Ir.Gate graph) >= 1);
   ignore (require Ir.Resource "repository:shared" graph);
   ignore (require Ir.Resource "variable:configuration" graph);
-  ignore (require Ir.Resource "environment:production" graph);
+  let environment = require Ir.Resource "environment:production" graph
+  and production = require Ir.Job "production" graph in
+  expect "Azure environment effects occur on the deployment job"
+    (environment.effects = []
+    && List.mem Ir.Deployment_change production.effects);
   ignore (require Ir.Parameter "matrix.linux" graph);
   ignore (require Ir.Call "checkout:self" graph);
   ignore (require Ir.Call "Bash@3" graph);
@@ -266,6 +322,26 @@ stages:
     && dependency_kind Frontend_intf.Task result
     && dependency_kind Frontend_intf.Template result);
   expect_valid graph
+
+let azure_root_variables_are_single_scope () =
+  let source =
+    {|
+pool:
+  vmImage: VS2017-Win2016
+variables:
+  solution: '**/*.sln'
+  buildPlatform: AnyCPU
+  buildConfiguration: Release
+steps:
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+|}
+  in
+  let result = compile Ir.Azure "azure-pipelines.yml" source in
+  expect "root variables lower exactly once"
+    (List.length (nodes Ir.Resource result.graph) = 3);
+  expect_valid result.graph
 
 let circleci_semantics () =
   let source =
@@ -337,6 +413,65 @@ workflows:
     (dependency_kind Frontend_intf.Orb result
     && dependency_kind Frontend_intf.Container_image result);
   expect_valid graph
+
+let circleci_named_invocation_semantics () =
+  let source =
+    {|version: 2.1
+jobs:
+  build:
+    docker: [{image: cimg/base:current}]
+    steps: [checkout]
+  deploy:
+    docker: [{image: cimg/base:current}]
+    steps: [{run: publish}]
+workflows:
+  delivery:
+    jobs:
+      - build:
+          name: "🧪 test"
+      - deploy:
+          requires: ["🧪 test"]
+|}
+  in
+  let result = compile Ir.Circleci ".circleci/config.yml" source in
+  let build = require Ir.Job "build" result.graph
+  and deploy = require Ir.Job "deploy" result.graph in
+  expect "requires resolves the invocation name rather than its job reference"
+    (dependency_reaches "requires" build deploy result.graph);
+  expect "a declared named invocation is not reported as unknown"
+    (not (problem "CC-UNKNOWN-REQUIREMENT" result));
+  expect_valid result.graph;
+  let matrix =
+    compile Ir.Circleci ".circleci/config.yml"
+      {|version: 2.1
+jobs:
+  build:
+    parameters:
+      image: {type: string}
+    docker: [{image: cimg/base:current}]
+    steps: [checkout]
+  deploy:
+    docker: [{image: cimg/base:current}]
+    steps: [{run: publish}]
+workflows:
+  delivery:
+    jobs:
+      - build:
+          name: build-<< matrix.image >>
+          matrix:
+            parameters:
+              image: [one, two]
+      - deploy:
+          requires: [build]
+|}
+  in
+  let matrix_build = require Ir.Job "build" matrix.graph
+  and matrix_deploy = require Ir.Job "deploy" matrix.graph in
+  expect "a matrix is also addressable by its default job-name alias"
+    (dependency_reaches "requires" matrix_build matrix_deploy matrix.graph);
+  expect "matrix fan-in through its default alias is not unknown"
+    (not (problem "CC-UNKNOWN-REQUIREMENT" matrix));
+  expect_valid matrix.graph
 
 let correctness_diagnostics () =
   let github =
@@ -454,9 +589,14 @@ let dependency_locator_semantics () =
 let tests : test list =
   [
     ("GitHub semantic surface", github_semantics);
+    ("GitHub attestation capability/effect profile", github_attestation_profile);
     ("GitLab semantic surface", gitlab_semantics);
+    ("GitLab inherited stage semantics", gitlab_inherited_stage_semantics);
     ("Azure semantic surface", azure_semantics);
+    ( "Azure root variables remain a single scope",
+      azure_root_variables_are_single_scope );
     ("CircleCI semantic surface", circleci_semantics);
+    ("CircleCI named invocation semantics", circleci_named_invocation_semantics);
     ("provider correctness diagnostics", correctness_diagnostics);
     ( "provider dependencies retain typed resolution locators",
       dependency_locator_semantics );

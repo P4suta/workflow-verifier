@@ -1,0 +1,186 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - ci*
+  pull_request: {}
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_RETRY: 10
+  RUSTUP_MAX_RETRIES: 10
+  RUST_BACKTRACE: short
+  # Pin a specific miri version
+  rust_miri_nightly: nightly-2025-03-16
+
+jobs:
+  ### check jobs ###
+
+  basics:
+    name: basic checks
+    runs-on: ubuntu-latest
+    needs:
+      - check
+      - fmt
+      - docs
+    steps:
+      - run: exit 0
+
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Check
+        run: cargo check --workspace --all-targets
+
+  fmt:
+    name: fmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: cargo fmt --check
+        run: |
+          cargo fmt --all --check
+
+  docs:
+    name: docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: nightly
+      - name: cargo doc
+        run: |
+          cargo doc --lib --no-deps --all-features --document-private-items
+        env:
+          RUSTDOCFLAGS: "--cfg docsrs -Dwarnings --cfg tower_sesh_docs_local"
+
+  style:
+    name: cargo fmt
+    needs: basics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: rustfmt
+        run: cargo fmt --all --check
+
+  hack-check:
+    name: cargo hack check
+    needs: basics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/install-action@cargo-hack
+      - name: Check feature powerset
+        run: |
+          cargo hack check --rust-version --workspace --ignore-private --exclude tower-sesh-store-redis --feature-powerset --optional-deps
+          cargo hack check --rust-version --package tower-sesh-store-redis --feature-powerset --mutually-exclusive-features rt_tokio,rt_async-std --at-least-one-of rt_tokio,rt_async-std
+
+  minimal-versions:
+    name: cargo minimal-versions
+    needs: basics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: taiki-e/install-action@cargo-hack
+      - uses: taiki-e/install-action@cargo-minimal-versions
+      - name: Check minimal versions
+        run: |
+          # TODO: Add --detach-path-deps when pre-release is over
+          cargo minimal-versions check --workspace --ignore-private --exclude tower-sesh-store-redis --all-features
+          cargo minimal-versions check --package tower-sesh-store-redis --features test-util
+
+  ### test jobs
+
+  test:
+    name: "cargo test (${{ matrix.rust }})"
+    needs: basics
+    strategy:
+      matrix:
+        rust: [stable, beta, nightly]
+      fail-fast: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "install Rust ${{ matrix.rust }}"
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+      - name: install cargo-nextest
+        uses: taiki-e/install-action@nextest
+      - name: Run tests
+        run: cargo nextest run --profile ci --workspace --features test-util
+      - name: Run doctests
+        run: cargo test --doc --workspace --all-features
+
+  miri-lib:
+    name: "miri test --lib"
+    needs: basics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust ${{ env.rust_miri_nightly }}
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.rust_miri_nightly }}
+          components: miri
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - name: miri
+        run: |
+          cargo miri nextest run --profile ci --workspace --lib --features test-util
+        env:
+          MIRIFLAGS: -Zmiri-disable-isolation -Zmiri-strict-provenance
+
+  miri-test:
+    name: "miri test --tests"
+    needs: basics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust ${{ env.rust_miri_nightly }}
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.rust_miri_nightly }}
+          components: miri
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - name: miri
+        run: |
+          cargo miri nextest run --profile ci --package tower-sesh --tests --features test-util
+        env:
+          MIRIFLAGS: -Zmiri-disable-isolation -Zmiri-strict-provenance
+
+  miri-doc:
+    name: "miri test --doc"
+    needs: basics
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust ${{ env.rust_miri_nightly }}
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.rust_miri_nightly }}
+          components: miri
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest
+      - name: miri
+        run: |
+          cargo miri test --workspace --doc --all-features
+        env:
+          MIRIFLAGS: -Zmiri-disable-isolation -Zmiri-strict-provenance

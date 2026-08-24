@@ -1,0 +1,621 @@
+{
+  "diagnostics": [
+    {
+      "capabilities": [],
+      "confidence": "high",
+      "evidence": [
+        "reference = actions/github-script@v7"
+      ],
+      "fix": {
+        "description": "resolve and replace the reference with an immutable revision",
+        "kind": "pin-dependency",
+        "replacement": null,
+        "span": {
+          "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+          "start": {
+            "byte": 375,
+            "column": 15,
+            "line": 14
+          },
+          "stop": {
+            "byte": 399,
+            "column": 39,
+            "line": 14
+          }
+        }
+      },
+      "id": "diag_eb73dc630b12196c389a",
+      "message": "dependency is not pinned to immutable content: actions/github-script@v7",
+      "rule_id": "WV-SUPPLY-001",
+      "severity": "warning",
+      "span": {
+        "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+        "start": {
+          "byte": 375,
+          "column": 15,
+          "line": 14
+        },
+        "stop": {
+          "byte": 399,
+          "column": 39,
+          "line": 14
+        }
+      },
+      "trace": [
+        {
+          "label": "mutable dependency",
+          "node_id": "wv_226fefa6fa13ed02b906",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 375,
+              "column": 15,
+              "line": 14
+            },
+            "stop": {
+              "byte": 399,
+              "column": 39,
+              "line": 14
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "digest": "sha256:098f2286a2a39679f6c6547cfd0809f78c5f74efd165c265cff687274d27bc0a",
+  "graphs": [
+    {
+      "edges": [
+        {
+          "condition": true,
+          "from": "wv_65040f2894d8acc2aaf1",
+          "id": "wv_04b45ff16f05eb9fe9a5",
+          "kind": "control",
+          "label": null,
+          "to": "wv_226fefa6fa13ed02b906"
+        },
+        {
+          "condition": true,
+          "from": "wv_65040f2894d8acc2aaf1",
+          "id": "wv_08dd85286a53b6e8e86f",
+          "kind": "call",
+          "label": null,
+          "to": "wv_226fefa6fa13ed02b906"
+        },
+        {
+          "condition": true,
+          "from": "wv_067eb2e95e71d449cba7",
+          "id": "wv_128facbfc41d78a3419c",
+          "kind": "data",
+          "label": "github.event.workflow_run.conclusion",
+          "to": "wv_bedee797f47cd14e969e"
+        },
+        {
+          "condition": {
+            "high": {
+              "high": true,
+              "low": false,
+              "variable": "(github.event.workflow_run.run_attempt<5)"
+            },
+            "low": false,
+            "variable": "(github.event.workflow_run.conclusion==\"failure\")"
+          },
+          "from": "wv_bedee797f47cd14e969e",
+          "id": "wv_179320177c645ea62fa6",
+          "kind": "control",
+          "label": "gate",
+          "to": "wv_ee76817edd3aaa3d8bae"
+        },
+        {
+          "condition": true,
+          "from": "wv_9bb3b2264a77a39d30eb",
+          "id": "wv_19d0ca84583a079b1cba",
+          "kind": "control",
+          "label": null,
+          "to": "wv_0eae2693cb68cd43641e"
+        },
+        {
+          "condition": true,
+          "from": "wv_ee76817edd3aaa3d8bae",
+          "id": "wv_7e1dd1c1ef34897e097f",
+          "kind": "control",
+          "label": null,
+          "to": "wv_65040f2894d8acc2aaf1"
+        },
+        {
+          "condition": true,
+          "from": "wv_0eae2693cb68cd43641e",
+          "id": "wv_f795385f015c5415bc81",
+          "kind": "control",
+          "label": null,
+          "to": "wv_bedee797f47cd14e969e"
+        },
+        {
+          "condition": true,
+          "from": "wv_117c9d6c0ed00cdb1105",
+          "id": "wv_fa755e816852395539af",
+          "kind": "data",
+          "label": "github.event.workflow_run.run_attempt",
+          "to": "wv_bedee797f47cd14e969e"
+        }
+      ],
+      "entrypoints": [
+        "wv_0eae2693cb68cd43641e"
+      ],
+      "nodes": [
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.workflow_run.conclusion",
+                  "span": {
+                    "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+                    "start": {
+                      "byte": 220,
+                      "column": 13,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 256,
+                      "column": 49,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.workflow_run.conclusion"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_067eb2e95e71d449cba7",
+          "kind": "resource",
+          "name": "github.event.workflow_run.conclusion",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 220,
+              "column": 13,
+              "line": 11
+            },
+            "stop": {
+              "byte": 256,
+              "column": 49,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_0eae2693cb68cd43641e",
+          "kind": "workflow",
+          "name": "Rerun Flaky Tests",
+          "phase": "compile",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 0,
+              "column": 1,
+              "line": 1
+            },
+            "stop": {
+              "byte": 654,
+              "column": 16,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "value": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.workflow_run.run_attempt",
+                  "span": {
+                    "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+                    "start": {
+                      "byte": 273,
+                      "column": 66,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 310,
+                      "column": 103,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.workflow_run.run_attempt"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_117c9d6c0ed00cdb1105",
+          "kind": "resource",
+          "name": "github.event.workflow_run.run_attempt",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 273,
+              "column": 66,
+              "line": 11
+            },
+            "stop": {
+              "byte": 310,
+              "column": 103,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [
+            "network"
+          ],
+          "condition": true,
+          "effects": [],
+          "id": "wv_226fefa6fa13ed02b906",
+          "kind": "call",
+          "name": "actions/github-script@v7",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 375,
+              "column": 15,
+              "line": 14
+            },
+            "stop": {
+              "byte": 399,
+              "column": 39,
+              "line": 14
+            }
+          },
+          "unknown": {
+            "detail": "actions/github-script@v7",
+            "kind": "unresolved_dependency"
+          }
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_65040f2894d8acc2aaf1",
+          "kind": "step",
+          "name": "Rerun Flaky Tests",
+          "phase": "run",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 337,
+              "column": 9,
+              "line": 13
+            },
+            "stop": {
+              "byte": 654,
+              "column": 16,
+              "line": 21
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_9bb3b2264a77a39d30eb",
+          "kind": "trigger",
+          "name": "workflow_run",
+          "phase": "source",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 30,
+              "column": 3,
+              "line": 3
+            },
+            "stop": {
+              "byte": 125,
+              "column": 18,
+              "line": 6
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {
+            "expression": {
+              "provenance": [
+                {
+                  "operation": "gate",
+                  "origin": "workflow condition",
+                  "span": {
+                    "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+                    "start": {
+                      "byte": 216,
+                      "column": 9,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 317,
+                      "column": 110,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "trusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "${{ github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.run_attempt < 5 }}"
+                ]
+              }
+            },
+            "reference:github.event.workflow_run.conclusion": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.workflow_run.conclusion",
+                  "span": {
+                    "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+                    "start": {
+                      "byte": 220,
+                      "column": 13,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 256,
+                      "column": 49,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.workflow_run.conclusion"
+                ]
+              }
+            },
+            "reference:github.event.workflow_run.run_attempt": {
+              "provenance": [
+                {
+                  "operation": "expression reference",
+                  "origin": "github.event.workflow_run.run_attempt",
+                  "span": {
+                    "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+                    "start": {
+                      "byte": 273,
+                      "column": 66,
+                      "line": 11
+                    },
+                    "stop": {
+                      "byte": 310,
+                      "column": 103,
+                      "line": 11
+                    }
+                  }
+                }
+              ],
+              "secrecy": "public",
+              "trust": "untrusted",
+              "type": "string",
+              "value": {
+                "constants": [
+                  "github.event.workflow_run.run_attempt"
+                ]
+              }
+            }
+          },
+          "capabilities": [],
+          "condition": {
+            "high": {
+              "high": true,
+              "low": false,
+              "variable": "(github.event.workflow_run.run_attempt<5)"
+            },
+            "low": false,
+            "variable": "(github.event.workflow_run.conclusion==\"failure\")"
+          },
+          "effects": [],
+          "id": "wv_bedee797f47cd14e969e",
+          "kind": "gate",
+          "name": "if:job:rerun_flaky_tests",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 216,
+              "column": 9,
+              "line": 11
+            },
+            "stop": {
+              "byte": 317,
+              "column": 110,
+              "line": 11
+            }
+          },
+          "unknown": null
+        },
+        {
+          "attributes": {},
+          "capabilities": [],
+          "condition": true,
+          "effects": [],
+          "id": "wv_ee76817edd3aaa3d8bae",
+          "kind": "job",
+          "name": "rerun_flaky_tests",
+          "phase": "plan",
+          "provider": "github",
+          "span": {
+            "file": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml",
+            "start": {
+              "byte": 134,
+              "column": 3,
+              "line": 8
+            },
+            "stop": {
+              "byte": 654,
+              "column": 16,
+              "line": 21
+            }
+          },
+          "unknown": null
+        }
+      ],
+      "provider": "github",
+      "source": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml"
+    }
+  ],
+  "inputs": [
+    {
+      "digest": "sha256:604540fa2cf5d3f1caa7165753326568f05489b56c97db94a74233015d5dc557",
+      "path": "github/opendreamproject/opendream/.github/workflows/rerun-flaky-tests.yml"
+    }
+  ],
+  "persona": "audit",
+  "properties": [
+    {
+      "explanation": "AI agent input is trusted or isolated from tools and network",
+      "id": "WV-AI-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "artifact integrity is preserved across producers and consumers",
+      "id": "WV-ARTIFACT-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "every privileged effect is dominated by an authorization gate",
+      "id": "WV-AUTH-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "cache integrity is preserved across producers and consumers",
+      "id": "WV-CACHE-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
+      "id": "WV-CORRECT-001",
+      "reasons": [],
+      "state": "Proved",
+      "subject": null
+    },
+    {
+      "explanation": "credentials do not persist into reusable runner state",
+      "id": "WV-CRED-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "granted capabilities are required by a reachable effect",
+      "id": "WV-PERM-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted values do not cross an unquoted command boundary",
+      "id": "WV-SEC-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "secret values do not reach network, output, or logging effects",
+      "id": "WV-SEC-002",
+      "reasons": [
+        {
+          "detail": "actions/github-script@v7",
+          "kind": "unresolved_dependency"
+        }
+      ],
+      "state": "Unknown",
+      "subject": null
+    },
+    {
+      "explanation": "workflow execution cannot rewrite trusted CI definitions",
+      "id": "WV-SELF-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    },
+    {
+      "explanation": "remote executable dependencies are content-addressed",
+      "id": "WV-SUPPLY-001",
+      "reasons": [],
+      "state": "Violated",
+      "subject": null
+    },
+    {
+      "explanation": "untrusted checkout selection cannot race a privileged consumer",
+      "id": "WV-TOCTOU-001",
+      "reasons": [],
+      "state": "NotApplicable",
+      "subject": null
+    }
+  ],
+  "schema": "report-v1",
+  "summary": {
+    "diagnostics": 1,
+    "graphs": 1,
+    "inputs": 1,
+    "unknown_properties": 1
+  },
+  "tool": {
+    "name": "workflow-verifier",
+    "version": "0.1.0"
+  }
+}

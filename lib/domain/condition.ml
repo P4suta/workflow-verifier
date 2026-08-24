@@ -17,45 +17,30 @@ let rec not_ = function
 
 type operation = And | Or
 
-let terminal operation left right =
-  match (operation, left, right) with
-  | And, Bottom, _ | And, _, Bottom -> Some Bottom
-  | And, Top, value | And, value, Top -> Some value
-  | Or, Top, _ | Or, _, Top -> Some Top
-  | Or, Bottom, value | Or, value, Bottom -> Some value
-  | _ when equal left right -> Some left
-  | _ -> None
-
 let rec apply operation left right =
-  match terminal operation left right with
-  | Some value -> value
-  | None -> (
-      match (left, right) with
-      | Branch left_node, Branch right_node ->
-          let comparison =
-            String.compare left_node.variable right_node.variable
-          in
-          if comparison = 0 then
-            branch left_node.variable
-              (apply operation left_node.low right_node.low)
-              (apply operation left_node.high right_node.high)
-          else if comparison < 0 then
-            branch left_node.variable
-              (apply operation left_node.low right)
-              (apply operation left_node.high right)
-          else
-            branch right_node.variable
-              (apply operation left right_node.low)
-              (apply operation left right_node.high)
-      | Branch node, terminal ->
-          branch node.variable
-            (apply operation node.low terminal)
-            (apply operation node.high terminal)
-      | terminal, Branch node ->
-          branch node.variable
-            (apply operation terminal node.low)
-            (apply operation terminal node.high)
-      | _ -> assert false)
+  if equal left right then left
+  else
+    match (operation, left, right) with
+    | And, Bottom, _ | And, _, Bottom -> Bottom
+    | And, Top, value | And, value, Top -> value
+    | Or, Top, _ | Or, _, Top -> Top
+    | Or, Bottom, value | Or, value, Bottom -> value
+    | _, Branch left_node, Branch right_node ->
+        let comparison =
+          String.compare left_node.variable right_node.variable
+        in
+        if comparison < 0 then
+          branch left_node.variable
+            (apply operation left_node.low right)
+            (apply operation left_node.high right)
+        else if comparison > 0 then
+          branch right_node.variable
+            (apply operation left right_node.low)
+            (apply operation left right_node.high)
+        else
+          branch left_node.variable
+            (apply operation left_node.low right_node.low)
+            (apply operation left_node.high right_node.high)
 
 let and_ = apply And
 let or_ = apply Or

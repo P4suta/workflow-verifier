@@ -1,0 +1,50 @@
+name: Dependency Audit
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - Cargo.toml
+      - Cargo.lock
+  pull_request:
+    paths:
+      - Cargo.toml
+      - Cargo.lock
+  schedule:
+    # Run nightly at 02:17 UTC to catch newly published advisories.
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: cargo audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo-audit binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/cargo-audit
+          key: cargo-audit-${{ runner.os }}-v1
+
+      - name: Install cargo-audit
+        run: |
+          if ! command -v cargo-audit &>/dev/null; then
+            cargo install cargo-audit --locked
+          fi
+
+      - name: Run audit
+        # --deny unsound  — treat unsoundness advisories as errors
+        # --deny yanked   — treat yanked crates as errors
+        # Exclude advisories for optional/dev-only dependencies where the
+        # vulnerable code path is not reachable (add IDs below as needed).
+        run: cargo audit --deny unsound --deny yanked
