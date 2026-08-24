@@ -7,6 +7,7 @@ let required =
     "../scripts/verify_install_layout.py";
     "../scripts/generate_sbom.py";
     "../scripts/package_release.py";
+    "../scripts/materialize_release_input.py";
     "../scripts/verify_release_version.py";
     "../scripts/verify_release_evidence.py";
     "../scripts/stage_release_evidence.py";
@@ -332,6 +333,10 @@ let () =
         fail "release workflow omits required surface: %s" required_surface)
     [
       "verify_release_version.py --tag";
+      "materialize_release_input.py";
+      "--source \"$ANALYZER_PATH\"";
+      "--destination \"$materialized_analyzer\"";
+      "ANALYZER_PATH=\"$materialized_analyzer\"";
       "package_release.py";
       "generate_sbom.py";
       "cargo build --locked --release";

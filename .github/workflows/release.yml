@@ -134,6 +134,12 @@ jobs:
           NATIVE_HELPER_PATH: ${{ matrix.native }}
           NATIVE_HELPER_NAME: ${{ matrix.native_name }}
         run: |
+          analyzer_name="workflow-verifier${ANALYZER_PATH##*workflow-verifier}"
+          materialized_analyzer="_release/package-input/$analyzer_name"
+          python -B scripts/materialize_release_input.py \
+            --source "$ANALYZER_PATH" \
+            --destination "$materialized_analyzer"
+          ANALYZER_PATH="$materialized_analyzer"
           files=(
             --file "bin/workflow-verifier${ANALYZER_PATH##*workflow-verifier}=$ANALYZER_PATH"
             --file "bin/workflow-verifier-oci-helper${OCI_HELPER_PATH##*workflow-verifier-oci-helper}=$OCI_HELPER_PATH"
