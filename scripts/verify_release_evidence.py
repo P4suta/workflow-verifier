@@ -587,21 +587,27 @@ def _verify_signature(root: Path, attestation_path: Path, signature_path: Path, 
         raise ValueError("maintainer allowed signers does not contain the pinned P4suta key")
     if signature_path.suffix != ".sig":
         raise ValueError("security attestation signature_path must end in .sig")
+    try:
+        root_resolved = root.resolve(strict=True)
+        allowed_signers_resolved = allowed_signers.resolve(strict=True)
+        signature_resolved = signature_path.resolve(strict=True)
+    except OSError as error:
+        raise ValueError(f"cannot resolve maintainer signature inputs: {error}") from error
     _run(
         [
             "ssh-keygen",
             "-Y",
             "verify",
             "-f",
-            str(allowed_signers),
+            str(allowed_signers_resolved),
             "-I",
             MAINTAINER_EMAIL,
             "-n",
             SIGNATURE_NAMESPACE,
             "-s",
-            str(signature_path),
+            str(signature_resolved),
         ],
-        cwd=root,
+        cwd=root_resolved,
         input_data=raw,
     )
     del attestation_path

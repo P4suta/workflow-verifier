@@ -394,6 +394,31 @@ class ReleaseEvidenceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "pinned P4suta key"):
                 _verify_signature(root, attestation, signature, attestation.read_bytes())
 
+    def test_relative_manifest_root_resolves_signature_subprocess_paths(self) -> None:
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as temporary:
+            absolute_root = Path(temporary)
+            root = absolute_root.relative_to(Path.cwd())
+            attestation = root / "maintainer-security-attestation-v1.json"
+            signature = root / "maintainer-security-attestation-v1.json.sig"
+            attestation.write_text("{}\n", encoding="utf-8")
+            signature.write_text("signature\n", encoding="ascii")
+            (root / "maintainer-allowed-signers").write_bytes(
+                f"{MAINTAINER_EMAIL} {MAINTAINER_PUBLIC_KEY}\n".encode("ascii")
+            )
+            with patch("scripts.verify_release_evidence._run", return_value=b"") as run:
+                _verify_signature(root, attestation, signature, attestation.read_bytes())
+
+            command = run.call_args.args[0]
+            self.assertEqual(run.call_args.kwargs["cwd"], absolute_root.resolve())
+            self.assertEqual(
+                Path(command[command.index("-f") + 1]),
+                (absolute_root / "maintainer-allowed-signers").resolve(),
+            )
+            self.assertEqual(
+                Path(command[command.index("-s") + 1]),
+                (absolute_root / signature.name).resolve(),
+            )
+
     def test_raw_parent_traversal_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
