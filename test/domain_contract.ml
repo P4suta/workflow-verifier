@@ -174,7 +174,10 @@ let robdd_test () =
   expect "false condition has a stable canonical string"
     (to_string false_ = "false");
   expect "an atom retains its variable in canonical strings"
-    (to_string a = "authorized")
+    (to_string a = "authorized");
+  expect "a compound ROBDD has one canonical explanatory formula"
+    (to_string (and_ a b)
+    = "((not authorized and false) or (authorized and fork))")
 
 let robdd_variable_order_test () =
   let open Condition in
