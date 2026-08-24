@@ -634,6 +634,22 @@ let script_adapter_test () =
   in
   expect "tokenizer must retain quoted expansion context"
     (List.exists (fun token -> token.Script_adapter.quoted) quoted.tokens);
+  let sparse = Script_adapter.analyze Script_adapter.Bash "  echo   ok  " in
+  expect "tokenizer must not materialize whitespace as empty tokens"
+    (List.map
+       (fun (token : Script_adapter.token) ->
+         (token.text, token.quoted, token.start, token.stop))
+       sparse.tokens
+    = [ ("echo", false, 2, 6); ("ok", false, 9, 11) ]);
+  let after_empty_quote =
+    Script_adapter.analyze Script_adapter.Bash "\"\" word"
+  in
+  expect "an empty quoted token cannot mark the following word as quoted"
+    (match after_empty_quote.tokens with
+    | [ token ] ->
+        token.text = "word" && (not token.quoted) && token.start = 3
+        && token.stop = 7
+    | _ -> false);
   let nested_substitution =
     Script_adapter.analyze Script_adapter.Bash
       "printf '%s' \"$TOKEN\" $(printf $(value) > private.log)"
@@ -673,6 +689,12 @@ let script_adapter_test () =
   in
   expect "nested substitutions keep separators and redirects in their group"
     nested_group.secret_to_output;
+  let grouped_private_output =
+    Script_adapter.analyze Script_adapter.Bash
+      "(echo $TOKEN; printf safe) > private.log"
+  in
+  expect "a leading group binds its secret output to the outer private redirect"
+    (not grouped_private_output.secret_to_output);
   let closed_substitution =
     Script_adapter.analyze Script_adapter.Bash
       "echo $TOKEN $(value);printf safe > private.log"

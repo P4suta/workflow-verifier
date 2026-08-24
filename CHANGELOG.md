@@ -96,3 +96,10 @@ after the first compatibility release.
   validator across config, lock, and sandbox protocols, and make a mutation
   runner serial by default so Dune RPC infrastructure faults cannot masquerade
   as detected mutants.
+- Close the final hosted mutation boundaries for BOM-relative comment offsets,
+  folded whitespace-only scalar lines, recursively decorated scalar values,
+  block-payload state, directive validation and digit boundaries, shell token
+  reset after empty quotes, grouped redirection binding, multiline scalar
+  endpoints, escaped spaces in flow scalars, and local-tag quote boundaries.
+  Retain only semantically observable parser state so equivalent implementation
+  detail cannot survive as false coverage debt.

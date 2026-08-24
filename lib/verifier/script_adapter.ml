@@ -70,9 +70,14 @@ let tokenize source : token list =
   and start = ref 0
   and quote = ref None
   and token_quoted = ref false
+  and has_text = ref false
   and escaped = ref false in
+  let add_character character =
+    Buffer.add_char buffer character;
+    has_text := true
+  in
   let flush stop =
-    if Buffer.length buffer > 0 then (
+    if !has_text then
       tokens :=
         ({
            text = Buffer.contents buffer;
@@ -80,10 +85,11 @@ let tokenize source : token list =
            start = !start;
            stop;
          }
-          : token)
+         : token)
         :: !tokens;
-      Buffer.clear buffer;
-      token_quoted := false)
+    Buffer.clear buffer;
+    token_quoted := false;
+    has_text := false
   in
   String.iteri
     (fun index character ->
@@ -91,21 +97,21 @@ let tokenize source : token list =
       | Some delimiter ->
           token_quoted := true;
           if !escaped then (
-            Buffer.add_char buffer character;
+            add_character character;
             escaped := false)
           else if character = '\\' && delimiter = '"' then escaped := true
           else if character = delimiter then quote := None
-          else Buffer.add_char buffer character
+          else add_character character
       | None -> (
           match character with
           | ('"' | '\'') as delimiter ->
-              if Buffer.length buffer = 0 then start := index;
+              if not !has_text then start := index;
               token_quoted := true;
               quote := Some delimiter
           | ' ' | '\t' | '\r' | '\n' -> flush index
           | character ->
-              if Buffer.length buffer = 0 then start := index;
-              Buffer.add_char buffer character))
+              if not !has_text then start := index;
+              add_character character))
     source;
   flush (String.length source);
   List.rev !tokens

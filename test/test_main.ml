@@ -169,6 +169,23 @@ let yaml_tests =
             (Yaml_cst.root tree = None));
     };
     {
+      name = "UTF-8 BOM offsets preserve the exact inline comment span";
+      run =
+        (fun () ->
+          let source = "\xef\xbb\xbfkey: value # note\n" in
+          let tree = Yaml_cst.parse ~file:"bom-comment.yml" source in
+          let comment =
+            List.find_opt
+              (fun trivia -> trivia.Yaml_cst.kind = Yaml_cst.Comment)
+              tree.trivia
+            |> require_some "BOM-prefixed inline comment"
+          in
+          expect_equal_string ~expected:"# note" comment.raw;
+          expect_equal_int ~expected:14 comment.span.start.byte;
+          expect_equal_int ~expected:15 comment.span.start.column;
+          expect_equal_int ~expected:20 comment.span.stop.byte);
+    };
+    {
       name = "YAML non-breaking-space escapes retain their Unicode value";
       run =
         (fun () ->
@@ -277,6 +294,29 @@ let yaml_tests =
             |> require_some "decorated scalar value"
           in
           expect_equal_string ~expected:"value" decorated_value);
+    };
+    {
+      name = "scalar lookup unwraps every decorated node";
+      run =
+        (fun () ->
+          let scalar =
+            Yaml_cst.Scalar
+              {
+                value = "exact";
+                raw = "exact";
+                style = Yaml_cst.Plain;
+                anchor = None;
+                tag = None;
+                span = Span.none;
+              }
+          in
+          let decorate value =
+            Yaml_cst.Decorated
+              { value; anchor = Some "layer"; tag = None; span = Span.none }
+          in
+          expect_equal_string ~expected:"exact"
+            (decorate (decorate scalar) |> Yaml_cst.scalar_value
+            |> require_some "multiply decorated scalar"));
     };
     {
       name = "YAML structural equality compares sequence elements";
@@ -392,6 +432,25 @@ let yaml_tests =
           expect_equal_int ~expected:20 span.stop.byte;
           expect_equal_int ~expected:3 span.stop.line;
           expect_equal_int ~expected:8 span.stop.column);
+    };
+    {
+      name = "plain scalar spans end at the final continuation byte";
+      run =
+        (fun () ->
+          let source = "plain: first\n  second\n" in
+          let tree = Yaml_cst.parse ~file:"workflow.yml" source in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "plain")
+            |> require_some "continued plain scalar"
+          in
+          let span = Yaml_cst.node_span value in
+          expect_equal_int ~expected:7 span.start.byte;
+          expect_equal_int ~expected:1 span.start.line;
+          expect_equal_int ~expected:8 span.start.column;
+          expect_equal_int ~expected:21 span.stop.byte;
+          expect_equal_int ~expected:2 span.stop.line;
+          expect_equal_int ~expected:9 span.stop.column);
     };
     {
       name = "comment-preserving edits reject overlap and touch only the span";
@@ -786,6 +845,19 @@ let yaml_tests =
           expect_equal_string ~expected:"\nbody\n" value);
     };
     {
+      name = "folded scalars preserve a more-indented whitespace-only line";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: >\n  alpha\n    \n  beta\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
+            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> require_some "folded scalar"
+          in
+          expect_equal_string ~expected:"alpha\n  \nbeta\n" value);
+    };
+    {
       name = "block scalar at end of input stays within source bounds";
       run =
         (fun () ->
@@ -849,6 +921,13 @@ let yaml_tests =
                   (fun problem ->
                     problem.Yaml_cst.message = "invalid YAML directive")
                   upper_major.problems));
+          let upper_minor = Yaml_cst.parse "%YAML 1.9\n---\nvalue: ok\n" in
+          expect_true "nine is a valid minor-version digit"
+            (not
+               (List.exists
+                  (fun problem ->
+                    problem.Yaml_cst.message = "invalid YAML directive")
+                  upper_minor.problems));
           let tree = Yaml_cst.parse "%YAML :.2\n---\nvalue: ok\n" in
           expect_true "a non-decimal major version must be rejected"
             (List.exists
@@ -894,6 +973,15 @@ let yaml_tests =
                  problem.Yaml_cst.message
                  = "content follows a completed flow collection")
                tree.problems));
+    };
+    {
+      name = "escaped spaces retain double-quoted flow state";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: [\"line\\ ,break\", tail]\n" in
+          expect_true
+            "a valid escape cannot expose a quoted comma as flow syntax"
+            (tree.problems = []));
     };
     {
       name = "truncated hexadecimal escapes fail within source bounds";
@@ -972,6 +1060,18 @@ let yaml_tests =
       name = "node-property tokens and quote boundaries preserve mapping colons";
       run =
         (fun () ->
+          let tagged_scalar = Yaml_cst.parse "!local \"value: inside\"\n" in
+          expect_true "a local tag keeps the quoted colon inside its scalar"
+            (match Yaml_cst.root tagged_scalar with
+            | Some
+                (Yaml_cst.Scalar
+                  {
+                    tag = Some "!local";
+                    value = "value: inside";
+                    style = Double_quoted;
+                    _;
+                  }) -> true
+            | _ -> false);
           let property = Yaml_cst.parse "key: !tag: scalar\n" in
           expect_true "a colon inside a node property is not a second mapping"
             (not

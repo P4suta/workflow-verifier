@@ -56,6 +56,8 @@ let script_oracle () =
   let cases =
     [
       (Script_adapter.Posix, "printf '%s' \"$TITLE\"");
+      (Bash, "  echo   ok  ");
+      (Bash, "\"\" word");
       (Posix, "echo $TITLE | tee output.txt");
       (Posix, "cat < private.txt > public.txt");
       (Posix, "curl -H \"Authorization: Bearer $TOKEN\" https://api.example");
@@ -105,7 +107,7 @@ let script_oracle () =
            ])
        cases)
   |> fingerprint "script-adapter"
-       "6730432f3d2f13af4cef4d627a4c5e2788e21739f2abe696a5cb9030ae831594"
+       "f0bcac9428d938ecbea0bede48507cb26d49dd3755def3f3258306918f9f39d5"
 
 let script_edge_oracle () =
   let cases =
@@ -114,6 +116,7 @@ let script_edge_oracle () =
       (Bash, {|printf '%s' 'a;|b'; echo $TOKEN|});
       (Bash, {|printf a\;b && echo $TOKEN|});
       (Bash, {|printf '%s' "$(printf 'a|b')" | tee output.txt|});
+      (Bash, {|(echo $TOKEN; printf safe) > private.log|});
       (Bash, "echo $TOKEN;");
       (Bash, "echo $TOKEN&printf safe");
       (Bash, "echo $TOKEN&&printf safe");
@@ -200,7 +203,7 @@ let script_edge_oracle () =
            ])
        cases)
   |> fingerprint "script-edges"
-       "d52f3ddf3a87a9c887f3377bd3d54509484d7cd5ca66c8811b72277459ae7273"
+       "0acea974f69b59d0f186ad9185076721bad6e9b53bb6aa773ee392908de0a14f"
 
 let config_result_json source =
   match Config.parse source with
@@ -2020,6 +2023,9 @@ let yaml_structural_evidence () =
                       tag = None;
                     }));
           ] );
+      ( "manual-decorated-scalar-value",
+        Option.fold ~none:Json.Null ~some:(fun value -> Json.String value)
+          (Yaml_cst.scalar_value manual_decorated) );
     ]
 
 let yaml_edge_oracle () =
@@ -2027,6 +2033,7 @@ let yaml_edge_oracle () =
     [
       ("crlf", "root:\r\n  child: value\r\n");
       ("bom-only", "\239\187\191");
+      ("bom-inline-comment", "\239\187\191key: value # note\n");
       ("partial-bom-first", "\239ab: value\n");
       ("partial-bom-second", "a\187c: value\n");
       ("partial-bom-indicator", "\239XY---\nvalue\n");
@@ -2067,6 +2074,7 @@ let yaml_edge_oracle () =
       ("bad-block-suffix", "value: |x\n  data\n");
       ("same-indent-block-end", "value: |\nnext: value\n");
       ("zero-version", "%YAML 0.1\n---\nvalue\n");
+      ("max-minor-version", "%YAML 1.9\n---\nvalue\n");
       ("flow-escape", "value: [\"a\\\\\\\"b\", c]\n");
       ("block-comment-indent", "value: |\n# same indent\nnext: value\n");
       ("block-leading-space", "value: |\n   \n  content\n");
@@ -2078,9 +2086,11 @@ let yaml_edge_oracle () =
       ("partial-bom-middle", "\239X\191--- value\n");
       ("bom-inline-document", "\239\187\191--- key: value\n");
       ("property-spacing", "value: &anchor   !tag   plain\n");
+      ("tagged-quoted-colon", "!local \"value: inside\"\n");
       ("flow-single-quotes", "root: {'a,b': 'c:d', '': ''}\n");
       ("flow-double-quotes", "root: {\"a,b\": \"c:d\", \"\": \"\"}\n");
       ("flow-escaped-double-key", "root: {\"a\\\"b\": value}\n");
+      ("flow-escaped-space-comma", "root: [\"line\\ ,break\", tail]\n");
       ("escape-ascii-boundary", "value: \"\\u007F\"\n");
       ( "escape-simple-boundaries",
         "value: \"\\0\\a\\b\\t\\n\\v\\f\\r\\e\\ \\\"\\/\\\\\"\n" );
@@ -2105,6 +2115,7 @@ let yaml_edge_oracle () =
       ("folded-trailing-blank", "value: >+\n  first\n  \n");
       ("folded-leading-blank", "value: >\n\n  first\n");
       ("folded-more-indented", "value: >\n   first\n  second\n");
+      ("folded-whitespace-indent", "value: >\n  alpha\n    \n  beta\n");
       ("folded-tabs", "value: >\n  first\t\t\n  second\n");
       ("literal-explicit-indent", "value: |2\n  first\n  \n  second\n");
       ("literal-short-first-indent", "value: |3\n  first\n   second\n");
@@ -2193,7 +2204,7 @@ let yaml_edge_oracle () =
                 })) );
     ]
   |> fingerprint "yaml-edges"
-       "5f3381f83b90daac5600a4cf59dcf26c0e8740d07f2c5a72d8ac9f09e893e774"
+       "95fa98b49213fa646089c629f227c8b0e0aefb82aa97866502ef698c73eb0cff"
 
 let rec yaml_suite_inputs root relative =
   let directory =

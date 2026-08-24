@@ -302,9 +302,7 @@ let document_end_line = has_document_indicator "..."
 let semantic_line line =
   if not (document_start_line line) then line
   else
-    let original_content = line.content in
-    let content = without_bom original_content in
-    let bom_width = String.length original_content - String.length content in
+    let content = line.content in
     let cursor = ref 3 in
     while
       !cursor < String.length content
@@ -320,7 +318,7 @@ let semantic_line line =
       {
         line with
         content = String.sub content !cursor (String.length content - !cursor);
-        content_byte = line.content_byte + bom_width + !cursor;
+        content_byte = line.content_byte + !cursor;
       }
 
 let trim_right value =
@@ -965,7 +963,7 @@ let parse ?(file = "<memory>") source =
         let cursor = ref next_index
         and blank_lines = ref 0
         and value = Buffer.create (String.length scalar.value)
-        and continuation_span = ref None
+        and continuation_stop = ref None
         and finished = ref false in
         Buffer.add_string value scalar.value;
         while !cursor < limit && not !finished do
@@ -988,23 +986,22 @@ let parse ?(file = "<memory>") source =
               done;
               blank_lines := 0);
             Buffer.add_string value content;
-            continuation_span :=
+            continuation_stop :=
               Some
-                (span_of_range file line.number (line.indent + 1)
-                   line.content_byte
-                   (String.length line.raw + 1)
+                (position_of_offset ~line:line.number
+                   ~column:(String.length line.raw + 1)
                    line.stop_byte);
             incr cursor;
             if Option.is_some line.comment_byte then finished := true)
           else finished := true
         done;
-        (match !continuation_span with
-        | Some last_span ->
+        (match !continuation_stop with
+        | Some stop ->
           ( Scalar
               {
                 scalar with
                 value = Buffer.contents value;
-                span = Span.merge scalar.span last_span;
+                span = { scalar.span with stop };
               },
             !cursor )
         | None -> (node, next_index))

@@ -288,13 +288,10 @@ let classify_block_header raw =
 let block_scalar_payload active_indent line =
   match !active_indent with
   | None -> false
-  | Some base_indent -> (
-      match String.trim line.raw with
-      | "" -> true
-      | _ when line.indent > base_indent -> true
-      | _ ->
-        active_indent := None;
-        false)
+  | Some base_indent when line.indent > base_indent -> true
+  | Some _ ->
+      active_indent := None;
+      false
 
 type block_analysis = { payload_lines : bool array; problems : issue list }
 
@@ -304,7 +301,8 @@ let analyze_blocks file source_lines =
   and problems = ref [] in
   Array.iteri
     (fun index line ->
-      if block_scalar_payload active_indent line then
+      if String.trim line.raw = "" then ()
+      else if block_scalar_payload active_indent line then
         payload_lines.(index) <- true
       else
         match classify_block_header line.raw with
@@ -430,19 +428,7 @@ let validate_directives file source_lines payload_lines =
             if !in_document then
               add line "directive appears before document end";
             pending_directive := Some line;
-            let directive =
-              match String.index_opt content '#' with
-              | Some index -> (
-                  let prefix = String.sub content 0 index in
-                  if
-                    String.length prefix > 0
-                    && separation prefix.[String.length prefix - 1]
-                  then
-                      String.trim prefix
-                  else content)
-              | None -> content
-            in
-            match words directive with
+            match words content with
             | [ "%YAML"; version ]
               when String.length version = 3
                    && version.[0] >= '0'
