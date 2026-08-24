@@ -17,19 +17,19 @@ let state_name = function
   | Unknown _ -> "Unknown"
   | Not_applicable -> "NotApplicable"
 
+let state_rank = function
+  | Proved -> 0
+  | Violated -> 1
+  | Unknown _ -> 2
+  | Not_applicable -> 3
+
 let compare_state left right =
   match (left, right) with
-  | Proved, Proved | Violated, Violated | Not_applicable, Not_applicable -> 0
   | Unknown left, Unknown right ->
       Stdlib.compare
         (List.sort Unknown.compare left)
         (List.sort Unknown.compare right)
-  | Proved, _ -> -1
-  | _, Proved -> 1
-  | Violated, _ -> -1
-  | _, Violated -> 1
-  | Unknown _, _ -> -1
-  | _, Unknown _ -> 1
+  | _ -> Int.compare (state_rank left) (state_rank right)
 
 let compare left right =
   match String.compare left.id right.id with

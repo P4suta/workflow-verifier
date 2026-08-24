@@ -960,24 +960,25 @@ let property_order_test () =
       Property.t =
     { id; state; subject; explanation }
   in
-  expect "Proved sorts strictly before NotApplicable"
-    (Property.compare (property Property.Proved)
-       (property Property.Not_applicable)
-    < 0);
-  expect "Violated sorts strictly before Unknown"
-    (Property.compare (property Property.Violated)
-       (property (Property.Unknown [ Unknown.External_state "fixture" ]))
-    < 0);
-  expect "Unknown sorts strictly after Violated"
-    (Property.compare
-       (property (Property.Unknown [ Unknown.External_state "fixture" ]))
-       (property Property.Violated)
-    > 0);
-  expect "Unknown sorts strictly before NotApplicable"
-    (Property.compare
-       (property (Property.Unknown [ Unknown.External_state "fixture" ]))
-       (property Property.Not_applicable)
-    < 0);
+  let states =
+    [
+      Property.Proved;
+      Property.Violated;
+      Property.Unknown [ Unknown.External_state "fixture" ];
+      Property.Not_applicable;
+    ]
+  in
+  List.iteri
+    (fun left_index left ->
+      List.iteri
+        (fun right_index right ->
+          let actual = Property.compare (property left) (property right) in
+          expect
+            (Printf.sprintf "%s and %s retain their total-order positions"
+               (Property.state_name left) (Property.state_name right))
+            (Int.compare actual 0 = Int.compare left_index right_index))
+        states)
+    states;
   expect "subjects are a stable comparison discriminator"
     (Property.compare
        (property ~subject:(Some "a") Property.Proved)

@@ -103,3 +103,9 @@ after the first compatibility release.
   endpoints, escaped spaces in flow scalars, and local-tag quote boundaries.
   Retain only semantically observable parser state so equivalent implementation
   detail cannot survive as false coverage debt.
+- Give proof states one explicit domain-owned rank with a complete ordering
+  matrix, and express ROBDD variable selection as a strict lexical trichotomy.
+  Contract and fingerprint oracles now exercise equal-variable reduction as
+  well as both operand orders, eliminating unobservable comparator mutations.
+  Pin the initial flow-scalar escape state with a leading empty double-quoted
+  element so separators following `""` remain observable collection boundaries.

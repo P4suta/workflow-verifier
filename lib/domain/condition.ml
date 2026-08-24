@@ -29,18 +29,18 @@ let rec apply operation left right =
         let comparison =
           String.compare left_node.variable right_node.variable
         in
-        if comparison = 0 then
-          branch left_node.variable
-            (apply operation left_node.low right_node.low)
-            (apply operation left_node.high right_node.high)
-        else if comparison < 0 then
+        if comparison < 0 then
           branch left_node.variable
             (apply operation left_node.low right)
             (apply operation left_node.high right)
-        else
+        else if comparison > 0 then
           branch right_node.variable
             (apply operation left right_node.low)
             (apply operation left right_node.high)
+        else
+          branch left_node.variable
+            (apply operation left_node.low right_node.low)
+            (apply operation left_node.high right_node.high)
 
 let and_ = apply And
 let or_ = apply Or

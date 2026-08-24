@@ -860,6 +860,37 @@ let ordering_edge_evidence () =
       "same"
   and explanation_left = property ~subject:"same" "alpha"
   and explanation_right = property ~subject:"same" "omega" in
+  let property_state_order =
+    let states =
+      [
+        Property.Proved;
+        Property.Violated;
+        Property.Unknown [ Unknown.External_state "fixture" ];
+        Property.Not_applicable;
+      ]
+    in
+    List.concat_map
+      (fun left ->
+        List.map
+          (fun right ->
+            Json.Int
+              (Property.compare (property ~state:left "same")
+                 (property ~state:right "same")))
+          states)
+      states
+  in
+  let condition_order =
+    let alpha = Condition.atom "alpha" and omega = Condition.atom "omega" in
+    Json.Array
+      [
+        Condition.to_json (Condition.and_ alpha omega);
+        Condition.to_json (Condition.and_ omega alpha);
+        Condition.to_json (Condition.or_ alpha omega);
+        Condition.to_json (Condition.or_ omega alpha);
+        Condition.to_json
+          (Condition.and_ alpha (Condition.or_ alpha omega));
+      ]
+  in
   Json.Object
     [
       ("low", Diagnostic.to_json diagnostic_left);
@@ -868,6 +899,8 @@ let ordering_edge_evidence () =
         Json.Int (Diagnostic.compare diagnostic_rule_left diagnostic_rule_right)
       );
       ("unknown_compare", Json.Int (Property.compare unknown_left unknown_right));
+      ("property_state_order", Json.Array property_state_order);
+      ("condition_order", condition_order);
       ( "explanation_compare",
         Json.Int (Property.compare explanation_left explanation_right) );
     ]
@@ -1687,7 +1720,7 @@ let semantic_edge_oracle () =
       ("should_fail", synthetic_should_fail_evidence ());
     ]
   |> fingerprint "semantic-edges"
-       "01ef4250f626839a04df5729ce3bc40e1cc2019cd23811dede7aae8bc40a0b6c"
+       "ee98021298a008f042912e6b27e6829fb6b34ed43115ca69627eb3f204583b99"
 
 let config_edge_oracle () =
   Json.Array
@@ -2089,6 +2122,7 @@ let yaml_edge_oracle () =
       ("tagged-quoted-colon", "!local \"value: inside\"\n");
       ("flow-single-quotes", "root: {'a,b': 'c:d', '': ''}\n");
       ("flow-double-quotes", "root: {\"a,b\": \"c:d\", \"\": \"\"}\n");
+      ("flow-leading-empty-double", "root: [\"\", tail]\n");
       ("flow-escaped-double-key", "root: {\"a\\\"b\": value}\n");
       ("flow-escaped-space-comma", "root: [\"line\\ ,break\", tail]\n");
       ("escape-ascii-boundary", "value: \"\\u007F\"\n");
@@ -2204,7 +2238,7 @@ let yaml_edge_oracle () =
                 })) );
     ]
   |> fingerprint "yaml-edges"
-       "95fa98b49213fa646089c629f227c8b0e0aefb82aa97866502ef698c73eb0cff"
+       "df7691aef5639ba3811584760a25f04c103490c32e747bff1865a42455dc68cf"
 
 let rec yaml_suite_inputs root relative =
   let directory =

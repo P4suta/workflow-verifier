@@ -176,6 +176,30 @@ let robdd_test () =
   expect "an atom retains its variable in canonical strings"
     (to_string a = "authorized")
 
+let robdd_variable_order_test () =
+  let open Condition in
+  let alpha = atom "alpha" and omega = atom "omega" in
+  let conjunction = and_ alpha omega and reverse = and_ omega alpha in
+  expect "ROBDD variable order is independent of operand order"
+    (equal conjunction reverse);
+  expect "ROBDD variable order is strictly lexical"
+    (to_json conjunction
+    = Json.Object
+        [
+          ( "high",
+            Json.Object
+              [
+                ("high", Json.Bool true);
+                ("low", Json.Bool false);
+                ("variable", Json.String "omega");
+              ] );
+          ("low", Json.Bool false);
+          ("variable", Json.String "alpha");
+        ]);
+  let disjunction = or_ alpha omega in
+  expect "an equal ROBDD variable is merged before either order branch"
+    (equal (and_ alpha disjunction) alpha)
+
 let node provider name start_byte =
   let start =
     Span.position ~byte:start_byte ~line:1 ~column:(start_byte + 1) ()
@@ -243,6 +267,7 @@ let tests : test list =
     ("abstract booleans retain their JSON truth value", boolean_json_test);
     ("abstract affix joins preserve one-sided information", affix_join_test);
     ("ROBDD canonicalizes and decides implication", robdd_test);
+    ("ROBDD uses one strict total variable order", robdd_variable_order_test);
     ("IR identity and serialization are deterministic", deterministic_ir_test);
     ("phase availability and Unknown are explicit", phase_and_unknown_test);
   ]

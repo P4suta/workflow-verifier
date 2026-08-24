@@ -730,6 +730,24 @@ let yaml_tests =
           expect_equal_string ~expected:"ok" next);
     };
     {
+      name = "flow splitting starts outside an empty double-quoted scalar";
+      run =
+        (fun () ->
+          let tree = Yaml_cst.parse "value: [\"\", tail]\n" in
+          let value =
+            Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
+            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
+            |> require_some "flow sequence"
+          in
+          match value with
+          | Yaml_cst.Flow_sequence (items, _) ->
+              expect_equal_int ~expected:2 (List.length items);
+              let values = List.filter_map Yaml_cst.scalar_value items in
+              expect_true "both flow scalars must remain separately observable"
+                (values = [ ""; "tail" ])
+          | _ -> fail "value is not a flow sequence");
+    };
+    {
       name = "doubled single quotes keep hashes inside the scalar";
       run =
         (fun () ->
