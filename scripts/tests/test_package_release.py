@@ -1,9 +1,9 @@
 import io
-from pathlib import Path
 import tarfile
 import tempfile
 import unittest
 import zipfile
+from pathlib import Path
 
 from scripts.package_release import build_package
 
@@ -69,7 +69,9 @@ class PackageReleaseTests(unittest.TestCase):
                     root / "b.tar.gz",
                 )
             with self.assertRaises(ValueError):
-                build_package("windows-x86_64", "1.0.0", [("bin/tool", artifact)], root / "c.tar.gz")
+                build_package(
+                    "windows-x86_64", "1.0.0", [("bin/tool", artifact)], root / "c.tar.gz"
+                )
             linked = root / "linked"
             try:
                 linked.symlink_to(artifact)
@@ -77,6 +79,23 @@ class PackageReleaseTests(unittest.TestCase):
                 return
             with self.assertRaises(ValueError):
                 build_package("linux-x86_64", "1.0.0", [("bin/tool", linked)], root / "d.tar.gz")
+
+    def test_output_symlink_is_rejected_without_changing_its_target(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            artifact = root / "artifact"
+            artifact.write_bytes(b"artifact")
+            target = root / "target.tar.gz"
+            target.write_bytes(b"keep")
+            linked = root / "release.tar.gz"
+            try:
+                linked.symlink_to(target)
+            except OSError:
+                return
+
+            with self.assertRaisesRegex(ValueError, "must not replace"):
+                build_package("linux-x86_64", "1.0.0", [("bin/tool", artifact)], linked)
+            self.assertEqual(target.read_bytes(), b"keep")
 
 
 if __name__ == "__main__":

@@ -7,15 +7,14 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
 import re
 import stat
 import subprocess
 import sys
 import tempfile
 import time
+from pathlib import Path, PurePosixPath
 from typing import Any
-
 
 MODES = ("cold", "incremental", "warm")
 ROOT_FIELDS = {"schema", "environment", "scenarios"}
@@ -106,6 +105,46 @@ def _native_argv(argv: list[str], cwd: Path) -> list[str]:
     return argv
 
 
+def uses_config_v2(workspace: Path) -> bool:
+    marker = workspace / "schema" / "config-v2.schema.json"
+    try:
+        metadata = marker.lstat()
+    except FileNotFoundError:
+        return False
+    except OSError as error:
+        raise ValueError(f"cannot inspect analyzer contract marker {marker}: {error}") from error
+    if marker.is_symlink() or not stat.S_ISREG(metadata.st_mode):
+        raise ValueError("analyzer config-v2 contract marker must be a regular file")
+    return True
+
+
+def _contract_argv(argv: list[str], workspace: Path) -> list[str]:
+    """Lower current cache semantics to the pre-release baseline CLI when needed."""
+    if uses_config_v2(workspace) or "--cache-mode" not in argv:
+        return argv
+    if argv.count("--cache-mode") != 1:
+        raise ValueError("performance command repeats --cache-mode")
+    index = argv.index("--cache-mode")
+    if index + 1 >= len(argv):
+        raise ValueError("performance command omits the --cache-mode value")
+    mode = argv[index + 1]
+    if mode == "off":
+        replacement = ["--no-cache"]
+    elif mode == "user":
+        # The v0.1 cache is intentionally write-only for gate decisions. Force
+        # the historical baseline to freshly analyze as well, while retaining
+        # equivalent serialization cost in a workspace-external target path.
+        replacement = [
+            "--no-cache",
+            "--write-cache",
+            "--cache",
+            str((workspace / "_build" / "performance-user-cache-v1.json").resolve()),
+        ]
+    else:
+        raise ValueError(f"performance command has unsupported cache mode {mode}")
+    return [*argv[:index], *replacement, *argv[index + 2 :]]
+
+
 def _run(argv: list[str], cwd: Path, timeout: int, environment: dict[str, str], label: str) -> None:
     try:
         completed = subprocess.run(
@@ -113,8 +152,7 @@ def _run(argv: list[str], cwd: Path, timeout: int, environment: dict[str, str], 
             cwd=cwd,
             env=environment,
             stdin=subprocess.DEVNULL,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             shell=False,
             timeout=timeout,
             check=False,
@@ -147,6 +185,9 @@ def measure(
     if workspace.is_symlink() or not stat.S_ISDIR(workspace_metadata.st_mode):
         raise ValueError("benchmark workspace must be a directory, not a symlink")
     workspace_resolved = workspace.resolve()
+    cache_root = workspace_resolved / "_build" / "performance-user-cache"
+    if cache_root.is_symlink() or (cache_root.exists() and not cache_root.is_dir()):
+        raise ValueError("performance user cache root must be a directory, not a symlink")
 
     document, suite_digest = _load(suite_path)
     _exact_fields(document, ROOT_FIELDS, "performance suite")
@@ -200,9 +241,18 @@ def measure(
             if type(timeout) is not int or not 1 <= timeout <= 3600:
                 raise ValueError(f"{mode_label}.timeout_seconds must be between 1 and 3600")
             parsed_modes[mode] = {
-                "before_each": _commands(mode_value["before_each"], f"{mode_label}.before_each"),
-                "command": _argv(mode_value["command"], f"{mode_label}.command"),
-                "setup": _commands(mode_value["setup"], f"{mode_label}.setup"),
+                "before_each": [
+                    _contract_argv(command, workspace_resolved)
+                    for command in _commands(mode_value["before_each"], f"{mode_label}.before_each")
+                ],
+                "command": _contract_argv(
+                    _argv(mode_value["command"], f"{mode_label}.command"),
+                    workspace_resolved,
+                ),
+                "setup": [
+                    _contract_argv(command, workspace_resolved)
+                    for command in _commands(mode_value["setup"], f"{mode_label}.setup")
+                ],
                 "timeout_seconds": timeout,
             }
         parsed.append((identifier, cwd, parsed_modes))
@@ -217,12 +267,20 @@ def measure(
                 {
                     "LANG": "C",
                     "LC_ALL": "C",
+                    "LOCALAPPDATA": str(cache_root),
                     "TZ": "UTC",
                     "WORKFLOW_VERIFIER_BENCHMARK_MODE": mode,
+                    "XDG_CACHE_HOME": str(cache_root),
                 }
             )
             for index, command in enumerate(specification["setup"]):
-                _run(command, cwd, specification["timeout_seconds"], environment, f"{identifier}/{mode} setup {index}")
+                _run(
+                    command,
+                    cwd,
+                    specification["timeout_seconds"],
+                    environment,
+                    f"{identifier}/{mode} setup {index}",
+                )
             durations: list[int] = []
             for sample in range(samples):
                 for index, command in enumerate(specification["before_each"]):
@@ -246,6 +304,7 @@ def measure(
             result_modes[mode] = {"samples_ns": durations}
         result_scenarios.append({"id": identifier, "modes": result_modes})
     environment = dict(raw_environment)
+    environment["cache_semantics"] = "fresh-analysis-with-isolated-write"
     environment["suite_digest"] = suite_digest
     platform = os.environ.get("WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM")
     if platform is not None:

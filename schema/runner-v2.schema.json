@@ -1,0 +1,48 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/runner-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "limits": {
+      "additionalProperties": false,
+      "properties": { "cpu_cores": { "const": 1 }, "memory_bytes": { "const": 2147483648 }, "output_bytes": { "const": 16777216 }, "processes": { "const": 128 }, "scratch_bytes": { "const": 4294967296 }, "scratch_entries": { "const": 100000 }, "wall_time_seconds": { "const": 900 } },
+      "required": ["cpu_cores", "memory_bytes", "output_bytes", "processes", "scratch_bytes", "scratch_entries", "wall_time_seconds"],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "backend": { "pattern": "^(oci:[A-Za-z0-9_.-]+|linux-native|windows-native|macos-vm)$", "type": "string" },
+    "controls": { "items": { "enum": ["source_read_only", "scratch_overlay", "network_deny", "egress_broker", "process_isolation", "resource_limits", "secret_redaction", "namespace", "seccomp", "landlock", "cgroup_v2", "app_container", "restricted_token", "job_object", "app_sandbox", "virtual_machine"] }, "type": "array", "uniqueItems": true },
+    "dependencies": { "items": { "additionalProperties": false, "properties": { "available": { "type": "boolean" }, "digest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "reference": { "minLength": 1, "type": "string" } }, "required": ["available", "digest", "reference"], "type": "object" }, "type": "array" },
+    "digest": { "$ref": "#/$defs/digest" },
+    "limits": { "$ref": "#/$defs/limits" },
+    "lock_digest": { "$ref": "#/$defs/digest" },
+    "network": { "additionalProperties": false, "properties": { "destinations": { "items": { "pattern": "^https://[^@?#]+", "type": "string" }, "type": "array", "uniqueItems": true }, "mode": { "enum": ["deny", "allowlist"] } }, "required": ["destinations", "mode"], "type": "object" },
+    "provider_profile": { "minLength": 1, "type": "string" },
+    "runtime": {
+      "additionalProperties": false,
+      "properties": { "boot_digest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "capability_fingerprint": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "helper_digest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "kind": { "enum": ["oci-capsule", "linux-capsule", "windows-runtime-profile", "macos-vm"] }, "rootfs_digest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] }, "runner_platform": { "enum": ["linux-x86_64", "linux-arm64", "windows-x86_64", "windows-arm64", "macos-x86_64", "macos-arm64"] }, "workload_digest": { "$ref": "#/$defs/digest" } },
+      "required": ["boot_digest", "capability_fingerprint", "helper_digest", "kind", "rootfs_digest", "runner_platform", "workload_digest"],
+      "type": "object"
+    },
+    "scenario_digest": { "$ref": "#/$defs/digest" },
+    "schema": { "const": "runner-v2" },
+    "secret_names": { "items": { "pattern": "^[A-Za-z_][A-Za-z0-9_]*$", "type": "string" }, "type": "array", "uniqueItems": true },
+    "selected_jobs": { "items": { "minLength": 1, "type": "string" }, "minItems": 1, "type": "array", "uniqueItems": true },
+    "source_digest": { "$ref": "#/$defs/digest" },
+    "status": { "oneOf": [{ "additionalProperties": false, "properties": { "state": { "const": "complete" } }, "required": ["state"], "type": "object" }, { "additionalProperties": false, "properties": { "reasons": { "items": { "pattern": "^Incomplete\\.", "type": "string" }, "minItems": 1, "type": "array", "uniqueItems": true }, "state": { "const": "incomplete" } }, "required": ["reasons", "state"], "type": "object" }] },
+    "steps": {
+      "items": {
+        "additionalProperties": false,
+        "properties": { "argv": { "items": { "type": "string" }, "minItems": 1, "type": "array" }, "environment": { "additionalProperties": { "type": "string" }, "propertyNames": { "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" }, "type": "object" }, "id": { "minLength": 1, "type": "string" }, "image": { "$ref": "#/$defs/digest" }, "supported": { "type": "boolean" }, "working_directory": { "pattern": "^/workspace(?:/|$)", "type": "string" } },
+        "required": ["argv", "environment", "id", "image", "supported", "working_directory"],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": ["backend", "controls", "dependencies", "digest", "limits", "lock_digest", "network", "provider_profile", "runtime", "scenario_digest", "schema", "secret_names", "selected_jobs", "source_digest", "status", "steps"],
+  "title": "workflow-verifier typed execution plan v2",
+  "type": "object"
+}

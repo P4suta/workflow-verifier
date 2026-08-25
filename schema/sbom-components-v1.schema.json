@@ -1,0 +1,53 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/sbom-components-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "components": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "applies_to": {
+            "items": {
+              "enum": [
+                "all",
+                "corresponding-source",
+                "helper",
+                "macos-boot-bundle",
+                "product",
+                "runtime-capsule",
+                "schema-bundle",
+                "source"
+              ]
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "id": { "pattern": "^[a-z0-9][a-z0-9.-]*$", "type": "string" },
+          "license": { "minLength": 1, "type": "string" },
+          "name": { "minLength": 1, "type": "string" },
+          "purl": { "pattern": "^pkg:", "type": "string" },
+          "relationship": { "enum": ["build", "content", "runtime"] },
+          "version": { "minLength": 1, "type": "string" }
+        },
+        "required": [
+          "applies_to",
+          "id",
+          "license",
+          "name",
+          "purl",
+          "relationship",
+          "version"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema": { "const": "sbom-components-v1" }
+  },
+  "required": ["components", "schema"],
+  "title": "workflow-verifier release dependency graph input",
+  "type": "object"
+}

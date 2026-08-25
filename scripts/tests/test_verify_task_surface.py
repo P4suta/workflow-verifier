@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 from unittest import mock
 
 from scripts.verify_task_surface import PINNED_JUST, REVISION_FIXTURE, verify
@@ -35,9 +35,7 @@ class TaskSurfaceTests(unittest.TestCase):
     def test_version_and_name_drift_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            (root / "mise.toml").write_text(
-                '[tasks.build]\nrun = "true"\n', encoding="utf-8"
-            )
+            (root / "mise.toml").write_text('[tasks.build]\nrun = "true"\n', encoding="utf-8")
             with mock.patch(
                 "scripts.verify_task_surface._run",
                 return_value=mock.Mock(returncode=0, stdout="just 1.56.0\n", stderr=""),

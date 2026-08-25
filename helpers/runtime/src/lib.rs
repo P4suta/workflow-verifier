@@ -124,7 +124,36 @@ pub struct SourceManifest {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SourceSnapshot {
     pub manifest: SourceManifest,
-    files: BTreeMap<String, String>,
+    files: BTreeMap<String, SnapshotEntry>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+enum SnapshotEntry {
+    Regular {
+        contents: Vec<u8>,
+        digest: String,
+        executable: bool,
+    },
+    Symlink {
+        digest: String,
+        raw_target: String,
+        resolved_target: String,
+    },
+}
+
+impl SnapshotEntry {
+    fn digest(&self) -> &str {
+        match self {
+            Self::Regular { digest, .. } | Self::Symlink { digest, .. } => digest,
+        }
+    }
+
+    fn size(&self) -> u64 {
+        match self {
+            Self::Regular { contents, .. } => u64::try_from(contents.len()).unwrap_or(u64::MAX),
+            Self::Symlink { raw_target, .. } => u64::try_from(raw_target.len()).unwrap_or(u64::MAX),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -141,10 +170,28 @@ pub struct Change {
     pub digest: Option<String>,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ScratchFinal {
+    pub changes: Vec<Change>,
+    pub digest: String,
+    pub bytes: u64,
+    pub entries: u64,
+}
+
+const MAX_FILE_BYTES: u64 = 16 * 1024 * 1024;
+const MAX_ENTRIES: usize = 100_000;
+const MAX_SNAPSHOT_BYTES: u64 = 4 * 1024 * 1024 * 1024;
+const DEFAULT_EXCLUSIONS: [&str; 4] = [
+    ".git",
+    ".workflow-verifier",
+    ".workflow-verifier-cache",
+    ".workflow-verifier-output",
+];
+
 fn ignored_component(name: &str) -> bool {
     matches!(
         name.to_ascii_lowercase().as_str(),
-        ".git" | ".workflow-verifier-cache" | "_build" | "_opam" | "node_modules" | "target"
+        ".git" | ".workflow-verifier" | ".workflow-verifier-cache" | ".workflow-verifier-output"
     )
 }
 
@@ -154,18 +201,130 @@ fn checked_name(path: &Path) -> Result<&str, String> {
         .ok_or_else(|| format!("non-UTF-8 source path: {}", path.display()))
 }
 
+#[cfg(unix)]
+fn executable(metadata: &fs::Metadata) -> bool {
+    use std::os::unix::fs::PermissionsExt as _;
+    metadata.permissions().mode() & 0o111 != 0
+}
+
+#[cfg(not(unix))]
+fn executable(_metadata: &fs::Metadata) -> bool {
+    false
+}
+
+#[cfg(unix)]
+// The shared API is fallible because the Windows implementation opens a handle.
+#[allow(clippy::unnecessary_wraps)]
+fn file_identity(_path: &Path, metadata: &fs::Metadata) -> Result<String, String> {
+    use std::os::unix::fs::MetadataExt as _;
+    Ok(format!("{}:{}", metadata.dev(), metadata.ino()))
+}
+
+#[cfg(windows)]
+fn file_identity(path: &Path, _metadata: &fs::Metadata) -> Result<String, String> {
+    use std::hash::{Hash as _, Hasher as _};
+    let handle = same_file::Handle::from_path(path).map_err(|error| error.to_string())?;
+    let mut first = std::collections::hash_map::DefaultHasher::new();
+    0x71_u8.hash(&mut first);
+    handle.hash(&mut first);
+    let mut second = std::collections::hash_map::DefaultHasher::new();
+    0xc3_u8.hash(&mut second);
+    handle.hash(&mut second);
+    Ok(format!("{:016x}{:016x}", first.finish(), second.finish()))
+}
+
+#[cfg(not(any(unix, windows)))]
+// Keep the same fallible cross-platform API as the Windows implementation.
+#[allow(clippy::unnecessary_wraps)]
+fn file_identity(path: &Path, metadata: &fs::Metadata) -> Result<String, String> {
+    Ok(format!(
+        "{}:{}:{}",
+        path.display(),
+        metadata.len(),
+        metadata.permissions().readonly()
+    ))
+}
+
+fn normalize_relative_target(path: &str, target: &str) -> Result<String, String> {
+    let target = target.replace('\\', "/");
+    if target.is_empty()
+        || target.starts_with('/')
+        || target.starts_with("//")
+        || target.as_bytes().get(1) == Some(&b':')
+    {
+        return Err(format!("absolute or empty source symlink target at {path}"));
+    }
+    let mut segments = path.rsplit_once('/').map_or_else(Vec::new, |(parent, _)| {
+        parent.split('/').map(str::to_owned).collect::<Vec<_>>()
+    });
+    for segment in target.split('/') {
+        match segment {
+            "" | "." => {}
+            ".." => {
+                if segments.pop().is_none() {
+                    return Err(format!("source symlink escapes the snapshot root: {path}"));
+                }
+            }
+            value => segments.push(value.to_owned()),
+        }
+    }
+    if segments.is_empty() {
+        Err(format!(
+            "source symlink resolves to the snapshot root: {path}"
+        ))
+    } else {
+        Ok(segments.join("/"))
+    }
+}
+
+fn read_regular(path: &Path, before: &fs::Metadata) -> Result<Vec<u8>, String> {
+    if before.len() > MAX_FILE_BYTES {
+        return Err(format!(
+            "Incomplete.Resource_limit: file exceeds 16 MiB: {}",
+            path.display()
+        ));
+    }
+    let mut file = File::open(path).map_err(|error| error.to_string())?;
+    let opened = file.metadata().map_err(|error| error.to_string())?;
+    if !opened.is_file() || file_identity(path, &opened)? != file_identity(path, before)? {
+        return Err(format!(
+            "source file identity changed while opening: {}",
+            path.display()
+        ));
+    }
+    let mut contents = Vec::new();
+    file.by_ref()
+        .take(MAX_FILE_BYTES + 1)
+        .read_to_end(&mut contents)
+        .map_err(|error| error.to_string())?;
+    if u64::try_from(contents.len()).unwrap_or(u64::MAX) > MAX_FILE_BYTES {
+        return Err(format!(
+            "Incomplete.Resource_limit: file exceeds 16 MiB: {}",
+            path.display()
+        ));
+    }
+    let after = fs::symlink_metadata(path).map_err(|error| error.to_string())?;
+    if after.file_type().is_symlink()
+        || file_identity(path, &after)? != file_identity(path, &opened)?
+        || after.len() != u64::try_from(contents.len()).unwrap_or(u64::MAX)
+    {
+        return Err(format!(
+            "source file changed while reading: {}",
+            path.display()
+        ));
+    }
+    Ok(contents)
+}
+
 fn visit_files(
     root: &Path,
     current: &Path,
-    output: &mut BTreeMap<String, String>,
+    output: &mut BTreeMap<String, SnapshotEntry>,
+    exclusions: &mut Vec<String>,
+    identities: &mut BTreeSet<String>,
+    total_size: &mut u64,
 ) -> Result<(), String> {
     let metadata = fs::symlink_metadata(current).map_err(|error| error.to_string())?;
-    if metadata.file_type().is_symlink() {
-        return Err(format!(
-            "source symlink is not allowed: {}",
-            current.display()
-        ));
-    }
     if metadata.is_dir() {
         let mut entries = fs::read_dir(current)
             .map_err(|error| error.to_string())?
@@ -174,21 +333,75 @@ fn visit_files(
         entries.sort_by_key(std::fs::DirEntry::file_name);
         for entry in entries {
             let path = entry.path();
-            if !ignored_component(checked_name(&path)?) {
-                visit_files(root, &path, output)?;
+            let name = checked_name(&path)?;
+            if ignored_component(name) {
+                let relative = path
+                    .strip_prefix(root)
+                    .map_err(|error| error.to_string())?
+                    .to_str()
+                    .ok_or_else(|| format!("non-UTF-8 source path: {}", path.display()))?
+                    .replace('\\', "/");
+                exclusions.push(relative);
+            } else {
+                visit_files(root, &path, output, exclusions, identities, total_size)?;
             }
         }
-    } else if metadata.is_file() {
+        let after = fs::symlink_metadata(current).map_err(|error| error.to_string())?;
+        if !after.is_dir() || file_identity(current, &after)? != file_identity(current, &metadata)?
+        {
+            return Err(format!(
+                "source directory changed while reading: {}",
+                current.display()
+            ));
+        }
+    } else if metadata.is_file() || metadata.file_type().is_symlink() {
         let relative = current
             .strip_prefix(root)
             .map_err(|error| error.to_string())?
             .to_str()
             .ok_or_else(|| format!("non-UTF-8 source path: {}", current.display()))?
             .replace('\\', "/");
-        output.insert(
-            relative,
-            sha256_hex(&fs::read(current).map_err(|error| error.to_string())?),
-        );
+        let folded = relative.to_ascii_lowercase();
+        if output
+            .keys()
+            .any(|path| path.to_ascii_lowercase() == folded)
+        {
+            return Err(format!("portable case-fold path collision: {relative}"));
+        }
+        if output.len() >= MAX_ENTRIES {
+            return Err("Incomplete.Resource_limit: source entry budget exceeded".to_owned());
+        }
+        let identity = file_identity(current, &metadata)?;
+        if !identities.insert(identity) {
+            return Err(format!("hardlink/file identity collision: {relative}"));
+        }
+        let snapshot_entry = if metadata.file_type().is_symlink() {
+            let target = fs::read_link(current).map_err(|error| error.to_string())?;
+            let raw_target = target
+                .to_str()
+                .ok_or_else(|| format!("non-UTF-8 source symlink target: {}", current.display()))?
+                .replace('\\', "/");
+            let resolved_target = normalize_relative_target(&relative, &raw_target)?;
+            SnapshotEntry::Symlink {
+                digest: sha256_hex(raw_target.as_bytes()),
+                raw_target,
+                resolved_target,
+            }
+        } else {
+            let contents = read_regular(current, &metadata)?;
+            SnapshotEntry::Regular {
+                digest: sha256_hex(&contents),
+                executable: executable(&metadata),
+                contents,
+            }
+        };
+        *total_size = total_size
+            .checked_add(snapshot_entry.size())
+            .ok_or_else(|| "Incomplete.Resource_limit: snapshot size overflow".to_owned())?;
+        if *total_size > MAX_SNAPSHOT_BYTES {
+            return Err("Incomplete.Resource_limit: snapshot exceeds 4 GiB".to_owned());
+        }
+        output.insert(relative, snapshot_entry);
     } else {
         return Err(format!(
             "unsupported source file type: {}",
@@ -198,19 +411,87 @@ fn visit_files(
     Ok(())
 }
 
-fn manifest(files: &BTreeMap<String, String>) -> SourceManifest {
+fn validate_symlink_cycles(files: &BTreeMap<String, SnapshotEntry>) -> Result<(), String> {
+    fn visit(
+        path: &str,
+        files: &BTreeMap<String, SnapshotEntry>,
+        visiting: &mut BTreeSet<String>,
+        visited: &mut BTreeSet<String>,
+    ) -> Result<(), String> {
+        if visiting.contains(path) {
+            return Err(format!("source symlink cycle at {path}"));
+        }
+        if visited.contains(path) {
+            return Ok(());
+        }
+        visiting.insert(path.to_owned());
+        if let Some(SnapshotEntry::Symlink {
+            resolved_target, ..
+        }) = files.get(path)
+        {
+            if matches!(
+                files.get(resolved_target),
+                Some(SnapshotEntry::Symlink { .. })
+            ) {
+                visit(resolved_target, files, visiting, visited)?;
+            }
+        }
+        visiting.remove(path);
+        visited.insert(path.to_owned());
+        Ok(())
+    }
+
+    let mut visiting = BTreeSet::new();
+    let mut visited = BTreeSet::new();
+    for path in files.keys() {
+        visit(path, files, &mut visiting, &mut visited)?;
+    }
+    Ok(())
+}
+
+fn manifest(
+    files: &BTreeMap<String, SnapshotEntry>,
+    exclusions: &[String],
+    total_size: u64,
+) -> SourceManifest {
     let entries = files
         .iter()
-        .map(|(path, digest)| {
+        .map(|(path, entry)| {
+            let (kind, executable, target) = match entry {
+                SnapshotEntry::Regular { executable, .. } => ("regular", *executable, "null".to_owned()),
+                SnapshotEntry::Symlink { resolved_target, .. } => {
+                    ("symlink", false, quote_json(resolved_target))
+                }
+            };
+            format!("{{\"digest\":\"sha256:{}\",\"executable\":{executable},\"kind\":\"{kind}\",\"path\":{},\"size\":{},\"target\":{target}}}", entry.digest(), quote_json(path), entry.size())
+        })
+        .collect::<Vec<_>>()
+        .join(",");
+    let exclusions = exclusions
+        .iter()
+        .map(|path| {
             format!(
-                "{{\"digest\":\"sha256:{digest}\",\"path\":{}}}",
+                "{{\"path\":{},\"reason\":\"product-default\"}}",
                 quote_json(path)
             )
         })
         .collect::<Vec<_>>()
         .join(",");
-    let canonical_json = format!("[{entries}]");
-    let digest = format!("sha256:{}", sha256_hex(canonical_json.as_bytes()));
+    let default_exclusions = DEFAULT_EXCLUSIONS
+        .iter()
+        .map(|value| quote_json(value))
+        .collect::<Vec<_>>()
+        .join(",");
+    let policy = format!("{{\"default\":[{default_exclusions}],\"trusted\":[]}}");
+    let policy_digest = sha256_hex(policy.as_bytes());
+    let unsigned_json = format!(
+        "{{\"entries\":[{entries}],\"exclusion_policy_digest\":\"sha256:{policy_digest}\",\"exclusions\":[{exclusions}],\"limits\":{{\"max_entries\":{MAX_ENTRIES},\"max_file_bytes\":{MAX_FILE_BYTES},\"max_snapshot_bytes\":{MAX_SNAPSHOT_BYTES}}},\"schema\":\"source-manifest-v2\",\"total_size\":{total_size}}}"
+    );
+    let digest = format!("sha256:{}", sha256_hex(unsigned_json.as_bytes()));
+    let canonical_json = format!(
+        "{{\"digest\":\"{digest}\",{}",
+        unsigned_json.trim_start_matches('{')
+    );
     SourceManifest {
         canonical_json,
         digest,
@@ -221,52 +502,101 @@ fn manifest(files: &BTreeMap<String, String>) -> SourceManifest {
 ///
 /// # Errors
 ///
-/// Rejects unreadable paths, symlinks, special files, and non-UTF-8 paths.
+/// Rejects unreadable paths, escaping symlinks, special files, and non-UTF-8 paths.
 pub fn source_snapshot(root: &Path) -> Result<SourceSnapshot, String> {
     let mut files = BTreeMap::new();
-    visit_files(root, root, &mut files)?;
+    let mut exclusions = Vec::new();
+    let mut identities = BTreeSet::new();
+    let mut total_size = 0;
+    visit_files(
+        root,
+        root,
+        &mut files,
+        &mut exclusions,
+        &mut identities,
+        &mut total_size,
+    )?;
+    validate_symlink_cycles(&files)?;
+    exclusions.sort();
     Ok(SourceSnapshot {
-        manifest: manifest(&files),
+        manifest: manifest(&files, &exclusions, total_size),
         files,
     })
 }
 
-fn copy_tree(source: &Path, destination: &Path) -> Result<(), String> {
-    let metadata = fs::symlink_metadata(source).map_err(|error| error.to_string())?;
-    if metadata.file_type().is_symlink() {
-        return Err(format!(
-            "source symlink is not allowed: {}",
-            source.display()
-        ));
-    }
-    if metadata.is_dir() {
-        fs::create_dir_all(destination).map_err(|error| error.to_string())?;
-        let mut entries = fs::read_dir(source)
-            .map_err(|error| error.to_string())?
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(|error| error.to_string())?;
-        entries.sort_by_key(std::fs::DirEntry::file_name);
-        for entry in entries {
-            let path = entry.path();
-            let name = checked_name(&path)?.to_owned();
-            if !ignored_component(&name) {
-                copy_tree(&path, &destination.join(name))?;
-            }
-        }
-    } else if metadata.is_file() {
-        if let Some(parent) = destination.parent() {
-            fs::create_dir_all(parent).map_err(|error| error.to_string())?;
-        }
-        let mut input = File::open(source).map_err(|error| error.to_string())?;
-        let mut output = File::create(destination).map_err(|error| error.to_string())?;
-        std::io::copy(&mut input, &mut output).map_err(|error| error.to_string())?;
-        fs::set_permissions(destination, metadata.permissions())
-            .map_err(|error| error.to_string())?;
+#[cfg(unix)]
+fn set_executable(path: &Path, value: bool) -> Result<(), String> {
+    use std::os::unix::fs::PermissionsExt as _;
+    let mut permissions = fs::metadata(path)
+        .map_err(|error| error.to_string())?
+        .permissions();
+    let mode = permissions.mode();
+    permissions.set_mode(if value { mode | 0o111 } else { mode & !0o111 });
+    fs::set_permissions(path, permissions).map_err(|error| error.to_string())
+}
+
+#[cfg(not(unix))]
+// Keep the same fallible cross-platform call contract as the Unix implementation.
+#[allow(clippy::unnecessary_wraps)]
+fn set_executable(_path: &Path, _value: bool) -> Result<(), String> {
+    Ok(())
+}
+
+#[cfg(unix)]
+fn create_snapshot_symlink(target: &str, path: &Path, _resolved: &Path) -> Result<(), String> {
+    std::os::unix::fs::symlink(target, path).map_err(|error| error.to_string())
+}
+
+#[cfg(windows)]
+fn create_snapshot_symlink(target: &str, path: &Path, resolved: &Path) -> Result<(), String> {
+    if resolved.is_dir() {
+        std::os::windows::fs::symlink_dir(target, path).map_err(|error| error.to_string())
     } else {
-        return Err(format!(
-            "unsupported source file type: {}",
-            source.display()
-        ));
+        std::os::windows::fs::symlink_file(target, path).map_err(|error| error.to_string())
+    }
+}
+
+#[cfg(not(any(unix, windows)))]
+fn create_snapshot_symlink(_target: &str, _path: &Path, _resolved: &Path) -> Result<(), String> {
+    Err("source symlink staging is unsupported on this platform".to_owned())
+}
+
+fn copy_snapshot(snapshot: &SourceSnapshot, destination: &Path) -> Result<(), String> {
+    for (relative, entry) in &snapshot.files {
+        if let SnapshotEntry::Regular {
+            contents,
+            executable,
+            ..
+        } = entry
+        {
+            let path = destination.join(relative);
+            let parent = path
+                .parent()
+                .ok_or_else(|| format!("source entry has no parent: {relative}"))?;
+            fs::create_dir_all(parent).map_err(|error| error.to_string())?;
+            OpenOptions::new()
+                .create_new(true)
+                .write(true)
+                .open(&path)
+                .and_then(|mut file| std::io::Write::write_all(&mut file, contents))
+                .map_err(|error| error.to_string())?;
+            set_executable(&path, *executable)?;
+        }
+    }
+    for (relative, entry) in &snapshot.files {
+        if let SnapshotEntry::Symlink {
+            raw_target,
+            resolved_target,
+            ..
+        } = entry
+        {
+            let path = destination.join(relative);
+            let parent = path
+                .parent()
+                .ok_or_else(|| format!("source symlink has no parent: {relative}"))?;
+            fs::create_dir_all(parent).map_err(|error| error.to_string())?;
+            create_snapshot_symlink(raw_target, &path, &destination.join(resolved_target))?;
+        }
     }
     Ok(())
 }
@@ -292,12 +622,12 @@ fn private_copy(
         return Err("source changed while preparing the sandbox".to_owned());
     }
     let path = reserve_temp_directory_in(storage_root, purpose)?;
-    if let Err(error) = copy_tree(source, &path) {
+    if let Err(error) = copy_snapshot(baseline, &path) {
         let _ = fs::remove_dir_all(&path);
         return Err(error);
     }
     let copied = source_snapshot(&path)?;
-    if copied.manifest != baseline.manifest {
+    if copied.files != baseline.files {
         let _ = fs::remove_dir_all(&path);
         return Err(format!(
             "private {purpose} copy does not match the source manifest"
@@ -370,6 +700,15 @@ impl ScratchTree {
     ///
     /// Fails if the scratch tree becomes unreadable or gains an unsafe entry.
     pub fn changes(&self) -> Result<Vec<Change>, String> {
+        self.final_state().map(|state| state.changes)
+    }
+
+    /// Captures the final tree once and returns both its digest and stable diff.
+    ///
+    /// # Errors
+    ///
+    /// Fails if the scratch tree becomes unreadable or gains an unsafe entry.
+    pub fn final_state(&self) -> Result<ScratchFinal, String> {
         let current = source_snapshot(&self.path)?;
         let paths = self
             .baseline
@@ -378,29 +717,35 @@ impl ScratchTree {
             .chain(current.files.keys())
             .cloned()
             .collect::<BTreeSet<_>>();
-        Ok(paths
+        let changes = paths
             .into_iter()
             .filter_map(
                 |path| match (self.baseline.files.get(&path), current.files.get(&path)) {
-                    (None, Some(digest)) => Some(Change {
+                    (None, Some(entry)) => Some(Change {
                         path,
                         kind: ChangeKind::Added,
-                        digest: Some(format!("sha256:{digest}")),
+                        digest: Some(format!("sha256:{}", entry.digest())),
                     }),
                     (Some(before), Some(after)) if before != after => Some(Change {
                         path,
                         kind: ChangeKind::Modified,
-                        digest: Some(format!("sha256:{after}")),
+                        digest: Some(format!("sha256:{}", after.digest())),
                     }),
                     (Some(before), None) => Some(Change {
                         path,
                         kind: ChangeKind::Deleted,
-                        digest: Some(format!("sha256:{before}")),
+                        digest: Some(format!("sha256:{}", before.digest())),
                     }),
                     _ => None,
                 },
             )
-            .collect())
+            .collect();
+        Ok(ScratchFinal {
+            changes,
+            digest: current.manifest.digest,
+            bytes: current.files.values().map(SnapshotEntry::size).sum(),
+            entries: u64::try_from(current.files.len()).unwrap_or(u64::MAX),
+        })
     }
 }
 
@@ -423,6 +768,8 @@ pub struct ProcessObservation {
     pub timed_out: bool,
     pub output_exceeded: bool,
     pub output: Vec<u8>,
+    pub output_bytes: u64,
+    pub wall_time_ms: u64,
 }
 
 fn read_limited<R: Read>(
@@ -540,5 +887,7 @@ where
         timed_out,
         output_exceeded: exceeded.load(Ordering::Acquire),
         output,
+        output_bytes: total.load(Ordering::Acquire),
+        wall_time_ms: u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX),
     })
 }

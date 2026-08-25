@@ -1,0 +1,126 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/config-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "path": { "pattern": "^(?!/)(?!.*:)(?!.*\\\\)(?!.*//)(?!\\.workflow-verifier\\.toml$)(?!workflow-verifier\\.lock$)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$)).+$", "type": "string" },
+    "predicate": {
+      "oneOf": [
+        { "additionalProperties": false, "properties": { "provider": { "enum": ["github", "gitlab", "azure", "circleci"] } }, "required": ["provider"], "type": "object" },
+        { "additionalProperties": false, "properties": { "kind": { "enum": ["trigger", "parameter", "workflow", "stage", "job", "step", "call", "command", "gate", "resource", "effect", "opaque"] } }, "required": ["kind"], "type": "object" },
+        { "additionalProperties": false, "properties": { "path": { "minLength": 1, "type": "string" } }, "required": ["path"], "type": "object" },
+        { "additionalProperties": false, "properties": { "trust": { "enum": ["trusted", "untrusted", "mixed", "unknown"] } }, "required": ["trust"], "type": "object" },
+        { "additionalProperties": false, "properties": { "effect": { "enum": ["repository_change", "network_request", "file_read", "file_write", "command_execution", "artifact_publish", "cache_publish", "deployment_change", "credential_use", "workflow_change", "ai_agent_execution"] } }, "required": ["effect"], "type": "object" },
+        { "additionalProperties": false, "properties": { "capability": { "enum": ["repository_read", "repository_write", "token_read", "token_write", "oidc", "cloud_credential", "secret_access", "network", "filesystem_read", "filesystem_write", "shell", "artifact_read", "artifact_write", "cache_read", "cache_write", "deployment", "self_hosted_persistence", "ai_tool"] } }, "required": ["capability"], "type": "object" },
+        { "additionalProperties": false, "properties": { "mutability": { "enum": ["immutable", "mutable", "local", "unknown"] } }, "required": ["mutability"], "type": "object" },
+        { "additionalProperties": false, "properties": { "dominated_by_gate": { "type": "boolean" } }, "required": ["dominated_by_gate"], "type": "object" }
+      ]
+    },
+    "selector": {
+      "additionalProperties": false,
+      "maxProperties": 1,
+      "minProperties": 1,
+      "properties": {
+        "all": { "items": { "$ref": "#/$defs/predicate" }, "type": "array" },
+        "any": { "items": { "$ref": "#/$defs/predicate" }, "type": "array" },
+        "none": { "items": { "$ref": "#/$defs/predicate" }, "type": "array" }
+      },
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowlist": {
+      "items": {
+        "additionalProperties": false,
+        "properties": { "kind": { "type": "string" }, "reason": { "minLength": 1, "type": "string" }, "value": { "minLength": 1, "type": "string" } },
+        "required": ["kind", "value", "reason"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "analysis": {
+      "additionalProperties": false,
+      "properties": {
+        "max_bdd_nodes": { "minimum": 1, "type": "integer" },
+        "max_entries": { "minimum": 100000, "type": "integer" },
+        "max_expansion_depth": { "minimum": 1, "type": "integer" },
+        "max_file_bytes": { "minimum": 16777216, "type": "integer" },
+        "max_graph_nodes": { "minimum": 1, "type": "integer" },
+        "max_report_bytes": { "minimum": 1, "type": "integer" },
+        "max_resolver_bytes": { "minimum": 1, "type": "integer" },
+        "max_snapshot_bytes": { "minimum": 4294967296, "type": "integer" },
+        "max_yaml_aliases": { "minimum": 1, "type": "integer" },
+        "max_yaml_depth": { "minimum": 1, "type": "integer" }
+      },
+      "required": ["max_bdd_nodes", "max_entries", "max_expansion_depth", "max_file_bytes", "max_graph_nodes", "max_report_bytes", "max_resolver_bytes", "max_snapshot_bytes", "max_yaml_aliases", "max_yaml_depth"],
+      "type": "object"
+    },
+    "frontends": { "items": { "enum": ["github", "gitlab", "azure", "circleci"] }, "type": "array", "uniqueItems": true },
+    "offline": { "const": true },
+    "persona": { "enum": ["gate", "audit", "paranoid"] },
+    "source_exclusions": { "items": { "$ref": "#/$defs/path" }, "type": "array", "uniqueItems": true },
+    "provenance": {
+      "additionalProperties": false,
+      "properties": { "digest": { "$ref": "#/$defs/digest" }, "origin": { "minLength": 1, "type": "string" }, "trust": { "enum": ["built-in", "trusted-policy", "repository"] } },
+      "required": ["digest", "origin", "trust"],
+      "type": "object"
+    },
+    "resolver": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_origins": {
+          "items": {
+            "additionalProperties": false,
+            "properties": { "origin": { "pattern": "^https://[^/?#@]+$", "type": "string" }, "path_prefixes": { "items": { "pattern": "^/", "type": "string" }, "minItems": 1, "type": "array", "uniqueItems": true } },
+            "required": ["origin", "path_prefixes"],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "require_immutable": { "const": true }
+      },
+      "required": ["allowed_origins", "require_immutable"],
+      "type": "object"
+    },
+    "rules": {
+      "items": {
+        "additionalProperties": false,
+        "properties": { "id": { "pattern": "^[A-Za-z0-9_.-]+$", "type": "string" }, "kind": { "enum": ["forbid", "require", "limit", "forbid_path"] }, "limit": { "minimum": 0, "type": ["integer", "null"] }, "message": { "minLength": 1, "type": "string" }, "selector": { "$ref": "#/$defs/selector" }, "severity": { "enum": ["critical", "error", "warning", "note"] } },
+        "required": ["id", "kind", "message", "severity", "selector"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "sandbox": {
+      "additionalProperties": false,
+      "properties": {
+        "backend": { "pattern": "^(oci:[A-Za-z0-9_.-]+|linux-native|windows-native|macos-vm)$", "type": "string" },
+        "capsule_digest": { "pattern": "^sha256:([0-9a-f]{64}|unresolved)$", "type": "string" },
+        "cpu_cores": { "const": 1 },
+        "memory_bytes": { "const": 2147483648 },
+        "network": { "const": "deny" },
+        "output_bytes": { "const": 16777216 },
+        "processes": { "const": 128 },
+        "scratch_bytes": { "const": 4294967296 },
+        "scratch_entries": { "const": 100000 },
+        "wall_time_seconds": { "const": 900 }
+      },
+      "required": ["backend", "capsule_digest", "cpu_cores", "memory_bytes", "network", "output_bytes", "processes", "scratch_bytes", "scratch_entries", "wall_time_seconds"],
+      "type": "object"
+    },
+    "suppressions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": { "expiry": { "format": "date", "type": "string" }, "owner": { "minLength": 1, "type": "string" }, "path": { "minLength": 1, "type": "string" }, "reason": { "minLength": 1, "type": "string" }, "rule": { "minLength": 1, "type": "string" } },
+        "required": ["rule", "path", "reason", "owner", "expiry"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "version": { "const": 2 }
+  },
+  "required": ["version", "persona", "frontends", "offline", "source_exclusions", "analysis", "resolver", "sandbox", "allowlist", "rules", "suppressions", "provenance"],
+  "title": "workflow-verifier normalized configuration v2",
+  "type": "object"
+}

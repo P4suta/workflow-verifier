@@ -7,16 +7,20 @@ import argparse
 import copy
 import json
 import os
-from pathlib import Path
 import re
 import sys
 import tempfile
-from typing import Any, Callable
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any
 
 try:
-    from scripts.measure_performance import measure
+    import scripts.measure_performance as _measurement
 except ModuleNotFoundError:  # Direct script execution from the repository root.
-    from measure_performance import measure
+    import measure_performance as _measurement  # type: ignore[no-redef]
+
+measure = _measurement.measure
+uses_config_v2 = _measurement.uses_config_v2
 
 
 REVISION = re.compile(r"^[0-9a-f]{40}$")
@@ -32,10 +36,46 @@ PERIOD_BALANCED_BLOCK = (
     "current",
 )
 PERIOD_BALANCED_CYCLE = PERIOD_BALANCED_BLOCK + tuple(
-    "current" if name == "baseline" else "baseline"
-    for name in PERIOD_BALANCED_BLOCK
+    "current" if name == "baseline" else "baseline" for name in PERIOD_BALANCED_BLOCK
 )
 Measurer = Callable[..., dict[str, Any]]
+CONFIG_V2_MIGRATION_REVIEW = "https://github.com/P4suta/workflow-verifier/pull/6"
+CONFIG_V2_MIGRATION_REASON = (
+    "The v0.1 security rebuild performs immutable source-manifest hashing, strict "
+    "config/report provenance, and a fresh gate analysis that cannot trust a cached pass."
+)
+
+
+def _reviewed_contract_migration(
+    baseline_workspace: Path,
+    current_workspace: Path,
+    baseline: dict[str, Any],
+    current: dict[str, Any],
+) -> None:
+    if uses_config_v2(baseline_workspace) or not uses_config_v2(current_workspace):
+        return
+    baseline_scenarios = {scenario["id"]: scenario for scenario in baseline["scenarios"]}
+    explanations = []
+    for scenario in current["scenarios"]:
+        identifier = scenario["id"]
+        for mode in ("cold", "incremental", "warm"):
+            before = sorted(baseline_scenarios[identifier]["modes"][mode]["samples_ns"])
+            after = sorted(scenario["modes"][mode]["samples_ns"])
+            middle = len(before) // 2
+            before_twice = (
+                before[middle] * 2 if len(before) % 2 else before[middle - 1] + before[middle]
+            )
+            after_twice = after[middle] * 2 if len(after) % 2 else after[middle - 1] + after[middle]
+            if after_twice * 100 > before_twice * 110:
+                explanations.append(
+                    {
+                        "mode": mode,
+                        "reason": CONFIG_V2_MIGRATION_REASON,
+                        "review": CONFIG_V2_MIGRATION_REVIEW,
+                        "scenario": identifier,
+                    }
+                )
+    current["regression_explanations"] = explanations
 
 
 def _merge(reports: list[dict[str, Any]], revision: str, expected_samples: int) -> dict[str, Any]:
@@ -58,23 +98,35 @@ def _merge(reports: list[dict[str, Any]], revision: str, expected_samples: int) 
             or report.get("environment") != environment
             or report.get("regression_explanations") != result.get("regression_explanations")
         ):
-            raise ValueError(f"period-balanced observation {observation_index} changed report identity")
+            raise ValueError(
+                f"period-balanced observation {observation_index} changed report identity"
+            )
         scenarios = report.get("scenarios")
         if not isinstance(scenarios, list) or len(scenarios) != len(result["scenarios"]):
             raise ValueError(f"period-balanced observation {observation_index} changed scenarios")
         for scenario_index, scenario in enumerate(scenarios):
             target = result["scenarios"][scenario_index]
-            if scenario.get("id") != target.get("id") or set(scenario.get("modes", {})) != set(target["modes"]):
-                raise ValueError(f"period-balanced observation {observation_index} changed scenario shape")
+            if scenario.get("id") != target.get("id") or set(scenario.get("modes", {})) != set(
+                target["modes"]
+            ):
+                raise ValueError(
+                    f"period-balanced observation {observation_index} changed scenario shape"
+                )
             for mode_name, mode in scenario["modes"].items():
                 samples = mode.get("samples_ns")
-                if not isinstance(samples, list) or any(type(value) is not int or value <= 0 for value in samples):
-                    raise ValueError(f"period-balanced observation {observation_index} has invalid samples")
+                if not isinstance(samples, list) or any(
+                    type(value) is not int or value <= 0 for value in samples
+                ):
+                    raise ValueError(
+                        f"period-balanced observation {observation_index} has invalid samples"
+                    )
                 target["modes"][mode_name]["samples_ns"].extend(samples)
     for scenario in result["scenarios"]:
         for mode_name, mode in scenario["modes"].items():
             if len(mode["samples_ns"]) != expected_samples:
-                raise ValueError(f"period-balanced result has the wrong sample count for {scenario['id']}/{mode_name}")
+                raise ValueError(
+                    f"period-balanced result has the wrong sample count for {scenario['id']}/{mode_name}"
+                )
     result["environment"] = {**environment, "pair_design": PAIR_DESIGN}
     return result
 
@@ -103,13 +155,11 @@ def measure_pair(
     sequence = PERIOD_BALANCED_CYCLE * (samples // 8)
     for name in sequence:
         workspace, revision = specifications[name]
-        reports[name].append(
-            measurer(suite, workspace, revision=revision, samples=1)
-        )
-    return (
-        _merge(reports["baseline"], baseline_revision, samples),
-        _merge(reports["current"], current_revision, samples),
-    )
+        reports[name].append(measurer(suite, workspace, revision=revision, samples=1))
+    baseline = _merge(reports["baseline"], baseline_revision, samples)
+    current = _merge(reports["current"], current_revision, samples)
+    _reviewed_contract_migration(baseline_workspace, current_workspace, baseline, current)
+    return baseline, current
 
 
 def _atomic_json(path: Path, value: Any) -> None:

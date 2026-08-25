@@ -199,7 +199,8 @@ let script_edge_oracle () =
          Json.Object
            [
              ("source", Json.String source);
-             ("summary", script_summary_json (Script_adapter.analyze shell source));
+             ( "summary",
+               script_summary_json (Script_adapter.analyze shell source) );
            ])
        cases)
   |> fingerprint "script-edges"
@@ -211,14 +212,18 @@ let config_result_json source =
   | Error errors -> Json.Object [ ("errors", strings errors) ]
 
 let full_config =
-  "version = 1\n" ^ "persona = \"paranoid\" # strict gate\n"
+  "version = 2\n" ^ "persona = \"paranoid\" # strict gate\n"
   ^ "frontends = [\"github\", \"gitlab\", \"azure\", \"circleci\"]\n"
   ^ "offline = true\n" ^ "[resolver]\nrequire_immutable = true\n"
-  ^ "allowed_sources = [\"github.com\", \"gitlab.com\"]\n"
-  ^ "[sandbox]\nbackend = \"linux-native\"\n" ^ "image = \"sha256:"
-  ^ String.make 64 'a' ^ "\"\n"
-  ^ "network = \"deny\"\ncpu_seconds = 7\nmemory_mb = 64\n"
-  ^ "processes = 8\noutput_bytes = 4096\n"
+  ^ "[[resolver.allowed_origins]]\norigin = \"https://github.com\"\n"
+  ^ "path_prefixes = [\"/\"]\n"
+  ^ "[[resolver.allowed_origins]]\norigin = \"https://gitlab.com\"\n"
+  ^ "path_prefixes = [\"/\"]\n" ^ "[sandbox]\nbackend = \"linux-native\"\n"
+  ^ "capsule_digest = \"sha256:" ^ String.make 64 'a' ^ "\"\n"
+  ^ "network = \"deny\"\nwall_time_seconds = 900\ncpu_cores = 1\n"
+  ^ "memory_bytes = 2147483648\nprocesses = 128\n"
+  ^ "output_bytes = 16777216\nscratch_bytes = 4294967296\n"
+  ^ "scratch_entries = 100000\n"
   ^ "[[allowlist]]\nkind = \"dependency\"\nvalue = \"owner/action\"\n"
   ^ "reason = \"reviewed # literal\"\n"
   ^ "[[allowlist]]\nkind = \"network_host\"\nvalue = \"example.com\"\n"
@@ -237,12 +242,15 @@ let full_config =
   ^ "selector.path = \".github/\"\nselector.dominance = \"false\"\n"
   ^ "[[suppressions]]\nrule = \"WV-SEC-001\"\n"
   ^ "path = \".github/workflows/ci.yml\"\nreason = \"reviewed fixture\"\n"
-  ^ "[[suppressions]]\nrule = \"WV-NOTE\"\nreason = \"global review\"\n"
+  ^ "owner = \"platform-team\"\nexpiry = \"2027-12-31\"\n"
+  ^ "[[suppressions]]\nrule = \"WV-NOTE\"\npath = \"**\"\n"
+  ^ "reason = \"global review\"\nowner = \"platform-team\"\n"
+  ^ "expiry = \"2027-12-31\"\n"
 
 let config_oracle () =
   let invalid =
     [
-      "version = 2\n";
+      "version = 1\n";
       "version = one\n";
       "offline = false\n";
       "offline = maybe\n";
@@ -253,7 +261,7 @@ let config_oracle () =
       "unknown = true\n";
       "[unknown]\nvalue = 1\n";
       "[resolver]\nrequire_immutable = false\n";
-      "[resolver]\nallowed_sources = broken\n";
+      "[resolver]\nallowed_origins = broken\n";
       "[resolver]\nunknown = true\n";
       "[resolver]\n\
        require_immutable = true\n\
@@ -261,9 +269,9 @@ let config_oracle () =
        require_immutable = true\n";
       "[sandbox]\nbackend = \"unknown\"\n";
       "[sandbox]\nbackend = \"oci:\"\n";
-      "[sandbox]\nimage = \"mutable\"\n";
+      "[sandbox]\ncapsule_digest = \"mutable\"\n";
       "[sandbox]\nnetwork = \"allow\"\n";
-      "[sandbox]\ncpu_seconds = 0\n";
+      "[sandbox]\nwall_time_seconds = 0\n";
       "[sandbox]\nprocesses = nope\n";
       "[[rules]]\nid = \"X\"\nkind = \"unknown\"\n";
       "[[rules]]\nid = \"X\"\nkind = \"limit\"\nlimit = nope\n";
@@ -282,7 +290,10 @@ let config_oracle () =
   in
   let suppression_evidence =
     match Config.parse full_config with
-    | Error _ -> Json.Bool false
+    | Error errors ->
+        record_failure "full config-v2 vector was rejected: %s"
+          (String.concat "; " errors);
+        Json.Bool false
     | Ok config ->
         let diagnostic file rule =
           Diagnostic.make ~rule_id:rule ~severity:Diagnostic.Warning
@@ -312,7 +323,7 @@ let config_oracle () =
       ("suppressed", suppression_evidence);
     ]
   |> fingerprint "config"
-       "b31505d44bd4ba4d8abcddba9b9baea9a861bfaa801db52d94c0c9010c76161b"
+       "b5bfbac79e78e3bf3e21ee4405ce4d8ad68bc9a725bf305ec08a71f8ee550f01"
 
 let position index =
   Span.position ~byte:(index * 3) ~line:(index + 1) ~column:2 ()
@@ -836,28 +847,21 @@ let json_parse_evidence () =
 
 let ordering_edge_evidence () =
   let diagnostic ?(rule_id = "ORDER-EDGE") span confidence message =
-    Diagnostic.make ~rule_id ~severity:Diagnostic.Note
-      ~confidence ~message ~span ()
+    Diagnostic.make ~rule_id ~severity:Diagnostic.Note ~confidence ~message
+      ~span ()
   and property ?subject ?(state = Property.Proved) explanation =
     { Property.id = "ORDER-EDGE"; state; subject; explanation }
   in
   let diagnostic_left = diagnostic (span 200 "z.yml") Diagnostic.Low "left"
-  and diagnostic_right =
-    diagnostic (span 201 "a.yml") Diagnostic.High "right"
+  and diagnostic_right = diagnostic (span 201 "a.yml") Diagnostic.High "right"
   and diagnostic_rule_left =
-    diagnostic ~rule_id:"ORDER-A" (span 202 "same.yml") Diagnostic.High
-      "same"
+    diagnostic ~rule_id:"ORDER-A" (span 202 "same.yml") Diagnostic.High "same"
   and diagnostic_rule_right =
-    diagnostic ~rule_id:"ORDER-Z" (span 202 "same.yml") Diagnostic.High
-      "same"
+    diagnostic ~rule_id:"ORDER-Z" (span 202 "same.yml") Diagnostic.High "same"
   and unknown_left =
-    property
-      ~state:(Property.Unknown [ Unknown.External_state "alpha" ])
-      "same"
+    property ~state:(Property.Unknown [ Unknown.External_state "alpha" ]) "same"
   and unknown_right =
-    property
-      ~state:(Property.Unknown [ Unknown.External_state "omega" ])
-      "same"
+    property ~state:(Property.Unknown [ Unknown.External_state "omega" ]) "same"
   and explanation_left = property ~subject:"same" "alpha"
   and explanation_right = property ~subject:"same" "omega" in
   let property_state_order =
@@ -874,7 +878,8 @@ let ordering_edge_evidence () =
         List.map
           (fun right ->
             Json.Int
-              (Property.compare (property ~state:left "same")
+              (Property.compare
+                 (property ~state:left "same")
                  (property ~state:right "same")))
           states)
       states
@@ -887,14 +892,14 @@ let ordering_edge_evidence () =
         Condition.to_json (Condition.and_ omega alpha);
         Condition.to_json (Condition.or_ alpha omega);
         Condition.to_json (Condition.or_ omega alpha);
-        Condition.to_json
-          (Condition.and_ alpha (Condition.or_ alpha omega));
+        Condition.to_json (Condition.and_ alpha (Condition.or_ alpha omega));
       ]
   in
   Json.Object
     [
       ("low", Diagnostic.to_json diagnostic_left);
-      ("diagnostic_compare", Json.Int (Diagnostic.compare diagnostic_left diagnostic_right));
+      ( "diagnostic_compare",
+        Json.Int (Diagnostic.compare diagnostic_left diagnostic_right) );
       ( "diagnostic_rule_compare",
         Json.Int (Diagnostic.compare diagnostic_rule_left diagnostic_rule_right)
       );
@@ -909,12 +914,15 @@ let graph_algorithm_edge_evidence () =
   let chain_nodes =
     List.init 80 (fun index ->
         node
-          ~attributes:[ ("value", value (300 + index) (Printf.sprintf "v%02d" index)) ]
-          (300 + index) (Printf.sprintf "chain-%02d" index))
+          ~attributes:
+            [ ("value", value (300 + index) (Printf.sprintf "v%02d" index)) ]
+          (300 + index)
+          (Printf.sprintf "chain-%02d" index))
   in
   let chain_edges =
     List.init 79 (fun index ->
-        edge ~kind:Ir.Data (List.nth chain_nodes index)
+        edge ~kind:Ir.Data
+          (List.nth chain_nodes index)
           (List.nth chain_nodes (index + 1)))
   in
   let chain = graph chain_nodes chain_edges [ List.hd chain_nodes ] in
@@ -967,7 +975,8 @@ let graph_algorithm_edge_evidence () =
               (Graph_algorithms.dominates diamond ~dominator:root.id
                  ~node:"missing");
           ] );
-      ("acyclic", Json.Array (List.map strings (Graph_algorithms.cycles diamond)));
+      ( "acyclic",
+        Json.Array (List.map strings (Graph_algorithms.cycles diamond)) );
     ]
 
 let program_graph_edge_evidence () =
@@ -1022,8 +1031,9 @@ let program_graph_edge_evidence () =
   let compose_case index reference candidates =
     let caller = node ~kind:Ir.Call index reference in
     let caller_graph =
-      graph ~source:(Printf.sprintf "caller-%d.yml" index) [ caller ] []
-        [ caller ]
+      graph
+        ~source:(Printf.sprintf "caller-%d.yml" index)
+        [ caller ] [] [ caller ]
     in
     Program_graph.compose (caller_graph :: candidates) |> Ir.to_json
   in
@@ -1040,30 +1050,36 @@ let program_graph_edge_evidence () =
       ( "child-target",
         compose_case 524 "child:./unit.yml"
           [
-            let child = node 525 "child" in
-            graph ~source:"unit.yml" [ child ] [] [ child ];
+            (let child = node 525 "child" in
+             graph ~source:"unit.yml" [ child ] [] [ child ]);
           ] );
       ( "parent-target",
         compose_case 526 "../unit.yaml"
           [
-            let parent = node 527 "parent" in
-            graph ~source:"unit.yaml" [ parent ] [] [ parent ];
+            (let parent = node 527 "parent" in
+             graph ~source:"unit.yaml" [ parent ] [] [ parent ]);
           ] );
       ( "github-target",
         compose_case 528 ".github/workflows/unit.yml"
           [
-            let github = node 529 "github" in
-            graph ~source:".github/workflows/unit.yml" [ github ] [] [ github ];
+            (let github = node 529 "github" in
+             graph ~source:".github/workflows/unit.yml" [ github ] [] [ github ]);
           ] );
       ( "remote-target",
         compose_case 530 "owner/action@v1"
           [
-            let remote = node 531 "remote" in
-            graph ~source:"action.yml" [ remote ] [] [ remote ];
+            (let remote = node 531 "remote" in
+             graph ~source:"action.yml" [ remote ] [] [ remote ]);
           ] );
       ( "composed",
         Program_graph.compose
-          [ main_graph; action_graph; wrong_manifest; non_manifest; resource_graph ]
+          [
+            main_graph;
+            action_graph;
+            wrong_manifest;
+            non_manifest;
+            resource_graph;
+          ]
         |> Ir.to_json );
     ]
 
@@ -1092,7 +1108,10 @@ let capability_edge_evidence () =
         index ("grant-" ^ label)
     and sink =
       node ~kind:Ir.Effect ~effects ?unknown
-        ~attributes:(Option.fold ~none:[] ~some:(fun value -> [ ("value", value) ]) attribute)
+        ~attributes:
+          (Option.fold ~none:[]
+             ~some:(fun value -> [ ("value", value) ])
+             attribute)
         (index + 1) ("sink-" ^ label)
     in
     let candidate = graph [ grant; sink ] [ edge grant sink ] [ grant ] in
@@ -1107,8 +1126,8 @@ let capability_edge_evidence () =
           Json.Array
             (List.map demand_json
                (Capability_analysis.excessive_grants candidate
-               |> List.map (fun grant -> (grant, Capability_analysis.Excessive))))
-        );
+               |> List.map (fun grant -> (grant, Capability_analysis.Excessive))
+               )) );
       ]
   in
   let reason label = Unknown.External_state label in
@@ -1145,20 +1164,18 @@ let capability_edge_evidence () =
       demand_case 730 "network-none" Ir.Network [];
       demand_case ~unknown:(reason "node") 732 "unknown-node" Ir.Network [];
       demand_case
-        ~attribute:
-          (abstract ~value:(Unknown_value [ reason "value" ]) ())
+        ~attribute:(abstract ~value:(Unknown_value [ reason "value" ]) ())
         734 "unknown-value" Ir.Network [];
       demand_case
-        ~attribute:
-          (abstract ~trust:(Unknown_trust [ reason "trust" ]) ())
+        ~attribute:(abstract ~trust:(Unknown_trust [ reason "trust" ]) ())
         736 "unknown-trust" Ir.Network [];
       demand_case
-        ~attribute:
-          (abstract ~secrecy:(Unknown_secrecy [ reason "secrecy" ]) ())
+        ~attribute:(abstract ~secrecy:(Unknown_secrecy [ reason "secrecy" ]) ())
         738 "unknown-secrecy" Ir.Network [];
     ]
   in
-  Json.Object [ ("minimal_by_effect", minimal_by_effect); ("demands", Json.Array cases) ]
+  Json.Object
+    [ ("minimal_by_effect", minimal_by_effect); ("demands", Json.Array cases) ]
 
 let verifier_boundary_evidence () =
   let unknown_secrecy reason =
@@ -1179,7 +1196,9 @@ let verifier_boundary_evidence () =
       [
         ("label", Json.String label);
         ("graph", Ir.to_json candidate);
-        ("result", Verifier.verify ~persona:Verifier.Audit candidate |> Verifier.to_json);
+        ( "result",
+          Verifier.verify ~persona:Verifier.Audit candidate |> Verifier.to_json
+        );
       ]
   in
   let env_source =
@@ -1289,8 +1308,10 @@ let verifier_boundary_evidence () =
     and artifact_write = resource 832 "bundle-write" Ir.Artifact_write
     and cache_read = resource 833 "deps-read" Ir.Cache_read
     and cache_write = resource 834 "deps-write" Ir.Cache_write in
-    graph [ artifact_read; artifact_write; cache_read; cache_write; sink ]
-      (List.map (fun source -> edge source sink)
+    graph
+      [ artifact_read; artifact_write; cache_read; cache_write; sink ]
+      (List.map
+         (fun source -> edge source sink)
          [ artifact_read; artifact_write; cache_read; cache_write ])
       [ artifact_read; artifact_write; cache_read; cache_write ]
   in
@@ -1308,11 +1329,14 @@ let verifier_boundary_evidence () =
       List.init 128 (fun offset ->
           node ~kind:Ir.Resource
             ~attributes:[ ("value", value (9000 + offset) "trusted") ]
-            (9000 + offset) (Printf.sprintf "trusted-%03d" offset))
-      |> List.find_opt (fun (candidate : Ir.node) -> candidate.Ir.id < resource.id)
+            (9000 + offset)
+            (Printf.sprintf "trusted-%03d" offset))
+      |> List.find_opt (fun (candidate : Ir.node) ->
+          candidate.Ir.id < resource.id)
       |> Option.get
     in
-    graph [ trusted_source; resource; sink ]
+    graph
+      [ trusted_source; resource; sink ]
       [ edge ~kind:Ir.Data trusted_source resource; edge resource sink ]
       [ trusted_source; resource ]
   in
@@ -1323,24 +1347,29 @@ let verifier_boundary_evidence () =
           [ ("value", value ~secrecy:Abstract_value.Secret 840 "TOKEN") ]
         840 "secret"
     and public_source =
-      node ~kind:Ir.Resource ~attributes:[ ("value", value 841 "public") ] 841
-        "public"
+      node ~kind:Ir.Resource
+        ~attributes:[ ("value", value 841 "public") ]
+        841 "public"
     and tail = node 842 "runner tail"
     and capability_candidate =
-      node ~kind:Ir.Call ~capabilities:[ Ir.Self_hosted_persistence ] 843
-        "capability persistence"
+      node ~kind:Ir.Call
+        ~capabilities:[ Ir.Self_hosted_persistence ]
+        843 "capability persistence"
     and edge_candidate = node ~kind:Ir.Call 844 "edge persistence"
     and disabled_candidate =
-      node ~kind:Ir.Call ~capabilities:[ Ir.Self_hosted_persistence ]
+      node ~kind:Ir.Call
+        ~capabilities:[ Ir.Self_hosted_persistence ]
         ~attributes:[ ("persist-credentials", value 845 "false") ]
         845 "disabled persistence"
     and direct_candidate =
-      node ~kind:Ir.Call ~capabilities:[ Ir.Self_hosted_persistence ]
+      node ~kind:Ir.Call
+        ~capabilities:[ Ir.Self_hosted_persistence ]
         ~attributes:
           [ ("credential", value ~secrecy:Abstract_value.Secret 846 "TOKEN") ]
         846 "direct persistence"
     and unknown_candidate =
-      node ~kind:Ir.Call ~capabilities:[ Ir.Self_hosted_persistence ]
+      node ~kind:Ir.Call
+        ~capabilities:[ Ir.Self_hosted_persistence ]
         ~attributes:
           [
             ( "credential",
@@ -1375,7 +1404,8 @@ let verifier_boundary_evidence () =
   let isolated_unknown_credential =
     let tail = node 848 "unknown tail"
     and candidate =
-      node ~kind:Ir.Call ~capabilities:[ Ir.Self_hosted_persistence ]
+      node ~kind:Ir.Call
+        ~capabilities:[ Ir.Self_hosted_persistence ]
         ~attributes:
           [
             ( "credential",
@@ -1384,7 +1414,8 @@ let verifier_boundary_evidence () =
           ]
         849 "isolated unknown credential"
     in
-    graph [ candidate; tail ] [ edge ~kind:Ir.Persist candidate tail ]
+    graph [ candidate; tail ]
+      [ edge ~kind:Ir.Persist candidate tail ]
       [ candidate ]
   in
   let privileged_sink index name =
@@ -1394,13 +1425,15 @@ let verifier_boundary_evidence () =
   let gate_case ?(provider = Ir.Github) index gate =
     let entry = node ~provider ~kind:Ir.Workflow ~phase:Ir.Compile index "entry"
     and sink = privileged_sink (index + 2) "deploy" in
-    graph ~provider [ entry; gate; sink ] [ edge entry gate; edge gate sink ]
+    graph ~provider [ entry; gate; sink ]
+      [ edge entry gate; edge gate sink ]
       [ entry ]
   in
   let protected_or_gate =
     node ~kind:Ir.Gate ~phase:Ir.Plan
       ~condition:
-        (Condition.or_ (Condition.atom "github.ref_protected")
+        (Condition.or_
+           (Condition.atom "github.ref_protected")
            (Condition.atom "actor_is_admin"))
       850 "protected or actor"
   and circle_nonapproval =
@@ -1434,7 +1467,8 @@ let verifier_boundary_evidence () =
       supply_case 818 "supply-local-dot" "./local/action" [];
       supply_case 819 "supply-local-parent" "../local/action" [];
       supply_case 820 "supply-sha-reference"
-        ("owner/action@sha256:" ^ String.make 64 'a') [];
+        ("owner/action@sha256:" ^ String.make 64 'a')
+        [];
       supply_case 821 "supply-valid-digest" "locked-by-metadata"
         (digest ("sha256:" ^ String.make 64 'b'));
       supply_case 822 "supply-wrong-prefix" "wrong-prefix"
@@ -1510,18 +1544,25 @@ let policy_predicate_edge_evidence () =
   and command = node ~kind:Ir.Command 212 "command"
   and resource =
     Ir.make_node ~provider:Ir.Github ~kind:Ir.Resource ~name:"resource"
-      ~phase:Ir.Run ~span:(span 213 ".github/workflows/edge.yml") ()
+      ~phase:Ir.Run
+      ~span:(span 213 ".github/workflows/edge.yml")
+      ()
   in
   let disconnected =
-    graph [ entry; disconnected_gate; command; resource ] [ edge entry command ]
+    graph
+      [ entry; disconnected_gate; command; resource ]
+      [ edge entry command ]
       [ entry; disconnected_gate ]
   and connected =
     let connected_entry =
       node ~kind:Ir.Workflow ~phase:Ir.Compile 214 "connected entry"
     and connected_gate = node ~kind:Ir.Gate ~phase:Ir.Plan 215 "connected gate"
     and connected_sink = node ~kind:Ir.Effect 216 "connected sink" in
-    graph [ connected_entry; connected_gate; connected_sink ]
-      [ edge connected_entry connected_gate; edge connected_gate connected_sink ]
+    graph
+      [ connected_entry; connected_gate; connected_sink ]
+      [
+        edge connected_entry connected_gate; edge connected_gate connected_sink;
+      ]
       [ connected_entry ]
   in
   let evaluate label selector candidate =
@@ -1728,17 +1769,21 @@ let config_edge_oracle () =
        [
          "";
          "frontends = broken\n";
-         "[resolver]\nallowed_sources = [\"a\"]\nallowed_sources = [\"b\"]\n";
+         "[resolver]\nallowed_origins = []\nallowed_origins = []\n";
          "[[rules]]\nid = bare\nkind = \"forbid\"\n";
          "[[rules]]\nid = \"EDGE\"\nkind = \"forbid\"\nextra = \"bad\"\n";
          "[[rules]]\nmessage = \"missing identity\"\n";
-         "[[allowlist]]\nkind = \"source\"\nvalue = \"github.com\"\nreason = \"reviewed\"\nextra = \"bad\"\n";
+         "[[allowlist]]\n\
+          kind = \"source\"\n\
+          value = \"github.com\"\n\
+          reason = \"reviewed\"\n\
+          extra = \"bad\"\n";
          "[sandbox]\nbackend = bare\n";
-         "[sandbox]\nimage = bare\n";
+         "[sandbox]\ncapsule_digest = bare\n";
          "[sandbox]\nnetwork = bare\n";
        ])
   |> fingerprint "config-edges"
-       "29682a34818b4362823fd1dfa70c4b848dfe2d5a10412acd01b6fb29a08a3051"
+       "52536c71347b91a39b8be946e4e8a5750d2c0b7852c4cd4da84726e1d84eb47d"
 
 let yaml_newline_name = function
   | `Lf -> "lf"
@@ -1928,8 +1973,8 @@ let yaml_structural_evidence () =
   in
   let anchor_tree = parsed "root: [&x value, *x]\n" in
   let collection_size project source =
-    parsed source |> Yaml_cst.root |> fun root -> Option.bind root project
-    |> Option.fold ~none:(-1) ~some:List.length
+    parsed source |> Yaml_cst.root |> fun root ->
+    Option.bind root project |> Option.fold ~none:(-1) ~some:List.length
   in
   let edit source edits =
     match Yaml_cst.apply_edits (parsed source) edits with
@@ -1982,8 +2027,7 @@ let yaml_structural_evidence () =
         Json.Bool (Yaml_cst.structural_equal (parsed "a\n") (parsed "- a\n")) );
       ( "different-scalar-style",
         Json.Bool
-          (Yaml_cst.structural_equal (parsed "value\n") (parsed "'value'\n"))
-      );
+          (Yaml_cst.structural_equal (parsed "value\n") (parsed "'value'\n")) );
       ( "different-scalar-anchor",
         Json.Bool
           (Yaml_cst.structural_equal (parsed "&left value\n")
@@ -2057,7 +2101,8 @@ let yaml_structural_evidence () =
                     }));
           ] );
       ( "manual-decorated-scalar-value",
-        Option.fold ~none:Json.Null ~some:(fun value -> Json.String value)
+        Option.fold ~none:Json.Null
+          ~some:(fun value -> Json.String value)
           (Yaml_cst.scalar_value manual_decorated) );
     ]
 
@@ -2169,11 +2214,15 @@ let yaml_edge_oracle () =
       ("explicit-nested-sequence", "? key\n:\n  - one\n  - two\n");
       ("explicit-empty-before-implicit", "? key\n:\nnext: value\n");
       ( "sequence-explicit-entry",
-        "items:\n  - ? key\n    : value\n  - ? other\n    : - one\n      - two\n" );
+        "items:\n\
+        \  - ? key\n\
+        \    : value\n\
+        \  - ? other\n\
+        \    : - one\n\
+        \      - two\n" );
       ( "sequence-explicit-followed-implicit",
         "items:\n  - ? key\n    next: value\n" );
-      ( "sequence-explicit-wrong-colon-indent",
-        "items:\n  - ? key\n  : value\n" );
+      ("sequence-explicit-wrong-colon-indent", "items:\n  - ? key\n  : value\n");
       ("explicit-colon-nested-value", ":\n  nested: value\n");
       ("document-end-at-eof", "---\nvalue\n...\n");
       ("empty-explicit-document", "---\n...\n");
@@ -2187,7 +2236,10 @@ let yaml_edge_oracle () =
       ( "overlapping-tag-handles-reversed",
         "%TAG !e! tag:long:/\n%TAG ! tag:short:/\n---\nvalue: !e!item data\n" );
       ( "directive-inline-comment",
-        "%YAML 1.2 # version\n%TAG !e! tag:example:/ # handle\n---\nvalue: !e!item data\n" );
+        "%YAML 1.2 # version\n\
+         %TAG !e! tag:example:/ # handle\n\
+         ---\n\
+         value: !e!item data\n" );
       ("invalid-short-hex", "value: \"\\x0\"\n");
       ("invalid-hex-digit", "value: \"\\x0G\"\n");
       ("invalid-unicode-digit", "value: \"\\u000G\"\n");
@@ -2196,7 +2248,8 @@ let yaml_edge_oracle () =
       ("invalid-double-indent", "value: |22\n  data\n");
       ("valid-indent-then-chomp", "value: |2+\n  data\n");
       ("valid-chomp-then-indent", "value: |+2\n  data\n");
-      ("single-contains-invalid-double-escape", "value: 'text \"bad\\q\" text'\n");
+      ( "single-contains-invalid-double-escape",
+        "value: 'text \"bad\\q\" text'\n" );
       ("single-contains-flow-like-invalid-escape", "value: '[\"bad\\q\"]'\n");
       ("single-before-invalid-double-escape", "root: ['single', \"bad\\q\"]\n");
       ("flow-doubled-single", "root: ['a''b', c]\n");

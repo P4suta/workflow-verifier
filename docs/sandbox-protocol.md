@@ -1,4 +1,4 @@
-# Sandbox protocol v1
+# Sandbox protocol v2
 
 Plans and evidence are canonical JSON: UTF-8, LF, sorted object keys, no
 insignificant whitespace, and integers only. A plan binds the source digest,

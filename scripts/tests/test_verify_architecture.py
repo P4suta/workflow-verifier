@@ -5,7 +5,6 @@ import pathlib
 import tempfile
 import unittest
 
-
 SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "verify_architecture.py"
 
 
@@ -51,6 +50,16 @@ class DuneArchitectureTests(unittest.TestCase):
         }
         self.assertTrue(any("cycle" in error for error in checker.graph_errors(actual)))
 
+    def test_only_declared_external_dependencies_are_allowed(self) -> None:
+        checker = load_checker()
+        self.assertEqual(checker.graph_errors({"wv_foundation": ("unix",)}), [])
+        self.assertTrue(
+            any(
+                "unknown internal library" in error
+                for error in checker.graph_errors({"wv_foundation": ("unexpected",)})
+            )
+        )
+
     def test_partial_assertions_are_rejected_from_analyzer_libraries(self) -> None:
         checker = load_checker()
         with tempfile.TemporaryDirectory() as directory:
@@ -74,8 +83,7 @@ class DuneArchitectureTests(unittest.TestCase):
             source = root / "lib" / "example.ml"
             source.parent.mkdir(parents=True)
             source.write_text(
-                "let first values = List.hd values\n"
-                "let require value = invalid_arg value\n",
+                "let first values = List.hd values\nlet require value = invalid_arg value\n",
                 encoding="utf-8",
             )
 

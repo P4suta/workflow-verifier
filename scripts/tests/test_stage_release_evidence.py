@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.stage_release_evidence import stage
 from scripts.tests.test_verify_release_evidence import fixture
@@ -28,39 +28,42 @@ class StageReleaseEvidenceTests(unittest.TestCase):
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertIn("--manifest", completed.stdout)
-        self.assertIn("--destination", completed.stdout)
 
-    def test_stages_every_v2_evidence_file_under_canonical_names(self) -> None:
+    def test_stages_every_v3_reference_without_flattening_paths(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             manifest = fixture(root)
             destination = root / "dist"
             outputs = stage(manifest, destination)
-            self.assertEqual(len(outputs), 10)
-            self.assertEqual(
-                sorted(path.name for path in outputs),
-                sorted(
-                    [
-                        "release-evidence-v2.json",
-                        "corpus-report-v1.json",
-                        "official-compat-v1.json",
-                        "maintainer-security-attestation-v1.json",
-                        "maintainer-security-attestation-v1.json.sig",
-                        "maintainer-allowed-signers",
-                        *[f"performance-{platform}.json" for platform in ("linux-x86_64", "windows-x86_64", "macos-arm64", "macos-x86_64")],
-                    ]
-                ),
-            )
+            self.assertIn(destination / "release-evidence-v3.json", outputs)
+            self.assertTrue((destination / "gates" / "unit.json").is_file())
+            self.assertTrue((destination / "sbom" / "workflow-verifier.cdx.json").is_file())
+            self.assertTrue((destination / "maintainer-allowed-signers").is_file())
+            self.assertGreater(len(outputs), 40)
 
-    def test_tampered_or_duplicate_platform_fails_closed(self) -> None:
+    def test_tampered_artifact_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             manifest = fixture(root)
-            document = json.loads(manifest.read_text(encoding="utf-8"))
-            document["performance"][1]["platform"] = document["performance"][0]["platform"]
-            manifest.write_text(json.dumps(document) + "\n", encoding="utf-8")
-            with self.assertRaisesRegex(ValueError, "duplicated"):
+            value = json.loads(manifest.read_text(encoding="utf-8"))
+            artifact = root / value["artifacts"][0]["path"]
+            artifact.write_bytes(b"tampered\n")
+            with self.assertRaisesRegex(ValueError, "digest.*mismatch"):
                 stage(manifest, root / "dist")
+
+    def test_symlink_destination_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            manifest = fixture(root)
+            target = root / "target"
+            target.mkdir()
+            destination = root / "dist"
+            try:
+                destination.symlink_to(target, target_is_directory=True)
+            except OSError:
+                self.skipTest("symlink creation is unavailable")
+            with self.assertRaisesRegex(ValueError, "not a symlink"):
+                stage(manifest, destination)
 
 
 if __name__ == "__main__":

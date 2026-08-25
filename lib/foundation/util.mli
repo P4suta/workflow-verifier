@@ -23,3 +23,4 @@ val option_value : default:'a -> 'a option -> 'a
 val take : int -> 'a list -> 'a list
 val take_while : ('a -> bool) -> 'a list -> 'a list
 val string_of_file_error : string -> string -> string
+val valid_utf8 : string -> bool

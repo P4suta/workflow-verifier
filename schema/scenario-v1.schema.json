@@ -1,0 +1,22 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/scenario-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": { "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" }, "name": { "pattern": "^[A-Za-z_][A-Za-z0-9_.-]*$", "type": "string" }, "stringMap": { "additionalProperties": { "type": "string" }, "propertyNames": { "$ref": "#/$defs/name" }, "type": "object" } },
+  "additionalProperties": false,
+  "properties": {
+    "digest": { "$ref": "#/$defs/digest" },
+    "event": { "minLength": 1, "type": "string" },
+    "inputs": { "$ref": "#/$defs/stringMap" },
+    "job": { "minLength": 1, "type": "string" },
+    "matrix": { "additionalProperties": { "type": ["string", "boolean", "integer"] }, "propertyNames": { "$ref": "#/$defs/name" }, "type": "object" },
+    "provider": { "enum": ["github", "gitlab", "azure", "circleci"] },
+    "runner_platform": { "enum": ["linux-x86_64", "linux-arm64", "windows-x86_64", "windows-arm64", "macos-x86_64", "macos-arm64"] },
+    "schema": { "const": "scenario-v1" },
+    "secret_names": { "items": { "pattern": "^[A-Za-z_][A-Za-z0-9_]*$", "type": "string" }, "type": "array", "uniqueItems": true },
+    "variables": { "$ref": "#/$defs/stringMap" },
+    "workflow_entrypoint": { "minLength": 1, "not": { "pattern": "(^/|^[A-Za-z]:|(^|/)\\.\\.?(/|$))" }, "type": "string" }
+  },
+  "required": ["schema", "digest", "provider", "workflow_entrypoint", "job", "event", "inputs", "matrix", "variables", "runner_platform", "secret_names"],
+  "title": "workflow-verifier concrete replay scenario v1",
+  "type": "object"
+}

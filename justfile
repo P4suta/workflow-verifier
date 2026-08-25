@@ -4,7 +4,7 @@ set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
 bootstrap:
     opam init --bare --no-setup --yes
     opam switch create . ocaml-base-compiler.5.5.0 --yes
-    opam install . --deps-only --with-test --yes
+    opam install . --deps-only --with-test --locked --yes
 
 build:
     opam exec -- dune build @all
@@ -54,6 +54,9 @@ corpus-refresh evaluation="evaluation" analyzer="_build/default/bin/main.exe" ou
 corpus-review review="evaluation/review-v1.json" manifest="evaluation/corpus-v1.json" reports_root="evaluation/reports":
     python -B scripts/prepare_corpus.py apply-review --manifest {{manifest}} --reports-root {{reports_root}} --review {{review}}
 
+corpus-rebase-review old="evaluation" fresh="_build/evaluation-refreshed":
+    python -B scripts/prepare_corpus.py rebase-review --old-manifest {{old}}/corpus-v1.json --old-reports-root {{old}}/reports --old-review {{old}}/review-v1.json --new-manifest {{fresh}}/corpus-v1.json --new-reports-root {{fresh}}/reports --output {{fresh}}/review-v1.json
+
 official-fetch manifest="official/official-projects-v1.json" destination="_build/official-projects" mode="pinned":
     python -B scripts/fetch_official_projects.py --manifest {{manifest}} --destination {{destination}} --mode {{mode}}
 
@@ -79,8 +82,14 @@ determinism-compare linux windows macos_arm64 macos_x86_64 output="_build/determ
 version:
     python -B scripts/verify_release_version.py --allow-development
 
-release-evidence revision tag manifest="release-evidence/release-evidence-v2.json":
+release-evidence revision tag manifest="release-evidence/release-evidence-v3.json":
     python -B scripts/verify_release_evidence.py --manifest {{manifest}} --revision {{revision}} --tag {{tag}} --repository .
+
+candidate-source revision version output="_candidate/source":
+    python -B scripts/candidate_artifacts.py source-assets --repository . --subject-commit {{revision}} --version {{version}} --output-dir {{output}} --fragment {{output}}/reproducibility-source.json
+
+candidate-reproducibility revision output *fragments:
+    python -B scripts/candidate_artifacts.py aggregate --subject-commit {{revision}} --output {{output}} {{fragments}}
 
 architecture:
     python -B scripts/verify_architecture.py
@@ -98,13 +107,22 @@ install-check:
 task-surface:
     python -B scripts/verify_task_surface.py
 
-sbom version artifact1 artifact2 artifact3 artifact4:
-    python -B scripts/generate_sbom.py --version {{version}} --output dist/workflow-verifier.spdx.json --checksums dist/SHA256SUMS {{artifact1}} {{artifact2}} {{artifact3}} {{artifact4}}
+conformance-manifest:
+    python -B scripts/verify_conformance_manifest.py --manifest conformance/manifest-v1.json --root .
 
-check: task-surface build test yaml-conformance tooling architecture helpers helpers-lint purity licenses install-check
+links:
+    python -B scripts/verify_markdown_links.py --root .
+
+sbom version *artifacts:
+    python -B scripts/generate_sbom.py --version {{version}} --dependency-manifest release/sbom-components-v1.json --output-dir dist/sbom --cyclonedx dist/workflow-verifier.cdx.json --checksums dist/SBOM-SHA256SUMS {{artifacts}}
+
+linux-compat binary:
+    python -B scripts/verify_linux_compat.py {{binary}}
+
+check: task-surface conformance-manifest links build test yaml-conformance tooling architecture helpers helpers-lint purity licenses install-check
 
 dogfood:
-    opam exec -- dune exec workflow-verifier -- check --persona audit .
+    opam exec -- dune exec workflow-verifier -- check --config examples/dogfood-policy-v2.toml --trust-repository-config .
 
 dogfood-gate root="_dogfood" output="_build/dogfood-v1.json":
     python -B scripts/dogfood_gate.py verify --root {{root}} --output {{output}}

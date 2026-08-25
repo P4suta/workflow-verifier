@@ -1,10 +1,10 @@
 import hashlib
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
-from scripts.generate_sbom import generate
+from scripts.generate_sbom import generate, generate_release
 
 
 class GenerateSbomTests(unittest.TestCase):
@@ -59,6 +59,89 @@ class GenerateSbomTests(unittest.TestCase):
                 return
             with self.assertRaises(ValueError):
                 generate([linked], output, sums, "1.0.0")
+
+    def test_release_mode_emits_one_spdx_per_payload_and_aggregate_cyclonedx(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            product = root / "workflow-verifier-linux.tar.gz"
+            helper = root / "workflow-verifier-helper-linux.tar.gz"
+            product.write_bytes(b"product")
+            helper.write_bytes(b"helper")
+            components = {
+                "components": [
+                    {
+                        "applies_to": ["product"],
+                        "id": "cmdliner",
+                        "license": "ISC",
+                        "name": "cmdliner",
+                        "purl": "pkg:opam/cmdliner@2.1.1",
+                        "relationship": "runtime",
+                        "version": "2.1.1",
+                    },
+                    {
+                        "applies_to": ["all"],
+                        "id": "rust",
+                        "license": "Apache-2.0 OR MIT",
+                        "name": "Rust",
+                        "purl": "pkg:generic/rust@1.98.0",
+                        "relationship": "build",
+                        "version": "1.98.0",
+                    },
+                ],
+                "schema": "sbom-components-v1",
+            }
+            manifest = root / "components.json"
+            manifest.write_text(
+                json.dumps(components, separators=(",", ":"), sort_keys=True) + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            output = root / "spdx"
+            cyclonedx = root / "workflow-verifier.cdx.json"
+            checksums = root / "SBOM-SHA256SUMS"
+
+            generated = generate_release(
+                [("product", product), ("helper", helper)],
+                dependency_manifest=manifest,
+                output_dir=output,
+                cyclonedx=cyclonedx,
+                checksums=checksums,
+                version="0.1.0",
+            )
+
+            self.assertEqual(len(generated), 3)
+            product_spdx = json.loads(
+                (output / f"{product.name}.spdx.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(product_spdx["name"], product.name)
+            self.assertEqual(product_spdx["spdxVersion"], "SPDX-2.3")
+            self.assertTrue(
+                any(
+                    relation["relationshipType"] == "BUILD_DEPENDENCY_OF"
+                    for relation in product_spdx["relationships"]
+                )
+            )
+            aggregate = json.loads(cyclonedx.read_text(encoding="utf-8"))
+            self.assertEqual(aggregate["bomFormat"], "CycloneDX")
+            self.assertEqual(aggregate["specVersion"], "1.6")
+            self.assertIn(product.name, checksums.read_text(encoding="utf-8"))
+            self.assertNotIn(str(root), cyclonedx.read_text(encoding="utf-8"))
+
+            components["components"][1]["version"] = "latest"
+            manifest.write_text(
+                json.dumps(components, separators=(",", ":"), sort_keys=True) + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            with self.assertRaisesRegex(ValueError, "must be exact"):
+                generate_release(
+                    [("product", product)],
+                    dependency_manifest=manifest,
+                    output_dir=output,
+                    cyclonedx=cyclonedx,
+                    checksums=checksums,
+                    version="0.1.0",
+                )
 
 
 if __name__ == "__main__":

@@ -75,6 +75,8 @@ impl VmTransport for FakeTransport {
             timed_out: false,
             output_exceeded: false,
             output: self.response.as_bytes().to_vec(),
+            output_bytes: u64::try_from(self.response.len()).unwrap_or(u64::MAX),
+            wall_time_ms: 1,
         })
     }
 }

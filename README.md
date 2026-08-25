@@ -1,6 +1,7 @@
 # workflow-verifier
 
 [![CI](https://github.com/P4suta/workflow-verifier/actions/workflows/ci.yml/badge.svg)](https://github.com/P4suta/workflow-verifier/actions/workflows/ci.yml)
+[![CodeQL Advanced](https://github.com/P4suta/workflow-verifier/actions/workflows/codeql.yml/badge.svg)](https://github.com/P4suta/workflow-verifier/actions/workflows/codeql.yml)
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE-MIT)
 
 `workflow-verifier` is an offline-by-default semantic verifier and isolated
@@ -9,8 +10,10 @@ execution planner for GitHub Actions, GitLab CI, Azure Pipelines, and CircleCI
 untrusted data, secrets, capabilities, effects, dependency integrity,
 authorization dominance, and semantic changes are evaluated by one model.
 
-The static analyzer, resolver model, policy engine, and CLI are pure OCaml.
-They do not shell out to provider linters and contain no foreign bindings.
+The analyzer libraries are pure OCaml: they contain no C stubs or foreign
+bindings and never delegate provider semantics to a subprocess linter. The
+application boundary uses Cmdliner 2.1.1, Otoml 1.0.5, and direct-argv OS
+process APIs for explicitly authorized resolver and sandbox helpers.
 Optional OCI and native containment helpers consume a separately versioned,
 canonical JSON protocol and fail closed when a requested control is absent.
 Architecture is the first product requirement: private libraries form a strict
@@ -42,30 +45,40 @@ every production change follows red/green/refactor.
 - OCI, Linux-native, Windows-native, and macOS-VM helpers implement their native
   controls behind the same canonical runner/evidence protocol.
 
+## Distribution limitations
+
+macOS executables are ad-hoc signed and release checksums are signed with
+Sigstore. They have no Developer ID signature or Apple notarization, so they do
+not receive standard Gatekeeper trust. The release audit is a signed
+sole-maintainer self-audit, not an independent security assessment. These are
+the only accepted v0.1 release exceptions and are also machine-readable in
+`release-evidence-v3`.
+
 ## Development status
 
 The tree carries version `0.1.0` as the first release candidate. It is not a
 published release until the protected `v0.1.0` tag exists. Publication requires
 the license-clear 400-repository corpus, pinned official-project compatibility,
 an approved four-platform performance baseline, complete mutation and native
-containment runs, and a signed sole-maintainer security attestation. Missing
-evidence is never represented as a passing result. `release-evidence-v2` binds
-measurements to candidate commit `C` in an evidence-only child commit `E`; the
-future tag points to `E` only after the dry-run release workflow passes.
+containment runs, and a signed sole-maintainer self-audit. Missing evidence is
+never represented as a passing result. `release-evidence-v3` binds exact
+product artifacts, per-payload SBOMs, signatures, and every gate to candidate
+commit `C` in an evidence-only child commit `E`; the future tag points to `E`
+only after offline verification and protected promotion pass.
 
 ## Quick start
 
 ```text
 workflow-verifier check .
-workflow-verifier check --format json --output report-v1.json .
+workflow-verifier check --format json --output report-v2.json .
 workflow-verifier resolve --allow-network .
 workflow-verifier explain WV-SEC-001 .
 workflow-verifier graph --kind dataflow --format dot .
 workflow-verifier diff ./base ./head
 workflow-verifier fix .                  # prints a patch
 workflow-verifier fix --apply .          # explicit source mutation
-workflow-verifier sandbox plan .
-workflow-verifier sandbox run --backend oci:docker .
+workflow-verifier sandbox plan --job build .
+workflow-verifier sandbox run --job build --backend oci:docker .
 workflow-verifier doctor
 ```
 

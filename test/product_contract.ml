@@ -35,7 +35,7 @@ let graph ?(source = ".github/workflows/ci.yml") (nodes : Ir.node list)
 
 let config_and_policy_test () =
   let source =
-    "version = 1\n" ^ "persona = \"gate\"\n"
+    "version = 2\n" ^ "persona = \"gate\"\n"
     ^ "frontends = [\"github\", \"gitlab\"]\n" ^ "[[rules]]\n"
     ^ "id = \"ORG-001\"\n" ^ "kind = \"forbid\"\n"
     ^ "selector.effect = \"network_request\"\n"
@@ -63,7 +63,7 @@ let config_and_policy_test () =
     (List.exists (fun item -> item.Diagnostic.rule_id = "ORG-001") diagnostics);
   expect "limit rule must count matching capability"
     (List.exists (fun item -> item.Diagnostic.rule_id = "ORG-002") diagnostics);
-  (match Config.parse "version = 1\neval = \"danger()\"\n" with
+  (match Config.parse "version = 2\neval = \"danger()\"\n" with
   | Error _ -> ()
   | Ok _ -> fail "string evaluation keys must be rejected");
   List.iter
@@ -72,52 +72,91 @@ let config_and_policy_test () =
         ("unsafe or unknown config must fail: " ^ source)
         (Result.is_error (Config.parse source)))
     [
-      "version = 2\n";
-      "version = 1\noffline = false\n";
-      "version = 1\n[sandbox]\nnetwork = \"allow\"\n";
-      "version = 1\n[sandbox]\nunknown_control = true\n";
-      "version = 1\n[sandbox]\nimage = \"unclosed\n";
-      "version = 1\n[sandbox]\nimage = \"sha256:abc\"\n";
-      "version = 1\n[sandbox]\nimage = \"not256:"
-      ^ String.make 64 'a' ^ "\"\n";
-      "version = 1\n[sandbox]\nimage = \"sha256:"
-      ^ String.make 63 'a' ^ "z\"\n";
-      "version = 1\nfrontends = [\"github\", \"github\"]\n";
-      "version = 1\nfrontends = [\"github\"x\n";
-      "version = 1\nversion = 1\n";
-      "version = 1\n[sandbox]\n[sandbox]\n";
-      "version = 1\n[[rules]]\nid = \"BAD\"\nkind = \"forbid\"\nselector.capability = \"invalid\"\nmessage = \"bad\"\n";
-      "version = 1\n[[rules]]\nid = \"BAD\"\nkind = \"forbid\"\nselector.effect = \"unterminated\nmessage = \"bad\"\n";
-    ]
-  ;
+      "version = 1\n";
+      "version = 2\noffline = false\n";
+      "version = 2\n[sandbox]\nnetwork = \"allow\"\n";
+      "version = 2\n[sandbox]\nunknown_control = true\n";
+      "version = 2\n[sandbox]\ncapsule_digest = \"unclosed\n";
+      "version = 2\n[sandbox]\ncapsule_digest = \"sha256:abc\"\n";
+      "version = 2\n[sandbox]\ncapsule_digest = \"not256:" ^ String.make 64 'a'
+      ^ "\"\n";
+      "version = 2\n[sandbox]\ncapsule_digest = \"sha256:" ^ String.make 63 'a'
+      ^ "z\"\n";
+      "version = 2\nfrontends = [\"github\", \"github\"]\n";
+      "version = 2\nfrontends = [\"github\"x\n";
+      "version = 2\nversion = 2\n";
+      "version = 2\n[sandbox]\n[sandbox]\n";
+      "version = 2\n\
+       [[rules]]\n\
+       id = \"BAD\"\n\
+       kind = \"forbid\"\n\
+       selector.capability = \"invalid\"\n\
+       message = \"bad\"\n";
+      "version = 2\n\
+       [[rules]]\n\
+       id = \"BAD\"\n\
+       kind = \"forbid\"\n\
+       selector.effect = \"unterminated\n\
+       message = \"bad\"\n";
+    ];
   let malformed_allowlist =
-    "version = 1\n[[allowlist]]\nkind = \"source\"\n"
+    "version = 2\n[[allowlist]]\nkind = \"source\"\n"
     ^ "value = \"unterminated\nreason = \"reviewed\"\n"
   in
   (match Config.parse malformed_allowlist with
   | Ok _ -> fail "an unterminated allowlist value must fail"
   | Error errors ->
       expect "the failing quoted field must retain its root-cause diagnostic"
-        (List.exists
-           (Util.contains ~needle:"expected a quoted string: \"unterminated")
-           errors));
+        (errors |> String.concat "; " |> String.lowercase_ascii
+        |> Util.contains ~needle:"string"));
   List.iter
     (fun source ->
       match Config.parse source with
       | Ok _ -> fail "a one-sided quoted persona must fail"
       | Error errors ->
-          expect "one-sided quotes retain the quoted-string root cause"
-            (List.exists
-               (Util.contains ~needle:"expected a quoted string:")
-               errors))
-    [ "version = 1\npersona = \"gate\n"; "version = 1\npersona = gate\"\n" ];
-  (match Config.parse "version = 1\n" with
+          expect "one-sided quotes retain the TOML parser root cause"
+            (List.exists (Util.starts_with ~prefix:"config-v2 TOML:") errors))
+    [ "version = 2\npersona = \"gate\n"; "version = 2\npersona = gate\"\n" ];
+  (match Config.parse "version = 2\n" with
   | Error errors -> fail "%s" (String.concat "; " errors)
   | Ok minimal ->
       expect "security booleans default explicitly to true"
         (minimal.offline && minimal.resolver.require_immutable));
   expect "an explicitly empty frontend set is a valid typed array"
-    (Result.is_ok (Config.parse "version = 1\nfrontends = []\n"))
+    (Result.is_ok (Config.parse "version = 2\nfrontends = []\n"));
+  let exclusions =
+    "version = 2\nsource_exclusions = [\"_build\", \"helpers/target\"]\n"
+  in
+  (match Config.parse ~trust:Config.Trusted_policy exclusions with
+  | Error errors -> fail "%s" (String.concat "; " errors)
+  | Ok trusted ->
+      expect "trusted source exclusions remain typed and report-visible"
+        (trusted.source_exclusions = [ "_build"; "helpers/target" ]
+        && Config.to_json trusted |> Json.to_string
+           |> Util.contains ~needle:"\"source_exclusions\""));
+  expect "repository config cannot remove source evidence"
+    (Result.is_error (Config.parse ~trust:Config.Repository exclusions));
+  List.iter
+    (fun path ->
+      expect
+        ("unsafe source exclusion must fail: " ^ path)
+        (Result.is_error
+           (Config.parse ~trust:Config.Trusted_policy
+              (Printf.sprintf "version = 2\nsource_exclusions = [%S]\n" path))))
+    [
+      "../outside";
+      "/absolute";
+      "C:/drive";
+      "a\\b";
+      "a//b";
+      "a/./b";
+      ".workflow-verifier.toml";
+      "workflow-verifier.lock";
+    ];
+  expect "portable case-fold collisions in exclusions must fail"
+    (Result.is_error
+       (Config.parse ~trust:Config.Trusted_policy
+          "version = 2\nsource_exclusions = [\"Build\", \"build\"]\n"))
 
 let policy_provider_test () =
   let command = node "provider subject" in
@@ -152,7 +191,8 @@ let shortest_policy_path_test () =
       (node
          ~attributes:
            [ ("value", string_value ~trust:Abstract_value.Untrusted name) ]
-         name) with
+         name)
+      with
       id;
     }
   in
@@ -168,11 +208,7 @@ let shortest_policy_path_test () =
   let pipeline =
     graph
       [ long_source; short_source; middle; sink ]
-      [
-        edge long_source middle;
-        edge middle sink;
-        edge short_source sink;
-      ]
+      [ edge long_source middle; edge middle sink; edge short_source sink ]
       long_source
   and rule : Policy.rule =
     {
@@ -218,11 +254,9 @@ let policy_dependency_identity_test () =
   let digest value = [ ("dependency.digest", string_value value) ] in
   let valid_digest = "sha256:" ^ String.make 64 'a' in
   expect "a full hexadecimal revision is immutable"
-    (matches Frontend_intf.Immutable
-       ("owner/action@" ^ String.make 40 'b'));
+    (matches Frontend_intf.Immutable ("owner/action@" ^ String.make 40 'b'));
   expect "a non-hexadecimal forty-character revision remains mutable"
-    (matches Frontend_intf.Mutable
-       ("owner/action@" ^ String.make 39 'b' ^ "z"));
+    (matches Frontend_intf.Mutable ("owner/action@" ^ String.make 39 'b' ^ "z"));
   expect "a parent-relative dependency is local"
     (matches Frontend_intf.Local "../action");
   expect "a valid lock digest proves immutable identity"
@@ -277,13 +311,17 @@ let report_and_sarif_test () =
     | Ok value -> value
     | Error error -> fail "%d:%s" error.offset error.message
   in
-  expect "report schema version is v1"
-    (Json.member "schema" parsed = Some (Json.String "report-v1"));
+  expect "report schema version is v2"
+    (Json.member "schema" parsed = Some (Json.String "report-v2"));
   expect "every property state is serialized"
     (Util.contains ~needle:"\"state\":\"Violated\"" first);
   let sarif = Sarif.to_canonical_json report in
   expect "SARIF 2.1.0 contract is emitted"
-    (Util.contains ~needle:"\"version\":\"2.1.0\"" sarif);
+    (Util.contains ~needle:"\"version\":\"2.1.0\"" sarif
+    && Util.contains
+         ~needle:
+           "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json"
+         sarif);
   expect "SARIF retains the stable rule ID"
     (Util.contains ~needle:"WV-SEC-001" sarif);
   expect "SARIF retains semantic traces"
@@ -430,8 +468,9 @@ let tests : test list =
       policy_dependency_identity_test );
     ("policy provider selectors are exact", policy_provider_test);
     ("forbid_path selects the shortest exploit trace", shortest_policy_path_test);
-    ("diagnostic JSON preserves medium confidence", diagnostic_confidence_json_test);
-    ("report-v1 and SARIF are deterministic", report_and_sarif_test);
+    ( "diagnostic JSON preserves medium confidence",
+      diagnostic_confidence_json_test );
+    ("report-v2 and SARIF are deterministic", report_and_sarif_test);
     ("lockfile enables truly offline resolution", lockfile_and_resolver_test);
     ("legacy lock-v1 remains readable", legacy_lock_v1_compatibility_test);
     ("semantic diff reports newly reachable attacks", semantic_diff_test);

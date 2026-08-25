@@ -1,6 +1,6 @@
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.run_afl_fuzz import build_command, validate_results
 

@@ -1,9 +1,9 @@
 import gzip
 import json
-from pathlib import Path
 import struct
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.build_vm_bundle import build_bundle, read_newc
 
@@ -69,7 +69,9 @@ class BuildVmBundleTests(unittest.TestCase):
             files = read_newc(archive)
             self.assertEqual(files["workflow-verifier-vm-agent"], elf_agent("arm64"))
             self.assertIn("dev", files)
-            self.assertEqual((first / "workflow-verifier-vm-agent").read_bytes(), agent.read_bytes())
+            self.assertEqual(
+                (first / "workflow-verifier-vm-agent").read_bytes(), agent.read_bytes()
+            )
 
     def test_builder_rejects_symlinks_and_existing_output(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -107,7 +109,7 @@ class BuildVmBundleTests(unittest.TestCase):
             build_bundle(kernel, rootfs, agent, output, "arm64", "release-日本")
 
             manifest = (output / "manifest.json").read_bytes()
-            self.assertIn("日本".encode("utf-8"), manifest)
+            self.assertIn("日本".encode(), manifest)
             self.assertNotIn(b"\\u65e5", manifest)
 
     def test_builder_rejects_non_ext4_dynamic_or_wrong_architecture_agent(self) -> None:

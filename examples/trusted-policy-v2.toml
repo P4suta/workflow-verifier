@@ -1,0 +1,21 @@
+version = 2
+persona = "audit"
+frontends = ["github", "gitlab", "azure", "circleci"]
+offline = true
+source_exclusions = []
+
+[resolver]
+require_immutable = true
+allowed_origins = []
+
+[sandbox]
+backend = "oci:docker"
+capsule_digest = "sha256:unresolved"
+network = "deny"
+wall_time_seconds = 900
+cpu_cores = 1
+memory_bytes = 2147483648
+processes = 128
+output_bytes = 16777216
+scratch_bytes = 4294967296
+scratch_entries = 100000

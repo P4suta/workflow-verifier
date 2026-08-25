@@ -21,6 +21,17 @@ steps keep provider detection unambiguous for both sides of a historical
 comparison. The generator is deterministic and changes one marker for
 incremental samples.
 
+The suite uses the current `--cache-mode` contract. When a historical
+config-v1 baseline is measured, the shell-free driver lowers `off` to
+`--no-cache` and `user` to forced fresh analysis plus an isolated cache write.
+The fixture likewise emits config-v1 only for a revision without the published
+config-v2 schema. Thus both revisions perform a fresh gate computation; a
+historical cached report is never compared with a fresh v0.1 analysis.
+For the one config-v1-to-v2 transition, the paired driver attaches the
+reviewed PR #6 rationale to each measured mode. That rationale is not attached
+when both revisions publish config-v2, so future regressions remain subject to
+the normal unexplained-regression failure.
+
 Release baselines are platform-specific reviewed artifacts. They are not copied
 from synthetic timings. `scripts/performance_gate.py` requires an identical
 environment and scenario set, computes exact rational medians, and rejects an

@@ -5,10 +5,10 @@ from __future__ import annotations
 
 import argparse
 import os
-from pathlib import Path
 import shutil
 import stat
 import tempfile
+from pathlib import Path
 
 
 def materialize(source: Path, destination: Path) -> Path:
@@ -62,8 +62,14 @@ def materialize(source: Path, destination: Path) -> Path:
         input_stream.close()
 
     output_metadata = destination.lstat()
-    if destination.is_symlink() or not stat.S_ISREG(output_metadata.st_mode) or output_metadata.st_size == 0:
-        raise ValueError(f"materialized release input is not a nonempty regular file: {destination}")
+    if (
+        destination.is_symlink()
+        or not stat.S_ISREG(output_metadata.st_mode)
+        or output_metadata.st_size == 0
+    ):
+        raise ValueError(
+            f"materialized release input is not a nonempty regular file: {destination}"
+        )
     return destination
 
 

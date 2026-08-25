@@ -7,13 +7,13 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import stat
 import subprocess
 import sys
 import tempfile
 import time
+from pathlib import Path
 from typing import Any
 
 try:
@@ -116,7 +116,9 @@ def _validate_acquisition(
             raise ValueError(f"{identifier} has an invalid commit")
         if not isinstance(project["tree"], str) or not REVISION.fullmatch(project["tree"]):
             raise ValueError(f"{identifier} has an invalid tree")
-        if not isinstance(project["snapshot_digest"], str) or not DIGEST.fullmatch(project["snapshot_digest"]):
+        if not isinstance(project["snapshot_digest"], str) or not DIGEST.fullmatch(
+            project["snapshot_digest"]
+        ):
             raise ValueError(f"{identifier} has an invalid snapshot digest")
         acquired_by_id[identifier] = project
 
@@ -163,7 +165,8 @@ def _run_analyzer(analyzer: Path, cwd: Path, target: str, deadline: float) -> by
             [
                 str(analyzer),
                 "check",
-                "--no-cache",
+                "--cache-mode",
+                "off",
                 "--persona",
                 "audit",
                 "--format",
@@ -173,8 +176,7 @@ def _run_analyzer(analyzer: Path, cwd: Path, target: str, deadline: float) -> by
             cwd=cwd,
             env=environment,
             stdin=subprocess.DEVNULL,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             shell=False,
             timeout=max(0.1, remaining),
             check=False,
@@ -200,8 +202,8 @@ def _report_summary(raw: bytes, project: dict[str, Any]) -> tuple[dict[str, Any]
         report = json.loads(raw.decode("utf-8"), object_pairs_hook=_strict_object)
     except (UnicodeError, json.JSONDecodeError) as error:
         raise ValueError(f"{project['id']} emitted invalid JSON: {error}") from error
-    if not isinstance(report, dict) or report.get("schema") != "report-v1":
-        raise ValueError(f"{project['id']} did not emit report-v1")
+    if not isinstance(report, dict) or report.get("schema") != "report-v2":
+        raise ValueError(f"{project['id']} did not emit report-v2")
     report_digest = report.get("digest")
     if not isinstance(report_digest, str) or not DIGEST.fullmatch(report_digest):
         raise ValueError(f"{project['id']} report digest is invalid")
@@ -231,8 +233,28 @@ def _report_summary(raw: bytes, project: dict[str, Any]) -> tuple[dict[str, Any]
         counts[severity] += 1
     counts["total"] = len(diagnostics)
     tool = report.get("tool")
-    if not isinstance(tool, dict) or tool.get("name") != "workflow-verifier" or not isinstance(tool.get("version"), str):
+    if (
+        not isinstance(tool, dict)
+        or tool.get("name") != "workflow-verifier"
+        or not isinstance(tool.get("version"), str)
+    ):
         raise ValueError(f"{project['id']} report tool identity is invalid")
+    semantic_report = json.loads(json.dumps(report))
+    semantic_report.pop("digest", None)
+    semantic_tool = semantic_report.get("tool")
+    if isinstance(semantic_tool, dict):
+        semantic_tool.pop("binary_digest", None)
+        semantic_build = semantic_tool.get("build")
+        if isinstance(semantic_build, dict):
+            semantic_build.pop("source_commit", None)
+    semantic_digest = _digest(
+        json.dumps(
+            semantic_report,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    )
     return (
         {
             "diagnostics": counts,
@@ -244,6 +266,7 @@ def _report_summary(raw: bytes, project: dict[str, Any]) -> tuple[dict[str, Any]
             "report_digest": report_digest,
             "report_sha256": _digest(raw),
             "revision": project["revision"],
+            "semantic_digest": semantic_digest,
             "snapshot_digest": project["snapshot_digest"],
             "tree": project["tree"],
         },
@@ -295,9 +318,7 @@ def analyze(
 
 
 def _canonical(value: Any) -> bytes:
-    return (
-        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
-    ).encode("utf-8")
+    return (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8")
 
 
 def _atomic_write(path: Path, raw: bytes) -> None:
@@ -317,12 +338,32 @@ def _atomic_write(path: Path, raw: bytes) -> None:
         raise
 
 
+def _comparison_projection(document: Any, label: str) -> Any:
+    if not isinstance(document, dict) or document.get("schema") != "official-compat-v1":
+        raise ValueError(f"{label} is not official-compat-v1")
+    projects = document.get("projects")
+    if not isinstance(projects, list):
+        raise ValueError(f"{label} projects are malformed")
+    projected = json.loads(json.dumps(document))
+    for index, project in enumerate(projected["projects"]):
+        if not isinstance(project, dict):
+            raise ValueError(f"{label} project {index} is malformed")
+        for field in ("report_digest", "report_sha256", "semantic_digest"):
+            if not isinstance(project.get(field), str) or not DIGEST.fullmatch(project[field]):
+                raise ValueError(f"{label} project {index} {field} is invalid")
+        project.pop("report_digest")
+        project.pop("report_sha256")
+    return projected
+
+
 def _verify_expected(raw: bytes, expected: Path, expected_digest: Path | None) -> None:
     expected_document, expected_raw = _load_json(
         expected, "expected official compatibility report", limit=4 * 1024 * 1024
     )
     actual_document = json.loads(raw.decode("utf-8"))
-    if actual_document != expected_document or raw != expected_raw:
+    if _comparison_projection(actual_document, "actual official compatibility report") != (
+        _comparison_projection(expected_document, "expected official compatibility report")
+    ):
         raise ValueError("official compatibility report differs from the fixed report")
     if expected_digest is not None:
         try:
@@ -360,8 +401,7 @@ def main() -> int:
         print(f"official compatibility gate: {error}", file=sys.stderr)
         return 2
     print(
-        f"official compatibility gate: {result['repositories']} repositories; "
-        f"report={_digest(raw)}"
+        f"official compatibility gate: {result['repositories']} repositories; report={_digest(raw)}"
     )
     return 0
 

@@ -1,50 +1,36 @@
-# Sole-maintainer security attestation
+# Sole-maintainer security review
 
-`workflow-verifier` has one maintainer, `P4suta`. The release gate records that
-fact directly: the maintainer performs and signs a security self-attestation.
-No second reviewer is implied.
+Version 0.1 has no independent audit. The only release review is a signed,
+machine-verifiable sole-maintainer self-audit, and release pages must disclose
+that limitation prominently.
 
-The required scope is closed and machine checked:
-
-- YAML parser and expression denial-of-service boundaries;
-- untrusted and secret dataflow;
-- authorization dominance;
-- dependency resolution, redirects, and allowlists;
-- fix proof obligations;
-- canonical protocols and evidence hash chains; and
-- OCI, Linux, Windows, and macOS native containment backends.
-
-Containment review includes filesystem write and escape, network and loopback
-access, child-process escape, resource exhaustion, output and secret leakage,
-source races, tampered plans, helpers, and VM images. Static and live dogfood,
-the four-platform determinism comparison, the complete mutation catalog, AFL,
-the 400-repository corpus, and the pinned official-project suite are inputs to
-the decision.
-
-`maintainer-security-attestation-v1.json` records candidate commit `C`, the
-planned tag, maintainer, public review URL, completion timestamp, the complete
-scope, findings, residual risks, and an `approve` or `reject` decision. Critical
-and high findings must be resolved. Every accepted or open lower-severity
-finding and every residual risk requires an HTTPS tracking URL, accountable
-owner, and non-overdue due date. The verifier fails closed on missing fields,
-unknown fields, duplicate identifiers, incomplete scope, or a non-`approve`
-decision.
-
-The exact canonical JSON bytes are signed with the maintainer SSH key and the
-dedicated namespace:
+`maintainer-self-audit-v2.json` is canonical JSON bound to candidate commit
+`C`, planned tag, public review URL, the implementation/threat-model/release
+control scope, both accepted disclosures, and an empty findings array. Any
+known finding makes the audit invalid. Its detached SSH signature uses the
+identity in `release-evidence/maintainer-allowed-signers` and namespace
+`workflow-verifier-release`.
 
 ```text
-ssh-keygen -Y sign -f MAINTAINER_KEY -n workflow-verifier-release \
-  release-evidence/maintainer-security-attestation-v1.json
+ssh-keygen -Y sign -n workflow-verifier-release \
+  release-evidence/maintainer-self-audit-v2.json
 ```
 
-The public key and signing identity are pinned in
-`release-evidence/maintainer-allowed-signers`. The v2 verifier checks the
-detached signature with `ssh-keygen -Y verify`; substituting the allowed-signers
-file, identity, namespace, attestation bytes, or signature is a hard failure.
+`release-evidence-v3` binds the audit and signature digests. The offline
+verifier fixes the maintainer identity and namespace, checks canonical bytes,
+requires `independent_audit=false`, and rejects any stale subject, disclosure
+change, finding, missing signature, or changed allowed-signers identity.
 
-Potential upstream findings are rechecked against the provider specification
-and the actual input boundary. Confirmed confidential issues use the upstream
-private security channel. Confirmed non-confidential issues use an existing or
-new public issue after duplicate search. Unconfirmed diagnostics are not sent
-upstream and remain local analysis data.
+The review covers trust expansion through repository configuration, cache and
+resolver poisoning, filesystem races and links, process and secret leakage,
+scenario over-execution, backend containment, network enforcement, evidence
+claims, release provenance, signing, SBOM coverage, and data-loss recovery.
+The threat model is in [threat-model.md](threat-model.md).
+
+Repository dogfood uses
+[`examples/dogfood-policy-v2.toml`](../examples/dogfood-policy-v2.toml) only
+with the explicit repository-trust grant. Its two path-scoped, owned, expiring
+suppressions document the protected Windows signing boundary: strict workflow
+inputs are validated before use, and HSM credentials intentionally reach the
+pinned SSL.com signing action. Expiry makes this exception fail closed unless it
+is reviewed again.

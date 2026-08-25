@@ -27,9 +27,19 @@ let step ?(supported = true) id command =
 
 let make_plan ~backend ~source_digest ~lock_digest ~controls ~limits
     ~secret_names ~dependencies ~steps =
+  let runner_platform =
+    match backend with
+    | Sandbox_protocol.Oci _ | Linux_native -> "linux-x86_64"
+    | Windows_native -> "windows-x86_64"
+    | Macos_vm -> "macos-arm64"
+  in
   match
-    Sandbox_protocol.make_plan ~backend ~source_digest ~lock_digest ~controls
-      ~limits ~secret_names ~dependencies ~steps
+    Sandbox_protocol.make_scenario_plan ~backend
+      ~scenario_digest:("sha256:" ^ String.make 64 'd')
+      ~provider_profile:"test-semantic-v1" ~selected_jobs:[ "build" ]
+      ~runner_platform ~source_digest ~lock_digest ~controls ~limits
+      ~network_destinations:[] ~secret_names ~dependencies ~steps
+      ~incomplete_reasons:[]
   with
   | Ok plan -> plan
   | Error error -> fail "valid test plan was rejected: %s" error
@@ -46,18 +56,40 @@ let fixture name =
   | Error message -> fail "%s" message
 
 let cross_language_protocol_test () =
-  let source = fixture "runner-v1-complete.json" in
+  let source = fixture "runner-v2-complete.json" in
   let plan =
     match Sandbox_protocol.parse source with
     | Ok plan -> plan
     | Error error -> fail "OCaml rejected shared runner fixture: %s" error
   in
-  expect "shared runner fixture is OCaml canonical"
-    (Sandbox_protocol.to_canonical_json plan = source);
-  let invalid = fixture "runner-v1-invalid-complete.json" in
+  let canonical_plan = Sandbox_protocol.to_canonical_json plan in
+  let () =
+    if canonical_plan = source then ()
+    else
+      let rec first_difference index =
+        if
+          index >= String.length source || index >= String.length canonical_plan
+        then index
+        else if source.[index] <> canonical_plan.[index] then index
+        else first_difference (index + 1)
+      in
+      let difference = first_difference 0 in
+      fail
+        "shared runner fixture is not OCaml canonical (byte=%d actual=%d/%s \
+         fixture=%d/%s):\n\
+         actual=%S\n\
+         fixture=%S"
+        difference
+        (String.length canonical_plan)
+        (Sha256.digest_string canonical_plan)
+        (String.length source)
+        (Sha256.digest_string source)
+        canonical_plan source
+  in
+  let invalid = fixture "runner-v2-invalid-complete.json" in
   expect "complete cannot conceal an unresolved dependency"
     (Result.is_error (Sandbox_protocol.parse invalid));
-  let run_source = fixture "sandbox-run-v1-complete.json" in
+  let run_source = fixture "sandbox-run-v2-complete.json" in
   let run =
     match Sandbox_run.parse run_source with
     | Ok value -> value
@@ -82,10 +114,41 @@ let cross_language_source_manifest_test () =
     | Error message -> fail "%s" message
   in
   expect "OCaml source manifest matches the shared canonical fixture"
-    (manifest.canonical_json = String.trim (fixture "source-manifest-v1.json"));
+    (manifest.canonical_json = String.trim (fixture "source-manifest-v2.json"));
   expect "shared source manifest has a stable content digest"
     (manifest.digest
-   = "sha256:6d8438471c06fc1f4199de690117a6c60da9bee4c8d9421ad2333a7847033b48")
+   = "sha256:d70c409989907fb9194417d737ec25d8dd56e7ab36911dbf5b43db5d620b3594")
+
+let trusted_source_exclusion_manifest_test () =
+  let root = "repository" in
+  let source path contents =
+    ( Filename.concat root path,
+      Source_manifest.Regular_source
+        { contents; executable = false; identity = None } )
+  in
+  let create trusted_exclusions =
+    match
+      Source_manifest.create_from_sources ~budget:Source_manifest.default_budget
+        ~trusted_exclusions ~root
+        ~files:
+          [ source "workflow.yml" "jobs: {}\n"; source "_build/cache" "bytes" ]
+    with
+    | Ok manifest -> manifest
+    | Error message -> fail "%s" message
+  in
+  let included = create [] and excluded = create [ "_build" ] in
+  expect "trusted exclusions remove only the declared prefix"
+    (List.length included.entries = 2
+    && List.map
+         (fun (entry : Source_manifest.entry) -> entry.path)
+         excluded.entries
+       = [ "workflow.yml" ]);
+  expect "manifest records the exclusion and its trust reason"
+    (excluded.exclusions
+    = [ { Source_manifest.path = "_build/cache"; reason = "trusted-policy" } ]);
+  expect "exclusion policy changes the content-addressed manifest"
+    (included.exclusion_policy_digest <> excluded.exclusion_policy_digest
+    && included.digest <> excluded.digest)
 
 let canonical_plan_test () =
   let plan =
@@ -95,10 +158,10 @@ let canonical_plan_test () =
       ~controls
       ~limits:
         {
-          cpu_seconds = 60;
-          memory_mb = 512;
-          processes = 32;
-          output_bytes = 1_000_000;
+          cpu_seconds = 900;
+          memory_mb = 2048;
+          processes = 128;
+          output_bytes = 16 * 1024 * 1024;
         }
       ~secret_names:[ "TOKEN"; "DEPLOY_KEY" ] ~dependencies:[]
       ~steps:[ step "build" "make test" ]
@@ -134,17 +197,18 @@ let incomplete_test () =
     }
   in
   let plan =
-    make_plan ~backend:Linux_native ~source_digest:"sha256:source"
-      ~lock_digest:"sha256:lock" ~controls
-      ~limits:
-        { cpu_seconds = 1; memory_mb = 64; processes = 4; output_bytes = 1024 }
-      ~secret_names:[] ~dependencies:[ dependency ]
+    make_plan ~backend:Linux_native
+      ~source_digest:("sha256:" ^ String.make 64 '1')
+      ~lock_digest:("sha256:" ^ String.make 64 '2')
+      ~controls ~limits:Sandbox_protocol.portable_limits ~secret_names:[]
+      ~dependencies:[ dependency ]
       ~steps:[ step ~supported:false "opaque" "unknown" ]
   in
   match plan.status with
   | Incomplete reasons ->
-      expect "both unresolved dependency and unsupported step are retained"
-        (List.length reasons = 2)
+      expect "unresolved dependency and unsupported step are retained"
+        (List.exists (Util.contains ~needle:"Unresolved_dependency") reasons
+        && List.exists (Util.contains ~needle:"Unsupported_step") reasons)
   | Complete -> fail "incomplete plan cannot report success"
 
 let smart_constructor_test () =
@@ -264,10 +328,9 @@ let sandbox_audit_test () =
     make_plan ~backend:(Oci "docker")
       ~source_digest:("sha256:" ^ String.make 64 '1')
       ~lock_digest:("sha256:" ^ String.make 64 '2')
-      ~controls
-      ~limits:
-        { cpu_seconds = 1; memory_mb = 64; processes = 4; output_bytes = 1024 }
-      ~secret_names:[] ~dependencies:[] ~steps:[]
+      ~controls ~limits:Sandbox_protocol.portable_limits ~secret_names:[]
+      ~dependencies:[]
+      ~steps:[ step "audit" "true" ]
   in
   let evidence =
     List.fold_left
@@ -335,6 +398,16 @@ let oci_runner_test () =
         (fun ~source_root ~scratch_root ->
           prepared := source_root = "C:/source" && scratch_root = "C:/scratch";
           Ok ());
+      finalize_scratch =
+        (fun ~scratch_root ->
+          expect "OCI finalizes the dedicated scratch"
+            (scratch_root = "C:/scratch");
+          Ok
+            {
+              Oci_runner.digest = "sha256:" ^ String.make 64 '1';
+              bytes = 8L;
+              entries = 1;
+            });
       run =
         (fun ~engine ~arguments ~timeout_seconds ~output_bytes ~secret_names ->
           calls :=
@@ -346,6 +419,9 @@ let oci_runner_test () =
               timed_out = false;
               output_truncated = false;
               redacted_secrets = [ "TOKEN" ];
+              redacted_output = "redacted log";
+              wall_time_ms = 3;
+              output_bytes = 12;
             });
     }
   in
@@ -353,9 +429,7 @@ let oci_runner_test () =
     make_plan ~backend:(Oci "docker")
       ~source_digest:("sha256:" ^ String.make 64 '1')
       ~lock_digest:("sha256:" ^ String.make 64 '2')
-      ~controls
-      ~limits:
-        { cpu_seconds = 7; memory_mb = 128; processes = 5; output_bytes = 4096 }
+      ~controls ~limits:Sandbox_protocol.portable_limits
       ~secret_names:[ "TOKEN" ] ~dependencies:[]
       ~steps:[ step "build" "make test" ]
   in
@@ -369,13 +443,13 @@ let oci_runner_test () =
   in
   expect "OCI source is copied into a dedicated scratch overlay" !prepared;
   (match !calls with
-  | [ ("docker", arguments, 7, 4096, [ "TOKEN" ]) ] ->
+  | [ ("docker", arguments, 900, 16_777_216, [ "TOKEN" ]) ] ->
       let joined = String.concat " " arguments in
       expect "OCI argv enforces network rootfs process and memory controls"
         (Util.contains ~needle:"--network none" joined
         && Util.contains ~needle:"--read-only" joined
-        && Util.contains ~needle:"--pids-limit 5" joined
-        && Util.contains ~needle:"--memory 128m" joined
+        && Util.contains ~needle:"--pids-limit 128" joined
+        && Util.contains ~needle:"--memory 2048m" joined
         && Util.contains ~needle:"readonly" joined
         && Util.contains ~needle:"C:/scratch" joined)
   | _ -> fail "unexpected OCI runtime calls");
@@ -470,10 +544,12 @@ let scratch_artifact_reconciliation_test () =
 
 let tests : test list =
   [
-    ( "OCaml and helpers share canonical runner-v1 fixtures",
+    ( "OCaml and helpers share canonical runner-v2 fixtures",
       cross_language_protocol_test );
     ( "OCaml and OCI helper share canonical source manifests",
       cross_language_source_manifest_test );
+    ( "trusted source exclusions are recorded and digest-bound",
+      trusted_source_exclusion_manifest_test );
     ( "runner plan is canonical content-addressed and secret-safe",
       canonical_plan_test );
     ("runner plans use a checked smart constructor", smart_constructor_test);

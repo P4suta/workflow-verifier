@@ -11,7 +11,6 @@ import re
 import sys
 from typing import Any
 
-
 MAX_ARTIFACT_BYTES = 32 * 1024 * 1024
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 ARTIFACTS = (
@@ -78,15 +77,14 @@ def _state(document: dict[str, Any], field: str, expected: str, name: str) -> No
 
 def _canonical(value: object) -> bytes:
     return (
-        json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
-        + "\n"
+        json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + "\n"
     ).encode("utf-8")
 
 
 def _canonical_without_newline(value: object) -> bytes:
-    return json.dumps(
-        value, ensure_ascii=False, separators=(",", ":"), sort_keys=True
-    ).encode("utf-8")
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+        "utf-8"
+    )
 
 
 def _report_frontends(report: dict[str, Any]) -> set[str]:
@@ -140,10 +138,10 @@ def _verify_evidence_chain(evidence: dict[str, Any], name: str) -> str:
 
 def extract_evidence(run_path: pathlib.Path, output: pathlib.Path) -> None:
     run = _json(run_path)
-    _schema(run, "sandbox-run-v1", run_path.name)
+    _schema(run, "sandbox-run-v2", run_path.name)
     evidence = run.get("evidence")
-    if not isinstance(evidence, dict) or evidence.get("schema") != "evidence-v1":
-        raise ValueError("sandbox-run-v1 lacks evidence-v1")
+    if not isinstance(evidence, dict) or evidence.get("schema") != "evidence-v2":
+        raise ValueError("sandbox-run-v2 lacks evidence-v2")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_bytes(_canonical(evidence))
 
@@ -154,8 +152,8 @@ def prepare_image(config_path: pathlib.Path, image: str) -> None:
     if config_path.is_symlink() or not config_path.is_file():
         raise ValueError("sandbox config must be a regular file")
     source = config_path.read_text(encoding="utf-8")
-    pattern = re.compile(r'(?m)^image\s*=\s*"sha256:[0-9a-f]{64}"\s*$')
-    updated, count = pattern.subn(f'image = "{image}"', source)
+    pattern = re.compile(r'(?m)^capsule_digest\s*=\s*"sha256:[0-9a-f]{64}"\s*$')
+    updated, count = pattern.subn(f'capsule_digest = "{image}"', source)
     if count != 1:
         raise ValueError("sandbox config must contain exactly one pinned image")
     config_path.write_text(updated, encoding="utf-8", newline="\n")
@@ -167,7 +165,7 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
     raw = {name: _bytes(root / name) for name in ARTIFACTS}
 
     report = _json(root / "report.json")
-    _schema(report, "report-v1", "report.json")
+    _schema(report, "report-v2", "report.json")
     if not isinstance(report.get("properties"), list) or not report["properties"]:
         raise ValueError("report.json contains no proved properties")
     if report.get("diagnostics") != []:
@@ -213,7 +211,7 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
         raise ValueError("lock.json is not a supported canonical lock")
 
     doctor = _json(root / "doctor.json")
-    _schema(doctor, "doctor-v1", "doctor.json")
+    _schema(doctor, "doctor-v2", "doctor.json")
     backends = doctor.get("backends")
     frontends = doctor.get("frontends")
     if doctor.get("sandbox_executor") is not True or not isinstance(backends, list):
@@ -233,17 +231,17 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
         raise ValueError("doctor.json reports no healthy oci:docker backend")
 
     plan = _json(root / "plan.json")
-    _schema(plan, "runner-v1", "plan.json")
+    _schema(plan, "runner-v2", "plan.json")
     _state(plan, "status", "complete", "plan.json")
     if plan.get("backend") != "oci:docker" or not plan.get("steps"):
         raise ValueError("plan.json is not a complete executable OCI plan")
 
     run = _json(root / "run.json")
-    _schema(run, "sandbox-run-v1", "run.json")
+    _schema(run, "sandbox-run-v2", "run.json")
     _state(run, "outcome", "completed", "run.json")
     evidence = run.get("evidence")
-    if not isinstance(evidence, dict) or evidence.get("schema") != "evidence-v1":
-        raise ValueError("run.json lacks evidence-v1")
+    if not isinstance(evidence, dict) or evidence.get("schema") != "evidence-v2":
+        raise ValueError("run.json lacks evidence-v2")
     if evidence.get("plan_digest") != plan.get("digest"):
         raise ValueError("run.json evidence does not bind plan.json")
     evidence_tail = _verify_evidence_chain(evidence, "run.json evidence")

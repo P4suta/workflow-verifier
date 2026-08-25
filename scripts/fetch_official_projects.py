@@ -7,7 +7,6 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
 import re
 import shutil
 import stat
@@ -15,9 +14,9 @@ import subprocess
 import sys
 import tempfile
 import time
+from pathlib import Path, PurePosixPath
 from typing import Any
 from urllib.parse import urlparse
-
 
 PROVIDERS = ("github", "gitlab", "azure", "circleci")
 REVISION = re.compile(r"^[0-9a-f]{40}$")
@@ -132,8 +131,7 @@ def _git(
             env=environment,
             input=input_bytes,
             stdin=subprocess.DEVNULL if input_bytes is None else None,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             shell=False,
             timeout=max(0.1, remaining),
             check=False,
@@ -157,7 +155,9 @@ def _snapshot_digest(root: Path) -> tuple[str, int]:
     files: list[tuple[str, Path]] = []
     for path in root.rglob("*"):
         metadata = path.lstat()
-        if path.is_symlink() or not (stat.S_ISDIR(metadata.st_mode) or stat.S_ISREG(metadata.st_mode)):
+        if path.is_symlink() or not (
+            stat.S_ISDIR(metadata.st_mode) or stat.S_ISREG(metadata.st_mode)
+        ):
             raise ValueError(f"snapshot contains a symlink or special file: {path}")
         if stat.S_ISREG(metadata.st_mode):
             relative = path.relative_to(root).as_posix()
@@ -208,7 +208,11 @@ def _acquire_project(project: dict[str, Any], output: Path, mode: str) -> dict[s
             cwd=checkout,
             deadline=deadline,
         )
-        revision = _git(["rev-parse", "FETCH_HEAD"], cwd=checkout, deadline=deadline).decode("ascii").strip()
+        revision = (
+            _git(["rev-parse", "FETCH_HEAD"], cwd=checkout, deadline=deadline)
+            .decode("ascii")
+            .strip()
+        )
         if not REVISION.fullmatch(revision):
             raise ValueError(f"{project['id']} resolved an invalid commit")
         if mode == "pinned" and revision != project["revision"]:
@@ -245,7 +249,9 @@ def _acquire_project(project: dict[str, Any], output: Path, mode: str) -> dict[s
             relative = PurePosixPath(source.relative_to(checkout).as_posix())
             if not _selected(relative, paths):
                 continue
-            if source.is_symlink() or not (stat.S_ISDIR(metadata.st_mode) or stat.S_ISREG(metadata.st_mode)):
+            if source.is_symlink() or not (
+                stat.S_ISDIR(metadata.st_mode) or stat.S_ISREG(metadata.st_mode)
+            ):
                 raise ValueError(f"selected CI source is a symlink or special file: {relative}")
             if stat.S_ISREG(metadata.st_mode) and source.suffix.lower() in YAML_SUFFIXES:
                 destination = output.joinpath(*relative.parts)
@@ -275,7 +281,9 @@ def acquire(manifest_path: Path, destination: Path, *, mode: str) -> dict[str, A
     if destination.exists() or destination.is_symlink():
         raise ValueError("official-project destination must not already exist")
     destination.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix=f".{destination.name}.", dir=destination.parent) as temporary:
+    with tempfile.TemporaryDirectory(
+        prefix=f".{destination.name}.", dir=destination.parent
+    ) as temporary:
         staging = Path(temporary) / "snapshots"
         staging.mkdir()
         projects = []

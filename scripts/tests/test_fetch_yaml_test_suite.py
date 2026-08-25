@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path, PurePosixPath
 import tempfile
 import unittest
+from pathlib import Path, PurePosixPath
 
 from scripts.fetch_yaml_test_suite import (
     PIN_PATH,
@@ -14,7 +14,6 @@ from scripts.fetch_yaml_test_suite import (
     validate_checkout_identity,
     validate_export,
 )
-
 
 COMMIT = "6e6c296ae9c9d2d5c4134b4b64d01b29ac19ff6f"
 
@@ -109,11 +108,12 @@ class YamlSuiteExportTests(unittest.TestCase):
                 (first / ".workflow-verifier-yaml-suite-v1.json").read_bytes(),
                 (second / ".workflow-verifier-yaml-suite-v1.json").read_bytes(),
             )
-            self.assertEqual(validate_export(first, commit=COMMIT, expected_cases=2), first_manifest)
+            self.assertEqual(
+                validate_export(first, commit=COMMIT, expected_cases=2), first_manifest
+            )
             self.assertEqual(
                 sorted(
-                    path.parent.relative_to(first).as_posix()
-                    for path in first.rglob("in.yaml")
+                    path.parent.relative_to(first).as_posix() for path in first.rglob("in.yaml")
                 ),
                 ["A001", "B002/00"],
             )

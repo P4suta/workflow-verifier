@@ -1,25 +1,38 @@
 #!/usr/bin/env python3
-"""Byte-compare determinism probe artifacts from two or more platforms."""
+"""Compare portable bytes and report semantics from two or more platforms."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import os
-from pathlib import Path
 import re
 import stat
 import sys
 import tempfile
+from pathlib import Path
 from typing import Any
 
 if __package__:
-    from .determinism_probe import ARTIFACTS, artifact_manifest
+    from .determinism_probe import (
+        ARTIFACTS,
+        REPORT_PROJECTION_EXCLUSIONS,
+        artifact_manifest,
+        parse_json,
+        report_semantic_bytes,
+    )
 else:
-    from determinism_probe import ARTIFACTS, artifact_manifest
+    from determinism_probe import (
+        ARTIFACTS,
+        REPORT_PROJECTION_EXCLUSIONS,
+        artifact_manifest,
+        parse_json,
+        report_semantic_bytes,
+    )
 
 
 PLATFORM = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+PORTABLE_ARTIFACTS = ("fix.diff", "workflow-verifier.lock")
 
 
 def _manifest(directory: Path) -> dict[str, Any]:
@@ -31,8 +44,8 @@ def _manifest(directory: Path) -> dict[str, Any]:
     if path.is_symlink() or not stat.S_ISREG(metadata.st_mode) or metadata.st_size == 0:
         raise ValueError(f"determinism manifest must be a nonempty regular file: {path}")
     try:
-        document = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        document = parse_json(path.read_bytes(), "determinism-v1 JSON")
+    except (OSError, ValueError) as error:
         raise ValueError(f"cannot parse determinism manifest {path}: {error}") from error
     expected = artifact_manifest(directory, list(ARTIFACTS))
     if document != expected:
@@ -58,17 +71,48 @@ def compare(directories: list[Path]) -> dict[str, Any]:
     ordered = sorted(platforms, key=lambda value: value.encode("utf-8"))
     baseline = ordered[0]
     failures: list[str] = []
-    for name in ARTIFACTS:
+    for name in PORTABLE_ARTIFACTS:
         expected = (platforms[baseline] / name).read_bytes()
         for platform in ordered[1:]:
             if (platforms[platform] / name).read_bytes() != expected:
                 failures.append(f"{name} differs between {baseline} and {platform}")
-    common = manifests[baseline]["artifacts"]
+    report_semantics = {
+        platform: report_semantic_bytes((directory / "report-v2.json").read_bytes())
+        for platform, directory in platforms.items()
+    }
+    for platform in ordered[1:]:
+        if report_semantics[platform] != report_semantics[baseline]:
+            failures.append(f"report-v2 semantic content differs between {baseline} and {platform}")
+    common = [
+        artifact
+        for artifact in manifests[baseline]["artifacts"]
+        if artifact["name"] in PORTABLE_ARTIFACTS
+    ]
+    reports = []
+    for platform in ordered:
+        raw = next(
+            artifact
+            for artifact in manifests[platform]["artifacts"]
+            if artifact["name"] == "report-v2.json"
+        )
+        reports.append(
+            {
+                "platform": platform,
+                "raw_digest": raw["digest"],
+                "raw_size": raw["size"],
+                "semantic_digest": manifests[platform]["report_semantic_digest"],
+                "semantic_size": len(report_semantics[platform]),
+            }
+        )
     return {
         "artifacts": common if not failures else [],
         "failures": failures,
         "passed": not failures,
         "platforms": ordered,
+        "report_projection": {
+            "excluded_fields": list(REPORT_PROJECTION_EXCLUSIONS),
+            "reports": reports,
+        },
         "schema": "determinism-comparison-v1",
     }
 
@@ -106,8 +150,8 @@ def main() -> int:
             print(f"determinism comparison: {failure}", file=sys.stderr)
         return 1
     print(
-        f"determinism comparison: {len(result['artifacts'])} artifacts are byte-identical "
-        f"across {len(result['platforms'])} platforms"
+        f"determinism comparison: {len(result['artifacts'])} portable artifacts are "
+        f"byte-identical and report semantics match across {len(result['platforms'])} platforms"
     )
     return 0
 

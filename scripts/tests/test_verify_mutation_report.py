@@ -1,7 +1,7 @@
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.verify_mutation_report import verify
 
@@ -135,8 +135,7 @@ class VerifyMutationReportTests(unittest.TestCase):
             root = Path(temporary)
             killed = mutant("6", "lib/domain/condition.ml", "killed")
             killed["stderr"]["contents"] = (
-                "Error: Another Dune instance is currently running "
-                "in the same build directory."
+                "Error: Another Dune instance is currently running in the same build directory."
             )
             killed["stderr"]["total_bytes"] = len(killed["stderr"]["contents"])
             with self.assertRaisesRegex(ValueError, "infrastructure failure"):

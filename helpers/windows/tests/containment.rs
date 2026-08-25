@@ -9,7 +9,9 @@ use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::Duration;
 
 use workflow_verifier_helper_runtime::source_snapshot;
-use workflow_verifier_runner_protocol::{Limits, Outcome, PlanStatus, Step, ValidatedPlan};
+use workflow_verifier_runner_protocol::{
+    Limits, Outcome, PlanStatus, RuntimeProfile, Step, ValidatedPlan,
+};
 
 static NEXT_DIRECTORY: AtomicU64 = AtomicU64::new(0);
 
@@ -41,16 +43,29 @@ fn execute(
     let plan = ValidatedPlan {
         digest: "sha256:windows-test-plan".to_owned(),
         backend: descriptor.id.to_owned(),
+        scenario_digest: format!("sha256:{}", "2".repeat(64)),
+        provider_profile: "github-actions-v1".to_owned(),
+        selected_jobs: vec!["contained-step".to_owned()],
         controls: descriptor.controls.clone(),
         status: PlanStatus::Complete,
         source_digest,
         lock_digest: format!("sha256:{}", "1".repeat(64)),
+        runtime: RuntimeProfile {
+            kind: "windows-runtime-profile".to_owned(),
+            runner_platform: "windows-x86_64".to_owned(),
+            workload_digest: format!("sha256:{}", "0".repeat(64)),
+            rootfs_digest: None,
+            helper_digest: None,
+            boot_digest: None,
+            capability_fingerprint: None,
+        },
         limits: Limits {
             cpu_seconds,
             memory_mb: 128,
             processes: 4,
             output_bytes,
         },
+        network_destinations: Vec::new(),
         secret_names: Vec::new(),
         dependencies: Vec::new(),
         steps: vec![Step {

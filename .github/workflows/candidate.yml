@@ -1,0 +1,331 @@
+name: Candidate artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_commit:
+        description: Exact lowercase 40-hex product commit C (must be current main)
+        required: true
+        type: string
+      version:
+        description: Exact release version without v
+        required: true
+        default: 0.1.0
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: candidate-${{ inputs.candidate_commit }}
+  cancel-in-progress: false
+
+jobs:
+  identity:
+    name: Validate candidate identity before checkout
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      candidate: ${{ steps.identity.outputs.candidate }}
+      version: ${{ steps.identity.outputs.version }}
+    steps:
+      - name: Reject ambiguous candidate and version inputs
+        id: identity
+        shell: bash
+        env:
+          CANDIDATE: ${{ inputs.candidate_commit }}
+          VERSION: ${{ inputs.version }}
+          WORKFLOW_COMMIT: ${{ github.sha }}
+          WORKFLOW_REF: ${{ github.ref }}
+        run: |
+          if [[ ! "$CANDIDATE" =~ ^[0-9a-f]{40}$ ]]; then
+            echo 'candidate_commit must be exact lowercase 40-hex' >&2
+            exit 2
+          fi
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo 'version must be an exact release SemVer' >&2
+            exit 2
+          fi
+          if [[ "$WORKFLOW_REF" != refs/heads/main || "$WORKFLOW_COMMIT" != "$CANDIDATE" ]]; then
+            echo 'candidate signing must run from main at the exact product commit C' >&2
+            exit 2
+          fi
+          echo "candidate=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+  source:
+    name: Static source and schema assets
+    needs: identity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      source_date_epoch: ${{ steps.source.outputs.source_date_epoch }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - name: Bind every version surface and build source assets twice
+        id: source
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.identity.outputs.candidate }}
+          VERSION: ${{ needs.identity.outputs.version }}
+        run: |
+          test "$GITHUB_SHA" = "$CANDIDATE"
+          test "$(python -B scripts/verify_release_version.py --tag "v$VERSION")" = "$VERSION"
+          epoch=$(git show -s --format=%ct "$CANDIDATE")
+          python -B scripts/candidate_artifacts.py source-assets \
+            --repository . \
+            --subject-commit "$CANDIDATE" \
+            --version "$VERSION" \
+            --output-dir _candidate/source \
+            --fragment _candidate/source/reproducibility-source.json
+          cp THIRD_PARTY_NOTICES.md _candidate/source/THIRD_PARTY_NOTICES.md
+          echo "source_date_epoch=$epoch" >> "$GITHUB_OUTPUT"
+      - name: Upload immutable source candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-source-${{ needs.identity.outputs.candidate }}
+          path: _candidate/source/*
+          if-no-files-found: error
+          retention-days: 30
+
+  build-linux:
+    name: Linux x86_64 candidate at glibc 2.28 floor
+    needs: [identity, source]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      image: rockylinux/rockylinux@sha256:f5529992e67440c1a4ae7788244d4381c6909159a88eacd95b7523ae47ced82e
+      options: --user root
+    steps:
+      - name: Install builder prerequisites in the digest-pinned Rocky 8 root
+        shell: bash
+        run: >-
+          dnf install --assumeyes
+          bash binutils bubblewrap ca-certificates curl diffutils findutils
+          gcc gcc-c++ git gzip libicu make openssl-libs patch tar unzip which xz zlib
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          toolchain: 1.98.0
+          components: rustfmt,clippy
+          cache: false
+          rustflags: ''
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+          opam-disable-sandboxing: true
+          dune-cache: false
+      - name: Install the locked OCaml dependency graph
+        run: opam install . --deps-only --locked --yes
+      - name: Verify exact toolchain and architecture
+        shell: bash
+        run: |
+          test "$(python --version)" = 'Python 3.13.7'
+          test "$(rustc --version)" = 'rustc 1.98.0 (88d9e12ae 2026-08-18)'
+          test "$(opam --version)" = '2.5.2'
+          test "$(opam exec -- ocamlc -version)" = '5.5.0'
+          test "$(opam exec -- dune --version)" = '3.24.2'
+          test "$(uname -m)" = 'x86_64'
+          test "$(getconf GNU_LIBC_VERSION)" = 'glibc 2.28'
+      - name: Build twice in clean roots and enforce ELF compatibility
+        shell: bash
+        env:
+          CANDIDATE_COMMIT: ${{ needs.identity.outputs.candidate }}
+          CANDIDATE_OUTPUT: _candidate/dist
+          CANDIDATE_PLATFORM: linux-x86_64
+          CANDIDATE_VERSION: ${{ needs.identity.outputs.version }}
+          SOURCE_DATE_EPOCH: ${{ needs.source.outputs.source_date_epoch }}
+        run: bash scripts/build_candidate_platform.sh
+      - name: Record exact native builder packages
+        shell: bash
+        run: rpm -qa --qf '%{NAME} %{EPOCHNUM}:%{VERSION}-%{RELEASE} %{ARCH}\n' | LC_ALL=C sort > _candidate/dist/linux-builder-rpm-inventory.txt
+      - name: Upload Linux candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-build-linux-x86_64-${{ needs.identity.outputs.candidate }}
+          path: _candidate/dist/*
+          if-no-files-found: error
+          retention-days: 30
+
+  build-portable:
+    name: ${{ matrix.platform }} candidate
+    needs: [identity, source]
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2025
+            platform: windows-x86_64
+            architecture: AMD64
+          - runner: macos-15
+            platform: macos-arm64
+            architecture: arm64
+          - runner: macos-15-intel
+            platform: macos-x86_64
+            architecture: x86_64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          toolchain: 1.98.0
+          components: rustfmt,clippy
+          cache: false
+          rustflags: ''
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+          dune-cache: false
+      - name: Install the locked OCaml dependency graph
+        run: opam install . --deps-only --locked --yes
+      - name: Verify exact toolchain and runner architecture
+        shell: bash
+        env:
+          EXPECTED_ARCHITECTURE: ${{ matrix.architecture }}
+        run: |
+          test "$(python --version)" = 'Python 3.13.7'
+          test "$(rustc --version)" = 'rustc 1.98.0 (88d9e12ae 2026-08-18)'
+          test "$(opam --version)" = '2.5.2'
+          test "$(opam exec -- ocamlc -version)" = '5.5.0'
+          test "$(opam exec -- dune --version)" = '3.24.2'
+          python -c 'import os,platform; actual=platform.machine(); expected=os.environ["EXPECTED_ARCHITECTURE"]; assert actual == expected, (actual, expected)'
+      - name: Build twice in clean roots with path remapping
+        shell: bash
+        env:
+          CANDIDATE_COMMIT: ${{ needs.identity.outputs.candidate }}
+          CANDIDATE_OUTPUT: _candidate/dist
+          CANDIDATE_PLATFORM: ${{ matrix.platform }}
+          CANDIDATE_VERSION: ${{ needs.identity.outputs.version }}
+          SOURCE_DATE_EPOCH: ${{ needs.source.outputs.source_date_epoch }}
+        run: bash scripts/build_candidate_platform.sh
+      - name: Upload unsigned/ad-hoc-signed candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-build-${{ matrix.platform }}-${{ needs.identity.outputs.candidate }}
+          path: _candidate/dist/*
+          if-no-files-found: error
+          retention-days: 30
+
+  reproducibility:
+    name: Aggregate two-clean-root reproducibility gate
+    needs: [identity, source, build-linux, build-portable]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - name: Download every platform fragment without merging
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: candidate-*-${{ needs.identity.outputs.candidate }}
+          path: _candidate/download
+      - name: Require exact five-platform/source coverage
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.identity.outputs.candidate }}
+        run: |
+          mapfile -d '' fragments < <(find _candidate/download -type f -name 'reproducibility-*.json' -print0 | sort -z)
+          test "${#fragments[@]}" -eq 5
+          arguments=()
+          for fragment in "${fragments[@]}"; do arguments+=(--fragment "$fragment"); done
+          python -B scripts/candidate_artifacts.py aggregate \
+            --subject-commit "$CANDIDATE" \
+            "${arguments[@]}" \
+            --output _candidate/reproducible-build.json
+      - name: Upload candidate-bound reproducibility evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-reproducibility-${{ needs.identity.outputs.candidate }}
+          path: _candidate/reproducible-build.json
+          if-no-files-found: error
+          retention-days: 30
+
+  sign-portable:
+    name: Sigstore-sign Linux, macOS, source, helper, and schema assets
+    needs: [identity, source, build-linux, build-portable, reproducibility]
+    runs-on: ubuntu-24.04
+    environment: candidate-signing
+    timeout-minutes: 20
+    permissions:
+      actions: read # Download exact artifacts produced earlier in this candidate run.
+      contents: read # Retain the workflow-wide read-only repository posture.
+      id-token: write # Obtain the short-lived OIDC identity used by Sigstore.
+    steps:
+      - name: Download exact candidate inputs without merging
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: candidate-*-${{ needs.identity.outputs.candidate }}
+          path: _candidate/download
+      - name: Install pinned Cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+      - name: Sign and immediately verify every portable payload
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.identity.outputs.candidate }}
+          VERSION: ${{ needs.identity.outputs.version }}
+        run: |
+          names=(
+            "workflow-verifier-$VERSION-linux-x86_64.tar.gz"
+            "workflow-verifier-helpers-$VERSION-linux-x86_64.tar.gz"
+            "workflow-verifier-$VERSION-macos-arm64.tar.gz"
+            "workflow-verifier-helpers-$VERSION-macos-arm64.tar.gz"
+            "workflow-verifier-$VERSION-macos-x86_64.tar.gz"
+            "workflow-verifier-helpers-$VERSION-macos-x86_64.tar.gz"
+            "workflow-verifier-$VERSION-source.tar.gz"
+            "workflow-verifier-$VERSION-corresponding-source.tar.gz"
+            "workflow-verifier-$VERSION-schemas.tar.gz"
+          )
+          mkdir -p _candidate/signed
+          for name in "${names[@]}"; do
+            mapfile -d '' matches < <(find _candidate/download -type f -name "$name" -print0)
+            test "${#matches[@]}" -eq 1
+            cp "${matches[0]}" "_candidate/signed/$name"
+            cosign sign-blob --yes \
+              --bundle "_candidate/signed/$name.sigstore.json" \
+              "_candidate/signed/$name"
+            cosign verify-blob --offline \
+              --bundle "_candidate/signed/$name.sigstore.json" \
+              --certificate-identity "https://github.com/$GITHUB_WORKFLOW_REF" \
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+              --certificate-github-workflow-repository "$GITHUB_REPOSITORY" \
+              --certificate-github-workflow-sha "$CANDIDATE" \
+              "_candidate/signed/$name"
+          done
+      - name: Upload signed portable candidate assets
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-portable-signed-${{ needs.identity.outputs.candidate }}
+          path: _candidate/signed/*
+          if-no-files-found: error
+          retention-days: 30

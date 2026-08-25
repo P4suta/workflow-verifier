@@ -62,7 +62,7 @@ use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, Vali
 const PROFILE_NAME: &str = "OpenAI.workflow-verifier.sandbox.v1";
 const PROFILE_LABEL: &str = "workflow-verifier sandbox";
 const PROFILE_DESCRIPTION: &str = "Network-denied native workflow verification";
-const ERROR_ALREADY_EXISTS_HRESULT: i32 = 0x8007_00B7_u32.cast_signed();
+const ERROR_ALREADY_EXISTS_HRESULT: i32 = signed_bits(0x8007_00B7);
 const SOURCE_MUTATION_RIGHTS: u32 = FILE_WRITE_DATA
     | FILE_APPEND_DATA
     | FILE_WRITE_EA
@@ -73,6 +73,14 @@ const SOURCE_MUTATION_RIGHTS: u32 = FILE_WRITE_DATA
     | WRITE_OWNER;
 
 static PROFILE_INITIALIZED: OnceLock<Result<(), String>> = OnceLock::new();
+
+const fn signed_bits(value: u32) -> i32 {
+    i32::from_ne_bytes(value.to_ne_bytes())
+}
+
+const fn unsigned_bits(value: i32) -> u32 {
+    u32::from_ne_bytes(value.to_ne_bytes())
+}
 
 fn wide(value: impl AsRef<std::ffi::OsStr>) -> Result<Vec<u16>, String> {
     let mut encoded = value.as_ref().encode_wide().collect::<Vec<_>>();
@@ -169,7 +177,7 @@ impl AppContainerSid {
         if result < 0 || sid.is_null() {
             Err(format!(
                 "DeriveAppContainerSidFromAppContainerName failed: HRESULT 0x{:08x}",
-                result.cast_unsigned()
+                unsigned_bits(result)
             ))
         } else {
             Ok(Self(sid))
@@ -203,7 +211,7 @@ impl AppContainerSid {
         if result < 0 || folder.is_null() {
             return Err(format!(
                 "GetAppContainerFolderPath failed: HRESULT 0x{:08x}",
-                result.cast_unsigned()
+                unsigned_bits(result)
             ));
         }
         let folder = CoTaskWide(folder);
@@ -248,12 +256,12 @@ fn initialize_profile() -> Result<(), String> {
             &raw mut sid,
         )
     };
-    if result == ERROR_ALREADY_EXISTS_HRESULT || result.cast_unsigned() == ERROR_ALREADY_EXISTS {
+    if result == ERROR_ALREADY_EXISTS_HRESULT || unsigned_bits(result) == ERROR_ALREADY_EXISTS {
         Ok(())
     } else if result < 0 || sid.is_null() {
         Err(format!(
             "CreateAppContainerProfile failed: HRESULT 0x{:08x}",
-            result.cast_unsigned()
+            unsigned_bits(result)
         ))
     } else {
         // SAFETY: a successful profile creation transfers this SID to us;
@@ -1036,6 +1044,7 @@ fn run_process(
         }
         return Err(windows_error("ResumeThread"));
     }
+    let started = Instant::now();
     let supervision = supervise_process(
         &job,
         &process_handle,
@@ -1048,12 +1057,15 @@ fn run_process(
     if unsafe { GetExitCodeProcess(process_handle.raw(), &raw mut code) } == 0 {
         return Err(windows_error("GetExitCodeProcess"));
     }
+    let output_bytes = output.length()?;
     let captured = output.read(request.plan.limits.output_bytes)?;
     Ok(ProcessObservation {
         code: i32::try_from(code).ok(),
         timed_out: supervision.timed_out,
         output_exceeded: supervision.output_exceeded,
         output: captured,
+        output_bytes,
+        wall_time_ms: u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX),
     })
 }
 
@@ -1151,16 +1163,29 @@ pub(super) fn probe() -> Vec<String> {
     let probe_plan = ValidatedPlan {
         digest: String::new(),
         backend: "windows-native".to_owned(),
+        scenario_digest: String::new(),
+        provider_profile: "probe".to_owned(),
+        selected_jobs: vec!["probe".to_owned()],
         controls: Vec::new(),
         status: workflow_verifier_runner_protocol::PlanStatus::Complete,
         source_digest: String::new(),
         lock_digest: String::new(),
+        runtime: workflow_verifier_runner_protocol::RuntimeProfile {
+            kind: "windows-runtime-profile".to_owned(),
+            runner_platform: "windows-x86_64".to_owned(),
+            workload_digest: format!("sha256:{}", "0".repeat(64)),
+            rootfs_digest: None,
+            helper_digest: None,
+            boot_digest: None,
+            capability_fingerprint: None,
+        },
         limits: workflow_verifier_runner_protocol::Limits {
             cpu_seconds: 1,
             memory_mb: 64,
             processes: 2,
             output_bytes: 1024,
         },
+        network_destinations: Vec::new(),
         secret_names: Vec::new(),
         dependencies: Vec::new(),
         steps: Vec::new(),

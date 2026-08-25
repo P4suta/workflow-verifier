@@ -35,22 +35,21 @@ let graph source (nodes : Ir.node list) (edges : Ir.edge list)
 
 let config_surface_test () =
   let source =
-    {|version = 1
+    {|version = 2
 persona = "gate"
 frontends = ["github"]
 offline = true
 
 [resolver]
 require_immutable = true
-allowed_sources = ["https://github.com/"]
+
+[[resolver.allowed_origins]]
+origin = "https://github.com"
+path_prefixes = ["/"]
 
 [sandbox]
 backend = "linux-native"
 network = "deny"
-cpu_seconds = 30
-memory_mb = 512
-processes = 16
-output_bytes = 100000
 
 [[allowlist]]
 kind = "network_host"
@@ -69,6 +68,8 @@ message = "sensitive surface"
 rule = "ORG-ANY"
 path = ".github/workflows/generated.yml"
 reason = "generated and reviewed"
+owner = "platform-team"
+expiry = "2027-01-31"
 |}
   in
   let config =
@@ -81,8 +82,8 @@ reason = "generated and reviewed"
     (config.resolver.allowed_sources = [ "https://github.com/" ]);
   expect "sandbox limits are typed"
     (config.sandbox.backend = "linux-native"
-    && config.sandbox.cpu_seconds = 30
-    && config.sandbox.memory_mb = 512);
+    && config.sandbox.cpu_seconds = 900
+    && config.sandbox.memory_mb = 2048);
   expect "allowlist entries require a reason" (List.length config.allowlist = 1);
   (match config.rules with
   | [ { Policy.selector = Any [ Effect _; Capability _ ]; _ } ] -> ()
@@ -323,7 +324,7 @@ let incremental_cache_test () =
   let entry =
     match
       Incremental_cache.create ~key:first ~exit_code:1
-        ~report:"{\"schema\":\"report-v1\"}\n"
+        ~report:"{\"schema\":\"report-v2\"}\n"
     with
     | Ok entry -> entry
     | Error message -> fail "%s" message

@@ -3,7 +3,7 @@
 The release corpus is evidence-owned data. A reviewed `corpus-v1` manifest names
 every repository by credential-free HTTPS URL and exact 40-character commit,
 the canonical digest of its checked-out bytes, SPDX license evidence, its
-`report-v1` path, and the exact diagnostics classified as expected or allowed.
+`report-v2` path, and the exact diagnostics classified as expected or allowed.
 
 `scripts/corpus_gate.py` independently recomputes source and license digests,
 rejects VCS metadata and symlinks, matches diagnostic IDs and rule IDs, and
@@ -15,7 +15,7 @@ Large third-party snapshots are never fabricated or silently downloaded by
 `check`. `just corpus-acquire` explicitly searches public GitHub repositories,
 pins each default branch to a 40-character commit, retains only MIT,
 Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, or 0BSD license evidence, and
-atomically builds 100 snapshots plus real `report-v1` documents per provider.
+atomically builds 100 snapshots plus real `report-v2` documents per provider.
 
 `just corpus-refresh` verifies every recorded source digest, copies the exact
 immutable snapshots into a new transaction, and reruns the analyzer without
@@ -30,7 +30,7 @@ manifest. `just corpus` then enforces provider counts, precision, recall,
 source/license digests, and known-vulnerability coverage.
 
 Copy the resulting passing `corpus-report-v1.json` into evidence-only commit
-`E` and bind its exact SHA-256 digest in `release-evidence-v2.json`. The
+`E` and bind its exact SHA-256 digest in `release-evidence-v3.json`. The
 protected tag workflow checks all provider counts, precision, recall,
 known-vulnerability coverage, nested diagnostic results, and the digest before
 publication.

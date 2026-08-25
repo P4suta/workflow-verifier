@@ -9,7 +9,14 @@ let argv_safe_get_test () =
   let observed = ref None in
   let invoke request =
     observed := Some request;
-    Ok { Helper_client.exit_code = 0; stdout = "binary\000body"; stderr = "" }
+    Ok
+      {
+        Helper_client.exit_code = 0;
+        stdout = "binary\000body";
+        stderr =
+          "\n\
+           workflow-verifier-curl-meta-v1\t200\thttps://api.github.com/start\t140.82.112.5\n";
+      }
   in
   let get = Curl_transport.make ~invoke ~executable:"curl" in
   let response =
@@ -26,13 +33,20 @@ let argv_safe_get_test () =
   expect "binary response bytes are preserved" (response.body = "binary\000body");
   expect "a successful non-redirecting transfer is a 200 response"
     (response.status = 200
-    && response.effective_url = "https://api.github.com/start");
+    && response.effective_url = "https://api.github.com/start"
+    && response.peer_ip = "140.82.112.5");
   match !observed with
   | None -> fail "curl was not invoked"
   | Some request ->
-      expect "curl receives no stdin" (request.Helper_client.stdin = "");
-      expect "URL remains one argv element"
-        (List.mem "https://api.github.com/start" request.arguments);
+      expect "URL and headers use the private stdin configuration channel"
+        (Util.contains ~needle:"https://api.github.com/start" request.stdin
+        && Util.contains ~needle:"Accept: application/json" request.stdin);
+      expect "URL and headers never enter argv"
+        ((not (List.mem "https://api.github.com/start" request.arguments))
+        && not
+             (List.exists
+                (Util.contains ~needle:"application/json")
+                request.arguments));
       List.iter
         (fun required ->
           expect ("curl omits " ^ required)
@@ -43,7 +57,7 @@ let argv_safe_get_test () =
           "=https";
           "--proto-redir";
           "--max-filesize";
-          "--fail";
+          "--fail-with-body";
         ];
 
       expect "curl never follows redirects"

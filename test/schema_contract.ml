@@ -7,18 +7,24 @@ let fail format =
 
 let schemas =
   [
-    ( "report-v1.schema.json",
-      "https://workflow-verifier.dev/schema/report-v1.json" );
+    ( "report-v2.schema.json",
+      "https://workflow-verifier.dev/schema/report-v2.json" );
+    ( "source-manifest-v2.schema.json",
+      "https://workflow-verifier.dev/schema/source-manifest-v2.json" );
+    ( "scenario-v1.schema.json",
+      "https://workflow-verifier.dev/schema/scenario-v1.json" );
     ( "config-v1.schema.json",
       "https://workflow-verifier.dev/schema/config-v1.json" );
     ("lock-v1.schema.json", "https://workflow-verifier.dev/schema/lock-v1.json");
     ("lock-v2.schema.json", "https://workflow-verifier.dev/schema/lock-v2.json");
-    ( "runner-v1.schema.json",
-      "https://workflow-verifier.dev/schema/runner-v1.json" );
-    ( "evidence-v1.schema.json",
-      "https://workflow-verifier.dev/schema/evidence-v1.json" );
-    ( "sandbox-run-v1.schema.json",
-      "https://workflow-verifier.dev/schema/sandbox-run-v1.json" );
+    ( "config-v2.schema.json",
+      "https://workflow-verifier.dev/schema/config-v2.json" );
+    ( "runner-v2.schema.json",
+      "https://workflow-verifier.dev/schema/runner-v2.json" );
+    ( "evidence-v2.schema.json",
+      "https://workflow-verifier.dev/schema/evidence-v2.json" );
+    ( "sandbox-run-v2.schema.json",
+      "https://workflow-verifier.dev/schema/sandbox-run-v2.json" );
     ( "sandbox-audit-v1.schema.json",
       "https://workflow-verifier.dev/schema/sandbox-audit-v1.json" );
     ( "backend-attestation-v1.schema.json",
@@ -51,10 +57,22 @@ let schemas =
       "https://workflow-verifier.dev/schema/determinism-comparison-v1.json" );
     ( "dogfood-v1.schema.json",
       "https://workflow-verifier.dev/schema/dogfood-v1.json" );
-    ( "release-evidence-v2.schema.json",
-      "https://workflow-verifier.dev/schema/release-evidence-v2.json" );
-    ( "maintainer-security-attestation-v1.schema.json",
-      "https://workflow-verifier.dev/schema/maintainer-security-attestation-v1.json" );
+    ( "conformance-manifest-v1.schema.json",
+      "https://workflow-verifier.dev/schema/conformance-manifest-v1.json" );
+    ( "doctor-v2.schema.json",
+      "https://workflow-verifier.dev/schema/doctor-v2.json" );
+    ( "release-evidence-v3.schema.json",
+      "https://workflow-verifier.dev/schema/release-evidence-v3.json" );
+    ( "release-index-v1.schema.json",
+      "https://workflow-verifier.dev/schema/release-index-v1.json" );
+    ( "release-gate-v1.schema.json",
+      "https://workflow-verifier.dev/schema/release-gate-v1.json" );
+    ( "reproducibility-fragment-v1.schema.json",
+      "https://workflow-verifier.dev/schema/reproducibility-fragment-v1.json" );
+    ( "maintainer-self-audit-v2.schema.json",
+      "https://workflow-verifier.dev/schema/maintainer-self-audit-v2.json" );
+    ( "sbom-components-v1.schema.json",
+      "https://workflow-verifier.dev/schema/sbom-components-v1.json" );
   ]
 
 let schema_root =
@@ -84,7 +102,7 @@ let () =
       then fail "%s does not use JSON Schema 2020-12" name;
       Printf.printf "ok - %s is canonical JSON Schema 2020-12\n" name)
     schemas;
-  let runner_path = Filename.concat schema_root "runner-v1.schema.json" in
+  let runner_path = Filename.concat schema_root "runner-v2.schema.json" in
   let runner =
     match Util.read_file runner_path with
     | Ok value -> value
@@ -92,7 +110,7 @@ let () =
   in
   if Util.contains ~needle:"secret_values" runner then
     fail "runner schema must never transport secret values";
-  let config_path = Filename.concat schema_root "config-v1.schema.json" in
+  let config_path = Filename.concat schema_root "config-v2.schema.json" in
   let config =
     match Util.read_file config_path with
     | Error message -> fail "%s" message

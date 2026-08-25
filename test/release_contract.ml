@@ -2,16 +2,26 @@ let required =
   [
     "../mise.toml";
     "../justfile";
+    "../.ocamlformat";
+    "../deny.toml";
+    "../pyproject.toml";
     "../scripts/verify_pure_ocaml.py";
     "../scripts/verify_architecture.py";
     "../scripts/verify_install_layout.py";
     "../scripts/generate_sbom.py";
+    "../scripts/generate_release_index.py";
     "../scripts/package_release.py";
+    "../scripts/candidate_artifacts.py";
+    "../scripts/build_candidate_platform.sh";
     "../scripts/materialize_release_input.py";
     "../scripts/verify_release_version.py";
     "../scripts/verify_release_evidence.py";
     "../scripts/stage_release_evidence.py";
     "../scripts/verify_task_surface.py";
+    "../scripts/verify_conformance_manifest.py";
+    "../scripts/verify_markdown_links.py";
+    "../scripts/verify_sarif.py";
+    "../scripts/verify_linux_compat.py";
     "../scripts/fetch_official_projects.py";
     "../scripts/official_compat.py";
     "../scripts/fetch_yaml_test_suite.py";
@@ -34,6 +44,8 @@ let required =
     "../.github/workflows/ci.yml";
     "../.github/workflows/mutation.yml";
     "../.github/workflows/release.yml";
+    "../.github/workflows/candidate.yml";
+    "../.github/workflows/sign-windows.yml";
     "../.github/workflows/official-compat.yml";
     "../.gitlab-ci.yml";
     "../azure-pipelines.yml";
@@ -41,19 +53,41 @@ let required =
     "../docs/release.md";
     "../docs/security-review.md";
     "../docs/evaluation.md";
+    "../docs/threat-model.md";
+    "../docs/backends.md";
+    "../docs/trust-and-data.md";
+    "../docs/troubleshooting.md";
+    "../docs/migration-v0.1.md";
+    "../docs/version-policy.md";
+    "../docs/quick-start.ja.md";
+    "../docs/rules.md";
+    "../examples/dogfood-policy-v2.toml";
     "../corpus/README.md";
     "../performance/README.md";
     "../performance/suite-v1.json";
     "../schema/dogfood-v1.schema.json";
     "../schema/mutation-campaign-v1.schema.json";
     "../schema/corpus-review-v1.schema.json";
-    "../schema/release-evidence-v2.schema.json";
-    "../schema/maintainer-security-attestation-v1.schema.json";
+    "../schema/conformance-manifest-v1.schema.json";
+    "../schema/release-evidence-v3.schema.json";
+    "../schema/release-gate-v1.schema.json";
+    "../schema/reproducibility-fragment-v1.schema.json";
+    "../schema/release-index-v1.schema.json";
+    "../schema/maintainer-self-audit-v2.schema.json";
+    "../schema/sbom-components-v1.schema.json";
     "../official/official-projects-v1.json";
     "../official/official-compat-v1.json";
     "../official/official-compat-v1.sha256";
     "../release-evidence/README.md";
     "../release-evidence/maintainer-allowed-signers";
+    "../conformance/manifest-v1.json";
+    "../release/sbom-components-v1.json";
+    "../THIRD_PARTY_NOTICES.md";
+    "../workflow-verifier.opam.locked";
+    "../rust-toolchain.toml";
+    "../requirements.lock";
+    "../spec/canonical-contracts.md";
+    "../spec/provider-lowering.md";
   ]
 
 let fail format =
@@ -64,8 +98,17 @@ let fail format =
     format
 
 let source_root =
-  let cwd = Sys.getcwd () in
-  Filename.dirname (Filename.dirname (Filename.dirname cwd))
+  let rec find remaining path =
+    if Sys.file_exists (Filename.concat path "dune-project") then path
+    else if remaining = 0 then
+      fail "cannot locate source root from %s" (Sys.getcwd ())
+    else
+      let parent = Filename.dirname path in
+      if parent = path then
+        fail "cannot locate source root from %s" (Sys.getcwd ())
+      else find (remaining - 1) parent
+  in
+  find 8 (Sys.getcwd ())
 
 let read_required relative =
   match Util.read_file (Filename.concat source_root relative) with
@@ -98,7 +141,7 @@ let () =
     (fun forbidden ->
       if Util.contains ~needle:forbidden opam then
         fail "analyzer dependency surface contains %s" forbidden)
-    [ "ctypes"; "yaml"; "unix"; "cmdliner"; "yojson" ];
+    [ "ctypes"; "yaml"; "yojson" ];
   let attributes = read_required ".gitattributes" in
   if
     not
@@ -116,6 +159,18 @@ let () =
         fail "GitHub CI omits required gate: %s" command)
     [
       "unittest discover";
+      "python-version: '3.13.7'";
+      "ruff check .";
+      "ruff format --check .";
+      "mypy";
+      "dune build @fmt";
+      "actionlint -no-color";
+      "zizmor --persona pedantic --no-progress";
+      "verify_markdown_links.py";
+      "cargo audit --file helpers/Cargo.lock --deny warnings";
+      "cargo deny --manifest-path helpers/Cargo.toml check";
+      "rustc 1.98.0";
+      "cargo +1.85.0 test --locked";
       "verify_architecture.py";
       "fetch_yaml_test_suite.py --allow-network";
       "yaml-test-suite-canonical-data-2022-01-17";
@@ -129,7 +184,15 @@ let () =
       "compare_determinism.py";
       "dogfood_gate.py verify";
       "dogfood_gate.py extract-evidence";
-      "sandbox run --backend oci:docker";
+      "--backend oci:docker --job build";
+      "graph --trust-repository-config --kind all";
+      "diff --trust-repository-config";
+      "fix --trust-repository-config";
+      "policy test --trust-repository-config";
+      "resolve --trust-repository-config";
+      "sandbox plan --trust-repository-config";
+      "sandbox run --trust-repository-config";
+      "sandbox audit --trust-repository-config";
       "WORKFLOW_VERIFIER_OCI_HELPER";
       "rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4";
       "Performance ${{ matrix.platform }}";
@@ -204,6 +267,8 @@ let () =
   if not (Util.contains ~needle:"workflow_call:" ci) then
     fail "CI workflow must be reusable by the release workflow";
   let release = read_required ".github/workflows/release.yml" in
+  let candidate = read_required ".github/workflows/candidate.yml" in
+  let windows_signing = read_required ".github/workflows/sign-windows.yml" in
   let mutation = read_required ".github/workflows/mutation.yml" in
   let mutation_config = read_required ".ocaml-mutants.toml" in
   let mutation_guard = read_required "scripts/mutation_resource_guard.py" in
@@ -328,21 +393,47 @@ let () =
       "sigstore/cosign-installer@v";
     ];
   List.iter
+    (fun mutable_reference ->
+      if Util.contains ~needle:mutable_reference candidate then
+        fail "candidate workflow contains mutable action reference %s"
+          mutable_reference)
+    [
+      "actions/checkout@v";
+      "actions/setup-python@v";
+      "actions/upload-artifact@v";
+      "actions/download-artifact@v";
+      "actions-rust-lang/setup-rust-toolchain@v";
+      "ocaml/setup-ocaml@v";
+      "sigstore/cosign-installer@v";
+    ];
+  List.iter
+    (fun mutable_reference ->
+      if Util.contains ~needle:mutable_reference windows_signing then
+        fail "Windows signing workflow contains mutable action reference %s"
+          mutable_reference)
+    [
+      "actions/checkout@v";
+      "actions/upload-artifact@v";
+      "actions/download-artifact@v";
+      "SSLcom/esigner-codesign@v";
+      "SSLcom/esigner-codesign@develop";
+      "SSLcom/esigner-codesign@main";
+    ];
+  List.iter
     (fun required_surface ->
       if not (Util.contains ~needle:required_surface release) then
         fail "release workflow omits required surface: %s" required_surface)
     [
       "verify_release_version.py --tag";
-      "materialize_release_input.py";
-      "--source \"$ANALYZER_PATH\"";
-      "--destination \"$materialized_analyzer\"";
-      "ANALYZER_PATH=\"$materialized_analyzer\"";
-      "package_release.py";
-      "generate_sbom.py";
-      "cargo build --locked --release";
-      "cosign sign-blob --yes --bundle";
+      "Promote exact verified assets without rebuilding";
+      "stage_release_evidence.py";
+      "promote_release_assets.py";
+      "generate_release_index.py";
+      "release-index-v1.json";
+      "release-notes-v0.1.0.md";
+      "cosign sign-blob --yes";
+      "cosign-release: v3.1.3";
       "subject-checksums:";
-      "sbom-path:";
       "gh release create";
       "id-token: write";
       "attestations: write";
@@ -350,15 +441,88 @@ let () =
       "uses: ./.github/workflows/ci.yml";
       "uses: ./.github/workflows/mutation.yml";
       "verify_release_evidence.py";
-      "release-evidence/release-evidence-v2.json";
-      "stage_release_evidence.py";
+      "release-evidence/release-evidence-v3.json";
       "workflow_dispatch:";
       "- 'v*'";
       "fetch-depth: 2";
-      "performance_baseline: ${{ needs.release_evidence.outputs.subject_commit }}";
+      "performance_baseline: ${{ needs.release_evidence.outputs.subject_commit \
+       }}";
       "github.event_name == 'push'";
-      "name: Assemble dry-run release bundle";
+      "name: Promote exact verified assets without rebuilding";
       "needs: [assemble, mutation, quality, release_evidence]";
+    ];
+  if Util.contains ~needle:"cosign-release: v3.0.6" release then
+    fail "release workflow must not use vulnerable Cosign 3.0.6";
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface candidate) then
+        fail "candidate workflow omits required surface: %s" required_surface)
+    [
+      "workflow_dispatch:";
+      "runs-on: ubuntu-24.04";
+      "runner: windows-2025";
+      "runner: macos-15";
+      "runner: macos-15-intel";
+      "rockylinux/rockylinux@sha256:f5529992e67440c1a4ae7788244d4381c6909159a88eacd95b7523ae47ced82e";
+      "actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659";
+      "rustc 1.98.0 (88d9e12ae 2026-08-18)";
+      "opam install . --deps-only --locked --yes";
+      "build_candidate_platform.sh";
+      "candidate_artifacts.py source-assets";
+      "candidate_artifacts.py aggregate";
+      "environment: candidate-signing";
+      "cosign-release: v3.1.3";
+      "cosign sign-blob --yes";
+      "cosign verify-blob --offline";
+      "id-token: write";
+    ];
+  let candidate_artifacts = read_required "scripts/candidate_artifacts.py" in
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface candidate_artifacts) then
+        fail "candidate artifact builder omits required contract: %s"
+          required_surface)
+    [
+      "REQUIRED_FRAGMENT_ROLES";
+      "MAX_ARCHIVE_ENTRIES = 100_000";
+      "MAX_ARCHIVE_BYTES = 4 * 1024 * 1024 * 1024";
+      "refusing to replace symlink output";
+      "release-gate-v1";
+      "repackage-windows";
+    ];
+  let evidence_verifier = read_required "scripts/verify_release_evidence.py" in
+  List.iter
+    (fun contract ->
+      if not (Util.contains ~needle:contract evidence_verifier) then
+        fail "release evidence verifier omits signature contract: %s" contract)
+    [
+      "application/vnd.dev.sigstore.bundle.v0.3+json";
+      "legacy bundles are rejected";
+      "--offline";
+      "--certificate-github-workflow-sha";
+      "https://token.actions.githubusercontent.com";
+    ];
+  List.iter
+    (fun rebuild ->
+      if Util.contains ~needle:rebuild release then
+        fail "protected release workflow must promote, not rebuild: %s" rebuild)
+    [ "opam install"; "dune build"; "cargo build"; "package_release.py" ];
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface windows_signing) then
+        fail "Windows signing workflow omits required surface: %s"
+          required_surface)
+    [
+      "environment: windows-signing";
+      "SSLcom/esigner-codesign@cf5f6c1d38ad10f47e3ed9aca873f429b1a8d85b";
+      "command: batch_sign";
+      "malware_block: true";
+      "environment_name: PROD";
+      "Get-AuthenticodeSignature";
+      "TimeStamperCertificate";
+      "verify /pa /all /v";
+      "publisher mismatch";
+      "payload digest mismatch";
     ];
   let just = read_required "justfile" and mise = read_required "mise.toml" in
   List.iter

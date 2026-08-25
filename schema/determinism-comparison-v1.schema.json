@@ -24,9 +24,35 @@
       "type": "array",
       "uniqueItems": true
     },
+    "report_projection": {
+      "additionalProperties": false,
+      "properties": {
+        "excluded_fields": {
+          "const": ["digest", "tool.binary_digest", "tool.build.source_commit"]
+        },
+        "reports": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "platform": { "pattern": "^[a-z0-9][a-z0-9._-]*$", "type": "string" },
+              "raw_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+              "raw_size": { "minimum": 1, "type": "integer" },
+              "semantic_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+              "semantic_size": { "minimum": 1, "type": "integer" }
+            },
+            "required": ["platform", "raw_digest", "raw_size", "semantic_digest", "semantic_size"],
+            "type": "object"
+          },
+          "minItems": 2,
+          "type": "array"
+        }
+      },
+      "required": ["excluded_fields", "reports"],
+      "type": "object"
+    },
     "schema": { "const": "determinism-comparison-v1" }
   },
-  "required": ["artifacts", "failures", "passed", "platforms", "schema"],
+  "required": ["artifacts", "failures", "passed", "platforms", "report_projection", "schema"],
   "title": "workflow-verifier cross-platform determinism comparison v1",
   "type": "object"
 }

@@ -7,7 +7,6 @@ import pathlib
 import re
 import sys
 
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SPDX_EXPRESSION = "MIT OR Apache-2.0"
 APACHE_MARKERS = (

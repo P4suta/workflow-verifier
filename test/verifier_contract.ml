@@ -73,7 +73,8 @@ let injection_triple_test () =
   expect "diagnostic needs a source-to-command trace" (diagnostic.trace <> []);
   expect "a directly tainted command is labelled as the contained sink"
     (List.exists
-       (fun hop -> hop.Diagnostic.label = "command sink contains untrusted data")
+       (fun hop ->
+         hop.Diagnostic.label = "command sink contains untrusted data")
        diagnostic.trace);
   expect "shell is part of the minimal exploit capability set"
     (List.mem Ir.Shell diagnostic.capabilities);
@@ -119,7 +120,8 @@ let injection_triple_test () =
     }
   in
   let value_only_command =
-    node ~attributes:[ ("command", value_only_unknown) ]
+    node
+      ~attributes:[ ("command", value_only_unknown) ]
       ~capabilities:[ Ir.Shell ] "value-only dynamic shell"
   in
   let value_only_result =
@@ -240,7 +242,8 @@ let unknown_secret_network_effect_test () =
     }
   in
   let network_effect =
-    node ~kind:Ir.Effect ~attributes:[ ("payload", uncertain) ]
+    node ~kind:Ir.Effect
+      ~attributes:[ ("payload", uncertain) ]
       ~capabilities:[ Ir.Network ] ~effects:[ Ir.Network_request ]
       "opaque network effect"
   in
@@ -416,7 +419,8 @@ let dominance_test () =
   let bypass_first = node ~kind:Ir.Step "bypass first"
   and bypass_second = node ~kind:Ir.Step "bypass second" in
   let bypass =
-    graph [ workflow; gate; bypass_first; bypass_second; deploy ]
+    graph
+      [ workflow; gate; bypass_first; bypass_second; deploy ]
       [
         edge workflow gate;
         edge gate deploy;
@@ -549,11 +553,10 @@ let known_excessive_permission_test () =
 let declared_grants_public_contract_test () =
   let workflow =
     node ~kind:Ir.Workflow ~phase:Ir.Compile
-      ~capabilities:[ Ir.Repository_write; Ir.Token_write ] "workflow"
-  and job =
-    node ~kind:Ir.Job ~capabilities:[ Ir.Artifact_write ] "publish job"
-  and delegated =
-    node ~capabilities:[ Ir.Network ] "delegated network grant"
+      ~capabilities:[ Ir.Repository_write; Ir.Token_write ]
+      "workflow"
+  and job = node ~kind:Ir.Job ~capabilities:[ Ir.Artifact_write ] "publish job"
+  and delegated = node ~capabilities:[ Ir.Network ] "delegated network grant"
   and command = node ~capabilities:[ Ir.Shell ] "ordinary command" in
   let candidate =
     graph
@@ -627,12 +630,14 @@ let inherent_execution_capabilities_are_not_reducible_grants_test () =
 let script_adapter_test () =
   let named_command = node "curl https://example.invalid" in
   expect "a command node without a command attribute uses its semantic name"
-    (Script_adapter.command_source named_command = "curl https://example.invalid");
+    (Script_adapter.command_source named_command
+    = "curl https://example.invalid");
   expect "node-name fallback participates in effect inference"
     (List.mem Ir.Network_request
        (Script_adapter.analyze_node named_command).effects);
   let unknown_command =
-    node ~attributes:[ ("command", Abstract_value.bottom) ]
+    node
+      ~attributes:[ ("command", Abstract_value.bottom) ]
       "curl https://fallback.invalid"
   in
   expect "a non-finite command value falls back to the semantic node name"
@@ -711,7 +716,8 @@ let script_adapter_test () =
       {|("sh" -c 'echo $TOKEN'); printf safe > private.log|}
   in
   expect
-    "a quoted command name inside a subshell preserves the following sequence boundary"
+    "a quoted command name inside a subshell preserves the following sequence \
+     boundary"
     quoted_subshell_command.secret_to_output;
   let unterminated_quote =
     Script_adapter.analyze Script_adapter.Bash "token\""
@@ -768,8 +774,7 @@ let script_adapter_test () =
   expect "an empty quoted argument closes before a following redirect"
     (not empty_argument_before_redirect.secret_to_output);
   let unquoted_secret_before_empty_argument =
-    Script_adapter.analyze Script_adapter.Bash
-      "echo $TOKEN \"\" > private.log"
+    Script_adapter.analyze Script_adapter.Bash "echo $TOKEN \"\" > private.log"
   in
   expect "an empty quote cannot hide the redirect that follows it"
     (not unquoted_secret_before_empty_argument.secret_to_output);
@@ -824,7 +829,8 @@ let dynamic_gate_mechanism_test () =
     }
   in
   let gate =
-    node ~kind:Ir.Gate ~phase:Ir.Plan ~attributes:[ ("mechanism", mechanism) ]
+    node ~kind:Ir.Gate ~phase:Ir.Plan
+      ~attributes:[ ("mechanism", mechanism) ]
       "dynamic mechanism"
   and deploy =
     node ~kind:Ir.Effect ~effects:[ Ir.Deployment_change ]
@@ -845,7 +851,8 @@ let dynamic_gate_mechanism_test () =
     }
   in
   let conditional =
-    graph [ workflow; conditional_gate; deploy ]
+    graph
+      [ workflow; conditional_gate; deploy ]
       [ edge workflow conditional_gate; edge conditional_gate deploy ]
       [ workflow ]
     |> Verifier.verify ~persona:Verifier.Gate
@@ -863,7 +870,8 @@ let dynamic_gate_mechanism_test () =
       "uncertain approval"
   in
   let uncertain =
-    graph [ workflow; uncertain_gate; deploy ]
+    graph
+      [ workflow; uncertain_gate; deploy ]
       [ edge workflow uncertain_gate; edge uncertain_gate deploy ]
       [ workflow ]
     |> Verifier.verify ~persona:Verifier.Gate
@@ -877,16 +885,14 @@ let credential_candidate_boundaries_test () =
   let secret =
     node
       ~attributes:
-        [
-          ( "credential",
-            value ~secrecy:Abstract_value.Secret "TOKEN" );
-        ]
+        [ ("credential", value ~secrecy:Abstract_value.Secret "TOKEN") ]
       "secret source"
   and benign_call = node ~kind:Ir.Call "benign call"
   and unrelated_writer = node ~kind:Ir.Step "unrelated writer"
   and tail = node ~kind:Ir.Resource "runner state" in
   let disconnected =
-    graph [ secret; benign_call; unrelated_writer; tail ]
+    graph
+      [ secret; benign_call; unrelated_writer; tail ]
       [
         edge ~kind:Ir.Data secret benign_call;
         edge ~kind:Ir.Persist unrelated_writer tail;
@@ -897,7 +903,8 @@ let credential_candidate_boundaries_test () =
   expect "an unrelated persist edge cannot turn another call into a candidate"
     ((property "WV-CRED-001" disconnected).state = Property.Not_applicable);
   let safe_candidate =
-    node ~kind:Ir.Call ~capabilities:[ Ir.Self_hosted_persistence ]
+    node ~kind:Ir.Call
+      ~capabilities:[ Ir.Self_hosted_persistence ]
       "safe persistent call"
   in
   let safe =
@@ -913,23 +920,22 @@ let graph_algorithm_boundaries_test () =
   and right = { (node "right") with id = "c-right" }
   and merge = { (node "merge") with id = "d-merge" } in
   let diamond =
-    graph [ root; left; right; merge ]
-      [
-        edge root left;
-        edge root right;
-        edge left merge;
-        edge right merge;
-      ]
+    graph
+      [ root; left; right; merge ]
+      [ edge root left; edge root right; edge left merge; edge right merge ]
       [ root ]
   in
   expect "neither branch of a diamond dominates its merge"
-    (not (Graph_algorithms.dominates diamond ~dominator:left.id ~node:merge.id)
+    ((not
+        (Graph_algorithms.dominates diamond ~dominator:left.id ~node:merge.id))
     && not
-         (Graph_algorithms.dominates diamond ~dominator:right.id ~node:merge.id));
+         (Graph_algorithms.dominates diamond ~dominator:right.id ~node:merge.id)
+    );
   let penultimate = { (node "penultimate") with id = "e-penultimate" }
   and target = { (node "target") with id = "f-target" } in
   let converging =
-    graph [ root; left; right; merge; penultimate; target ]
+    graph
+      [ root; left; right; merge; penultimate; target ]
       [
         edge root left;
         edge root right;
@@ -953,9 +959,10 @@ let graph_algorithm_boundaries_test () =
   let cyclic =
     let isolated = { (node "isolated") with id = "z-isolated" } in
     let graph =
-      graph [ cycle_root; cycle_a; cycle_b; isolated ]
-      [ edge cycle_root cycle_a; edge cycle_a cycle_b; edge cycle_b cycle_a ]
-      [ cycle_root ]
+      graph
+        [ cycle_root; cycle_a; cycle_b; isolated ]
+        [ edge cycle_root cycle_a; edge cycle_a cycle_b; edge cycle_b cycle_a ]
+        [ cycle_root ]
     in
     expect "shortest-path search terminates when a cyclic target is unreachable"
       (Graph_algorithms.shortest_path graph cycle_root.id isolated.id = None);
@@ -970,7 +977,9 @@ let graph_algorithm_boundaries_test () =
 
 let graph_algorithm_differential_test () =
   let matching kinds (candidate : Ir.edge) =
-    Option.fold ~none:true ~some:(fun values -> List.mem candidate.kind values) kinds
+    Option.fold ~none:true
+      ~some:(fun values -> List.mem candidate.kind values)
+      kinds
   in
   let feasible candidate (candidate_edge : Ir.edge) =
     let node_condition id =
@@ -979,7 +988,8 @@ let graph_algorithm_differential_test () =
           item.condition)
     in
     Condition.and_ candidate_edge.condition
-      (Condition.and_ (node_condition candidate_edge.from_)
+      (Condition.and_
+         (node_condition candidate_edge.from_)
          (node_condition candidate_edge.to_))
     |> Condition.satisfiable
   in
@@ -1123,12 +1133,12 @@ let graph_algorithm_differential_test () =
             ~condition:
               (if edge_index mod 11 = 0 then Condition.false_
                else Condition.true_)
-            ~label:(Printf.sprintf "random-%d" edge_index) ())
+            ~label:(Printf.sprintf "random-%d" edge_index)
+            ())
     in
     let entries =
       nodes
-      |> List.filteri (fun index _ ->
-          index = 0 || Random.State.int state 5 = 0)
+      |> List.filteri (fun index _ -> index = 0 || Random.State.int state 5 = 0)
     in
     let candidate = graph nodes edges entries in
     let indexed = Graph_algorithms.index candidate in
@@ -1173,8 +1183,8 @@ let graph_algorithm_differential_test () =
             expect "indexed dominance differs from the naive contract"
               (Graph_algorithms.dominates_indexed indexed ~dominator:source.id
                  ~node:target.id
-              = naive_dominates candidate ~dominator:source.id
-                  ~target:target.id))
+              = naive_dominates candidate ~dominator:source.id ~target:target.id
+              ))
           candidate.nodes)
       candidate.nodes;
     expect "indexed cycle witnesses differ from the naive contract"
@@ -1201,9 +1211,7 @@ let dataflow_order_test () =
       "eta";
     ]
   in
-  let nodes =
-    List.map (fun id -> { (node ("node " ^ id)) with id }) ids
-  in
+  let nodes = List.map (fun id -> { (node ("node " ^ id)) with id }) ids in
   let solution = Dataflow.solve (graph (List.rev nodes) [] nodes) in
   expect "dataflow evidence follows canonical node identity order"
     (List.map fst solution.values = List.sort String.compare ids)
@@ -1228,7 +1236,8 @@ let property_order_test () =
           let actual = Property.compare (property left) (property right) in
           expect
             (Printf.sprintf "%s and %s retain their total-order positions"
-               (Property.state_name left) (Property.state_name right))
+               (Property.state_name left)
+               (Property.state_name right))
             (Int.compare actual 0 = Int.compare left_index right_index))
         states)
     states;
@@ -1242,7 +1251,9 @@ let correctness_evidence_test () =
   let compile = node ~kind:Ir.Parameter ~phase:Ir.Compile "compile value"
   and runtime = node ~kind:Ir.Command ~phase:Ir.Run "runtime value" in
   let result =
-    graph [ compile; runtime ] [ edge ~kind:Ir.Data runtime compile ] [ runtime ]
+    graph [ compile; runtime ]
+      [ edge ~kind:Ir.Data runtime compile ]
+      [ runtime ]
     |> Verifier.verify ~persona:Verifier.Gate
   in
   match
@@ -1253,17 +1264,18 @@ let correctness_evidence_test () =
   | Some diagnostic ->
       expect "correctness diagnostics retain the machine issue code"
         (List.mem "IR-PHASE-ORDER" diagnostic.evidence)
-  | None -> fail "phase-order violation did not produce a correctness diagnostic"
+  | None ->
+      fail "phase-order violation did not produce a correctness diagnostic"
 
 let local_reference_suffix_test () =
   let call = node ~kind:Ir.Call "./actions/build@deadbeef"
   and entry = node ~kind:Ir.Step "local action entry" in
   let caller =
-    Ir.empty Ir.Github ".github/workflows/ci.yml" |> Ir.add_node call
-    |> Ir.add_entrypoint call.id |> Ir.finalize
+    Ir.empty Ir.Github ".github/workflows/ci.yml"
+    |> Ir.add_node call |> Ir.add_entrypoint call.id |> Ir.finalize
   and target =
-    Ir.empty Ir.Github "actions/build/action.yml" |> Ir.add_node entry
-    |> Ir.add_entrypoint entry.id |> Ir.finalize
+    Ir.empty Ir.Github "actions/build/action.yml"
+    |> Ir.add_node entry |> Ir.add_entrypoint entry.id |> Ir.finalize
   in
   let program = Program_graph.compose [ caller; target ] in
   expect "a local call suffix is stripped before target matching"
@@ -1274,11 +1286,15 @@ let local_reference_suffix_test () =
   let yaml_call = node ~kind:Ir.Call "actions/reusable.yaml@deadbeef"
   and yaml_entry = node ~kind:Ir.Workflow "YAML reusable entry" in
   let yaml_caller =
-    Ir.empty Ir.Github ".github/workflows/release.yml" |> Ir.add_node yaml_call
-    |> Ir.add_entrypoint yaml_call.id |> Ir.finalize
+    Ir.empty Ir.Github ".github/workflows/release.yml"
+    |> Ir.add_node yaml_call
+    |> Ir.add_entrypoint yaml_call.id
+    |> Ir.finalize
   and yaml_target =
-    Ir.empty Ir.Github "actions/reusable.yaml" |> Ir.add_node yaml_entry
-    |> Ir.add_entrypoint yaml_entry.id |> Ir.finalize
+    Ir.empty Ir.Github "actions/reusable.yaml"
+    |> Ir.add_node yaml_entry
+    |> Ir.add_entrypoint yaml_entry.id
+    |> Ir.finalize
   in
   let yaml_program = Program_graph.compose [ yaml_caller; yaml_target ] in
   expect "a bare .yaml reference links as a local workflow"
@@ -1290,8 +1306,10 @@ let local_reference_suffix_test () =
   let self_call = node ~kind:Ir.Call "workflows/self.yml"
   and self_entry = node ~kind:Ir.Workflow "self entry" in
   let self_graph =
-    Ir.empty Ir.Github "workflows/self.yml" |> Ir.add_node self_call
-    |> Ir.add_node self_entry |> Ir.add_entrypoint self_entry.id |> Ir.finalize
+    Ir.empty Ir.Github "workflows/self.yml"
+    |> Ir.add_node self_call |> Ir.add_node self_entry
+    |> Ir.add_entrypoint self_entry.id
+    |> Ir.finalize
   in
   let self_program = Program_graph.compose [ self_graph ] in
   expect "a local unit never creates a recursive call edge to itself"
@@ -1448,16 +1466,19 @@ let tests : test list =
     ("script adapters infer effects and quote boundaries", script_adapter_test);
     ( "capability demand follows reachable effects only",
       disconnected_capability_demand_test );
-    ("dynamic gate mechanisms are not authorization", dynamic_gate_mechanism_test);
+    ( "dynamic gate mechanisms are not authorization",
+      dynamic_gate_mechanism_test );
     ( "credential candidates follow their own persistence edges",
       credential_candidate_boundaries_test );
-    ("graph algorithms preserve path boundaries", graph_algorithm_boundaries_test);
+    ( "graph algorithms preserve path boundaries",
+      graph_algorithm_boundaries_test );
     ( "indexed graph algorithms match the naive randomized contract",
       graph_algorithm_differential_test );
     ("dataflow evidence has canonical node ordering", dataflow_order_test);
     ("property proof states have a total order", property_order_test);
     ("correctness diagnostics retain issue evidence", correctness_evidence_test);
-    ("local call references strip immutable suffixes", local_reference_suffix_test);
+    ( "local call references strip immutable suffixes",
+      local_reference_suffix_test );
     ( "GitHub frontend feeds whole-program security analysis",
       github_end_to_end_test );
     ( "protected release ref dominates deployment and repository effects",

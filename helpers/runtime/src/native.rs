@@ -6,7 +6,9 @@ use workflow_verifier_runner_protocol::{
     controls_digest, validate_launch,
 };
 
-use crate::{ChangeKind, PrivateSourceTree, ProcessObservation, ScratchTree, source_snapshot};
+use crate::{
+    Change, ChangeKind, PrivateSourceTree, ProcessObservation, ScratchTree, source_snapshot,
+};
 
 /// Supplies only the explicitly named secrets requested by a runner plan.
 pub trait SecretProvider {
@@ -195,8 +197,8 @@ fn observation_outcome(step: &Step, observation: &ProcessObservation) -> Outcome
     }
 }
 
-fn record_changes(evidence: &mut Evidence, scratch: &ScratchTree) -> Result<(), LaunchError> {
-    for change in scratch.changes().map_err(LaunchError::Infrastructure)? {
+fn record_changes(evidence: &mut Evidence, changes: Vec<Change>) -> Result<(), LaunchError> {
+    for change in changes {
         evidence.append(EvidenceBody::FilesystemAccess {
             path: change.path.clone(),
             operation: match change.kind {
@@ -218,6 +220,27 @@ fn record_changes(evidence: &mut Evidence, scratch: &ScratchTree) -> Result<(), 
     Ok(())
 }
 
+fn redact_bytes(output: &[u8], secrets: &[(String, String)]) -> Vec<u8> {
+    secrets.iter().fold(output.to_vec(), |input, (_, secret)| {
+        let needle = secret.as_bytes();
+        if needle.is_empty() {
+            return input;
+        }
+        let mut redacted = Vec::with_capacity(input.len());
+        let mut offset = 0;
+        while offset < input.len() {
+            if input[offset..].starts_with(needle) {
+                redacted.extend_from_slice(b"***");
+                offset += needle.len();
+            } else {
+                redacted.push(input[offset]);
+                offset += 1;
+            }
+        }
+        redacted
+    })
+}
+
 /// Runs a native plan while keeping source/scratch, secret, outcome, and
 /// evidence semantics identical across operating-system containment adapters.
 ///
@@ -230,6 +253,9 @@ fn record_changes(evidence: &mut Evidence, scratch: &ScratchTree) -> Result<(), 
 /// Fails closed before launch on an unavailable backend, source mismatch,
 /// unsafe workspace path, or scratch setup error. Adapter failures are treated
 /// as sandbox infrastructure failures and have secret values redacted.
+// This function is the auditable transaction boundary: validate, stage, launch,
+// observe, redact, and attest must remain in this order.
+#[allow(clippy::too_many_lines)]
 pub fn execute_native<S, N>(
     plan: &ValidatedPlan,
     descriptor: &Descriptor,
@@ -269,7 +295,7 @@ where
             scratch_root: scratch.path(),
         })
         .map_err(|error| LaunchError::Infrastructure(redact_text(&error, &secret_values)))?;
-    let mut evidence = Evidence::new(plan.digest.clone());
+    let mut evidence = Evidence::for_plan(plan);
     evidence.append(EvidenceBody::BackendAttested {
         id: descriptor.id.to_owned(),
         version: descriptor.version.to_owned(),
@@ -281,6 +307,10 @@ where
     }
 
     let mut outcome = Outcome::Completed;
+    let mut redacted_log = Vec::new();
+    let mut wall_time_ms = 0_u64;
+    let mut output_bytes = 0_u64;
+    let mut observed_processes = 0_u64;
     for step in &plan.steps {
         let relative = workspace_relative(&step.working_directory)?;
         let working_directory = scratch.path().join(relative);
@@ -316,6 +346,10 @@ where
         let observation = sandbox
             .run(&request)
             .map_err(|error| LaunchError::Infrastructure(redact_text(&error, &secret_values)))?;
+        redacted_log.extend_from_slice(&redact_bytes(&observation.output, &secret_values));
+        wall_time_ms = wall_time_ms.saturating_add(observation.wall_time_ms);
+        output_bytes = output_bytes.saturating_add(observation.output_bytes);
+        observed_processes = observed_processes.saturating_add(1);
         for (name, value) in &secret_values {
             if contains(&observation.output, value.as_bytes()) {
                 evidence.append(EvidenceBody::SecretRedacted { name: name.clone() });
@@ -330,7 +364,26 @@ where
         }
     }
 
-    record_changes(&mut evidence, &scratch)?;
+    let final_state = scratch.final_state().map_err(LaunchError::Infrastructure)?;
+    record_changes(&mut evidence, final_state.changes)?;
+    evidence.append(EvidenceBody::ResourceObserved {
+        wall_time_ms,
+        cpu_time_ms: 0,
+        peak_memory_bytes: 0,
+        processes: observed_processes,
+        output_bytes,
+        scratch_bytes: final_state.bytes,
+        scratch_entries: final_state.entries,
+    });
+    evidence.append(EvidenceBody::LogRecorded {
+        digest: format!(
+            "sha256:{}",
+            workflow_verifier_runner_protocol::sha256_hex(&redacted_log)
+        ),
+    });
+    evidence.append(EvidenceBody::FilesystemFinal {
+        digest: final_state.digest,
+    });
     Ok(RunResult { evidence, outcome })
 }
 

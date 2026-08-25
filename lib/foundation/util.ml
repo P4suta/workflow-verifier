@@ -76,17 +76,61 @@ let read_file path =
   with Sys_error message -> Error message
 
 let write_file path contents =
+  let temporary = ref None in
+  let cleanup () =
+    match !temporary with
+    | Some candidate when Sys.file_exists candidate -> (
+        try Sys.remove candidate with Sys_error _ -> ())
+    | Some _ | None -> ()
+  in
   try
     let directory = Filename.dirname path in
     mkdir_p directory;
-    let channel = open_out_bin path in
-    Fun.protect
-      ~finally:(fun () -> close_out_noerr channel)
-      (fun () ->
-        output_string channel contents;
-        flush channel;
-        Ok ())
-  with Sys_error message -> Error message
+    let mode =
+      try
+        let metadata = Unix.lstat path in
+        if metadata.st_kind = Unix.S_LNK then
+          raise (Sys_error (path ^ ": refusing to replace a symbolic link"));
+        if metadata.st_kind <> Unix.S_REG then
+          raise (Sys_error (path ^ ": refusing to replace a non-regular file"));
+        metadata.st_perm
+      with Unix.Unix_error (Unix.ENOENT, _, _) -> 0o600
+    in
+    let prefix = "." ^ Filename.basename path ^ ".workflow-verifier-" in
+    let candidate, channel =
+      Filename.open_temp_file ~temp_dir:directory prefix ".tmp"
+        ~mode:[ Open_binary; Open_wronly; Open_excl ]
+    in
+    temporary := Some candidate;
+    let wrote =
+      Fun.protect
+        ~finally:(fun () -> close_out_noerr channel)
+        (fun () ->
+          output_string channel contents;
+          flush channel;
+          Unix.fsync (Unix.descr_of_out_channel channel);
+          Unix.chmod candidate mode;
+          Ok ())
+    in
+    match wrote with
+    | Error _ as error -> error
+    | Ok () ->
+        Unix.rename candidate path;
+        temporary := None;
+        (if not Sys.win32 then
+           let descriptor = Unix.openfile directory [ Unix.O_RDONLY ] 0 in
+           Fun.protect
+             ~finally:(fun () -> Unix.close descriptor)
+             (fun () -> Unix.fsync descriptor));
+        Ok ()
+  with
+  | Sys_error message ->
+      cleanup ();
+      Error message
+  | Unix.Unix_error (code, operation, target) ->
+      cleanup ();
+      Error
+        (Printf.sprintf "%s %s: %s" operation target (Unix.error_message code))
 
 let normalize_slashes path =
   String.map
@@ -146,3 +190,61 @@ let rec take_while predicate = function
   | _ -> []
 
 let string_of_file_error path message = Printf.sprintf "%s: %s" path message
+
+let valid_utf8 value =
+  let length = String.length value in
+  let continuation index =
+    index < length
+    &&
+    let byte = Char.code value.[index] in
+    byte >= 0x80 && byte <= 0xbf
+  in
+  let rec loop index =
+    if index = length then true
+    else
+      let first = Char.code value.[index] in
+      if first <= 0x7f then loop (index + 1)
+      else if first >= 0xc2 && first <= 0xdf then
+        continuation (index + 1) && loop (index + 2)
+      else if first = 0xe0 then
+        index + 2 < length
+        &&
+        let second = Char.code value.[index + 1] in
+        second >= 0xa0 && second <= 0xbf
+        && continuation (index + 2)
+        && loop (index + 3)
+      else if
+        (first >= 0xe1 && first <= 0xec) || (first >= 0xee && first <= 0xef)
+      then
+        continuation (index + 1) && continuation (index + 2) && loop (index + 3)
+      else if first = 0xed then
+        index + 2 < length
+        &&
+        let second = Char.code value.[index + 1] in
+        second >= 0x80 && second <= 0x9f
+        && continuation (index + 2)
+        && loop (index + 3)
+      else if first = 0xf0 then
+        index + 3 < length
+        &&
+        let second = Char.code value.[index + 1] in
+        second >= 0x90 && second <= 0xbf
+        && continuation (index + 2)
+        && continuation (index + 3)
+        && loop (index + 4)
+      else if first >= 0xf1 && first <= 0xf3 then
+        continuation (index + 1)
+        && continuation (index + 2)
+        && continuation (index + 3)
+        && loop (index + 4)
+      else if first = 0xf4 then
+        index + 3 < length
+        &&
+        let second = Char.code value.[index + 1] in
+        second >= 0x80 && second <= 0x8f
+        && continuation (index + 2)
+        && continuation (index + 3)
+        && loop (index + 4)
+      else false
+  in
+  loop 0

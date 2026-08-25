@@ -127,6 +127,8 @@ fn decode_transport(
             timed_out: true,
             output_exceeded: false,
             output: Vec::new(),
+            output_bytes: 0,
+            wall_time_ms: transport.wall_time_ms,
         });
     }
     if transport.output_exceeded {
@@ -151,11 +153,14 @@ fn decode_transport(
     if observation.timed_out && observation.output_exceeded {
         return Err("VM guest returned conflicting terminal states".to_owned());
     }
+    let output_bytes = u64::try_from(observation.output.len()).unwrap_or(u64::MAX);
     Ok(ProcessObservation {
         code: observation.code,
         timed_out: observation.timed_out,
         output_exceeded: observation.output_exceeded,
         output: observation.output,
+        output_bytes,
+        wall_time_ms: transport.wall_time_ms,
     })
 }
 

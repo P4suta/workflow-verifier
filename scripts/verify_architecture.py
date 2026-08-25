@@ -3,11 +3,10 @@
 
 from __future__ import annotations
 
-from collections import namedtuple
 import pathlib
 import re
 import sys
-
+from collections import namedtuple
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PARTIAL_EXPRESSIONS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -27,20 +26,22 @@ PARTIAL_EXPRESSIONS: tuple[tuple[str, re.Pattern[str]], ...] = (
 )
 
 EXPECTED_DEPENDENCIES: dict[str, tuple[str, ...]] = {
-    "wv_foundation": (),
+    "wv_foundation": ("unix",),
     "wv_syntax": ("wv_foundation",),
     "wv_domain": ("wv_foundation",),
     "wv_frontend": ("wv_foundation", "wv_syntax", "wv_domain"),
     "wv_verifier": ("wv_foundation", "wv_domain"),
     "wv_product": (
+        "otoml",
         "wv_foundation",
         "wv_syntax",
         "wv_domain",
         "wv_frontend",
         "wv_verifier",
     ),
-    "wv_sandbox": ("wv_foundation", "wv_domain", "wv_verifier"),
+    "wv_sandbox": ("wv_foundation", "wv_domain", "wv_frontend", "wv_verifier"),
     "wv_application": (
+        "cmdliner",
         "wv_foundation",
         "wv_syntax",
         "wv_domain",
@@ -50,6 +51,7 @@ EXPECTED_DEPENDENCIES: dict[str, tuple[str, ...]] = {
         "wv_sandbox",
     ),
 }
+EXTERNAL_DEPENDENCIES = {"cmdliner", "otoml", "unix"}
 
 Library = namedtuple("Library", "path name modules dependencies wrapped")
 
@@ -83,7 +85,7 @@ def graph_errors(graph: dict[str, tuple[str, ...]]) -> list[str]:
     errors: list[str] = []
     for name, dependencies in sorted(graph.items()):
         for dependency in dependencies:
-            if dependency not in graph:
+            if dependency not in graph and dependency not in EXTERNAL_DEPENDENCIES:
                 errors.append(f"{name} depends on unknown internal library {dependency}")
 
     visiting: set[str] = set()
@@ -118,9 +120,7 @@ def validate_dependencies(actual: dict[str, tuple[str, ...]]) -> list[str]:
         elif dependencies is None:
             errors.append(f"missing internal library {name}")
         elif dependencies != expected:
-            errors.append(
-                f"{name} dependencies are {dependencies!r}; expected {expected!r}"
-            )
+            errors.append(f"{name} dependencies are {dependencies!r}; expected {expected!r}")
     errors.extend(graph_errors(actual))
     return errors
 
@@ -161,18 +161,11 @@ def repository_errors(root: pathlib.Path = ROOT) -> list[str]:
             errors.append(f"{library.name} must remain private and explicitly unwrapped")
         directory = root / pathlib.PurePosixPath(library.path).parent
         sources = tuple(
-            sorted(
-                {
-                    path.stem
-                    for pattern in ("*.ml", "*.mli")
-                    for path in directory.glob(pattern)
-                }
-            )
+            sorted({path.stem for pattern in ("*.ml", "*.mli") for path in directory.glob(pattern)})
         )
         if sources != tuple(sorted(library.modules)):
             errors.append(
-                f"{library.name} declares {tuple(sorted(library.modules))!r} "
-                f"but owns {sources!r}"
+                f"{library.name} declares {tuple(sorted(library.modules))!r} but owns {sources!r}"
             )
         for module in library.modules:
             previous = owners.setdefault(module, library.name)

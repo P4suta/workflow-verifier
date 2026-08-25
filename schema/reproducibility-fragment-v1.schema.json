@@ -1,0 +1,71 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/reproducibility-fragment-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+        "name": {
+          "pattern": "^[0-9A-Za-z][0-9A-Za-z._+-]*$",
+          "type": "string"
+        },
+        "role": {
+          "enum": ["corresponding-source", "helper", "product", "schema-bundle", "source"]
+        }
+      },
+      "required": ["digest", "name", "role"],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": { "platform": { "const": "source" } },
+        "required": ["platform"]
+      },
+      "then": {
+        "properties": {
+          "artifacts": {
+            "allOf": [
+              { "contains": { "properties": { "role": { "const": "source" } }, "required": ["role"] } },
+              { "contains": { "properties": { "role": { "const": "corresponding-source" } }, "required": ["role"] } },
+              { "contains": { "properties": { "role": { "const": "schema-bundle" } }, "required": ["role"] } }
+            ],
+            "maxItems": 3,
+            "minItems": 3
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "artifacts": {
+            "allOf": [
+              { "contains": { "properties": { "role": { "const": "product" } }, "required": ["role"] } },
+              { "contains": { "properties": { "role": { "const": "helper" } }, "required": ["role"] } }
+            ],
+            "maxItems": 2,
+            "minItems": 2
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "artifacts": {
+      "items": { "$ref": "#/$defs/artifact" },
+      "minItems": 1,
+      "type": "array"
+    },
+    "platform": {
+      "enum": ["linux-x86_64", "macos-arm64", "macos-x86_64", "source", "windows-x86_64"]
+    },
+    "schema": { "const": "reproducibility-fragment-v1" },
+    "source_date_epoch": { "minimum": 1, "type": "integer" },
+    "subject_commit": { "pattern": "^[0-9a-f]{40}$", "type": "string" }
+  },
+  "required": ["artifacts", "platform", "schema", "source_date_epoch", "subject_commit"],
+  "title": "workflow-verifier reproducible candidate fragment v1",
+  "type": "object"
+}

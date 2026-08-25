@@ -529,19 +529,19 @@ let decode_double value =
     else
       let escaped = value.[index + 1] in
       let add_simple character =
-          Buffer.add_char buffer character;
-          loop (index + 2)
+        Buffer.add_char buffer character;
+        loop (index + 2)
       and add_unicode codepoint =
         add_utf8 buffer codepoint;
         loop (index + 2)
       and add_hex digits =
         match decode_hex value (index + 2) digits with
-          | Some codepoint ->
-              add_utf8 buffer codepoint;
-              loop (index + 2 + digits)
-          | None ->
-              Buffer.add_char buffer escaped;
-              loop (index + 2)
+        | Some codepoint ->
+            add_utf8 buffer codepoint;
+            loop (index + 2 + digits)
+        | None ->
+            Buffer.add_char buffer escaped;
+            loop (index + 2)
       in
       match escaped with
       | '0' -> add_simple '\000'
@@ -881,7 +881,8 @@ let rec parse_inline ?(implicit_flow_mapping = false) ~file ~line ~column ~byte
       then
         ( Single_quoted,
           String.sub body 1 (String.length body - 2)
-          |> fold_scalar_lines Preserve_backslashes |> decode_single )
+          |> fold_scalar_lines Preserve_backslashes
+          |> decode_single )
       else if
         String.length body >= 2
         && body.[0] = '"'
@@ -889,7 +890,8 @@ let rec parse_inline ?(implicit_flow_mapping = false) ~file ~line ~column ~byte
       then
         ( Double_quoted,
           String.sub body 1 (String.length body - 2)
-          |> fold_scalar_lines Join_double_quoted_continuations |> decode_double )
+          |> fold_scalar_lines Join_double_quoted_continuations
+          |> decode_double )
       else
         ( Plain,
           if String.contains body '\n' then
@@ -959,7 +961,7 @@ let parse ?(file = "<memory>") source =
   in
   let extend_plain_scalar limit parent_indent next_index node =
     match node with
-    | Scalar ({ style = Plain; _ } as scalar) ->
+    | Scalar ({ style = Plain; _ } as scalar) -> (
         let cursor = ref next_index
         and blank_lines = ref 0
         and value = Buffer.create (String.length scalar.value)
@@ -995,15 +997,15 @@ let parse ?(file = "<memory>") source =
             if Option.is_some line.comment_byte then finished := true)
           else finished := true
         done;
-        (match !continuation_stop with
+        match !continuation_stop with
         | Some stop ->
-          ( Scalar
-              {
-                scalar with
-                value = Buffer.contents value;
-                span = { scalar.span with stop };
-              },
-            !cursor )
+            ( Scalar
+                {
+                  scalar with
+                  value = Buffer.contents value;
+                  span = { scalar.span with stop };
+                },
+              !cursor )
         | None -> (node, next_index))
     | _ -> (node, next_index)
   in
@@ -1076,8 +1078,7 @@ let parse ?(file = "<memory>") source =
         and chunks = ref []
         and finished = ref false
         and saw_non_blank = ref false
-        and content_stop = ref None
-        in
+        and content_stop = ref None in
         while !cursor < limit && not !finished do
           let block_line = lines.(!cursor) in
           if document_start_line block_line || document_end_line block_line then
@@ -1210,16 +1211,7 @@ let parse ?(file = "<memory>") source =
           | None -> header_span
           | Some stop -> Span.make ~file header_span.start stop
         in
-        ( Scalar
-            {
-              value;
-              raw;
-              style;
-              anchor;
-              tag;
-              span;
-            },
-          !cursor )
+        (Scalar { value; raw; style; anchor; tag; span }, !cursor)
   in
   let rec parse_block_at limit index =
     let line = lines.(index) in
@@ -1263,9 +1255,7 @@ let parse ?(file = "<memory>") source =
       parse_sequence limit index line.indent None
     else if indicator_with_separation '?' content then
       parse_explicit_mapping limit index line.indent
-    else if
-      content.[0] = '*' && content.[String.length content - 1] = ':'
-    then
+    else if content.[0] = '*' && content.[String.length content - 1] = ':' then
       let node =
         parse_inline ~file ~line:line.number ~column:(line.indent + 1)
           ~byte:line.content_byte content
@@ -1309,13 +1299,7 @@ let parse ?(file = "<memory>") source =
               then (
                 cursor := significant;
                 None)
-              else
-                Some
-                  ( significant,
-                    line,
-                    content,
-                    line.content_byte,
-                    false )
+              else Some (significant, line, content, line.content_byte, false)
       in
       match candidate with
       | None -> finished := true
@@ -1522,9 +1506,7 @@ let parse ?(file = "<memory>") source =
       else
         let line = lines.(significant) in
         let content = String.trim line.content in
-        if
-          line.indent <> indent
-          || not (indicator_with_separation '?' content)
+        if line.indent <> indent || not (indicator_with_separation '?' content)
         then (
           cursor := significant;
           finished := true)
@@ -1535,7 +1517,8 @@ let parse ?(file = "<memory>") source =
           let value_byte = succ question_byte in
           let question_span =
             span_of_range file line.number (succ line.indent) question_byte
-              (succ (succ line.indent)) value_byte
+              (succ (succ line.indent))
+              value_byte
           in
           let key_raw =
             if String.length content = 1 then ""
@@ -1544,13 +1527,15 @@ let parse ?(file = "<memory>") source =
           let key_node, after_key =
             if Option.is_some (block_header key_raw) then
               parse_block_scalar limit indent following line
-                (succ (succ (succ line.indent))) (succ value_byte) key_raw
+                (succ (succ (succ line.indent)))
+                (succ value_byte) key_raw
             else if indicator_with_separation '-' key_raw then
               parse_sequence limit following nested_indent
                 (Some (line, key_raw, succ value_byte))
             else if key_raw <> "" then
               parse_inline_value ~implicit_flow_mapping:true limit indent
-                following line (succ (succ (succ line.indent)))
+                following line
+                (succ (succ (succ line.indent)))
                 (succ value_byte) key_raw
             else
               let child = next_significant lines limit following in
@@ -1559,7 +1544,8 @@ let parse ?(file = "<memory>") source =
                   parse_block_at limit child
               | _ ->
                   ( parse_inline ~file ~line:line.number
-                      ~column:(succ (succ line.indent)) ~byte:value_byte "",
+                      ~column:(succ (succ line.indent))
+                      ~byte:value_byte "",
                     following )
           in
           let value_line = next_significant lines limit after_key in

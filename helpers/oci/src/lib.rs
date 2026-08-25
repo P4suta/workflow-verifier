@@ -12,13 +12,14 @@ use workflow_verifier_helper_runtime::{
 };
 use workflow_verifier_runner_protocol::{
     BACKEND_ATTESTATION_SCHEMA, Control, Evidence, EvidenceBody, PlanStatus, Step, ValidatedPlan,
-    controls_digest, quote_json, validate_plan,
+    controls_digest, quote_json, sha256_hex, validate_plan,
 };
 pub use workflow_verifier_runner_protocol::{Outcome, RunResult};
 
 const REQUIRED_CONTROLS: &[Control] = &[
     Control::SourceReadOnly,
     Control::ScratchOverlay,
+    Control::NetworkDeny,
     Control::ProcessIsolation,
     Control::ResourceLimits,
     Control::SecretRedaction,
@@ -40,6 +41,24 @@ fn mount(source: &str, target: &str, readonly: bool) -> String {
     )
 }
 
+#[cfg(target_os = "linux")]
+fn scratch_execution_user(path: &Path) -> Result<Option<String>, String> {
+    use std::os::unix::fs::MetadataExt as _;
+
+    let metadata = std::fs::symlink_metadata(path).map_err(|error| error.to_string())?;
+    if metadata.file_type().is_symlink() || !metadata.is_dir() {
+        return Err("OCI scratch root is not a real directory".to_owned());
+    }
+    Ok(Some(format!("{}:{}", metadata.uid(), metadata.gid())))
+}
+
+#[cfg(not(target_os = "linux"))]
+// Docker Desktop mediates bind ownership outside Linux; no host identity is portable there.
+#[allow(clippy::unnecessary_wraps)]
+fn scratch_execution_user(_path: &Path) -> Result<Option<String>, String> {
+    Ok(None)
+}
+
 /// Builds an OCI engine argument vector without invoking a command shell.
 #[must_use]
 pub fn build_arguments(
@@ -47,16 +66,36 @@ pub fn build_arguments(
     step: &Step,
     source_root: &str,
     scratch_root: &str,
+    execution_user: Option<&str>,
 ) -> Vec<String> {
     let mut arguments = vec![
         "run".to_owned(),
         "--rm".to_owned(),
+        "--pull".to_owned(),
+        "never".to_owned(),
         "--read-only".to_owned(),
+        "--cap-drop".to_owned(),
+        "ALL".to_owned(),
+        "--security-opt".to_owned(),
+        "no-new-privileges".to_owned(),
+        "--cpus".to_owned(),
+        "1".to_owned(),
         "--pids-limit".to_owned(),
         plan.limits.processes.to_string(),
         "--memory".to_owned(),
         format!("{}m", plan.limits.memory_mb),
     ];
+    if let Some(user) = execution_user {
+        // Disable daemon-level user remapping, then run as the private scratch
+        // owner. The workload stays unprivileged while a 0700 scratch tree
+        // remains writable on remapped GitHub-hosted Docker daemons.
+        arguments.extend([
+            "--userns".to_owned(),
+            "host".to_owned(),
+            "--user".to_owned(),
+            user.to_owned(),
+        ]);
+    }
     if plan.controls.contains(&Control::NetworkDeny) {
         arguments.extend(["--network".to_owned(), "none".to_owned()]);
     }
@@ -101,6 +140,27 @@ fn redacted_output(output: &[u8], secrets: &[(String, String)]) -> String {
         }
     }
     text.trim().to_owned()
+}
+
+fn redacted_bytes(output: &[u8], secrets: &[(String, String)]) -> Vec<u8> {
+    secrets.iter().fold(output.to_vec(), |input, (_, secret)| {
+        let needle = secret.as_bytes();
+        if needle.is_empty() {
+            return input;
+        }
+        let mut redacted = Vec::with_capacity(input.len());
+        let mut offset = 0;
+        while offset < input.len() {
+            if input[offset..].starts_with(needle) {
+                redacted.extend_from_slice(b"***");
+                offset += needle.len();
+            } else {
+                redacted.push(input[offset]);
+                offset += 1;
+            }
+        }
+        redacted
+    })
 }
 
 fn classify_observation(
@@ -175,6 +235,9 @@ fn validate_execution(plan: &ValidatedPlan, engine: &str) -> Result<(), String> 
 ///
 /// Fails closed on plan/source mismatch, unsafe source entries, missing controls,
 /// engine failures, or evidence collection failures.
+// Keep source verification, materialization, launch, and evidence finalization in
+// one auditable transaction boundary.
+#[allow(clippy::too_many_lines)]
 pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunResult, String> {
     validate_execution(plan, engine)?;
     let source = source.canonicalize().map_err(|error| error.to_string())?;
@@ -193,7 +256,8 @@ pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunR
         .path()
         .to_str()
         .ok_or_else(|| "scratch root is not UTF-8".to_owned())?;
-    let mut evidence = Evidence::new(plan.digest.clone());
+    let execution_user = scratch_execution_user(scratch.path())?;
+    let mut evidence = Evidence::for_plan(plan);
     evidence.append(EvidenceBody::BackendAttested {
         id: plan.backend.clone(),
         version: env!("CARGO_PKG_VERSION").to_owned(),
@@ -204,22 +268,40 @@ pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunR
         evidence.append(EvidenceBody::ControlAttested(control.name().to_owned()));
     }
     let mut outcome = Outcome::Completed;
+    let mut redacted_log = Vec::new();
+    let mut wall_time_ms = 0_u64;
+    let mut output_bytes = 0_u64;
+    let mut observed_processes = 0_u64;
     let secret_values = plan
         .secret_names
         .iter()
         .filter_map(|name| std::env::var(name).ok().map(|value| (name.clone(), value)))
         .collect::<Vec<_>>();
     for step in &plan.steps {
-        let arguments = build_arguments(plan, step, source_text, scratch_text);
+        let arguments = build_arguments(
+            plan,
+            step,
+            source_text,
+            scratch_text,
+            execution_user.as_deref(),
+        );
+        let (executable, argv) = step
+            .argv
+            .split_first()
+            .ok_or_else(|| format!("step {} has empty argv", step.id))?;
         evidence.append(EvidenceBody::ProcessStarted {
-            executable: engine.to_owned(),
-            argv: arguments.clone(),
+            executable: executable.clone(),
+            argv: argv.to_vec(),
         });
         let observation = run_command(
             Command::new(engine).args(&arguments),
             Duration::from_secs(plan.limits.cpu_seconds),
             plan.limits.output_bytes,
         )?;
+        redacted_log.extend_from_slice(&redacted_bytes(&observation.output, &secret_values));
+        wall_time_ms = wall_time_ms.saturating_add(observation.wall_time_ms);
+        output_bytes = output_bytes.saturating_add(observation.output_bytes);
+        observed_processes = observed_processes.saturating_add(1);
         for (name, value) in &secret_values {
             if contains(&observation.output, value.as_bytes()) {
                 evidence.append(EvidenceBody::SecretRedacted { name: name.clone() });
@@ -233,7 +315,8 @@ pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunR
             break;
         }
     }
-    for change in scratch.changes()? {
+    let final_state = scratch.final_state()?;
+    for change in final_state.changes {
         evidence.append(EvidenceBody::FilesystemAccess {
             path: change.path.clone(),
             operation: match change.kind {
@@ -252,6 +335,21 @@ pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunR
             });
         }
     }
+    evidence.append(EvidenceBody::ResourceObserved {
+        wall_time_ms,
+        cpu_time_ms: 0,
+        peak_memory_bytes: 0,
+        processes: observed_processes,
+        output_bytes,
+        scratch_bytes: final_state.bytes,
+        scratch_entries: final_state.entries,
+    });
+    evidence.append(EvidenceBody::LogRecorded {
+        digest: format!("sha256:{}", sha256_hex(&redacted_log)),
+    });
+    evidence.append(EvidenceBody::FilesystemFinal {
+        digest: final_state.digest,
+    });
     Ok(RunResult { evidence, outcome })
 }
 
@@ -353,6 +451,8 @@ mod tests {
             timed_out: false,
             output_exceeded: false,
             output: b"daemon rejected token-value".to_vec(),
+            output_bytes: 27,
+            wall_time_ms: 1,
         };
         let secrets = [("TOKEN".to_owned(), "token-value".to_owned())];
         let error = classify_observation("build", &observation, &secrets)
@@ -368,6 +468,8 @@ mod tests {
             timed_out: false,
             output_exceeded: false,
             output: Vec::new(),
+            output_bytes: 0,
+            wall_time_ms: 1,
         };
         assert_eq!(
             classify_observation("build", &observation, &[]).expect("classification"),

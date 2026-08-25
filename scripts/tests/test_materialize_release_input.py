@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from pathlib import Path
 import stat
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.materialize_release_input import materialize
 from scripts.package_release import build_package

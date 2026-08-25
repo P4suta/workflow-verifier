@@ -3,11 +3,17 @@ type process_result = {
   timed_out : bool;
   output_truncated : bool;
   redacted_secrets : string list;
+  redacted_output : string;
+  wall_time_ms : int;
+  output_bytes : int;
 }
+
+type scratch_result = { digest : string; bytes : int64; entries : int }
 
 type runtime = {
   prepare_scratch :
     source_root:string -> scratch_root:string -> (unit, string) result;
+  finalize_scratch : scratch_root:string -> (scratch_result, string) result;
   run :
     engine:string ->
     arguments:string list ->
@@ -21,6 +27,7 @@ let required_controls =
   [
     Sandbox_protocol.Source_read_only;
     Scratch_overlay;
+    Network_deny;
     Process_isolation;
     Resource_limits;
     Secret_redaction;
@@ -35,7 +42,15 @@ let arguments plan step ~source_root ~scratch_root =
   [
     "run";
     "--rm";
+    "--pull";
+    "never";
     "--read-only";
+    "--cap-drop";
+    "ALL";
+    "--security-opt";
+    "no-new-privileges";
+    "--cpus";
+    "1";
     "--pids-limit";
     string_of_int limits.processes;
     "--memory";
@@ -87,7 +102,7 @@ let execute ~runtime ~source_root ~scratch_root plan =
   else
     let* () = runtime.prepare_scratch ~source_root ~scratch_root in
     let backend_evidence =
-      Evidence.empty ~plan_digest:checked.digest
+      Evidence.for_plan checked
       |> Evidence.append
            (Evidence.Backend_attested
               {
@@ -106,13 +121,49 @@ let execute ~runtime ~source_root ~scratch_root plan =
             evidence)
         backend_evidence checked.controls
     in
-    let rec run_steps evidence = function
-      | [] -> Ok { Sandbox_run.evidence; outcome = Completed }
+    let finalize evidence ~processes ~wall_time_ms ~output_bytes ~logs outcome =
+      let* scratch = runtime.finalize_scratch ~scratch_root in
+      let evidence =
+        evidence
+        |> Evidence.append
+             (Evidence.Resource_observed
+                {
+                  wall_time_ms;
+                  cpu_time_ms = 0;
+                  peak_memory_bytes = 0L;
+                  processes;
+                  output_bytes;
+                  scratch_bytes = scratch.bytes;
+                  scratch_entries = scratch.entries;
+                })
+        |> Evidence.append
+             (Evidence.Log_recorded
+                {
+                  digest =
+                    "sha256:"
+                    ^ Sha256.digest_string (String.concat "" (List.rev logs));
+                })
+        |> Evidence.append
+             (Evidence.Filesystem_final { digest = scratch.digest })
+      in
+      Ok { Sandbox_run.evidence; outcome }
+    in
+    let rec run_steps evidence processes wall_time_ms output_bytes logs =
+      function
+      | [] ->
+          finalize evidence ~processes ~wall_time_ms ~output_bytes ~logs
+            Completed
       | (step : Sandbox_protocol.step) :: rest -> (
           let argv = arguments checked step ~source_root ~scratch_root in
+          let workload_executable, workload_argv =
+            match step.argv with
+            | executable :: arguments -> (executable, arguments)
+            | [] -> ("<invalid>", [])
+          in
           let evidence =
             Evidence.append
-              (Evidence.Process_started { executable = engine; argv })
+              (Evidence.Process_started
+                 { executable = workload_executable; argv = workload_argv })
               evidence
           in
           let* process =
@@ -134,22 +185,22 @@ let execute ~runtime ~source_root ~scratch_root plan =
                  { code = Option.value ~default:(-1) process.exit_code })
               evidence
           in
+          let processes = processes + 1
+          and wall_time_ms = wall_time_ms + process.wall_time_ms
+          and output_bytes = output_bytes + process.output_bytes
+          and logs = process.redacted_output :: logs in
           if process.timed_out then
-            Ok { Sandbox_run.evidence; outcome = Timed_out { step = step.id } }
+            finalize evidence ~processes ~wall_time_ms ~output_bytes ~logs
+              (Timed_out { step = step.id })
           else if process.output_truncated then
-            Ok
-              {
-                Sandbox_run.evidence;
-                outcome = Output_limit_exceeded { step = step.id };
-              }
+            finalize evidence ~processes ~wall_time_ms ~output_bytes ~logs
+              (Output_limit_exceeded { step = step.id })
           else
             match process.exit_code with
-            | Some 0 -> run_steps evidence rest
+            | Some 0 ->
+                run_steps evidence processes wall_time_ms output_bytes logs rest
             | code ->
-                Ok
-                  {
-                    Sandbox_run.evidence;
-                    outcome = Step_failed { step = step.id; code };
-                  })
+                finalize evidence ~processes ~wall_time_ms ~output_bytes ~logs
+                  (Step_failed { step = step.id; code }))
     in
-    run_steps initial checked.steps
+    run_steps initial 0 0 0 [] checked.steps

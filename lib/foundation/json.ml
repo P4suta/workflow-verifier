@@ -140,10 +140,23 @@ let parse source =
     else if codepoint <= 0x7ff then (
       Buffer.add_char buffer (Char.chr (0xc0 lor (codepoint lsr 6)));
       Buffer.add_char buffer (Char.chr (0x80 lor (codepoint land 0x3f))))
-    else (
+    else if codepoint <= 0xffff then (
       Buffer.add_char buffer (Char.chr (0xe0 lor (codepoint lsr 12)));
       Buffer.add_char buffer (Char.chr (0x80 lor ((codepoint lsr 6) land 0x3f)));
       Buffer.add_char buffer (Char.chr (0x80 lor (codepoint land 0x3f))))
+    else (
+      Buffer.add_char buffer (Char.chr (0xf0 lor (codepoint lsr 18)));
+      Buffer.add_char buffer
+        (Char.chr (0x80 lor ((codepoint lsr 12) land 0x3f)));
+      Buffer.add_char buffer (Char.chr (0x80 lor ((codepoint lsr 6) land 0x3f)));
+      Buffer.add_char buffer (Char.chr (0x80 lor (codepoint land 0x3f))))
+  in
+  let unicode_escape () =
+    let value = ref 0 in
+    for _ = 1 to 4 do
+      value := (!value lsl 4) lor hex_value (take ())
+    done;
+    !value
   in
   let parse_string () =
     if take () <> '"' then fail "expected string";
@@ -162,11 +175,18 @@ let parse source =
           | 'r' -> Buffer.add_char buffer '\r'
           | 't' -> Buffer.add_char buffer '\t'
           | 'u' ->
-              let value = ref 0 in
-              for _ = 1 to 4 do
-                value := (!value lsl 4) lor hex_value (take ())
-              done;
-              add_utf8 buffer !value
+              let first = unicode_escape () in
+              if first >= 0xd800 && first <= 0xdbff then (
+                if take () <> '\\' || take () <> 'u' then
+                  fail "high surrogate must be followed by a low surrogate";
+                let second = unicode_escape () in
+                if second < 0xdc00 || second > 0xdfff then
+                  fail "high surrogate must be followed by a low surrogate";
+                add_utf8 buffer
+                  (0x10000 + ((first - 0xd800) lsl 10) + (second - 0xdc00)))
+              else if first >= 0xdc00 && first <= 0xdfff then
+                fail "lone low surrogate is invalid"
+              else add_utf8 buffer first
           | _ -> fail "invalid string escape");
           loop ()
       | character when Char.code character < 0x20 ->
@@ -182,18 +202,23 @@ let parse source =
     (match peek () with
     | Some '-' -> incr offset
     | _ -> ());
-    let digits = ref 0 in
-    while
-      match peek () with
-      | Some '0' .. '9' ->
-          incr offset;
-          incr digits;
-          true
-      | _ -> false
-    do
-      ()
-    done;
-    if !digits = 0 then fail "invalid number";
+    (match peek () with
+    | Some '0' -> (
+        incr offset;
+        match peek () with
+        | Some '0' .. '9' -> fail "leading zero in JSON number"
+        | _ -> ())
+    | Some '1' .. '9' ->
+        while
+          match peek () with
+          | Some '0' .. '9' ->
+              incr offset;
+              true
+          | _ -> false
+        do
+          ()
+        done
+    | _ -> fail "invalid number");
     (match peek () with
     | Some ('.' | 'e' | 'E') -> fail "runner JSON permits integers only"
     | _ -> ());
@@ -255,12 +280,15 @@ let parse source =
       in
       fields [] []
   in
-  try
-    let parsed = value () in
-    whitespace ();
-    if !offset <> length then fail "trailing JSON input";
-    Ok parsed
-  with Parse_error error -> Error error
+  if not (Util.valid_utf8 source) then
+    Error { offset = 0; message = "JSON input is not valid UTF-8" }
+  else
+    try
+      let parsed = value () in
+      whitespace ();
+      if !offset <> length then fail "trailing JSON input";
+      Ok parsed
+    with Parse_error error -> Error error
 
 let member name = function
   | Object fields -> List.assoc_opt name fields
@@ -285,3 +313,13 @@ let as_array = function
 let as_object = function
   | Object fields -> Some fields
   | _ -> None
+
+let exact_object ~context ~allowed = function
+  | Object fields -> (
+      match
+        List.find_opt (fun (name, _) -> not (List.mem name allowed)) fields
+      with
+      | Some (name, _) ->
+          Error (Printf.sprintf "%s has unknown field %s" context name)
+      | None -> Ok fields)
+  | _ -> Error (context ^ " must be an object")

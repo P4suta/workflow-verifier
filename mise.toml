@@ -20,7 +20,7 @@ macos-arm64 = { asset_pattern = "opam-2.5.2-arm64-macos", bin = "opam" }
 
 [tasks.bootstrap]
 description = "Create the project-local OCaml 5.5 switch"
-run = "opam init --bare --no-setup --yes && opam switch create . ocaml-base-compiler.5.5.0 --yes && opam install . --deps-only --with-test --yes"
+run = "opam init --bare --no-setup --yes && opam switch create . ocaml-base-compiler.5.5.0 --yes && opam install . --deps-only --with-test --locked --yes"
 
 [tasks.build]
 description = "Build every OCaml target"
@@ -82,6 +82,10 @@ run = "python -B scripts/prepare_corpus.py refresh --evaluation evaluation --ana
 description = "Apply exhaustive reviewed diagnostic classifications to the corpus"
 run = "python -B scripts/prepare_corpus.py apply-review --manifest evaluation/corpus-v1.json --reports-root evaluation/reports --review evaluation/review-v1.json"
 
+[tasks.corpus-rebase-review]
+description = "Explicitly rebase authenticated legacy classifications onto equivalent fresh diagnostics"
+run = "python -B scripts/prepare_corpus.py rebase-review --old-manifest evaluation/corpus-v1.json --old-reports-root evaluation/reports --old-review evaluation/review-v1.json --new-manifest _build/evaluation-refreshed/corpus-v1.json --new-reports-root _build/evaluation-refreshed/reports --output _build/evaluation-refreshed/review-v1.json"
+
 [tasks.official-fetch]
 description = "Acquire the eight pinned official CI snapshots without executing them"
 run = "python -B scripts/fetch_official_projects.py --manifest official/official-projects-v1.json --destination _build/official-projects --mode pinned"
@@ -103,11 +107,11 @@ description = "Reject unexplained performance regressions above ten percent"
 run = "python -B scripts/performance_gate.py --baseline performance/baseline.json --current _build/performance-current.json --output _build/performance-comparison-v1.json"
 
 [tasks.determinism-probe]
-description = "Generate exact report lockfile and fix artifacts for this platform"
+description = "Generate twice-local report, lockfile, and fix artifacts for this platform"
 run = "opam exec -- dune build bin/main.exe && python -B scripts/determinism_probe.py --analyzer _build/default/bin/main.exe --fixture test/fixtures/determinism --output _build/determinism/local"
 
 [tasks.determinism-compare]
-description = "Compare exact artifacts from all four release platforms"
+description = "Compare portable bytes and report semantics from all four release platforms"
 run = "python -B scripts/compare_determinism.py --output _build/determinism/comparison.json _build/determinism/linux-x86_64 _build/determinism/windows-x86_64 _build/determinism/macos-arm64 _build/determinism/macos-x86_64"
 
 [tasks.version]
@@ -116,7 +120,15 @@ run = "python -B scripts/verify_release_version.py --allow-development"
 
 [tasks.release-evidence]
 description = "Verify two-commit evidence and the signed maintainer attestation"
-run = "python -B scripts/verify_release_evidence.py --manifest release-evidence/release-evidence-v2.json --revision ${WV_RELEASE_REVISION} --tag ${WV_RELEASE_TAG} --repository ."
+run = "python -B scripts/verify_release_evidence.py --manifest release-evidence/release-evidence-v3.json --revision ${WV_RELEASE_REVISION} --tag ${WV_RELEASE_TAG} --repository ."
+
+[tasks.candidate-source]
+description = "Build commit-bound static source and schema candidate assets twice"
+run = "python -B scripts/candidate_artifacts.py source-assets --repository . --subject-commit ${WV_CANDIDATE_COMMIT} --version ${WV_RELEASE_VERSION} --output-dir _candidate/source --fragment _candidate/source/reproducibility-source.json"
+
+[tasks.candidate-reproducibility]
+description = "Aggregate all candidate reproducibility fragments into one release gate"
+run = "python -B scripts/candidate_artifacts.py aggregate --subject-commit ${WV_CANDIDATE_COMMIT} --output _candidate/reproducible-build.json ${WV_REPRODUCIBILITY_FRAGMENTS}"
 
 [tasks.architecture]
 description = "Enforce the one-way OCaml layer graph"
@@ -138,17 +150,29 @@ run = "opam exec -- dune build @install && python -B scripts/verify_install_layo
 description = "Verify the pinned Just parser and aligned Just/mise task names"
 run = "python -B scripts/verify_task_surface.py"
 
+[tasks.conformance-manifest]
+description = "Verify content-addressed language-independent vectors"
+run = "python -B scripts/verify_conformance_manifest.py --manifest conformance/manifest-v1.json --root ."
+
+[tasks.links]
+description = "Verify local Markdown links without network access"
+run = "python -B scripts/verify_markdown_links.py --root ."
+
 [tasks.sbom]
-description = "Generate a deterministic SPDX SBOM and checksum manifest"
-run = "python -B scripts/generate_sbom.py --version ${WV_RELEASE_VERSION} --output dist/workflow-verifier.spdx.json --checksums dist/SHA256SUMS ${WV_RELEASE_ARTIFACTS}"
+description = "Generate per-payload SPDX and aggregate CycloneDX SBOMs"
+run = "python -B scripts/generate_sbom.py --version ${WV_RELEASE_VERSION} --dependency-manifest release/sbom-components-v1.json --output-dir dist/sbom --cyclonedx dist/workflow-verifier.cdx.json --checksums dist/SBOM-SHA256SUMS ${WV_RELEASE_ARTIFACTS}"
+
+[tasks.linux-compat]
+description = "Enforce the glibc 2.28 and ELF dependency floor for WV_LINUX_BINARY"
+run = "python -B scripts/verify_linux_compat.py ${WV_LINUX_BINARY}"
 
 [tasks.check]
 description = "Run the local release-readiness sequence"
-depends = ["task-surface", "build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "licenses", "install-check"]
+depends = ["task-surface", "conformance-manifest", "build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "licenses", "install-check"]
 
 [tasks.dogfood]
 description = "Analyze workflow-verifier with its own audit persona"
-run = "opam exec -- dune exec workflow-verifier -- check --persona audit ."
+run = "opam exec -- dune exec workflow-verifier -- check --config examples/dogfood-policy-v2.toml --trust-repository-config ."
 
 [tasks.dogfood-gate]
 description = "Verify complete static CLI and live OCI dogfood evidence"

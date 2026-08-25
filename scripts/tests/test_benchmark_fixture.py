@@ -27,7 +27,9 @@ class BenchmarkFixtureTests(unittest.TestCase):
             changed = [name for name in expected if before[name] != after[name]]
             self.assertEqual(changed, [".github/workflows/ci.yml"])
             prepare(workspace, "toggle")
-            self.assertEqual((root / ".github/workflows/ci.yml").read_bytes(), before[".github/workflows/ci.yml"])
+            self.assertEqual(
+                (root / ".github/workflows/ci.yml").read_bytes(), before[".github/workflows/ci.yml"]
+            )
 
     def test_rejects_symlinked_or_unknown_targets(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -65,6 +67,18 @@ class BenchmarkFixtureTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "scenario"):
                 prepare(workspace, "reset", "unknown")
+
+    def test_config_matches_the_workspace_contract_without_a_trust_grant(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory)
+            schema = workspace / "schema"
+            schema.mkdir()
+            (schema / "config-v2.schema.json").write_text("{}\n", encoding="utf-8")
+            root = prepare(workspace, "reset")
+            self.assertEqual(
+                (root / ".workflow-verifier.toml").read_text(encoding="utf-8"),
+                "version = 2\n",
+            )
 
 
 if __name__ == "__main__":

@@ -4,17 +4,17 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
 import gzip
 import hashlib
 import io
 import json
 import os
-from pathlib import Path
 import shutil
 import stat
 import struct
 import tempfile
+from dataclasses import dataclass
+from pathlib import Path
 
 
 def _sha256(path: Path) -> str:

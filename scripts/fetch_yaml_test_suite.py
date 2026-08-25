@@ -4,11 +4,9 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
 import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
 import re
 import shutil
 import stat
@@ -16,8 +14,10 @@ import subprocess
 import sys
 import tempfile
 import tomllib
-from typing import Any, Iterable, Mapping
-
+from collections.abc import Iterable, Mapping
+from dataclasses import dataclass
+from pathlib import Path, PurePosixPath
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 PIN_PATH = ROOT / "test" / "upstream" / "yaml-test-suite.toml"
@@ -112,9 +112,7 @@ RELEASE = PIN.release
 COMMIT = PIN.commit
 EXPECTED_CASES = PIN.cases
 DEFAULT_DESTINATION = ROOT / "_build" / "upstream" / f"yaml-test-suite-{RELEASE}"
-DEFAULT_EXPORT_DESTINATION = (
-    ROOT / "_build" / "upstream" / f"yaml-test-suite-canonical-{RELEASE}"
-)
+DEFAULT_EXPORT_DESTINATION = ROOT / "_build" / "upstream" / f"yaml-test-suite-canonical-{RELEASE}"
 
 
 @dataclass(frozen=True, order=True)
@@ -131,8 +129,7 @@ def git(*arguments: str, cwd: Path | None = None) -> str:
         cwd=cwd,
         check=False,
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
     if process.returncode != 0:
         detail = process.stderr.strip() or process.stdout.strip()
@@ -146,8 +143,7 @@ def git_bytes(*arguments: str, cwd: Path, input_bytes: bytes | None = None) -> b
         cwd=cwd,
         check=False,
         input=input_bytes,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
     if process.returncode != 0:
         detail = process.stderr.decode("utf-8", errors="replace").strip()
@@ -159,9 +155,7 @@ def safe_path(raw: str) -> PurePosixPath:
     if "\\" in raw:
         raise RuntimeError(f"non-canonical upstream path: {raw!r}")
     path = PurePosixPath(raw)
-    if path.is_absolute() or not path.parts or any(
-        part in {"", ".", ".."} for part in path.parts
-    ):
+    if path.is_absolute() or not path.parts or any(part in {"", ".", ".."} for part in path.parts):
         raise RuntimeError(f"unsafe upstream path: {raw!r}")
     if path.as_posix() != raw:
         raise RuntimeError(f"non-canonical upstream path: {raw!r}")
@@ -184,9 +178,7 @@ def tree_entries(checkout: Path) -> tuple[TreeEntry, ...]:
         if path in seen:
             raise RuntimeError(f"duplicate upstream tree path: {path.as_posix()}")
         seen.add(path)
-        entries.append(
-            TreeEntry(path=path, mode=mode, kind=kind, object_id=object_id)
-        )
+        entries.append(TreeEntry(path=path, mode=mode, kind=kind, object_id=object_id))
     return tuple(sorted(entries))
 
 
@@ -205,31 +197,22 @@ def canonical_case_entries(
     }
     if len(case_directories) != expected_cases:
         raise RuntimeError(
-            "suite case count mismatch: "
-            f"expected {expected_cases}, found {len(case_directories)}"
+            f"suite case count mismatch: expected {expected_cases}, found {len(case_directories)}"
         )
     selected: list[TreeEntry] = []
     for entry in ordered:
         if entry.path.parent not in case_directories:
             continue
         if entry.mode not in REGULAR_MODES or entry.kind != "blob":
-            raise RuntimeError(
-                f"non-regular entry inside case {entry.path.as_posix()}"
-            )
+            raise RuntimeError(f"non-regular entry inside case {entry.path.as_posix()}")
         selected.append(entry)
-    selected_cases = {
-        entry.path.parent
-        for entry in selected
-        if entry.path.name == "in.yaml"
-    }
+    selected_cases = {entry.path.parent for entry in selected if entry.path.name == "in.yaml"}
     if selected_cases != case_directories:
         raise RuntimeError("canonical case selection lost an in.yaml input")
     return tuple(selected)
 
 
-def read_blobs(
-    checkout: Path, entries: Iterable[TreeEntry]
-) -> dict[PurePosixPath, bytes]:
+def read_blobs(checkout: Path, entries: Iterable[TreeEntry]) -> dict[PurePosixPath, bytes]:
     ordered = tuple(entries)
     request = b"".join(entry.object_id.encode("ascii") + b"\n" for entry in ordered)
     response = git_bytes("cat-file", "--batch", cwd=checkout, input_bytes=request)
@@ -253,9 +236,7 @@ def read_blobs(
             or stop >= len(response)
             or response[stop] != 0x0A
         ):
-            raise RuntimeError(
-                f"git blob evidence mismatch for {entry.path.as_posix()}"
-            )
+            raise RuntimeError(f"git blob evidence mismatch for {entry.path.as_posix()}")
         blobs[entry.path] = response[cursor:stop]
         cursor = stop + 1
     if cursor != len(response):
@@ -265,8 +246,7 @@ def read_blobs(
 
 def canonical_json(value: object) -> bytes:
     return (
-        json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-        + "\n"
+        json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True) + "\n"
     ).encode("utf-8")
 
 
@@ -284,9 +264,7 @@ def manifest_for(
         extra = sorted(path.as_posix() for path in set(blobs) - paths)
         raise RuntimeError(f"blob set mismatch: missing={missing}, extra={extra}")
     cases = sorted(
-        entry.path.parent.as_posix()
-        for entry in ordered
-        if entry.path.name == "in.yaml"
+        entry.path.parent.as_posix() for entry in ordered if entry.path.name == "in.yaml"
     )
     if len(cases) != expected_cases or len(set(cases)) != expected_cases:
         raise RuntimeError("export entries do not contain the expected unique cases")
@@ -363,10 +341,7 @@ def validate_pinned_export_evidence(
         raise RuntimeError(
             f"canonical export file count mismatch: expected {expected_files}, found {actual}"
         )
-    if (
-        expected_tree_sha256 is not None
-        and manifest.get("tree_sha256") != expected_tree_sha256
-    ):
+    if expected_tree_sha256 is not None and manifest.get("tree_sha256") != expected_tree_sha256:
         raise RuntimeError("canonical export pinned tree digest mismatch")
 
 
@@ -420,9 +395,7 @@ def validate_export(
         or not all(isinstance(case, str) for case in cases)
         or cases != sorted(set(cases))
         or len(cases) != expected_cases
-        or not all(
-            CASE_ID.fullmatch(safe_path(case).parts[0]) is not None for case in cases
-        )
+        or not all(CASE_ID.fullmatch(safe_path(case).parts[0]) is not None for case in cases)
     ):
         raise RuntimeError("canonical export case ledger is invalid")
     if not isinstance(raw_files, list):
@@ -454,11 +427,7 @@ def validate_export(
     ledger_paths = [path.as_posix() for path, _ in ledger]
     if ledger_paths != sorted(set(ledger_paths)):
         raise RuntimeError("canonical export file ledger is not sorted and unique")
-    input_cases = sorted(
-        path.parent.as_posix()
-        for path, _ in ledger
-        if path.name == "in.yaml"
-    )
+    input_cases = sorted(path.parent.as_posix() for path, _ in ledger if path.name == "in.yaml")
     if input_cases != cases:
         raise RuntimeError("canonical export inputs contradict the case ledger")
     payload = {key: value for key, value in manifest.items() if key != "tree_sha256"}
@@ -529,9 +498,7 @@ def build_export(
         expected_tree_sha256=expected_tree_sha256,
     )
     destination.parent.mkdir(parents=True, exist_ok=True)
-    staging = Path(
-        tempfile.mkdtemp(prefix=f".{destination.name}.staging-", dir=destination.parent)
-    )
+    staging = Path(tempfile.mkdtemp(prefix=f".{destination.name}.staging-", dir=destination.parent))
     try:
         raw_files = manifest["files"]
         assert isinstance(raw_files, list)
@@ -555,18 +522,13 @@ def build_export(
     )
 
 
-def validate_checkout_identity(
-    pin: YamlSuitePin, *, tag_object: str, commit: str
-) -> None:
+def validate_checkout_identity(pin: YamlSuitePin, *, tag_object: str, commit: str) -> None:
     if tag_object != pin.tag_object:
         raise RuntimeError(
-            "suite annotated tag object mismatch: "
-            f"expected {pin.tag_object}, found {tag_object}"
+            f"suite annotated tag object mismatch: expected {pin.tag_object}, found {tag_object}"
         )
     if commit != pin.commit:
-        raise RuntimeError(
-            f"suite release commit mismatch: expected {pin.commit}, found {commit}"
-        )
+        raise RuntimeError(f"suite release commit mismatch: expected {pin.commit}, found {commit}")
 
 
 def validate_checkout(destination: Path) -> bool:
@@ -581,8 +543,7 @@ def validate_checkout(destination: Path) -> bool:
     actual_head = git("rev-parse", "HEAD^{commit}", cwd=destination)
     if actual_head != PIN.commit:
         raise RuntimeError(
-            "suite checkout HEAD mismatch: "
-            f"expected {PIN.commit}, found {actual_head}"
+            f"suite checkout HEAD mismatch: expected {PIN.commit}, found {actual_head}"
         )
     canonical_case_entries(tree_entries(destination))
     return True
@@ -593,9 +554,7 @@ def main() -> None:
     parser.add_argument("--allow-network", action="store_true")
     parser.add_argument("--verify-export-only", action="store_true")
     parser.add_argument("--destination", type=Path, default=DEFAULT_DESTINATION)
-    parser.add_argument(
-        "--export-destination", type=Path, default=DEFAULT_EXPORT_DESTINATION
-    )
+    parser.add_argument("--export-destination", type=Path, default=DEFAULT_EXPORT_DESTINATION)
     arguments = parser.parse_args()
     destination = arguments.destination.resolve()
     export_destination = arguments.export_destination.resolve()
@@ -617,9 +576,7 @@ def main() -> None:
         if destination.exists():
             raise RuntimeError(f"refusing to replace non-suite path: {destination}")
         if not arguments.allow_network:
-            raise RuntimeError(
-                "suite is absent; pass --allow-network to fetch the pinned release"
-            )
+            raise RuntimeError("suite is absent; pass --allow-network to fetch the pinned release")
         destination.parent.mkdir(parents=True, exist_ok=True)
         git(
             "clone",

@@ -49,8 +49,14 @@ machine-readable evidence.
   boundaries, graph algorithms, fixed-point dataflow, and all verifier personas.
   Fingerprint updates therefore require an intentional test review rather than
   silently accepting changed behavior.
-- `determinism-comparison-v1` byte-compares report, lockfile, and fix output from
-  Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64.
+- `determinism-v1` executes report, lockfile, and fix generation twice on each
+  platform and requires raw byte identity locally. `determinism-comparison-v1`
+  byte-compares the lockfile and fix output across Linux x86-64, Windows x86-64,
+  macOS arm64, and macOS x86-64. It compares canonical report semantics after
+  excluding only the authenticated root digest, executable digest, and bound
+  build commit, while retaining every platform's raw report digest and size as
+  provenance. This avoids falsely requiring PE, ELF, and Mach-O binaries to have
+  one digest without weakening any analyzer result.
 - `dogfood-v1` requires zero diagnostics while analyzing the repository's real
   GitHub, GitLab, Azure, and CircleCI entrypoints, exercises every public CLI
   surface, recomputes the OCI evidence hash chain, and binds the verified audit
@@ -62,7 +68,7 @@ The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,
 and partial source coverage. They write outputs atomically.
 
-Publication inputs are composed by `release-evidence-v2`. Candidate commit `C`
+Publication inputs are composed by `release-evidence-v3`. Candidate commit `C`
 contains the release code and version; its single evidence-only child `E`
 contains measurements of `C` and is the future tag target. The manifest binds
 `C` and the planned tag to the corpus report, fixed official compatibility
@@ -86,8 +92,18 @@ recorded source digests and then reanalyzes those exact snapshots into a new
 transaction without network access. The source evaluation is immutable; the
 new reports receive a fresh exhaustive review before promotion.
 
+When a schema migration changes generated diagnostic or graph-node identities,
+`rebase-review` is an explicit aid rather than an implicit report migration. It
+accepts authenticated `report-v1` only on its named legacy side and authenticated
+`report-v2` only on its fresh side. Repository revision/source/license identity,
+the complete primary diagnostic semantics, and trace label/file shape must form
+a unique bijection. Generated IDs, the old corpus-root path prefix, graph-node
+IDs, and auxiliary trace coordinates are the only ignored values. Any added,
+missing, ambiguous, or semantically changed finding is rejected and must be
+reviewed from the fresh draft.
+
 Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
-`just corpus-review`, `just corpus`, `just performance-measure`,
+`just corpus-rebase-review`, `just corpus-review`, `just corpus`, `just performance-measure`,
 `just performance-gate`, `just mutation-gate`, `just mutation-campaign`,
 `just determinism-probe`, and `just determinism-compare`.
 `just official-fetch`, `just official-compat`, and

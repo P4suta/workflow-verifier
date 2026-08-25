@@ -1,7 +1,7 @@
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.performance_gate import compare
 
@@ -44,10 +44,14 @@ class PerformanceGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             baseline = self.write(
-                root, "baseline.json", measurement("a" * 40, [90, 100, 110], [50, 60, 70], [70, 80, 90])
+                root,
+                "baseline.json",
+                measurement("a" * 40, [90, 100, 110], [50, 60, 70], [70, 80, 90]),
             )
             current = self.write(
-                root, "current.json", measurement("b" * 40, [100, 110, 120], [55, 66, 77], [77, 88, 99])
+                root,
+                "current.json",
+                measurement("b" * 40, [100, 110, 120], [55, 66, 77], [77, 88, 99]),
             )
             result = compare(baseline, current)
             self.assertTrue(result["passed"])
@@ -59,12 +63,8 @@ class PerformanceGateTests(unittest.TestCase):
     def test_more_than_ten_percent_requires_a_reviewed_explanation(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            baseline = self.write(
-                root, "baseline.json", measurement("a" * 40, [100], [100], [100])
-            )
-            current = self.write(
-                root, "current.json", measurement("b" * 40, [111], [100], [100])
-            )
+            baseline = self.write(root, "baseline.json", measurement("a" * 40, [100], [100], [100]))
+            current = self.write(root, "current.json", measurement("b" * 40, [111], [100], [100]))
             failed = compare(baseline, current)
             self.assertFalse(failed["passed"])
             self.assertEqual(failed["comparisons"][0]["status"], "regression")

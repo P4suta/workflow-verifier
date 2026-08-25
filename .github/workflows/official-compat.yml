@@ -14,18 +14,23 @@ concurrency:
 
 jobs:
   latest-default-branches:
+    name: Latest official default branches
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
       - name: Build current analyzer
         run: |
-          opam install . --deps-only --with-test --yes
+          opam install . --deps-only --with-test --locked --yes
           opam exec -- dune build bin/main.exe
       - name: Observe current upstream default branches
         run: >-
