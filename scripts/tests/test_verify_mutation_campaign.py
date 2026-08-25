@@ -1,9 +1,9 @@
 import json
-from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.mutation_resource_guard import contract as resource_guard_contract
 from scripts.verify_mutation_campaign import (
@@ -57,10 +57,7 @@ def result(mutant: dict[str, object]) -> dict[str, object]:
 
 
 def catalog_mutant(mutant: dict[str, object]) -> dict[str, object]:
-    return {
-        field: mutant[field]
-        for field in ("id", "full_id", "path", "range", "family", "rule")
-    }
+    return {field: mutant[field] for field in ("id", "full_id", "path", "range", "family", "rule")}
 
 
 def report(mutants: list[dict[str, object]]) -> dict[str, object]:
@@ -75,8 +72,7 @@ def report(mutants: list[dict[str, object]]) -> dict[str, object]:
         "workspace": {"digest": "b" * 64, "toolchain": "OCaml 5.5.0"},
         "profile": "balanced",
         "selection": {
-            "description": "mutants:"
-            + ",".join(str(mutant["full_id"]) for mutant in mutants)
+            "description": "mutants:" + ",".join(str(mutant["full_id"]) for mutant in mutants)
         },
         "test": {
             "command": ["dune", "runtest", "--force"],
@@ -203,16 +199,13 @@ operators = ["boolean-literal"]
     def write_resource_guard(self, name: str) -> Path:
         path = self.resource_guard_path(name)
         path.write_text(
-            json.dumps(resource_guard_contract(), sort_keys=True, separators=(",", ":"))
-            + "\n",
+            json.dumps(resource_guard_contract(), sort_keys=True, separators=(",", ":")) + "\n",
             encoding="utf-8",
             newline="\n",
         )
         return path
 
-    def write_surviving_report(
-        self, name: str, mutant: dict[str, object]
-    ) -> Path:
+    def write_surviving_report(self, name: str, mutant: dict[str, object]) -> Path:
         document = report([mutant])
         document["mutants"][0]["outcome"] = "survived"
         document["summary"].update(
@@ -252,10 +245,7 @@ operators = ["boolean-literal"]
         self.assertEqual(campaign["detected"], 2)
         self.assertEqual(campaign["resource_guard"], resource_guard_contract())
         self.assertTrue(
-            all(
-                item["resource_guard_digest"].startswith("sha256:")
-                for item in campaign["shards"]
-            )
+            all(item["resource_guard_digest"].startswith("sha256:") for item in campaign["shards"])
         )
         self.assertEqual([item["name"] for item in campaign["shards"]], ["hex-1", "hex-2"])
 
@@ -446,9 +436,7 @@ operators = ["boolean-literal"]
         campaign = aggregate(plan, self.catalog, self.root)
         self.assertFalse(campaign["passed"])
         self.assertEqual(campaign["unexpected_survivors"], 1)
-        self.assertEqual(
-            campaign["failures"], ["hex-1: one unexpected mutant survived"]
-        )
+        self.assertEqual(campaign["failures"], ["hex-1: one unexpected mutant survived"])
 
     def test_runner_exit_code_must_agree_with_the_authenticated_gate(self) -> None:
         plan = load_plan(self.manifest, self.config, self.root)

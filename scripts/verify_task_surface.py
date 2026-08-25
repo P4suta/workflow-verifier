@@ -4,11 +4,10 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import subprocess
 import sys
 import tomllib
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PINNED_JUST = "1.57.0"
@@ -21,8 +20,7 @@ def _run(argv: list[str], root: Path) -> subprocess.CompletedProcess[str]:
             argv,
             cwd=root,
             stdin=subprocess.DEVNULL,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             text=True,
             encoding="utf-8",
             errors="replace",
@@ -68,9 +66,7 @@ def verify(root: Path = ROOT, *, just: str = "just") -> list[str]:
             details.append("missing in mise: " + ", ".join(missing_in_mise))
         raise ValueError("task names differ (" + "; ".join(details) + ")")
 
-    dry_run = _run(
-        [just, "--dry-run", "performance-measure", REVISION_FIXTURE], root
-    )
+    dry_run = _run([just, "--dry-run", "performance-measure", REVISION_FIXTURE], root)
     if dry_run.returncode != 0:
         raise ValueError(
             "just --dry-run performance-measure failed: "
@@ -91,10 +87,7 @@ def main() -> int:
     except ValueError as error:
         print(f"task-surface gate: {error}", file=sys.stderr)
         return 1
-    print(
-        f"task-surface gate: Just {PINNED_JUST}; "
-        f"{len(tasks)} aligned Just/mise tasks"
-    )
+    print(f"task-surface gate: Just {PINNED_JUST}; {len(tasks)} aligned Just/mise tasks")
     return 0
 
 

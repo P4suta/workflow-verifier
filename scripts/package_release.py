@@ -7,13 +7,12 @@ import argparse
 import gzip
 import io
 import os
-from pathlib import Path, PurePosixPath
 import re
 import stat
 import tarfile
 import tempfile
 import zipfile
-
+from pathlib import Path, PurePosixPath
 
 IDENTIFIER = re.compile(r"^[0-9A-Za-z][0-9A-Za-z._-]*$")
 
@@ -77,18 +76,34 @@ def _tar_gz(prefix: str, files: list[tuple[str, Path, int]]) -> bytes:
 
 def _zip(prefix: str, files: list[tuple[str, Path, int]]) -> bytes:
     output = io.BytesIO()
-    with zipfile.ZipFile(output, mode="w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+    with zipfile.ZipFile(
+        output, mode="w", compression=zipfile.ZIP_DEFLATED, compresslevel=9
+    ) as archive:
         for name, source, mode in files:
             info = zipfile.ZipInfo(f"{prefix}/{name}", date_time=(1980, 1, 1, 0, 0, 0))
             info.create_system = 3
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = (stat.S_IFREG | mode) << 16
-            archive.writestr(info, source.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+            archive.writestr(
+                info, source.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9
+            )
     return output.getvalue()
 
 
 def _atomic_write(path: Path, contents: bytes) -> None:
+    try:
+        metadata = path.lstat()
+    except FileNotFoundError:
+        pass
+    except OSError as error:
+        raise ValueError(f"cannot inspect release output {path}: {error}") from error
+    else:
+        if path.is_symlink() or not stat.S_ISREG(metadata.st_mode):
+            raise ValueError(f"release output must not replace a link or special file: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
+    parent_metadata = path.parent.lstat()
+    if path.parent.is_symlink() or not stat.S_ISDIR(parent_metadata.st_mode):
+        raise ValueError("release output parent must be a non-symlink directory")
     descriptor, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     temporary = Path(temporary_name)
     try:

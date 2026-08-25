@@ -20,21 +20,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  quality:
-    needs: release_evidence
-    uses: ./.github/workflows/ci.yml
-    with:
-      performance_baseline: ${{ needs.release_evidence.outputs.subject_commit }}
-    permissions:
-      contents: read
-
-  mutation:
-    uses: ./.github/workflows/mutation.yml
-    permissions:
-      contents: read
-
   release_evidence:
-    name: Verify two-commit release evidence
+    name: Verify candidate C and evidence-only child E
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     outputs:
@@ -48,127 +35,46 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
-      - name: Verify parent relation, digests, and maintainer signature
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - name: Install patched pinned Cosign for offline bundle verification
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+      - name: Verify exact v3 evidence, digests, gates, and maintainer signature
         id: evidence
         shell: bash
         env:
           RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         run: >-
           python -B scripts/verify_release_evidence.py
-          --manifest release-evidence/release-evidence-v2.json
+          --manifest release-evidence/release-evidence-v3.json
           --revision "$GITHUB_SHA"
           --tag "$RELEASE_TAG"
           --repository .
           --github-output "$GITHUB_OUTPUT"
 
-  build:
-    name: Build ${{ matrix.platform }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-24.04
-            platform: linux-x86_64
-            analyzer: _build/install/default/bin/workflow-verifier
-            oci: helpers/target/release/workflow-verifier-oci-helper
-            native: helpers/target/release/workflow-verifier-linux-helper
-            native_name: workflow-verifier-linux-helper
-            archive: .tar.gz
-          - os: windows-2025
-            platform: windows-x86_64
-            analyzer: _build/install/default/bin/workflow-verifier.exe
-            oci: helpers/target/release/workflow-verifier-oci-helper.exe
-            native: helpers/target/release/workflow-verifier-windows-helper.exe
-            native_name: workflow-verifier-windows-helper.exe
-            archive: .zip
-          - os: macos-15
-            platform: macos-arm64
-            analyzer: _build/install/default/bin/workflow-verifier
-            oci: helpers/target/release/workflow-verifier-oci-helper
-            native: helpers/target/release/workflow-verifier-macos-helper
-            native_name: workflow-verifier-macos-helper
-            archive: .tar.gz
-          - os: macos-15-intel
-            platform: macos-x86_64
-            analyzer: _build/install/default/bin/workflow-verifier
-            oci: helpers/target/release/workflow-verifier-oci-helper
-            native: helpers/target/release/workflow-verifier-macos-helper
-            native_name: workflow-verifier-macos-helper
-            archive: .tar.gz
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
-        with:
-          ocaml-compiler: 5.5.0
-      - name: Verify release identity
-        id: version
-        shell: bash
-        env:
-          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
-        run: |
-          version=$(python -B scripts/verify_release_version.py --tag "$RELEASE_TAG")
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-      - name: Install analyzer dependencies
-        run: opam install . --deps-only --with-test --yes
-      - name: Build and test analyzer
-        run: opam exec -- dune build @install @runtest --force
-      - name: Build and test containment helpers
-        run: |
-          cargo test --locked --manifest-path helpers/Cargo.toml --workspace --all-targets
-          cargo build --locked --release --manifest-path helpers/Cargo.toml --workspace
-      - name: Build ad-hoc code-signed macOS VM shim
-        if: runner.os == 'macOS'
-        shell: bash
-        run: sh helpers/macos/build-shim.sh _release/workflow-verifier-vm-shim
-      - name: Create deterministic release package
-        shell: bash
-        env:
-          RELEASE_VERSION: ${{ steps.version.outputs.version }}
-          RELEASE_PLATFORM: ${{ matrix.platform }}
-          RELEASE_ARCHIVE: ${{ matrix.archive }}
-          ANALYZER_PATH: ${{ matrix.analyzer }}
-          OCI_HELPER_PATH: ${{ matrix.oci }}
-          NATIVE_HELPER_PATH: ${{ matrix.native }}
-          NATIVE_HELPER_NAME: ${{ matrix.native_name }}
-        run: |
-          analyzer_name="workflow-verifier${ANALYZER_PATH##*workflow-verifier}"
-          materialized_analyzer="_release/package-input/$analyzer_name"
-          python -B scripts/materialize_release_input.py \
-            --source "$ANALYZER_PATH" \
-            --destination "$materialized_analyzer"
-          ANALYZER_PATH="$materialized_analyzer"
-          files=(
-            --file "bin/workflow-verifier${ANALYZER_PATH##*workflow-verifier}=$ANALYZER_PATH"
-            --file "bin/workflow-verifier-oci-helper${OCI_HELPER_PATH##*workflow-verifier-oci-helper}=$OCI_HELPER_PATH"
-            --file "bin/$NATIVE_HELPER_NAME=$NATIVE_HELPER_PATH"
-            --file "schema/config-v1.schema.json=schema/config-v1.schema.json"
-            --file "schema/report-v1.schema.json=schema/report-v1.schema.json"
-            --file "LICENSE-MIT=LICENSE-MIT"
-            --file "LICENSE-APACHE=LICENSE-APACHE"
-            --file "README.md=README.md"
-          )
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            files+=(--file "bin/workflow-verifier-vm-shim=_release/workflow-verifier-vm-shim")
-          fi
-          python -B scripts/package_release.py \
-            --platform "$RELEASE_PLATFORM" \
-            --version "$RELEASE_VERSION" \
-            --output "dist/workflow-verifier-$RELEASE_VERSION-$RELEASE_PLATFORM$RELEASE_ARCHIVE" \
-            "${files[@]}"
-      - name: Upload immutable package
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: release-${{ matrix.platform }}
-          path: dist/*
-          if-no-files-found: error
+  quality:
+    needs: release_evidence
+    uses: ./.github/workflows/ci.yml
+    with:
+      performance_baseline: ${{ needs.release_evidence.outputs.subject_commit }}
+    permissions:
+      contents: read
+
+  mutation:
+    needs: release_evidence
+    uses: ./.github/workflows/mutation.yml
+    permissions:
+      contents: read
 
   assemble:
-    name: Assemble dry-run release bundle
-    needs: [build, release_evidence]
+    name: Promote exact verified assets without rebuilding
+    needs: release_evidence
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -176,6 +82,10 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - name: Verify release identity
         id: version
         shell: bash
@@ -184,32 +94,21 @@ jobs:
         run: |
           version=$(python -B scripts/verify_release_version.py --tag "$RELEASE_TAG")
           echo "version=$version" >> "$GITHUB_OUTPUT"
-      - name: Download immutable packages
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          pattern: release-*
-          path: dist
-          merge-multiple: true
-      - name: Stage verified v2 evidence
+      - name: Stage every digest-checked v3 reference
         run: >-
           python -B scripts/stage_release_evidence.py
-          --manifest release-evidence/release-evidence-v2.json
-          --destination dist
-      - name: Generate deterministic SBOM and checksums
+          --manifest release-evidence/release-evidence-v3.json
+          --destination _release/staged
+      - name: Create public assets and deterministic evidence bundle
         shell: bash
         env:
           RELEASE_VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         run: |
-          mapfile -t packages < <(find dist -maxdepth 1 -type f \( -name '*.tar.gz' -o -name '*.zip' \) -print | LC_ALL=C sort)
-          test "${#packages[@]}" -eq 4
-          mapfile -t evidence < <(find dist -maxdepth 1 -type f ! -name '*.tar.gz' ! -name '*.zip' -print | LC_ALL=C sort)
-          test "${#evidence[@]}" -eq 10
-          python -B scripts/generate_sbom.py \
-            --version "$RELEASE_VERSION" \
-            --output dist/workflow-verifier.spdx.json \
-            --checksums dist/SHA256SUMS \
-            "${packages[@]}" "${evidence[@]}"
-      - name: Upload assembled dry-run bundle
+          python -B scripts/promote_release_assets.py             --staged _release/staged             --output dist             --version "$RELEASE_VERSION"
+          cp docs/release-notes-v0.1.0.md dist/release-notes-v0.1.0.md
+          python -B scripts/generate_release_index.py             --root dist             --index dist/release-index-v1.json             --checksums dist/SHA256SUMS             --tag "$RELEASE_TAG"
+      - name: Upload promotion-only release bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: release-bundle
@@ -217,18 +116,18 @@ jobs:
           if-no-files-found: error
 
   publish:
-    name: Sign, attest, and publish
+    name: Sign final index and publish exact assets
     needs: [assemble, mutation, quality, release_evidence]
     if: github.event_name == 'push' && github.ref_protected == true && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
     environment: release
     permissions:
-      contents: write
-      id-token: write
-      attestations: write
-      artifact-metadata: write
+      contents: write # Publish the immutable GitHub Release for the protected tag.
+      id-token: write # Obtain the short-lived OIDC identity used by Sigstore.
+      attestations: write # Create GitHub attestations for exact promoted bytes.
+      artifact-metadata: write # Associate attestations with uploaded artifacts.
     steps:
-      - name: Download assembled release bundle
+      - name: Download promotion-only release bundle
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: release-bundle
@@ -236,19 +135,16 @@ jobs:
       - name: Install pinned Cosign
         uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
         with:
-          cosign-release: v3.0.6
-      - name: Sign checksum manifest with keyless Sigstore identity
+          cosign-release: v3.1.3
+      - name: Sign final checksum and release-index layers
         shell: bash
-        run: cosign sign-blob --yes --bundle dist/SHA256SUMS.sigstore.json dist/SHA256SUMS
-      - name: Attest build provenance
+        run: |
+          cosign sign-blob --yes             --bundle dist/SHA256SUMS.sigstore.json             dist/SHA256SUMS
+          cosign sign-blob --yes             --bundle dist/release-index-v1.json.sigstore.json             dist/release-index-v1.json
+      - name: Attest exact promoted bytes
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-checksums: dist/SHA256SUMS
-      - name: Attest SPDX SBOM
-        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        with:
-          subject-checksums: dist/SHA256SUMS
-          sbom-path: dist/workflow-verifier.spdx.json
       - name: Publish immutable GitHub release
         shell: bash
         env:
@@ -256,5 +152,6 @@ jobs:
         run: |
           prerelease=()
           if [[ "$GITHUB_REF_NAME" == *-* ]]; then prerelease=(--prerelease); fi
-          gh release create "$GITHUB_REF_NAME" dist/* \
-            --verify-tag --generate-notes "${prerelease[@]}"
+          mapfile -d '' assets < <(find dist -maxdepth 1 -type f -print0 | sort -z)
+          test "${#assets[@]}" -gt 10
+          gh release create "$GITHUB_REF_NAME" "${assets[@]}"             --verify-tag             --notes-file dist/release-notes-v0.1.0.md             "${prerelease[@]}"

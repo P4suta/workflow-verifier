@@ -1,13 +1,14 @@
 from __future__ import annotations
 
+import hashlib
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 from unittest import mock
 
 from scripts.fetch_official_projects import _snapshot_digest, load_manifest
-from scripts.official_compat import analyze
+from scripts.official_compat import _canonical, _run_analyzer, _verify_expected, analyze
 
 
 def report(provider: str, *, rule_id: str = "WV-SUPPLY-001") -> bytes:
@@ -31,7 +32,7 @@ def report(provider: str, *, rule_id: str = "WV-SUPPLY-001") -> bytes:
         "inputs": [{"digest": "sha256:" + "b" * 64, "path": "ci.yml"}],
         "persona": "audit",
         "properties": [],
-        "schema": "report-v1",
+        "schema": "report-v2",
         "summary": {},
         "tool": {"name": "workflow-verifier", "version": "0.1.0"},
     }
@@ -39,6 +40,17 @@ def report(provider: str, *, rule_id: str = "WV-SUPPLY-001") -> bytes:
 
 
 class OfficialCompatibilityTests(unittest.TestCase):
+    @mock.patch("scripts.official_compat.subprocess.run")
+    def test_analyzer_uses_the_strict_explicit_cache_contract(self, run: mock.Mock) -> None:
+        run.return_value = mock.Mock(returncode=0, stdout=report("github"), stderr=b"")
+
+        result = _run_analyzer(Path("workflow-verifier"), Path("."), "fixture", 1e18)
+
+        self.assertEqual(result, report("github"))
+        arguments = run.call_args.args[0]
+        self.assertEqual(arguments[1:4], ["check", "--cache-mode", "off"])
+        self.assertNotIn("--no-cache", arguments)
+
     def fixture(self, root: Path) -> tuple[Path, Path, Path]:
         manifest = Path("official/official-projects-v1.json").resolve()
         document, manifest_digest = load_manifest(manifest)
@@ -85,16 +97,54 @@ class OfficialCompatibilityTests(unittest.TestCase):
 
             def run(_analyzer: Path, _cwd: Path, target: str, _deadline: float) -> bytes:
                 acquisition = json.loads((snapshots / "acquisition-v1.json").read_text())
-                provider = next(item["provider"] for item in acquisition["projects"] if item["id"] == target)
+                provider = next(
+                    item["provider"] for item in acquisition["projects"] if item["id"] == target
+                )
                 return report(provider)
 
             with mock.patch("scripts.official_compat._run_analyzer", side_effect=run):
                 result = analyze(manifest, snapshots, analyzer)
             self.assertTrue(result["passed"])
             self.assertEqual(result["repositories"], 8)
-            self.assertEqual(result["providers"], {provider: 2 for provider in ("github", "gitlab", "azure", "circleci")})
+            self.assertEqual(
+                result["providers"],
+                {provider: 2 for provider in ("github", "gitlab", "azure", "circleci")},
+            )
             self.assertTrue(all(item["diagnostics"]["warning"] == 1 for item in result["projects"]))
+            self.assertTrue(
+                all(item["semantic_digest"].startswith("sha256:") for item in result["projects"])
+            )
             self.assertNotIn("message", json.dumps(result))
+
+    def test_expected_baseline_ignores_only_platform_bound_report_digests(self) -> None:
+        base = {
+            "projects": [
+                {
+                    "id": "fixture",
+                    "report_digest": "sha256:" + "1" * 64,
+                    "report_sha256": "sha256:" + "2" * 64,
+                    "semantic_digest": "sha256:" + "3" * 64,
+                }
+            ],
+            "schema": "official-compat-v1",
+        }
+        actual = json.loads(json.dumps(base))
+        actual["projects"][0]["report_digest"] = "sha256:" + "4" * 64
+        actual["projects"][0]["report_sha256"] = "sha256:" + "5" * 64
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            expected = root / "expected.json"
+            expected_raw = _canonical(base)
+            expected.write_bytes(expected_raw)
+            checksum = root / "expected.sha256"
+            checksum.write_text(
+                "sha256:" + hashlib.sha256(expected_raw).hexdigest() + "\n",
+                encoding="ascii",
+            )
+            _verify_expected(_canonical(actual), expected, checksum)
+            actual["projects"][0]["semantic_digest"] = "sha256:" + "6" * 64
+            with self.assertRaisesRegex(ValueError, "differs"):
+                _verify_expected(_canonical(actual), expected, checksum)
 
     def test_yaml_false_positive_nondeterminism_and_snapshot_tamper_fail(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -104,7 +154,9 @@ class OfficialCompatibilityTests(unittest.TestCase):
 
             with mock.patch(
                 "scripts.official_compat._run_analyzer",
-                side_effect=lambda _a, _c, target, _d: report(providers[target], rule_id="YAML-SYNTAX"),
+                side_effect=lambda _a, _c, target, _d: report(
+                    providers[target], rule_id="YAML-SYNTAX"
+                ),
             ):
                 with self.assertRaisesRegex(ValueError, "valid upstream YAML"):
                     analyze(manifest, snapshots, analyzer)

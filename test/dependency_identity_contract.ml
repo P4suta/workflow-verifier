@@ -22,7 +22,8 @@ let classification_cases_test () =
   in
   List.iter
     (fun (reference, expected) ->
-      expect ("unexpected classification for " ^ reference)
+      expect
+        ("unexpected classification for " ^ reference)
         (classify_reference reference = expected))
     cases
 
@@ -45,7 +46,8 @@ let digest_cases_test () =
 
 let tests =
   [
-    ("dependency references have one canonical classification", classification_cases_test);
+    ( "dependency references have one canonical classification",
+      classification_cases_test );
     ("content digests are exact SHA-256 identities", digest_cases_test);
   ]
 

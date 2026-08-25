@@ -75,8 +75,7 @@ let index graph =
              if not (Hashtbl.mem entrypoints id) then
                let predecessors =
                  Option.value ~default:[] (Hashtbl.find_opt incoming id)
-                 |> List.filter (fun (edge : Ir.edge) ->
-                     edge.kind = Ir.Control)
+                 |> List.filter (fun (edge : Ir.edge) -> edge.kind = Ir.Control)
                  |> List.map (fun (edge : Ir.edge) -> edge.from_)
                in
                let updated =
@@ -144,7 +143,7 @@ let shortest_path_indexed ?edge_kinds ?(avoid = []) indexed source target =
     Hashtbl.replace visited source ();
     Queue.add source queue;
     let found = ref false in
-    while not !found && not (Queue.is_empty queue) do
+    while (not !found) && not (Queue.is_empty queue) do
       let current = Queue.take queue in
       if current = target then found := true
       else
@@ -168,8 +167,7 @@ let shortest_path_indexed ?edge_kinds ?(avoid = []) indexed source target =
           Option.bind (Hashtbl.find_opt parent id) (fun previous ->
               reconstruct previous (id :: path))
       in
-      reconstruct target []
-      |> Option.map (List.filter_map (find_node indexed))
+      reconstruct target [] |> Option.map (List.filter_map (find_node indexed))
 
 let shortest_path ?edge_kinds ?(avoid = []) graph source target =
   shortest_path_indexed ?edge_kinds ~avoid (index graph) source target
@@ -188,8 +186,7 @@ let reachable_from_indexed ?edge_kinds ?(avoid = []) indexed source =
       |> List.iter (fun (edge : Ir.edge) ->
           let child = edge.to_ in
           if
-            (not (Hashtbl.mem visited child))
-            && not (Hashtbl.mem avoided child)
+            (not (Hashtbl.mem visited child)) && not (Hashtbl.mem avoided child)
           then (
             Hashtbl.replace visited child ();
             Queue.add child queue))
@@ -227,8 +224,7 @@ let cycles_indexed ?edge_kinds indexed =
       in
       let cycles =
         List.fold_left
-          (fun cycles child ->
-            visit (id :: path) (id :: visiting) child cycles)
+          (fun cycles child -> visit (id :: path) (id :: visiting) child cycles)
           cycles successors
       in
       Hashtbl.replace visited id ();

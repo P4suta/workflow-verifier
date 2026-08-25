@@ -7,15 +7,14 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
 import re
 import stat
 import subprocess
 import sys
 import tempfile
 import time
+from pathlib import Path, PurePosixPath
 from typing import Any
-
 
 MODES = ("cold", "incremental", "warm")
 ROOT_FIELDS = {"schema", "environment", "scenarios"}
@@ -113,8 +112,7 @@ def _run(argv: list[str], cwd: Path, timeout: int, environment: dict[str, str], 
             cwd=cwd,
             env=environment,
             stdin=subprocess.DEVNULL,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             shell=False,
             timeout=timeout,
             check=False,
@@ -222,7 +220,13 @@ def measure(
                 }
             )
             for index, command in enumerate(specification["setup"]):
-                _run(command, cwd, specification["timeout_seconds"], environment, f"{identifier}/{mode} setup {index}")
+                _run(
+                    command,
+                    cwd,
+                    specification["timeout_seconds"],
+                    environment,
+                    f"{identifier}/{mode} setup {index}",
+                )
             durations: list[int] = []
             for sample in range(samples):
                 for index, command in enumerate(specification["before_each"]):

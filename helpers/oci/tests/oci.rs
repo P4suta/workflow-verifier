@@ -2,12 +2,17 @@ use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 use workflow_verifier_oci_helper::{build_arguments, source_manifest};
-use workflow_verifier_runner_protocol::{Control, Limits, PlanStatus, Step, ValidatedPlan};
+use workflow_verifier_runner_protocol::{
+    Control, Limits, PlanStatus, RuntimeProfile, Step, ValidatedPlan,
+};
 
 fn plan() -> ValidatedPlan {
     ValidatedPlan {
         digest: "sha256:test".to_owned(),
         backend: "oci:docker".to_owned(),
+        scenario_digest: format!("sha256:{}", "2".repeat(64)),
+        provider_profile: "github-actions-v1".to_owned(),
+        selected_jobs: vec!["build".to_owned()],
         controls: vec![
             Control::SourceReadOnly,
             Control::ScratchOverlay,
@@ -19,12 +24,22 @@ fn plan() -> ValidatedPlan {
         status: PlanStatus::Complete,
         source_digest: "sha256:source".to_owned(),
         lock_digest: "sha256:lock".to_owned(),
+        runtime: RuntimeProfile {
+            kind: "oci-capsule".to_owned(),
+            runner_platform: "linux-x86_64".to_owned(),
+            workload_digest: format!("sha256:{}", "0".repeat(64)),
+            rootfs_digest: Some(format!("sha256:{}", "0".repeat(64))),
+            helper_digest: None,
+            boot_digest: None,
+            capability_fingerprint: None,
+        },
         limits: Limits {
             cpu_seconds: 5,
             memory_mb: 256,
             processes: 7,
             output_bytes: 4096,
         },
+        network_destinations: Vec::new(),
         secret_names: vec!["TOKEN".to_owned()],
         dependencies: Vec::new(),
         steps: Vec::new(),
@@ -76,7 +91,7 @@ fn source_manifest_matches_the_shared_ocaml_fixture() {
     let repository = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let root = repository.join("test/fixtures/protocol/source-tree");
     let expected =
-        std::fs::read_to_string(repository.join("test/fixtures/protocol/source-manifest-v1.json"))
+        std::fs::read_to_string(repository.join("test/fixtures/protocol/source-manifest-v2.json"))
             .expect("shared source manifest fixture")
             .trim()
             .to_owned();
@@ -84,6 +99,6 @@ fn source_manifest_matches_the_shared_ocaml_fixture() {
     assert_eq!(manifest.canonical_json, expected);
     assert_eq!(
         manifest.digest,
-        "sha256:6d8438471c06fc1f4199de690117a6c60da9bee4c8d9421ad2333a7847033b48"
+        "sha256:d70c409989907fb9194417d737ec25d8dd56e7ab36911dbf5b43db5d620b3594"
     );
 }

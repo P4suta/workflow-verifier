@@ -1,0 +1,242 @@
+name: Sign Windows payload
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_commit:
+        description: Exact 40-hex product commit C
+        required: true
+        type: string
+      artifact_run_id:
+        description: Run containing the reproducible unsigned Windows payload
+        required: true
+        type: string
+      version:
+        description: Exact release version without v
+        required: true
+        default: 0.1.0
+        type: string
+      payload_sha256:
+        description: SHA-256 of windows-unsigned-payload.zip
+        required: true
+        type: string
+      publisher:
+        description: Exact expected Authenticode publisher subject
+        required: true
+        type: string
+
+permissions:
+  actions: read # Download the exact unsigned payload from its authorized run.
+  contents: read
+
+concurrency:
+  group: windows-signing-${{ inputs.candidate_commit }}
+  cancel-in-progress: false
+
+jobs:
+  sign:
+    name: Sign and verify immutable Windows payload
+    runs-on: windows-2025
+    environment: windows-signing
+    timeout-minutes: 45
+    permissions:
+      actions: read # Download only the candidate artifact from the authenticated run.
+      contents: read # Read the exact candidate commit without persisting credentials.
+      id-token: write # Obtain the short-lived OIDC identity used by Sigstore.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.candidate_commit }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - name: Reject ambiguous signing identity
+        shell: pwsh
+        env:
+          CANDIDATE: ${{ inputs.candidate_commit }}
+          ARTIFACT_RUN_ID: ${{ inputs.artifact_run_id }}
+          PAYLOAD_SHA256: ${{ inputs.payload_sha256 }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          WORKFLOW_COMMIT: ${{ github.sha }}
+          WORKFLOW_REF: ${{ github.ref }}
+        run: |
+          if ($env:CANDIDATE -notmatch '^[0-9a-f]{40}$') { throw 'candidate_commit must be exact lowercase 40-hex' }
+          if ($env:ARTIFACT_RUN_ID -notmatch '^[1-9][0-9]*$') { throw 'artifact_run_id must be a positive decimal run id' }
+          if ($env:PAYLOAD_SHA256 -notmatch '^[0-9a-f]{64}$') { throw 'payload_sha256 must be exact lowercase SHA-256' }
+          if ($env:RELEASE_VERSION -notmatch '^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$') { throw 'version must be exact release SemVer' }
+          if ($env:WORKFLOW_REF -ne 'refs/heads/main' -or $env:WORKFLOW_COMMIT -ne $env:CANDIDATE) {
+            throw 'Windows signing must run from main at the exact product commit C'
+          }
+          if ((python --version) -ne 'Python 3.13.7') { throw 'Python 3.13.7 is required' }
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne $env:CANDIDATE) { throw "checkout $actual does not equal candidate $env:CANDIDATE" }
+          $validatedVersion = (python -B scripts/verify_release_version.py --tag "v$env:RELEASE_VERSION").Trim()
+          if ($validatedVersion -ne $env:RELEASE_VERSION) { throw 'repository version does not match signing input' }
+      - name: Authenticate the candidate workflow run
+        shell: pwsh
+        env:
+          CANDIDATE: ${{ inputs.candidate_commit }}
+          ARTIFACT_RUN_ID: ${{ inputs.artifact_run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $run = gh api "repos/$env:GITHUB_REPOSITORY/actions/runs/$env:ARTIFACT_RUN_ID" | ConvertFrom-Json -Depth 20
+          if ($run.head_sha -ne $env:CANDIDATE) { throw 'artifact run is bound to a different commit' }
+          if ($run.path -ne '.github/workflows/candidate.yml') { throw 'artifact run was not produced by candidate.yml' }
+          if ($run.event -ne 'workflow_dispatch' -or $run.conclusion -ne 'success') {
+            throw 'candidate artifact run is not a successful workflow_dispatch run'
+          }
+      - name: Download immutable unsigned payload
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: candidate-build-windows-x86_64-${{ inputs.candidate_commit }}
+          path: unsigned
+          run-id: ${{ inputs.artifact_run_id }}
+          github-token: ${{ github.token }}
+      - name: Authenticate and extract unsigned payload
+        shell: pwsh
+        env:
+          EXPECTED: ${{ inputs.payload_sha256 }}
+        run: |
+          $archive = Get-Item -LiteralPath unsigned/windows-unsigned-payload.zip
+          if ($archive.LinkType) { throw 'unsigned payload archive must not be a link' }
+          $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $archive.FullName).Hash.ToLowerInvariant()
+          if ($actual -ne $env:EXPECTED) { throw "unsigned payload digest mismatch: $actual" }
+          Expand-Archive -LiteralPath $archive.FullName -DestinationPath signing-input
+          $executables = @(Get-ChildItem -LiteralPath signing-input -Filter *.exe -File -Recurse)
+          $expected = @(
+            'workflow-verifier-vm-agent.exe',
+            'workflow-verifier-windows-helper.exe',
+            'workflow-verifier.exe'
+          )
+          $actualNames = @($executables.Name | Sort-Object -Unique)
+          if ($executables.Count -ne 3 -or (Compare-Object $expected $actualNames)) {
+            throw 'unsigned payload must contain exactly the analyzer and both Windows helpers'
+          }
+          New-Item -ItemType Directory -Path signables | Out-Null
+          foreach ($file in $executables) {
+            if ((Get-AuthenticodeSignature -LiteralPath $file.FullName).Status -ne 'NotSigned') {
+              throw "input is already signed: $($file.FullName)"
+            }
+            Copy-Item -LiteralPath $file.FullName -Destination (Join-Path signables $file.Name)
+          }
+      - name: Malware-scan, batch-sign, and timestamp through SSL.com cloud HSM
+        uses: SSLcom/esigner-codesign@cf5f6c1d38ad10f47e3ed9aca873f429b1a8d85b # v1.3.2
+        with:
+          command: batch_sign
+          username: ${{ secrets.ES_USERNAME }}
+          password: ${{ secrets.ES_PASSWORD }}
+          credential_id: ${{ secrets.ES_CREDENTIAL_ID }}
+          totp_secret: ${{ secrets.ES_TOTP_SECRET }}
+          dir_path: ${{ github.workspace }}/signables
+          output_path: ${{ github.workspace }}/signed
+          malware_block: true
+          override: false
+          environment_name: PROD
+          clean_logs: true
+          jvm_max_memory: 2048M
+          signing_method: v2
+      - name: Independently verify chain, publisher, timestamp, and payload inventory
+        shell: pwsh
+        env:
+          EXPECTED_PUBLISHER: ${{ inputs.publisher }}
+        run: |
+          $signTool = Get-ChildItem 'C:/Program Files (x86)/Windows Kits/10/bin' -Filter signtool.exe -File -Recurse |
+            Where-Object { $_.FullName -match '/x64/' -or $_.FullName -match '\\x64\\' } |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1
+          if (-not $signTool) { throw 'Windows SDK SignTool was not found' }
+          $executables = @(Get-ChildItem -LiteralPath signed -Filter *.exe -File -Recurse)
+          $expectedNames = @(
+            'workflow-verifier-vm-agent.exe',
+            'workflow-verifier-windows-helper.exe',
+            'workflow-verifier.exe'
+          )
+          if ($executables.Count -ne 3 -or (Compare-Object $expectedNames @($executables.Name | Sort-Object -Unique))) {
+            throw 'signed output does not contain the exact executable inventory'
+          }
+          foreach ($file in $executables) {
+            $signature = Get-AuthenticodeSignature -LiteralPath $file.FullName
+            if ($signature.Status -ne 'Valid') { throw "invalid Authenticode signature: $($file.FullName)" }
+            if ($signature.SignerCertificate.Subject -ne $env:EXPECTED_PUBLISHER) {
+              throw "publisher mismatch: $($signature.SignerCertificate.Subject)"
+            }
+            if (-not $signature.TimeStamperCertificate) { throw "missing RFC3161 timestamp: $($file.FullName)" }
+            & $signTool.FullName verify /pa /all /v $file.FullName
+            if ($LASTEXITCODE -ne 0) { throw "SignTool verification failed: $($file.FullName)" }
+          }
+      - name: Repackage the verified signed bytes deterministically
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          New-Item -ItemType Directory -Path dist | Out-Null
+          python -B scripts/candidate_artifacts.py repackage-windows `
+            --unsigned-archive unsigned/windows-unsigned-payload.zip `
+            --signed-directory signed `
+            --version $env:RELEASE_VERSION `
+            --output "dist/workflow-verifier-$env:RELEASE_VERSION-windows-x86_64.zip" `
+            --helpers-output "dist/workflow-verifier-helpers-$env:RELEASE_VERSION-windows-x86_64.zip"
+      - name: Install pinned Cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.1.3
+      - name: Sigstore-sign and verify final Windows archives
+        shell: pwsh
+        env:
+          CANDIDATE: ${{ inputs.candidate_commit }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          $identity = "https://github.com/$env:GITHUB_WORKFLOW_REF"
+          $archives = @(
+            "dist/workflow-verifier-$env:RELEASE_VERSION-windows-x86_64.zip",
+            "dist/workflow-verifier-helpers-$env:RELEASE_VERSION-windows-x86_64.zip"
+          )
+          foreach ($archive in $archives) {
+            cosign sign-blob --yes --bundle "$archive.sigstore.json" $archive
+            if ($LASTEXITCODE -ne 0) { throw "Cosign signing failed: $archive" }
+            cosign verify-blob --offline `
+              --bundle "$archive.sigstore.json" `
+              --certificate-identity $identity `
+              --certificate-oidc-issuer https://token.actions.githubusercontent.com `
+              --certificate-github-workflow-repository $env:GITHUB_REPOSITORY `
+              --certificate-github-workflow-sha $env:CANDIDATE `
+              $archive
+            if ($LASTEXITCODE -ne 0) { throw "Cosign verification failed: $archive" }
+          }
+      - name: Re-expand and independently verify the final product archive
+        shell: pwsh
+        env:
+          EXPECTED_PUBLISHER: ${{ inputs.publisher }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          $archive = "dist/workflow-verifier-$env:RELEASE_VERSION-windows-x86_64.zip"
+          Expand-Archive -LiteralPath $archive -DestinationPath final-check
+          $executables = @(Get-ChildItem -LiteralPath final-check -Filter *.exe -File -Recurse)
+          if ($executables.Count -ne 3) { throw 'final product archive lost signed executables' }
+          foreach ($file in $executables) {
+            $signature = Get-AuthenticodeSignature -LiteralPath $file.FullName
+            if ($signature.Status -ne 'Valid') { throw "final archive has invalid signature: $($file.Name)" }
+            if ($signature.SignerCertificate.Subject -ne $env:EXPECTED_PUBLISHER) { throw "final publisher mismatch: $($file.Name)" }
+            if (-not $signature.TimeStamperCertificate) { throw "final timestamp missing: $($file.Name)" }
+          }
+          New-Item -ItemType Directory -Path dist/executables | Out-Null
+          Get-ChildItem -LiteralPath signed -Filter *.exe -File -Recurse | ForEach-Object {
+            Copy-Item -LiteralPath $_.FullName -Destination (Join-Path dist/executables $_.Name)
+          }
+          $records = @()
+          Get-ChildItem -LiteralPath signed -Filter *.exe -File -Recurse | Sort-Object Name | ForEach-Object {
+            $records += "$((Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLowerInvariant())  executables/$($_.Name)"
+          }
+          Get-ChildItem -LiteralPath dist -File | Sort-Object Name | ForEach-Object {
+            $records += "$((Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLowerInvariant())  $($_.Name)"
+          }
+          $records | Set-Content -LiteralPath dist/windows-signing-SHA256SUMS -Encoding utf8NoBOM
+      - name: Upload traceable signed transformation
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: windows-signed-${{ inputs.candidate_commit }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 30

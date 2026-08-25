@@ -71,5 +71,4 @@ let solve_indexed indexed =
   { values; complete = true }
 
 let solve graph = solve_indexed (Graph_algorithms.index graph)
-
 let value_at solution id = value solution.values id

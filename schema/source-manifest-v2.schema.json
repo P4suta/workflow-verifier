@@ -1,0 +1,27 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/source-manifest-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": { "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" }, "path": { "minLength": 1, "not": { "pattern": "(^/|^[A-Za-z]:|(^|/)\\.\\.?(/|$))" }, "type": "string" } },
+  "additionalProperties": false,
+  "properties": {
+    "digest": { "$ref": "#/$defs/digest" },
+    "entries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": { "digest": { "$ref": "#/$defs/digest" }, "executable": { "type": "boolean" }, "kind": { "enum": ["regular", "symlink"] }, "path": { "$ref": "#/$defs/path" }, "size": { "minimum": 0, "type": "integer" }, "target": { "anyOf": [{ "$ref": "#/$defs/path" }, { "type": "null" }] } },
+        "required": ["digest", "executable", "kind", "path", "size", "target"],
+        "type": "object"
+      },
+      "maxItems": 100000,
+      "type": "array"
+    },
+    "exclusion_policy_digest": { "$ref": "#/$defs/digest" },
+    "exclusions": { "items": { "additionalProperties": false, "properties": { "path": { "$ref": "#/$defs/path" }, "reason": { "enum": ["product-default", "trusted-policy"] } }, "required": ["path", "reason"], "type": "object" }, "type": "array" },
+    "limits": { "additionalProperties": false, "properties": { "max_entries": { "minimum": 100000, "type": "integer" }, "max_file_bytes": { "minimum": 16777216, "type": "integer" }, "max_snapshot_bytes": { "minimum": 4294967296, "type": "integer" } }, "required": ["max_entries", "max_file_bytes", "max_snapshot_bytes"], "type": "object" },
+    "schema": { "const": "source-manifest-v2" },
+    "total_size": { "minimum": 0, "type": "integer" }
+  },
+  "required": ["schema", "digest", "entries", "exclusions", "exclusion_policy_digest", "limits", "total_size"],
+  "title": "workflow-verifier immutable source manifest v2",
+  "type": "object"
+}

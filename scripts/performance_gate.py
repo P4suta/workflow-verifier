@@ -4,19 +4,18 @@
 from __future__ import annotations
 
 import argparse
-from decimal import Decimal, ROUND_HALF_UP
-from fractions import Fraction
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import stat
 import sys
 import tempfile
+from decimal import ROUND_HALF_UP, Decimal
+from fractions import Fraction
+from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
-
 
 MODES = ("cold", "incremental", "warm")
 ROOT_FIELDS = {
@@ -104,7 +103,9 @@ def _review_url(value: Any, label: str) -> str:
     return value
 
 
-def _validate(document: dict[str, Any], label: str) -> tuple[dict[str, dict[str, list[int]]], dict[tuple[str, str], dict[str, str]]]:
+def _validate(
+    document: dict[str, Any], label: str
+) -> tuple[dict[str, dict[str, list[int]]], dict[tuple[str, str], dict[str, str]]]:
     _exact_fields(document, ROOT_FIELDS, label)
     if document["schema"] != "performance-v1":
         raise ValueError(f"{label}.schema must be performance-v1")
@@ -135,7 +136,9 @@ def _validate(document: dict[str, Any], label: str) -> tuple[dict[str, dict[str,
             raise ValueError(f"{label} contains duplicate scenario {identifier}")
         modes = scenario["modes"]
         if not isinstance(modes, dict) or set(modes) != set(MODES):
-            raise ValueError(f"{scenario_label}.modes must contain exactly cold, incremental, and warm")
+            raise ValueError(
+                f"{scenario_label}.modes must contain exactly cold, incremental, and warm"
+            )
         parsed_modes: dict[str, list[int]] = {}
         for mode in MODES:
             measurement = modes[mode]
@@ -223,7 +226,9 @@ def compare(baseline_path: Path, current_path: Path) -> dict[str, Any]:
     stale = sorted(set(explanations) - regressions)
     if stale:
         scenario, mode = stale[0]
-        raise ValueError(f"current explanation for {scenario}/{mode} is stale because no regression exists")
+        raise ValueError(
+            f"current explanation for {scenario}/{mode} is stale because no regression exists"
+        )
     failures = [
         f"{row['scenario']}/{row['mode']} regressed by {row['change_percent']}% without review"
         for row in comparisons

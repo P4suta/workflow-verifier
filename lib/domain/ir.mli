@@ -85,7 +85,6 @@ type issue = { code : string; message : string; node_ids : string list }
 
 val compare_node : node -> node -> int
 val compare_edge : edge -> edge -> int
-
 val provider_name : provider -> string
 val phase_name : phase -> string
 val kind_name : node_kind -> string

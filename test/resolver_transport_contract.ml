@@ -18,7 +18,12 @@ let dependency ?(locator = Frontend_intf.Direct_reference) provider kind
   }
 
 let response ?(status = 200) url body =
-  { Resolver_transport.status; body; effective_url = url }
+  {
+    Resolver_transport.status;
+    body;
+    effective_url = url;
+    peer_ip = "93.184.216.34";
+  }
 
 let github_action_test () =
   let revision = String.make 40 'a' and requests = ref [] in
@@ -337,6 +342,7 @@ let direct_and_network_boundary_test () =
         Resolver_transport.status = 200;
         body = "stolen";
         effective_url = "https://evil.example/redirect";
+        peer_ip = "93.184.216.34";
       }
   in
   let redirected =

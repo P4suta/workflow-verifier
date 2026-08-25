@@ -124,21 +124,20 @@ let property_precedes value index previous =
 let quote_starts_node value index =
   match previous_non_separation value index with
   | None -> true
-  | Some previous ->
-    let separated = previous + 1 < index in
-    match value.[previous] with
-    | '[' | '{' | ',' -> true
-    | '-' | '?' -> separated
-    | ':' -> separated || flow_depth_before value index > 0
-    | _ -> property_precedes value index previous
+  | Some previous -> (
+      let separated = previous + 1 < index in
+      match value.[previous] with
+      | '[' | '{' | ',' -> true
+      | '-' | '?' -> separated
+      | ':' -> separated || flow_depth_before value index > 0
+      | _ -> property_precedes value index previous)
 
 let quoted_step value limit index quote =
   let next = succ index in
   match (quote, value.[index]) with
   | Double_quote, '\\' -> (min limit (succ next), Some Double_quote)
   | Double_quote, '"' -> (next, None)
-  | Single_quote, '\''
-    when next < limit && value.[next] = '\'' ->
+  | Single_quote, '\'' when next < limit && value.[next] = '\'' ->
       (succ next, Some Single_quote)
   | Single_quote, '\'' -> (next, None)
   | _ -> (next, Some quote)
@@ -154,8 +153,8 @@ let separated_comment_start value =
           loop next quote
       | None ->
           let character = value.[index] in
-          if character = '#' && (index = 0 || separation value.[pred index]) then
-            Some index
+          if character = '#' && (index = 0 || separation value.[pred index])
+          then Some index
           else if character = '"' && quote_starts_node value index then
             loop (succ index) (Some Double_quote)
           else if character = '\'' && quote_starts_node value index then
@@ -180,7 +179,7 @@ let find_mapping_colons value =
       | Some quote ->
           let next, quote = quoted_step value limit index quote in
           loop next quote property_token depth answer
-      | None ->
+      | None -> (
           let character = value.[index] in
           if property_token then
             loop (succ index) None
@@ -202,7 +201,7 @@ let find_mapping_colons value =
                    && (succ index = String.length value
                       || separation value.[succ index]) ->
                 loop (succ index) None property_token depth (index :: answer)
-            | _ -> loop (succ index) None false depth answer
+            | _ -> loop (succ index) None false depth answer)
   in
   loop 0 None false 0 []
 
@@ -256,8 +255,7 @@ let plain_scalar_head raw =
   if fragment = "" then false
   else
     match fragment.[0] with
-    | '\'' | '"' | '[' | '{' | ']' | '}' | '*' | '&' | '!' | '#' ->
-        false
+    | '\'' | '"' | '[' | '{' | ']' | '}' | '*' | '&' | '!' | '#' -> false
     | _ ->
         not
           (Util.starts_with ~prefix:"---" fragment
@@ -291,7 +289,7 @@ let analyze_blocks file source_lines =
         let plain_continuation =
           match !active_plain_indent with
           | Some base_indent ->
-              line.indent > base_indent && not comment_only
+              line.indent > base_indent && (not comment_only)
               && find_mapping_colons line.raw = []
           | None -> false
         in
@@ -300,14 +298,16 @@ let analyze_blocks file source_lines =
           active_plain_indent := None;
           match classify_block_header line.raw with
           | Not_block ->
-              if plain_scalar_head line.raw && not (has_separated_comment line.raw)
+              if
+                plain_scalar_head line.raw
+                && not (has_separated_comment line.raw)
               then active_plain_indent := Some line.indent
           | Valid _ -> active_indent := Some line.indent
           | Invalid token_length ->
-            problems :=
-              issue file line line.indent token_length
-                "invalid block scalar header"
-              :: !problems))
+              problems :=
+                issue file line line.indent token_length
+                  "invalid block scalar header"
+                :: !problems))
     source_lines;
   { payload_lines; problems = List.rev !problems }
 
@@ -335,50 +335,48 @@ let validate_double_escapes file source source_lines payload_lines =
     let line = source_lines.(!line_index) in
     let character = source.[!index] in
     if payload_lines.(!line_index) then
-       index :=
-         if !line_index + 1 < Array.length source_lines then
-           source_lines.(!line_index + 1).start_byte
-         else String.length source
-     else (
-       (match !quote with
-       | None ->
-           let column = !index - line.start_byte in
-           if
-             character = '#'
-             && (column = 0 || separation line.raw.[pred column])
-           then index := line.stop_byte
-           else if character = '"' && quote_starts_node line.raw column then
-             quote := Some Double_quote
-           else if character = '\'' && quote_starts_node line.raw column then
-             quote := Some Single_quote
-       | Some Single_quote -> if character = '\'' then quote := None
-       | Some Double_quote ->
-           if character = '"' then quote := None
-           else if character = '\\' then
-             if succ !index < String.length source then
-               let escaped = source.[succ !index] in
-               let hex_stop =
-                 match escaped with
-                 | 'x' -> consume_hex (succ (succ !index)) 2
-                 | 'u' -> consume_hex (succ (succ !index)) 4
-                 | 'U' -> consume_hex (succ (succ !index)) 8
-                 | _ -> None
-               in
-               let simple =
-                 String.contains "0abtnvfre \"/\\N_LP" escaped
-                 || escaped = '\n' || escaped = '\r' || escaped = '\t'
-               in
-               if simple then incr index
-               else
-                 match hex_stop with
-                 | Some _ -> ()
-                 | None ->
-                     problems :=
-                       issue file source_lines.(!line_index)
-                         (!index - source_lines.(!line_index).start_byte)
-                         2 "invalid escape in a double-quoted scalar"
-                       :: !problems);
-       incr index)
+      index :=
+        if !line_index + 1 < Array.length source_lines then
+          source_lines.(!line_index + 1).start_byte
+        else String.length source
+    else (
+      (match !quote with
+      | None ->
+          let column = !index - line.start_byte in
+          if character = '#' && (column = 0 || separation line.raw.[pred column])
+          then index := line.stop_byte
+          else if character = '"' && quote_starts_node line.raw column then
+            quote := Some Double_quote
+          else if character = '\'' && quote_starts_node line.raw column then
+            quote := Some Single_quote
+      | Some Single_quote -> if character = '\'' then quote := None
+      | Some Double_quote -> (
+          if character = '"' then quote := None
+          else if character = '\\' then
+            if succ !index < String.length source then
+              let escaped = source.[succ !index] in
+              let hex_stop =
+                match escaped with
+                | 'x' -> consume_hex (succ (succ !index)) 2
+                | 'u' -> consume_hex (succ (succ !index)) 4
+                | 'U' -> consume_hex (succ (succ !index)) 8
+                | _ -> None
+              in
+              let simple =
+                String.contains "0abtnvfre \"/\\N_LP" escaped
+                || escaped = '\n' || escaped = '\r' || escaped = '\t'
+              in
+              if simple then incr index
+              else
+                match hex_stop with
+                | Some _ -> ()
+                | None ->
+                    problems :=
+                      issue file source_lines.(!line_index)
+                        (!index - source_lines.(!line_index).start_byte)
+                        2 "invalid escape in a double-quoted scalar"
+                      :: !problems));
+      incr index)
   done;
   List.rev !problems
 
@@ -554,12 +552,12 @@ let validate_inline_forms file source_lines payload_lines =
                  && (Util.contains ~needle:"{" token
                     || Util.contains ~needle:"}" token))
         then add line "invalid tag token";
-        (match words content with
+        match words content with
         | "-" :: tag :: _
           when Util.starts_with ~prefix:"!!" tag
                && Util.ends_with ~suffix:"," tag ->
             add line "tag cannot contain a block-context comma"
-        | _ -> ())))
+        | _ -> ()))
     source_lines;
   List.rev !problems
 
@@ -768,12 +766,12 @@ let validate_layout file source_lines payload_lines =
             if String.contains content '"' then quoted_mapping := None
         | None -> ());
         (match find_mapping_colons content with
-        | colon :: _ ->
+        | colon :: _ -> (
             let value =
               String.sub content (colon + 1) (String.length content - colon - 1)
               |> trim_left
             in
-            if String.length value > 0 && value.[0] = '"' then (
+            if String.length value > 0 && value.[0] = '"' then
               match closing_double_quote value with
               | Some closing ->
                   let tail =
@@ -790,8 +788,7 @@ let validate_layout file source_lines payload_lines =
                       (line.indent + colon + closing + 2)
                       "content follows a quoted scalar"
                   else if
-                    Util.starts_with ~prefix:"#" trimmed_tail
-                    && tail.[0] = '#'
+                    Util.starts_with ~prefix:"#" trimmed_tail && tail.[0] = '#'
                   then
                     add line
                       (line.indent + colon + closing + 2)
@@ -822,16 +819,17 @@ let validate_layout file source_lines payload_lines =
           | rest -> (saw_tab, rest)
         in
         match content |> String.to_seq |> List.of_seq with
-        | ('-' | '?' | ':') :: rest ->
+        | ('-' | '?' | ':') :: rest -> (
             let saw_tab, remainder = split_separation false rest in
-            (match (saw_tab, remainder) with
+            match (saw_tab, remainder) with
             | true, _ :: _ ->
                 let remainder = remainder |> List.to_seq |> String.of_seq in
                 if
                   indicator '-' remainder || indicator '?' remainder
                   || indicator ':' remainder
                   || find_mapping_colons remainder <> []
-                then add line line.indent "tab cannot indent a nested block node"
+                then
+                  add line line.indent "tab cannot indent a nested block node"
             | _ -> ())
         | _ -> ()))
     source_lines;

@@ -1,0 +1,39 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/doctor-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "backends": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "available": { "type": "boolean" },
+          "capabilities": { "items": { "type": "string" }, "type": "array", "uniqueItems": true },
+          "digest": { "anyOf": [{ "$ref": "#/$defs/digest" }, { "type": "null" }] },
+          "id": { "pattern": "^(oci:(docker|podman)|linux-native|windows-native|macos-vm)$", "type": "string" },
+          "path": { "type": ["string", "null"] },
+          "platform": { "minLength": 1, "type": "string" },
+          "protocol": { "const": "backend-attestation-v1/runner-v2/evidence-v2" },
+          "reasons": { "items": { "minLength": 1, "type": "string" }, "type": "array", "uniqueItems": true },
+          "required_features": { "items": { "minLength": 1, "type": "string" }, "type": "array", "uniqueItems": true },
+          "signature": { "enum": ["absent", "unverified", "trusted-digest", "authenticode-verified", "sigstore-verified"] },
+          "version": { "minLength": 1, "type": "string" }
+        },
+        "required": ["available", "capabilities", "digest", "id", "path", "platform", "protocol", "reasons", "required_features", "signature", "version"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "frontends": { "items": { "enum": ["github", "gitlab", "azure", "circleci"] }, "maxItems": 4, "minItems": 4, "type": "array", "uniqueItems": true },
+    "platform": { "minLength": 1, "type": "string" },
+    "resolver_network": { "type": "boolean" },
+    "sandbox_executor": { "type": "boolean" },
+    "schema": { "const": "doctor-v2" }
+  },
+  "required": ["backends", "frontends", "platform", "resolver_network", "sandbox_executor", "schema"],
+  "title": "workflow-verifier backend doctor v2",
+  "type": "object"
+}

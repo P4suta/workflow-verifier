@@ -1,0 +1,11 @@
+(install
+ (package workflow-verifier)
+ (section share)
+ (files
+  (manifest-v1.json as conformance/manifest-v1.json)
+  (vectors/json/valid-canonical.json
+   as
+   conformance/vectors/json/valid-canonical.json)
+  (vectors/json/invalid-duplicate-key.json
+   as
+   conformance/vectors/json/invalid-duplicate-key.json)))

@@ -1,84 +1,92 @@
-# Release process
+# Release procedure
 
-Release archives use the exact version in `dune-project`, prefixed with `v` for
-the tag. The opam file, Rust workspace and lockfile, CLI banner and cache key,
-resolver user agent, report identity, and changelog must match. Versions ending
-in `-dev` cannot be published.
+> macOS artifacts use ad-hoc code signatures plus Sigstore. They have no
+> Developer ID signature or Apple notarization and do not receive standard
+> Gatekeeper trust.
+>
+> The security review is a signed sole-maintainer self-audit. It is not an
+> independent audit.
 
-The release workflow builds Linux x86-64, Windows x86-64, macOS arm64, and
-macOS x86-64 packages. The deterministic packager fixes archive order,
-ownership, permissions, timestamps, and root directory names. A separate
-assembly job stages the verified v2 evidence, generates SPDX 2.3 and
-`SHA256SUMS`, and uploads one release bundle. Manual `workflow_dispatch` runs
-quality, every mutation, all four builds, evidence verification, packaging,
-SBOM, and checksums, but the publish job is structurally disabled. Only a
-protected `v*` tag permits checksum signing, provenance/SBOM attestations, and
-GitHub Release creation.
+A product candidate commit `C` contains implementation, schemas, documentation,
+and no passing candidate evidence. Build the unsigned Linux, Windows, macOS
+arm64, and macOS x86_64 payloads from `C` twice in clean roots with
+`SOURCE_DATE_EPOCH` and path remapping. The two unsigned builds must be byte
+identical.
 
-## Two-commit evidence model
+The protected [candidate workflow](../.github/workflows/candidate.yml) accepts
+an exact lowercase commit and version only when that commit is the current
+`main`. It creates source and schema archives twice from Git objects, builds
+each product/helper bundle twice in separate extracted roots, and aggregates
+all five fragments into one `reproducible-build` `release-gate-v1`. Linux is
+built in a digest-pinned Rocky Linux 8 root and every ELF is checked against the
+glibc 2.28 and `DT_NEEDED` policy. The fixed GitHub runner labels are
+`windows-2025`, `macos-15` (arm64), and `macos-15-intel` (x86_64). The macOS
+build applies timestamp-free ad-hoc signatures with fixed identifiers before
+the two archive bytes are compared.
 
-The evidence manifest cannot contain the hash of the commit that contains the
-manifest itself. Publication resolves that cycle with two commits:
+The candidate workflow Sigstore-signs the Linux, macOS, source, corresponding
+source, schema, and helper archives in the protected `candidate-signing`
+environment. It deliberately leaves the Windows product unsigned. Run the
+protected [Windows signing workflow](../.github/workflows/sign-windows.yml) at
+the same exact `C`, supplying the successful candidate run id, SHA-256 of
+`windows-unsigned-payload.zip`, exact version, and expected publisher. That
+workflow authenticates the producer run, sends only the three executables to
+SSL.com, verifies their Authenticode chains and timestamps, deterministically
+repackages the product and helper archives, Sigstore-signs both archives, then
+re-expands and verifies the final product a second time.
 
-1. Merge candidate commit `C`, containing code, version, changelog, schemas,
-   tests, and release machinery.
-2. Measure `C` on every required platform and retain the passing corpus,
-   official compatibility, mutation, determinism, dogfood, containment, fuzz,
-   and performance evidence.
-3. Create one child commit `E` whose only changed paths are
-   `release-evidence/**`. Its `release-evidence-v2.json` names `C` as
-   `subject_commit`; the signed self-attestation also names `C` and the planned
-   tag.
-4. Verify that `E` has exactly one parent, `C`, that `E` is signed and authored
-   by the maintainer account, and that every changed path is evidence-only.
-5. Run the publish-disabled release workflow at `E`. A future tag points to
-   `E`, never `C`.
+These workflows do not invent a capsule, kernel, root filesystem, performance
+result, containment result, malware result, or signature result. The
+architecture-specific macOS boot bundles must be made from their pinned kernel,
+rootfs, and static guest-agent inputs with `scripts/build_vm_bundle.py`; runtime
+capsules and any copyleft corresponding source must likewise come from exact
+inventories. Until both macOS architectures, the runtime capsule, all real-host
+gates, and their SBOM/signature records exist, `release-evidence-v3` remains
+unverifiable and no `E` commit or tag may be created.
 
-Before creating `E`:
+Run every required release gate against those exact bytes: static and unit
+quality, fuzz and complete mutation, fresh immutable 400-repository analysis,
+four-platform determinism and performance, OCI/Linux/Windows/macOS containment
+attacks, clean installs, reproducibility, CodeQL, dependency/secret/license
+scans, SBOM checks, signature verification, malware scans, and the self-audit.
+A gate emits strict `release-gate-v1` evidence bound to `C`. Critical, High,
+or unclassified scanner findings block release.
 
-1. Run `just check`, `mise run check`, and `just version` at `C`.
-2. Require a 400-repository corpus report with 100 repositories per provider,
-   precision 1.0, and recall 1.0.
-3. Reacquire the fixed eight official projects, then analyze the snapshot twice
-   without network access and match `official/official-compat-v1.json` exactly.
-4. Retain passing cold, warm, and incremental paired performance reports on all
-   four platforms, including the Arcade-scale scenario.
-5. Retain the four-platform determinism comparison, complete mutation campaign,
-   AFL summary, static/live dogfood, and native containment attack results.
-6. Complete and sign the security attestation described in
-   [security-review.md](security-review.md).
+Dogfood SARIF is validated against the
+[OASIS SARIF 2.1.0 Errata 01 schema](https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json).
+CI downloads only that URL, verifies SHA-256
+`c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e`,
+then runs `scripts/verify_sarif.py`; a schema identity, digest, format, or
+document validation error blocks the gate.
 
-At `E`, verify the exact candidate identity:
+Windows executables are timestamped and Authenticode-signed through the
+protected SSL.com cloud/HSM environment, then their chain, publisher, and
+timestamp are independently rechecked. Every Mach-O is ad-hoc signed with only
+its required entitlements. Sigstore covers product and support assets. Each
+payload has an SPDX 2.3 SBOM; one aggregate CycloneDX document includes OCaml,
+Cargo, toolchains, capsules, kernels, and VM assets. THIRD_PARTY_NOTICES and
+corresponding source are required.
+
+Create a single-parent child commit `E` that changes only
+`release-evidence/**`. Its canonical `release-evidence-v3.json` binds the
+candidate, exactly one product and helper bundle for every release platform,
+both architecture-specific macOS boot bundles, source archive, every remaining
+artifact and signature, all gates, both disclosures, and the detached
+SSH-signed `maintainer-self-audit-v2`.
+Verify offline:
 
 ```text
-python -B scripts/verify_release_version.py --tag vX.Y.Z
-just release-evidence E_COMMIT vX.Y.Z
-gh workflow run release.yml --ref main -f tag=vX.Y.Z
+just release-evidence E v0.1.0
 ```
 
-The dry-run URL and every evidence digest are recorded before tagging. Missing
-or tampered evidence, a performance self-comparison, unresolved critical/high
-finding, untracked accepted risk, wrong parent, unrelated changed path, or bad
-maintainer signature blocks publication; none is an acceptable waiver.
+After verification, create a separate final release index and checksum file
+covering product assets, evidence, SBOMs, notices, and source archive. The index
+does not list its own digest, which avoids a digest cycle. Sign it with Sigstore.
 
-The tag workflow depends on the complete reusable CI and mutation workflows,
-the four-platform builds, release evidence, and bundle assembly. Every
-third-party action and containment image uses an immutable pin. The publish job
-alone receives write, OIDC, attestation, and artifact-metadata permissions.
-
-Verify a downloaded release from the repository root with:
-
-```text
-sha256sum -c SHA256SUMS
-cosign verify-blob --bundle SHA256SUMS.sigstore.json \
-  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  --certificate-identity-regexp '^https://github.com/P4suta/workflow-verifier/.github/workflows/release.yml@refs/tags/v' \
-  SHA256SUMS
-gh attestation verify workflow-verifier-X.Y.Z-linux-x86_64.tar.gz \
-  --repo P4suta/workflow-verifier
-```
-
-The opam package installs one analyzer executable and only the public
-config/report schemas. Native helpers remain separately versioned release
-assets that communicate over canonical JSON; they do not add a foreign library
-to the analyzer process.
+The protected release environment promotes those exact bytes; it does not
+rebuild them. Only after final manual approval is the signed `v0.1.0` tag
+attached to `E` and the GitHub Release published. Submit the same immutable,
+checksum-pinned static source archive to opam. After publication, repeat
+download, signature, checksum, installation, Quick Start, and offline evidence
+verification from clean hosts. Never replace a published asset; issue a fixed
+release.

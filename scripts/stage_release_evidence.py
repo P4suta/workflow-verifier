@@ -1,41 +1,42 @@
 #!/usr/bin/env python3
-"""Stage the digest-verified v2 evidence bundle with canonical public names."""
+"""Stage every digest-checked release-evidence-v3 input without renaming it."""
 
 from __future__ import annotations
 
 import argparse
 import os
-from pathlib import Path
 import shutil
 import stat
+import sys
 import tempfile
+from pathlib import Path
 from typing import Any
 
 try:
     from scripts.verify_release_evidence import (
-        PLATFORMS,
         ROOT_FIELDS,
         _exact,
         _load_json,
+        _object,
         _resolve_file,
         _verify_digest,
     )
-except ModuleNotFoundError:  # Direct script execution from the repository root.
+except ModuleNotFoundError:  # Direct execution from the repository root.
     from verify_release_evidence import (  # type: ignore[no-redef]
-        PLATFORMS,
         ROOT_FIELDS,
         _exact,
         _load_json,
+        _object,
         _resolve_file,
         _verify_digest,
     )
 
 
-def _record(root: Path, value: Any, label: str) -> Path:
+def _reference(root: Path, value: Any, label: str) -> tuple[str, Path]:
     record = _exact(value, {"digest", "path"}, label)
-    _, path = _resolve_file(root, record["path"], f"{label}.path")
+    relative, path = _resolve_file(root, record["path"], f"{label}.path")
     _verify_digest(path, record["digest"], f"{label}.digest")
-    return path
+    return relative, path
 
 
 def _atomic_copy(source: Path, destination: Path) -> None:
@@ -58,49 +59,92 @@ def _atomic_copy(source: Path, destination: Path) -> None:
 
 
 def stage(manifest_path: Path, destination: Path) -> list[Path]:
-    manifest, _ = _load_json(manifest_path, "release evidence manifest", limit=1024 * 1024)
-    _exact(manifest, ROOT_FIELDS, "release evidence manifest")
-    if manifest["schema"] != "release-evidence-v2":
-        raise ValueError("release evidence schema must be release-evidence-v2")
+    manifest, _ = _load_json(manifest_path, "release evidence manifest", canonical=True)
+    manifest = _exact(manifest, ROOT_FIELDS, "release evidence manifest")
+    if manifest["schema"] != "release-evidence-v3":
+        raise ValueError("release evidence schema must be release-evidence-v3")
     root = manifest_path.parent
-    sources: list[tuple[str, Path]] = [
-        ("release-evidence-v2.json", manifest_path),
-        ("corpus-report-v1.json", _record(root, manifest["corpus"], "corpus evidence")),
-        (
-            "official-compat-v1.json",
-            _record(root, manifest["official_compat"], "official compatibility evidence"),
-        ),
-    ]
-    performance = manifest["performance"]
-    if not isinstance(performance, list) or len(performance) != len(PLATFORMS):
-        raise ValueError("release evidence must contain exactly four performance reports")
-    seen: set[str] = set()
-    for index, raw in enumerate(performance):
-        label = f"performance evidence[{index}]"
-        record = _exact(raw, {"digest", "path", "platform"}, label)
-        platform = record["platform"]
-        if platform not in PLATFORMS or platform in seen:
-            raise ValueError(f"{label}.platform is unsupported or duplicated")
-        seen.add(platform)
-        _, source = _resolve_file(root, record["path"], f"{label}.path")
-        _verify_digest(source, record["digest"], f"{label}.digest")
-        sources.append((f"performance-{platform}.json", source))
-    security = _exact(
-        manifest["security_attestation"],
-        {"digest", "path", "signature_digest", "signature_path"},
-        "security attestation evidence",
+    sources: dict[str, Path] = {"release-evidence-v3.json": manifest_path}
+
+    artifacts = manifest["artifacts"]
+    if not isinstance(artifacts, list):
+        raise ValueError("release evidence artifacts must be an array")
+    for index, raw in enumerate(artifacts):
+        item = _object(
+            raw,
+            required={"digest", "kind", "name", "path", "platform"},
+            allowed={
+                "digest",
+                "kind",
+                "name",
+                "path",
+                "platform",
+                "signature",
+                "subject",
+            },
+            label=f"artifact[{index}]",
+        )
+        relative, source = _resolve_file(root, item["path"], f"artifact[{index}].path")
+        _verify_digest(source, item["digest"], f"artifact[{index}].digest")
+        sources[relative] = source
+        if "signature" in item:
+            signature = _exact(
+                item["signature"],
+                {"digest", "kind", "path"},
+                f"artifact[{index}].signature",
+            )
+            relative, source = _resolve_file(
+                root,
+                signature["path"],
+                f"artifact[{index}].signature.path",
+            )
+            _verify_digest(
+                source,
+                signature["digest"],
+                f"artifact[{index}].signature.digest",
+            )
+            sources[relative] = source
+
+    gates = manifest["gates"]
+    if not isinstance(gates, list):
+        raise ValueError("release evidence gates must be an array")
+    for index, raw in enumerate(gates):
+        gate = _exact(
+            raw,
+            {"evidence", "id", "status", "subject_commit"},
+            f"gate[{index}]",
+        )
+        relative, source = _reference(root, gate["evidence"], f"gate[{index}].evidence")
+        sources[relative] = source
+
+    audit = _exact(
+        manifest["self_audit"],
+        {
+            "digest",
+            "independent",
+            "path",
+            "signature_digest",
+            "signature_path",
+            "sole_maintainer",
+        },
+        "self_audit",
     )
-    _, attestation = _resolve_file(root, security["path"], "security attestation path")
-    _, signature = _resolve_file(root, security["signature_path"], "security signature path")
-    _verify_digest(attestation, security["digest"], "security attestation digest")
-    _verify_digest(signature, security["signature_digest"], "security signature digest")
-    sources.extend(
-        [
-            ("maintainer-security-attestation-v1.json", attestation),
-            ("maintainer-security-attestation-v1.json.sig", signature),
-            ("maintainer-allowed-signers", root / "maintainer-allowed-signers"),
-        ]
-    )
+    for path_field, digest_field in (
+        ("path", "digest"),
+        ("signature_path", "signature_digest"),
+    ):
+        relative, source = _resolve_file(root, audit[path_field], f"self_audit.{path_field}")
+        _verify_digest(source, audit[digest_field], f"self_audit.{digest_field}")
+        sources[relative] = source
+    allowed = root / "maintainer-allowed-signers"
+    try:
+        metadata = allowed.lstat()
+    except OSError as error:
+        raise ValueError(f"cannot inspect maintainer allowed signers: {error}") from error
+    if allowed.is_symlink() or not stat.S_ISREG(metadata.st_mode):
+        raise ValueError("maintainer allowed signers must be a regular non-symlink file")
+    sources["maintainer-allowed-signers"] = allowed
+
     try:
         destination_metadata = destination.lstat()
     except FileNotFoundError:
@@ -111,14 +155,8 @@ def stage(manifest_path: Path, destination: Path) -> list[Path]:
         if destination.is_symlink() or not stat.S_ISDIR(destination_metadata.st_mode):
             raise ValueError("staging destination must be a directory, not a symlink")
     outputs: list[Path] = []
-    for name, source in sources:
-        try:
-            metadata = source.lstat()
-        except OSError as error:
-            raise ValueError(f"cannot inspect evidence source {source}: {error}") from error
-        if source.is_symlink() or not stat.S_ISREG(metadata.st_mode) or metadata.st_size == 0:
-            raise ValueError(f"evidence source must be a nonempty regular non-symlink file: {source}")
-        output = destination / name
+    for relative, source in sorted(sources.items()):
+        output = destination.joinpath(*relative.split("/"))
         _atomic_copy(source, output)
         outputs.append(output)
     return outputs
@@ -132,7 +170,7 @@ def main() -> int:
     try:
         outputs = stage(arguments.manifest, arguments.destination)
     except (OSError, ValueError) as error:
-        print(f"release evidence staging: {error}", file=os.sys.stderr)
+        print(f"release evidence staging: {error}", file=sys.stderr)
         return 1
     print(f"release evidence staging: {len(outputs)} files")
     return 0

@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from pathlib import Path
 import subprocess
 import sys
 import tomllib
 import unittest
+from pathlib import Path
 from unittest import mock
 
 from scripts import mutation_resource_guard
-
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 
@@ -106,9 +105,7 @@ class MutationResourceGuardTests(unittest.TestCase):
     def test_check_mode_applies_limits_before_attesting(self) -> None:
         resources = FakeResource()
         with (
-            mock.patch.object(
-                mutation_resource_guard, "_linux_resources", return_value=resources
-            ),
+            mock.patch.object(mutation_resource_guard, "_linux_resources", return_value=resources),
             mock.patch("builtins.print") as printed,
         ):
             self.assertEqual(mutation_resource_guard.main(["--check"]), 0)
@@ -125,8 +122,7 @@ class MutationResourceGuardTests(unittest.TestCase):
         completed = subprocess.run(
             [sys.executable, "-B", str(script), "--check"],
             check=False,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             text=True,
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)

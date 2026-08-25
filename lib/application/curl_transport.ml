@@ -36,21 +36,53 @@ let error_response response =
   if detail = "" then Printf.sprintf "curl exited %d" response.exit_code
   else Printf.sprintf "curl exited %d: %s" response.exit_code detail
 
+let quote_config value =
+  let buffer = Buffer.create (String.length value + 2) in
+  Buffer.add_char buffer '"';
+  String.iter
+    (function
+      | ('"' | '\\') as character ->
+          Buffer.add_char buffer '\\';
+          Buffer.add_char buffer character
+      | character -> Buffer.add_char buffer character)
+    value;
+  Buffer.add_char buffer '"';
+  Buffer.contents buffer
+
+let metadata_prefix = "workflow-verifier-curl-meta-v1\t"
+
+let parse_metadata stderr =
+  stderr |> String.split_on_char '\n' |> List.rev
+  |> List.find_map (fun line ->
+      if Util.starts_with ~prefix:metadata_prefix line then
+        match String.split_on_char '\t' line with
+        | [ _; status; effective_url; peer_ip ] -> (
+            match int_of_string_opt status with
+            | Some status
+              when status >= 100 && status <= 599 && safe_text effective_url
+                   && safe_text peer_ip -> Some (status, effective_url, peer_ip)
+            | Some _ | None -> None)
+        | _ -> None
+      else None)
+
+let config request =
+  let headers =
+    request.Resolver_transport.headers
+    |> List.map (fun (name, value) ->
+        "header = " ^ quote_config (name ^ ": " ^ value))
+  in
+  String.concat "\n" (headers @ [ "url = " ^ quote_config request.url ]) ^ "\n"
+
 let make ~invoke ~executable request =
   match validate request with
   | Error _ as error -> error
   | Ok () -> (
-      let header_arguments =
-        request.headers
-        |> List.concat_map (fun (name, value) ->
-            [ "--header"; name ^ ": " ^ value ])
-      in
       let arguments =
         [
           "--disable";
           "--silent";
           "--show-error";
-          "--fail";
+          "--fail-with-body";
           "--proto";
           "=https";
           "--proto-redir";
@@ -66,17 +98,26 @@ let make ~invoke ~executable request =
           "GET";
           "--user-agent";
           "workflow-verifier/0.1.0";
+          "--write-out";
+          "\n%{stderr}" ^ metadata_prefix
+          ^ "%{http_code}\t%{url_effective}\t%{remote_ip}\n";
+          "--config";
+          "-";
         ]
-        @ header_arguments @ [ "--url"; request.url ]
       in
-      match invoke { Helper_client.executable; arguments; stdin = "" } with
+      match
+        invoke { Helper_client.executable; arguments; stdin = config request }
+      with
       | Error _ as error -> error
-      | Ok response when response.Helper_client.exit_code <> 0 ->
-          Error (error_response response)
-      | Ok response ->
-          Ok
-            {
-              Resolver_transport.status = 200;
-              body = response.Helper_client.stdout;
-              effective_url = request.url;
-            })
+      | Ok response -> (
+          match parse_metadata response.Helper_client.stderr with
+          | Some (status, effective_url, peer_ip)
+            when response.exit_code = 0 || response.exit_code = 22 ->
+              Ok
+                {
+                  Resolver_transport.status;
+                  body = response.stdout;
+                  effective_url;
+                  peer_ip;
+                }
+          | Some _ | None -> Error (error_response response)))

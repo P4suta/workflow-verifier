@@ -1,0 +1,27 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/conformance-manifest-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "conformance-manifest-v1" },
+    "vectors": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "expected": { "enum": ["accept", "reject"] },
+          "path": { "minLength": 1, "not": { "pattern": "(^/|^[A-Za-z]:|\\\\|(^|/)\\.\\.?(/|$))" }, "type": "string" },
+          "protocol": { "enum": ["canonical-json", "source-manifest-v2", "scenario-v1", "report-v2", "runner-v2", "sandbox-run-v2", "evidence-v2"] },
+          "size": { "minimum": 1, "type": "integer" }
+        },
+        "required": ["digest", "expected", "path", "protocol", "size"],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": ["schema", "vectors"],
+  "title": "workflow-verifier content-addressed conformance manifest v1",
+  "type": "object"
+}

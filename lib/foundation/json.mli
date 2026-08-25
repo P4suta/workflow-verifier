@@ -18,3 +18,9 @@ val as_int : t -> int option
 val as_bool : t -> bool option
 val as_array : t -> t list option
 val as_object : t -> (string * t) list option
+
+val exact_object :
+  context:string ->
+  allowed:string list ->
+  t ->
+  ((string * t) list, string) result

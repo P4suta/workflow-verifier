@@ -5,11 +5,10 @@ from __future__ import annotations
 
 import argparse
 import os
-from pathlib import Path
 import stat
 import sys
 import tempfile
-
+from pathlib import Path
 
 FILES = {
     ".workflow-verifier.toml": """version = 1
@@ -139,7 +138,7 @@ def _arcade_scale(variant: str) -> str:
                 "          vmImage: windows-2025\n",
                 "        steps:\n",
                 "          - checkout: none\n",
-                f"          - download: current\n",
+                "          - download: current\n",
                 f"            artifact: arcade-{stage:03d}\n",
                 f"          - bash: echo validate-{stage:03d}\n",
                 "            displayName: Validate artifact\n",
@@ -196,9 +195,7 @@ def prepare(workspace: Path, mode: str, scenario: str = "four-provider") -> Path
     build = workspace / "_build"
     _directory(build, "benchmark build root")
     root = build / (
-        "performance-workload"
-        if scenario == "four-provider"
-        else "performance-arcade-scale"
+        "performance-workload" if scenario == "four-provider" else "performance-arcade-scale"
     )
     _directory(root, "benchmark workload root")
     if scenario == "arcade-scale":

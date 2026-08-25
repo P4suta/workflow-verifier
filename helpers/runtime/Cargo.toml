@@ -6,7 +6,10 @@ license.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-workflow-verifier-runner-protocol = { path = "../protocol" }
+workflow-verifier-runner-protocol = { path = "../protocol", version = "=0.1.0" }
+
+[target.'cfg(windows)'.dependencies]
+same-file = "=1.0.6"
 
 [lints]
 workspace = true

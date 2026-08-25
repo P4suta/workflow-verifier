@@ -1,11 +1,10 @@
 import hashlib
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.corpus_gate import evaluate, tree_digest
-
 
 SHA = "a" * 40
 DIGEST = "sha256:" + ("b" * 64)
@@ -32,17 +31,45 @@ def diagnostic(identifier: str, rule_id: str) -> dict[str, object]:
 
 
 def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
-    return {
-        "schema": "report-v1",
-        "digest": DIGEST,
-        "tool": {"name": "workflow-verifier", "version": "0.1.0"},
+    document: dict[str, object] = {
+        "completeness": {"reasons": [], "state": "complete"},
+        "configuration": {"digest": DIGEST, "origin": "built-in", "trust": "built-in"},
+        "schema": "report-v2",
+        "digest": None,
+        "tool": {
+            "binary_digest": DIGEST,
+            "build": {"dune": "3.24.2", "ocaml": "5.5.0", "source_commit": SHA},
+            "name": "workflow-verifier",
+            "version": "0.1.0",
+        },
+        "gate": {"exit_code": 0, "result": "pass"},
         "persona": "audit",
         "inputs": [],
         "graphs": [],
+        "lock": {"digest": DIGEST},
+        "provider_profiles": [],
         "properties": [],
         "diagnostics": diagnostics,
-        "summary": {},
+        "snapshot": {"digest": DIGEST, "schema": "source-manifest-v2"},
+        "summary": {
+            "diagnostics": len(diagnostics),
+            "graphs": 0,
+            "inputs": 0,
+            "unknown_properties": 0,
+        },
     }
+    document["digest"] = (
+        "sha256:"
+        + hashlib.sha256(
+            json.dumps(
+                document,
+                ensure_ascii=False,
+                separators=(",", ":"),
+                sort_keys=True,
+            ).encode("utf-8")
+        ).hexdigest()
+    )
+    return document
 
 
 class CorpusGateTests(unittest.TestCase):
@@ -63,9 +90,7 @@ class CorpusGateTests(unittest.TestCase):
         workflow.write_bytes(b"name: fixture\n")
         report_path = root / "reports" / f"{identifier.replace('/', '-')}.json"
         report_path.parent.mkdir(parents=True, exist_ok=True)
-        report_path.write_text(
-            json.dumps(report(actual), ensure_ascii=False), encoding="utf-8"
-        )
+        report_path.write_text(json.dumps(report(actual), ensure_ascii=False), encoding="utf-8")
         return {
             "id": identifier,
             "provider": provider,
@@ -110,9 +135,7 @@ class CorpusGateTests(unittest.TestCase):
 
             first = evaluate(manifest, root / "corpus", root / "reports")
             manifest.write_text(
-                json.dumps(
-                    {"schema": "corpus-v1", "repositories": list(reversed(repositories))}
-                ),
+                json.dumps({"schema": "corpus-v1", "repositories": list(reversed(repositories))}),
                 encoding="utf-8",
             )
             second = evaluate(manifest, root / "corpus", root / "reports")
@@ -131,9 +154,7 @@ class CorpusGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             expected = {"id": "diag_" + "4" * 20, "rule_id": "WV-AUTH-001"}
-            repository = self.repository(
-                root, "azure/acme/missing", "azure", [expected], [], []
-            )
+            repository = self.repository(root, "azure/acme/missing", "azure", [expected], [], [])
             manifest = root / "corpus.json"
             manifest.write_text(
                 json.dumps({"schema": "corpus-v1", "repositories": [repository]}),
@@ -146,9 +167,7 @@ class CorpusGateTests(unittest.TestCase):
     def test_source_license_and_strict_manifest_are_verified(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            repository = self.repository(
-                root, "circleci/acme/strict", "circleci", [], [], []
-            )
+            repository = self.repository(root, "circleci/acme/strict", "circleci", [], [], [])
             manifest = root / "corpus.json"
             repository["revision"] = "main"
             manifest.write_text(
@@ -176,6 +195,30 @@ class CorpusGateTests(unittest.TestCase):
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ValueError, "source digest"):
+                evaluate(manifest, root / "corpus", root / "reports")
+
+    def test_report_digest_rejects_tampered_findings(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            finding = diagnostic("diag_" + "6" * 20, "WV-SUPPLY-001")
+            repository = self.repository(
+                root,
+                "github/acme/tampered-report",
+                "github",
+                [{"id": finding["id"], "rule_id": finding["rule_id"]}],
+                [],
+                [finding],
+            )
+            manifest = root / "corpus.json"
+            manifest.write_text(
+                json.dumps({"schema": "corpus-v1", "repositories": [repository]}),
+                encoding="utf-8",
+            )
+            report_path = root / "reports" / repository["report"]
+            document = json.loads(report_path.read_text(encoding="utf-8"))
+            document["diagnostics"][0]["message"] = "tampered after report generation"
+            report_path.write_text(json.dumps(document), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "report digest"):
                 evaluate(manifest, root / "corpus", root / "reports")
 
     def test_release_gate_requires_one_hundred_unique_repositories_per_provider(self) -> None:

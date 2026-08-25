@@ -72,8 +72,7 @@ let foundation_tests =
           expect_equal_string ~expected:"[\n  1,\n  2\n]\n"
             (Json.to_pretty_string (Json.Array [ Json.Int 1; Json.Int 2 ]));
           expect_equal_string ~expected:"[\n  [\n    1\n  ]\n]\n"
-            (Json.to_pretty_string
-               (Json.Array [ Json.Array [ Json.Int 1 ] ]));
+            (Json.to_pretty_string (Json.Array [ Json.Array [ Json.Int 1 ] ]));
           expect_equal_string
             ~expected:"{\n  \"a\": 1,\n  \"z\": [\n    2\n  ]\n}\n"
             (Json.to_pretty_string
@@ -88,7 +87,8 @@ let foundation_tests =
             match Json.parse source with
             | Ok (Json.String value) -> expect_equal_string ~expected value
             | Ok _ -> fail "escape did not produce a JSON string: %s" source
-            | Error error -> fail "escape failed for %s: %s" source error.message
+            | Error error ->
+                fail "escape failed for %s: %s" source error.message
           in
           expect_string "\"\\\\\"" "\\";
           expect_string "\"\\b\"" "\008";
@@ -134,8 +134,7 @@ let foundation_tests =
               match Json.parse source with
               | Error error ->
                   expect_equal_string
-                    ~expected:"runner JSON permits integers only"
-                    error.message
+                    ~expected:"runner JSON permits integers only" error.message
               | Ok _ -> fail "%s must be rejected as non-integer JSON" source)
             [ "1.0"; "1e3"; "1E3" ]);
     };
@@ -194,7 +193,8 @@ let yaml_tests =
           let mapping = require_some "mapping" (Yaml_cst.as_mapping root) in
           let value =
             require_some "value" (Yaml_cst.mapping_find "value" mapping)
-            |> Yaml_cst.scalar_value |> require_some "escaped scalar"
+            |> Yaml_cst.scalar_value
+            |> require_some "escaped scalar"
           in
           expect_equal_string ~expected:"\xc2\xa0" value);
     };
@@ -204,9 +204,10 @@ let yaml_tests =
         (fun () ->
           let tree = Yaml_cst.parse ~file:"escape.yml" "value: \"\\N\"\n" in
           let value =
-            Yaml_cst.root tree |> fun node -> Option.bind node Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            Yaml_cst.root tree |> fun node ->
+            Option.bind node Yaml_cst.as_mapping |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "value") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "escaped next-line scalar"
           in
           expect_equal_string ~expected:"\xc2\x85" value);
@@ -229,8 +230,7 @@ let yaml_tests =
                 = "comment requires separation after a quoted scalar")
               adjacent.problems
           with
-          | Some problem ->
-              expect_equal_int ~expected:2 problem.span.start.line
+          | Some problem -> expect_equal_int ~expected:2 problem.span.start.line
           | None -> fail "adjacent empty-scalar comment was not rejected");
     };
     {
@@ -262,7 +262,7 @@ let yaml_tests =
             |> require_some "flow mapping"
           in
           expect_true "duplicate flow keys must retain their duplicate marker"
-            ((List.nth flow_entries 1).duplicate));
+            (List.nth flow_entries 1).duplicate);
     };
     {
       name = "mapping entry lookup preserves the selected key and value";
@@ -289,8 +289,9 @@ let yaml_tests =
           let decorated = Yaml_cst.parse "key: &anchor value\n" in
           let decorated_value =
             Option.bind (Yaml_cst.root decorated) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "key")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "key") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "decorated scalar value"
           in
           expect_equal_string ~expected:"value" decorated_value);
@@ -315,7 +316,8 @@ let yaml_tests =
               { value; anchor = Some "layer"; tag = None; span = Span.none }
           in
           expect_equal_string ~expected:"exact"
-            (decorate (decorate scalar) |> Yaml_cst.scalar_value
+            (decorate (decorate scalar)
+            |> Yaml_cst.scalar_value
             |> require_some "multiply decorated scalar"));
     };
     {
@@ -333,9 +335,11 @@ let yaml_tests =
             (not
                (Yaml_cst.structural_equal (Yaml_cst.parse "")
                   (Yaml_cst.parse "value\n")));
-          expect_true "flow sequence elements participate in structural equality"
+          expect_true
+            "flow sequence elements participate in structural equality"
             (not
-               (Yaml_cst.structural_equal (Yaml_cst.parse "[one, two]\n")
+               (Yaml_cst.structural_equal
+                  (Yaml_cst.parse "[one, two]\n")
                   (Yaml_cst.parse "[one, changed]\n")));
           expect_true "aliases with different targets are structurally unequal"
             (not
@@ -402,17 +406,20 @@ let yaml_tests =
           let source = "prefix: ok\nitems:\n  - one\n  - two\n" in
           let tree = Yaml_cst.parse ~file:"workflow.yml" source in
           let root = require_some "document root" (Yaml_cst.root tree) in
-          let mapping = require_some "root mapping" (Yaml_cst.as_mapping root) in
+          let mapping =
+            require_some "root mapping" (Yaml_cst.as_mapping root)
+          in
           let items =
-            Yaml_cst.mapping_find "items" mapping
-            |> fun node -> Option.bind node Yaml_cst.as_sequence
+            Yaml_cst.mapping_find "items" mapping |> fun node ->
+            Option.bind node Yaml_cst.as_sequence
             |> require_some "items sequence"
           in
           let second = List.nth items 1 in
           let first_dash = String.index source '-' in
           let second_dash = String.index_from source (first_dash + 1) '-' in
           expect_equal_int ~expected:second_dash second.dash_span.start.byte;
-          expect_equal_int ~expected:(second_dash + 1) second.dash_span.stop.byte);
+          expect_equal_int ~expected:(second_dash + 1)
+            second.dash_span.stop.byte);
     };
     {
       name = "block scalar spans run from the header through final content";
@@ -422,7 +429,8 @@ let yaml_tests =
           let tree = Yaml_cst.parse ~file:"workflow.yml" source in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "key")
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "key")
             |> require_some "block scalar"
           in
           let span = Yaml_cst.node_span value in
@@ -441,7 +449,8 @@ let yaml_tests =
           let tree = Yaml_cst.parse ~file:"workflow.yml" source in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "plain")
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "plain")
             |> require_some "continued plain scalar"
           in
           let span = Yaml_cst.node_span value in
@@ -492,7 +501,8 @@ let yaml_tests =
           let expect_outside_source label edit =
             match Yaml_cst.apply_edits compact [ edit ] with
             | Error "edit span is outside the source" -> ()
-            | Error message -> fail "%s returned the wrong error: %s" label message
+            | Error message ->
+                fail "%s returned the wrong error: %s" label message
             | Ok value -> fail "%s was unexpectedly applied as %S" label value
           in
           expect_outside_source "an edit past the source boundary"
@@ -511,7 +521,8 @@ let yaml_tests =
           let encoded = Yaml_cst.node_to_json node |> Json.to_string in
           List.iter
             (fun needle ->
-              expect_true ("invalid node JSON omits " ^ needle)
+              expect_true
+                ("invalid node JSON omits " ^ needle)
                 (Util.contains ~needle encoded))
             [
               "\"kind\":\"invalid\"";
@@ -538,7 +549,7 @@ let yaml_tests =
                -MAP\n\
                -DOC ...\n\
                -STR\n"
-             (Yaml_event.of_cst tree |> Yaml_event.to_string));
+            (Yaml_event.of_cst tree |> Yaml_event.to_string));
     };
     {
       name = "YAML tag percent decoding retains an incomplete trailing escape";
@@ -584,8 +595,8 @@ let yaml_tests =
       run =
         (fun () ->
           let events =
-            Yaml_cst.parse "? {a: b}\n: value\n" |> Yaml_event.of_cst
-            |> Yaml_event.to_string
+            Yaml_cst.parse "? {a: b}\n: value\n"
+            |> Yaml_event.of_cst |> Yaml_event.to_string
           in
           expect_true "the explicit key must remain a flow mapping"
             (Util.contains ~needle:"+MAP {}\n" events));
@@ -640,8 +651,9 @@ let yaml_tests =
           let tree = Yaml_cst.parse "plain: first\\\n second\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "plain")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "plain") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "backslash plain scalar"
           in
           expect_equal_string ~expected:"first\\ second" value);
@@ -653,8 +665,9 @@ let yaml_tests =
           let tree = Yaml_cst.parse "plain: value\n\n\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "plain")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "plain") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "trailing blank plain scalar"
           in
           expect_equal_string ~expected:"value" value);
@@ -666,8 +679,9 @@ let yaml_tests =
           let tree = Yaml_cst.parse "value: 'first\\\n  second'\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "value") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "single-quoted multiline scalar"
           in
           expect_equal_string ~expected:"first\\ second" value);
@@ -679,8 +693,9 @@ let yaml_tests =
           let tree = Yaml_cst.parse "value: 'text\n\n\n  '\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "value") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "quoted multiline trailing blanks"
           in
           expect_equal_string ~expected:"text\n\n" value);
@@ -723,9 +738,9 @@ let yaml_tests =
             (tree.problems = []);
           let next =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "next")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
-            |> require_some "next scalar"
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "next") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value |> require_some "next scalar"
           in
           expect_equal_string ~expected:"ok" next);
     };
@@ -736,7 +751,8 @@ let yaml_tests =
           let tree = Yaml_cst.parse "value: [\"\", tail]\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "value")
             |> require_some "flow sequence"
           in
           match value with
@@ -754,8 +770,9 @@ let yaml_tests =
           let tree = Yaml_cst.parse "value: 'it''s # data'\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "value") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "single-quoted scalar"
           in
           expect_equal_string ~expected:"it's # data" value);
@@ -807,19 +824,23 @@ let yaml_tests =
           expect_true "payload text must not be validated as YAML structure"
             (not
                (List.exists
-                   (fun problem -> problem.Yaml_cst.code = "YAML-SYNTAX")
-                   tree.problems)));
+                  (fun problem -> problem.Yaml_cst.code = "YAML-SYNTAX")
+                  tree.problems)));
     };
     {
       name = "block header validation preserves multiline plain shell scalars";
       run =
         (fun () ->
           let source =
-            "verify:\n  script:\n    - dbus-run-session meson test ||\n      || exit_code=$?\n"
+            "verify:\n\
+            \  script:\n\
+            \    - dbus-run-session meson test ||\n\
+            \      || exit_code=$?\n"
           in
           let tree = Yaml_cst.parse ~file:".gitlab-ci.yml" source in
           expect_true
-            "a pipe at the start of a continued plain scalar is not a block header"
+            "a pipe at the start of a continued plain scalar is not a block \
+             header"
             (not
                (List.exists
                   (fun problem ->
@@ -830,14 +851,14 @@ let yaml_tests =
       name = "shared block header classifier rejects malformed indicators";
       run =
         (fun () ->
-          [ ("zero indentation indicator", "value: |0\n  data\n");
+          [
+            ("zero indentation indicator", "value: |0\n  data\n");
             ("duplicate keep indicator", "value: |++\n  data\n");
             ("duplicate strip indicator", "value: |--\n  data\n");
             ("mixed chomping indicators", "value: |-+\n  data\n");
             ("non-comment trailer", "value: |2+ trailer\n  data\n");
             ("empty mapping head", "value:\n  |0\n    data\n");
-            ( "quoted mapping head",
-              "value: \"quoted\"\n  |0\n    data\n" );
+            ("quoted mapping head", "value: \"quoted\"\n  |0\n    data\n");
             ("document start head", "---\n  |0\n    data\n");
             ("document end head", "...\n  |0\n    data\n");
             ("directive head", "%YAML 1.2\n  |0\n    data\n");
@@ -848,25 +869,24 @@ let yaml_tests =
             ( "separated inline comment ends continuation",
               "value: plain # separated\n  |0\n    data\n" );
             ( "same-indent line is not a continuation",
-              "value: plain\n|0\n  data\n" )
+              "value: plain\n|0\n  data\n" );
           ]
           |> List.iter (fun (label, source) ->
-                 let tree = Yaml_cst.parse source in
-                 expect_true
-                   (label ^ ": malformed block header must remain rejected")
-                   (List.exists
-                      (fun problem ->
-                        problem.Yaml_cst.message = "invalid block scalar header")
-                      tree.problems)));
+              let tree = Yaml_cst.parse source in
+              expect_true
+                (label ^ ": malformed block header must remain rejected")
+                (List.exists
+                   (fun problem ->
+                     problem.Yaml_cst.message = "invalid block scalar header")
+                   tree.problems)));
     };
     {
       name = "plain scalar continuation remains distinct from a block header";
       run =
         (fun () ->
-          let tree =
-            Yaml_cst.parse "value: command ||\n  | exit_code=$?\n"
-          in
-          expect_true "a direct plain continuation must not become a block header"
+          let tree = Yaml_cst.parse "value: command ||\n  | exit_code=$?\n" in
+          expect_true
+            "a direct plain continuation must not become a block header"
             (not
                (List.exists
                   (fun problem ->
@@ -887,9 +907,7 @@ let yaml_tests =
       name = "dedented mapping values leave block scalar validation state";
       run =
         (fun () ->
-          let tree =
-            Yaml_cst.parse "literal: |\n  body\nnext: \"bad\\q\"\n"
-          in
+          let tree = Yaml_cst.parse "literal: |\n  body\nnext: \"bad\\q\"\n" in
           let problem =
             List.find_opt
               (fun problem ->
@@ -919,8 +937,9 @@ let yaml_tests =
           let tree = Yaml_cst.parse "literal: |\n\n  body\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "literal")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "literal") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "literal scalar"
           in
           expect_equal_string ~expected:"\nbody\n" value);
@@ -932,8 +951,9 @@ let yaml_tests =
           let tree = Yaml_cst.parse "value: >\n  alpha\n    \n  beta\n" in
           let value =
             Option.bind (Yaml_cst.root tree) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "value")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "value") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "folded scalar"
           in
           expect_equal_string ~expected:"alpha\n  \nbeta\n" value);
@@ -950,7 +970,9 @@ let yaml_tests =
       name = "directives accept comments only after separated content";
       run =
         (fun () ->
-          let valid = Yaml_cst.parse "%YAML 1.2 # supported\n---\nvalue: ok\n" in
+          let valid =
+            Yaml_cst.parse "%YAML 1.2 # supported\n---\nvalue: ok\n"
+          in
           expect_true "a separated directive comment must be ignored"
             (not
                (List.exists
@@ -960,10 +982,12 @@ let yaml_tests =
           let misplaced =
             Yaml_cst.parse "---\nplain\n# comment\n%YAML 1.2\n---\nnext\n"
           in
-          expect_true "a leading comment cannot disguise an in-document directive"
+          expect_true
+            "a leading comment cannot disguise an in-document directive"
             (List.exists
                (fun problem ->
-                 problem.Yaml_cst.message = "directive appears before document end")
+                 problem.Yaml_cst.message
+                 = "directive appears before document end")
                misplaced.problems);
           let trailing =
             Yaml_cst.parse "---\nplain #\n%YAML 1.2\n---\nnext\n"
@@ -971,7 +995,8 @@ let yaml_tests =
           expect_true "a trailing separated comment must end the plain scalar"
             (List.exists
                (fun problem ->
-                 problem.Yaml_cst.message = "directive appears before document end")
+                 problem.Yaml_cst.message
+                 = "directive appears before document end")
                trailing.problems);
           let unfinished = Yaml_cst.parse "%YAML 1.2\n# waiting\n\n" in
           let problem =
@@ -1031,11 +1056,8 @@ let yaml_tests =
       name = "escaped quotes do not close a flow scalar";
       run =
         (fun () ->
-          let tree =
-            Yaml_cst.parse
-              {|value: ["a\"b"]
-|}
-          in
+          let tree = Yaml_cst.parse {|value: ["a\"b"]
+|} in
           expect_true "escaped flow quote must remain inside the scalar"
             (not
                (List.exists
@@ -1090,13 +1112,14 @@ let yaml_tests =
               tree.Yaml_cst.problems
           in
           expect_true "separated comment must be accepted"
-            (not (has_problem valid) && valid.problems = []);
+            ((not (has_problem valid)) && valid.problems = []);
           expect_true "adjacent comment must be rejected" (has_problem invalid);
           let empty = Yaml_cst.parse "key: \"\" # trailing\n" in
           let empty_value =
             Option.bind (Yaml_cst.root empty) Yaml_cst.as_mapping
-            |> fun mapping -> Option.bind mapping (Yaml_cst.mapping_find "key")
-            |> fun node -> Option.bind node Yaml_cst.scalar_value
+            |> fun mapping ->
+            Option.bind mapping (Yaml_cst.mapping_find "key") |> fun node ->
+            Option.bind node Yaml_cst.scalar_value
             |> require_some "empty quoted scalar before comment"
           in
           expect_equal_string ~expected:"" empty_value;
@@ -1119,9 +1142,7 @@ let yaml_tests =
                second_colon.problems);
           let after_escaped_double =
             Yaml_cst.parse "key: \"value \\\" # inside\" : extra\n"
-          and after_single =
-            Yaml_cst.parse "key: 'value # inside' : extra\n"
-          in
+          and after_single = Yaml_cst.parse "key: 'value # inside' : extra\n" in
           List.iter
             (fun (label, tree) ->
               expect_true label
@@ -1146,12 +1167,12 @@ let yaml_tests =
             (match Yaml_cst.root tagged_scalar with
             | Some
                 (Yaml_cst.Scalar
-                  {
-                    tag = Some "!local";
-                    value = "value: inside";
-                    style = Double_quoted;
-                    _;
-                  }) -> true
+                   {
+                     tag = Some "!local";
+                     value = "value: inside";
+                     style = Double_quoted;
+                     _;
+                   }) -> true
             | _ -> false);
           let property = Yaml_cst.parse "key: !tag: scalar\n" in
           expect_true "a colon inside a node property is not a second mapping"
@@ -1161,9 +1182,7 @@ let yaml_tests =
                     problem.Yaml_cst.message
                     = "multiple mapping separators in a plain scalar")
                   property.problems));
-          let tagged_quote =
-            Yaml_cst.parse "key: !tag \"value: inside\"\n"
-          in
+          let tagged_quote = Yaml_cst.parse "key: !tag \"value: inside\"\n" in
           expect_true "a quoted scalar following a property hides inner colons"
             (not
                (List.exists
@@ -1249,8 +1268,8 @@ let yaml_tests =
       run =
         (fun () ->
           let events =
-            Yaml_cst.parse "&anchor scalar\n" |> Yaml_event.of_cst
-            |> Yaml_event.to_string
+            Yaml_cst.parse "&anchor scalar\n"
+            |> Yaml_event.of_cst |> Yaml_event.to_string
           in
           expect_true "decorated scalar must emit a value event"
             (Util.contains ~needle:"=VAL &anchor :scalar" events));
@@ -1277,7 +1296,13 @@ let yaml_tests =
               bom = false;
               newline = `Lf;
               documents =
-                [ { root = Some decorated_alias; directives = []; span = Span.none } ];
+                [
+                  {
+                    root = Some decorated_alias;
+                    directives = [];
+                    span = Span.none;
+                  };
+                ];
               trivia = [];
               anchors = [];
               problems = [];
@@ -1292,12 +1317,14 @@ let yaml_tests =
       run =
         (fun () ->
           let tree = Yaml_cst.parse "value: |\n    \n# outside\nnext: ok\n" in
-          expect_true "same-indent comment must remain outside block indentation"
+          expect_true
+            "same-indent comment must remain outside block indentation"
             (not
                (List.exists
                   (fun problem ->
                     problem.Yaml_cst.message
-                    = "leading block-scalar whitespace exceeds content indentation")
+                    = "leading block-scalar whitespace exceeds content \
+                       indentation")
                   tree.problems)));
     };
     {

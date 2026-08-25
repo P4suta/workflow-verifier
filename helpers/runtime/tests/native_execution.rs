@@ -8,7 +8,7 @@ use workflow_verifier_helper_runtime::{
     NativeStorageParents, ProcessObservation, execute_native, source_snapshot,
 };
 use workflow_verifier_runner_protocol::{
-    Control, Descriptor, Limits, Outcome, PlanStatus, Step, ValidatedPlan,
+    Control, Descriptor, Limits, Outcome, PlanStatus, RuntimeProfile, Step, ValidatedPlan,
 };
 
 static NEXT_DIRECTORY: AtomicU64 = AtomicU64::new(0);
@@ -51,16 +51,29 @@ fn plan(source_digest: String) -> ValidatedPlan {
     ValidatedPlan {
         digest: "sha256:plan".to_owned(),
         backend: "linux-native".to_owned(),
+        scenario_digest: format!("sha256:{}", "2".repeat(64)),
+        provider_profile: "github-actions-v1".to_owned(),
+        selected_jobs: vec!["build".to_owned()],
         controls: descriptor().controls,
         status: PlanStatus::Complete,
         source_digest,
         lock_digest: "sha256:lock".to_owned(),
+        runtime: RuntimeProfile {
+            kind: "linux-capsule".to_owned(),
+            runner_platform: "linux-x86_64".to_owned(),
+            workload_digest: format!("sha256:{}", "0".repeat(64)),
+            rootfs_digest: Some(format!("sha256:{}", "0".repeat(64))),
+            helper_digest: None,
+            boot_digest: None,
+            capability_fingerprint: None,
+        },
         limits: Limits {
             cpu_seconds: 1,
             memory_mb: 64,
             processes: 4,
             output_bytes: 1024,
         },
+        network_destinations: Vec::new(),
         secret_names: vec!["TOKEN".to_owned()],
         dependencies: Vec::new(),
         steps: vec![Step {
@@ -138,6 +151,8 @@ fn native_execution_emits_common_process_secret_and_artifact_evidence() {
                 timed_out: false,
                 output_exceeded: false,
                 output: b"log do-not-leak".to_vec(),
+                output_bytes: 15,
+                wall_time_ms: 2,
             })
         },
     );
@@ -187,6 +202,8 @@ impl NativeSandbox for LocatedSandbox {
             timed_out: false,
             output_exceeded: false,
             output: Vec::new(),
+            output_bytes: 0,
+            wall_time_ms: 1,
         })
     }
 }

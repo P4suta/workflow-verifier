@@ -1,39 +1,49 @@
 # Release evidence bundle
 
-`workflow-verifier` is maintained by one person. Publication therefore uses a
-signed, explicitly named maintainer self-attestation; it does not claim an
-independent review that did not occur.
+No passing candidate evidence is committed on the product commit `C`. The old
+0.1 candidate evidence was discarded when the v2 protocols and trust boundary
+were rebuilt.
 
-Release evidence is created in two commits:
+After every required check has run against the exact unsigned artifacts from
+`C`, one single-parent child commit `E` may add only `release-evidence/**`.
+`release-evidence-v3.json` binds all of the following to `C` and the planned
+tag:
 
-1. Candidate commit `C` contains the code, version, changelog, and release
-   machinery.
-2. Its single child `E` changes only `release-evidence/**` and contains
-   measurements for `C`, `release-evidence-v2.json`, and the detached signed
-   `maintainer-security-attestation-v1.json`.
-3. The planned tag points to `E`. The verifier requires `E` to have exactly
-   one parent, `C`, and rejects any non-evidence change in `E`.
+- the four product archives, four platform-specific helper bundles, source
+  archive, runtime capsule, both architecture-specific macOS boot bundles,
+  schemas, corresponding source, and notices;
+- a signature record for every executable payload;
+- one SPDX 2.3 SBOM per payload and one aggregate CycloneDX SBOM;
+- every required quality, corpus, mutation, fuzz, determinism, performance,
+  containment, clean-install, reproducibility, scanner, signature, and malware
+  gate;
+- the canonical, detached-SSH-signed sole-maintainer self-audit.
 
-The v2 manifest binds `C` and the planned tag to:
+The verifier rejects missing gates, stale candidate identities, changed
+artifacts, failed or unclassified scanner results, invalid signature records,
+incomplete SBOM coverage, a non-evidence child commit, and non-canonical JSON.
 
-- a passing 400-repository `corpus-report-v1`, with 100 repositories for each
-  supported provider and precision/recall of 1.0;
-- the deterministic pinned eight-repository `official-compat-v1` report;
-- passing cold, warm, and incremental comparisons against an independent
-  baseline on Linux x86-64, Windows x86-64, macOS arm64, and macOS x86-64;
-- the sole-maintainer security attestation and its detached SSH signature.
+Two limitations are intentionally prominent and machine-readable:
 
-The attestation must cover every security scope named by its schema. Critical
-and high findings must be resolved. Every accepted or open lower-severity item
-and every residual risk needs an HTTPS tracking URL, accountable owner, and
-non-overdue due date. The decision is fail-closed unless it is `approve`.
+1. macOS binaries use ad-hoc code signatures and release assets use Sigstore;
+   there is no Developer ID signature or Apple notarization.
+2. The project has one maintainer and the signed audit is a self-audit, not an
+   independent security review.
 
-The trusted public key is pinned in `maintainer-allowed-signers`. Sign the exact
-attestation bytes with namespace `workflow-verifier-release`, then run:
+The pinned self-audit identity is in `maintainer-allowed-signers`. Sign the
+exact canonical audit bytes with namespace `workflow-verifier-release`, then
+verify `E` with:
 
 ```text
 just release-evidence E v0.1.0
 ```
 
-No passing example manifest is committed in candidate commit `C`: real
-evidence is added only by commit `E`, after all measurements of `C` complete.
+The candidate and Windows-signing workflows produce only evidence they can
+actually observe. In particular, the candidate workflow does not synthesize a
+passing runtime capsule, macOS boot bundle, real-host containment result, or
+scanner result. Missing external assets or protected-environment runs therefore
+keep this directory without a passing v3 manifest.
+
+The final release index and checksum signature are created after v3 evidence
+verification. They cover product assets, the evidence bundle, SBOMs, and the
+source archive without including their own digest, avoiding a digest cycle.

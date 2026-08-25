@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   catalog:
+    name: Build complete mutation catalog
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     outputs:
@@ -23,11 +24,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
       - name: Install analyzer dependencies
-        run: opam install . --deps-only --with-test --yes
+        run: opam install . --deps-only --with-test --locked --yes
       - name: Install immutable mutation runner
         run: >-
           opam pin add ocaml-mutants.dev
@@ -66,6 +71,7 @@ jobs:
           include-hidden-files: true
 
   shard:
+    name: Mutation shard ${{ matrix.shard }}
     needs: catalog
     strategy:
       fail-fast: false
@@ -77,11 +83,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
       - name: Install analyzer dependencies
-        run: opam install . --deps-only --with-test --yes
+        run: opam install . --deps-only --with-test --locked --yes
       - name: Install immutable mutation runner
         run: >-
           opam pin add ocaml-mutants.dev
@@ -171,6 +181,7 @@ jobs:
           if-no-files-found: error
 
   aggregate:
+    name: Aggregate mutation evidence
     needs: [catalog, shard]
     if: ${{ always() && needs.catalog.result == 'success' }}
     runs-on: ubuntu-24.04
@@ -179,6 +190,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - name: Download every catalog-bound shard
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:

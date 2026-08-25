@@ -1,9 +1,13 @@
 type system = {
-  temporary_file : prefix:string -> suffix:string -> string;
-  write_file : string -> string -> (unit, string) result;
-  read_file : string -> (string, string) result;
-  remove_file : string -> unit;
-  command : string -> int;
+  getenv : string -> string option;
+  run :
+    executable:string ->
+    arguments:string list ->
+    environment:(string * string) list ->
+    stdin:string ->
+    timeout_seconds:int ->
+    output_bytes:int ->
+    (Helper_client.response, string) result;
 }
 
 val invoke : system -> Helper_client.invoke

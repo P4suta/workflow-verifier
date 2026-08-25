@@ -1,6 +1,6 @@
 use workflow_verifier_runner_protocol::{
     Control, Descriptor, Evidence, LaunchError, Limits, Outcome, PlanStatus, RunResult,
-    ValidatedPlan, validate_launch, validate_plan,
+    RuntimeProfile, ValidatedPlan, validate_launch, validate_plan,
 };
 
 const PLAN: &str = concat!(
@@ -14,26 +14,50 @@ const PLAN: &str = concat!(
 );
 
 const CANONICAL_PLAN: &str =
-    include_str!("../../../test/fixtures/protocol/runner-v1-complete.json");
+    include_str!("../../../test/fixtures/protocol/runner-v2-complete.json");
 const INVALID_COMPLETE_PLAN: &str =
-    include_str!("../../../test/fixtures/protocol/runner-v1-invalid-complete.json");
+    include_str!("../../../test/fixtures/protocol/runner-v2-invalid-complete.json");
 const CANONICAL_RUN: &str =
-    include_str!("../../../test/fixtures/protocol/sandbox-run-v1-complete.json");
+    include_str!("../../../test/fixtures/protocol/sandbox-run-v2-complete.json");
 
 fn plan_for(descriptor: &Descriptor, status: PlanStatus) -> ValidatedPlan {
     ValidatedPlan {
         digest: "sha256:test".to_owned(),
         backend: descriptor.id.to_owned(),
+        scenario_digest: format!("sha256:{}", "2".repeat(64)),
+        provider_profile: "github-actions-v1".to_owned(),
+        selected_jobs: vec!["build".to_owned()],
         controls: descriptor.controls.clone(),
         status,
         source_digest: "sha256:source".to_owned(),
         lock_digest: "sha256:lock".to_owned(),
+        runtime: RuntimeProfile {
+            kind: match descriptor.id {
+                "linux-native" => "linux-capsule",
+                "windows-native" => "windows-runtime-profile",
+                "macos-vm" => "macos-vm",
+                _ => "oci-capsule",
+            }
+            .to_owned(),
+            runner_platform: match descriptor.platform {
+                "windows" => "windows-x86_64",
+                "macos" => "macos-arm64",
+                _ => "linux-x86_64",
+            }
+            .to_owned(),
+            workload_digest: format!("sha256:{}", "0".repeat(64)),
+            rootfs_digest: None,
+            helper_digest: None,
+            boot_digest: None,
+            capability_fingerprint: None,
+        },
         limits: Limits {
             cpu_seconds: 1,
             memory_mb: 64,
             processes: 4,
             output_bytes: 1024,
         },
+        network_destinations: Vec::new(),
         secret_names: Vec::new(),
         dependencies: Vec::new(),
         steps: Vec::new(),
@@ -60,10 +84,56 @@ fn ocaml_and_helpers_share_canonical_runner_fixtures() {
 
 #[test]
 fn ocaml_and_helpers_share_canonical_sandbox_run_fixtures() {
+    let plan = validate_plan(CANONICAL_PLAN).expect("canonical runner-v2");
+    let mut evidence = Evidence::for_plan(&plan);
+    evidence.append(
+        workflow_verifier_runner_protocol::EvidenceBody::BackendAttested {
+            id: "oci:docker".to_owned(),
+            version: "0.1.0".to_owned(),
+            platform: "portable-fixture".to_owned(),
+            controls_digest: workflow_verifier_runner_protocol::controls_digest(&plan.controls),
+        },
+    );
+    for control in &plan.controls {
+        evidence.append(
+            workflow_verifier_runner_protocol::EvidenceBody::ControlAttested(
+                control.name().to_owned(),
+            ),
+        );
+    }
+    evidence.append(
+        workflow_verifier_runner_protocol::EvidenceBody::ProcessStarted {
+            executable: "/bin/sh".to_owned(),
+            argv: vec!["-eu".to_owned(), "-c".to_owned(), "true".to_owned()],
+        },
+    );
+    evidence.append(workflow_verifier_runner_protocol::EvidenceBody::ProcessExited { code: 0 });
+    evidence.append(
+        workflow_verifier_runner_protocol::EvidenceBody::ResourceObserved {
+            wall_time_ms: 1,
+            cpu_time_ms: 0,
+            peak_memory_bytes: 0,
+            processes: 1,
+            output_bytes: 0,
+            scratch_bytes: 0,
+            scratch_entries: 0,
+        },
+    );
+    evidence.append(
+        workflow_verifier_runner_protocol::EvidenceBody::LogRecorded {
+            digest: format!(
+                "sha256:{}",
+                workflow_verifier_runner_protocol::sha256_hex(b"")
+            ),
+        },
+    );
+    evidence.append(
+        workflow_verifier_runner_protocol::EvidenceBody::FilesystemFinal {
+            digest: plan.source_digest.clone(),
+        },
+    );
     let run = RunResult {
-        evidence: Evidence::new(
-            "sha256:b8ad3d5133f98eb1a6747bf7360a4e1e3de5bec0bf92724c381121e15e9e8a6f",
-        ),
+        evidence,
         outcome: Outcome::Completed,
     };
     assert_eq!(run.canonical_json(), CANONICAL_RUN);

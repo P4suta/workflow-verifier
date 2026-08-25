@@ -85,7 +85,7 @@ let tokenize source : token list =
            start = !start;
            stop;
          }
-         : token)
+          : token)
         :: !tokens;
     Buffer.clear buffer;
     token_quoted := false;
@@ -218,10 +218,7 @@ type output_destination =
   | Private_file
   | Unknown_output of Unknown.reason
 
-type output_quote =
-  | Output_single
-  | Output_double
-  | Output_double_escape
+type output_quote = Output_single | Output_double | Output_double_escape
 
 let output_destination shell source =
   match shell with
@@ -242,12 +239,10 @@ let output_destination shell source =
           | Some Output_double ->
               if character = '\\' then
                 scan (index + 1) (Some Output_double_escape) depth redirects
-              else if character = '"' then
-                scan (index + 1) None depth redirects
+              else if character = '"' then scan (index + 1) None depth redirects
               else scan (index + 1) quote depth redirects
           | Some Output_single ->
-              if character = '\'' then
-                scan (index + 1) None depth redirects
+              if character = '\'' then scan (index + 1) None depth redirects
               else scan (index + 1) quote depth redirects
           | None -> (
               match character with
@@ -329,7 +324,7 @@ let group_observability shell group =
   let stages = split_top_level pipeline_separator group in
   match List.rev stages with
   | [] -> (false, false, [])
-  | final_stage :: _ ->
+  | final_stage :: _ -> (
       let secret = List.exists secret_reference stages
       and producer =
         List.exists
@@ -338,10 +333,10 @@ let group_observability shell group =
       in
       if not secret then (false, false, [])
       else
-    let network = List.exists network_command stages in
-      if (not producer) || network then (network, false, [])
-      else
-        match output_destination shell final_stage with
+        let network = List.exists network_command stages in
+        if (not producer) || network then (network, false, [])
+        else
+          match output_destination shell final_stage with
           | Private_file -> (network, false, [])
           | Unknown_output reason -> (network, false, [ reason ])
           | Standard_output ->
@@ -357,7 +352,7 @@ let group_observability shell group =
                   [
                     Unknown.Unsupported_syntax
                       "unresolved pipeline stdout behavior";
-                  ] )
+                  ] ))
 
 let line_observability shell source =
   source |> String.lowercase_ascii |> String.split_on_char '\n'

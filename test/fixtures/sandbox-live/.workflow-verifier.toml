@@ -1,13 +1,16 @@
-version = 1
+version = 2
 persona = "audit"
 frontends = ["github"]
 offline = true
 
 [sandbox]
 backend = "oci:docker"
-image = "sha256:648d431f16e33c7ef32784c37a6c270c6c87c4d4ceeb37d42aa824ee7671bc65"
+capsule_digest = "sha256:648d431f16e33c7ef32784c37a6c270c6c87c4d4ceeb37d42aa824ee7671bc65"
 network = "deny"
-cpu_seconds = 30
-memory_mb = 256
-processes = 16
-output_bytes = 1048576
+wall_time_seconds = 900
+cpu_cores = 1
+memory_bytes = 2147483648
+processes = 128
+output_bytes = 16777216
+scratch_bytes = 4294967296
+scratch_entries = 100000

@@ -29,5 +29,4 @@ let classify_reference reference =
           String.sub reference (index + 1) (String.length reference - index - 1)
         in
         if immutable_revision revision then Immutable else Mutable
-    | None ->
-        if Util.contains ~needle:"://" reference then Mutable else Unknown
+    | None -> if Util.contains ~needle:"://" reference then Mutable else Unknown

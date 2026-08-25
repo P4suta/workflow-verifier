@@ -39,10 +39,10 @@ let trace_hop label (node : Ir.node) =
 
 type origin_path = From_origin of Ir.node list | Target_only of Ir.node
 
-let shortest_origin_path ~is_origin ~edge_kinds graph indexed (target : Ir.node) =
+let shortest_origin_path ~is_origin ~edge_kinds graph indexed (target : Ir.node)
+    =
   match
-    graph.Ir.nodes
-    |> List.filter is_origin
+    graph.Ir.nodes |> List.filter is_origin
     |> List.find_map (fun (source : Ir.node) ->
         Graph_algorithms.shortest_path_indexed ~edge_kinds indexed source.id
           target.id)
@@ -509,8 +509,8 @@ let cache_rule graph indexed solution =
            (fun capability ->
              List.mem capability [ Ir.Cache_read; Ir.Cache_write ])
            node.capabilities)
-    ~write_capability:Ir.Cache_write ~read_capability:Ir.Cache_read graph indexed
-    solution
+    ~write_capability:Ir.Cache_write ~read_capability:Ir.Cache_read graph
+    indexed solution
 
 let toctou_rule graph indexed solution =
   let checkouts =

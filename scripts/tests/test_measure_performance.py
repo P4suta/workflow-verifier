@@ -1,8 +1,8 @@
 import json
-from pathlib import Path
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 from unittest import mock
 
 import scripts.measure_performance as measurement
@@ -14,9 +14,7 @@ class MeasurePerformanceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             cwd = Path(temporary) / "test"
             cwd.mkdir()
-            resolved = measurement._native_argv(
-                ["../_build/default/bin/main.exe", "check"], cwd
-            )
+            resolved = measurement._native_argv(["../_build/default/bin/main.exe", "check"], cwd)
             self.assertEqual(
                 resolved,
                 [str((cwd / "../_build/default/bin/main.exe").resolve()), "check"],
@@ -92,7 +90,9 @@ class MeasurePerformanceTests(unittest.TestCase):
             modes = result["scenarios"][0]["modes"]
             self.assertEqual(set(modes), {"cold", "incremental", "warm"})
             self.assertTrue(all(len(value["samples_ns"]) == 2 for value in modes.values()))
-            self.assertTrue(all(sample > 0 for value in modes.values() for sample in value["samples_ns"]))
+            self.assertTrue(
+                all(sample > 0 for value in modes.values() for sample in value["samples_ns"])
+            )
             self.assertEqual(marker.read_bytes(), b"ok")
 
     def test_setup_and_before_each_are_observable_and_failures_stop_measurement(self) -> None:

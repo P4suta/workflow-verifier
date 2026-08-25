@@ -1,0 +1,23 @@
+[project]
+name = "workflow-verifier-release-tools"
+version = "0.1.0"
+requires-python = ">=3.13.7,<3.14"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["B", "E4", "E7", "E9", "F", "I", "UP"]
+
+[tool.ruff.format]
+line-ending = "lf"
+quote-style = "double"
+
+[tool.mypy]
+allow_redefinition = true
+check_untyped_defs = true
+explicit_package_bases = true
+follow_imports = "skip"
+ignore_missing_imports = true
+python_version = "3.13"

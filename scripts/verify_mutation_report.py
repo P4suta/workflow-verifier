@@ -7,13 +7,12 @@ import argparse
 import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
 import re
 import stat
 import sys
 import tempfile
+from pathlib import Path, PurePosixPath
 from typing import Any
-
 
 TOP_FIELDS = {
     "document_type",
@@ -145,7 +144,10 @@ def verify(report_path: Path, required_prefixes: list[str]) -> dict[str, Any]:
     prefixes = sorted({_required_prefix(prefix) for prefix in required_prefixes})
     document, report_digest = _load(report_path)
     _exact_fields(document, TOP_FIELDS, "mutation report")
-    if document["document_type"] != "ocaml-mutants.run-report-v1" or document["schema_version"] != 1:
+    if (
+        document["document_type"] != "ocaml-mutants.run-report-v1"
+        or document["schema_version"] != 1
+    ):
         raise ValueError("mutation report is not ocaml-mutants.run-report-v1 schema version 1")
     if document["status"] != "completed" or document["failure"] is not None:
         raise ValueError("mutation gate requires a successfully completed run")
@@ -161,9 +163,7 @@ def verify(report_path: Path, required_prefixes: list[str]) -> dict[str, Any]:
     if summary["kind"] != "complete":
         raise ValueError("mutation gate requires a complete mutation run")
     counters = {
-        name: _counter(summary, name)
-        for name in SUMMARY_FIELDS
-        if name not in {"kind", "score"}
+        name: _counter(summary, name) for name in SUMMARY_FIELDS if name not in {"kind", "score"}
     }
     mutants = document["mutants"]
     not_run = document["not_run"]
@@ -208,9 +208,7 @@ def verify(report_path: Path, required_prefixes: list[str]) -> dict[str, Any]:
         evidence_text = _result_evidence_text(result, label)
         for marker in INFRASTRUCTURE_FAILURE_MARKERS:
             if marker in evidence_text:
-                raise ValueError(
-                    f"{label} records an infrastructure failure marker: {marker}"
-                )
+                raise ValueError(f"{label} records an infrastructure failure marker: {marker}")
         actual[outcome] += 1
         expected = result.get("expected_survivor")
         if type(expected) is not bool:
@@ -251,7 +249,9 @@ def verify(report_path: Path, required_prefixes: list[str]) -> dict[str, Any]:
     failures: list[str] = []
     if unexpected_survivors:
         amount = "one" if unexpected_survivors == 1 else str(unexpected_survivors)
-        failures.append(f"{amount} unexpected mutant{'s' if unexpected_survivors != 1 else ''} survived")
+        failures.append(
+            f"{amount} unexpected mutant{'s' if unexpected_survivors != 1 else ''} survived"
+        )
     if actual["inconclusive"]:
         failures.append(f"{actual['inconclusive']} mutation outcomes were inconclusive")
     if actual["error"]:
@@ -259,7 +259,9 @@ def verify(report_path: Path, required_prefixes: list[str]) -> dict[str, Any]:
     if unconfirmed_timeouts:
         failures.append(f"{unconfirmed_timeouts} mutation timeouts were unconfirmed")
     if counters["unfulfilled_expectations"]:
-        failures.append(f"{counters['unfulfilled_expectations']} mutation expectations were unfulfilled")
+        failures.append(
+            f"{counters['unfulfilled_expectations']} mutation expectations were unfulfilled"
+        )
     if detected == 0 and unexpected_survivors == 0:
         failures.append("no mutant was detected")
     return {

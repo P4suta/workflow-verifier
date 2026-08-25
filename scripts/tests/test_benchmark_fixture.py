@@ -27,7 +27,9 @@ class BenchmarkFixtureTests(unittest.TestCase):
             changed = [name for name in expected if before[name] != after[name]]
             self.assertEqual(changed, [".github/workflows/ci.yml"])
             prepare(workspace, "toggle")
-            self.assertEqual((root / ".github/workflows/ci.yml").read_bytes(), before[".github/workflows/ci.yml"])
+            self.assertEqual(
+                (root / ".github/workflows/ci.yml").read_bytes(), before[".github/workflows/ci.yml"]
+            )
 
     def test_rejects_symlinked_or_unknown_targets(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

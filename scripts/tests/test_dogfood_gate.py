@@ -24,7 +24,7 @@ def evidence(plan_digest: str) -> dict[str, object]:
         digest = "sha256:" + hashlib.sha256(canonical(unsigned)[:-1].encode("utf-8")).hexdigest()
         events.append({**unsigned, "digest": digest})
         previous = digest
-    return {"events": events, "plan_digest": plan_digest, "schema": "evidence-v1"}
+    return {"events": events, "plan_digest": plan_digest, "schema": "evidence-v2"}
 
 
 class DogfoodGateTests(unittest.TestCase):
@@ -42,24 +42,66 @@ class DogfoodGateTests(unittest.TestCase):
                 ],
                 "persona": "audit",
                 "properties": [{"state": "Proved"}],
-                "schema": "report-v1",
+                "schema": "report-v2",
             },
-            "report.sarif.json": {"$schema": "https://json.schemastore.org/sarif-2.1.0.json", "runs": [], "version": "2.1.0"},
+            "report.sarif.json": {
+                "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+                "runs": [],
+                "version": "2.1.0",
+            },
             "graph.json": {"edges": [], "entrypoints": ["entry"], "nodes": [{"id": "entry"}]},
-            "diff.json": {"base_digest": "sha256:" + "0" * 64, "changes": [], "head_digest": "sha256:" + "1" * 64, "schema": "semantic-diff-v1"},
-            "policy.json": {"cases": [{"passed": True}], "passed": True, "schema": "policy-test-v1"},
+            "diff.json": {
+                "base_digest": "sha256:" + "0" * 64,
+                "changes": [],
+                "head_digest": "sha256:" + "1" * 64,
+                "schema": "semantic-diff-v1",
+            },
+            "policy.json": {
+                "cases": [{"passed": True}],
+                "passed": True,
+                "schema": "policy-test-v1",
+            },
             "lock.json": {"entries": [], "integrity": "sha256:" + "2" * 64, "schema": "lock-v2"},
-            "doctor.json": {"backends": [{"id": "oci:docker", "available": True}], "frontends": ["github", "gitlab", "azure", "circleci"], "resolver_network": False, "sandbox_executor": True, "schema": "doctor-v1"},
-            "plan.json": {"backend": "oci:docker", "digest": plan_digest, "schema": "runner-v1", "status": {"state": "complete"}, "steps": [{"id": "build"}]},
-            "run.json": {"evidence": runtime_evidence, "outcome": {"state": "completed"}, "schema": "sandbox-run-v1"},
+            "doctor.json": {
+                "backends": [{"id": "oci:docker", "available": True}],
+                "frontends": ["github", "gitlab", "azure", "circleci"],
+                "resolver_network": False,
+                "sandbox_executor": True,
+                "schema": "doctor-v2",
+            },
+            "plan.json": {
+                "backend": "oci:docker",
+                "digest": plan_digest,
+                "schema": "runner-v2",
+                "status": {"state": "complete"},
+                "steps": [{"id": "build"}],
+            },
+            "run.json": {
+                "evidence": runtime_evidence,
+                "outcome": {"state": "completed"},
+                "schema": "sandbox-run-v2",
+            },
             "replay.json": runtime_evidence,
-            "audit.json": {"event_count": 3, "evidence_tail": runtime_evidence["events"][-1]["digest"], "plan_digest": plan_digest, "reconciliation": {"state": "Proved"}, "schema": "sandbox-audit-v1", "status": {"state": "verified"}},
+            "audit.json": {
+                "event_count": 3,
+                "evidence_tail": runtime_evidence["events"][-1]["digest"],
+                "plan_digest": plan_digest,
+                "reconciliation": {"state": "Proved"},
+                "schema": "sandbox-audit-v1",
+                "status": {"state": "verified"},
+            },
         }
         for name, document in documents.items():
             (root / name).write_text(canonical(document), encoding="utf-8", newline="\n")
-        (root / "explain.txt").write_text("WV-SEC-001\ntrace:\n  - source\ncapabilities: network\n", encoding="utf-8", newline="\n")
+        (root / "explain.txt").write_text(
+            "WV-SEC-001\ntrace:\n  - source\ncapabilities: network\n",
+            encoding="utf-8",
+            newline="\n",
+        )
         (root / "graph.dot").write_text("digraph workflow {\n}\n", encoding="utf-8", newline="\n")
-        (root / "fix.patch").write_text("--- a/workflow.yml\n+++ b/workflow.yml\n", encoding="utf-8", newline="\n")
+        (root / "fix.patch").write_text(
+            "--- a/workflow.yml\n+++ b/workflow.yml\n", encoding="utf-8", newline="\n"
+        )
 
     def test_complete_live_cli_evidence_passes_and_is_digest_bound(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -69,7 +111,9 @@ class DogfoodGateTests(unittest.TestCase):
             self.assertTrue(result["passed"])
             self.assertEqual(result["schema"], "dogfood-v1")
             self.assertEqual(len(result["artifacts"]), 14)
-            self.assertTrue(all(item["digest"].startswith("sha256:") for item in result["artifacts"]))
+            self.assertTrue(
+                all(item["digest"].startswith("sha256:") for item in result["artifacts"])
+            )
 
     def test_missing_or_semantically_incomplete_evidence_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -135,14 +179,21 @@ class DogfoodGateTests(unittest.TestCase):
             self.fixture(root)
             output = root / "evidence.json"
             extract_evidence(root / "run.json", output)
-            self.assertEqual(output.read_text(encoding="utf-8"), (root / "replay.json").read_text(encoding="utf-8"))
-            with self.assertRaisesRegex(ValueError, "sandbox-run-v1"):
+            self.assertEqual(
+                output.read_text(encoding="utf-8"),
+                (root / "replay.json").read_text(encoding="utf-8"),
+            )
+            with self.assertRaisesRegex(ValueError, "sandbox-run-v2"):
                 extract_evidence(root / "report.json", output)
 
     def test_prepares_only_a_content_addressed_image(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             config = Path(directory) / ".workflow-verifier.toml"
-            config.write_text('[sandbox]\nimage = "sha256:' + "0" * 64 + '"\n', encoding="utf-8", newline="\n")
+            config.write_text(
+                '[sandbox]\ncapsule_digest = "sha256:' + "0" * 64 + '"\n',
+                encoding="utf-8",
+                newline="\n",
+            )
             image = "sha256:" + "a" * 64
             prepare_image(config, image)
             self.assertIn(image, config.read_text(encoding="utf-8"))

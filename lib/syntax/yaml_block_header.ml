@@ -1,12 +1,6 @@
 type style = Literal | Folded
 type chomping = Clip | Keep | Strip
-
-type header = {
-  style : style;
-  chomping : chomping;
-  indentation : int option;
-}
-
+type header = { style : style; chomping : chomping; indentation : int option }
 type classification = Not_block | Valid of header | Invalid of int
 
 let separation = function
@@ -28,7 +22,7 @@ let classify raw =
     let cursor = ref 1 in
     while
       !cursor < String.length fragment
-      && not (separation fragment.[!cursor])
+      && (not (separation fragment.[!cursor]))
       && fragment.[!cursor] <> '#'
     do
       incr cursor

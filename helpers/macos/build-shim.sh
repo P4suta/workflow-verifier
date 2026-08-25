@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+script_directory=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 output=${1:-"$script_directory/../../target/release/workflow-verifier-vm-shim"}
 identity=${WORKFLOW_VERIFIER_CODESIGN_IDENTITY:--}
 
@@ -17,6 +17,8 @@ swiftc \
 codesign \
   --force \
   --sign "$identity" \
+  --timestamp=none \
+  --identifier dev.workflow-verifier.vm-shim \
   --options runtime \
   --entitlements "$script_directory/shim/WorkflowVerifierVm.entitlements" \
   "$output"

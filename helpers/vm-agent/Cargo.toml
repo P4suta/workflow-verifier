@@ -13,11 +13,11 @@ name = "workflow-verifier-vm-agent"
 path = "src/main.rs"
 
 [dependencies]
-workflow-verifier-helper-runtime = { path = "../runtime" }
-workflow-verifier-runner-protocol = { path = "../protocol" }
+workflow-verifier-helper-runtime = { path = "../runtime", version = "=0.1.0" }
+workflow-verifier-runner-protocol = { path = "../protocol", version = "=0.1.0" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-libc = "0.2.189"
+libc = "=0.2.189"
 
 [lints]
 workspace = true

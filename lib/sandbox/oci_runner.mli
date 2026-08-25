@@ -3,11 +3,17 @@ type process_result = {
   timed_out : bool;
   output_truncated : bool;
   redacted_secrets : string list;
+  redacted_output : string;
+  wall_time_ms : int;
+  output_bytes : int;
 }
+
+type scratch_result = { digest : string; bytes : int64; entries : int }
 
 type runtime = {
   prepare_scratch :
     source_root:string -> scratch_root:string -> (unit, string) result;
+  finalize_scratch : scratch_root:string -> (scratch_result, string) result;
   run :
     engine:string ->
     arguments:string list ->

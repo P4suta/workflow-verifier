@@ -1,0 +1,26 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/release-index-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "files": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "path": { "minLength": 1, "not": { "pattern": "(^/|^[A-Za-z]:|\\\\|(^|/)\\.\\.?(/|$))" }, "type": "string" },
+          "size": { "minimum": 1, "type": "integer" }
+        },
+        "required": ["digest", "path", "size"],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "planned_tag": { "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$", "type": "string" },
+    "schema": { "const": "release-index-v1" }
+  },
+  "required": ["files", "planned_tag", "schema"],
+  "title": "workflow-verifier final release index v1",
+  "type": "object"
+}

@@ -28,6 +28,10 @@ let rule_descriptor diagnostic =
     [
       ("id", Json.String diagnostic.Diagnostic.rule_id);
       ("name", Json.String diagnostic.rule_id);
+      ( "helpUri",
+        Json.String
+          ("https://workflow-verifier.dev/rules/"
+          ^ String.lowercase_ascii diagnostic.rule_id) );
       ( "shortDescription",
         Json.Object [ ("text", Json.String diagnostic.message) ] );
     ]
@@ -100,6 +104,8 @@ let result diagnostic =
       ("level", Json.String (level diagnostic.Diagnostic.severity));
       ("locations", Json.Array [ location diagnostic.span ]);
       ("message", Json.Object [ ("text", Json.String diagnostic.message) ]);
+      ( "partialFingerprints",
+        Json.Object [ ("workflowVerifier/v1", Json.String diagnostic.id) ] );
       ( "properties",
         Json.Object
           [
@@ -137,12 +143,41 @@ let to_json report =
   in
   Json.Object
     [
-      ("$schema", Json.String "https://json.schemastore.org/sarif-2.1.0.json");
+      ( "$schema",
+        Json.String
+          "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json"
+      );
       ( "runs",
         Json.Array
           [
             Json.Object
               [
+                ( "automationDetails",
+                  Json.Object [ ("id", Json.String report.Report.digest) ] );
+                ( "invocations",
+                  Json.Array
+                    [
+                      Json.Object
+                        [
+                          ( "executionSuccessful",
+                            Json.Bool
+                              (report.provenance.exit_code <> 4
+                              && report.provenance.exit_code <> 5) );
+                          ("exitCode", Json.Int report.provenance.exit_code);
+                          ( "exitCodeDescription",
+                            Json.String
+                              (Report.gate_result_name
+                                 report.provenance.gate_result) );
+                          ( "properties",
+                            Json.Object
+                              [
+                                ("reportDigest", Json.String report.digest);
+                                ( "sourceManifestDigest",
+                                  Json.String
+                                    report.provenance.source_manifest_digest );
+                              ] );
+                        ];
+                    ] );
                 ("results", Json.Array (List.map result diagnostics));
                 ( "tool",
                   Json.Object

@@ -18,7 +18,12 @@ let plan () =
           Secret_redaction;
         ]
       ~limits:
-        { cpu_seconds = 2; memory_mb = 64; processes = 2; output_bytes = 1024 }
+        {
+          cpu_seconds = 900;
+          memory_mb = 2048;
+          processes = 128;
+          output_bytes = 16 * 1024 * 1024;
+        }
       ~secret_names:[] ~dependencies:[] ~steps:[]
   with
   | Ok value -> value
@@ -81,7 +86,7 @@ let execution_contract () =
     | Error message -> fail "%s" message
   in
   expect "helper result is authenticated protocol data" (actual = execution);
-  expect "only canonical runner-v1 bytes enter helper stdin"
+  expect "only canonical runner-v2 bytes enter helper stdin"
     (match !observed with
     | Some request -> request.stdin = Sandbox_protocol.to_canonical_json plan
     | None -> false);

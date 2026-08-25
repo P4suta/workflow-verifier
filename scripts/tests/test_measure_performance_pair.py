@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import unittest
 from pathlib import Path
 from statistics import median
-import unittest
 
 from scripts.measure_performance_pair import measure_pair
 
@@ -58,9 +58,7 @@ class InterleavedPerformanceTests(unittest.TestCase):
             "head",
             "base",
         ]
-        self.assertEqual(
-            [name for name, _revision, _samples in calls], cycle * 3
-        )
+        self.assertEqual([name for name, _revision, _samples in calls], cycle * 3)
         self.assertTrue(all(samples == 1 for _name, _revision, samples in calls))
         for report in (baseline, current):
             for mode in ("cold", "incremental", "warm"):
@@ -72,12 +70,8 @@ class InterleavedPerformanceTests(unittest.TestCase):
         baseline_samples = baseline["scenarios"][0]["modes"]["cold"]["samples_ns"]
         current_samples = current["scenarios"][0]["modes"]["cold"]["samples_ns"]
         self.assertEqual(median(baseline_samples), median(current_samples))
-        self.assertEqual(
-            baseline["environment"]["pair_design"], "period-balanced-v2"
-        )
-        self.assertEqual(
-            current["environment"]["pair_design"], "period-balanced-v2"
-        )
+        self.assertEqual(baseline["environment"]["pair_design"], "period-balanced-v2")
+        self.assertEqual(current["environment"]["pair_design"], "period-balanced-v2")
 
     def test_candidate_and_sample_identity_are_strict(self) -> None:
         with self.assertRaisesRegex(ValueError, "different revisions"):

@@ -4,16 +4,16 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
 import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
 import re
 import stat
 import sys
 import tempfile
 import tomllib
+from dataclasses import dataclass
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 if __package__:
@@ -118,9 +118,7 @@ class Plan:
     def assignment(self, full_id: str) -> Shard:
         selected = [shard for shard in self.shards if shard.selects(full_id)]
         if len(selected) != 1:
-            raise CampaignError(
-                f"catalog mutant {full_id} is assigned to {len(selected)} shards"
-            )
+            raise CampaignError(f"catalog mutant {full_id} is assigned to {len(selected)} shards")
         return selected[0]
 
 
@@ -139,9 +137,7 @@ class Catalog:
 def _validate_shard_partition(shards: list[Shard]) -> None:
     owner_key = "$owner"
     trie: dict[str, Any] = {}
-    entries = sorted(
-        (prefix, shard.name) for shard in shards for prefix in shard.prefixes
-    )
+    entries = sorted((prefix, shard.name) for shard in shards for prefix in shard.prefixes)
     for prefix, shard_name in entries:
         node = trie
         for character in prefix:
@@ -350,9 +346,7 @@ def load_plan(manifest_path: Path, config_path: Path, workspace: Path) -> Plan:
             raise CampaignError(f"{label}.name is invalid")
         prefixes = tuple(sorted(_string_array(row["prefixes"], f"{label}.prefixes")))
         if any(not HEX_PREFIX.fullmatch(prefix) for prefix in prefixes):
-            raise CampaignError(
-                f"{label}.prefixes must contain lowercase hexadecimal prefixes"
-            )
+            raise CampaignError(f"{label}.prefixes must contain lowercase hexadecimal prefixes")
         shards.append(Shard(name=name, prefixes=prefixes))
     shards.sort(key=lambda shard: shard.name)
     if len({shard.name for shard in shards}) != len(shards):
@@ -370,9 +364,7 @@ def load_plan(manifest_path: Path, config_path: Path, workspace: Path) -> Plan:
     )
 
 
-def _validate_mutant(
-    value: Any, label: str, *, report: bool
-) -> dict[str, Any]:
+def _validate_mutant(value: Any, label: str, *, report: bool) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise CampaignError(f"{label} must be an object")
     expected_fields = REPORT_MUTANT_FIELDS if report else CATALOG_MUTANT_FIELDS
@@ -483,9 +475,7 @@ def _report_mutants(report_path: Path) -> tuple[dict[str, Any], dict[str, dict[s
     for index, row in enumerate(rows):
         if not isinstance(row, dict) or not isinstance(row.get("mutant"), dict):
             raise CampaignError(f"mutation result {index} is malformed")
-        mutant = _validate_mutant(
-            row["mutant"], f"mutation result {index}.mutant", report=True
-        )
+        mutant = _validate_mutant(row["mutant"], f"mutation result {index}.mutant", report=True)
         full_id = mutant["full_id"]
         if full_id in mutants:
             raise CampaignError(f"mutation report contains duplicate mutant {full_id}")
@@ -504,8 +494,7 @@ def verify_shard(
 ) -> dict[str, Any]:
     if type(runner_exit_code) is not int or runner_exit_code not in {0, 1}:
         raise CampaignError(
-            f"mutation shard {shard_name} has invalid runner exit code "
-            f"{runner_exit_code!r}"
+            f"mutation shard {shard_name} has invalid runner exit code {runner_exit_code!r}"
         )
     shard = plan.shard(shard_name)
     catalog = load_catalog(plan, catalog_path)
@@ -531,10 +520,7 @@ def verify_shard(
         )
     workspace = document.get("workspace")
     catalog_workspace = catalog.document["workspace"]
-    if (
-        not isinstance(workspace, dict)
-        or workspace.get("digest") != catalog_workspace["digest"]
-    ):
+    if not isinstance(workspace, dict) or workspace.get("digest") != catalog_workspace["digest"]:
         raise CampaignError(
             f"mutation shard {shard.name} workspace digest does not match the catalog"
         )
@@ -546,10 +532,7 @@ def verify_shard(
     }:
         raise CampaignError(f"mutation shard {shard.name} profile or selection is invalid")
     prefixes = sorted(
-        {
-            str(PurePosixPath(mutant["path"]).parent) + "/"
-            for mutant in expected.values()
-        }
+        {str(PurePosixPath(mutant["path"]).parent) + "/" for mutant in expected.values()}
     )
     try:
         gate = verify_report(report_path, prefixes)
@@ -562,9 +545,7 @@ def verify_shard(
             f"does not match authenticated gate outcome "
             f"{expected_exit_code}"
         )
-    gate["resource_guard_digest"] = _resource_guard_attestation(
-        resource_guard_path, shard.name
-    )
+    gate["resource_guard_digest"] = _resource_guard_attestation(resource_guard_path, shard.name)
     gate["runner_exit_code"] = runner_exit_code
     return gate
 
@@ -572,9 +553,7 @@ def verify_shard(
 def _runner_exit_code(path: Path, shard_name: str) -> int:
     raw = _read_regular(path, f"mutation shard {shard_name} runner exit", maximum=16)
     if raw not in {b"0\n", b"1\n"}:
-        raise CampaignError(
-            f"mutation shard {shard_name} runner exit must be exactly 0 or 1"
-        )
+        raise CampaignError(f"mutation shard {shard_name} runner exit must be exactly 0 or 1")
     return int(raw[:1])
 
 
@@ -583,8 +562,7 @@ def _resource_guard_attestation(path: Path, shard_name: str) -> str:
         path, f"mutation shard {shard_name} resource guard attestation", maximum=4096
     )
     expected = (
-        json.dumps(resource_guard_contract(), sort_keys=True, separators=(",", ":"))
-        + "\n"
+        json.dumps(resource_guard_contract(), sort_keys=True, separators=(",", ":")) + "\n"
     ).encode("utf-8")
     if raw != expected:
         raise CampaignError(
@@ -604,12 +582,8 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
         raise CampaignError(f"mutation campaign is missing shard reports: {', '.join(missing)}")
     if extra:
         raise CampaignError(f"mutation campaign has unexpected shard reports: {', '.join(extra)}")
-    expected_exit_names = {
-        f"mutation-runner-exit-{name}.txt" for name in catalog.active_names
-    }
-    actual_exit_names = {
-        path.name for path in evidence_dir.glob("mutation-runner-exit-*.txt")
-    }
+    expected_exit_names = {f"mutation-runner-exit-{name}.txt" for name in catalog.active_names}
+    actual_exit_names = {path.name for path in evidence_dir.glob("mutation-runner-exit-*.txt")}
     missing_exits = sorted(expected_exit_names - actual_exit_names)
     extra_exits = sorted(actual_exit_names - expected_exit_names)
     if missing_exits:
@@ -620,18 +594,13 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
         raise CampaignError(
             "mutation campaign has unexpected runner exits: " + ", ".join(extra_exits)
         )
-    expected_guard_names = {
-        f"mutation-resource-guard-{name}.json" for name in catalog.active_names
-    }
-    actual_guard_names = {
-        path.name for path in evidence_dir.glob("mutation-resource-guard-*.json")
-    }
+    expected_guard_names = {f"mutation-resource-guard-{name}.json" for name in catalog.active_names}
+    actual_guard_names = {path.name for path in evidence_dir.glob("mutation-resource-guard-*.json")}
     missing_guards = sorted(expected_guard_names - actual_guard_names)
     extra_guards = sorted(actual_guard_names - expected_guard_names)
     if missing_guards:
         raise CampaignError(
-            "mutation campaign is missing resource guard attestations: "
-            + ", ".join(missing_guards)
+            "mutation campaign is missing resource guard attestations: " + ", ".join(missing_guards)
         )
     if extra_guards:
         raise CampaignError(
@@ -656,9 +625,7 @@ def aggregate(plan: Plan, catalog_path: Path, evidence_dir: Path) -> dict[str, A
             catalog_path,
             name,
             report_path,
-            resource_guard_path=(
-                evidence_dir / f"mutation-resource-guard-{name}.json"
-            ),
+            resource_guard_path=(evidence_dir / f"mutation-resource-guard-{name}.json"),
             runner_exit_code=runner_exit_code,
         )
         for field in totals:
@@ -766,9 +733,7 @@ def main() -> int:
         plan = load_plan(arguments.manifest, arguments.config, arguments.workspace)
         if arguments.command == "plan":
             catalog = load_catalog(plan, arguments.catalog)
-            matrix = json.dumps(
-                {"shard": list(catalog.active_names)}, separators=(",", ":")
-            )
+            matrix = json.dumps({"shard": list(catalog.active_names)}, separators=(",", ":"))
             if arguments.github_output is not None:
                 _github_output(arguments.github_output, matrix)
             print(matrix)
@@ -792,9 +757,7 @@ def main() -> int:
             _atomic_json(arguments.output, result)
             if not result["passed"]:
                 for failure in result["failures"]:
-                    print(
-                        f"mutation shard {arguments.shard}: {failure}", file=sys.stderr
-                    )
+                    print(f"mutation shard {arguments.shard}: {failure}", file=sys.stderr)
                 return 1
             print(
                 f"mutation shard {arguments.shard}: "

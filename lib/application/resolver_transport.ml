@@ -1,5 +1,12 @@
 type request = { url : string; headers : (string * string) list }
-type response = { status : int; body : string; effective_url : string }
+
+type response = {
+  status : int;
+  body : string;
+  effective_url : string;
+  peer_ip : string;
+}
+
 type get = request -> (response, string) result
 
 let default_sources =
@@ -23,40 +30,160 @@ let is_hex value =
          | _ -> false)
        value
 
-let starts_with_any prefixes value =
-  List.exists (fun prefix -> Util.starts_with ~prefix value) prefixes
+type normalized_url = { origin : string; path : string }
 
-let authority url =
+let first_delimiter value start =
+  match
+    [ '/'; '?'; '#' ]
+    |> List.filter_map (String.index_from_opt value start)
+    |> List.sort Int.compare
+  with
+  | first :: _ -> Some first
+  | [] -> None
+
+let valid_percent_encoding value =
+  let hex = function
+    | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
+    | _ -> false
+  in
+  let rec loop index =
+    if index >= String.length value then true
+    else if value.[index] <> '%' then loop (index + 1)
+    else
+      index + 2 < String.length value
+      && hex value.[index + 1]
+      && hex value.[index + 2]
+      && loop (index + 3)
+  in
+  loop 0
+
+let unsafe_encoded_path value =
+  let lower = String.lowercase_ascii value in
+  List.exists
+    (fun needle -> Util.contains ~needle lower)
+    [ "%00"; "%5c"; "%3f"; "%23"; "%25" ]
+
+let normalize_url url =
   let prefix = "https://" in
   if not (Util.starts_with ~prefix url) then None
+  else if
+    String.exists
+      (function
+        | '\000' | '\r' | '\n' | '\\' -> true
+        | _ -> false)
+      url
+  then None
   else
     let start = String.length prefix in
     let stop =
-      match String.index_from_opt url start '/' with
+      match first_delimiter url start with
       | Some index -> index
       | None -> String.length url
     in
-    Some (String.sub url start (stop - start) |> String.lowercase_ascii)
-
-let safe_https_origin url =
-  match authority url with
-  | None -> false
-  | Some host ->
+    let authority = String.sub url start (stop - start) in
+    let host =
+      if Util.ends_with ~suffix:":443" authority then
+        String.sub authority 0 (String.length authority - 4)
+      else authority
+    in
+    let host = String.lowercase_ascii host in
+    let query_or_fragment =
+      match String.index_from_opt url stop '#' with
+      | Some _ -> true
+      | None -> false
+    in
+    let path_end =
+      match String.index_from_opt url stop '?' with
+      | Some index -> index
+      | None -> String.length url
+    in
+    let path =
+      if stop >= String.length url || url.[stop] <> '/' then "/"
+      else String.sub url stop (path_end - stop)
+    in
+    let host_char = function
+      | 'a' .. 'z' | '0' .. '9' | '.' | '-' -> true
+      | _ -> false
+    in
+    let labels = String.split_on_char '.' host in
+    let safe_host =
       host <> ""
-      && (not (String.contains host '@'))
-      && (not (String.contains host '['))
+      && String.for_all host_char host
+      && List.for_all
+           (fun label ->
+             label <> ""
+             && label.[0] <> '-'
+             && label.[String.length label - 1] <> '-')
+           labels
+      && (not (String.contains authority '@'))
+      && (not (String.contains authority '['))
+      && ((not (String.contains authority ':'))
+         || Util.ends_with ~suffix:":443" authority)
       && host <> "localhost"
       && (not (Util.ends_with ~suffix:".localhost" host))
+      && (not (Util.ends_with ~suffix:".local" host))
+      && (not (Util.ends_with ~suffix:".internal" host))
       && not
            (String.for_all
               (function
                 | '0' .. '9' | '.' -> true
                 | _ -> false)
               host)
+    in
+    let safe_path =
+      path <> ""
+      && path.[0] = '/'
+      && valid_percent_encoding path
+      && (not (unsafe_encoded_path path))
+      && not
+           (List.exists
+              (fun segment -> segment = "." || segment = "..")
+              (String.split_on_char '/' path))
+    in
+    if query_or_fragment || (not safe_host) || not safe_path then None
+    else Some { origin = prefix ^ host; path }
+
+let public_peer_ip value =
+  let ipv4 = String.split_on_char '.' value in
+  match ipv4 with
+  | [ a; b; c; d ] -> (
+      match List.map int_of_string_opt [ a; b; c; d ] with
+      | [ Some a; Some b; Some c; Some d ]
+        when List.for_all (fun byte -> byte >= 0 && byte <= 255) [ a; b; c; d ]
+        ->
+          not
+            (a = 0 || a = 10 || a = 127 || a >= 224
+            || (a = 100 && b >= 64 && b <= 127)
+            || (a = 169 && b = 254)
+            || (a = 172 && b >= 16 && b <= 31)
+            || (a = 192 && (b = 0 || b = 168))
+            || (a = 198 && (b = 18 || b = 19 || (b = 51 && c = 100)))
+            || (a = 203 && b = 0 && c = 113))
+      | _ -> false)
+  | _ ->
+      let lower = String.lowercase_ascii value in
+      String.contains lower ':' && lower <> "::" && lower <> "::1"
+      && (not (Util.starts_with ~prefix:"fc" lower))
+      && (not (Util.starts_with ~prefix:"fd" lower))
+      && (not (Util.starts_with ~prefix:"fe8" lower))
+      && (not (Util.starts_with ~prefix:"fe9" lower))
+      && (not (Util.starts_with ~prefix:"fea" lower))
+      && (not (Util.starts_with ~prefix:"feb" lower))
+      && (not (Util.starts_with ~prefix:"ff" lower))
+      && not (Util.starts_with ~prefix:"2001:db8" lower)
 
 let source_allowed allowed_sources url =
-  safe_https_origin url
-  && starts_with_any (default_sources @ allowed_sources) url
+  match normalize_url url with
+  | None -> false
+  | Some requested ->
+      List.exists
+        (fun source ->
+          match normalize_url source with
+          | Some policy ->
+              requested.origin = policy.origin
+              && Util.starts_with ~prefix:policy.path requested.path
+          | None -> false)
+        (default_sources @ allowed_sources)
 
 let fetch ~get ~allowed_sources ?(headers = []) url =
   if not (source_allowed allowed_sources url) then
@@ -72,6 +199,10 @@ let fetch ~get ~allowed_sources ?(headers = []) url =
           Error
             ("resolver redirect escaped the HTTPS source allowlist: "
            ^ response.effective_url)
+        else if not (public_peer_ip response.peer_ip) then
+          Error
+            ("resolver peer address is private, reserved, or malformed: "
+           ^ response.peer_ip)
         else if response.body = "" then
           Error ("resolver returned empty content for " ^ url)
         else Ok response

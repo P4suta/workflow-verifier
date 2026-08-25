@@ -4,7 +4,6 @@ import importlib.util
 import pathlib
 import unittest
 
-
 SCRIPT = pathlib.Path(__file__).resolve().parents[1] / "verify_pure_ocaml.py"
 
 
@@ -20,13 +19,13 @@ def load_checker():
 class OpamDependencyParserTests(unittest.TestCase):
     def test_versions_and_filter_values_are_not_dependency_names(self) -> None:
         checker = load_checker()
-        source = '''
+        source = """
 depends: [
   "ocaml" {>= "5.4" & < "5.6"}
   "dune" {>= "3.21"}
   "odoc" {with-doc}
 ]
-'''
+"""
         self.assertEqual(
             checker.opam_dependency_names(source),
             {"ocaml", "dune", "odoc"},

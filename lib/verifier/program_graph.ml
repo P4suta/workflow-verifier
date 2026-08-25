@@ -99,7 +99,8 @@ let resource_written indexed (resource : Ir.node) =
   <> []
 
 let resource_read indexed (resource : Ir.node) =
-  Graph_algorithms.edges_from ~edge_kinds:[ Ir.Read; Ir.Data ] indexed resource.id
+  Graph_algorithms.edges_from ~edge_kinds:[ Ir.Read; Ir.Data ] indexed
+    resource.id
   <> []
 
 let link_resources graph =
@@ -124,8 +125,7 @@ let link_resources graph =
          else
            Option.value ~default:[]
              (Hashtbl.find_opt readers_by_name writer.name)
-           |> List.filter (fun (reader : Ir.node) ->
-               reader.Ir.id <> writer.id)
+           |> List.filter (fun (reader : Ir.node) -> reader.Ir.id <> writer.id)
            |> List.fold_left
                 (fun graph (reader : Ir.node) ->
                   Ir.add_edge

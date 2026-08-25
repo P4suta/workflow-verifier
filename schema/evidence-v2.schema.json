@@ -1,0 +1,42 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/evidence-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "limits": { "$ref": "runner-v2.json#/$defs/limits" },
+    "resources": { "additionalProperties": false, "properties": { "cpu_time_ms": { "minimum": 0, "type": "integer" }, "output_bytes": { "minimum": 0, "type": "integer" }, "peak_memory_bytes": { "minimum": 0, "type": "integer" }, "processes": { "minimum": 0, "type": "integer" }, "scratch_bytes": { "minimum": 0, "type": "integer" }, "scratch_entries": { "minimum": 0, "type": "integer" }, "wall_time_ms": { "minimum": 0, "type": "integer" } }, "required": ["cpu_time_ms", "output_bytes", "peak_memory_bytes", "processes", "scratch_bytes", "scratch_entries", "wall_time_ms"], "type": "object" },
+    "eventBody": {
+      "oneOf": [
+        { "additionalProperties": false, "properties": { "controls_digest": { "$ref": "#/$defs/digest" }, "id": { "minLength": 1, "type": "string" }, "kind": { "const": "backend_attested" }, "platform": { "minLength": 1, "type": "string" }, "version": { "minLength": 1, "type": "string" } }, "required": ["controls_digest", "id", "kind", "platform", "version"], "type": "object" },
+        { "additionalProperties": false, "properties": { "control": { "type": "string" }, "kind": { "const": "control_attested" } }, "required": ["control", "kind"], "type": "object" },
+        { "additionalProperties": false, "properties": { "argv": { "items": { "type": "string" }, "type": "array" }, "executable": { "minLength": 1, "type": "string" }, "kind": { "const": "process_started" } }, "required": ["argv", "executable", "kind"], "type": "object" },
+        { "additionalProperties": false, "properties": { "code": { "type": "integer" }, "kind": { "const": "process_exited" } }, "required": ["code", "kind"], "type": "object" },
+        { "additionalProperties": false, "properties": { "allowed": { "type": "boolean" }, "kind": { "const": "filesystem_access" }, "operation": { "minLength": 1, "type": "string" }, "path": { "minLength": 1, "type": "string" } }, "required": ["allowed", "kind", "operation", "path"], "type": "object" },
+        { "additionalProperties": false, "properties": { "allowed": { "type": "boolean" }, "host": { "minLength": 1, "type": "string" }, "kind": { "const": "network_attempt" }, "port": { "maximum": 65535, "minimum": 0, "type": "integer" } }, "required": ["allowed", "host", "kind", "port"], "type": "object" },
+        { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "kind": { "const": "artifact_recorded" }, "path": { "minLength": 1, "type": "string" } }, "required": ["digest", "kind", "path"], "type": "object" },
+        { "additionalProperties": false, "properties": { "kind": { "const": "secret_redacted" }, "name": { "pattern": "^[A-Za-z_][A-Za-z0-9_]*$", "type": "string" } }, "required": ["kind", "name"], "type": "object" },
+        { "additionalProperties": false, "properties": { "cpu_time_ms": { "minimum": 0, "type": "integer" }, "kind": { "const": "resource_observed" }, "output_bytes": { "minimum": 0, "type": "integer" }, "peak_memory_bytes": { "minimum": 0, "type": "integer" }, "processes": { "minimum": 0, "type": "integer" }, "scratch_bytes": { "minimum": 0, "type": "integer" }, "scratch_entries": { "minimum": 0, "type": "integer" }, "wall_time_ms": { "minimum": 0, "type": "integer" } }, "required": ["cpu_time_ms", "kind", "output_bytes", "peak_memory_bytes", "processes", "scratch_bytes", "scratch_entries", "wall_time_ms"], "type": "object" },
+        { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "kind": { "const": "log_recorded" } }, "required": ["digest", "kind"], "type": "object" },
+        { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "kind": { "const": "filesystem_final" } }, "required": ["digest", "kind"], "type": "object" },
+        { "additionalProperties": false, "properties": { "kind": { "const": "backend_error" }, "message": { "minLength": 1, "type": "string" } }, "required": ["kind", "message"], "type": "object" }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": { "items": { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "path": { "minLength": 1, "type": "string" } }, "required": ["digest", "path"], "type": "object" }, "type": "array" },
+    "bindings": { "additionalProperties": false, "properties": { "controls_digest": { "$ref": "#/$defs/digest" }, "lock_digest": { "$ref": "#/$defs/digest" }, "runtime_digest": { "$ref": "#/$defs/digest" }, "scenario_digest": { "$ref": "#/$defs/digest" }, "source_digest": { "$ref": "#/$defs/digest" } }, "required": ["controls_digest", "lock_digest", "runtime_digest", "scenario_digest", "source_digest"], "type": "object" },
+    "effective_limits": { "$ref": "#/$defs/limits" },
+    "events": { "items": { "additionalProperties": false, "properties": { "body": { "$ref": "#/$defs/eventBody" }, "digest": { "$ref": "#/$defs/digest" }, "previous_digest": { "$ref": "#/$defs/digest" }, "sequence": { "minimum": 0, "type": "integer" } }, "required": ["body", "digest", "previous_digest", "sequence"], "type": "object" }, "minItems": 4, "type": "array" },
+    "final_filesystem_digest": { "$ref": "#/$defs/digest" },
+    "forensic_sidecars": { "items": { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "kind": { "minLength": 1, "type": "string" } }, "required": ["digest", "kind"], "type": "object" }, "type": "array" },
+    "observed_resources": { "$ref": "#/$defs/resources" },
+    "plan_digest": { "$ref": "#/$defs/digest" },
+    "redacted_log_digest": { "$ref": "#/$defs/digest" },
+    "requested_limits": { "$ref": "#/$defs/limits" },
+    "schema": { "const": "evidence-v2" }
+  },
+  "required": ["artifacts", "bindings", "effective_limits", "events", "final_filesystem_digest", "forensic_sidecars", "observed_resources", "plan_digest", "redacted_log_digest", "requested_limits", "schema"],
+  "title": "workflow-verifier portable execution evidence v2",
+  "type": "object"
+}

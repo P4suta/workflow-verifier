@@ -1,0 +1,37 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/maintainer-self-audit-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "disclosures": {
+      "additionalProperties": false,
+      "properties": {
+        "independent_audit": { "const": "sole-maintainer-self-audit" },
+        "macos_distribution": { "const": "ad-hoc-signature-and-sigstore-no-developer-id-or-notarization" }
+      },
+      "required": ["independent_audit", "macos_distribution"],
+      "type": "object"
+    },
+    "findings": {
+      "items": false,
+      "maxItems": 0,
+      "type": "array"
+    },
+    "independent_audit": { "const": false },
+    "maintainer": { "const": "P4suta" },
+    "planned_tag": { "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$", "type": "string" },
+    "review": { "pattern": "^https://github\\.com/P4suta/workflow-verifier/(?:issues|pull)/[1-9][0-9]*(?:#.*)?$", "type": "string" },
+    "schema": { "const": "maintainer-self-audit-v2" },
+    "scope": {
+      "contains": { "const": "implementation" },
+      "items": { "enum": ["implementation", "threat-model", "release-controls"] },
+      "minItems": 3,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "subject_commit": { "pattern": "^[0-9a-f]{40}$", "type": "string" }
+  },
+  "required": ["disclosures", "findings", "independent_audit", "maintainer", "planned_tag", "review", "schema", "scope", "subject_commit"],
+  "title": "workflow-verifier sole-maintainer self-audit v2",
+  "type": "object"
+}

@@ -4,18 +4,17 @@
 from __future__ import annotations
 
 import argparse
-from decimal import Decimal
 import hashlib
 import json
 import os
-from pathlib import Path, PurePosixPath
 import re
 import stat
 import sys
 import tempfile
+from decimal import Decimal
+from pathlib import Path, PurePosixPath
 from typing import Any
 from urllib.parse import urlsplit
-
 
 PROVIDERS = ("github", "gitlab", "azure", "circleci")
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
@@ -41,6 +40,35 @@ REPOSITORY_FIELDS = {
     "allowed_diagnostics",
 }
 EXPECTATION_FIELDS = {"id", "rule_id"}
+REPORT_FIELDS = {
+    "completeness",
+    "configuration",
+    "diagnostics",
+    "digest",
+    "gate",
+    "graphs",
+    "inputs",
+    "lock",
+    "persona",
+    "provider_profiles",
+    "properties",
+    "schema",
+    "snapshot",
+    "summary",
+    "tool",
+}
+DIAGNOSTIC_FIELDS = {
+    "capabilities",
+    "confidence",
+    "evidence",
+    "fix",
+    "id",
+    "message",
+    "rule_id",
+    "severity",
+    "span",
+    "trace",
+}
 
 
 def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -114,9 +142,9 @@ def _sha256_file(path: Path) -> str:
 
 
 def _canonical(value: Any) -> bytes:
-    return json.dumps(
-        value, ensure_ascii=False, separators=(",", ":"), sort_keys=True
-    ).encode("utf-8")
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+        "utf-8"
+    )
 
 
 def tree_digest(root: Path) -> str:
@@ -128,7 +156,9 @@ def tree_digest(root: Path) -> str:
     if root.is_symlink() or not stat.S_ISDIR(metadata.st_mode):
         raise ValueError(f"corpus checkout must be a directory, not a symlink: {root}")
     records: list[dict[str, Any]] = []
-    for path in sorted(root.rglob("*"), key=lambda item: item.relative_to(root).as_posix().encode("utf-8")):
+    for path in sorted(
+        root.rglob("*"), key=lambda item: item.relative_to(root).as_posix().encode("utf-8")
+    ):
         relative = path.relative_to(root)
         if ".git" in relative.parts:
             raise ValueError(f"corpus checkout contains forbidden VCS metadata: {path}")
@@ -189,10 +219,21 @@ def _expectations(value: Any, label: str) -> dict[str, str]:
 
 def _report_diagnostics(path: Path) -> dict[str, str]:
     document = _load_json(path)
-    if not isinstance(document, dict) or document.get("schema") != "report-v1":
-        raise ValueError(f"{path} is not a report-v1 document")
-    if document.get("tool", {}).get("name") != "workflow-verifier":
+    if not isinstance(document, dict) or document.get("schema") != "report-v2":
+        raise ValueError(f"{path} is not a report-v2 document")
+    _exact_fields(document, REPORT_FIELDS, f"{path} report")
+    tool = document.get("tool")
+    if not isinstance(tool, dict) or tool.get("name") != "workflow-verifier":
         raise ValueError(f"{path} was not produced by workflow-verifier")
+    if document.get("persona") != "audit":
+        raise ValueError(f"{path} is not an audit report")
+    claimed_digest = document.get("digest")
+    if not isinstance(claimed_digest, str) or not DIGEST.fullmatch(claimed_digest):
+        raise ValueError(f"{path} has an invalid report digest")
+    provisional = dict(document)
+    provisional["digest"] = None
+    if claimed_digest != _sha256_bytes(_canonical(provisional)):
+        raise ValueError(f"{path} report digest does not authenticate canonical content")
     diagnostics = document.get("diagnostics")
     if not isinstance(diagnostics, list):
         raise ValueError(f"{path} diagnostics must be an array")
@@ -200,6 +241,7 @@ def _report_diagnostics(path: Path) -> dict[str, str]:
     for index, item in enumerate(diagnostics):
         if not isinstance(item, dict):
             raise ValueError(f"{path} diagnostic {index} must be an object")
+        _exact_fields(item, DIAGNOSTIC_FIELDS, f"{path} diagnostic {index}")
         identifier = item.get("id")
         rule_id = item.get("rule_id")
         if not isinstance(identifier, str) or not DIAGNOSTIC_ID.fullmatch(identifier):
@@ -228,7 +270,11 @@ def _repository(
         raise ValueError(f"{label} must be an object")
     _exact_fields(value, REPOSITORY_FIELDS, label)
     identifier = value["id"]
-    if not isinstance(identifier, str) or not IDENTIFIER.fullmatch(identifier) or ".." in PurePosixPath(identifier).parts:
+    if (
+        not isinstance(identifier, str)
+        or not IDENTIFIER.fullmatch(identifier)
+        or ".." in PurePosixPath(identifier).parts
+    ):
         raise ValueError(f"{label}.id is invalid")
     provider = value["provider"]
     if provider not in PROVIDERS:
@@ -336,7 +382,9 @@ def evaluate(
             raise ValueError(f"duplicate corpus repository id: {result['id']}")
         identity = (result["url"], result["revision"])
         if identity in origins:
-            raise ValueError(f"duplicate corpus repository origin: {result['url']}@{result['revision']}")
+            raise ValueError(
+                f"duplicate corpus repository origin: {result['url']}@{result['revision']}"
+            )
         identifiers.add(result["id"])
         origins.add(identity)
         provider_counts[result["provider"]] += 1
@@ -354,7 +402,9 @@ def evaluate(
                 )
         for provider in PROVIDERS:
             if provider_expected[provider] == 0:
-                raise ValueError(f"release corpus has no known-vulnerability expectation for {provider}")
+                raise ValueError(
+                    f"release corpus has no known-vulnerability expectation for {provider}"
+                )
 
     normalized_repositories = []
     for repository in repositories:
@@ -373,12 +423,8 @@ def evaluate(
         "schema": "corpus-v1",
     }
 
-    precision = _ratio(
-        totals["true_positive"], totals["true_positive"] + totals["false_positive"]
-    )
-    recall = _ratio(
-        totals["true_positive"], totals["true_positive"] + totals["false_negative"]
-    )
+    precision = _ratio(totals["true_positive"], totals["true_positive"] + totals["false_positive"])
+    recall = _ratio(totals["true_positive"], totals["true_positive"] + totals["false_negative"])
     failures: list[str] = []
     if Decimal(precision) < Decimal("0.950000"):
         failures.append(f"precision {precision} is below 0.950000")

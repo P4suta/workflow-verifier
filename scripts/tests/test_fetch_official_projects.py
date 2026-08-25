@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from pathlib import Path, PurePosixPath
 import tempfile
 import unittest
+from pathlib import Path
 
 from scripts.fetch_official_projects import (
     _safe_path,
@@ -24,10 +24,7 @@ class OfficialProjectAcquisitionTests(unittest.TestCase):
             with self.subTest(invalid=invalid):
                 with self.assertRaisesRegex(ValueError, "safe relative"):
                     _safe_path(invalid, "fixture")
-        raw = (
-            b"120000 blob 0123456789abcdef0123456789abcdef01234567\t"
-            b".github/workflows/ci.yml\0"
-        )
+        raw = b"120000 blob 0123456789abcdef0123456789abcdef01234567\t.github/workflows/ci.yml\0"
         with self.assertRaisesRegex(ValueError, "symlink"):
             _tree_entries(raw, [".github/workflows"])
 

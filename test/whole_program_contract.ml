@@ -292,7 +292,8 @@ let ai_effect_semantics () =
     ((property "WV-AI-001" result).state = Property.Violated);
   let command_agent =
     node ~kind:Ir.Command ~capabilities:[ Ir.Ai_tool; Ir.Network ]
-      ~effects:[ Ir.Ai_agent_execution; Ir.Network_request ] "ai-agent command"
+      ~effects:[ Ir.Ai_agent_execution; Ir.Network_request ]
+      "ai-agent command"
   in
   let command_result =
     graph [ prompt; command_agent ]

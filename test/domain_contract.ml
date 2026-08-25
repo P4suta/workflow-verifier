@@ -36,11 +36,7 @@ let provenance_operation_identity_test () =
       ~secrecy:Abstract_value.Public
       ~provenance:
         [
-          {
-            Abstract_value.origin = "same-origin";
-            span = Span.none;
-            operation;
-          };
+          { Abstract_value.origin = "same-origin"; span = Span.none; operation };
         ]
   in
   let joined = Abstract_value.join (value "checkout") (value "template") in
@@ -155,7 +151,8 @@ let affix_join_test () =
       ()
   | _ -> fail "a shared prefix must survive when suffixes diverge");
   match
-    joined (affix (Some "alpha") (Some "left-a"))
+    joined
+      (affix (Some "alpha") (Some "left-a"))
       (affix (Some "beta") (Some "right-b"))
   with
   | Abstract_value.String Abstract_value.Top -> ()
@@ -266,7 +263,8 @@ let tests : test list =
     ( "provenance identity includes its semantic operation",
       provenance_operation_identity_test );
     ("finite constants widen deterministically", bounded_domain_test);
-    ("finite constants retain the inclusive widening boundary", finite_domain_boundary_test);
+    ( "finite constants retain the inclusive widening boundary",
+      finite_domain_boundary_test );
     ("abstract booleans retain their JSON truth value", boolean_json_test);
     ("abstract affix joins preserve one-sided information", affix_join_test);
     ("ROBDD canonicalizes and decides implication", robdd_test);

@@ -7,11 +7,12 @@ import argparse
 import copy
 import json
 import os
-from pathlib import Path
 import re
 import sys
 import tempfile
-from typing import Any, Callable
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any
 
 try:
     from scripts.measure_performance import measure
@@ -32,8 +33,7 @@ PERIOD_BALANCED_BLOCK = (
     "current",
 )
 PERIOD_BALANCED_CYCLE = PERIOD_BALANCED_BLOCK + tuple(
-    "current" if name == "baseline" else "baseline"
-    for name in PERIOD_BALANCED_BLOCK
+    "current" if name == "baseline" else "baseline" for name in PERIOD_BALANCED_BLOCK
 )
 Measurer = Callable[..., dict[str, Any]]
 
@@ -58,23 +58,35 @@ def _merge(reports: list[dict[str, Any]], revision: str, expected_samples: int) 
             or report.get("environment") != environment
             or report.get("regression_explanations") != result.get("regression_explanations")
         ):
-            raise ValueError(f"period-balanced observation {observation_index} changed report identity")
+            raise ValueError(
+                f"period-balanced observation {observation_index} changed report identity"
+            )
         scenarios = report.get("scenarios")
         if not isinstance(scenarios, list) or len(scenarios) != len(result["scenarios"]):
             raise ValueError(f"period-balanced observation {observation_index} changed scenarios")
         for scenario_index, scenario in enumerate(scenarios):
             target = result["scenarios"][scenario_index]
-            if scenario.get("id") != target.get("id") or set(scenario.get("modes", {})) != set(target["modes"]):
-                raise ValueError(f"period-balanced observation {observation_index} changed scenario shape")
+            if scenario.get("id") != target.get("id") or set(scenario.get("modes", {})) != set(
+                target["modes"]
+            ):
+                raise ValueError(
+                    f"period-balanced observation {observation_index} changed scenario shape"
+                )
             for mode_name, mode in scenario["modes"].items():
                 samples = mode.get("samples_ns")
-                if not isinstance(samples, list) or any(type(value) is not int or value <= 0 for value in samples):
-                    raise ValueError(f"period-balanced observation {observation_index} has invalid samples")
+                if not isinstance(samples, list) or any(
+                    type(value) is not int or value <= 0 for value in samples
+                ):
+                    raise ValueError(
+                        f"period-balanced observation {observation_index} has invalid samples"
+                    )
                 target["modes"][mode_name]["samples_ns"].extend(samples)
     for scenario in result["scenarios"]:
         for mode_name, mode in scenario["modes"].items():
             if len(mode["samples_ns"]) != expected_samples:
-                raise ValueError(f"period-balanced result has the wrong sample count for {scenario['id']}/{mode_name}")
+                raise ValueError(
+                    f"period-balanced result has the wrong sample count for {scenario['id']}/{mode_name}"
+                )
     result["environment"] = {**environment, "pair_design": PAIR_DESIGN}
     return result
 
@@ -103,9 +115,7 @@ def measure_pair(
     sequence = PERIOD_BALANCED_CYCLE * (samples // 8)
     for name in sequence:
         workspace, revision = specifications[name]
-        reports[name].append(
-            measurer(suite, workspace, revision=revision, samples=1)
-        )
+        reports[name].append(measurer(suite, workspace, revision=revision, samples=1))
     return (
         _merge(reports["baseline"], baseline_revision, samples),
         _merge(reports["current"], current_revision, samples),

@@ -1,29 +1,33 @@
 # Compatibility policy
 
-The analyzer package installs exactly one executable plus the `config-v1` and
-`report-v1` schemas. `lock-v1`, `lock-v2`, `runner-v1`, and `evidence-v1` remain
-versioned repository protocols for resolver and helper implementations; they do
-not expand the analyzer package surface. New locks use `lock-v2` semantic
-summaries. `lock-v1` remains readable, but its digest-only entries retain a
-machine-readable missing-semantic-evidence state.
+Version 0.1 publishes strict, language-independent contracts for canonical
+UTF-8 JSON, paths, snapshots, provider lowering, unknown values, diagnostics,
+fixes, scenarios, runners, and evidence.
 
-Sandbox run/audit, backend attestation, VM image/request/observation, corpus,
-performance, mutation, determinism, and composed release-evidence documents are
-also strict versioned repository protocols. Their schemas travel with source
-and release evidence, but they are not additional analyzer configuration or
-report entry points.
+The current product protocols are `config-v2`, `source-manifest-v2`,
+`report-v2`, `scenario-v1`, `runner-v2`, `sandbox-run-v2`, and
+`evidence-v2`. Unknown or duplicate fields, duplicate JSON keys, invalid
+UTF-8, wrong types, unsupported enum values, and unknown protocol versions are
+rejected. Existing version names never acquire new meaning; field-set or
+semantic changes require a new protocol version.
 
-Canonical v1 objects are strict: producers and consumers reject unknown fields
-and unknown protocol versions. A field-set change therefore requires a new
-schema version. Existing field meaning is never changed in place. Rule
-identifiers become stable after the first release candidate.
+`config-v1` and `lock-v1` are accepted only by the validated `migrate`
+command. A legacy report, runner, sandbox result, or evidence object is never
+interpreted as a current object. New locks use `lock-v2`.
 
-Supported analyzer compilers are OCaml 5.4 and 5.5 with Dune 3.21 or newer.
-Generated JSON, SARIF, lockfiles, and fix patches use LF and are byte-identical
-on Windows, Linux, and macOS for the same UTF-8 input tree.
+OCaml 5.5 with Dune 3.24.2 is the release toolchain. OCaml 5.4 is a compatibility
+gate. Rust helpers use Rust 1.98 with MSRV 1.85. JSON, SARIF, lockfiles, evidence,
+and fix patches are LF-canonical. Raw report bytes must repeat for the same
+snapshot, semantic profile, and binary provenance. The four-platform gate
+retains each raw report digest but compares canonical report semantics after
+removing only the authenticated root digest, binary digest, and bound source
+commit; lockfiles and fix patches remain byte-identical across platforms.
 
-The native helper boundary is compatible only when schema version, plan digest,
-helper identity, control digest, and backend type all match. Unknown fields or
-versions are never interpreted optimistically. Analyzer and helpers may be
-distributed separately, but compatibility failure is exit 5 and cannot trigger
-a weaker fallback.
+The helper boundary requires an exact helper digest, backend-attestation-v1
+identity, runner-v2 plan, requested controls, and backend type. A mismatch is
+exit 5 and cannot select a weaker fallback.
+
+Before 1.0, a minor release may add CLI or schema versions. Published schema
+names and meanings remain immutable. Future Rust analyzers must pass every valid
+and invalid conformance vector, canonical byte expectation, and digest generated
+from the language-independent contracts.

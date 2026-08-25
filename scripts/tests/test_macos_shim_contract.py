@@ -1,10 +1,10 @@
-from pathlib import Path
 import unittest
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SHIM = ROOT / "helpers" / "macos" / "shim" / "WorkflowVerifierVm.swift"
 ENTITLEMENTS = ROOT / "helpers" / "macos" / "shim" / "WorkflowVerifierVm.entitlements"
+BUILD = ROOT / "helpers" / "macos" / "build-shim.sh"
 
 
 class MacOsShimContract(unittest.TestCase):
@@ -26,8 +26,8 @@ class MacOsShimContract(unittest.TestCase):
         source = SHIM.read_text(encoding="utf-8")
         for required in (
             "import CryptoKit",
-            'vm-shim-request-v1',
-            'vm-observation-v1',
+            "vm-shim-request-v1",
+            "vm-observation-v1",
             "validateExactKeys",
             "verifyDigest(request.image.kernelPath",
             "verifyDigest(request.image.initrdPath",
@@ -41,6 +41,12 @@ class MacOsShimContract(unittest.TestCase):
         self.assertIn("com.apple.security.virtualization", value)
         self.assertNotIn("com.apple.security.network.client", value)
         self.assertNotIn("com.apple.security.network.server", value)
+
+    def test_ad_hoc_build_has_fixed_identity_and_no_timestamp(self) -> None:
+        source = BUILD.read_text(encoding="utf-8")
+        self.assertIn("--timestamp=none", source)
+        self.assertIn("--identifier dev.workflow-verifier.vm-shim", source)
+        self.assertIn("WORKFLOW_VERIFIER_CODESIGN_IDENTITY:--", source)
 
 
 if __name__ == "__main__":

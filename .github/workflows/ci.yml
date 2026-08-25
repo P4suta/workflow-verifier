@@ -28,12 +28,105 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - name: Install Just 1.57.0 from its locked crate graph
         run: cargo install just --version 1.57.0 --locked
       - name: Parse and dry-run the public task surface
         run: python -B scripts/verify_task_surface.py
 
+  static-quality:
+    name: Format, lint, type, workflow, and documentation quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+      - name: Install hash-locked Python quality tools
+        run: python -m pip install --require-hashes --no-deps -r requirements.lock
+      - name: Install checksum-pinned actionlint and ShellCheck
+        shell: bash
+        run: |
+          quality_bin="$RUNNER_TEMP/quality-tools/bin"
+          mkdir -p "$quality_bin"
+          curl --fail --location --proto '=https' --tlsv1.2 \
+            --output "$RUNNER_TEMP/actionlint.tar.gz" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          printf '%s  %s\n' \
+            8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 \
+            "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$quality_bin" actionlint
+          curl --fail --location --proto '=https' --tlsv1.2 \
+            --output "$RUNNER_TEMP/shellcheck.tar.xz" \
+            https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellcheck-v0.11.0.linux.x86_64.tar.xz
+          printf '%s  %s\n' \
+            8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198 \
+            "$RUNNER_TEMP/shellcheck.tar.xz" | sha256sum --check
+          tar -xJf "$RUNNER_TEMP/shellcheck.tar.xz" -C "$RUNNER_TEMP"
+          install -m 0755 "$RUNNER_TEMP/shellcheck-v0.11.0/shellcheck" \
+            "$quality_bin/shellcheck"
+          printf '%s\n' "$quality_bin" >> "$GITHUB_PATH"
+      - name: Verify Python formatting, lint, and release-tool types
+        run: |
+          ruff check .
+          ruff format --check .
+          mypy \
+            scripts/candidate_artifacts.py \
+            scripts/generate_sbom.py \
+            scripts/generate_release_index.py \
+            scripts/promote_release_assets.py \
+            scripts/stage_release_evidence.py \
+            scripts/verify_release_evidence.py \
+            scripts/verify_conformance_manifest.py \
+            scripts/verify_linux_compat.py \
+            scripts/verify_sarif.py \
+            scripts/prepare_corpus.py \
+            scripts/corpus_gate.py
+          python -B -m unittest scripts.tests.test_verify_sarif -v
+      - name: Verify OCaml formatting
+        run: |
+          opam install ocamlformat.0.28.1 --yes
+          opam exec -- dune build @fmt
+      - name: Audit GitHub Actions and embedded shell
+        run: |
+          test "$(actionlint -version | head -n 1)" = '1.7.12'
+          shellcheck --version | grep --fixed-strings 'version: 0.11.0'
+          actionlint -no-color
+          zizmor --persona pedantic --no-progress .github/workflows
+      - name: Verify Markdown links offline
+        run: python -B scripts/verify_markdown_links.py --root .
+
+  rust-security:
+    name: Rust lock, advisory, license, and source policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require the release Rust toolchain
+        run: rustc --version | grep --fixed-strings 'rustc 1.98.0'
+      - name: Install exact locked security tools
+        run: |
+          cargo install cargo-audit --version 0.22.2 --locked
+          cargo install cargo-deny --version 0.20.2 --locked
+      - name: Reject advisories, yanks, license drift, and unknown sources
+        run: |
+          cargo audit --file helpers/Cargo.lock --deny warnings
+          cargo deny --manifest-path helpers/Cargo.toml check
+
   ocaml:
+    name: OCaml ${{ matrix.ocaml-compiler }} on ${{ matrix.os }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -45,11 +138,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       - name: Install dependencies
-        run: opam install . --deps-only --with-test --yes
+        run: opam install . --deps-only --with-test --locked --yes
       - name: Build
         run: opam exec -- dune build @all
       - name: Contract tests
@@ -69,9 +166,13 @@ jobs:
       - name: Install surface
         run: opam exec -- dune build @install && python -B scripts/verify_install_layout.py _build/install/default
       - name: Self dogfood
-        run: opam exec -- dune exec workflow-verifier -- check --persona audit .
+        run: >-
+          opam exec -- dune exec workflow-verifier -- check
+          --config examples/dogfood-policy-v2.toml
+          --trust-repository-config .
 
   native-helpers:
+    name: Native helpers on ${{ matrix.os }}
     timeout-minutes: 45
     strategy:
       fail-fast: false
@@ -92,7 +193,21 @@ jobs:
       - name: Rust lint
         run: cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
 
+  native-helpers-msrv:
+    name: Native helpers Rust 1.85 MSRV
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install exact MSRV toolchain
+        run: rustup toolchain install 1.85.0 --profile minimal
+      - name: Build and test the locked workspace at MSRV
+        run: cargo +1.85.0 test --locked --manifest-path helpers/Cargo.toml --workspace --all-targets
+
   linux-native-containment:
+    name: Linux native containment
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -125,12 +240,18 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
+      - name: Install hash-locked SARIF validator
+        run: python -m pip install --require-hashes --no-deps -r requirements.lock
       - name: Build analyzer and isolated OCI adapter
         run: |
-          opam install . --deps-only --with-test --yes
+          opam install . --deps-only --with-test --locked --yes
           opam exec -- dune build bin/main.exe
           cargo build --locked --manifest-path helpers/Cargo.toml \
             -p workflow-verifier-oci-helper
@@ -151,25 +272,53 @@ jobs:
           WORKFLOW_VERIFIER_OCI_HELPER: ${{ github.workspace }}/helpers/target/debug/workflow-verifier-oci-helper
         run: |
           analyzer='_build/default/bin/main.exe'
-          "$analyzer" check --persona audit --format json --output _dogfood/report.json .
-          "$analyzer" check --persona audit --format sarif --output _dogfood/report.sarif.json .
+          helper_sha256="$(sha256sum "$WORKFLOW_VERIFIER_OCI_HELPER" | cut -d' ' -f1)"
+          export WORKFLOW_VERIFIER_OCI_HELPER_SHA256="sha256:${helper_sha256}"
+          "$analyzer" check --config examples/dogfood-policy-v2.toml \
+            --trust-repository-config --format json --output _dogfood/report.json .
+          "$analyzer" check --config examples/dogfood-policy-v2.toml \
+            --trust-repository-config --format sarif --output _dogfood/report.sarif.json .
           "$analyzer" explain WV-SUPPLY-001 test/fixtures/github/workflow.yml > _dogfood/explain.txt
-          "$analyzer" graph --kind all --format json test/fixtures/determinism > _dogfood/graph.json
-          "$analyzer" graph --kind dataflow --format dot test/fixtures/determinism > _dogfood/graph.dot
-          "$analyzer" diff test/fixtures/determinism test/fixtures/sandbox-live > _dogfood/diff.json
-          "$analyzer" fix test/fixtures/determinism > _dogfood/fix.patch
-          "$analyzer" policy test test/fixtures/dogfood-policy > _dogfood/policy.json
-          "$analyzer" resolve test/fixtures/determinism > _dogfood/lock.json
+          "$analyzer" graph --trust-repository-config --kind all --format json \
+            test/fixtures/determinism > _dogfood/graph.json
+          "$analyzer" graph --trust-repository-config --kind dataflow --format dot \
+            test/fixtures/determinism > _dogfood/graph.dot
+          "$analyzer" diff --trust-repository-config \
+            test/fixtures/determinism test/fixtures/sandbox-live > _dogfood/diff.json
+          "$analyzer" fix --trust-repository-config \
+            test/fixtures/determinism > _dogfood/fix.patch
+          "$analyzer" policy test --trust-repository-config \
+            test/fixtures/dogfood-policy > _dogfood/policy.json
+          "$analyzer" resolve --trust-repository-config \
+            test/fixtures/determinism > _dogfood/lock.json
           "$analyzer" doctor --format json > _dogfood/doctor.json
-          "$analyzer" sandbox plan --backend oci:docker _build/dogfood/sandbox > _dogfood/plan.json
-          "$analyzer" sandbox run --backend oci:docker _build/dogfood/sandbox > _dogfood/run.json
+          "$analyzer" sandbox plan --trust-repository-config \
+            --backend oci:docker --job build _build/dogfood/sandbox > _dogfood/plan.json
+          "$analyzer" sandbox run --trust-repository-config \
+            --backend oci:docker --job build _build/dogfood/sandbox > _dogfood/run.json
           python -B scripts/dogfood_gate.py extract-evidence \
             --run _dogfood/run.json --output _dogfood/evidence.json
           "$analyzer" sandbox replay _dogfood/evidence.json > _dogfood/replay.json
-          "$analyzer" sandbox audit _dogfood/plan.json _dogfood/evidence.json \
+          "$analyzer" sandbox audit --trust-repository-config \
+            _dogfood/plan.json _dogfood/evidence.json \
             _build/dogfood/sandbox > _dogfood/audit.json
           python -B scripts/dogfood_gate.py verify \
             --root _dogfood --output _build/dogfood-v1.json
+      - name: Validate SARIF against the digest-pinned OASIS 2.1.0 schema
+        shell: bash
+        run: |
+          schema="$RUNNER_TEMP/sarif-schema-2.1.0.json"
+          curl --fail --location --proto '=https' --tlsv1.2 \
+            --output "$schema" \
+            https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json
+          printf '%s  %s\n' \
+            c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e \
+            "$schema" | sha256sum --check
+          python -B scripts/verify_sarif.py \
+            --schema "$schema" \
+            --schema-digest \
+            sha256:c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e \
+            _dogfood/report.sarif.json
       - name: Upload content-addressed dogfood evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -188,12 +337,16 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
       - name: Build the analyzer
         run: |
-          opam install . --deps-only --with-test --yes
+          opam install . --deps-only --with-test --locked --yes
           opam exec -- dune build bin/main.exe
       - name: Acquire only pinned upstream CI YAML
         run: >-
@@ -237,6 +390,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - name: Check out the comparison baseline
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -248,7 +405,7 @@ jobs:
           ocaml-compiler: 5.5.0
       - name: Install and build baseline and head analyzers
         run: |
-          opam install . --deps-only --with-test --yes
+          opam install . --deps-only --with-test --locked --yes
           opam exec -- dune build --root _performance-base bin/main.exe
           opam exec -- dune build bin/main.exe
       - name: Install the measured workload driver in the baseline tree
@@ -259,11 +416,12 @@ jobs:
       - name: Period-balance identical workloads
         shell: bash
         env:
+          PERFORMANCE_PLATFORM: ${{ matrix.platform }}
           WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM: ${{ matrix.platform }}
         run: |
           base_revision=$(git -C _performance-base rev-parse HEAD)
           head_revision=$(git rev-parse HEAD)
-          mkdir -p "_performance-evidence/${{ matrix.platform }}"
+          mkdir -p "_performance-evidence/${PERFORMANCE_PLATFORM}"
           python -B scripts/measure_performance_pair.py \
             --suite performance/suite-v1.json \
             --baseline-workspace _performance-base \
@@ -271,11 +429,11 @@ jobs:
             --current-workspace . \
             --current-revision "$head_revision" \
             --samples 24 \
-            --output-dir "_performance-evidence/${{ matrix.platform }}"
+            --output-dir "_performance-evidence/${PERFORMANCE_PLATFORM}"
           python -B scripts/performance_gate.py \
-            --baseline "_performance-evidence/${{ matrix.platform }}/baseline.json" \
-            --current "_performance-evidence/${{ matrix.platform }}/current.json" \
-            --output "_performance-evidence/${{ matrix.platform }}/comparison.json"
+            --baseline "_performance-evidence/${PERFORMANCE_PLATFORM}/baseline.json" \
+            --current "_performance-evidence/${PERFORMANCE_PLATFORM}/current.json" \
+            --output "_performance-evidence/${PERFORMANCE_PLATFORM}/comparison.json"
       - name: Upload exact performance evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -285,12 +443,17 @@ jobs:
           if-no-files-found: warn
 
   coverage-guided-yaml-fuzz:
+    name: Coverage-guided YAML fuzz
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
@@ -298,7 +461,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends afl++
-          opam install . --deps-only --with-test --yes
+          opam install . --deps-only --with-test --locked --yes
       - name: Build AFL-instrumented pure OCaml parser
         run: opam exec -- dune build --profile afl test/yaml_fuzz.exe
       - name: Coverage-guided malformed-input campaign
@@ -330,19 +493,25 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
       - name: Install and build analyzer
         run: |
-          opam install . --deps-only --with-test --yes
+          opam install . --deps-only --with-test --locked --yes
           opam exec -- dune build bin/main.exe
-      - name: Generate canonical comparison artifacts
+      - name: Generate twice-local canonical comparison artifacts
+        env:
+          DETERMINISM_PLATFORM: ${{ matrix.platform }}
         run: >-
           python -B scripts/determinism_probe.py
           --analyzer _build/default/bin/main.exe
           --fixture test/fixtures/determinism
-          --output _build/determinism/${{ matrix.platform }}
+          --output "_build/determinism/${DETERMINISM_PLATFORM}"
       - name: Upload exact comparison artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -351,6 +520,7 @@ jobs:
           if-no-files-found: error
 
   determinism-compare:
+    name: Compare determinism artifacts
     needs: determinism-probe
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -358,12 +528,16 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
       - name: Download platform artifacts without merging
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: determinism-*
           path: _determinism
-      - name: Require byte-identical report, lockfile, and fix output
+      - name: Require portable bytes and platform-neutral report semantics
         run: >-
           python -B scripts/compare_determinism.py
           --output _determinism/comparison.json
@@ -377,8 +551,11 @@ jobs:
     if: ${{ always() }}
     needs:
       - task-surface
+      - static-quality
+      - rust-security
       - ocaml
       - native-helpers
+      - native-helpers-msrv
       - linux-native-containment
       - live-dogfood
       - official-compat

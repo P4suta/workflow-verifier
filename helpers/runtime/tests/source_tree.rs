@@ -7,7 +7,7 @@ fn source_snapshot_matches_the_shared_ocaml_fixture() {
     let repository = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let root = repository.join("test/fixtures/protocol/source-tree");
     let expected =
-        std::fs::read_to_string(repository.join("test/fixtures/protocol/source-manifest-v1.json"))
+        std::fs::read_to_string(repository.join("test/fixtures/protocol/source-manifest-v2.json"))
             .expect("shared source manifest fixture")
             .trim()
             .to_owned();
@@ -15,7 +15,7 @@ fn source_snapshot_matches_the_shared_ocaml_fixture() {
     assert_eq!(snapshot.manifest.canonical_json, expected);
     assert_eq!(
         snapshot.manifest.digest,
-        "sha256:6d8438471c06fc1f4199de690117a6c60da9bee4c8d9421ad2333a7847033b48"
+        "sha256:d70c409989907fb9194417d737ec25d8dd56e7ab36911dbf5b43db5d620b3594"
     );
 }
 
