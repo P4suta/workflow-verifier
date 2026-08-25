@@ -221,7 +221,15 @@ let help_surface_test () =
       "doctor";
       "completion";
       "migrate";
-    ]
+    ];
+  let default_state = harness () in
+  let default_code =
+    Cli.run ~io:(io default_state) ~services:(services default_state)
+      [| "workflow-verifier" |]
+  in
+  expect "the empty command returns buffered help without a pager"
+    (default_code = 0
+    && Util.contains ~needle:"workflow-verifier" (output default_state.stdout))
 
 let subcommand_help_test () =
   let state = harness () in

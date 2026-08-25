@@ -430,7 +430,7 @@ let root =
       `P "https://workflow-verifier.dev/docs/cli-v0.1";
     ]
   in
-  let default = Term.(ret (const (`Help (`Pager, None)))) in
+  let default = Term.(ret (const (`Help (`Plain, None)))) in
   Cmd.group ~default
     (Cmd.info "workflow-verifier" ~version:"0.1.0" ~doc ~man ~exits)
     [
@@ -457,7 +457,16 @@ let parse ~argv =
       Format.pp_set_margin help columns;
       Format.pp_set_margin err columns
   | _ -> ());
-  let result = Cmd.eval_value ~help ~err ~catch:false ~argv root in
+  (* Cmdliner maps auto help to an external pager on Windows when TERM is
+     absent. Parsing is deliberately buffered so that the application owns
+     stdout/stderr and help remains side-effect free; make auto deterministic
+     and plain while retaining an explicitly requested --help=pager. *)
+  let environment name =
+    if String.equal name "TERM" then Some "dumb" else Sys.getenv_opt name
+  in
+  let result =
+    Cmd.eval_value ~help ~err ~catch:false ~env:environment ~argv root
+  in
   Format.pp_print_flush help ();
   Format.pp_print_flush err ();
   let help_text = Buffer.contents help_buffer
