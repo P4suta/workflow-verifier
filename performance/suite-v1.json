@@ -13,7 +13,7 @@
           "before_each": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle"]
           ],
-          "command": ["../_build/default/bin/main.exe", "check", "--no-cache", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
+          "command": ["../_build/default/bin/main.exe", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
           "setup": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset"]
           ],
@@ -23,19 +23,19 @@
           "before_each": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle"]
           ],
-          "command": ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-incremental-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
+          "command": ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
           "setup": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset"],
-            ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-incremental-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-workload"]
+            ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-workload"]
           ],
           "timeout_seconds": 60
         },
         "warm": {
           "before_each": [],
-          "command": ["../_build/default/bin/main.exe", "check", "--cache", "../_build/performance-warm-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
+          "command": ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
           "setup": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset"],
-            ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-warm-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-workload"]
+            ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-workload"]
           ],
           "timeout_seconds": 60
         }
@@ -49,7 +49,7 @@
           "before_each": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle", "--scenario", "arcade-scale"]
           ],
-          "command": ["../_build/default/bin/main.exe", "check", "--no-cache", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "command": ["../_build/default/bin/main.exe", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
           "setup": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"]
           ],
@@ -59,19 +59,19 @@
           "before_each": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle", "--scenario", "arcade-scale"]
           ],
-          "command": ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-arcade-incremental-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "command": ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
           "setup": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"],
-            ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-arcade-incremental-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
+            ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
           ],
           "timeout_seconds": 60
         },
         "warm": {
           "before_each": [],
-          "command": ["../_build/default/bin/main.exe", "check", "--cache", "../_build/performance-arcade-warm-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "command": ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
           "setup": [
             ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"],
-            ["../_build/default/bin/main.exe", "check", "--write-cache", "--cache", "../_build/performance-arcade-warm-cache.json", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
+            ["../_build/default/bin/main.exe", "check", "--cache-mode", "user", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
           ],
           "timeout_seconds": 60
         }

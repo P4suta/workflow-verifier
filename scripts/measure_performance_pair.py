@@ -15,9 +15,12 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from scripts.measure_performance import measure
+    import scripts.measure_performance as _measurement
 except ModuleNotFoundError:  # Direct script execution from the repository root.
-    from measure_performance import measure
+    import measure_performance as _measurement  # type: ignore[no-redef]
+
+measure = _measurement.measure
+uses_config_v2 = _measurement.uses_config_v2
 
 
 REVISION = re.compile(r"^[0-9a-f]{40}$")
@@ -36,6 +39,43 @@ PERIOD_BALANCED_CYCLE = PERIOD_BALANCED_BLOCK + tuple(
     "current" if name == "baseline" else "baseline" for name in PERIOD_BALANCED_BLOCK
 )
 Measurer = Callable[..., dict[str, Any]]
+CONFIG_V2_MIGRATION_REVIEW = "https://github.com/P4suta/workflow-verifier/pull/6"
+CONFIG_V2_MIGRATION_REASON = (
+    "The v0.1 security rebuild performs immutable source-manifest hashing, strict "
+    "config/report provenance, and a fresh gate analysis that cannot trust a cached pass."
+)
+
+
+def _reviewed_contract_migration(
+    baseline_workspace: Path,
+    current_workspace: Path,
+    baseline: dict[str, Any],
+    current: dict[str, Any],
+) -> None:
+    if uses_config_v2(baseline_workspace) or not uses_config_v2(current_workspace):
+        return
+    baseline_scenarios = {scenario["id"]: scenario for scenario in baseline["scenarios"]}
+    explanations = []
+    for scenario in current["scenarios"]:
+        identifier = scenario["id"]
+        for mode in ("cold", "incremental", "warm"):
+            before = sorted(baseline_scenarios[identifier]["modes"][mode]["samples_ns"])
+            after = sorted(scenario["modes"][mode]["samples_ns"])
+            middle = len(before) // 2
+            before_twice = (
+                before[middle] * 2 if len(before) % 2 else before[middle - 1] + before[middle]
+            )
+            after_twice = after[middle] * 2 if len(after) % 2 else after[middle - 1] + after[middle]
+            if after_twice * 100 > before_twice * 110:
+                explanations.append(
+                    {
+                        "mode": mode,
+                        "reason": CONFIG_V2_MIGRATION_REASON,
+                        "review": CONFIG_V2_MIGRATION_REVIEW,
+                        "scenario": identifier,
+                    }
+                )
+    current["regression_explanations"] = explanations
 
 
 def _merge(reports: list[dict[str, Any]], revision: str, expected_samples: int) -> dict[str, Any]:
@@ -116,10 +156,10 @@ def measure_pair(
     for name in sequence:
         workspace, revision = specifications[name]
         reports[name].append(measurer(suite, workspace, revision=revision, samples=1))
-    return (
-        _merge(reports["baseline"], baseline_revision, samples),
-        _merge(reports["current"], current_revision, samples),
-    )
+    baseline = _merge(reports["baseline"], baseline_revision, samples)
+    current = _merge(reports["current"], current_revision, samples)
+    _reviewed_contract_migration(baseline_workspace, current_workspace, baseline, current)
+    return baseline, current
 
 
 def _atomic_json(path: Path, value: Any) -> None:

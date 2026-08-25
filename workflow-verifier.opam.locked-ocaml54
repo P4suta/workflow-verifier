@@ -1,0 +1,33 @@
+opam-version: "2.0"
+name: "workflow-verifier"
+version: "0.1.0"
+synopsis: "Semantic verifier and isolated execution planner for CI workflows"
+description:
+  "workflow-verifier compiles GitHub Actions, GitLab CI, Azure Pipelines, and CircleCI into a shared phase-aware IR. It checks correctness, trust flow, secret flow, dependency integrity, least privilege, semantic changes, and fail-closed sandbox plans without invoking provider linters."
+maintainer: "workflow-verifier contributors"
+authors: "workflow-verifier contributors"
+license: "MIT OR Apache-2.0"
+homepage: "https://github.com/P4suta/workflow-verifier"
+bug-reports: "https://github.com/P4suta/workflow-verifier/issues"
+depends: [
+  "cmdliner" {= "2.1.1"}
+  "dune" {= "3.24.2"}
+  "ocaml" {= "5.4.0"}
+  "otoml" {= "1.0.5"}
+]
+build: [
+  ["dune" "subst"] {dev}
+  [
+    "dune"
+    "build"
+    "-p"
+    name
+    "-j"
+    jobs
+    "@install"
+    "@runtest" {with-test}
+    "@doc" {with-doc}
+  ]
+]
+dev-repo: "git+https://github.com/P4suta/workflow-verifier.git"
+x-maintenance-intent: ["(latest)"]

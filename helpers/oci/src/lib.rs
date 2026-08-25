@@ -41,6 +41,24 @@ fn mount(source: &str, target: &str, readonly: bool) -> String {
     )
 }
 
+#[cfg(target_os = "linux")]
+fn scratch_execution_user(path: &Path) -> Result<Option<String>, String> {
+    use std::os::unix::fs::MetadataExt as _;
+
+    let metadata = std::fs::symlink_metadata(path).map_err(|error| error.to_string())?;
+    if metadata.file_type().is_symlink() || !metadata.is_dir() {
+        return Err("OCI scratch root is not a real directory".to_owned());
+    }
+    Ok(Some(format!("{}:{}", metadata.uid(), metadata.gid())))
+}
+
+#[cfg(not(target_os = "linux"))]
+// Docker Desktop mediates bind ownership outside Linux; no host identity is portable there.
+#[allow(clippy::unnecessary_wraps)]
+fn scratch_execution_user(_path: &Path) -> Result<Option<String>, String> {
+    Ok(None)
+}
+
 /// Builds an OCI engine argument vector without invoking a command shell.
 #[must_use]
 pub fn build_arguments(
@@ -48,6 +66,7 @@ pub fn build_arguments(
     step: &Step,
     source_root: &str,
     scratch_root: &str,
+    execution_user: Option<&str>,
 ) -> Vec<String> {
     let mut arguments = vec![
         "run".to_owned(),
@@ -66,6 +85,17 @@ pub fn build_arguments(
         "--memory".to_owned(),
         format!("{}m", plan.limits.memory_mb),
     ];
+    if let Some(user) = execution_user {
+        // Disable daemon-level user remapping, then run as the private scratch
+        // owner. The workload stays unprivileged while a 0700 scratch tree
+        // remains writable on remapped GitHub-hosted Docker daemons.
+        arguments.extend([
+            "--userns".to_owned(),
+            "host".to_owned(),
+            "--user".to_owned(),
+            user.to_owned(),
+        ]);
+    }
     if plan.controls.contains(&Control::NetworkDeny) {
         arguments.extend(["--network".to_owned(), "none".to_owned()]);
     }
@@ -226,6 +256,7 @@ pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunR
         .path()
         .to_str()
         .ok_or_else(|| "scratch root is not UTF-8".to_owned())?;
+    let execution_user = scratch_execution_user(scratch.path())?;
     let mut evidence = Evidence::for_plan(plan);
     evidence.append(EvidenceBody::BackendAttested {
         id: plan.backend.clone(),
@@ -247,7 +278,13 @@ pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunR
         .filter_map(|name| std::env::var(name).ok().map(|value| (name.clone(), value)))
         .collect::<Vec<_>>();
     for step in &plan.steps {
-        let arguments = build_arguments(plan, step, source_text, scratch_text);
+        let arguments = build_arguments(
+            plan,
+            step,
+            source_text,
+            scratch_text,
+            execution_user.as_deref(),
+        );
         let (executable, argv) = step
             .argv
             .split_first()

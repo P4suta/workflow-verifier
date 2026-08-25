@@ -60,7 +60,13 @@ fn invocation_is_argv_safe_and_enforces_every_oci_control() {
         working_directory: "/workspace".to_owned(),
         supported: true,
     };
-    let arguments = build_arguments(&plan(), &step, r"\\?\C:\source", r"\\?\C:\scratch");
+    let arguments = build_arguments(
+        &plan(),
+        &step,
+        r"\\?\C:\source",
+        r"\\?\C:\scratch",
+        Some("1000:1000"),
+    );
     assert!(
         arguments
             .windows(2)
@@ -83,6 +89,16 @@ fn invocation_is_argv_safe_and_enforces_every_oci_control() {
         "Windows extended path prefixes are not valid Docker bind sources"
     );
     assert!(arguments.windows(2).any(|pair| pair == ["--env", "TOKEN"]));
+    assert!(
+        arguments
+            .windows(2)
+            .any(|pair| pair == ["--userns", "host"])
+    );
+    assert!(
+        arguments
+            .windows(2)
+            .any(|pair| pair == ["--user", "1000:1000"])
+    );
     assert!(!arguments.iter().any(|value| value.contains("secret-value")));
 }
 

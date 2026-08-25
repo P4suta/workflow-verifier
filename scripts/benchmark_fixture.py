@@ -11,11 +11,6 @@ import tempfile
 from pathlib import Path
 
 FILES = {
-    ".workflow-verifier.toml": """version = 1
-persona = "audit"
-frontends = ["github", "gitlab", "azure", "circleci"]
-offline = true
-""",
     ".gitlab-ci.yml": """stages: [test]
 verify:
   stage: test
@@ -46,6 +41,22 @@ SCENARIOS = ("four-provider", "arcade-scale")
 ARCADE_REPOSITORIES = 64
 ARCADE_VARIABLES = 778
 ARCADE_GATED_STAGES = 2
+
+
+def _configuration(workspace: Path, frontends: tuple[str, ...]) -> str:
+    marker = workspace / "schema" / "config-v2.schema.json"
+    try:
+        metadata = marker.lstat()
+    except FileNotFoundError:
+        quoted = ", ".join(f'"{frontend}"' for frontend in frontends)
+        return f'version = 1\npersona = "audit"\nfrontends = [{quoted}]\noffline = true\n'
+    if marker.is_symlink() or not stat.S_ISREG(metadata.st_mode):
+        raise ValueError("config-v2 contract marker must be a regular file")
+    # config-v2 defaults are deliberately non-privileged. CLI arguments select
+    # the audit persona, so the benchmark never needs to trust repository config.
+    return "version = 2\n"
+
+
 ARCADE_DISPLAY_PADDING = 1050
 
 
@@ -207,7 +218,7 @@ def prepare(workspace: Path, mode: str, scenario: str = "four-provider") -> Path
             variant = "variant-b" if "echo variant-a" in current else "variant-a"
         _write(
             root / ".workflow-verifier.toml",
-            'version = 1\npersona = "audit"\nfrontends = ["azure"]\noffline = true\n',
+            _configuration(workspace, ("azure",)),
         )
         _write(pipeline, _arcade_scale(variant))
         return root
@@ -226,6 +237,10 @@ def prepare(workspace: Path, mode: str, scenario: str = "four-provider") -> Path
         variant = "variant-b" if "variant-a" in current else "variant-a"
     for relative, source in FILES.items():
         _write(root / relative, source)
+    _write(
+        root / ".workflow-verifier.toml",
+        _configuration(workspace, ("github", "gitlab", "azure", "circleci")),
+    )
     _write(workflow, _github(variant))
     return root
 

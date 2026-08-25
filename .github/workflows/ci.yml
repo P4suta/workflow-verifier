@@ -15,6 +15,9 @@ on:
 permissions:
   contents: read
 
+env:
+  NO_COLOR: '1'
+
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -90,6 +93,9 @@ jobs:
             scripts/verify_conformance_manifest.py \
             scripts/verify_linux_compat.py \
             scripts/verify_sarif.py \
+            scripts/benchmark_fixture.py \
+            scripts/measure_performance.py \
+            scripts/measure_performance_pair.py \
             scripts/prepare_corpus.py \
             scripts/corpus_gate.py
           python -B -m unittest scripts.tests.test_verify_sarif -v
@@ -145,8 +151,14 @@ jobs:
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-      - name: Install dependencies
+      - name: Install release-locked dependencies
+        if: ${{ matrix.ocaml-compiler == '5.5.0' }}
         run: opam install . --deps-only --with-test --locked --yes
+      - name: Install OCaml 5.4 compatibility-locked dependencies
+        if: ${{ matrix.ocaml-compiler == '5.4.0' }}
+        run: >-
+          opam install . --deps-only --with-test --locked
+          --lock-suffix=locked-ocaml54 --yes
       - name: Build
         run: opam exec -- dune build @all
       - name: Contract tests
@@ -505,13 +517,14 @@ jobs:
           opam install . --deps-only --with-test --locked --yes
           opam exec -- dune build bin/main.exe
       - name: Generate twice-local canonical comparison artifacts
+        shell: bash
         env:
           DETERMINISM_PLATFORM: ${{ matrix.platform }}
         run: >-
           python -B scripts/determinism_probe.py
           --analyzer _build/default/bin/main.exe
           --fixture test/fixtures/determinism
-          --output "_build/determinism/${DETERMINISM_PLATFORM}"
+          --output "_build/determinism/$DETERMINISM_PLATFORM"
       - name: Upload exact comparison artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

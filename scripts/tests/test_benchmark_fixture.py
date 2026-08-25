@@ -68,6 +68,18 @@ class BenchmarkFixtureTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "scenario"):
                 prepare(workspace, "reset", "unknown")
 
+    def test_config_matches_the_workspace_contract_without_a_trust_grant(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory)
+            schema = workspace / "schema"
+            schema.mkdir()
+            (schema / "config-v2.schema.json").write_text("{}\n", encoding="utf-8")
+            root = prepare(workspace, "reset")
+            self.assertEqual(
+                (root / ".workflow-verifier.toml").read_text(encoding="utf-8"),
+                "version = 2\n",
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

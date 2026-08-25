@@ -213,6 +213,8 @@ fn executable(_metadata: &fs::Metadata) -> bool {
 }
 
 #[cfg(unix)]
+// The shared API is fallible because the Windows implementation opens a handle.
+#[allow(clippy::unnecessary_wraps)]
 fn file_identity(_path: &Path, metadata: &fs::Metadata) -> Result<String, String> {
     use std::os::unix::fs::MetadataExt as _;
     Ok(format!("{}:{}", metadata.dev(), metadata.ino()))
@@ -232,6 +234,8 @@ fn file_identity(path: &Path, _metadata: &fs::Metadata) -> Result<String, String
 }
 
 #[cfg(not(any(unix, windows)))]
+// Keep the same fallible cross-platform API as the Windows implementation.
+#[allow(clippy::unnecessary_wraps)]
 fn file_identity(path: &Path, metadata: &fs::Metadata) -> Result<String, String> {
     Ok(format!(
         "{}:{}:{}",
