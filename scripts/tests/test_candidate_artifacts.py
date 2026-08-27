@@ -1,4 +1,5 @@
 import json
+import shutil
 import subprocess
 import tarfile
 import tempfile
@@ -32,6 +33,30 @@ def artifact_pair(root: Path, name: str, contents: bytes) -> tuple[Path, Path]:
 
 
 class CandidateArtifactsTests(unittest.TestCase):
+    def test_ocaml_oracle_has_a_reference_only_executable_name(self) -> None:
+        repository = Path(__file__).resolve().parents[2]
+        dune = (repository / "bin" / "dune").read_text(encoding="utf-8")
+        self.assertIn("(public_name workflow-verifier-reference)", dune)
+        self.assertNotIn("(public_name workflow-verifier)\n", dune)
+
+    def test_linux_arm64_candidate_builder_and_workflow_are_wired(self) -> None:
+        repository = Path(__file__).resolve().parents[2]
+        builder = (repository / "scripts" / "build_candidate_platform.sh").read_text(
+            encoding="utf-8"
+        )
+        workflow = (repository / ".github" / "workflows" / "candidate.yml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("linux-x86_64 | linux-arm64)", builder)
+        self.assertIn("[[ $CANDIDATE_PLATFORM == linux-* ]]", builder)
+        self.assertIn("runner: ubuntu-24.04-arm", workflow)
+        self.assertIn("platform: linux-arm64", workflow)
+        self.assertIn("architecture: aarch64", workflow)
+        self.assertIn('"workflow-verifier-$VERSION-linux-arm64.tar.gz"', workflow)
+        self.assertIn('"workflow-verifier-helpers-$VERSION-linux-arm64.tar.gz"', workflow)
+        self.assertIn('test "${#fragments[@]}" -eq 6', workflow)
+
     def test_ocaml_build_path_prefix_map_uses_the_specified_escape_alphabet(self) -> None:
         self.assertEqual(
             build_path_prefix_map(r"C:\source=one%two"),
@@ -44,7 +69,11 @@ class CandidateArtifactsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             install = root / "_build" / "install" / "default"
-            write(install / "bin" / "workflow-verifier.exe", b"analyzer")
+            analyzer = write(root / "target" / "workflow-verifier.exe", b"analyzer")
+            write(
+                install / "bin" / "workflow-verifier-reference.exe",
+                b"reference oracle",
+            )
             write(install / "doc" / "workflow-verifier" / "README.md", b"docs")
             write(install / "share" / "workflow-verifier" / "schema.json", b"{}\n")
             write(install / "man" / "man1" / "workflow-verifier.1", b"manual")
@@ -60,6 +89,7 @@ class CandidateArtifactsTests(unittest.TestCase):
             second_helpers = root / "second-helpers.zip"
 
             package_install(
+                analyzer=analyzer,
                 install_root=install,
                 workspace_root=root,
                 platform="windows-x86_64",
@@ -69,6 +99,7 @@ class CandidateArtifactsTests(unittest.TestCase):
                 helpers_output=first_helpers,
             )
             package_install(
+                analyzer=analyzer,
                 install_root=install,
                 workspace_root=root,
                 platform="windows-x86_64",
@@ -87,6 +118,7 @@ class CandidateArtifactsTests(unittest.TestCase):
                     any(name.endswith("/doc/workflow-verifier/README.md") for name in names)
                 )
                 self.assertEqual(sum(name.endswith(".exe") for name in names), 3)
+                self.assertFalse(any("workflow-verifier-reference" in name for name in names))
             with zipfile.ZipFile(first_helpers) as archive:
                 self.assertEqual(len(archive.namelist()), 2)
                 self.assertFalse(
@@ -95,6 +127,7 @@ class CandidateArtifactsTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "helper inventory"):
                 package_install(
+                    analyzer=analyzer,
                     install_root=install,
                     workspace_root=root,
                     platform="windows-x86_64",
@@ -110,6 +143,7 @@ class CandidateArtifactsTests(unittest.TestCase):
             fragments: list[Path] = []
             platforms = (
                 "linux-x86_64",
+                "linux-arm64",
                 "windows-x86_64",
                 "macos-arm64",
                 "macos-x86_64",
@@ -153,7 +187,7 @@ class CandidateArtifactsTests(unittest.TestCase):
             self.assertEqual(document["gate"], "reproducible-build")
             self.assertEqual(document["status"], "pass")
             self.assertEqual(document["details"]["builds_per_artifact"], 2)
-            self.assertEqual(len(document["details"]["artifacts"]), 11)
+            self.assertEqual(len(document["details"]["artifacts"]), 13)
             self.assertEqual(
                 gate.read_bytes(),
                 json.dumps(
@@ -240,13 +274,21 @@ class CandidateArtifactsTests(unittest.TestCase):
             write(root / "README.md", b"source\n")
             write(root / "schema" / "one.schema.json", b"{}\n")
             subprocess.run(["git", "add", "."], cwd=root, check=True)
+            system_git = shutil.which("git")
+            self.assertIsNotNone(system_git)
+            empty_hooks = Path(temporary) / "empty-hooks"
+            empty_hooks.mkdir()
             subprocess.run(
                 [
-                    "git",
+                    system_git,
                     "-c",
                     "user.name=Release Test",
                     "-c",
                     "user.email=release@example.invalid",
+                    "-c",
+                    "commit.gpgSign=false",
+                    "-c",
+                    f"core.hooksPath={empty_hooks.as_posix()}",
                     "commit",
                     "--quiet",
                     "-m",

@@ -29,13 +29,13 @@ class StageReleaseEvidenceTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertIn("--manifest", completed.stdout)
 
-    def test_stages_every_v3_reference_without_flattening_paths(self) -> None:
+    def test_stages_every_v4_reference_without_flattening_paths(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             manifest = fixture(root)
             destination = root / "dist"
             outputs = stage(manifest, destination)
-            self.assertIn(destination / "release-evidence-v3.json", outputs)
+            self.assertIn(destination / "release-evidence-v4.json", outputs)
             self.assertTrue((destination / "gates" / "unit.json").is_file())
             self.assertTrue((destination / "sbom" / "workflow-verifier.cdx.json").is_file())
             self.assertTrue((destination / "maintainer-allowed-signers").is_file())

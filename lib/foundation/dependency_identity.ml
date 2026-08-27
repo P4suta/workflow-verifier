@@ -4,6 +4,10 @@ let is_hex = function
   | '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' -> true
   | _ -> false
 
+let is_lower_hex = function
+  | '0' .. '9' | 'a' .. 'f' -> true
+  | _ -> false
+
 let exact_hex length value =
   String.length value = length && String.for_all is_hex value
 
@@ -11,7 +15,7 @@ let valid_content_digest value =
   let prefix = "sha256:" in
   String.length value = String.length prefix + 64
   && Util.starts_with ~prefix value
-  && exact_hex 64 (String.sub value (String.length prefix) 64)
+  && String.for_all is_lower_hex (String.sub value (String.length prefix) 64)
 
 let immutable_revision revision =
   exact_hex 40 revision || exact_hex 64 revision

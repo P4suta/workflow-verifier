@@ -116,9 +116,12 @@ def _git(
     remaining = deadline - time.monotonic()
     if remaining <= 0:
         raise ValueError("repository acquisition exceeded 60 seconds")
-    environment = dict(os.environ)
+    environment = {
+        key: value for key, value in os.environ.items() if not key.upper().startswith("GIT_")
+    }
     environment.update(
         {
+            "GIT_CONFIG_GLOBAL": os.devnull,
             "GIT_CONFIG_NOSYSTEM": "1",
             "GIT_TERMINAL_PROMPT": "0",
             "GIT_LFS_SKIP_SMUDGE": "1",

@@ -6,6 +6,7 @@ from __future__ import annotations
 import pathlib
 import re
 import sys
+import tomllib
 from collections import namedtuple
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -52,6 +53,87 @@ EXPECTED_DEPENDENCIES: dict[str, tuple[str, ...]] = {
     ),
 }
 EXTERNAL_DEPENDENCIES = {"cmdliner", "otoml", "unix"}
+
+EXPECTED_RUST_DEPENDENCIES: dict[str, tuple[str, ...]] = {
+    "workflow-verifier-foundation": (),
+    "workflow-verifier-syntax": ("workflow-verifier-foundation",),
+    "workflow-verifier-domain": ("workflow-verifier-foundation",),
+    "workflow-verifier-frontend": (
+        "workflow-verifier-domain",
+        "workflow-verifier-foundation",
+        "workflow-verifier-syntax",
+    ),
+    "workflow-verifier-verifier": (
+        "workflow-verifier-domain",
+        "workflow-verifier-foundation",
+    ),
+    "workflow-verifier-product": (
+        "workflow-verifier-domain",
+        "workflow-verifier-foundation",
+        "workflow-verifier-frontend",
+        "workflow-verifier-syntax",
+        "workflow-verifier-verifier",
+    ),
+    "workflow-verifier-sandbox": (
+        "workflow-verifier-domain",
+        "workflow-verifier-foundation",
+        "workflow-verifier-frontend",
+        "workflow-verifier-verifier",
+    ),
+    "workflow-verifier-engine": (
+        "workflow-verifier-domain",
+        "workflow-verifier-foundation",
+        "workflow-verifier-frontend",
+        "workflow-verifier-product",
+        "workflow-verifier-sandbox",
+        "workflow-verifier-syntax",
+        "workflow-verifier-verifier",
+    ),
+    "workflow-verifier-cli": (
+        "workflow-verifier-domain",
+        "workflow-verifier-engine",
+        "workflow-verifier-foundation",
+        "workflow-verifier-frontend",
+        "workflow-verifier-product",
+        "workflow-verifier-sandbox",
+        "workflow-verifier-syntax",
+        "workflow-verifier-verifier",
+    ),
+    "workflow-verifier-conformance": (
+        "workflow-verifier-foundation",
+        "workflow-verifier-product",
+    ),
+}
+
+EXPECTED_RUST_ADAPTER_DEPENDENCIES: dict[str, tuple[str, ...]] = {
+    "workflow-verifier-cli": ("workflow-verifier-helper-runtime",),
+    "workflow-verifier-sandbox": ("workflow-verifier-runner-protocol",),
+}
+
+ALLOWED_RUST_EXTERNAL_DEPENDENCIES: dict[str, tuple[str, ...]] = {
+    "workflow-verifier-foundation": ("caseless", "sha2", "unicode-normalization"),
+    "workflow-verifier-syntax": (),
+    "workflow-verifier-domain": (),
+    "workflow-verifier-frontend": (),
+    "workflow-verifier-verifier": (),
+    "workflow-verifier-product": ("serde", "toml"),
+    "workflow-verifier-sandbox": (),
+    "workflow-verifier-engine": (),
+}
+
+RUST_CORE_CRATES = tuple(ALLOWED_RUST_EXTERNAL_DEPENDENCIES)
+RUST_FORBIDDEN_CORE_APIS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("std::fs", re.compile(r"\bstd::fs\b")),
+    ("std::net", re.compile(r"\bstd::net\b")),
+    ("std::process", re.compile(r"\bstd::process\b")),
+    ("std::env", re.compile(r"\bstd::env\b")),
+)
+RUST_PARTIAL_EXPRESSIONS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("unreachable!", re.compile(r"\bunreachable!\s*\(")),
+    ("panic!", re.compile(r"\bpanic!\s*\(")),
+    ("unsafe block", re.compile(r"\bunsafe\s*(?:fn|trait|impl|\{)")),
+    ("static mut", re.compile(r"\bstatic\s+mut\b")),
+)
 
 Library = namedtuple("Library", "path name modules dependencies wrapped")
 
@@ -125,6 +207,21 @@ def validate_dependencies(actual: dict[str, tuple[str, ...]]) -> list[str]:
     return errors
 
 
+def validate_rust_dependencies(actual: dict[str, tuple[str, ...]]) -> list[str]:
+    errors: list[str] = []
+    for name in sorted(set(EXPECTED_RUST_DEPENDENCIES) | set(actual)):
+        expected = EXPECTED_RUST_DEPENDENCIES.get(name)
+        dependencies = actual.get(name)
+        if expected is None:
+            errors.append(f"unexpected Rust analyzer crate {name}")
+        elif dependencies is None:
+            errors.append(f"missing Rust analyzer crate {name}")
+        elif dependencies != expected:
+            errors.append(f"{name} dependencies are {dependencies!r}; expected {expected!r}")
+    errors.extend(graph_errors(actual))
+    return errors
+
+
 def partial_expression_errors(root: pathlib.Path) -> list[str]:
     errors: list[str] = []
     for path in sorted((root / "lib").rglob("*.ml*")):
@@ -133,6 +230,86 @@ def partial_expression_errors(root: pathlib.Path) -> list[str]:
             if pattern.search(source):
                 relative = path.relative_to(root).as_posix()
                 errors.append(f"{relative} contains partial expression {expression!r}")
+    return errors
+
+
+def rust_core_source_errors(root: pathlib.Path) -> list[str]:
+    errors: list[str] = []
+    for crate in RUST_CORE_CRATES:
+        directory = root / "crates" / crate.removeprefix("workflow-verifier-") / "src"
+        if not directory.exists():
+            continue
+        library = directory / "lib.rs"
+        if not library.is_file() or "#![forbid(unsafe_code)]" not in library.read_text(
+            encoding="utf-8"
+        ):
+            errors.append(
+                f"{library.relative_to(root).as_posix()} must forbid unsafe_code at the crate root"
+            )
+        for path in sorted(directory.rglob("*.rs")):
+            source = path.read_text(encoding="utf-8")
+            relative = path.relative_to(root).as_posix()
+            for api, pattern in RUST_FORBIDDEN_CORE_APIS:
+                if pattern.search(source):
+                    errors.append(f"{relative} contains forbidden core API {api!r}")
+            for expression, pattern in RUST_PARTIAL_EXPRESSIONS:
+                if pattern.search(source):
+                    errors.append(f"{relative} contains partial expression {expression!r}")
+    return errors
+
+
+def rust_repository_errors(root: pathlib.Path) -> list[str]:
+    errors: list[str] = []
+    actual: dict[str, tuple[str, ...]] = {}
+    adapters: dict[str, tuple[str, ...]] = {}
+    externals: dict[str, tuple[str, ...]] = {}
+    for manifest in sorted((root / "crates").glob("*/Cargo.toml")):
+        relative = manifest.relative_to(root).as_posix()
+        try:
+            document = tomllib.loads(manifest.read_text(encoding="utf-8"))
+            package = document["package"]
+            name = package["name"]
+            dependencies = document.get("dependencies", {})
+        except (KeyError, OSError, UnicodeError, tomllib.TOMLDecodeError) as error:
+            errors.append(f"{relative}: cannot parse Cargo package: {error}")
+            continue
+        if name not in EXPECTED_RUST_DEPENDENCIES:
+            errors.append(f"{relative}: unexpected Rust analyzer package {name!r}")
+            continue
+        if package.get("publish") is not False:
+            errors.append(f"{relative}: package.publish must be false")
+        internal = tuple(sorted(dep for dep in dependencies if dep in EXPECTED_RUST_DEPENDENCIES))
+        adapter = tuple(
+            sorted(
+                dep
+                for dep in dependencies
+                if dep
+                in {
+                    item
+                    for values in EXPECTED_RUST_ADAPTER_DEPENDENCIES.values()
+                    for item in values
+                }
+            )
+        )
+        external = tuple(
+            sorted(dep for dep in dependencies if dep not in set(internal) | set(adapter))
+        )
+        actual[name] = internal
+        adapters[name] = adapter
+        externals[name] = external
+
+    errors.extend(validate_rust_dependencies(actual))
+    for name, expected in sorted(EXPECTED_RUST_ADAPTER_DEPENDENCIES.items()):
+        if adapters.get(name, ()) != expected:
+            errors.append(
+                f"{name} adapter dependencies are {adapters.get(name, ())!r}; expected {expected!r}"
+            )
+    for name, expected in sorted(ALLOWED_RUST_EXTERNAL_DEPENDENCIES.items()):
+        if externals.get(name, ()) != expected:
+            errors.append(
+                f"{name} external dependencies are {externals.get(name, ())!r}; expected {expected!r}"
+            )
+    errors.extend(rust_core_source_errors(root))
     return errors
 
 
@@ -172,6 +349,7 @@ def repository_errors(root: pathlib.Path = ROOT) -> list[str]:
             if previous != library.name:
                 errors.append(f"module {module} is owned by both {previous} and {library.name}")
     errors.extend(partial_expression_errors(root))
+    errors.extend(rust_repository_errors(root))
     return errors
 
 
@@ -182,7 +360,7 @@ def run() -> None:
             print(f"architecture gate: {error}", file=sys.stderr)
         raise SystemExit(1)
     print(
-        "architecture gate: 8 private total layers, one-way dependencies, unique module ownership"
+        "architecture gate: OCaml reference and Rust product layers are one-way, private, pure, and panic-free"
     )
 
 

@@ -12,9 +12,10 @@ class ConformanceManifestTests(unittest.TestCase):
     def test_repository_manifest_binds_every_exact_vector(self) -> None:
         root = Path(__file__).resolve().parents[2]
         self.assertGreaterEqual(
-            verify(root / "conformance" / "manifest-v1.json", root),
-            6,
+            verify(root / "conformance" / "manifest-v2.json", root),
+            8,
         )
+        self.assertEqual(verify(root / "conformance" / "manifest-v1.json", root), 6)
 
     def test_tampered_vector_and_noncanonical_manifest_fail(self) -> None:
         root = Path(__file__).resolve().parents[2]
@@ -42,6 +43,34 @@ class ConformanceManifestTests(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "canonical"):
                 verify(manifest, destination)
+
+    def test_v2_manifest_accepts_report_v3_protocol_without_widening_v1(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        source = root / "conformance" / "manifest-v1.json"
+        document = json.loads(source.read_text(encoding="utf-8"))
+        document["schema"] = "conformance-manifest-v2"
+        document["vectors"][0]["protocol"] = "report-v3"
+        with tempfile.TemporaryDirectory() as temporary:
+            manifest = Path(temporary) / "manifest-v2.json"
+            manifest.write_text(
+                json.dumps(document, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+                + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            self.assertEqual(verify(manifest, root), len(document["vectors"]))
+
+        document["schema"] = "conformance-manifest-v1"
+        with tempfile.TemporaryDirectory() as temporary:
+            manifest = Path(temporary) / "manifest-v1.json"
+            manifest.write_text(
+                json.dumps(document, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+                + "\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            with self.assertRaisesRegex(ValueError, "protocol"):
+                verify(manifest, root)
 
 
 if __name__ == "__main__":

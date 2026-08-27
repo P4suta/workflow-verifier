@@ -44,6 +44,53 @@ let make_plan ~backend ~source_digest ~lock_digest ~controls ~limits
   | Ok plan -> plan
   | Error error -> fail "valid test plan was rejected: %s" error
 
+let complete_evidence_with_backend (plan : Sandbox_protocol.plan) backend_id =
+  let evidence =
+    Evidence.for_plan plan
+    |> Evidence.append
+         (Evidence.Backend_attested
+            {
+              id = backend_id;
+              version = "test";
+              platform = "test";
+              controls_digest = Sandbox_protocol.controls_digest plan.controls;
+            })
+  in
+  let evidence =
+    List.fold_left
+      (fun current control ->
+        Evidence.append
+          (Evidence.Control_attested (Sandbox_protocol.control_name control))
+          current)
+      evidence plan.controls
+  in
+  let evidence =
+    List.fold_left
+      (fun current (step : Sandbox_protocol.step) ->
+        match step.argv with
+        | executable :: argv ->
+            current
+            |> Evidence.append (Evidence.Process_started { executable; argv })
+            |> Evidence.append (Evidence.Process_exited { code = 0 })
+        | [] -> current)
+      evidence plan.steps
+  in
+  evidence
+  |> Evidence.append
+       (Evidence.Resource_observed
+          {
+            wall_time_ms = 1;
+            cpu_time_ms = 0;
+            peak_memory_bytes = 0L;
+            processes = 1;
+            output_bytes = 0;
+            scratch_bytes = 0L;
+            scratch_entries = 0;
+          })
+  |> Evidence.append
+       (Evidence.Log_recorded { digest = "sha256:" ^ Sha256.digest_string "" })
+  |> Evidence.append (Evidence.Filesystem_final { digest = plan.source_digest })
+
 let fixture_root () =
   let build_tree = Filename.concat (Sys.getcwd ()) "fixtures/protocol" in
   if Sys.file_exists build_tree then build_tree
@@ -323,6 +370,22 @@ let evidence_parse_test () =
   expect "evidence parser rejects a broken hash chain"
     (Result.is_error (Evidence.parse tampered))
 
+let evidence_backend_binding_test () =
+  let plan =
+    make_plan ~backend:(Oci "docker")
+      ~source_digest:("sha256:" ^ String.make 64 '1')
+      ~lock_digest:("sha256:" ^ String.make 64 '2')
+      ~controls ~limits:Sandbox_protocol.portable_limits ~secret_names:[]
+      ~dependencies:[]
+      ~steps:[ step "build" "true" ]
+  in
+  let evidence = complete_evidence_with_backend plan "oci:podman" in
+  expect "evidence backend identity is bound directly to runner-v2"
+    (match Evidence.validate_for_plan plan evidence with
+    | Error message ->
+        Util.contains ~needle:"backend attestation identity" message
+    | Ok () -> false)
+
 let sandbox_audit_test () =
   let plan =
     make_plan ~backend:(Oci "docker")
@@ -542,6 +605,59 @@ let scratch_artifact_reconciliation_test () =
   expect "recording scratch bytes is not a provider artifact publication"
     (not (Evidence.observes_effect Ir.Artifact_publish evidence))
 
+let scenario_condition_planner_test () =
+  let source =
+    "on: [push, pull_request]\n\
+     jobs:\n\
+    \  build:\n\
+    \    if: github.event_name == 'push'\n\
+    \    steps:\n\
+    \      - run: echo selected\n\
+    \      - if: github.event_name == 'schedule'\n\
+    \        run: echo skipped\n"
+  in
+  let graph =
+    match
+      Frontend.compile_string ~provider:Ir.Github
+        ~path:".github/workflows/ci.yml" ~source ()
+    with
+    | Ok compilation -> compilation.Frontend_intf.graph
+    | Error problems ->
+        fail "%s"
+          (String.concat "; "
+             (List.map (fun problem -> problem.Frontend_intf.message) problems))
+  in
+  let scenario event =
+    match
+      Scenario.make ~provider:Ir.Github
+        ~workflow_entrypoint:".github/workflows/ci.yml" ~job:"build" ~event
+        ~inputs:[] ~matrix:[] ~variables:[]
+        ~runner_platform:Scenario.Linux_x86_64 ~secret_names:[]
+    with
+    | Ok value -> value
+    | Error message -> fail "%s" message
+  in
+  let plan event =
+    match
+      Scenario_planner.plan ~scenario:(scenario event)
+        ~image:("sha256:" ^ String.make 64 'a')
+        ~graphs:[ graph ]
+    with
+    | Ok value -> value
+    | Error message -> fail "%s" message
+  in
+  let push = plan "push" in
+  expect "true job and step gates select only the reachable command"
+    (match push.steps with
+    | [ step ] ->
+        List.rev step.Sandbox_protocol.argv |> List.hd = "echo selected"
+    | _ -> false);
+  expect "known false conditions are complete, not unsupported"
+    (push.incomplete_reasons = []);
+  let pull_request = plan "pull_request" in
+  expect "a false job gate suppresses its entire command subtree"
+    (pull_request.steps = [] && pull_request.incomplete_reasons = [])
+
 let tests : test list =
   [
     ( "OCaml and helpers share canonical runner-v2 fixtures",
@@ -558,11 +674,15 @@ let tests : test list =
     ("backend probes are versioned and typed", backend_probe_parse_test);
     ("runtime evidence is hash chained to the plan", evidence_chain_test);
     ("runtime evidence parses and authenticates", evidence_parse_test);
+    ( "runtime evidence binds the exact backend identity",
+      evidence_backend_binding_test );
     ("sandbox audit verifies every requested control", sandbox_audit_test);
     ("OCI runner enforces controls through argv-safe ports", oci_runner_test);
     ("runtime absence never upgrades static proof", reconciliation_test);
     ( "scratch artifacts retain file-write rather than publish semantics",
       scratch_artifact_reconciliation_test );
+    ( "scenario planning propagates job and step conditions",
+      scenario_condition_planner_test );
     ( "runtime observations are checked against the static effect envelope",
       runtime_envelope_test );
   ]

@@ -433,7 +433,8 @@ let validate_for_plan (plan : Sandbox_protocol.plan) evidence =
   let backend_attestations =
     bodies
     |> List.filter_map (function
-      | Backend_attested { controls_digest; _ } -> Some controls_digest
+      | Backend_attested { id; version; platform; controls_digest } ->
+          Some (id, version, platform, controls_digest)
       | _ -> None)
   and controls =
     bodies
@@ -479,7 +480,19 @@ let validate_for_plan (plan : Sandbox_protocol.plan) evidence =
   else if
     not
       (List.for_all
-         (fun controls_digest ->
+         (fun (id, _, _, _) -> id = Sandbox_protocol.backend_name plan.backend)
+         backend_attestations)
+  then Error "backend attestation identity does not match runner-v2"
+  else if
+    List.exists
+      (fun (_, version, platform, _) ->
+        String.trim version = "" || String.trim platform = "")
+      backend_attestations
+  then Error "backend attestation identity is incomplete"
+  else if
+    not
+      (List.for_all
+         (fun (_, _, _, controls_digest) ->
            controls_digest = expected.bindings.controls_digest)
          backend_attestations)
   then Error "backend attestation controls do not match runner-v2"

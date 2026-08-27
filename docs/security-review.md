@@ -16,7 +16,7 @@ ssh-keygen -Y sign -n workflow-verifier-release \
   release-evidence/maintainer-self-audit-v2.json
 ```
 
-`release-evidence-v3` binds the audit and signature digests. The offline
+`release-evidence-v4` binds the audit and signature digests. The offline
 verifier fixes the maintainer identity and namespace, checks canonical bytes,
 requires `independent_audit=false`, and rejects any stale subject, disclosure
 change, finding, missing signature, or changed allowed-signers identity.

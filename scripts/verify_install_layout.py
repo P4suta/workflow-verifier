@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import stat
 import sys
 from pathlib import Path, PurePosixPath
 
@@ -11,11 +12,14 @@ SCHEMAS = {
     "config-v1.schema.json",
     "config-v2.schema.json",
     "conformance-manifest-v1.schema.json",
+    "conformance-manifest-v2.schema.json",
     "corpus-report-v1.schema.json",
     "corpus-review-v1.schema.json",
     "corpus-v1.schema.json",
     "determinism-comparison-v1.schema.json",
+    "determinism-comparison-v2.schema.json",
     "determinism-v1.schema.json",
+    "determinism-v2.schema.json",
     "dogfood-v1.schema.json",
     "doctor-v2.schema.json",
     "evidence-v2.schema.json",
@@ -24,14 +28,18 @@ SCHEMAS = {
     "maintainer-self-audit-v2.schema.json",
     "mutation-campaign-v1.schema.json",
     "mutation-gate-v1.schema.json",
+    "network-profile-v1.schema.json",
     "performance-comparison-v1.schema.json",
     "performance-suite-v1.schema.json",
     "performance-v1.schema.json",
     "release-evidence-v3.schema.json",
+    "release-evidence-v4.schema.json",
     "release-gate-v1.schema.json",
     "release-index-v1.schema.json",
     "report-v2.schema.json",
+    "report-v3.schema.json",
     "reproducibility-fragment-v1.schema.json",
+    "reproducibility-fragment-v2.schema.json",
     "runner-v2.schema.json",
     "sandbox-audit-v1.schema.json",
     "sandbox-run-v2.schema.json",
@@ -49,20 +57,37 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-if len(sys.argv) != 2:
-    fail("usage: verify_install_layout.py INSTALL_ROOT")
+if len(sys.argv) != 3:
+    fail("usage: verify_install_layout.py INSTALL_ROOT RUST_ANALYZER")
 
 root = Path(sys.argv[1]).resolve()
 if not root.is_dir():
     fail(f"install root does not exist: {root}")
+analyzer = Path(sys.argv[2])
+try:
+    analyzer_metadata = analyzer.lstat()
+except OSError as error:
+    fail(f"cannot inspect Rust analyzer: {error}")
+if (
+    analyzer.is_symlink()
+    or not stat.S_ISREG(analyzer_metadata.st_mode)
+    or analyzer_metadata.st_size <= 0
+):
+    fail("Rust analyzer must be a nonempty regular non-symlink file")
+if analyzer.name not in {"workflow-verifier", "workflow-verifier.exe"}:
+    fail(f"Rust analyzer has unexpected name: {analyzer.name}")
 
 files = sorted(path for path in root.rglob("*") if path.is_file())
 relative = [path.relative_to(root).as_posix() for path in files]
-executables = [
-    path for path in relative if path in {"bin/workflow-verifier", "bin/workflow-verifier.exe"}
-]
-if len(executables) != 1:
-    fail(f"expected one workflow-verifier executable, found {executables}")
+installed_executables = [path for path in relative if path.startswith("bin/")]
+if installed_executables not in [
+    ["bin/workflow-verifier-reference"],
+    ["bin/workflow-verifier-reference.exe"],
+]:
+    fail(
+        "support install must contain exactly the OCaml reference oracle, got "
+        f"{installed_executables}"
+    )
 
 schemas = {f"share/workflow-verifier/{name}" for name in SCHEMAS}
 installed_schemas = {
@@ -89,6 +114,7 @@ if missing_support:
 
 required_examples = {
     "share/workflow-verifier/conformance/manifest-v1.json",
+    "share/workflow-verifier/conformance/manifest-v2.json",
     "share/workflow-verifier/examples/scenario-v1.json",
     "share/workflow-verifier/examples/trusted-policy-v2.toml",
     "share/workflow-verifier/spec/canonical-contracts.md",
@@ -110,6 +136,6 @@ for path in relative:
         fail(f"private analyzer library leaked into install: {path}")
 
 print(
-    f"install-layout gate: {len(executables)} executable, "
-    f"{len(schemas)} schemas, docs and four completions"
+    "install-layout gate: 1 Rust executable, "
+    f"1 reference oracle, {len(schemas)} schemas, docs and four completions"
 )

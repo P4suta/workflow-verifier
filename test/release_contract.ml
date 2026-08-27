@@ -47,9 +47,12 @@ let required =
     "../.github/workflows/candidate.yml";
     "../.github/workflows/sign-windows.yml";
     "../.github/workflows/official-compat.yml";
+    "../.github/actions/setup-repository-rust/action.yml";
     "../.gitlab-ci.yml";
     "../azure-pipelines.yml";
     "../.circleci/config.yml";
+    "../action.yml";
+    "../action/run.py";
     "../docs/release.md";
     "../docs/security-review.md";
     "../docs/evaluation.md";
@@ -59,21 +62,25 @@ let required =
     "../docs/troubleshooting.md";
     "../docs/migration-v0.1.md";
     "../docs/version-policy.md";
-    "../docs/quick-start.ja.md";
     "../docs/rules.md";
     "../examples/dogfood-policy-v2.toml";
     "../corpus/README.md";
     "../performance/README.md";
     "../performance/suite-v1.json";
     "../schema/dogfood-v1.schema.json";
+    "../schema/determinism-v2.schema.json";
+    "../schema/determinism-comparison-v2.schema.json";
     "../schema/mutation-campaign-v1.schema.json";
     "../schema/corpus-review-v1.schema.json";
     "../schema/conformance-manifest-v1.schema.json";
     "../schema/release-evidence-v3.schema.json";
+    "../schema/release-evidence-v4.schema.json";
     "../schema/release-gate-v1.schema.json";
     "../schema/reproducibility-fragment-v1.schema.json";
+    "../schema/reproducibility-fragment-v2.schema.json";
     "../schema/release-index-v1.schema.json";
     "../schema/maintainer-self-audit-v2.schema.json";
+    "../schema/network-profile-v1.schema.json";
     "../schema/sbom-components-v1.schema.json";
     "../official/official-projects-v1.json";
     "../official/official-compat-v1.json";
@@ -167,10 +174,14 @@ let () =
       "actionlint -no-color";
       "zizmor --persona pedantic --no-progress";
       "verify_markdown_links.py";
-      "cargo audit --file helpers/Cargo.lock --deny warnings";
-      "cargo deny --manifest-path helpers/Cargo.toml check";
+      "cargo audit --file Cargo.lock --deny warnings";
+      "cargo deny check";
       "rustc 1.98.0";
-      "cargo +1.85.0 test --locked";
+      "cargo test --locked --workspace --all-targets";
+      "Rust product ${{ matrix.platform }}";
+      "platform: linux-arm64";
+      "target/debug/workflow-verifier";
+      "workflow-verifier-reference";
       "verify_architecture.py";
       "fetch_yaml_test_suite.py --allow-network";
       "yaml-test-suite-canonical-data-2022-01-17";
@@ -267,6 +278,8 @@ let () =
   if not (Util.contains ~needle:"workflow_call:" ci) then
     fail "CI workflow must be reusable by the release workflow";
   let release = read_required ".github/workflows/release.yml" in
+  let action = read_required "action.yml" in
+  let action_runner = read_required "action/run.py" in
   let candidate = read_required ".github/workflows/candidate.yml" in
   let windows_signing = read_required ".github/workflows/sign-windows.yml" in
   let mutation = read_required ".github/workflows/mutation.yml" in
@@ -431,25 +444,52 @@ let () =
       "generate_release_index.py";
       "release-index-v1.json";
       "release-notes-v0.1.0.md";
-      "cosign sign-blob --yes";
       "cosign-release: v3.1.3";
-      "subject-checksums:";
-      "gh release create";
-      "id-token: write";
-      "attestations: write";
-      "artifact-metadata: write";
       "uses: ./.github/workflows/ci.yml";
       "uses: ./.github/workflows/mutation.yml";
       "verify_release_evidence.py";
-      "release-evidence/release-evidence-v3.json";
+      "release-evidence/release-evidence-v4.json";
       "workflow_dispatch:";
-      "- 'v*'";
       "fetch-depth: 2";
       "performance_baseline: ${{ needs.release_evidence.outputs.subject_commit \
        }}";
-      "github.event_name == 'push'";
       "name: Promote exact verified assets without rebuilding";
-      "needs: [assemble, mutation, quality, release_evidence]";
+      "needs: [release_evidence, mutation, quality]";
+    ];
+  List.iter
+    (fun forbidden_surface ->
+      if Util.contains ~needle:forbidden_surface release then
+        fail "release publication must remain source-disabled: %s"
+          forbidden_surface)
+    [
+      "push:";
+      "publish:";
+      "gh release create";
+      "actions/attest@";
+      "contents: write";
+    ];
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface action) then
+        fail "official GitHub Action omits required surface: %s"
+          required_surface)
+    [
+      "using: composite";
+      "github-token:";
+      "github-host:";
+      "network-profile:";
+      "python -B \"$GITHUB_ACTION_PATH/action/run.py\"";
+    ];
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface action_runner) then
+        fail "official GitHub Action runner omits required contract: %s"
+          required_surface)
+    [
+      "WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN";
+      "--auth-from-env";
+      "base_environment.pop(CREDENTIAL_ENV, None)";
+      "stdin=subprocess.DEVNULL";
     ];
   if Util.contains ~needle:"cosign-release: v3.0.6" release then
     fail "release workflow must not use vulnerable Cosign 3.0.6";
@@ -461,10 +501,11 @@ let () =
       "workflow_dispatch:";
       "runs-on: ubuntu-24.04";
       "runner: windows-2025";
+      "runner: ubuntu-24.04-arm";
       "runner: macos-15";
       "runner: macos-15-intel";
       "rockylinux/rockylinux@sha256:f5529992e67440c1a4ae7788244d4381c6909159a88eacd95b7523ae47ced82e";
-      "actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659";
+      "uses: ./.github/actions/setup-repository-rust";
       "rustc 1.98.0 (88d9e12ae 2026-08-18)";
       "opam install . --deps-only --locked --yes";
       "build_candidate_platform.sh";

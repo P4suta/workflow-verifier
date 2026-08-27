@@ -1,6 +1,9 @@
 use std::path::PathBuf;
 
-use workflow_verifier_helper_runtime::{ChangeKind, ScratchTree, source_snapshot};
+use workflow_verifier_helper_runtime::{
+    ChangeKind, ScratchTree, reserve_temp_directory, source_snapshot,
+    source_snapshot_with_exclusions,
+};
 
 #[test]
 fn source_snapshot_matches_the_shared_ocaml_fixture() {
@@ -54,4 +57,42 @@ fn scratch_diff_records_add_modify_and_delete() {
     );
     drop(scratch);
     std::fs::remove_dir_all(&root).expect("remove source");
+}
+
+#[test]
+fn trusted_exclusions_are_authenticated_and_remove_the_excluded_bytes() {
+    let root = reserve_temp_directory("trusted-exclusion-test").expect("temporary source");
+    std::fs::create_dir(root.join("generated")).expect("generated directory");
+    std::fs::write(root.join("workflow.yml"), b"jobs: {}\n").expect("workflow");
+    std::fs::write(root.join("generated/ignored.yml"), b"secret build output\n")
+        .expect("excluded output");
+
+    let included = source_snapshot(&root).expect("unfiltered snapshot");
+    let excluded = source_snapshot_with_exclusions(&root, &["generated".to_owned()])
+        .expect("trusted filtered snapshot");
+
+    assert!(included.regular_file("generated/ignored.yml").is_some());
+    assert!(excluded.regular_file("generated/ignored.yml").is_none());
+    assert_eq!(
+        excluded
+            .regular_file("workflow.yml")
+            .expect("included workflow"),
+        b"jobs: {}\n"
+    );
+    assert_eq!(excluded.trusted_exclusions(), ["generated"]);
+    assert!(
+        excluded
+            .manifest
+            .canonical_json
+            .contains("\"exclusion_policy_digest\":\"sha256:")
+    );
+    assert!(
+        excluded
+            .manifest
+            .canonical_json
+            .contains("\"exclusions\":[{\"path\":\"generated\",\"reason\":\"trusted-policy\"}]")
+    );
+    assert_ne!(included.manifest.digest, excluded.manifest.digest);
+
+    std::fs::remove_dir_all(root).expect("remove source");
 }

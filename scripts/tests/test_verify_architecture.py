@@ -95,6 +95,32 @@ class DuneArchitectureTests(unittest.TestCase):
                 ],
             )
 
+    def test_rust_dependency_inversion_is_rejected(self) -> None:
+        checker = load_checker()
+        actual = dict(checker.EXPECTED_RUST_DEPENDENCIES)
+        actual["workflow-verifier-foundation"] = ("workflow-verifier-product",)
+        errors = checker.validate_rust_dependencies(actual)
+        self.assertTrue(any("workflow-verifier-foundation" in error for error in errors))
+
+    def test_rust_core_rejects_os_io_and_partial_panics(self) -> None:
+        checker = load_checker()
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            source = root / "crates" / "foundation" / "src" / "lib.rs"
+            source.parent.mkdir(parents=True)
+            source.write_text(
+                "#![forbid(unsafe_code)]\nuse std::fs;\nfn decode() { unreachable!() }\n",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(
+                checker.rust_core_source_errors(root),
+                [
+                    "crates/foundation/src/lib.rs contains forbidden core API 'std::fs'",
+                    "crates/foundation/src/lib.rs contains partial expression 'unreachable!'",
+                ],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

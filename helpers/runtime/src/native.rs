@@ -6,9 +6,7 @@ use workflow_verifier_runner_protocol::{
     controls_digest, validate_launch,
 };
 
-use crate::{
-    Change, ChangeKind, PrivateSourceTree, ProcessObservation, ScratchTree, source_snapshot,
-};
+use crate::{Change, ChangeKind, PrivateSourceTree, ProcessObservation, ScratchTree};
 
 /// Supplies only the explicitly named secrets requested by a runner plan.
 pub trait SecretProvider {
@@ -267,11 +265,35 @@ where
     S: SecretProvider,
     N: NativeSandbox,
 {
+    execute_native_with_exclusions(plan, descriptor, source_root, &[], secrets, sandbox)
+}
+
+/// Executes a native plan using the exact trusted source policy authenticated
+/// by the coordinator.
+///
+/// # Errors
+///
+/// Returns the same fail-closed errors as [`execute_native`], and additionally
+/// rejects malformed trusted exclusion prefixes.
+#[allow(clippy::too_many_lines)]
+pub fn execute_native_with_exclusions<S, N>(
+    plan: &ValidatedPlan,
+    descriptor: &Descriptor,
+    source_root: &Path,
+    trusted_exclusions: &[String],
+    secrets: &S,
+    sandbox: &mut N,
+) -> Result<RunResult, LaunchError>
+where
+    S: SecretProvider,
+    N: NativeSandbox,
+{
     validate_launch(descriptor, plan)?;
     let source_root = source_root
         .canonicalize()
         .map_err(|error| LaunchError::Infrastructure(error.to_string()))?;
-    let baseline = source_snapshot(&source_root).map_err(LaunchError::Infrastructure)?;
+    let baseline = super::source_snapshot_with_exclusions(&source_root, trusted_exclusions)
+        .map_err(LaunchError::Infrastructure)?;
     if baseline.manifest.digest != plan.source_digest {
         return Err(LaunchError::InvalidPlan(format!(
             "source digest mismatch: plan {}, actual {}",

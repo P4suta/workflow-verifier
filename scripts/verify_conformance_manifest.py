@@ -13,7 +13,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
-PROTOCOLS = {
+V1_PROTOCOLS = {
     "canonical-json",
     "source-manifest-v2",
     "scenario-v1",
@@ -21,6 +21,10 @@ PROTOCOLS = {
     "runner-v2",
     "sandbox-run-v2",
     "evidence-v2",
+}
+PROTOCOLS_BY_SCHEMA = {
+    "conformance-manifest-v1": V1_PROTOCOLS,
+    "conformance-manifest-v2": V1_PROTOCOLS | {"report-v3"},
 }
 
 
@@ -71,8 +75,10 @@ def verify(manifest_path: Path, root: Path) -> int:
         raise ValueError("conformance manifest must be canonical JSON")
     if not isinstance(manifest, dict) or set(manifest) != {"schema", "vectors"}:
         raise ValueError("conformance manifest fields are not exact")
-    if manifest["schema"] != "conformance-manifest-v1":
+    schema = manifest["schema"]
+    if schema not in PROTOCOLS_BY_SCHEMA:
         raise ValueError("unsupported conformance manifest schema")
+    protocols = PROTOCOLS_BY_SCHEMA[schema]
     vectors = manifest["vectors"]
     if not isinstance(vectors, list) or not vectors:
         raise ValueError("conformance manifest needs vectors")
@@ -104,7 +110,7 @@ def verify(manifest_path: Path, root: Path) -> int:
             raise ValueError(f"vector {relative} size mismatch")
         if vector["expected"] not in {"accept", "reject"}:
             raise ValueError(f"vector {relative} expected result is invalid")
-        if vector["protocol"] not in PROTOCOLS:
+        if vector["protocol"] not in protocols:
             raise ValueError(f"vector {relative} protocol is unknown")
         if vector["expected"] == "accept":
             value, vector_raw = _load(path, f"accepted vector {relative}")
@@ -120,7 +126,7 @@ def verify(manifest_path: Path, root: Path) -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", type=Path, default=Path("conformance/manifest-v1.json"))
+    parser.add_argument("--manifest", type=Path, default=Path("conformance/manifest-v2.json"))
     parser.add_argument("--root", type=Path, default=Path("."))
     arguments = parser.parse_args()
     try:

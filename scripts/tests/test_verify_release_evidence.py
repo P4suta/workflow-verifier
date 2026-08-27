@@ -217,7 +217,7 @@ def fixture(root: Path) -> Path:
         f"{MAINTAINER_EMAIL} ssh-ed25519 AAAAfixture\n", encoding="utf-8"
     )
     source = next(item for item in artifacts if item["kind"] == "source")
-    manifest = root / "release-evidence-v3.json"
+    manifest = root / "release-evidence-v4.json"
     write_json(
         manifest,
         {
@@ -231,7 +231,7 @@ def fixture(root: Path) -> Path:
             "maintainer": "P4suta",
             "planned_tag": TAG,
             "review": REVIEW,
-            "schema": "release-evidence-v3",
+            "schema": "release-evidence-v4",
             "self_audit": {
                 "digest": digest(audit_path),
                 "independent": False,
@@ -249,7 +249,7 @@ def document(path: Path) -> dict[str, object]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-class ReleaseEvidenceV3Tests(unittest.TestCase):
+class ReleaseEvidenceV4Tests(unittest.TestCase):
     def verify_fixture(self, manifest: Path) -> dict[str, str]:
         with (
             patch("scripts.verify_release_evidence._verify_signature") as signature,
@@ -304,11 +304,15 @@ class ReleaseEvidenceV3Tests(unittest.TestCase):
                     subject_commit=SUBJECT,
                 )
 
-    def test_complete_v3_evidence_is_accepted(self) -> None:
+    def test_complete_v4_evidence_is_accepted(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             manifest = fixture(Path(temporary))
             values = self.verify_fixture(manifest)
             self.assertEqual(values["subject_commit"], SUBJECT)
+            self.assertEqual(len(PLATFORMS), 5)
+            self.assertIn("linux-arm64", PLATFORMS)
+            self.assertIn("performance-5-platform", REQUIRED_GATES)
+            self.assertNotIn("performance-4-platform", REQUIRED_GATES)
 
     def test_missing_gate_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -339,7 +343,7 @@ class ReleaseEvidenceV3Tests(unittest.TestCase):
 
     def test_every_helper_platform_and_both_macos_boot_architectures_are_required(self) -> None:
         cases = (
-            ("helper", "windows-x86_64", "helper bundles for all four"),
+            ("helper", "linux-arm64", "helper bundles for all five"),
             ("macos-boot-bundle", "macos-arm64", "both architecture-specific"),
         )
         for kind, platform, message in cases:
@@ -411,7 +415,7 @@ class ReleaseEvidenceV3Tests(unittest.TestCase):
     def test_repository_relation_requires_exact_evidence_only_child(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             repository = Path(temporary)
-            manifest = repository / "release-evidence" / "release-evidence-v3.json"
+            manifest = repository / "release-evidence" / "release-evidence-v4.json"
             manifest.parent.mkdir()
             manifest.write_text("{}\n", encoding="utf-8", newline="\n")
 
@@ -422,7 +426,7 @@ class ReleaseEvidenceV3Tests(unittest.TestCase):
                 if arguments[0] == "rev-list":
                     return f"{EVIDENCE} {SUBJECT}\n".encode()
                 if arguments[0] == "diff-tree":
-                    return b"release-evidence/release-evidence-v3.json\n"
+                    return b"release-evidence/release-evidence-v4.json\n"
                 raise AssertionError(arguments)
 
             with patch("scripts.verify_release_evidence._git", side_effect=valid_git):

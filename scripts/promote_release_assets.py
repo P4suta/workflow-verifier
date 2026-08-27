@@ -104,10 +104,10 @@ def promote(staged: Path, output: Path, version: str) -> list[Path]:
     if not VERSION.fullmatch(version):
         raise ValueError("release version is invalid")
     staged = staged.resolve(strict=True)
-    manifest_path = staged / "release-evidence-v3.json"
+    manifest_path = staged / "release-evidence-v4.json"
     manifest, _ = _load_json(manifest_path, "staged release evidence", canonical=True)
-    if not isinstance(manifest, dict) or manifest.get("schema") != "release-evidence-v3":
-        raise ValueError("staged evidence manifest is not release-evidence-v3")
+    if not isinstance(manifest, dict) or manifest.get("schema") != "release-evidence-v4":
+        raise ValueError("staged evidence manifest is not release-evidence-v4")
     try:
         metadata = output.lstat()
     except FileNotFoundError:

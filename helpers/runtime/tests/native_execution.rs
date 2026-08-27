@@ -5,7 +5,8 @@ use std::sync::atomic::{AtomicU64, Ordering};
 
 use workflow_verifier_helper_runtime::{
     ClosureSandbox, MapSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest,
-    NativeStorageParents, ProcessObservation, execute_native, source_snapshot,
+    NativeStorageParents, ProcessObservation, execute_native, execute_native_with_exclusions,
+    source_snapshot, source_snapshot_with_exclusions,
 };
 use workflow_verifier_runner_protocol::{
     Control, Descriptor, Limits, Outcome, PlanStatus, RuntimeProfile, Step, ValidatedPlan,
@@ -250,4 +251,45 @@ fn native_execution_uses_and_cleans_split_backend_storage() {
     std::fs::remove_dir_all(root).expect("remove test source");
     std::fs::remove_dir_all(source_storage).expect("remove source storage");
     std::fs::remove_dir_all(scratch_storage).expect("remove scratch storage");
+}
+
+#[test]
+fn native_execution_reauthenticates_and_stages_the_trusted_filtered_tree() {
+    let root = temporary_source();
+    std::fs::create_dir(root.join("generated")).expect("generated directory");
+    std::fs::write(root.join("generated/ignored.txt"), b"excluded").expect("generated output");
+    let exclusions = vec!["generated".to_owned()];
+    let digest = source_snapshot_with_exclusions(&root, &exclusions)
+        .expect("filtered source snapshot")
+        .manifest
+        .digest;
+    let mut sandbox = ClosureSandbox::new(
+        |request: &NativeSandboxRequest<'_>| {
+            assert!(!request.source_root.join("generated").exists());
+            assert!(!request.scratch_root.join("generated").exists());
+            Ok(())
+        },
+        |_request: &NativeStepRequest<'_>| {
+            Ok(ProcessObservation {
+                code: Some(0),
+                timed_out: false,
+                output_exceeded: false,
+                output: Vec::new(),
+                output_bytes: 0,
+                wall_time_ms: 1,
+            })
+        },
+    );
+
+    let result = execute_native_with_exclusions(
+        &plan(digest),
+        &descriptor(),
+        &root,
+        &exclusions,
+        &MapSecrets::default(),
+        &mut sandbox,
+    )
+    .expect("trusted filtered execution");
+    assert_eq!(result.outcome, Outcome::Completed);
+    std::fs::remove_dir_all(root).expect("remove test source");
 }

@@ -44,6 +44,32 @@ ACQUIRED_PROJECT_FIELDS = {
     "tree",
 }
 SEVERITIES = ("critical", "error", "warning", "note")
+REPORT_V3_FIELDS = {
+    "completeness",
+    "configuration",
+    "diagnostics",
+    "digest",
+    "gate",
+    "graphs",
+    "inputs",
+    "lock",
+    "persona",
+    "properties",
+    "provider_profiles",
+    "schema",
+    "semantic_digest",
+    "snapshot",
+    "summary",
+    "tool",
+}
+TOOL_V3_FIELDS = {"build", "name", "version"}
+BUILD_V3_FIELDS = {
+    "binary_digest",
+    "compiler",
+    "implementation",
+    "source_commit",
+    "target",
+}
 
 
 def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -76,6 +102,12 @@ def _load_json(path: Path, label: str, *, limit: int) -> tuple[dict[str, Any], b
 
 def _digest(raw: bytes) -> str:
     return "sha256:" + hashlib.sha256(raw).hexdigest()
+
+
+def _canonical_compact(value: Any) -> bytes:
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+        "utf-8"
+    )
 
 
 def _validate_acquisition(
@@ -202,11 +234,29 @@ def _report_summary(raw: bytes, project: dict[str, Any]) -> tuple[dict[str, Any]
         report = json.loads(raw.decode("utf-8"), object_pairs_hook=_strict_object)
     except (UnicodeError, json.JSONDecodeError) as error:
         raise ValueError(f"{project['id']} emitted invalid JSON: {error}") from error
-    if not isinstance(report, dict) or report.get("schema") != "report-v2":
-        raise ValueError(f"{project['id']} did not emit report-v2")
+    if not isinstance(report, dict) or report.get("schema") != "report-v3":
+        raise ValueError(f"{project['id']} did not emit report-v3")
+    if set(report) != REPORT_V3_FIELDS:
+        raise ValueError(f"{project['id']} report-v3 fields are incomplete or extended")
     report_digest = report.get("digest")
     if not isinstance(report_digest, str) or not DIGEST.fullmatch(report_digest):
         raise ValueError(f"{project['id']} report digest is invalid")
+    semantic_digest = report.get("semantic_digest")
+    if not isinstance(semantic_digest, str) or not DIGEST.fullmatch(semantic_digest):
+        raise ValueError(f"{project['id']} report semantic digest is invalid")
+    semantic_report = json.loads(json.dumps(report))
+    semantic_report.pop("digest")
+    semantic_report.pop("semantic_digest")
+    semantic_tool = semantic_report.get("tool")
+    if not isinstance(semantic_tool, dict):
+        raise ValueError(f"{project['id']} report tool identity is invalid")
+    semantic_tool.pop("build", None)
+    if semantic_digest != _digest(_canonical_compact(semantic_report)):
+        raise ValueError(f"{project['id']} report semantic digest does not authenticate semantics")
+    full_report = json.loads(json.dumps(report))
+    full_report.pop("digest")
+    if report_digest != _digest(_canonical_compact(full_report)):
+        raise ValueError(f"{project['id']} report digest does not authenticate report-v3")
     graphs = report.get("graphs")
     inputs = report.get("inputs")
     diagnostics = report.get("diagnostics")
@@ -235,26 +285,25 @@ def _report_summary(raw: bytes, project: dict[str, Any]) -> tuple[dict[str, Any]
     tool = report.get("tool")
     if (
         not isinstance(tool, dict)
+        or set(tool) != TOOL_V3_FIELDS
         or tool.get("name") != "workflow-verifier"
         or not isinstance(tool.get("version"), str)
+        or not tool["version"]
     ):
         raise ValueError(f"{project['id']} report tool identity is invalid")
-    semantic_report = json.loads(json.dumps(report))
-    semantic_report.pop("digest", None)
-    semantic_tool = semantic_report.get("tool")
-    if isinstance(semantic_tool, dict):
-        semantic_tool.pop("binary_digest", None)
-        semantic_build = semantic_tool.get("build")
-        if isinstance(semantic_build, dict):
-            semantic_build.pop("source_commit", None)
-    semantic_digest = _digest(
-        json.dumps(
-            semantic_report,
-            ensure_ascii=False,
-            separators=(",", ":"),
-            sort_keys=True,
-        ).encode("utf-8")
-    )
+    build = tool.get("build")
+    if (
+        not isinstance(build, dict)
+        or set(build) != BUILD_V3_FIELDS
+        or not isinstance(build.get("binary_digest"), str)
+        or DIGEST.fullmatch(build["binary_digest"]) is None
+        or any(
+            not isinstance(build.get(field), str)
+            for field in ("compiler", "implementation", "target")
+        )
+        or not (build.get("source_commit") is None or isinstance(build.get("source_commit"), str))
+    ):
+        raise ValueError(f"{project['id']} report build provenance is invalid")
     return (
         {
             "diagnostics": counts,

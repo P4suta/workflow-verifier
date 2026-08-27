@@ -11,7 +11,10 @@ let is_identifier_character = function
   | _ -> false
 
 let words expression =
-  let values = ref [] and start = ref None in
+  let values = ref []
+  and start = ref None
+  and quote = ref None
+  and escaped = ref false in
   let flush stop =
     match !start with
     | None -> ()
@@ -22,9 +25,18 @@ let words expression =
   in
   String.iteri
     (fun index character ->
-      if is_identifier_character character then (
-        if !start = None then start := Some index)
-      else flush index)
+      if !escaped then escaped := false
+      else
+        match (!quote, character) with
+        | Some '"', '\\' -> escaped := true
+        | Some active, candidate when active = candidate -> quote := None
+        | Some _, _ -> ()
+        | None, ('\'' | '"') ->
+            flush index;
+            quote := Some character
+        | None, _ when is_identifier_character character ->
+            if !start = None then start := Some index
+        | None, _ -> flush index)
     expression;
   flush (String.length expression);
   List.rev !values

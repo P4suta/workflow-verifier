@@ -57,24 +57,40 @@ fn platform_reasons() -> Vec<String> {
 /// Returns a fail-closed error when validation, bundle verification, VM
 /// containment setup, process execution, or evidence collection fails.
 pub fn launch(plan: &ValidatedPlan, source_root: &str) -> Result<RunResult, LaunchError> {
+    launch_with_exclusions(plan, source_root, &[])
+}
+
+#[doc(hidden)]
+pub fn launch_with_exclusions(
+    plan: &ValidatedPlan,
+    source_root: &str,
+    trusted_exclusions: &[String],
+) -> Result<RunResult, LaunchError> {
     let descriptor = descriptor();
     validate_launch(&descriptor, plan)?;
-    platform_launch(plan, Path::new(source_root), &descriptor)
+    platform_launch(
+        plan,
+        Path::new(source_root),
+        trusted_exclusions,
+        &descriptor,
+    )
 }
 
 #[cfg(target_os = "macos")]
 fn platform_launch(
     plan: &ValidatedPlan,
     source_root: &Path,
+    trusted_exclusions: &[String],
     descriptor: &Descriptor,
 ) -> Result<RunResult, LaunchError> {
-    platform::launch(plan, source_root, descriptor)
+    platform::launch(plan, source_root, trusted_exclusions, descriptor)
 }
 
 #[cfg(not(target_os = "macos"))]
 fn platform_launch(
     _plan: &ValidatedPlan,
     _source_root: &Path,
+    _trusted_exclusions: &[String],
     _descriptor: &Descriptor,
 ) -> Result<RunResult, LaunchError> {
     Err(LaunchError::UnsupportedPlatform {

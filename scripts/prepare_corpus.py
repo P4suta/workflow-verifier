@@ -49,7 +49,7 @@ DIAGNOSTIC_ID = re.compile(r"^diag_[0-9a-f]{20}$")
 RULE_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
 SPDX_EXPRESSION = re.compile(r"^[A-Za-z0-9.+() -]+$")
 MAX_SOURCE_BYTES = 4 * 1024 * 1024
-REPORT_V2_FIELDS = {
+REPORT_V3_FIELDS = {
     "completeness",
     "configuration",
     "diagnostics",
@@ -62,6 +62,7 @@ REPORT_V2_FIELDS = {
     "provider_profiles",
     "properties",
     "schema",
+    "semantic_digest",
     "snapshot",
     "summary",
     "tool",
@@ -173,6 +174,41 @@ def _verify_document_digest(document: dict[str, Any], label: str) -> None:
         raise ValueError(f"{label}.digest does not authenticate its canonical content")
 
 
+def _verify_report_v3_digests(document: dict[str, Any], label: str) -> None:
+    claimed_semantic = document.get("semantic_digest")
+    if not isinstance(claimed_semantic, str) or not re.fullmatch(
+        r"sha256:[0-9a-f]{64}", claimed_semantic
+    ):
+        raise ValueError(f"{label}.semantic_digest is invalid")
+    tool = document.get("tool")
+    if not isinstance(tool, dict) or set(tool) != {"build", "name", "version"}:
+        raise ValueError(f"{label}.tool is invalid")
+    build = tool.get("build")
+    build_fields = {
+        "binary_digest",
+        "compiler",
+        "implementation",
+        "source_commit",
+        "target",
+    }
+    if not isinstance(build, dict) or set(build) != build_fields:
+        raise ValueError(f"{label}.tool.build is invalid")
+    semantic = {
+        key: value for key, value in document.items() if key not in {"digest", "semantic_digest"}
+    }
+    semantic["tool"] = {key: value for key, value in tool.items() if key != "build"}
+    actual_semantic = "sha256:" + hashlib.sha256(_canonical_content(semantic)).hexdigest()
+    if claimed_semantic != actual_semantic:
+        raise ValueError(f"{label}.semantic_digest does not authenticate canonical content")
+    claimed = document.get("digest")
+    if not isinstance(claimed, str) or not re.fullmatch(r"sha256:[0-9a-f]{64}", claimed):
+        raise ValueError(f"{label}.digest is invalid")
+    full = {key: value for key, value in document.items() if key != "digest"}
+    actual = "sha256:" + hashlib.sha256(_canonical_content(full)).hexdigest()
+    if claimed != actual:
+        raise ValueError(f"{label}.digest does not authenticate its canonical content")
+
+
 def _atomic_json(path: Path, value: Any) -> None:
     if path.is_symlink():
         raise ValueError(f"refusing to replace symlink output: {path}")
@@ -280,7 +316,10 @@ def _validated_diagnostics(
     tool = report["tool"]
     if not isinstance(tool, dict) or tool.get("name") != "workflow-verifier":
         raise ValueError(f"{label} was not produced by workflow-verifier")
-    _verify_document_digest(report, label)
+    if schema == "report-v3":
+        _verify_report_v3_digests(report, label)
+    else:
+        _verify_document_digest(report, label)
     diagnostics = report["diagnostics"]
     if not isinstance(diagnostics, list):
         raise ValueError(f"{label}.diagnostics must be an array")
@@ -307,8 +346,8 @@ def _diagnostics(report: Any, label: str) -> list[dict[str, Any]]:
     return _validated_diagnostics(
         report,
         label,
-        schema="report-v2",
-        fields=REPORT_V2_FIELDS,
+        schema="report-v3",
+        fields=REPORT_V3_FIELDS,
     )
 
 
@@ -789,7 +828,7 @@ def rebase_review(
     new_reports_root: Path,
     output_path: Path,
 ) -> dict[str, Any]:
-    """Explicitly map reviewed report-v1 diagnostics onto equivalent report-v2 diagnostics."""
+    """Explicitly map reviewed report-v1 diagnostics onto equivalent report-v3 diagnostics."""
     old_manifest, old_documents = _rebase_documents(
         old_manifest_path, old_reports_root, legacy=True
     )
@@ -1031,6 +1070,8 @@ def analyzer_command(path: Path) -> Analyzer:
                 [
                     str(analyzer),
                     "check",
+                    "--cache-mode",
+                    "off",
                     "--persona",
                     "audit",
                     "--format",
@@ -1051,7 +1092,7 @@ def analyzer_command(path: Path) -> Analyzer:
         try:
             value = json.loads(completed.stdout.decode("utf-8"), object_pairs_hook=_strict_object)
         except (UnicodeError, json.JSONDecodeError) as error:
-            raise RuntimeError(f"analyzer did not return report-v2 JSON: {error}") from error
+            raise RuntimeError(f"analyzer did not return report-v3 JSON: {error}") from error
         if not isinstance(value, dict):
             raise RuntimeError("analyzer report must be an object")
         return value

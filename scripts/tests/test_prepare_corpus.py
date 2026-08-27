@@ -48,16 +48,24 @@ def diagnostic(identifier: str, rule_id: str) -> dict[str, object]:
 
 
 def seal(document: dict[str, object]) -> dict[str, object]:
-    document["digest"] = None
+    document.pop("digest", None)
+    document.pop("semantic_digest", None)
+    semantic = json.loads(json.dumps(document))
+    semantic["tool"].pop("build")
+    document["semantic_digest"] = (
+        "sha256:"
+        + hashlib.sha256(
+            json.dumps(semantic, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+                "utf-8"
+            )
+        ).hexdigest()
+    )
     document["digest"] = (
         "sha256:"
         + hashlib.sha256(
-            json.dumps(
-                document,
-                ensure_ascii=False,
-                separators=(",", ":"),
-                sort_keys=True,
-            ).encode("utf-8")
+            json.dumps(document, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+                "utf-8"
+            )
         ).hexdigest()
     )
     return document
@@ -70,7 +78,6 @@ def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
             "completeness": {"reasons": [], "state": "complete"},
             "configuration": {"digest": digest, "origin": "built-in", "trust": "built-in"},
             "diagnostics": diagnostics,
-            "digest": None,
             "gate": {"exit_code": 0, "result": "pass"},
             "graphs": [],
             "inputs": [],
@@ -78,7 +85,7 @@ def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
             "persona": "audit",
             "provider_profiles": [],
             "properties": [],
-            "schema": "report-v2",
+            "schema": "report-v3",
             "snapshot": {"digest": digest, "schema": "source-manifest-v2"},
             "summary": {
                 "diagnostics": len(diagnostics),
@@ -87,8 +94,13 @@ def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
                 "unknown_properties": 0,
             },
             "tool": {
-                "binary_digest": digest,
-                "build": {"dune": "3.24.2", "ocaml": "5.5.0", "source_commit": "a" * 40},
+                "build": {
+                    "binary_digest": digest,
+                    "compiler": "rustc test",
+                    "implementation": "rust",
+                    "source_commit": "a" * 40,
+                    "target": "test-target",
+                },
                 "name": "workflow-verifier",
                 "version": "0.1.0",
             },
@@ -107,8 +119,24 @@ def legacy_report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
         "snapshot",
     ):
         document.pop(field)
+    document.pop("semantic_digest")
     document["schema"] = "report-v1"
-    return seal(document)
+    document["tool"] = {
+        "binary_digest": "sha256:" + "f" * 64,
+        "build": {"dune": "3.24.2", "ocaml": "5.5.0", "source_commit": "a" * 40},
+        "name": "workflow-verifier",
+        "version": "0.1.0",
+    }
+    document["digest"] = None
+    document["digest"] = (
+        "sha256:"
+        + hashlib.sha256(
+            json.dumps(document, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+                "utf-8"
+            )
+        ).hexdigest()
+    )
+    return document
 
 
 class FakeSource:

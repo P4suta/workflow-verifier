@@ -1,5 +1,19 @@
 use std::collections::BTreeMap;
 
+// JSON Unicode escape widths and UTF-16 surrogate bounds are fixed by RFC
+// 8259 and the Unicode scalar-value definition.
+const JSON_UNICODE_ESCAPE_DIGITS: usize = 4;
+const BITS_PER_HEX_DIGIT: u32 = 4;
+const HEX_ALPHA_DIGIT_OFFSET: u32 = 10;
+const UTF16_HIGH_SURROGATE_START: u32 = 0xd800;
+const UTF16_HIGH_SURROGATE_END: u32 = 0xdbff;
+const UTF16_LOW_SURROGATE_START: u32 = 0xdc00;
+const UTF16_LOW_SURROGATE_END: u32 = 0xdfff;
+const UTF16_SUPPLEMENTARY_PLANE_START: u32 = 0x1_0000;
+const UTF16_SURROGATE_PAYLOAD_BITS: u32 = 10;
+const JSON_CONTROL_BYTE_LIMIT: u8 = 0x20;
+const JSON_CONTROL_CHARACTER_LIMIT: char = '\u{20}';
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum Value {
     Null,
@@ -73,13 +87,14 @@ impl Parser<'_> {
     }
 
     fn whitespace(&mut self) {
-        while self
+        let whitespace_bytes = self
             .source
-            .get(self.offset)
-            .is_some_and(|byte| matches!(byte, b' ' | b'\t' | b'\r' | b'\n'))
-        {
-            self.offset += 1;
-        }
+            .get(self.offset..)
+            .unwrap_or_default()
+            .iter()
+            .take_while(|byte| matches!(byte, b' ' | b'\t' | b'\r' | b'\n'))
+            .count();
+        self.offset = self.offset.saturating_add(whitespace_bytes);
     }
 
     fn take(&mut self) -> Result<u8, String> {
@@ -130,57 +145,90 @@ impl Parser<'_> {
                     b'r' => output.push('\r'),
                     b't' => output.push('\t'),
                     b'u' => {
-                        let mut value = 0u32;
-                        for _ in 0..4 {
-                            value = (value << 4)
-                                | match self.take()? {
-                                    byte @ b'0'..=b'9' => u32::from(byte - b'0'),
-                                    byte @ b'a'..=b'f' => u32::from(byte - b'a' + 10),
-                                    byte @ b'A'..=b'F' => u32::from(byte - b'A' + 10),
-                                    _ => return Err(self.error("invalid Unicode escape")),
-                                };
-                        }
+                        let value = self.unicode_scalar()?;
                         output.push(
                             char::from_u32(value).ok_or_else(|| self.error("invalid codepoint"))?,
                         );
                     }
                     _ => return Err(self.error("invalid string escape")),
                 },
-                byte if byte < 0x20 => return Err(self.error("control byte in string")),
-                byte if byte.is_ascii() => output.push(char::from(byte)),
-                first => {
-                    let width = if first & 0xe0 == 0xc0 {
-                        2
-                    } else if first & 0xf0 == 0xe0 {
-                        3
-                    } else if first & 0xf8 == 0xf0 {
-                        4
-                    } else {
-                        return Err(self.error("invalid UTF-8"));
-                    };
-                    let start = self.offset - 1;
-                    let stop = start + width;
-                    let bytes = self
-                        .source
-                        .get(start..stop)
+                byte if byte < JSON_CONTROL_BYTE_LIMIT => {
+                    return Err(self.error("control byte in string"));
+                }
+                _ => {
+                    let start = self.offset.saturating_sub(1);
+                    let remaining = std::str::from_utf8(&self.source[start..])
+                        .map_err(|_| self.error("invalid UTF-8"))?;
+                    let character = remaining
+                        .chars()
+                        .next()
                         .ok_or_else(|| self.error("truncated UTF-8"))?;
-                    output.push_str(
-                        std::str::from_utf8(bytes).map_err(|_| self.error("invalid UTF-8"))?,
-                    );
-                    self.offset = stop;
+                    output.push(character);
+                    self.offset = start.saturating_add(character.len_utf8());
                 }
             }
         }
     }
 
+    fn unicode_escape(&mut self) -> Result<u32, String> {
+        let mut value = 0u32;
+        for _ in 0..JSON_UNICODE_ESCAPE_DIGITS {
+            let digit = match self.take()? {
+                byte @ b'0'..=b'9' => u32::from(byte - b'0'),
+                byte @ b'a'..=b'f' => u32::from(byte - b'a') + HEX_ALPHA_DIGIT_OFFSET,
+                byte @ b'A'..=b'F' => u32::from(byte - b'A') + HEX_ALPHA_DIGIT_OFFSET,
+                _ => return Err(self.error("invalid Unicode escape")),
+            };
+            // The shifted accumulator and one-hex-digit payload occupy
+            // disjoint bits, so addition is the clearest composition.
+            value = (value << BITS_PER_HEX_DIGIT) + digit;
+        }
+        Ok(value)
+    }
+
+    fn unicode_scalar(&mut self) -> Result<u32, String> {
+        let first = self.unicode_escape()?;
+        if (UTF16_HIGH_SURROGATE_START..=UTF16_HIGH_SURROGATE_END).contains(&first) {
+            if self.take()? != b'\\' || self.take()? != b'u' {
+                return Err(self.error("high surrogate must be followed by a low surrogate"));
+            }
+            let second = self.unicode_escape()?;
+            if !(UTF16_LOW_SURROGATE_START..=UTF16_LOW_SURROGATE_END).contains(&second) {
+                return Err(self.error("high surrogate must be followed by a low surrogate"));
+            }
+            Ok(UTF16_SUPPLEMENTARY_PLANE_START
+                + ((first - UTF16_HIGH_SURROGATE_START) << UTF16_SURROGATE_PAYLOAD_BITS)
+                + (second - UTF16_LOW_SURROGATE_START))
+        } else if (UTF16_LOW_SURROGATE_START..=UTF16_LOW_SURROGATE_END).contains(&first) {
+            Err(self.error("lone low surrogate is invalid"))
+        } else {
+            Ok(first)
+        }
+    }
+
     fn integer(&mut self, first: u8) -> Result<Value, String> {
-        let start = self.offset - 1;
+        let start = self.offset.saturating_sub(1);
         if first == b'-' && !self.source.get(self.offset).is_some_and(u8::is_ascii_digit) {
             return Err(self.error("invalid integer"));
         }
-        while self.source.get(self.offset).is_some_and(u8::is_ascii_digit) {
-            self.offset += 1;
+        let first_digit = if first == b'-' {
+            self.source.get(self.offset).copied()
+        } else {
+            Some(first)
+        };
+        let following_digit = if first == b'-' {
+            self.source.get(self.offset.saturating_add(1))
+        } else {
+            self.source.get(self.offset)
+        };
+        if first_digit == Some(b'0') && following_digit.is_some_and(u8::is_ascii_digit) {
+            return Err(self.error("integer has a leading zero"));
         }
+        let digits = self.source[self.offset..]
+            .iter()
+            .take_while(|byte| byte.is_ascii_digit())
+            .count();
+        self.offset = self.offset.saturating_add(digits);
         if self
             .source
             .get(self.offset)
@@ -267,7 +315,7 @@ fn write_value(output: &mut String, value: &Value) {
                     '\n' => output.push_str("\\n"),
                     '\r' => output.push_str("\\r"),
                     '\t' => output.push_str("\\t"),
-                    value if value < '\u{0020}' => {
+                    value if value < JSON_CONTROL_CHARACTER_LIMIT => {
                         write!(output, "\\u{:04x}", u32::from(value)).expect("String write");
                     }
                     value => output.push(value),
@@ -297,5 +345,44 @@ fn write_value(output: &mut String, value: &Value) {
             }
             output.push('}');
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Value, canonical, parse};
+
+    #[test]
+    fn every_json_escape_unicode_width_and_surrogate_pair_is_exact() {
+        assert_eq!(
+            parse(r#""\\\"\/\b\f\n\r\t""#),
+            Ok(Value::String("\\\"/\u{8}\u{c}\n\r\t".to_owned()))
+        );
+        assert_eq!(
+            parse(r#""\u0041\u00e9\u20AC\ud83d\ude00""#),
+            Ok(Value::String("Aé€😀".to_owned()))
+        );
+        assert_eq!(parse("\"é€😀\""), Ok(Value::String("é€😀".to_owned())));
+        for invalid in [r#""\q""#, r#""\u12xz""#, r#""\ud800""#, "\"\u{1f}\""] {
+            assert!(parse(invalid).is_err(), "accepted {invalid:?}");
+        }
+    }
+
+    #[test]
+    fn integer_grammar_and_error_offsets_are_strict() {
+        assert_eq!(parse("-1"), Ok(Value::Integer(-1)));
+        for invalid in ["-", "01", "-01", "1.0", "1e2", "9223372036854775808"] {
+            let error = parse(invalid).expect_err("invalid integer");
+            assert!(error.starts_with("JSON byte "), "{error:?}");
+            assert!(error.len() > "JSON byte ".len());
+        }
+    }
+
+    #[test]
+    fn canonical_strings_escape_every_json_control_boundary() {
+        assert_eq!(
+            canonical(&Value::String("\"\\\u{8}\u{c}\n\r\t\u{1f} ".to_owned())),
+            r#""\"\\\b\f\n\r\t\u001f ""#
+        );
     }
 }

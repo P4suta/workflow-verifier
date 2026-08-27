@@ -54,8 +54,8 @@ use windows_sys::Win32::System::WindowsProgramming::PROCESS_CREATION_CHILD_PROCE
 
 use workflow_verifier_helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest,
-    NativeStorageParents, ProcessObservation, execute_native, reserve_temp_directory,
-    reserve_temp_file,
+    NativeStorageParents, ProcessObservation, execute_native_with_exclusions,
+    reserve_temp_directory, reserve_temp_file,
 };
 use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, ValidatedPlan};
 
@@ -1199,13 +1199,15 @@ pub(super) fn probe() -> Vec<String> {
 pub(super) fn launch(
     plan: &ValidatedPlan,
     source_root: &Path,
+    trusted_exclusions: &[String],
     descriptor: &Descriptor,
 ) -> Result<RunResult, LaunchError> {
     let mut sandbox = WindowsSandbox::new();
-    execute_native(
+    execute_native_with_exclusions(
         plan,
         descriptor,
         source_root,
+        trusted_exclusions,
         &EnvironmentSecrets,
         &mut sandbox,
     )

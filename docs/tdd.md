@@ -25,7 +25,7 @@ naming refactor while the same test remains green.
 | YAML conformance oracle | Artifact upload dereferences upstream alias symlinks and expands 402 cases into 1,954 inputs | Immutable Git projection contains 402 case directories, 1,887 regular files, and the pinned tree digest | One typed TOML pin owns source and export identity; workers only authenticate the canonical projection |
 | Evaluation | Bad precision/recall/performance fixture passes | 95%/100% and 10% gates reject it | Inputs are immutable and machine-readable |
 | Performance experiment | Sequential runner drift looks like a code regression | Paired period-balanced cycles retain 24 single-sample observations per revision and cancel linear drift | Measurement order is owned by the pair orchestrator; the 10% comparison gate is unchanged |
-| Publication evidence | Missing or self-asserted review permits a tag publish | Candidate-bound corpus, four platforms, and external Sigstore identity pass | Evidence composition is separate from build and publish authority |
+| Publication evidence | Missing or self-asserted review permits a tag publish | Candidate-bound corpus, five platforms, and external Sigstore identity pass | Evidence composition is separate from build and publish authority |
 | Live dogfood | A passing artifact omits one provider or trusts a forged runtime event | Four real provider roots, zero diagnostics, and a recomputed evidence/audit chain pass | CLI execution and evidence verification remain separate processes |
 | Determinism | Platform artifacts differ by newline/path/order | Exact report, lock, and fix bytes match | Canonicalization stays at ownership boundary |
 | Total library core | An invariant-only branch, partial lookup, or invalid fetched lock entry can terminate analysis | Architecture gate rejects partial APIs; invalid boundaries return `Error`; all semantic contracts remain byte-stable | Closed states become variants, graph queues encode nonempty paths, JSON fields stay primary, and lock updates are transactional |
@@ -53,6 +53,24 @@ single-worker and declares its test stages non-parallel-safe. Hosted throughput
 comes only from independent, catalog-reconciled jobs, never concurrent Dune RPC
 clients inside one evidence producer.
 
+The Rust product has a separate high-value mutation tier in
+`.cargo/mutants.toml`. It mutates the pure foundation, YAML, domain,
+four-provider frontend, verifier, product, sandbox, engine, and shared runner
+protocol crates, then runs their owning and downstream conformance packages for
+every mutant. CLI/LSP rendering, OS adapters, runtime helper glue, and the
+comparator implementation are excluded from this tier because their safety is
+covered by protocol, attack-fixture, and platform contracts. Within the shared
+protocol crate, only `helper_main` is excluded: it is stdin/stdout/process-exit
+wiring, while its argument grammar, validation, launch, evidence, and result
+composition remain in the mutation catalog. `just mutation-rust PACKAGE` runs
+one tractable slice; `just mutation-rust-high-value` runs the entire selected
+Rust surface. The full OCaml reference catalog remains a distinct
+release-evidence campaign. Per-process concurrency and timeout policy use the pinned runner's
+documented defaults. In particular, build time is not bounded from a cache-warm
+baseline, which prevents valid downstream compilation from becoming false
+timeout evidence. Hosted package parallelism reuses the mutation campaign's
+existing four-worker backpressure limit.
+
 No green test may be obtained by weakening an assertion from a semantic fact to
 mere output presence. When a test exposes an architectural mismatch, the
 refactor moves responsibility to the owning layer before the next slice begins.
@@ -60,3 +78,10 @@ Survivor triage follows the same rule: first preserve the mutant as a failing
 contract, then make the smallest semantic correction, then remove duplicated
 state or accidental observability while replaying both the focused mutant set
 and the complete deterministic contract suite.
+
+Production code does not contain unexplained numeric tuning literals. Protocol
+widths, schema limits, ports, timeouts, polling intervals, resource profiles,
+and acceptance thresholds must have a named constant next to an authoritative
+standard/schema reference or a concrete product rationale. Algebraic identity
+values and values local to an explicit boundary table are not tuning knobs, but
+the test name or adjacent comment must still make their role apparent.

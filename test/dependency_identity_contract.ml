@@ -39,6 +39,10 @@ let digest_cases_test () =
     (not
        (Dependency_identity.valid_content_digest
           ("sha256:" ^ String.make 63 'a' ^ "z")));
+  expect "uppercase SHA-256 text is non-canonical"
+    (not
+       (Dependency_identity.valid_content_digest
+          ("sha256:" ^ String.make 64 'A')));
   expect "the digest algorithm is part of the identity"
     (not
        (Dependency_identity.valid_content_digest

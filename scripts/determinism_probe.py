@@ -16,12 +16,12 @@ import tempfile
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-ARTIFACTS = ("fix.diff", "report-v2.json", "workflow-verifier.lock")
+ARTIFACTS = ("fix.diff", "report-v3.json", "workflow-verifier.lock")
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 REPORT_PROJECTION_EXCLUSIONS = (
     "digest",
-    "tool.binary_digest",
-    "tool.build.source_commit",
+    "semantic_digest",
+    "tool.build",
 )
 
 
@@ -120,37 +120,50 @@ def parse_json(contents: bytes, label: str) -> Any:
 def report_semantic_bytes(contents: bytes) -> bytes:
     """Validate report provenance and return its platform-neutral projection."""
 
-    document = parse_json(contents, "report-v2 JSON")
-    if not isinstance(document, dict) or document.get("schema") != "report-v2":
-        raise ValueError("determinism report must be a report-v2 object")
+    document = parse_json(contents, "report-v3 JSON")
+    if not isinstance(document, dict) or document.get("schema") != "report-v3":
+        raise ValueError("determinism report must be a report-v3 object")
     if contents != canonical_json(document):
         raise ValueError("determinism report must be canonical JSON")
     report_digest = document.get("digest")
     if not isinstance(report_digest, str) or not DIGEST.fullmatch(report_digest):
         raise ValueError("determinism report digest is invalid")
     authenticated = copy.deepcopy(document)
-    authenticated["digest"] = None
+    authenticated.pop("digest")
     if _sha256_bytes(canonical_json(authenticated, trailing_newline=False)) != report_digest:
         raise ValueError("determinism report digest does not authenticate its body")
+    semantic_digest = document.get("semantic_digest")
+    if not isinstance(semantic_digest, str) or not DIGEST.fullmatch(semantic_digest):
+        raise ValueError("determinism report semantic digest is invalid")
     tool = document.get("tool")
     if not isinstance(tool, dict):
         raise ValueError("determinism report tool must be an object")
-    binary_digest = tool.get("binary_digest")
+    build = tool.get("build")
+    if not isinstance(build, dict) or set(build) != {
+        "binary_digest",
+        "compiler",
+        "implementation",
+        "source_commit",
+        "target",
+    }:
+        raise ValueError("determinism report build source commit is invalid")
+    binary_digest = build.get("binary_digest")
     if not isinstance(binary_digest, str) or not DIGEST.fullmatch(binary_digest):
         raise ValueError("determinism report binary digest is invalid")
-    build = tool.get("build")
-    if (
-        not isinstance(build, dict)
-        or "source_commit" not in build
-        or not isinstance(build["source_commit"], (str, type(None)))
+    if not isinstance(build["source_commit"], (str, type(None))) or not all(
+        isinstance(build[field], str) and build[field]
+        for field in ("compiler", "implementation", "target")
     ):
-        raise ValueError("determinism report build source commit is invalid")
+        raise ValueError("determinism report build provenance is invalid")
 
     projection = copy.deepcopy(document)
     projection.pop("digest")
-    projection["tool"].pop("binary_digest")
-    projection["tool"]["build"].pop("source_commit")
-    return canonical_json(projection)
+    projection.pop("semantic_digest")
+    projection["tool"].pop("build")
+    semantic_bytes = canonical_json(projection)
+    if _sha256_bytes(canonical_json(projection, trailing_newline=False)) != semantic_digest:
+        raise ValueError("determinism report semantic digest does not authenticate projection")
+    return semantic_bytes
 
 
 def artifact_manifest(root: Path, names: list[str]) -> dict[str, Any]:
@@ -170,12 +183,12 @@ def artifact_manifest(root: Path, names: list[str]) -> dict[str, Any]:
         if path.is_symlink() or not stat.S_ISREG(metadata.st_mode) or metadata.st_size == 0:
             raise ValueError(f"determinism artifact must be a nonempty regular file: {path}")
         artifacts.append({"digest": _sha256(path), "name": name, "size": metadata.st_size})
-    report_semantic = report_semantic_bytes((root / "report-v2.json").read_bytes())
+    report_semantic = report_semantic_bytes((root / "report-v3.json").read_bytes())
     return {
         "artifacts": artifacts,
         "local_repetitions": 2,
         "report_semantic_digest": _sha256_bytes(report_semantic),
-        "schema": "determinism-v1",
+        "schema": "determinism-v2",
     }
 
 
@@ -249,16 +262,16 @@ def probe(analyzer: Path, fixture: str, output: Path, root: Path) -> dict[str, A
             raise RuntimeError(f"{label} is not byte-repeatable on this platform")
     report, lockfile, fix = first
     try:
-        report_json = parse_json(report, "report-v2 JSON")
+        report_json = parse_json(report, "report-v3 JSON")
         report_semantic_bytes(report)
         lock_json = parse_json(lockfile, "lock-v2 JSON")
     except ValueError as error:
         raise RuntimeError(f"determinism probe emitted invalid canonical JSON: {error}") from error
-    if report_json.get("schema") != "report-v2":
-        raise RuntimeError("check determinism probe did not emit report-v2")
+    if report_json.get("schema") != "report-v3":
+        raise RuntimeError("check determinism probe did not emit report-v3")
     expected_binary_digest = _sha256(executable.resolve())
-    if report_json.get("tool", {}).get("binary_digest") != expected_binary_digest:
-        raise RuntimeError("report-v2 does not bind the analyzer executable digest")
+    if report_json.get("tool", {}).get("build", {}).get("binary_digest") != expected_binary_digest:
+        raise RuntimeError("report-v3 does not bind the analyzer executable digest")
     if lock_json.get("schema") != "lock-v2":
         raise RuntimeError("resolve determinism probe did not emit lock-v2")
     expected_lock = (fixture_path / "workflow-verifier.lock").read_bytes()
@@ -268,14 +281,14 @@ def probe(analyzer: Path, fixture: str, output: Path, root: Path) -> dict[str, A
         raise RuntimeError("fix determinism probe did not emit a canonical LF-only unified diff")
     outputs = {
         "fix.diff": fix,
-        "report-v2.json": report,
+        "report-v3.json": report,
         "workflow-verifier.lock": lockfile,
     }
     for name, contents in outputs.items():
         _atomic_bytes(output / name, contents)
     manifest = artifact_manifest(output, list(outputs))
     _atomic_bytes(
-        output / "determinism-v1.json",
+        output / "determinism-v2.json",
         (json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"),
     )
     return manifest

@@ -1,0 +1,29 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/network-profile-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "safe_relative_path": {
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*\\\\)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$)).+$",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "custom_ca_der": {
+      "items": { "$ref": "#/$defs/safe_relative_path" },
+      "maxItems": 16,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "proxy": {
+      "format": "uri",
+      "pattern": "^http://[^/?#@]+/?$",
+      "type": "string"
+    },
+    "version": { "const": 1 }
+  },
+  "required": ["version"],
+  "title": "workflow-verifier trusted network profile v1",
+  "type": "object"
+}

@@ -1,0 +1,162 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/release-evidence-v4.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "path": {
+      "minLength": 1,
+      "not": {
+        "pattern": "(?:^|/)\\.\\.?(?:/|$)|\\\\|^[A-Za-z]:"
+      },
+      "type": "string"
+    },
+    "file": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": { "$ref": "#/$defs/digest" },
+        "path": { "$ref": "#/$defs/path" }
+      },
+      "required": ["digest", "path"],
+      "type": "object"
+    },
+    "signature": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": { "$ref": "#/$defs/digest" },
+        "kind": {
+          "enum": ["sigstore", "authenticode+sigstore", "ad-hoc+sigstore"]
+        },
+        "path": { "$ref": "#/$defs/path" }
+      },
+      "required": ["digest", "kind", "path"],
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "$ref": "#/$defs/digest" },
+          "kind": {
+            "enum": [
+              "product",
+              "source",
+              "runtime-capsule",
+              "macos-boot-bundle",
+              "helper",
+              "schema-bundle",
+              "sbom-spdx",
+              "sbom-cyclonedx",
+              "third-party-notices",
+              "corresponding-source"
+            ]
+          },
+          "name": {
+            "pattern": "^[0-9A-Za-z][0-9A-Za-z._+-]*$",
+            "type": "string"
+          },
+          "path": { "$ref": "#/$defs/path" },
+          "platform": {
+            "enum": [
+              "any",
+              "linux-arm64",
+              "linux-x86_64",
+              "windows-x86_64",
+              "macos-arm64",
+              "macos-x86_64"
+            ]
+          },
+          "signature": { "$ref": "#/$defs/signature" },
+          "subject": { "minLength": 1, "type": "string" }
+        },
+        "required": ["digest", "kind", "name", "path", "platform"],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "product_commit": { "pattern": "^[0-9a-f]{40}$", "type": "string" },
+        "source_archive_digest": { "$ref": "#/$defs/digest" }
+      },
+      "required": ["product_commit", "source_archive_digest"],
+      "type": "object"
+    },
+    "disclosures": {
+      "additionalProperties": false,
+      "properties": {
+        "independent_audit": { "const": "sole-maintainer-self-audit" },
+        "macos_distribution": {
+          "const": "ad-hoc-signature-and-sigstore-no-developer-id-or-notarization"
+        }
+      },
+      "required": ["independent_audit", "macos_distribution"],
+      "type": "object"
+    },
+    "gates": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence": { "$ref": "#/$defs/file" },
+          "id": { "pattern": "^[a-z0-9][a-z0-9-]*$", "type": "string" },
+          "status": { "const": "pass" },
+          "subject_commit": { "pattern": "^[0-9a-f]{40}$", "type": "string" }
+        },
+        "required": ["evidence", "id", "status", "subject_commit"],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "maintainer": { "const": "P4suta" },
+    "planned_tag": {
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?$",
+      "type": "string"
+    },
+    "review": {
+      "pattern": "^https://github\\.com/P4suta/workflow-verifier/(?:issues|pull)/[1-9][0-9]*(?:#.*)?$",
+      "type": "string"
+    },
+    "schema": { "const": "release-evidence-v4" },
+    "self_audit": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": { "$ref": "#/$defs/digest" },
+        "independent": { "const": false },
+        "path": { "$ref": "#/$defs/path" },
+        "signature_digest": { "$ref": "#/$defs/digest" },
+        "signature_path": { "$ref": "#/$defs/path" },
+        "sole_maintainer": { "const": true }
+      },
+      "required": [
+        "digest",
+        "independent",
+        "path",
+        "signature_digest",
+        "signature_path",
+        "sole_maintainer"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "artifacts",
+    "candidate",
+    "disclosures",
+    "gates",
+    "maintainer",
+    "planned_tag",
+    "review",
+    "schema",
+    "self_audit"
+  ],
+  "title": "workflow-verifier release attestation v4",
+  "type": "object"
+}

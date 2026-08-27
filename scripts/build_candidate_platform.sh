@@ -14,7 +14,7 @@ if [[ ! $CANDIDATE_COMMIT =~ ^[0-9a-f]{40}$ ]]; then
 fi
 
 case "$CANDIDATE_PLATFORM" in
-  linux-x86_64)
+  linux-x86_64 | linux-arm64)
     archive_suffix=.tar.gz
     cargo_packages=(
       -p workflow-verifier-linux-helper
@@ -55,6 +55,11 @@ case "$CANDIDATE_PLATFORM" in
     exit 2
     ;;
 esac
+cargo_packages=(-p workflow-verifier-cli "${cargo_packages[@]}")
+analyzer_name=workflow-verifier
+if [[ $CANDIDATE_PLATFORM == windows-x86_64 ]]; then
+  analyzer_name=workflow-verifier.exe
+fi
 
 task_temp=$RUNNER_TEMP
 if command -v cygpath >/dev/null 2>&1; then
@@ -106,10 +111,10 @@ build_one() {
     export DUNE_CACHE=disabled
     export SOURCE_DATE_EPOCH
     export TZ=UTC
+    export WORKFLOW_VERIFIER_SOURCE_COMMIT=$CANDIDATE_COMMIT
     opam exec -- dune build --profile release @install
     cargo build \
       --locked \
-      --manifest-path helpers/Cargo.toml \
       --release \
       --target-dir _candidate-target \
       "${cargo_packages[@]}"
@@ -121,14 +126,15 @@ build_one() {
       "$source_root/_candidate-target/release/workflow-verifier-vm-shim"
     codesign --force --sign - --timestamp=none \
       --identifier dev.workflow-verifier.cli --options runtime \
-      "$source_root/_build/default/bin/main.exe"
+      "$source_root/_candidate-target/release/$analyzer_name"
     codesign --force --sign - --timestamp=none \
       --identifier dev.workflow-verifier.macos-helper --options runtime \
       "$source_root/_candidate-target/release/workflow-verifier-macos-helper"
     codesign --force --sign - --timestamp=none \
       --identifier dev.workflow-verifier.vm-agent --options runtime \
       "$source_root/_candidate-target/release/workflow-verifier-vm-agent"
-    codesign --verify --strict --verbose=2 "$source_root/_build/default/bin/main.exe"
+    codesign --verify --strict --verbose=2 \
+      "$source_root/_candidate-target/release/$analyzer_name"
     codesign --verify --strict --verbose=2 \
       "$source_root/_candidate-target/release/workflow-verifier-macos-helper"
     codesign --verify --strict --verbose=2 \
@@ -145,15 +151,16 @@ build_one() {
   python -B scripts/candidate_artifacts.py package-install \
     --workspace-root "$source_root" \
     --install-root "$source_root/_build/install/default" \
+    --analyzer "$source_root/_candidate-target/release/$analyzer_name" \
     --platform "$CANDIDATE_PLATFORM" \
     --version "$CANDIDATE_VERSION" \
     "${helper_arguments[@]}" \
     --output "$output_root/$product_name" \
     --helpers-output "$output_root/$helpers_name"
 
-  if [[ $CANDIDATE_PLATFORM == linux-x86_64 ]]; then
+  if [[ $CANDIDATE_PLATFORM == linux-* ]]; then
     python -B scripts/verify_linux_compat.py \
-      "$source_root/_build/default/bin/main.exe" \
+      "$source_root/_candidate-target/release/$analyzer_name" \
       "$source_root/_candidate-target/release/workflow-verifier-linux-helper" \
       "$source_root/_candidate-target/release/workflow-verifier-oci-helper" \
       "$source_root/_candidate-target/release/workflow-verifier-vm-agent"

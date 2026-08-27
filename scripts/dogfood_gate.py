@@ -165,7 +165,7 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
     raw = {name: _bytes(root / name) for name in ARTIFACTS}
 
     report = _json(root / "report.json")
-    _schema(report, "report-v2", "report.json")
+    _schema(report, "report-v3", "report.json")
     if not isinstance(report.get("properties"), list) or not report["properties"]:
         raise ValueError("report.json contains no proved properties")
     if report.get("diagnostics") != []:
