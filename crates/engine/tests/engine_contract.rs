@@ -443,6 +443,11 @@ selector = { kind = "step" }
         .analyze(&audit)
         .expect("audit policy analysis");
     assert_eq!(audit_result.report.provenance.exit_code, 0);
+    assert_eq!(audit_result.report.graphs, gate_result.report.graphs);
+    assert_eq!(
+        audit_result.report.provenance.source_manifest_digest,
+        gate_result.report.provenance.source_manifest_digest
+    );
     assert!(
         audit_result
             .report

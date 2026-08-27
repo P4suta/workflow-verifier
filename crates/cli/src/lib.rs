@@ -937,13 +937,7 @@ fn sandbox_audit(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
         .validate_for_plan(&plan)
         .map_err(CliError::invalid)?;
     let graphs = if let Some(target) = positional.get(2) {
-        let analyzed = analyze_target(
-            &absolute(cwd, Path::new(target)),
-            &CommonOptions {
-                persona: Some(Persona::Audit),
-                ..common
-            },
-        )?;
+        let analyzed = analyze_target(&absolute(cwd, Path::new(target)), &common)?;
         if analyzed.result.report.provenance.source_manifest_digest != plan.source_digest {
             return Err(CliError::invalid(
                 "audit target source digest does not match the execution plan",
@@ -1625,8 +1619,9 @@ fn command_auth(arguments: &[String]) -> Result<CommandOutput, CliError> {
                     "auth login requires an interactive terminal; CI must use resolve --auth-from-env PROVIDER@HOST=ENV_NAME",
                 ));
             }
-            let secret = acquire_interactive_credential(&key)?;
-            service.login(&key, &secret).map_err(CliError::internal)?;
+            acquire_and_store_interactive_credential(&key, |credential| {
+                service.login(&key, credential)
+            })?;
             Ok(CommandOutput::success(format!(
                 "credential stored in the OS credential store for {}\n",
                 key.identity()
@@ -1720,19 +1715,37 @@ fn parse_auth_arguments(
     Ok((provider, host))
 }
 
-fn acquire_interactive_credential(key: &CredentialKey) -> Result<SecretString, CliError> {
+fn acquire_and_store_interactive_credential(
+    key: &CredentialKey,
+    store: impl FnOnce(&SecretString) -> Result<(), String>,
+) -> Result<(), CliError> {
     let _ = writeln!(
         io::stderr().lock(),
         "Authentication for {}. Browser/device flow through the official provider CLI is preferred.",
         key.identity()
     );
-    if prompt_yes_no("Run the official provider CLI now? [y/N] ")?
-        && run_provider_login(key)
-        && let Some(secret) = import_provider_credential(key)?
-    {
-        return Ok(secret);
+    let credential =
+        if prompt_yes_no("Run the official provider CLI now? [y/N] ")? && run_provider_login(key) {
+            match import_provider_credential(key)? {
+                Some(value) => value,
+                None => masked_token_prompt()?,
+            }
+        } else {
+            masked_token_prompt()?
+        };
+    persist_acquired_credential(&credential, store)
+}
+
+fn persist_acquired_credential(
+    credential: &SecretString,
+    store: impl FnOnce(&SecretString) -> Result<(), String>,
+) -> Result<(), CliError> {
+    match store(credential) {
+        Ok(()) => Ok(()),
+        Err(_) => Err(CliError::internal(
+            "OS credential store rejected the credential",
+        )),
     }
-    masked_token_prompt()
 }
 
 fn prompt_yes_no(prompt: &str) -> Result<bool, CliError> {
@@ -2995,8 +3008,10 @@ fn atomic_write(path: &Path, bytes: &[u8]) -> Result<(), CliError> {
 mod tests {
     use super::{
         DOCTOR_TIMEOUT_SECONDS, helper_environment, load_auth_bindings_with,
-        parse_auth_binding_keys, supervise_process, trusted_resolver_hosts, utc_date_from_days,
+        parse_auth_binding_keys, persist_acquired_credential, supervise_process,
+        trusted_resolver_hosts, utc_date_from_days,
     };
+    use crate::auth::SecretString;
     use std::collections::BTreeMap;
     use std::ffi::OsString;
     use std::process::Command;
@@ -3178,6 +3193,21 @@ mod tests {
         let credential = loaded.values().next().expect("credential");
         assert_eq!(credential.expose(), secret);
         assert!(!format!("{credential:?}").contains(secret));
+    }
+
+    #[test]
+    fn acquired_credentials_are_consumed_before_public_errors_are_created() {
+        const CREDENTIAL_MARKER: &str = "must-not-appear-in-command-output";
+        const PUBLIC_STORE_ERROR: &str = "OS credential store rejected the credential";
+        let credential = SecretString::new(CREDENTIAL_MARKER).expect("credential fixture");
+
+        let error = persist_acquired_credential(&credential, |value| {
+            Err(format!("backend reflected {}", value.expose()))
+        })
+        .expect_err("backend failure");
+
+        assert_eq!(error.message, PUBLIC_STORE_ERROR);
+        assert!(!error.message.contains(CREDENTIAL_MARKER));
     }
 
     #[test]
