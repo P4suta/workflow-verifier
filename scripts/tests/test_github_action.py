@@ -62,12 +62,9 @@ class GitHubActionTests(unittest.TestCase):
                 records.append(
                     {
                         "argv": arguments[1:],
-                        "credential_present": env.get(
-                            "WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN"
-                        )
+                        "credential_present": env.get("WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN")
                         == "top-secret-value",
-                        "quiet": stdout is subprocess.DEVNULL
-                        and stderr is subprocess.DEVNULL,
+                        "quiet": stdout is subprocess.DEVNULL and stderr is subprocess.DEVNULL,
                         "stdin_closed": stdin is subprocess.DEVNULL,
                     }
                 )
