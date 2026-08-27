@@ -2991,21 +2991,17 @@ mod tests {
     use workflow_verifier_product::ResolverOrigin;
 
     // Test shell startup is a control-process launch, so it shares the product's
-    // bounded doctor-probe contract. This accommodates cold PowerShell startup
-    // without weakening the supervisor's production timeout behavior.
+    // bounded doctor-probe contract without weakening production supervision.
     const CONTROL_PROCESS_TEST_TIMEOUT: Duration = Duration::from_secs(DOCTOR_TIMEOUT_SECONDS);
 
     fn shell_command(script: &str) -> Command {
         #[cfg(windows)]
         {
-            let mut command = Command::new("powershell.exe");
-            command.args([
-                "-NoLogo",
-                "-NoProfile",
-                "-NonInteractive",
-                "-Command",
-                script,
-            ]);
+            let executable =
+                std::env::var_os("ComSpec").unwrap_or_else(|| OsString::from("cmd.exe"));
+            let mut command = Command::new(executable);
+            // /D disables registry AutoRun commands and /Q disables command echo.
+            command.args(["/D", "/Q", "/C", script]);
             command
         }
         #[cfg(not(windows))]
@@ -3052,7 +3048,7 @@ mod tests {
         const EXPECTED_STDOUT: &[u8] = b"stdout";
         const EXPECTED_STDERR: &[u8] = b"stderr";
         #[cfg(windows)]
-        let script = "[Console]::Out.Write('stdout'); [Console]::Error.Write('stderr')";
+        let script = "<nul set /p \"=stdout\" & <nul set /p \"=stderr\" 1>&2 & exit /b 0";
         #[cfg(not(windows))]
         let script = "printf stdout; printf stderr >&2";
         let observed = supervise_process(
@@ -3074,7 +3070,7 @@ mod tests {
     #[test]
     fn child_supervisor_terminates_at_the_wall_timeout() {
         #[cfg(windows)]
-        let script = "Start-Sleep -Seconds 10";
+        let script = "ping -t 127.0.0.1 >nul";
         #[cfg(not(windows))]
         let script = "sleep 10";
         let started = std::time::Instant::now();
@@ -3100,7 +3096,7 @@ mod tests {
     fn child_supervisor_terminates_when_output_exceeds_its_cap() {
         const CAPTURED_PREFIX: &[u8] = b"01234567";
         #[cfg(windows)]
-        let script = "[Console]::Out.Write('0123456789abcdef')";
+        let script = "<nul set /p \"=0123456789abcdef\" & exit /b 0";
         #[cfg(not(windows))]
         let script = "printf 0123456789abcdef";
         let observed = supervise_process(
