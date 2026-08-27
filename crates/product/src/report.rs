@@ -1,6 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 use workflow_verifier_domain::Graph;
-use workflow_verifier_foundation::{JsonValue, content_digest, normalize_slashes};
+use workflow_verifier_foundation::{JsonValue, normalize_slashes};
 use workflow_verifier_verifier::{Diagnostic, Persona, Property, VerificationResult};
 
 pub const TOOL_NAME: &str = "workflow-verifier";
@@ -157,13 +157,13 @@ impl Report {
             digest: String::new(),
         };
         let mut digest_projection = report.semantic_projection();
-        report.semantic_digest = content_digest(digest_projection.canonical());
+        report.semantic_digest = digest_projection.canonical_digest();
         Self::promote_to_full_digest_projection(
             &mut digest_projection,
             &report.build,
             &report.semantic_digest,
         );
-        report.digest = content_digest(digest_projection.canonical());
+        report.digest = digest_projection.canonical_digest();
         report
     }
 
@@ -406,14 +406,15 @@ impl Report {
 
     #[must_use]
     pub fn verify_digests(&self) -> bool {
-        self.semantic_digest == content_digest(self.semantic_projection().canonical())
-            && self.digest == content_digest(self.full_digest_projection().canonical())
+        self.semantic_digest == self.semantic_projection().canonical_digest()
+            && self.digest == self.full_digest_projection().canonical_digest()
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use workflow_verifier_foundation::content_digest;
     use workflow_verifier_verifier::{PropertyState, VerificationResult};
 
     fn report() -> Report {

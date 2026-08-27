@@ -1,16 +1,28 @@
 # Performance evidence
 
-Performance is measured from a `performance-suite-v1` document. Each scenario
-defines shell-free argv for setup, per-sample preparation, and the measured
-command in cold, warm, and incremental modes. The measurement runner fixes
-locale and timezone, bounds time and output, records positive nanosecond samples,
-and writes `performance-v1` atomically.
+Performance is measured from shell-free `performance-suite-v1` documents. The
+retained OCaml reference uses `performance/suite-v1.json`; the shipped release
+Rust CLI uses `performance/rust-suite-v1.json`. Each scenario defines argv for
+setup, per-sample preparation, and the measured command in cold, warm, and
+incremental modes. The measurement runner fixes locale and timezone, bounds
+time and output, records positive nanosecond samples, and writes
+`performance-v1` atomically.
 
 CI measures the baseline (`A`) and candidate (`B`) one sample at a time in
 paired `A-B-B-A-B-A-A-B` / `B-A-A-B-A-B-B-A` cycles. Each side receives 24
 samples with equal time-position sums, predecessor counts, and first/last
 placement. The two aggregated `performance-v1` documents then enter the
-unchanged 10% comparison gate.
+unchanged 10% comparison gate. CI runs this pairing and gate independently for
+OCaml and Rust, so samples, suite identities, comparisons, and uploaded
+artifacts never cross implementations.
+
+The Rust suite invokes `target/release/workflow-verifier` in a new process for
+every measured sample and keeps `--cache-mode off`. Cold has no analyzer
+preflight. Warm preflights the exact input and measures that same input.
+Incremental preflights the baseline input, changes exactly one fixture file,
+then measures the changed input. All three therefore measure a fresh analysis;
+the mode names distinguish operating-system warmth and input-change shape, not
+a persistent result cache.
 
 The suite also generates an `arcade-scale-analysis` fixture with 64 repository
 resources, 778 variables, two protected-environment deployments, and paired
@@ -38,6 +50,13 @@ environment and scenario set, computes exact rational medians, and rejects an
 unexplained regression greater than 10%. A permitted regression needs both a
 substantive reason and an HTTPS review URL; stale explanations are rejected.
 
-Use `just performance-measure <revision>` with a reviewed suite, followed by
-`just performance-gate <baseline>`. Publication automation must supply the
-reviewed baseline rather than treating a missing baseline as success.
+For the OCaml reference, build `bin/main.exe`, then use
+`just performance-measure <revision>` or
+`just performance-pair <baseline-workspace> <baseline-revision> <revision>`.
+For the release Rust CLI, use `just performance-measure-rust <revision>` or
+`just performance-pair-rust <baseline-workspace> <baseline-revision> <revision>`;
+these tasks build the required release binaries first. Pass each
+implementation's current ledger and reviewed baseline separately to
+`just performance-gate`. Publication automation must supply the reviewed
+baseline rather than treating a missing baseline as success. Neither gate
+requires a minimum improvement.

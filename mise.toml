@@ -126,6 +126,14 @@ run = "python -B scripts/measure_performance.py --suite performance/suite-v1.jso
 description = "Period-balance WV_BASE_REVISION and WV_REVISION on one runner"
 run = "python -B scripts/measure_performance_pair.py --suite performance/suite-v1.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 24 --output-dir _build/performance-pair"
 
+[tasks.performance-measure-rust]
+description = "Build and measure the release Rust CLI for WV_REVISION"
+run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_REVISION} cargo build --locked --release -p workflow-verifier-cli && python -B scripts/measure_performance.py --suite performance/rust-suite-v1.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-rust-current.json"
+
+[tasks.performance-pair-rust]
+description = "Build and period-balance release Rust CLIs for both revisions"
+run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_BASE_REVISION} cargo build --locked --release --manifest-path ${WV_BASE_WORKSPACE}/Cargo.toml -p workflow-verifier-cli && WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_REVISION} cargo build --locked --release -p workflow-verifier-cli && python -B scripts/measure_performance_pair.py --suite performance/rust-suite-v1.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 24 --output-dir _build/performance-rust-pair"
+
 [tasks.performance-gate]
 description = "Reject unexplained performance regressions above ten percent"
 run = "python -B scripts/performance_gate.py --baseline performance/baseline.json --current _build/performance-current.json --output _build/performance-comparison-v1.json"

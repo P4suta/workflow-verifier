@@ -1,6 +1,6 @@
 use crate::exit_code::{PUBLIC_EXIT_CODE_MAX, PUBLIC_EXIT_CODE_MIN};
 use std::collections::BTreeMap;
-use workflow_verifier_foundation::{JsonValue, content_digest, normalize_slashes};
+use workflow_verifier_foundation::{JsonValue, normalize_slashes};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CacheKeyInput {
@@ -55,7 +55,7 @@ pub fn cache_key(
             JsonValue::String(tool_version.to_owned()),
         ),
     ]));
-    content_digest(material.canonical())
+    material.canonical_digest()
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -87,7 +87,7 @@ impl AnalysisCacheEntry {
             report: report.into(),
             integrity: String::new(),
         };
-        entry.integrity = content_digest(entry.unsigned_json().canonical());
+        entry.integrity = entry.unsigned_json().canonical_digest();
         Ok(entry)
     }
 
@@ -109,7 +109,7 @@ impl AnalysisCacheEntry {
 
     #[must_use]
     pub fn verify_integrity(&self) -> bool {
-        self.integrity == content_digest(self.unsigned_json().canonical())
+        self.integrity == self.unsigned_json().canonical_digest()
     }
 
     #[must_use]

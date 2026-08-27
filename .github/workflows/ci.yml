@@ -406,7 +406,7 @@ jobs:
           if-no-files-found: error
 
   performance-regression:
-    name: Performance ${{ matrix.platform }}
+    name: OCaml performance ${{ matrix.platform }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -458,7 +458,7 @@ jobs:
         run: |
           base_revision=$(git -C _performance-base rev-parse HEAD)
           head_revision=$(git rev-parse HEAD)
-          mkdir -p "_performance-evidence/${PERFORMANCE_PLATFORM}"
+          mkdir -p "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}"
           python -B scripts/measure_performance_pair.py \
             --suite performance/suite-v1.json \
             --baseline-workspace _performance-base \
@@ -466,17 +466,95 @@ jobs:
             --current-workspace . \
             --current-revision "$head_revision" \
             --samples 24 \
-            --output-dir "_performance-evidence/${PERFORMANCE_PLATFORM}"
+            --output-dir "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}"
           python -B scripts/performance_gate.py \
-            --baseline "_performance-evidence/${PERFORMANCE_PLATFORM}/baseline.json" \
-            --current "_performance-evidence/${PERFORMANCE_PLATFORM}/current.json" \
-            --output "_performance-evidence/${PERFORMANCE_PLATFORM}/comparison.json"
+            --baseline "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}/baseline.json" \
+            --current "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}/current.json" \
+            --output "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}/comparison.json"
       - name: Upload exact performance evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: performance-${{ matrix.platform }}
-          path: _performance-evidence/${{ matrix.platform }}/*
+          name: performance-ocaml-${{ matrix.platform }}
+          path: _performance-evidence/ocaml/${{ matrix.platform }}/*
+          if-no-files-found: warn
+
+  rust-performance-regression:
+    name: Rust performance ${{ matrix.platform }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            platform: linux-x86_64
+          - os: ubuntu-24.04-arm
+            platform: linux-arm64
+          - os: windows-2025
+            platform: windows-x86_64
+          - os: macos-15
+            platform: macos-arm64
+          - os: macos-15-intel
+            platform: macos-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - name: Check out the comparison baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          path: _performance-base
+          ref: ${{ inputs.performance_baseline || (github.event_name == 'pull_request' && github.event.pull_request.base.sha) || (github.event_name == 'push' && github.event.before) || github.sha }}
+      - uses: ./.github/actions/setup-repository-rust
+      - name: Build release Rust baseline and head analyzers
+        shell: bash
+        run: |
+          base_revision=$(git -C _performance-base rev-parse HEAD)
+          head_revision=$(git rev-parse HEAD)
+          WORKFLOW_VERIFIER_SOURCE_COMMIT="$base_revision" \
+            cargo build --locked --release \
+            --manifest-path _performance-base/Cargo.toml \
+            -p workflow-verifier-cli
+          WORKFLOW_VERIFIER_SOURCE_COMMIT="$head_revision" \
+            cargo build --locked --release -p workflow-verifier-cli
+      - name: Install the measured workload driver in the baseline tree
+        shell: bash
+        run: |
+          mkdir -p _performance-base/scripts
+          cp scripts/benchmark_fixture.py _performance-base/scripts/benchmark_fixture.py
+      - name: Period-balance identical Rust workloads
+        shell: bash
+        env:
+          PERFORMANCE_PLATFORM: ${{ matrix.platform }}
+          WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM: ${{ matrix.platform }}
+        run: |
+          base_revision=$(git -C _performance-base rev-parse HEAD)
+          head_revision=$(git rev-parse HEAD)
+          mkdir -p "_performance-evidence/rust/${PERFORMANCE_PLATFORM}"
+          python -B scripts/measure_performance_pair.py \
+            --suite performance/rust-suite-v1.json \
+            --baseline-workspace _performance-base \
+            --baseline-revision "$base_revision" \
+            --current-workspace . \
+            --current-revision "$head_revision" \
+            --samples 24 \
+            --output-dir "_performance-evidence/rust/${PERFORMANCE_PLATFORM}"
+          python -B scripts/performance_gate.py \
+            --baseline "_performance-evidence/rust/${PERFORMANCE_PLATFORM}/baseline.json" \
+            --current "_performance-evidence/rust/${PERFORMANCE_PLATFORM}/current.json" \
+            --output "_performance-evidence/rust/${PERFORMANCE_PLATFORM}/comparison.json"
+      - name: Upload exact Rust performance evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: performance-rust-${{ matrix.platform }}
+          path: _performance-evidence/rust/${{ matrix.platform }}/*
           if-no-files-found: warn
 
   coverage-guided-yaml-fuzz:
@@ -603,6 +681,7 @@ jobs:
       - live-dogfood
       - official-compat
       - performance-regression
+      - rust-performance-regression
       - coverage-guided-yaml-fuzz
       - determinism-probe
       - determinism-compare

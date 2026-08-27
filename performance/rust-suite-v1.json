@@ -1,0 +1,80 @@
+{
+  "environment": {
+    "cache_semantics": "fresh-process-analysis",
+    "compiler": "rust-1.98",
+    "executor": "github-hosted",
+    "implementation": "rust",
+    "suite": "rust-suite-v1"
+  },
+  "scenarios": [
+    {
+      "cwd": "test",
+      "id": "four-provider-analysis",
+      "modes": {
+        "cold": {
+          "before_each": [],
+          "command": ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset"]
+          ],
+          "timeout_seconds": 60
+        },
+        "incremental": {
+          "before_each": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle"]
+          ],
+          "command": ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset"],
+            ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-workload"]
+          ],
+          "timeout_seconds": 60
+        },
+        "warm": {
+          "before_each": [],
+          "command": ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset"],
+            ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-workload"]
+          ],
+          "timeout_seconds": 60
+        }
+      }
+    },
+    {
+      "cwd": "test",
+      "id": "arcade-scale-analysis",
+      "modes": {
+        "cold": {
+          "before_each": [],
+          "command": ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"]
+          ],
+          "timeout_seconds": 60
+        },
+        "incremental": {
+          "before_each": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "toggle", "--scenario", "arcade-scale"]
+          ],
+          "command": ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"],
+            ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
+          ],
+          "timeout_seconds": 60
+        },
+        "warm": {
+          "before_each": [],
+          "command": ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"],
+          "setup": [
+            ["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset", "--scenario", "arcade-scale"],
+            ["../target/release/workflow-verifier", "check", "--cache-mode", "off", "--persona", "audit", "--format", "json", "../_build/performance-arcade-scale"]
+          ],
+          "timeout_seconds": 60
+        }
+      }
+    }
+  ],
+  "schema": "performance-suite-v1"
+}

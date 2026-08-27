@@ -16,8 +16,8 @@ use std::fmt::Write as FmtWrite;
 use std::fs::{self, OpenOptions};
 use std::io::{self, IsTerminal, Read, Write};
 use std::path::{Component, Path, PathBuf};
-use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 use workflow_verifier_domain::{Graph, NodeKind, Provider};
 use workflow_verifier_engine::{
@@ -86,7 +86,7 @@ fn process_exit_code(code: i64) -> i32 {
     i32::try_from(code).expect("the documented public exit-code range fits i32")
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 struct CliError {
     code: i32,
     message: String,
@@ -158,6 +158,27 @@ struct AnalyzedWorkspace {
     config: Config,
 }
 
+#[derive(Default)]
+struct AnalysisContext {
+    engine: OnceLock<Result<AnalysisEngine, CliError>>,
+}
+
+impl AnalysisContext {
+    fn engine(&self) -> Result<&AnalysisEngine, CliError> {
+        self.engine_with(analysis_engine)
+    }
+
+    fn engine_with(
+        &self,
+        initialize: impl FnOnce() -> Result<AnalysisEngine, CliError>,
+    ) -> Result<&AnalysisEngine, CliError> {
+        self.engine
+            .get_or_init(initialize)
+            .as_ref()
+            .map_err(Clone::clone)
+    }
+}
+
 /// Execute the command from the process environment and write its two output
 /// streams exactly once. This is the only public process boundary.
 #[must_use]
@@ -173,14 +194,16 @@ pub fn run_env() -> i32 {
             return process_exit_code(EXIT_CODE_INTERNAL_FAILURE);
         }
     };
-    let output = match utf8_arguments(&arguments).and_then(|values| dispatch(&cwd, &values)) {
-        Ok(output) => output,
-        Err(error) => CommandOutput {
-            code: error.code,
-            stdout: String::new(),
-            stderr: format!("workflow-verifier: {}\n", error.message),
-        },
-    };
+    let context = AnalysisContext::default();
+    let output =
+        match utf8_arguments(&arguments).and_then(|values| dispatch(&cwd, &values, &context)) {
+            Ok(output) => output,
+            Err(error) => CommandOutput {
+                code: error.code,
+                stdout: String::new(),
+                stderr: format!("workflow-verifier: {}\n", error.message),
+            },
+        };
     let stdout_ok = io::stdout()
         .lock()
         .write_all(output.stdout.as_bytes())
@@ -208,7 +231,11 @@ fn utf8_arguments(arguments: &[OsString]) -> Result<Vec<String>, CliError> {
         .collect()
 }
 
-fn dispatch(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
+fn dispatch(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
     let Some(command) = arguments.first().map(String::as_str) else {
         return Err(CliError::invalid("a command is required; use --help"));
     };
@@ -216,16 +243,16 @@ fn dispatch(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError>
     match command {
         "--help" | "-h" | "help" => Ok(CommandOutput::success(HELP)),
         "--version" | "version" => Ok(CommandOutput::success("workflow-verifier 0.1.0\n")),
-        "check" => command_check(cwd, rest),
-        "graph" => command_graph(cwd, rest),
-        "diff" => command_diff(cwd, rest),
+        "check" => command_check(cwd, rest, context),
+        "graph" => command_graph(cwd, rest, context),
+        "diff" => command_diff(cwd, rest, context),
         "fix" => command_fix(cwd, rest),
         "resolve" => command_resolve(cwd, rest),
-        "explain" => command_explain(cwd, rest),
+        "explain" => command_explain(cwd, rest, context),
         "doctor" => command_doctor(rest),
         "policy" => command_policy(cwd, rest),
         "migrate" => command_migrate(cwd, rest),
-        "sandbox" => command_sandbox(cwd, rest),
+        "sandbox" => command_sandbox(cwd, rest, context),
         "completion" => command_completion(rest),
         "auth" => command_auth(rest),
         "lsp" => Err(CliError::invalid(format!(
@@ -235,16 +262,20 @@ fn dispatch(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError>
     }
 }
 
-fn command_sandbox(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
+fn command_sandbox(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
     let Some(subcommand) = arguments.first().map(String::as_str) else {
         return Err(CliError::invalid("sandbox requires a subcommand"));
     };
     match subcommand {
         "replay" => sandbox_replay(cwd, &arguments[1..]),
         "verify" => sandbox_verify(cwd, &arguments[1..]),
-        "audit" => sandbox_audit(cwd, &arguments[1..]),
-        "plan" => sandbox_plan(cwd, &arguments[1..]),
-        "run" => sandbox_run(cwd, &arguments[1..]),
+        "audit" => sandbox_audit(cwd, &arguments[1..], context),
+        "plan" => sandbox_plan(cwd, &arguments[1..], context),
+        "run" => sandbox_run(cwd, &arguments[1..], context),
         _ => Err(CliError::invalid(
             "sandbox requires plan, run, replay, verify, or audit",
         )),
@@ -272,13 +303,21 @@ struct PlannedSandbox {
     trusted_exclusions: Vec<String>,
 }
 
-fn sandbox_plan(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
-    let planned = build_sandbox_plan(cwd, arguments)?;
+fn sandbox_plan(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
+    let planned = build_sandbox_plan(cwd, arguments, context)?;
     Ok(CommandOutput::success(planned.plan.to_canonical_json()))
 }
 
 #[allow(clippy::too_many_lines)]
-fn build_sandbox_plan(cwd: &Path, arguments: &[String]) -> Result<PlannedSandbox, CliError> {
+fn build_sandbox_plan(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<PlannedSandbox, CliError> {
     let mut options = SandboxPlanOptions::default();
     let (common, positional) = parse_options(cwd, arguments, |name, value| match name {
         "--backend" => set_once(&mut options.backend, name, required_value(name, value)?),
@@ -308,7 +347,7 @@ fn build_sandbox_plan(cwd: &Path, arguments: &[String]) -> Result<PlannedSandbox
         _ => Ok(false),
     })?;
     let target = one_target(cwd, &positional)?;
-    let analyzed = analyze_target(&target, &common)?;
+    let analyzed = analyze_target(&target, &common, context)?;
     let config = &analyzed.config;
     let backend = parse_sandbox_backend(
         options
@@ -373,8 +412,12 @@ fn build_sandbox_plan(cwd: &Path, arguments: &[String]) -> Result<PlannedSandbox
     })
 }
 
-fn sandbox_run(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
-    let planned = build_sandbox_plan(cwd, arguments)?;
+fn sandbox_run(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
+    let planned = build_sandbox_plan(cwd, arguments, context)?;
     if let SandboxPlanStatus::Incomplete(reasons) = planned.plan.status() {
         return Ok(CommandOutput {
             code: process_exit_code(EXIT_CODE_INCOMPLETE),
@@ -922,7 +965,11 @@ fn sandbox_verify(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, Cli
     )))
 }
 
-fn sandbox_audit(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
+fn sandbox_audit(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
     let (common, positional) = parse_options(cwd, arguments, |_name, _value| Ok(false))?;
     if !(2..=3).contains(&positional.len()) {
         return Err(CliError::invalid(
@@ -937,7 +984,7 @@ fn sandbox_audit(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
         .validate_for_plan(&plan)
         .map_err(CliError::invalid)?;
     let graphs = if let Some(target) = positional.get(2) {
-        let analyzed = analyze_target(&absolute(cwd, Path::new(target)), &common)?;
+        let analyzed = analyze_target(&absolute(cwd, Path::new(target)), &common, context)?;
         if analyzed.result.report.provenance.source_manifest_digest != plan.source_digest {
             return Err(CliError::invalid(
                 "audit target source digest does not match the execution plan",
@@ -1242,7 +1289,11 @@ fn utc_date_from_days(days_since_epoch: i64) -> String {
     format!("{year:04}-{month:02}-{day:02}")
 }
 
-fn command_explain(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
+fn command_explain(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
     let (common, positional) = parse_options(cwd, arguments, |_name, _value| Ok(false))?;
     let Some(rule) = positional.first() else {
         return Err(CliError::invalid("explain requires a rule ID"));
@@ -1254,7 +1305,7 @@ fn command_explain(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, Cl
         || cwd.to_path_buf(),
         |value| absolute(cwd, Path::new(value)),
     );
-    let result = analyze_target(&target, &common)?.result;
+    let result = analyze_target(&target, &common, context)?.result;
     let diagnostics: Vec<_> = result
         .report
         .diagnostics()
@@ -1866,7 +1917,11 @@ fn masked_token_prompt() -> Result<SecretString, CliError> {
     ))
 }
 
-fn command_check(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
+fn command_check(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
     let mut format = "text";
     let mut output = None;
     let (common, positional) = parse_options(cwd, arguments, |name, value| match name {
@@ -1894,7 +1949,7 @@ fn command_check(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
         _ => Ok(false),
     })?;
     let target = one_target(cwd, &positional)?;
-    let analyzed = analyze_target(&target, &common)?;
+    let analyzed = analyze_target(&target, &common, context)?;
     let rendered = match format {
         "json" => analyzed.result.report.to_canonical_json(),
         "sarif" => report_to_sarif(&analyzed.result.report),
@@ -1915,7 +1970,11 @@ fn command_check(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
     })
 }
 
-fn command_graph(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
+fn command_graph(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
     let mut format = "json";
     let mut kind = GraphKind::All;
     let (common, positional) = parse_options(cwd, arguments, |name, value| match name {
@@ -1944,7 +2003,7 @@ fn command_graph(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
         _ => Ok(false),
     })?;
     let target = one_target(cwd, &positional)?;
-    let result = analyze_target(&target, &common)?.result;
+    let result = analyze_target(&target, &common, context)?.result;
     let graph = compose_graphs(&result.report.graphs);
     Ok(CommandOutput::success(if format == "dot" {
         graph_to_dot(kind, &graph)
@@ -1953,13 +2012,17 @@ fn command_graph(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
     }))
 }
 
-fn command_diff(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
+fn command_diff(
+    cwd: &Path,
+    arguments: &[String],
+    context: &AnalysisContext,
+) -> Result<CommandOutput, CliError> {
     let (common, positional) = parse_options(cwd, arguments, |_name, _value| Ok(false))?;
     if positional.len() != 2 {
         return Err(CliError::invalid("diff requires BASE and HEAD"));
     }
-    let base = analyze_target(&absolute(cwd, Path::new(&positional[0])), &common)?;
-    let head = analyze_target(&absolute(cwd, Path::new(&positional[1])), &common)?;
+    let base = analyze_target(&absolute(cwd, Path::new(&positional[0])), &common, context)?;
+    let head = analyze_target(&absolute(cwd, Path::new(&positional[1])), &common, context)?;
     let difference = semantic_diff(
         &compose_graphs(&base.result.report.graphs),
         &compose_graphs(&head.result.report.graphs),
@@ -2407,7 +2470,11 @@ fn absolute(cwd: &Path, path: &Path) -> PathBuf {
     }
 }
 
-fn analyze_target(target: &Path, common: &CommonOptions) -> Result<AnalyzedWorkspace, CliError> {
+fn analyze_target(
+    target: &Path,
+    common: &CommonOptions,
+    context: &AnalysisContext,
+) -> Result<AnalyzedWorkspace, CliError> {
     let (loaded, config_snapshot, config) = load_workspace_and_config(target, common)?;
     let persona = common.persona.unwrap_or(config.persona);
     let (_, lock_snapshot) = load_lock(
@@ -2415,7 +2482,8 @@ fn analyze_target(target: &Path, common: &CommonOptions) -> Result<AnalyzedWorks
         common.lockfile.as_deref(),
         Some(&loaded.authenticated),
     )?;
-    let result = analysis_engine()?
+    let result = context
+        .engine()?
         .analyze(&AnalysisRequest {
             snapshot: loaded.snapshot.clone(),
             overlays: BTreeMap::new(),
@@ -3007,15 +3075,19 @@ fn atomic_write(path: &Path, bytes: &[u8]) -> Result<(), CliError> {
 #[cfg(test)]
 mod tests {
     use super::{
-        DOCTOR_TIMEOUT_SECONDS, helper_environment, load_auth_bindings_with,
-        parse_auth_binding_keys, persist_acquired_credential, supervise_process,
-        trusted_resolver_hosts, utc_date_from_days,
+        AnalysisContext, DOCTOR_TIMEOUT_SECONDS, dispatch, helper_environment,
+        load_auth_bindings_with, parse_auth_binding_keys, persist_acquired_credential,
+        supervise_process, trusted_resolver_hosts, utc_date_from_days,
     };
     use crate::auth::SecretString;
     use std::collections::BTreeMap;
     use std::ffi::OsString;
+    use std::path::Path;
     use std::process::Command;
+    use std::sync::atomic::{AtomicUsize, Ordering};
     use std::time::Duration;
+    use workflow_verifier_engine::AnalysisEngine;
+    use workflow_verifier_foundation::Budget;
     use workflow_verifier_product::ResolverOrigin;
 
     // Test shell startup is a control-process launch, so it shares the product's
@@ -3038,6 +3110,48 @@ mod tests {
             command.args(["-c", script]);
             command
         }
+    }
+
+    #[test]
+    fn analysis_context_is_lazy_initializes_once_and_reuses_engine_caches() {
+        let context = AnalysisContext::default();
+        let help = dispatch(Path::new("."), &["--help".to_owned()], &context)
+            .expect("help dispatch succeeds");
+        assert!(help.stdout.starts_with("workflow-verifier 0.1.0"));
+        assert!(context.engine.get().is_none());
+
+        let initializations = AtomicUsize::new(0);
+        let first = context
+            .engine_with(|| {
+                initializations.fetch_add(1, Ordering::Relaxed);
+                Ok(AnalysisEngine::new())
+            })
+            .expect("engine initialization succeeds");
+        first
+            .parse_document(
+                ".github/workflows/ci.yml",
+                "on: push\njobs: {}\n",
+                Budget::default(),
+            )
+            .expect("first parse succeeds");
+        let second = context
+            .engine_with(|| {
+                initializations.fetch_add(1, Ordering::Relaxed);
+                Ok(AnalysisEngine::new())
+            })
+            .expect("cached engine is available");
+        second
+            .parse_document(
+                ".github/workflows/ci.yml",
+                "on: push\njobs: {}\n",
+                Budget::default(),
+            )
+            .expect("cached parse succeeds");
+
+        assert!(std::ptr::eq(first, second));
+        assert_eq!(initializations.load(Ordering::Relaxed), 1);
+        assert_eq!(second.statistics().parse_misses, 1);
+        assert_eq!(second.statistics().parse_hits, 1);
     }
 
     #[cfg(windows)]

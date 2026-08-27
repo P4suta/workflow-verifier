@@ -1123,7 +1123,13 @@ fn graph_diff_fix_resolve_and_completion_are_composed() {
         &fixture.0,
         &["diff", base.to_str().unwrap(), head.to_str().unwrap()],
     );
+    let repeated_diff = invoke(
+        &fixture.0,
+        &["diff", base.to_str().unwrap(), head.to_str().unwrap()],
+    );
     assert_eq!(diff.status.code(), Some(0), "{}", text(&diff.stderr));
+    assert_eq!(repeated_diff.status.code(), Some(0));
+    assert_eq!(diff.stdout, repeated_diff.stdout);
     assert_eq!(
         JsonValue::parse(text(&diff.stdout))
             .unwrap()

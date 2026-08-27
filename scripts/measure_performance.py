@@ -101,7 +101,12 @@ def _commands(value: Any, label: str) -> list[list[str]]:
 def _native_argv(argv: list[str], cwd: Path) -> list[str]:
     executable = argv[0]
     if not os.path.isabs(executable) and ("/" in executable or "\\" in executable):
-        return [str((cwd / executable).resolve()), *argv[1:]]
+        resolved = (cwd / executable).resolve()
+        if sys.platform == "win32" and resolved.suffix.lower() != ".exe":
+            windows_executable = Path(f"{resolved}.exe")
+            if windows_executable.is_file():
+                resolved = windows_executable
+        return [str(resolved), *argv[1:]]
     return argv
 
 
@@ -304,7 +309,7 @@ def measure(
             result_modes[mode] = {"samples_ns": durations}
         result_scenarios.append({"id": identifier, "modes": result_modes})
     environment = dict(raw_environment)
-    environment["cache_semantics"] = "fresh-analysis-with-isolated-write"
+    environment.setdefault("cache_semantics", "fresh-analysis-with-isolated-write")
     environment["suite_digest"] = suite_digest
     platform = os.environ.get("WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM")
     if platform is not None:

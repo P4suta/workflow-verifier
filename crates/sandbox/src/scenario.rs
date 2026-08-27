@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 use workflow_verifier_domain::Provider;
-use workflow_verifier_foundation::{JsonValue, PublicPath, content_digest};
+use workflow_verifier_foundation::{JsonValue, PublicPath};
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum RunnerPlatform {
@@ -229,12 +229,12 @@ impl Scenario {
     }
 
     fn refresh_digest(&mut self) {
-        self.digest = content_digest(self.unsigned_json().canonical());
+        self.digest = self.unsigned_json().canonical_digest();
     }
 
     #[must_use]
     pub fn verify_digest(&self) -> bool {
-        self.digest == content_digest(self.unsigned_json().canonical())
+        self.digest == self.unsigned_json().canonical_digest()
     }
 
     #[must_use]

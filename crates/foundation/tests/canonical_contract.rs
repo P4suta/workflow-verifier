@@ -1,3 +1,4 @@
+use std::collections::BTreeMap;
 use workflow_verifier_foundation::{
     Budget, BudgetKind, BudgetTracker, JsonValue, PublicPath, content_digest, portable_path_key,
     valid_content_digest,
@@ -24,6 +25,35 @@ fn strict_json_rejects_non_contract_values() {
 fn canonical_json_sorts_and_appends_exactly_one_lf() {
     let parsed = JsonValue::parse("{\"z\":0,\"é\":2,\"a\":1}").expect("fixture is valid");
     assert_eq!(parsed.canonical_line(), "{\"a\":1,\"z\":0,\"é\":2}\n");
+}
+
+#[test]
+fn canonical_digest_streams_the_exact_canonical_json_bytes() {
+    let values = [
+        JsonValue::Null,
+        JsonValue::String("日本語\n\t\u{0008}\u{000c}\u{001f}\\\"".to_owned()),
+        JsonValue::Object(BTreeMap::from([
+            (
+                "array".to_owned(),
+                JsonValue::Array(vec![
+                    JsonValue::Boolean(true),
+                    JsonValue::Integer(i64::MIN),
+                    JsonValue::Object(BTreeMap::from([(
+                        "é".to_owned(),
+                        JsonValue::String("😀".to_owned()),
+                    )])),
+                ]),
+            ),
+            (
+                "control".to_owned(),
+                JsonValue::String("\0\n\r\t".to_owned()),
+            ),
+        ])),
+    ];
+
+    for value in values {
+        assert_eq!(value.canonical_digest(), content_digest(value.canonical()));
+    }
 }
 
 #[test]
