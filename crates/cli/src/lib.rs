@@ -3079,10 +3079,16 @@ mod tests {
 
     #[test]
     fn child_supervisor_separates_bounded_stdout_and_stderr() {
+        #[cfg(windows)]
+        const EXPECTED_STDOUT: &[u8] = b"stdout\r\n";
+        #[cfg(not(windows))]
         const EXPECTED_STDOUT: &[u8] = b"stdout";
+        #[cfg(windows)]
+        const EXPECTED_STDERR: &[u8] = b"stderr\r\n";
+        #[cfg(not(windows))]
         const EXPECTED_STDERR: &[u8] = b"stderr";
         #[cfg(windows)]
-        let script = "<nul set /p \"=stdout\" & <nul set /p \"=stderr\" 1>&2 & exit /b 0";
+        let script = "echo stdout&echo stderr>&2&exit /b 0";
         #[cfg(not(windows))]
         let script = "printf stdout; printf stderr >&2";
         let observed = supervise_process(
