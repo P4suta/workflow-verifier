@@ -1,13 +1,15 @@
 from __future__ import annotations
 
+import importlib.util
+import io
 import json
 import os
-import stat
 import subprocess
-import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -21,36 +23,13 @@ class GitHubActionTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            trace = root / "trace.jsonl"
             report = root / "report.json"
-            analyzer = root / "fake-analyzer"
-            analyzer.write_text(
-                """#!/usr/bin/env python3
-import json, os, pathlib, sys
-record = {
-    "argv": sys.argv[1:],
-    "credential_present": os.environ.get("WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN") == "top-secret-value",
-}
-with pathlib.Path(os.environ["WV_ACTION_TEST_TRACE"]).open("a", encoding="utf-8") as output:
-    output.write(json.dumps(record, sort_keys=True) + "\\n")
-if sys.argv[1] == "resolve":
-    print(os.environ.get("WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN", ""))
-    print(os.environ.get("WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN", ""), file=sys.stderr)
-    lock = pathlib.Path(sys.argv[sys.argv.index("--lockfile") + 1])
-    lock.write_text("{}\\n", encoding="utf-8")
-else:
-    report = pathlib.Path(sys.argv[sys.argv.index("--output") + 1])
-    report.write_text("{}\\n", encoding="utf-8")
-""",
-                encoding="utf-8",
-            )
-            analyzer.chmod(analyzer.stat().st_mode | stat.S_IXUSR)
             github_output = root / "github-output"
             environment = {
                 **os.environ,
                 "GITHUB_OUTPUT": str(github_output),
                 "RUNNER_TEMP": str(root),
-                "WV_ACTION_BINARY": str(analyzer),
+                "WV_ACTION_BINARY": "workflow-verifier-test-double",
                 "WV_ACTION_CONFIG": "",
                 "WV_ACTION_FORMAT": "json",
                 "WV_ACTION_GITHUB_HOST": "github.com",
@@ -60,23 +39,68 @@ else:
                 "WV_ACTION_PATH": ".",
                 "WV_ACTION_PERSONA": "gate",
                 "WV_ACTION_RESOLVE": "true",
-                "WV_ACTION_TEST_TRACE": str(trace),
             }
-            completed = subprocess.run(
-                [sys.executable, "-B", str(runner)],
-                cwd=ROOT,
-                env=environment,
-                stdin=subprocess.DEVNULL,
-                capture_output=True,
-                text=True,
-                check=False,
+            specification = importlib.util.spec_from_file_location(
+                "workflow_verifier_action_run", runner
             )
-            self.assertEqual(completed.returncode, 0, completed.stderr)
-            self.assertNotIn("top-secret-value", completed.stdout + completed.stderr)
-            records = [json.loads(line) for line in trace.read_text(encoding="utf-8").splitlines()]
+            self.assertIsNotNone(specification)
+            self.assertIsNotNone(specification.loader)
+            action_run = importlib.util.module_from_spec(specification)
+            specification.loader.exec_module(action_run)
+
+            records: list[dict[str, object]] = []
+
+            def run_test_double(
+                arguments: list[str],
+                *,
+                env: dict[str, str],
+                stdin: int,
+                stdout: int | None,
+                stderr: int | None,
+                check: bool,
+            ) -> subprocess.CompletedProcess[list[str]]:
+                records.append(
+                    {
+                        "argv": arguments[1:],
+                        "credential_present": env.get(
+                            "WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN"
+                        )
+                        == "top-secret-value",
+                        "quiet": stdout is subprocess.DEVNULL
+                        and stderr is subprocess.DEVNULL,
+                        "stdin_closed": stdin is subprocess.DEVNULL,
+                    }
+                )
+                operation = arguments[1]
+                if operation == "resolve":
+                    lock = Path(arguments[arguments.index("--lockfile") + 1])
+                    lock.write_text("{}\n", encoding="utf-8")
+                else:
+                    output = Path(arguments[arguments.index("--output") + 1])
+                    output.write_text("{}\n", encoding="utf-8")
+                return subprocess.CompletedProcess(arguments, 0)
+
+            captured_stdout = io.StringIO()
+            captured_stderr = io.StringIO()
+            with (
+                mock.patch.dict(os.environ, environment, clear=True),
+                mock.patch.object(action_run.subprocess, "run", side_effect=run_test_double),
+                redirect_stdout(captured_stdout),
+                redirect_stderr(captured_stderr),
+            ):
+                status = action_run.main()
+
+            self.assertEqual(status, 0, captured_stderr.getvalue())
+            self.assertNotIn(
+                "top-secret-value",
+                captured_stdout.getvalue() + captured_stderr.getvalue(),
+            )
             self.assertEqual(len(records), 2)
             self.assertTrue(records[0]["credential_present"])
             self.assertFalse(records[1]["credential_present"])
+            self.assertTrue(records[0]["quiet"])
+            self.assertFalse(records[1]["quiet"])
+            self.assertTrue(all(record["stdin_closed"] for record in records))
             self.assertIn(
                 "github@github.com=WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN",
                 records[0]["argv"],

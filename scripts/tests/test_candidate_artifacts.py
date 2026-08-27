@@ -1,5 +1,4 @@
 import json
-import os
 import shutil
 import subprocess
 import tarfile
@@ -275,8 +274,10 @@ class CandidateArtifactsTests(unittest.TestCase):
             write(root / "README.md", b"source\n")
             write(root / "schema" / "one.schema.json", b"{}\n")
             subprocess.run(["git", "add", "."], cwd=root, check=True)
-            system_git = shutil.which("git", path=os.defpath)
+            system_git = shutil.which("git")
             self.assertIsNotNone(system_git)
+            empty_hooks = Path(temporary) / "empty-hooks"
+            empty_hooks.mkdir()
             subprocess.run(
                 [
                     system_git,
@@ -287,7 +288,7 @@ class CandidateArtifactsTests(unittest.TestCase):
                     "-c",
                     "commit.gpgSign=false",
                     "-c",
-                    "core.hooksPath=/dev/null",
+                    f"core.hooksPath={empty_hooks.as_posix()}",
                     "commit",
                     "--quiet",
                     "-m",
