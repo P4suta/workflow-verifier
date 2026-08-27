@@ -38,6 +38,35 @@ class RustFirstSurfaceTests(unittest.TestCase):
         self.assertIn("cargo audit --file Cargo.lock --deny warnings", ci)
         self.assertNotIn("helpers/Cargo.lock", ci)
 
+    def test_workflows_use_only_the_repository_pinned_rust_setup(self) -> None:
+        workflows = sorted((ROOT / ".github" / "workflows").glob("*.yml"))
+        workflow_sources = {
+            workflow.relative_to(ROOT).as_posix(): workflow.read_text(encoding="utf-8")
+            for workflow in workflows
+        }
+        for relative, source in workflow_sources.items():
+            self.assertNotIn("actions-rust-lang/setup-rust-toolchain", source, relative)
+            self.assertNotIn("Swatinem/rust-cache", source, relative)
+
+        for relative in (
+            ".github/workflows/ci.yml",
+            ".github/workflows/official-compat.yml",
+            ".github/workflows/candidate.yml",
+        ):
+            self.assertIn(
+                "uses: ./.github/actions/setup-repository-rust",
+                workflow_sources[relative],
+                relative,
+            )
+
+        setup = (
+            ROOT / ".github" / "actions" / "setup-repository-rust" / "action.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("rustup show active-toolchain", setup)
+        self.assertIn("rustc --version --verbose", setup)
+        self.assertIn("cargo --version --verbose", setup)
+        self.assertNotIn("uses:", setup)
+
     def test_live_and_official_product_gates_execute_the_rust_cli(self) -> None:
         ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
         dogfood = section(ci, "  live-dogfood:\n", "  official-compat:\n")

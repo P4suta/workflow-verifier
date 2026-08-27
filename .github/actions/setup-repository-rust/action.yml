@@ -1,0 +1,37 @@
+name: Set up repository Rust toolchain
+description: Install the exact toolchain and components declared by rust-toolchain.toml.
+
+runs:
+  using: composite
+  steps:
+    - name: Install the repository-pinned Rust toolchain
+      shell: bash
+      env:
+        # Pinned to the digest published beside this official rustup archive.
+        # https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init.sha256
+        RUSTUP_BOOTSTRAP_VERSION: '1.29.0'
+        RUSTUP_BOOTSTRAP_TARGET: x86_64-unknown-linux-gnu
+        RUSTUP_BOOTSTRAP_SHA256: 4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10
+      run: |
+        set -euo pipefail
+        if ! command -v rustup >/dev/null 2>&1; then
+          if [[ "$(uname -s):$(uname -m)" != 'Linux:x86_64' ]]; then
+            echo 'rustup is absent and no checksum-pinned bootstrap is defined for this runner' >&2
+            exit 1
+          fi
+          rustup_init="$RUNNER_TEMP/rustup-init"
+          curl --fail --show-error --silent --proto '=https' --tlsv1.2 \
+            --output "$rustup_init" \
+            "https://static.rust-lang.org/rustup/archive/$RUSTUP_BOOTSTRAP_VERSION/$RUSTUP_BOOTSTRAP_TARGET/rustup-init"
+          printf '%s  %s\n' "$RUSTUP_BOOTSTRAP_SHA256" "$rustup_init" | sha256sum --check
+          chmod 0700 "$rustup_init"
+          "$rustup_init" --default-toolchain none --no-modify-path --profile minimal -y
+          cargo_bin="${CARGO_HOME:-$HOME/.cargo}/bin"
+          printf '%s\n' "$cargo_bin" >> "$GITHUB_PATH"
+          export PATH="$cargo_bin:$PATH"
+        fi
+        rustup set auto-self-update disable
+        rustup toolchain install --no-self-update
+        rustup show active-toolchain
+        rustc --version --verbose
+        cargo --version --verbose
