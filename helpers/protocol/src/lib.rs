@@ -185,6 +185,7 @@ pub struct Evidence {
     effective_limits: Limits,
     source_digest: String,
     events: Vec<EvidenceEvent>,
+    forensic_sidecars: Vec<ForensicSidecar>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -196,6 +197,12 @@ struct EvidenceBindings {
     lock_digest: String,
     runtime_digest: String,
     controls_digest: String,
+}
+
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+struct ForensicSidecar {
+    kind: String,
+    digest: String,
 }
 
 fn object(fields: impl IntoIterator<Item = (&'static str, json::Value)>) -> json::Value {
@@ -441,6 +448,7 @@ impl Evidence {
             source_digest: plan_digest.clone(),
             plan_digest,
             events: Vec::new(),
+            forensic_sidecars: Vec::new(),
         }
     }
 
@@ -463,6 +471,7 @@ impl Evidence {
             effective_limits: plan.limits.clone(),
             source_digest: plan.source_digest.clone(),
             events: Vec::new(),
+            forensic_sidecars: Vec::new(),
         }
     }
 
@@ -593,7 +602,20 @@ impl Evidence {
                 "final_filesystem_digest",
                 json::Value::String(final_filesystem_digest),
             ),
-            ("forensic_sidecars", json::Value::Array(Vec::new())),
+            (
+                "forensic_sidecars",
+                json::Value::Array(
+                    self.forensic_sidecars
+                        .iter()
+                        .map(|sidecar| {
+                            object([
+                                ("digest", json::Value::String(sidecar.digest.clone())),
+                                ("kind", json::Value::String(sidecar.kind.clone())),
+                            ])
+                        })
+                        .collect(),
+                ),
+            ),
             (
                 "observed_resources",
                 object([
@@ -656,6 +678,591 @@ impl Evidence {
     pub fn canonical_json(&self) -> String {
         json::canonical(&self.json())
     }
+
+    /// Parse and authenticate a persisted `evidence-v2` document.
+    ///
+    /// # Errors
+    /// Rejects malformed JSON, unknown fields, invalid digests, broken event
+    /// chains, and redundant summaries which disagree with their events.
+    pub fn parse(source: &str) -> Result<Self, String> {
+        let root = json::parse(source)?;
+        parse_evidence_value(&root)
+    }
+
+    /// Validate the evidence envelope and its hash-linked event chain.
+    ///
+    /// # Errors
+    /// Returns the first structural, digest, limit, path, or chain mismatch.
+    pub fn validate(&self) -> Result<(), String> {
+        let digests = [
+            self.plan_digest.as_str(),
+            self.bindings.scenario_digest.as_str(),
+            self.bindings.source_digest.as_str(),
+            self.bindings.lock_digest.as_str(),
+            self.bindings.runtime_digest.as_str(),
+            self.bindings.controls_digest.as_str(),
+        ];
+        if digests
+            .into_iter()
+            .any(|digest| !valid_content_digest(digest))
+        {
+            return Err("evidence-v2 contains an invalid SHA-256 digest".to_owned());
+        }
+        if self.source_digest != self.bindings.source_digest {
+            return Err("evidence source binding mismatch".to_owned());
+        }
+        if self.requested_limits != portable_limits() || self.effective_limits != portable_limits()
+        {
+            return Err("evidence-v2 portable limits do not match runner-v2".to_owned());
+        }
+        for sidecar in &self.forensic_sidecars {
+            if sidecar.kind.trim().is_empty() || !valid_content_digest(&sidecar.digest) {
+                return Err("forensic sidecar identity is invalid".to_owned());
+            }
+        }
+        let mut previous = self.plan_digest.as_str();
+        for (expected_sequence, event) in self.events.iter().enumerate() {
+            if event.sequence != expected_sequence {
+                return Err("evidence sequence is not contiguous".to_owned());
+            }
+            if event.previous_digest != previous {
+                return Err("evidence previous digest mismatch".to_owned());
+            }
+            validate_evidence_body(&event.body)?;
+            let expected = format!(
+                "sha256:{}",
+                sha256::digest(
+                    json::canonical(&unsigned_evidence_event(
+                        event.sequence,
+                        &event.previous_digest,
+                        &event.body,
+                    ))
+                    .as_bytes(),
+                )
+            );
+            if event.digest != expected {
+                return Err("evidence event digest mismatch".to_owned());
+            }
+            previous = &event.digest;
+        }
+        Ok(())
+    }
+
+    /// Prove that persisted evidence was produced for exactly this runner-v2
+    /// plan and contains the required control and process attestations.
+    ///
+    /// # Errors
+    /// Returns a stable mismatch when any binding or lifecycle is incomplete.
+    #[allow(clippy::too_many_lines)]
+    pub fn validate_for_plan(&self, plan: &ValidatedPlan) -> Result<(), String> {
+        self.validate()?;
+        let expected = Self::for_plan(plan);
+        if self.plan_digest != plan.digest {
+            return Err("evidence plan digest mismatch".to_owned());
+        }
+        if self.bindings != expected.bindings {
+            return Err("evidence provenance bindings do not match runner-v2".to_owned());
+        }
+        if self.requested_limits != plan.limits || self.effective_limits != plan.limits {
+            return Err("evidence limits do not match runner-v2".to_owned());
+        }
+        let backend_attestations: Vec<_> = self
+            .events
+            .iter()
+            .filter_map(|event| match &event.body {
+                EvidenceBody::BackendAttested {
+                    id,
+                    version,
+                    platform,
+                    controls_digest,
+                } => Some((
+                    id.as_str(),
+                    version.as_str(),
+                    platform.as_str(),
+                    controls_digest.as_str(),
+                )),
+                _ => None,
+            })
+            .collect();
+        if backend_attestations.len() != 1 {
+            return Err("evidence-v2 requires exactly one backend attestation".to_owned());
+        }
+        let (backend_id, version, platform, attested_controls) = backend_attestations[0];
+        if backend_id != plan.backend {
+            return Err("backend attestation identity does not match runner-v2".to_owned());
+        }
+        if version.trim().is_empty() || platform.trim().is_empty() {
+            return Err("backend attestation identity is incomplete".to_owned());
+        }
+        if attested_controls != expected.bindings.controls_digest {
+            return Err("backend attestation controls do not match runner-v2".to_owned());
+        }
+        let controls: Vec<_> = self
+            .events
+            .iter()
+            .filter_map(|event| match &event.body {
+                EvidenceBody::ControlAttested(control) => Some(control.as_str()),
+                _ => None,
+            })
+            .collect();
+        let expected_controls: Vec<_> =
+            plan.controls.iter().map(|control| control.name()).collect();
+        if controls != expected_controls {
+            return Err("control attestations do not exactly match runner-v2".to_owned());
+        }
+        for (predicate, message) in [
+            (
+                EvidenceBodyKind::Resource,
+                "evidence-v2 requires exactly one resource observation",
+            ),
+            (
+                EvidenceBodyKind::Log,
+                "evidence-v2 requires exactly one redacted log record",
+            ),
+            (
+                EvidenceBodyKind::FilesystemFinal,
+                "evidence-v2 requires exactly one final filesystem record",
+            ),
+        ] {
+            if self
+                .events
+                .iter()
+                .filter(|event| predicate.matches(&event.body))
+                .count()
+                != 1
+            {
+                return Err(message.to_owned());
+            }
+        }
+        let starts: Vec<_> = self
+            .events
+            .iter()
+            .filter_map(|event| match &event.body {
+                EvidenceBody::ProcessStarted { executable, argv } => {
+                    Some((executable.as_str(), argv.as_slice()))
+                }
+                _ => None,
+            })
+            .collect();
+        let exits = self
+            .events
+            .iter()
+            .filter(|event| matches!(event.body, EvidenceBody::ProcessExited { .. }))
+            .count();
+        if starts.len() != exits {
+            return Err("process lifecycle start/exit events are unbalanced".to_owned());
+        }
+        if !plan.steps.is_empty() && starts.is_empty() {
+            return Err("evidence-v2 is missing the planned process lifecycle".to_owned());
+        }
+        if starts.len() > plan.steps.len()
+            || !starts
+                .iter()
+                .zip(&plan.steps)
+                .all(|((executable, argv), step)| {
+                    step.argv
+                        .split_first()
+                        .is_some_and(|(expected, rest)| expected == executable && rest == *argv)
+                })
+        {
+            return Err("process lifecycle does not match the ordered runner-v2 steps".to_owned());
+        }
+        Ok(())
+    }
+
+    #[must_use]
+    pub fn plan_digest(&self) -> &str {
+        &self.plan_digest
+    }
+
+    #[must_use]
+    pub fn event_count(&self) -> usize {
+        self.events.len()
+    }
+
+    #[must_use]
+    pub fn tail_digest(&self) -> &str {
+        self.events
+            .last()
+            .map_or(self.plan_digest.as_str(), |event| event.digest.as_str())
+    }
+
+    pub fn bodies(&self) -> impl Iterator<Item = &EvidenceBody> {
+        self.events.iter().map(|event| &event.body)
+    }
+}
+
+#[derive(Clone, Copy)]
+enum EvidenceBodyKind {
+    Resource,
+    Log,
+    FilesystemFinal,
+}
+
+impl EvidenceBodyKind {
+    fn matches(self, body: &EvidenceBody) -> bool {
+        matches!(
+            (self, body),
+            (Self::Resource, EvidenceBody::ResourceObserved { .. })
+                | (Self::Log, EvidenceBody::LogRecorded { .. })
+                | (Self::FilesystemFinal, EvidenceBody::FilesystemFinal { .. })
+        )
+    }
+}
+
+fn portable_limits() -> Limits {
+    Limits {
+        cpu_seconds: 900,
+        memory_mb: 2048,
+        processes: 128,
+        output_bytes: 16 * 1024 * 1024,
+    }
+}
+
+fn parse_evidence_value(root: &json::Value) -> Result<Evidence, String> {
+    let fields = root
+        .object()
+        .ok_or_else(|| "evidence-v2 must be an object".to_owned())?;
+    exact_fields(
+        fields,
+        &[
+            "artifacts",
+            "bindings",
+            "effective_limits",
+            "events",
+            "final_filesystem_digest",
+            "forensic_sidecars",
+            "observed_resources",
+            "plan_digest",
+            "redacted_log_digest",
+            "requested_limits",
+            "schema",
+        ],
+        "evidence-v2",
+    )?;
+    if string_field(fields, "schema")? != "evidence-v2" {
+        return Err("evidence schema must be evidence-v2".to_owned());
+    }
+    let bindings = parse_evidence_bindings(field(fields, "bindings")?)?;
+    let events = field(fields, "events")?
+        .array()
+        .ok_or_else(|| "evidence events must be an array".to_owned())?
+        .iter()
+        .map(parse_evidence_event)
+        .collect::<Result<Vec<_>, _>>()?;
+    let forensic_sidecars = parse_forensic_sidecars(field(fields, "forensic_sidecars")?)?;
+    let evidence = Evidence {
+        plan_digest: string_field(fields, "plan_digest")?,
+        requested_limits: parse_evidence_limits(field(fields, "requested_limits")?)?,
+        effective_limits: parse_evidence_limits(field(fields, "effective_limits")?)?,
+        source_digest: bindings.source_digest.clone(),
+        bindings,
+        events,
+        forensic_sidecars,
+    };
+    evidence.validate()?;
+    if json::canonical(&evidence.json()) != json::canonical(root) {
+        return Err("evidence summaries do not match the authenticated event chain".to_owned());
+    }
+    Ok(evidence)
+}
+
+fn parse_evidence_bindings(value: &json::Value) -> Result<EvidenceBindings, String> {
+    let fields = value
+        .object()
+        .ok_or_else(|| "evidence bindings must be an object".to_owned())?;
+    exact_fields(
+        fields,
+        &[
+            "controls_digest",
+            "lock_digest",
+            "runtime_digest",
+            "scenario_digest",
+            "source_digest",
+        ],
+        "evidence bindings",
+    )?;
+    Ok(EvidenceBindings {
+        scenario_digest: string_field(fields, "scenario_digest")?,
+        source_digest: string_field(fields, "source_digest")?,
+        lock_digest: string_field(fields, "lock_digest")?,
+        runtime_digest: string_field(fields, "runtime_digest")?,
+        controls_digest: string_field(fields, "controls_digest")?,
+    })
+}
+
+fn parse_evidence_limits(value: &json::Value) -> Result<Limits, String> {
+    let fields = value
+        .object()
+        .ok_or_else(|| "evidence limits must be an object".to_owned())?;
+    exact_fields(
+        fields,
+        &[
+            "cpu_cores",
+            "memory_bytes",
+            "output_bytes",
+            "processes",
+            "scratch_bytes",
+            "scratch_entries",
+            "wall_time_seconds",
+        ],
+        "evidence limits",
+    )?;
+    let limits = Limits {
+        cpu_seconds: integer_field(fields, "wall_time_seconds")?,
+        memory_mb: integer_field(fields, "memory_bytes")? / (1024 * 1024),
+        processes: integer_field(fields, "processes")?,
+        output_bytes: integer_field(fields, "output_bytes")?,
+    };
+    if integer_field(fields, "cpu_cores")? != 1
+        || integer_field(fields, "memory_bytes")? != 2_147_483_648
+        || integer_field(fields, "scratch_bytes")? != 4_294_967_296
+        || integer_field(fields, "scratch_entries")? != 100_000
+        || limits != portable_limits()
+    {
+        return Err("evidence-v2 portable limits do not match runner-v2".to_owned());
+    }
+    Ok(limits)
+}
+
+fn parse_forensic_sidecars(value: &json::Value) -> Result<Vec<ForensicSidecar>, String> {
+    value
+        .array()
+        .ok_or_else(|| "forensic_sidecars must be an array".to_owned())?
+        .iter()
+        .map(|value| {
+            let fields = value
+                .object()
+                .ok_or_else(|| "forensic sidecar must be an object".to_owned())?;
+            exact_fields(fields, &["digest", "kind"], "forensic sidecar")?;
+            Ok(ForensicSidecar {
+                kind: string_field(fields, "kind")?,
+                digest: string_field(fields, "digest")?,
+            })
+        })
+        .collect()
+}
+
+fn parse_evidence_event(value: &json::Value) -> Result<EvidenceEvent, String> {
+    let fields = value
+        .object()
+        .ok_or_else(|| "evidence event must be an object".to_owned())?;
+    exact_fields(
+        fields,
+        &["body", "digest", "previous_digest", "sequence"],
+        "evidence event",
+    )?;
+    Ok(EvidenceEvent {
+        sequence: usize::try_from(integer_field(fields, "sequence")?)
+            .map_err(|_| "evidence sequence is out of range".to_owned())?,
+        previous_digest: string_field(fields, "previous_digest")?,
+        digest: string_field(fields, "digest")?,
+        body: parse_evidence_body(field(fields, "body")?)?,
+    })
+}
+
+#[allow(clippy::too_many_lines)]
+fn parse_evidence_body(value: &json::Value) -> Result<EvidenceBody, String> {
+    let fields = value
+        .object()
+        .ok_or_else(|| "evidence event body must be an object".to_owned())?;
+    let kind = string_field(fields, "kind")?;
+    match kind.as_str() {
+        "backend_attested" => {
+            exact_fields(
+                fields,
+                &["controls_digest", "id", "kind", "platform", "version"],
+                "backend_attested",
+            )?;
+            Ok(EvidenceBody::BackendAttested {
+                id: string_field(fields, "id")?,
+                version: string_field(fields, "version")?,
+                platform: string_field(fields, "platform")?,
+                controls_digest: string_field(fields, "controls_digest")?,
+            })
+        }
+        "control_attested" => {
+            exact_fields(fields, &["control", "kind"], "control_attested")?;
+            Ok(EvidenceBody::ControlAttested(string_field(
+                fields, "control",
+            )?))
+        }
+        "process_started" => {
+            exact_fields(fields, &["argv", "executable", "kind"], "process_started")?;
+            Ok(EvidenceBody::ProcessStarted {
+                executable: string_field(fields, "executable")?,
+                argv: string_array(field(fields, "argv")?, "argv")?,
+            })
+        }
+        "process_exited" => {
+            exact_fields(fields, &["code", "kind"], "process_exited")?;
+            let code = field(fields, "code")?
+                .integer()
+                .ok_or_else(|| "process exit code must be an integer".to_owned())?;
+            Ok(EvidenceBody::ProcessExited {
+                code: i32::try_from(code)
+                    .map_err(|_| "process exit code is out of range".to_owned())?,
+            })
+        }
+        "filesystem_access" => {
+            exact_fields(
+                fields,
+                &["allowed", "kind", "operation", "path"],
+                "filesystem_access",
+            )?;
+            Ok(EvidenceBody::FilesystemAccess {
+                path: string_field(fields, "path")?,
+                operation: string_field(fields, "operation")?,
+                allowed: boolean_field(fields, "allowed")?,
+            })
+        }
+        "network_attempt" => {
+            exact_fields(
+                fields,
+                &["allowed", "host", "kind", "port"],
+                "network_attempt",
+            )?;
+            Ok(EvidenceBody::NetworkAttempt {
+                host: string_field(fields, "host")?,
+                port: u16::try_from(integer_field(fields, "port")?)
+                    .map_err(|_| "network port is out of range".to_owned())?,
+                allowed: boolean_field(fields, "allowed")?,
+            })
+        }
+        "artifact_recorded" => {
+            exact_fields(fields, &["digest", "kind", "path"], "artifact_recorded")?;
+            Ok(EvidenceBody::ArtifactRecorded {
+                path: string_field(fields, "path")?,
+                digest: string_field(fields, "digest")?,
+            })
+        }
+        "secret_redacted" => {
+            exact_fields(fields, &["kind", "name"], "secret_redacted")?;
+            Ok(EvidenceBody::SecretRedacted {
+                name: string_field(fields, "name")?,
+            })
+        }
+        "resource_observed" => {
+            exact_fields(
+                fields,
+                &[
+                    "cpu_time_ms",
+                    "kind",
+                    "output_bytes",
+                    "peak_memory_bytes",
+                    "processes",
+                    "scratch_bytes",
+                    "scratch_entries",
+                    "wall_time_ms",
+                ],
+                "resource_observed",
+            )?;
+            Ok(EvidenceBody::ResourceObserved {
+                wall_time_ms: integer_field(fields, "wall_time_ms")?,
+                cpu_time_ms: integer_field(fields, "cpu_time_ms")?,
+                peak_memory_bytes: integer_field(fields, "peak_memory_bytes")?,
+                processes: integer_field(fields, "processes")?,
+                output_bytes: integer_field(fields, "output_bytes")?,
+                scratch_bytes: integer_field(fields, "scratch_bytes")?,
+                scratch_entries: integer_field(fields, "scratch_entries")?,
+            })
+        }
+        "log_recorded" => {
+            exact_fields(fields, &["digest", "kind"], "log_recorded")?;
+            Ok(EvidenceBody::LogRecorded {
+                digest: string_field(fields, "digest")?,
+            })
+        }
+        "filesystem_final" => {
+            exact_fields(fields, &["digest", "kind"], "filesystem_final")?;
+            Ok(EvidenceBody::FilesystemFinal {
+                digest: string_field(fields, "digest")?,
+            })
+        }
+        "backend_error" => {
+            exact_fields(fields, &["kind", "message"], "backend_error")?;
+            Ok(EvidenceBody::BackendError(string_field(fields, "message")?))
+        }
+        _ => Err(format!("unknown evidence event kind {kind}")),
+    }
+}
+
+fn validate_evidence_body(body: &EvidenceBody) -> Result<(), String> {
+    let digest = match body {
+        EvidenceBody::BackendAttested {
+            id,
+            version,
+            platform,
+            controls_digest,
+        } => {
+            if id.trim().is_empty() || version.trim().is_empty() || platform.trim().is_empty() {
+                return Err("backend attestation identity must not be empty".to_owned());
+            }
+            Some(controls_digest)
+        }
+        EvidenceBody::ControlAttested(control) => {
+            if Control::parse(control).is_none() {
+                return Err(format!("unknown control attestation {control}"));
+            }
+            None
+        }
+        EvidenceBody::ProcessStarted { executable, .. } => {
+            if executable.trim().is_empty() {
+                return Err("process executable must not be empty".to_owned());
+            }
+            None
+        }
+        EvidenceBody::FilesystemAccess {
+            path, operation, ..
+        } => {
+            if path.trim().is_empty() || operation.trim().is_empty() {
+                return Err("filesystem evidence must identify path and operation".to_owned());
+            }
+            None
+        }
+        EvidenceBody::NetworkAttempt { host, port, .. } => {
+            if host.trim().is_empty() || *port == 0 {
+                return Err("network evidence host and port are invalid".to_owned());
+            }
+            None
+        }
+        EvidenceBody::ArtifactRecorded { path, digest } => {
+            if !root_relative_path(path) {
+                return Err("evidence artifact paths must be root-relative".to_owned());
+            }
+            Some(digest)
+        }
+        EvidenceBody::SecretRedacted { name } => {
+            if name.trim().is_empty() {
+                return Err("redacted secret name must not be empty".to_owned());
+            }
+            None
+        }
+        EvidenceBody::LogRecorded { digest } | EvidenceBody::FilesystemFinal { digest } => {
+            Some(digest)
+        }
+        EvidenceBody::BackendError(message) => {
+            if message.trim().is_empty() {
+                return Err("backend error evidence must not be empty".to_owned());
+            }
+            None
+        }
+        EvidenceBody::ProcessExited { .. } | EvidenceBody::ResourceObserved { .. } => None,
+    };
+    if digest.is_some_and(|digest| !valid_content_digest(digest)) {
+        Err("evidence-v2 contains an invalid SHA-256 digest".to_owned())
+    } else {
+        Ok(())
+    }
+}
+
+fn root_relative_path(path: &str) -> bool {
+    !path.is_empty()
+        && !path.starts_with(['/', '\\'])
+        && !path.contains('\\')
+        && !path
+            .split('/')
+            .any(|segment| matches!(segment, "" | "." | ".."))
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -705,6 +1312,81 @@ impl RunResult {
             ("schema", json::Value::String("sandbox-run-v2".to_owned())),
         ]);
         format!("{}\n", json::canonical(&value))
+    }
+
+    /// Parse a persisted `sandbox-run-v2` result and authenticate its evidence.
+    ///
+    /// # Errors
+    /// Rejects malformed/unknown fields, invalid outcomes, or invalid evidence.
+    pub fn parse(source: &str) -> Result<Self, String> {
+        let root = json::parse(source)?;
+        let fields = root
+            .object()
+            .ok_or_else(|| "sandbox-run-v2 must be an object".to_owned())?;
+        exact_fields(fields, &["evidence", "outcome", "schema"], "sandbox-run-v2")?;
+        if string_field(fields, "schema")? != "sandbox-run-v2" {
+            return Err("sandbox run schema must be sandbox-run-v2".to_owned());
+        }
+        let result = Self {
+            evidence: parse_evidence_value(field(fields, "evidence")?)?,
+            outcome: parse_outcome(field(fields, "outcome")?)?,
+        };
+        if result.canonical_json().trim_end() != json::canonical(&root) {
+            return Err("sandbox-run-v2 summary is not internally consistent".to_owned());
+        }
+        Ok(result)
+    }
+}
+
+fn parse_outcome(value: &json::Value) -> Result<Outcome, String> {
+    let fields = value
+        .object()
+        .ok_or_else(|| "sandbox outcome must be an object".to_owned())?;
+    match string_field(fields, "state")?.as_str() {
+        "completed" => {
+            exact_fields(fields, &["state"], "completed outcome")?;
+            Ok(Outcome::Completed)
+        }
+        "step_failed" => {
+            exact_fields(fields, &["code", "state", "step"], "step_failed outcome")?;
+            let code = match field(fields, "code")? {
+                json::Value::Null => None,
+                json::Value::Integer(value) => Some(
+                    i32::try_from(*value)
+                        .map_err(|_| "sandbox outcome code is out of range".to_owned())?,
+                ),
+                _ => return Err("sandbox outcome code must be an integer or null".to_owned()),
+            };
+            Ok(Outcome::StepFailed {
+                step: nonempty_string_field(fields, "step")?,
+                code,
+            })
+        }
+        "timed_out" => {
+            exact_fields(fields, &["state", "step"], "timed_out outcome")?;
+            Ok(Outcome::TimedOut {
+                step: nonempty_string_field(fields, "step")?,
+            })
+        }
+        "output_limit_exceeded" => {
+            exact_fields(fields, &["state", "step"], "output_limit_exceeded outcome")?;
+            Ok(Outcome::OutputLimitExceeded {
+                step: nonempty_string_field(fields, "step")?,
+            })
+        }
+        state => Err(format!("unknown sandbox outcome {state}")),
+    }
+}
+
+fn nonempty_string_field(
+    fields: &BTreeMap<String, json::Value>,
+    name: &str,
+) -> Result<String, String> {
+    let value = string_field(fields, name)?;
+    if value.trim().is_empty() {
+        Err(format!("{name} must not be empty"))
+    } else {
+        Ok(value)
     }
 }
 
@@ -1197,7 +1879,10 @@ fn validate_status(
 
 fn valid_content_digest(value: &str) -> bool {
     value.strip_prefix("sha256:").is_some_and(|digest| {
-        digest.len() == 64 && digest.bytes().all(|byte| byte.is_ascii_hexdigit())
+        digest.len() == 64
+            && digest
+                .bytes()
+                .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
     })
 }
 
@@ -1376,7 +2061,10 @@ pub fn validate_launch(descriptor: &Descriptor, plan: &ValidatedPlan) -> Result<
 pub enum HelperMode {
     Doctor,
     Validate,
-    Run { source_root: String },
+    Run {
+        source_root: String,
+        trusted_exclusions: Vec<String>,
+    },
 }
 
 /// Parses the deliberately small native-helper command surface.
@@ -1389,21 +2077,41 @@ pub fn parse_helper_arguments(arguments: &[String]) -> Result<HelperMode, String
         [] => Ok(HelperMode::Doctor),
         [mode] if mode == "--doctor" => Ok(HelperMode::Doctor),
         [mode] if mode == "--validate" => Ok(HelperMode::Validate),
-        [mode, source_option, source_root]
+        [mode, source_option, source_root, rest @ ..]
             if mode == "--run" && source_option == "--source" && !source_root.is_empty() =>
         {
+            let (pairs, remainder) = rest.as_chunks::<2>();
+            let trusted_exclusions = pairs
+                .iter()
+                .map(|pair| match pair {
+                    [option, value] if option == "--exclude" && !value.is_empty() => {
+                        Ok(value.clone())
+                    }
+                    _ => Err(
+                        "--run accepts only repeated --exclude PREFIX arguments after --source"
+                            .to_owned(),
+                    ),
+                })
+                .collect::<Result<Vec<_>, _>>()?;
+            if !remainder.is_empty() {
+                return Err("--exclude requires a non-empty prefix".to_owned());
+            }
             Ok(HelperMode::Run {
                 source_root: source_root.clone(),
+                trusted_exclusions,
             })
         }
         [mode, ..] if mode == "--run" => Err("--run requires --source SOURCE_ROOT".to_owned()),
-        _ => Err("usage: helper --doctor|--validate|--run --source SOURCE_ROOT".to_owned()),
+        _ => Err(
+            "usage: helper --doctor|--validate|--run --source SOURCE_ROOT [--exclude PREFIX ...]"
+                .to_owned(),
+        ),
     }
 }
 
 pub fn helper_main(
     descriptor: &Descriptor,
-    launch: fn(&ValidatedPlan, &str) -> Result<RunResult, LaunchError>,
+    launch: fn(&ValidatedPlan, &str, &[String]) -> Result<RunResult, LaunchError>,
 ) -> i32 {
     let arguments = std::env::args().skip(1).collect::<Vec<_>>();
     let mode = match parse_helper_arguments(&arguments) {
@@ -1433,10 +2141,14 @@ pub fn helper_main(
         println!("{{\"digest\":\"{}\",\"valid\":true}}", plan.digest);
         return 0;
     }
-    let HelperMode::Run { source_root } = mode else {
+    let HelperMode::Run {
+        source_root,
+        trusted_exclusions,
+    } = mode
+    else {
         unreachable!("doctor and validate modes returned above")
     };
-    match launch(&plan, &source_root) {
+    match launch(&plan, &source_root, &trusted_exclusions) {
         Ok(result) => {
             print!("{}", result.canonical_json());
             0
@@ -1463,7 +2175,8 @@ pub fn helper_main(
 #[cfg(test)]
 mod tests {
     use super::{
-        HelperMode, PlanStatus, RuntimeProfile, Step, parse_helper_arguments, validate_status,
+        HelperMode, PlanStatus, RuntimeProfile, Step, parse_helper_arguments, valid_content_digest,
+        validate_status,
     };
     use std::collections::BTreeMap;
 
@@ -1507,10 +2220,41 @@ mod tests {
                 "/repo".to_owned(),
             ]),
             Ok(HelperMode::Run {
-                source_root: "/repo".to_owned()
+                source_root: "/repo".to_owned(),
+                trusted_exclusions: Vec::new(),
+            })
+        );
+        assert_eq!(
+            parse_helper_arguments(&[
+                "--run".to_owned(),
+                "--source".to_owned(),
+                "/repo".to_owned(),
+                "--exclude".to_owned(),
+                "generated".to_owned(),
+                "--exclude".to_owned(),
+                "vendor/cache".to_owned(),
+            ]),
+            Ok(HelperMode::Run {
+                source_root: "/repo".to_owned(),
+                trusted_exclusions: vec!["generated".to_owned(), "vendor/cache".to_owned()],
             })
         );
         assert!(parse_helper_arguments(&["--run".to_owned()]).is_err());
+        assert!(
+            parse_helper_arguments(&[
+                "--run".to_owned(),
+                "--source".to_owned(),
+                "/repo".to_owned(),
+                "--exclude".to_owned(),
+            ])
+            .is_err()
+        );
         assert!(parse_helper_arguments(&["--doctor".to_owned(), "unexpected".to_owned()]).is_err());
+    }
+
+    #[test]
+    fn content_digests_require_lowercase_canonical_hex() {
+        assert!(valid_content_digest(&format!("sha256:{}", "a".repeat(64))));
+        assert!(!valid_content_digest(&format!("sha256:{}", "A".repeat(64))));
     }
 }

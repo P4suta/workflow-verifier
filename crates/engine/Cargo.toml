@@ -1,0 +1,19 @@
+[package]
+name = "workflow-verifier-engine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+workflow-verifier-domain = { path = "../domain" }
+workflow-verifier-foundation = { path = "../foundation" }
+workflow-verifier-frontend = { path = "../frontend" }
+workflow-verifier-product = { path = "../product" }
+workflow-verifier-sandbox = { path = "../sandbox" }
+workflow-verifier-syntax = { path = "../syntax" }
+workflow-verifier-verifier = { path = "../verifier" }
+
+[lints]
+workspace = true

@@ -128,11 +128,51 @@ jobs:
           cargo install cargo-deny --version 0.20.2 --locked
       - name: Reject advisories, yanks, license drift, and unknown sources
         run: |
-          cargo audit --file helpers/Cargo.lock --deny warnings
-          cargo deny --manifest-path helpers/Cargo.toml check
+          cargo audit --file Cargo.lock --deny warnings
+          cargo deny check
 
-  ocaml:
-    name: OCaml ${{ matrix.ocaml-compiler }} on ${{ matrix.os }}
+  rust-product:
+    name: Rust product ${{ matrix.platform }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            platform: linux-x86_64
+          - os: ubuntu-24.04-arm
+            platform: linux-arm64
+          - os: windows-2025
+            platform: windows-x86_64
+          - os: macos-15
+            platform: macos-arm64
+          - os: macos-15-intel
+            platform: macos-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          toolchain: 1.98.0
+          cache: false
+      - name: Test the complete Rust product and helper workspace
+        run: cargo test --locked --workspace --all-targets
+      - name: Enforce Rust formatting
+        if: ${{ matrix.platform == 'linux-x86_64' }}
+        run: cargo fmt --all -- --check
+      - name: Enforce warning-free Rust
+        if: ${{ matrix.platform == 'linux-x86_64' }}
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: Enforce release-mode LSP latency budgets
+        if: ${{ matrix.platform == 'linux-x86_64' }}
+        run: >-
+          cargo test --release -p workflow-verifier-cli --lib
+          lsp::performance_tests -- --ignored --nocapture --test-threads=1
+
+  ocaml-reference:
+    name: OCaml reference ${{ matrix.ocaml-compiler }} on ${{ matrix.os }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -175,11 +215,21 @@ jobs:
         run: python -B scripts/verify_architecture.py
       - name: Pure OCaml boundary
         run: python -B scripts/verify_pure_ocaml.py
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.ocaml-compiler == '5.5.0' }}
+        with:
+          toolchain: 1.98.0
+          cache: false
       - name: Install surface
-        run: opam exec -- dune build @install && python -B scripts/verify_install_layout.py _build/install/default
-      - name: Self dogfood
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.ocaml-compiler == '5.5.0' }}
         run: >-
-          opam exec -- dune exec workflow-verifier -- check
+          opam exec -- dune build @install &&
+          cargo build --locked -p workflow-verifier-cli &&
+          python -B scripts/verify_install_layout.py
+          _build/install/default target/debug/workflow-verifier
+      - name: Exercise the reference oracle
+        run: >-
+          opam exec -- dune exec workflow-verifier-reference -- check
           --config examples/dogfood-policy-v2.toml
           --trust-repository-config .
 
@@ -204,19 +254,6 @@ jobs:
         run: cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
       - name: Rust lint
         run: cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
-
-  native-helpers-msrv:
-    name: Native helpers Rust 1.85 MSRV
-    runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Install exact MSRV toolchain
-        run: rustup toolchain install 1.85.0 --profile minimal
-      - name: Build and test the locked workspace at MSRV
-        run: cargo +1.85.0 test --locked --manifest-path helpers/Cargo.toml --workspace --all-targets
 
   linux-native-containment:
     name: Linux native containment
@@ -256,16 +293,15 @@ jobs:
         with:
           python-version: '3.13.7'
           check-latest: false
-      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          ocaml-compiler: 5.5.0
+          toolchain: 1.98.0
+          cache: false
       - name: Install hash-locked SARIF validator
         run: python -m pip install --require-hashes --no-deps -r requirements.lock
       - name: Build analyzer and isolated OCI adapter
         run: |
-          opam install . --deps-only --with-test --locked --yes
-          opam exec -- dune build bin/main.exe
-          cargo build --locked --manifest-path helpers/Cargo.toml \
+          cargo build --locked -p workflow-verifier-cli \
             -p workflow-verifier-oci-helper
       - name: Prepare immutable OCI fixture
         shell: bash
@@ -281,9 +317,9 @@ jobs:
       - name: Exercise every public CLI surface and live Docker containment
         shell: bash
         env:
-          WORKFLOW_VERIFIER_OCI_HELPER: ${{ github.workspace }}/helpers/target/debug/workflow-verifier-oci-helper
+          WORKFLOW_VERIFIER_OCI_HELPER: ${{ github.workspace }}/target/debug/workflow-verifier-oci-helper
         run: |
-          analyzer='_build/default/bin/main.exe'
+          analyzer='target/debug/workflow-verifier'
           helper_sha256="$(sha256sum "$WORKFLOW_VERIFIER_OCI_HELPER" | cut -d' ' -f1)"
           export WORKFLOW_VERIFIER_OCI_HELPER_SHA256="sha256:${helper_sha256}"
           "$analyzer" check --config examples/dogfood-policy-v2.toml \
@@ -353,13 +389,12 @@ jobs:
         with:
           python-version: '3.13.7'
           check-latest: false
-      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          ocaml-compiler: 5.5.0
+          toolchain: 1.98.0
+          cache: false
       - name: Build the analyzer
-        run: |
-          opam install . --deps-only --with-test --locked --yes
-          opam exec -- dune build bin/main.exe
+        run: cargo build --locked -p workflow-verifier-cli
       - name: Acquire only pinned upstream CI YAML
         run: >-
           python -B scripts/fetch_official_projects.py
@@ -371,7 +406,7 @@ jobs:
           python -B scripts/official_compat.py
           --manifest official/official-projects-v1.json
           --snapshots _build/official-projects
-          --analyzer _build/default/bin/main.exe
+          --analyzer target/debug/workflow-verifier
           --output _build/official-compat-v1.json
           --expected official/official-compat-v1.json
           --expected-digest official/official-compat-v1.sha256
@@ -391,6 +426,8 @@ jobs:
         include:
           - os: ubuntu-24.04
             platform: linux-x86_64
+          - os: ubuntu-24.04-arm
+            platform: linux-arm64
           - os: windows-2025
             platform: windows-x86_64
           - os: macos-15
@@ -494,6 +531,8 @@ jobs:
         include:
           - os: ubuntu-24.04
             platform: linux-x86_64
+          - os: ubuntu-24.04-arm
+            platform: linux-arm64
           - os: windows-2025
             platform: windows-x86_64
           - os: macos-15
@@ -509,22 +548,27 @@ jobs:
         with:
           python-version: '3.13.7'
           check-latest: false
-      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          ocaml-compiler: 5.5.0
-      - name: Install and build analyzer
-        run: |
-          opam install . --deps-only --with-test --locked --yes
-          opam exec -- dune build bin/main.exe
+          toolchain: 1.98.0
+          cache: false
+      - name: Build the Rust analyzer with candidate provenance
+        env:
+          WORKFLOW_VERIFIER_SOURCE_COMMIT: ${{ github.sha }}
+        run: cargo build --locked -p workflow-verifier-cli
       - name: Generate twice-local canonical comparison artifacts
         shell: bash
         env:
           DETERMINISM_PLATFORM: ${{ matrix.platform }}
-        run: >-
-          python -B scripts/determinism_probe.py
-          --analyzer _build/default/bin/main.exe
-          --fixture test/fixtures/determinism
-          --output "_build/determinism/$DETERMINISM_PLATFORM"
+        run: |
+          analyzer=target/debug/workflow-verifier
+          if [[ $DETERMINISM_PLATFORM == windows-x86_64 ]]; then
+            analyzer=target/debug/workflow-verifier.exe
+          fi
+          python -B scripts/determinism_probe.py \
+            --analyzer "$analyzer" \
+            --fixture test/fixtures/determinism \
+            --output "_build/determinism/$DETERMINISM_PLATFORM"
       - name: Upload exact comparison artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -554,6 +598,7 @@ jobs:
         run: >-
           python -B scripts/compare_determinism.py
           --output _determinism/comparison.json
+          _determinism/determinism-linux-arm64
           _determinism/determinism-linux-x86_64
           _determinism/determinism-windows-x86_64
           _determinism/determinism-macos-arm64
@@ -566,9 +611,9 @@ jobs:
       - task-surface
       - static-quality
       - rust-security
-      - ocaml
+      - rust-product
+      - ocaml-reference
       - native-helpers
-      - native-helpers-msrv
       - linux-native-containment
       - live-dogfood
       - official-compat

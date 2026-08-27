@@ -1,0 +1,69 @@
+name: workflow-verifier
+description: Run the Rust workflow verifier with offline-by-default, secret-safe CI authentication.
+author: workflow-verifier maintainers
+
+inputs:
+  binary:
+    description: workflow-verifier executable already installed on the runner PATH or an absolute path.
+    required: false
+    default: workflow-verifier
+  path:
+    description: Repository-relative workflow file or workspace to analyze.
+    required: false
+    default: .
+  persona:
+    description: Verification persona (gate, audit, or paranoid).
+    required: false
+    default: gate
+  format:
+    description: Machine report format (json or sarif).
+    required: false
+    default: json
+  output:
+    description: Report output path.
+    required: false
+    default: workflow-verifier-report.json
+  config:
+    description: Optional trusted config path supplied by the caller.
+    required: false
+    default: ''
+  resolve:
+    description: Resolve immutable dependencies before checking (true or false).
+    required: false
+    default: 'false'
+  github-token:
+    description: Optional GitHub token; passed only through a named child environment variable during resolve.
+    required: false
+    default: ''
+  github-host:
+    description: Canonical GitHub or GitHub Enterprise host paired with github-token.
+    required: false
+    default: github.com
+  network-profile:
+    description: Optional trusted network profile outside the analyzed repository; requires resolve=true.
+    required: false
+    default: ''
+
+outputs:
+  report:
+    description: Absolute path to the generated report.
+    value: ${{ steps.verify.outputs.report }}
+
+runs:
+  using: composite
+  steps:
+    - id: verify
+      name: Resolve explicitly and verify workflows
+      shell: bash
+      env:
+        WV_ACTION_BINARY: ${{ inputs.binary }}
+        WV_ACTION_CONFIG: ${{ inputs.config }}
+        WV_ACTION_FORMAT: ${{ inputs.format }}
+        WV_ACTION_GITHUB_HOST: ${{ inputs.github-host }}
+        WV_ACTION_GITHUB_TOKEN: ${{ inputs.github-token }}
+        WV_ACTION_NETWORK_PROFILE: ${{ inputs.network-profile }}
+        WV_ACTION_OUTPUT: ${{ inputs.output }}
+        WV_ACTION_PATH: ${{ inputs.path }}
+        WV_ACTION_PERSONA: ${{ inputs.persona }}
+        WV_ACTION_RESOLVE: ${{ inputs.resolve }}
+      run: python -B "$GITHUB_ACTION_PATH/action/run.py"

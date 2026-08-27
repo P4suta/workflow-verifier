@@ -42,7 +42,7 @@ class DogfoodGateTests(unittest.TestCase):
                 ],
                 "persona": "audit",
                 "properties": [{"state": "Proved"}],
-                "schema": "report-v2",
+                "schema": "report-v3",
             },
             "report.sarif.json": {
                 "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
@@ -149,6 +149,16 @@ class DogfoodGateTests(unittest.TestCase):
             doctor["frontends"].remove("azure")
             (root / "doctor.json").write_text(canonical(doctor), encoding="utf-8", newline="\n")
             with self.assertRaisesRegex(ValueError, "exactly four frontends"):
+                verify(root)
+
+    def test_legacy_reference_report_is_not_product_dogfood_evidence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.fixture(root)
+            report = json.loads((root / "report.json").read_text(encoding="utf-8"))
+            report["schema"] = "report-v2"
+            (root / "report.json").write_text(canonical(report), encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(ValueError, "report-v3"):
                 verify(root)
 
     def test_runtime_hash_chain_and_audit_tail_are_recomputed(self) -> None:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Enforce the Linux x86_64 glibc 2.28 floor and DT_NEEDED allowlist."""
+"""Enforce the Linux x86_64/AArch64 glibc 2.28 floor and DT_NEEDED allowlist."""
 
 from __future__ import annotations
 
@@ -14,7 +14,6 @@ from typing import TypedDict
 GLIBC = re.compile(r"\bGLIBC_(\d+)\.(\d+)\b")
 NEEDED = re.compile(r"\(NEEDED\).*\[([^\]]+)\]")
 DEFAULT_NEEDED = {
-    "ld-linux-x86-64.so.2",
     "libc.so.6",
     "libdl.so.2",
     "libgcc_s.so.1",
@@ -22,9 +21,14 @@ DEFAULT_NEEDED = {
     "libpthread.so.0",
     "librt.so.1",
 }
+ARCHITECTURES = {
+    "Advanced Micro Devices X86-64": ("x86_64", "ld-linux-x86-64.so.2"),
+    "AArch64": ("aarch64", "ld-linux-aarch64.so.1"),
+}
 
 
 class CompatibilityResult(TypedDict):
+    architecture: str
     glibc_floor: str
     needed: list[str]
     path: str
@@ -52,12 +56,12 @@ def verify(
     if path.is_symlink() or not stat.S_ISREG(metadata.st_mode) or metadata.st_size <= 0:
         raise ValueError(f"ELF input must be a nonempty regular non-symlink file: {path}")
     header = _run(readelf, ["--file-header"], path)
-    if (
-        "Class:" not in header
-        or "ELF64" not in header
-        or "Advanced Micro Devices X86-64" not in header
-    ):
-        raise ValueError(f"{path} is not an ELF64 x86_64 executable")
+    if "Class:" not in header or "ELF64" not in header:
+        raise ValueError(f"{path} is not an ELF64 executable")
+    matching = [contract for machine, contract in ARCHITECTURES.items() if machine in header]
+    if len(matching) != 1:
+        raise ValueError(f"{path} is not a supported ELF64 x86_64/AArch64 executable")
+    architecture, loader = matching[0]
     versions = _run(readelf, ["--version-info"], path)
     required = {(int(major), int(minor)) for major, minor in GLIBC.findall(versions)}
     if not required:
@@ -69,11 +73,12 @@ def verify(
         raise ValueError(f"{path} unexpectedly depends on a C++ runtime")
     dynamic = _run(readelf, ["--dynamic"], path)
     needed = set(NEEDED.findall(dynamic))
-    allowed = DEFAULT_NEEDED if allowed is None else allowed
+    allowed = DEFAULT_NEEDED | {loader} if allowed is None else allowed
     unexpected = needed - allowed
     if unexpected:
         raise ValueError(f"{path} has unexpected DT_NEEDED entries: {sorted(unexpected)}")
     return {
+        "architecture": architecture,
         "glibc_floor": f"{maximum[0]}.{maximum[1]}",
         "needed": sorted(needed),
         "path": path.name,
@@ -93,7 +98,8 @@ def main() -> int:
     for result in results:
         print(
             f"linux compatibility: {result['path']} "
-            f"GLIBC_{result['glibc_floor']} needed={','.join(result['needed'])}"
+            f"{result['architecture']} GLIBC_{result['glibc_floor']} "
+            f"needed={','.join(result['needed'])}"
         )
     return 0
 

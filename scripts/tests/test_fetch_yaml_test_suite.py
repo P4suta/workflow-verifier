@@ -1,15 +1,19 @@
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path, PurePosixPath
+from unittest import mock
 
 from scripts.fetch_yaml_test_suite import (
     PIN_PATH,
     TreeEntry,
     build_export,
     canonical_case_entries,
+    git,
     load_pin,
     validate_checkout_identity,
     validate_export,
@@ -23,6 +27,44 @@ def entry(path: str, *, mode: str = "100644", object_id: str = "a" * 40):
 
 
 class YamlSuiteExportTests(unittest.TestCase):
+    def test_git_acquisition_ignores_ambient_git_configuration(self) -> None:
+        completed = subprocess.CompletedProcess(
+            args=["git", "version"], returncode=0, stdout="git version test\n", stderr=""
+        )
+        ambient = {
+            "GIT_CONFIG_GLOBAL": "/tmp/hostile-gitconfig",
+            "GIT_CONFIG_SYSTEM": "/tmp/hostile-system-gitconfig",
+            "GIT_SSH_COMMAND": "hostile-ssh",
+            "HTTPS_PROXY": "http://trusted-proxy.example:8080",
+        }
+        with mock.patch.dict(os.environ, ambient, clear=False):
+            with mock.patch(
+                "scripts.fetch_yaml_test_suite.subprocess.run", return_value=completed
+            ) as run:
+                self.assertEqual(git("version"), "git version test")
+        invocation = run.call_args
+        environment = invocation.kwargs["env"]
+        self.assertFalse(
+            any(
+                key.upper().startswith("GIT_")
+                for key in environment
+                if key
+                not in {
+                    "GIT_CONFIG_GLOBAL",
+                    "GIT_CONFIG_NOSYSTEM",
+                    "GIT_LFS_SKIP_SMUDGE",
+                    "GIT_TERMINAL_PROMPT",
+                }
+            )
+        )
+        self.assertEqual(environment["GIT_CONFIG_GLOBAL"], os.devnull)
+        self.assertEqual(environment["GIT_CONFIG_NOSYSTEM"], "1")
+        self.assertEqual(environment["GIT_LFS_SKIP_SMUDGE"], "1")
+        self.assertEqual(environment["GIT_TERMINAL_PROMPT"], "0")
+        self.assertEqual(environment["HTTPS_PROXY"], ambient["HTTPS_PROXY"])
+        self.assertIs(invocation.kwargs["stdin"], subprocess.DEVNULL)
+        self.assertFalse(invocation.kwargs["shell"])
+
     def test_repository_pin_is_the_single_typed_export_authority(self) -> None:
         pin = load_pin(PIN_PATH)
         self.assertEqual(pin.release, "data-2022-01-17")

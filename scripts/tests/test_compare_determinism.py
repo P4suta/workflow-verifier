@@ -1,3 +1,4 @@
+import copy
 import hashlib
 import json
 import subprocess
@@ -6,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.compare_determinism import compare
+from scripts.compare_determinism import RELEASE_PLATFORMS, compare
 from scripts.determinism_probe import artifact_manifest, canonical_json
 
 
@@ -16,14 +17,32 @@ def report_bytes(
     document = {
         "digest": None,
         "persona": persona,
-        "schema": "report-v2",
+        "schema": "report-v3",
+        "semantic_digest": None,
         "tool": {
-            "binary_digest": "sha256:" + binary * 64,
-            "build": {"source_commit": source_commit},
+            "build": {
+                "binary_digest": "sha256:" + binary * 64,
+                "compiler": "rustc test",
+                "implementation": "rust",
+                "source_commit": source_commit,
+                "target": "test-target",
+            },
+            "name": "workflow-verifier",
+            "version": "0.1.0",
         },
     }
+    semantic = copy.deepcopy(document)
+    semantic.pop("digest")
+    semantic.pop("semantic_digest")
+    semantic["tool"].pop("build")
+    document["semantic_digest"] = (
+        "sha256:" + hashlib.sha256(canonical_json(semantic, trailing_newline=False)).hexdigest()
+    )
+    authenticated = copy.deepcopy(document)
+    authenticated.pop("digest")
     document["digest"] = (
-        "sha256:" + hashlib.sha256(canonical_json(document, trailing_newline=False)).hexdigest()
+        "sha256:"
+        + hashlib.sha256(canonical_json(authenticated, trailing_newline=False)).hexdigest()
     )
     return canonical_json(document)
 
@@ -41,77 +60,103 @@ class CompareDeterminismTests(unittest.TestCase):
     ) -> Path:
         directory = root / name
         directory.mkdir()
-        (directory / "report-v2.json").write_bytes(
+        (directory / "report-v3.json").write_bytes(
             report_bytes(binary=binary, source_commit=source_commit, persona=persona)
         )
         (directory / "workflow-verifier.lock").write_bytes(b"lock\n")
         (directory / "fix.diff").write_bytes(b"changed\n" if changed_fix else b"diff\n")
         manifest = artifact_manifest(
-            directory, ["report-v2.json", "workflow-verifier.lock", "fix.diff"]
+            directory, ["report-v3.json", "workflow-verifier.lock", "fix.diff"]
         )
-        (directory / "determinism-v1.json").write_text(
+        (directory / "determinism-v2.json").write_text(
             json.dumps(manifest, sort_keys=True), encoding="utf-8"
         )
         return directory
 
+    def release_set(
+        self,
+        root: Path,
+        overrides: dict[str, dict[str, object]] | None = None,
+    ) -> dict[str, Path]:
+        overrides = {} if overrides is None else overrides
+        return {
+            platform: self.platform(root, platform, **overrides.get(platform, {}))
+            for platform in sorted(RELEASE_PLATFORMS)
+        }
+
     def test_identical_platform_artifacts_pass_independent_of_argument_order(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            windows = self.platform(root, "windows-x86_64")
-            linux = self.platform(root, "linux-x86_64")
-            macos = self.platform(root, "macos-arm64")
-            result = compare([windows, macos, linux])
+            platforms = self.release_set(root)
+            result = compare(list(reversed(platforms.values())))
             self.assertTrue(result["passed"])
-            self.assertEqual(result["platforms"], ["linux-x86_64", "macos-arm64", "windows-x86_64"])
+            self.assertEqual(
+                result["platforms"],
+                [
+                    "linux-arm64",
+                    "linux-x86_64",
+                    "macos-arm64",
+                    "macos-x86_64",
+                    "windows-x86_64",
+                ],
+            )
+            self.assertEqual(result["schema"], "determinism-comparison-v2")
 
     def test_platform_bound_report_provenance_is_recorded_but_not_compared(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            baseline = self.platform(root, "linux-x86_64", binary="a")
-            changed = self.platform(root, "windows-x86_64", binary="b", source_commit="c" * 40)
-            result = compare([changed, baseline])
+            platforms = self.release_set(
+                root,
+                {"windows-x86_64": {"binary": "b", "source_commit": "c" * 40}},
+            )
+            result = compare(list(platforms.values()))
             self.assertTrue(result["passed"])
             reports = result["report_projection"]["reports"]
-            self.assertNotEqual(reports[0]["raw_digest"], reports[1]["raw_digest"])
-            self.assertEqual(reports[0]["semantic_digest"], reports[1]["semantic_digest"])
+            self.assertEqual(len({report["raw_digest"] for report in reports}), 2)
+            self.assertEqual(len({report["semantic_digest"] for report in reports}), 1)
 
     def test_semantic_report_difference_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            baseline = self.platform(root, "linux-x86_64")
-            changed = self.platform(root, "windows-x86_64", persona="paranoid")
-            result = compare([changed, baseline])
+            platforms = self.release_set(root, {"windows-x86_64": {"persona": "paranoid"}})
+            result = compare(list(platforms.values()))
             self.assertFalse(result["passed"])
             self.assertEqual(
                 result["failures"],
-                ["report-v2 semantic content differs between linux-x86_64 and windows-x86_64"],
+                ["report-v3 semantic content differs between linux-arm64 and windows-x86_64"],
             )
 
     def test_portable_artifact_byte_difference_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            baseline = self.platform(root, "linux-x86_64")
-            changed = self.platform(root, "windows-x86_64", changed_fix=True)
-            result = compare([changed, baseline])
+            platforms = self.release_set(root, {"windows-x86_64": {"changed_fix": True}})
+            result = compare(list(platforms.values()))
             self.assertFalse(result["passed"])
             self.assertEqual(
                 result["failures"],
-                ["fix.diff differs between linux-x86_64 and windows-x86_64"],
+                ["fix.diff differs between linux-arm64 and windows-x86_64"],
             )
 
     def test_tampered_manifest_fails_before_comparison(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            platform = self.platform(root, "linux-x86_64")
+            platforms = self.release_set(root)
+            platform = platforms["linux-x86_64"]
             (platform / "fix.diff").write_bytes(b"tampered\n")
             with self.assertRaisesRegex(ValueError, "manifest does not match"):
-                compare([platform, self.platform(root, "macos-arm64")])
+                compare(list(platforms.values()))
+
+    def test_missing_release_platform_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            platforms = self.release_set(Path(temporary))
+            platforms.pop("linux-arm64")
+            with self.assertRaisesRegex(ValueError, "exactly five"):
+                compare(list(platforms.values()))
 
     def test_direct_script_entrypoint_resolves_its_sibling_module(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            linux = self.platform(root, "linux-x86_64")
-            windows = self.platform(root, "windows-x86_64")
+            platforms = self.release_set(root)
             output = root / "comparison.json"
             completed = subprocess.run(
                 [
@@ -120,8 +165,7 @@ class CompareDeterminismTests(unittest.TestCase):
                     "scripts/compare_determinism.py",
                     "--output",
                     str(output),
-                    str(linux),
-                    str(windows),
+                    *(str(path) for path in platforms.values()),
                 ],
                 cwd=Path(__file__).resolve().parents[2],
                 check=False,

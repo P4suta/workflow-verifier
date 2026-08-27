@@ -53,8 +53,12 @@ let schemas =
       "https://workflow-verifier.dev/schema/mutation-campaign-v1.json" );
     ( "determinism-v1.schema.json",
       "https://workflow-verifier.dev/schema/determinism-v1.json" );
+    ( "determinism-v2.schema.json",
+      "https://workflow-verifier.dev/schema/determinism-v2.json" );
     ( "determinism-comparison-v1.schema.json",
       "https://workflow-verifier.dev/schema/determinism-comparison-v1.json" );
+    ( "determinism-comparison-v2.schema.json",
+      "https://workflow-verifier.dev/schema/determinism-comparison-v2.json" );
     ( "dogfood-v1.schema.json",
       "https://workflow-verifier.dev/schema/dogfood-v1.json" );
     ( "conformance-manifest-v1.schema.json",
@@ -63,14 +67,20 @@ let schemas =
       "https://workflow-verifier.dev/schema/doctor-v2.json" );
     ( "release-evidence-v3.schema.json",
       "https://workflow-verifier.dev/schema/release-evidence-v3.json" );
+    ( "release-evidence-v4.schema.json",
+      "https://workflow-verifier.dev/schema/release-evidence-v4.json" );
     ( "release-index-v1.schema.json",
       "https://workflow-verifier.dev/schema/release-index-v1.json" );
     ( "release-gate-v1.schema.json",
       "https://workflow-verifier.dev/schema/release-gate-v1.json" );
     ( "reproducibility-fragment-v1.schema.json",
       "https://workflow-verifier.dev/schema/reproducibility-fragment-v1.json" );
+    ( "reproducibility-fragment-v2.schema.json",
+      "https://workflow-verifier.dev/schema/reproducibility-fragment-v2.json" );
     ( "maintainer-self-audit-v2.schema.json",
       "https://workflow-verifier.dev/schema/maintainer-self-audit-v2.json" );
+    ( "network-profile-v1.schema.json",
+      "https://workflow-verifier.dev/schema/network-profile-v1.json" );
     ( "sbom-components-v1.schema.json",
       "https://workflow-verifier.dev/schema/sbom-components-v1.json" );
   ]

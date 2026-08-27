@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage every digest-checked release-evidence-v3 input without renaming it."""
+"""Stage every digest-checked release-evidence-v4 input without renaming it."""
 
 from __future__ import annotations
 
@@ -61,10 +61,10 @@ def _atomic_copy(source: Path, destination: Path) -> None:
 def stage(manifest_path: Path, destination: Path) -> list[Path]:
     manifest, _ = _load_json(manifest_path, "release evidence manifest", canonical=True)
     manifest = _exact(manifest, ROOT_FIELDS, "release evidence manifest")
-    if manifest["schema"] != "release-evidence-v3":
-        raise ValueError("release evidence schema must be release-evidence-v3")
+    if manifest["schema"] != "release-evidence-v4":
+        raise ValueError("release evidence schema must be release-evidence-v4")
     root = manifest_path.parent
-    sources: dict[str, Path] = {"release-evidence-v3.json": manifest_path}
+    sources: dict[str, Path] = {"release-evidence-v4.json": manifest_path}
 
     artifacts = manifest["artifacts"]
     if not isinstance(artifacts, list):

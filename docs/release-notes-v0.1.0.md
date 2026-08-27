@@ -15,8 +15,8 @@ Linux-native, Windows AppContainer, and macOS VM backends. Runtime replay is
 limited to an explicit event/input/matrix/job scenario; unsupported runner
 semantics are reported as `Incomplete` and are never guessed.
 
-The release bundle includes strict public schemas, language-independent
-conformance vectors, manual pages, four shell completions, English operational
-documentation, a Japanese Quick Start, per-payload SPDX 2.3 SBOMs, aggregate
+The release bundle includes the Rust product, strict public schemas,
+language-independent conformance vectors, manual pages, four shell completions,
+English operational documentation, per-payload SPDX 2.3 SBOMs, aggregate
 CycloneDX, THIRD_PARTY_NOTICES, corresponding source, signatures, and offline
-release-evidence-v3.
+release-evidence-v4.

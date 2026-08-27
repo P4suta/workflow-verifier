@@ -1,0 +1,69 @@
+[workspace]
+resolver = "3"
+members = [
+  "crates/foundation",
+  "crates/syntax",
+  "crates/domain",
+  "crates/frontend",
+  "crates/verifier",
+  "crates/product",
+  "crates/sandbox",
+  "crates/engine",
+  "crates/cli",
+  "crates/conformance",
+  "helpers",
+  "helpers/protocol",
+  "helpers/runtime",
+  "helpers/oci",
+  "helpers/linux",
+  "helpers/windows",
+  "helpers/macos",
+  "helpers/vm-agent",
+  "helpers/conformance",
+]
+default-members = [
+  "crates/foundation",
+  "crates/syntax",
+  "crates/domain",
+  "crates/frontend",
+  "crates/verifier",
+  "crates/product",
+  "crates/sandbox",
+  "crates/engine",
+  "crates/cli",
+  "crates/conformance",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+rust-version = "1.98"
+publish = false
+
+[workspace.dependencies]
+caseless = "=0.2.2"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+serde_yaml = "=0.9.34"
+sha2 = "=0.10.9"
+toml = "=1.1.4"
+unicode-normalization = "=0.1.25"
+url = "=2.5.8"
+rustls = { version = "=0.23.43", default-features = false, features = ["aws-lc-rs", "std", "tls12"] }
+rustls-native-certs = "=0.8.3"
+zeroize = "=1.9.0"
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+unused_must_use = "deny"
+
+[workspace.lints.clippy]
+all = "deny"
+pedantic = "warn"
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
+panic = "abort"
+strip = "symbols"

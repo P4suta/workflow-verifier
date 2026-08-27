@@ -50,6 +50,18 @@ run = "cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets"
 description = "Enforce native helper formatting and warning-free Clippy"
 run = "cargo fmt --manifest-path helpers/Cargo.toml --all -- --check && cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings"
 
+[tasks.rust]
+description = "Run the Rust workspace formatting, test, and lint gates"
+run = "cargo fmt --all -- --check && cargo test --workspace --all-targets && cargo clippy --workspace --all-targets -- -D warnings"
+
+[tasks.lsp-performance]
+description = "Enforce pinned release-mode LSP latency budgets"
+run = "cargo test --release -p workflow-verifier-cli --lib lsp::performance_tests -- --ignored --nocapture --test-threads=1"
+
+[tasks.differential]
+description = "Compare authenticated OCaml report-v2 and Rust report-v3 semantics"
+run = "opam exec -- dune build bin/main.exe && cargo build -p workflow-verifier-cli -p workflow-verifier-conformance && mkdir -p _build/rust-conformance && _build/default/bin/main.exe check --format json --trust-repository-config --output _build/rust-conformance/reference-report-v2.json test/fixtures/determinism && target/debug/workflow-verifier check --format json --trust-repository-config --output _build/rust-conformance/candidate-report-v3.json test/fixtures/determinism && target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-report-v2.json _build/rust-conformance/candidate-report-v3.json > _build/rust-conformance/report-conformance-v1.json && _build/default/bin/main.exe check --format json --trust-repository-config --output _build/rust-conformance/reference-exclusions-report-v2.json test/fixtures/determinism-exclusions && target/debug/workflow-verifier check --format json --trust-repository-config --output _build/rust-conformance/candidate-exclusions-report-v3.json test/fixtures/determinism-exclusions && target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-exclusions-report-v2.json _build/rust-conformance/candidate-exclusions-report-v3.json > _build/rust-conformance/report-exclusions-conformance-v1.json && _build/default/bin/main.exe check --format json --output _build/rust-conformance/reference-file-target-report-v2.json test/fixtures/file-target/selected.yml && target/debug/workflow-verifier check --format json --output _build/rust-conformance/candidate-file-target-report-v3.json test/fixtures/file-target/selected.yml && target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-file-target-report-v2.json _build/rust-conformance/candidate-file-target-report-v3.json > _build/rust-conformance/report-file-target-conformance-v1.json"
+
 [tasks.tooling]
 description = "Run release-tool regression tests"
 run = 'python -B -m unittest discover -s scripts/tests -p "test_*.py" -v'
@@ -72,11 +84,11 @@ run = "python -B scripts/corpus_gate.py --manifest evaluation/corpus-v1.json --c
 
 [tasks.corpus-acquire]
 description = "Explicitly acquire immutable permissively licensed corpus snapshots"
-run = "python -B scripts/prepare_corpus.py acquire --analyzer _build/default/bin/main.exe --output evaluation --per-provider 100 --pages 10 --workers 8"
+run = "cargo build --locked -p workflow-verifier-cli && python -B scripts/prepare_corpus.py acquire --analyzer target/debug/workflow-verifier --output evaluation --per-provider 100 --pages 10 --workers 8"
 
 [tasks.corpus-refresh]
 description = "Reanalyze verified immutable corpus snapshots without network access"
-run = "python -B scripts/prepare_corpus.py refresh --evaluation evaluation --analyzer _build/default/bin/main.exe --output _build/evaluation-refreshed --workers 8"
+run = "cargo build --locked -p workflow-verifier-cli && python -B scripts/prepare_corpus.py refresh --evaluation evaluation --analyzer target/debug/workflow-verifier --output _build/evaluation-refreshed --workers 8"
 
 [tasks.corpus-review]
 description = "Apply exhaustive reviewed diagnostic classifications to the corpus"
@@ -92,7 +104,7 @@ run = "python -B scripts/fetch_official_projects.py --manifest official/official
 
 [tasks.official-compat]
 description = "Verify deterministic compatibility with the pinned official projects"
-run = "python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots _build/official-projects --analyzer _build/default/bin/main.exe --output _build/official-compat-v1.json --expected official/official-compat-v1.json --expected-digest official/official-compat-v1.sha256"
+run = "cargo build --locked -p workflow-verifier-cli && python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots _build/official-projects --analyzer target/debug/workflow-verifier --output _build/official-compat-v1.json --expected official/official-compat-v1.json --expected-digest official/official-compat-v1.sha256"
 
 [tasks.performance-measure]
 description = "Measure cold, warm, and incremental scenarios for WV_REVISION"
@@ -108,11 +120,11 @@ run = "python -B scripts/performance_gate.py --baseline performance/baseline.jso
 
 [tasks.determinism-probe]
 description = "Generate twice-local report, lockfile, and fix artifacts for this platform"
-run = "opam exec -- dune build bin/main.exe && python -B scripts/determinism_probe.py --analyzer _build/default/bin/main.exe --fixture test/fixtures/determinism --output _build/determinism/local"
+run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=$(git rev-parse HEAD) cargo build --locked -p workflow-verifier-cli && python -B scripts/determinism_probe.py --analyzer target/debug/workflow-verifier --fixture test/fixtures/determinism --output _build/determinism/local"
 
 [tasks.determinism-compare]
-description = "Compare portable bytes and report semantics from all four release platforms"
-run = "python -B scripts/compare_determinism.py --output _build/determinism/comparison.json _build/determinism/linux-x86_64 _build/determinism/windows-x86_64 _build/determinism/macos-arm64 _build/determinism/macos-x86_64"
+description = "Compare portable bytes and report semantics from all five release platforms"
+run = "python -B scripts/compare_determinism.py --output _build/determinism/comparison.json _build/determinism/linux-x86_64 _build/determinism/linux-arm64 _build/determinism/windows-x86_64 _build/determinism/macos-arm64 _build/determinism/macos-x86_64"
 
 [tasks.version]
 description = "Verify every development version surface"
@@ -120,7 +132,7 @@ run = "python -B scripts/verify_release_version.py --allow-development"
 
 [tasks.release-evidence]
 description = "Verify two-commit evidence and the signed maintainer attestation"
-run = "python -B scripts/verify_release_evidence.py --manifest release-evidence/release-evidence-v3.json --revision ${WV_RELEASE_REVISION} --tag ${WV_RELEASE_TAG} --repository ."
+run = "python -B scripts/verify_release_evidence.py --manifest release-evidence/release-evidence-v4.json --revision ${WV_RELEASE_REVISION} --tag ${WV_RELEASE_TAG} --repository ."
 
 [tasks.candidate-source]
 description = "Build commit-bound static source and schema candidate assets twice"
@@ -144,7 +156,7 @@ run = "python -B scripts/verify_licenses.py"
 
 [tasks.install-check]
 description = "Verify the intentionally narrow install surface"
-run = "opam exec -- dune build @install && python -B scripts/verify_install_layout.py _build/install/default"
+run = "opam exec -- dune build @install && cargo build -p workflow-verifier-cli && python -B scripts/verify_install_layout.py _build/install/default target/debug/workflow-verifier"
 
 [tasks.task-surface]
 description = "Verify the pinned Just parser and aligned Just/mise task names"
@@ -152,7 +164,7 @@ run = "python -B scripts/verify_task_surface.py"
 
 [tasks.conformance-manifest]
 description = "Verify content-addressed language-independent vectors"
-run = "python -B scripts/verify_conformance_manifest.py --manifest conformance/manifest-v1.json --root ."
+run = "python -B scripts/verify_conformance_manifest.py --manifest conformance/manifest-v2.json --root ."
 
 [tasks.links]
 description = "Verify local Markdown links without network access"
@@ -168,11 +180,11 @@ run = "python -B scripts/verify_linux_compat.py ${WV_LINUX_BINARY}"
 
 [tasks.check]
 description = "Run the local release-readiness sequence"
-depends = ["task-surface", "conformance-manifest", "build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "purity", "licenses", "install-check"]
+depends = ["task-surface", "conformance-manifest", "build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "rust", "lsp-performance", "differential", "purity", "licenses", "install-check"]
 
 [tasks.dogfood]
 description = "Analyze workflow-verifier with its own audit persona"
-run = "opam exec -- dune exec workflow-verifier -- check --config examples/dogfood-policy-v2.toml --trust-repository-config ."
+run = "cargo build --locked -p workflow-verifier-cli && target/debug/workflow-verifier check --config examples/dogfood-policy-v2.toml --trust-repository-config ."
 
 [tasks.dogfood-gate]
 description = "Verify complete static CLI and live OCI dogfood evidence"

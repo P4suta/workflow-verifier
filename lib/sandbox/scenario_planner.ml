@@ -229,32 +229,88 @@ let job_closure graph selected =
   in
   visit [] selected
 
-let descendant_ids graph jobs =
+let truth_and left right =
+  match (left, right) with
+  | Condition.False, _ | _, Condition.False -> Condition.False
+  | Condition.True, Condition.True -> Condition.True
+  | _ -> Condition.Unknown
+
+let truth_or left right =
+  match (left, right) with
+  | Condition.True, _ | _, Condition.True -> Condition.True
+  | Condition.False, Condition.False -> Condition.False
+  | _ -> Condition.Unknown
+
+let descendant_truths graph jobs facts =
   let selected_job_ids = List.map (fun (node : Ir.node) -> node.Ir.id) jobs in
-  let rec visit seen allow_local_jobs id =
-    if List.mem id seen then seen
-    else
-      let seen = id :: seen in
-      graph.Ir.edges
-      |> List.filter (fun edge -> relevant_edge edge && edge.from_ = id)
-      |> List.fold_left
-           (fun seen (edge : Ir.edge) ->
-             let allow_local_jobs =
-               allow_local_jobs || edge.label = Some "local-unit"
-             in
-             match Ir.find_node graph edge.to_ with
-             | Some node
-               when node.kind = Ir.Job
-                    && not (List.mem node.id selected_job_ids) ->
-                 if allow_local_jobs then visit seen allow_local_jobs node.id
-                 else seen
-             | Some node -> visit seen allow_local_jobs node.id
-             | None -> seen)
-           seen
-  in
-  List.fold_left
-    (fun seen (job : Ir.node) -> visit seen false job.Ir.id)
-    [] jobs
+  let queue = Queue.create () in
+  jobs
+  |> List.iter (fun (job : Ir.node) ->
+      let gates =
+        graph.Ir.edges
+        |> List.filter_map (fun (edge : Ir.edge) ->
+            if
+              edge.kind = Ir.Control && edge.to_ = job.id
+              && edge.label = Some "gate"
+            then
+              Option.bind (Ir.find_node graph edge.from_) (fun node ->
+                  if node.Ir.kind = Ir.Gate then Some node else None)
+            else None)
+      in
+      match gates with
+      | [] -> Queue.add (job.id, false, Condition.True) queue
+      | _ ->
+          List.iter
+            (fun (gate : Ir.node) ->
+              Queue.add (gate.id, false, Condition.True) queue)
+            gates);
+  let states = Hashtbl.create (max 1 (List.length graph.Ir.nodes)) in
+  while not (Queue.is_empty queue) do
+    let id, allow_local_jobs, incoming = Queue.take queue in
+    match Ir.find_node graph id with
+    | None -> ()
+    | Some node ->
+        let node_truth =
+          truth_and incoming (Condition.evaluate facts node.condition)
+        in
+        let key = (id, allow_local_jobs) in
+        let merged =
+          match Hashtbl.find_opt states key with
+          | None -> node_truth
+          | Some old -> truth_or old node_truth
+        in
+        if Hashtbl.find_opt states key <> Some merged then (
+          Hashtbl.replace states key merged;
+          if merged <> Condition.False then
+            graph.Ir.edges
+            |> List.filter (fun edge ->
+                relevant_edge edge && edge.Ir.from_ = id)
+            |> List.iter (fun (edge : Ir.edge) ->
+                let allow_local_jobs =
+                  allow_local_jobs || edge.label = Some "local-unit"
+                in
+                match Ir.find_node graph edge.to_ with
+                | Some target
+                  when target.kind <> Ir.Job
+                       || List.mem target.id selected_job_ids
+                       || allow_local_jobs ->
+                    let edge_truth = Condition.evaluate facts edge.condition in
+                    Queue.add
+                      (target.id, allow_local_jobs, truth_and merged edge_truth)
+                      queue
+                | Some _ | None -> ()))
+  done;
+  let output = Hashtbl.create (max 1 (Hashtbl.length states)) in
+  Hashtbl.iter
+    (fun (id, _) truth ->
+      let merged =
+        match Hashtbl.find_opt output id with
+        | None -> truth
+        | Some old -> truth_or old truth
+      in
+      Hashtbl.replace output id merged)
+    states;
+  output
 
 let topological_nodes (graph : Ir.t) selected_ids =
   let nodes =
@@ -407,14 +463,23 @@ let plan ~scenario ~image ~graphs =
              entry workflow would silently drop their concrete commands. *)
           let program = Program_graph.compose graphs in
           let jobs = job_closure program selected in
-          let selected_ids = descendant_ids program jobs in
           let facts = scenario_facts scenario in
+          let reachability = descendant_truths program jobs facts in
+          let selected_ids =
+            Hashtbl.to_seq reachability
+            |> List.of_seq
+            |> List.filter_map (fun (id, truth) ->
+                if truth = Condition.False then None else Some id)
+          in
           let nodes = topological_nodes program selected_ids in
           let steps, reasons =
             nodes
             |> List.fold_left
                  (fun (steps, reasons) (node : Ir.node) ->
-                   let truth = Condition.evaluate facts node.Ir.condition in
+                   let truth =
+                     Option.value ~default:Condition.False
+                       (Hashtbl.find_opt reachability node.id)
+                   in
                    let reasons =
                      match (truth, unsupported_reason node) with
                      | Condition.False, _ | _, None -> reasons

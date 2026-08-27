@@ -1,0 +1,33 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/report-v3.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "position": { "additionalProperties": false, "properties": { "byte": { "minimum": 0, "type": "integer" }, "column": { "minimum": 1, "type": "integer" }, "line": { "minimum": 1, "type": "integer" } }, "required": ["byte", "column", "line"], "type": "object" },
+    "span": { "additionalProperties": false, "properties": { "file": { "not": { "pattern": "(^/|^[A-Za-z]:)" }, "type": "string" }, "start": { "$ref": "#/$defs/position" }, "stop": { "$ref": "#/$defs/position" } }, "required": ["file", "start", "stop"], "type": "object" },
+    "diagnostic": { "additionalProperties": false, "properties": { "capabilities": { "items": { "type": "string" }, "type": "array" }, "confidence": { "enum": ["high", "medium", "low"] }, "evidence": { "items": { "type": "string" }, "type": "array" }, "fix": { "type": ["object", "null"] }, "id": { "type": "string" }, "message": { "type": "string" }, "rule_id": { "type": "string" }, "severity": { "enum": ["critical", "error", "warning", "note"] }, "span": { "$ref": "#/$defs/span" }, "trace": { "items": { "type": "object" }, "type": "array" } }, "required": ["id", "rule_id", "severity", "confidence", "message", "span", "trace", "capabilities", "evidence", "fix"], "type": "object" },
+    "property": { "additionalProperties": false, "properties": { "explanation": { "type": "string" }, "id": { "type": "string" }, "reasons": { "items": { "type": "object" }, "type": "array" }, "state": { "enum": ["Proved", "Violated", "Unknown", "NotApplicable"] }, "subject": { "type": ["string", "null"] } }, "required": ["id", "state", "subject", "explanation", "reasons"], "type": "object" }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "completeness": { "additionalProperties": false, "properties": { "reasons": { "items": { "pattern": "^Incomplete\\.", "type": "string" }, "type": "array", "uniqueItems": true }, "state": { "enum": ["complete", "incomplete"] } }, "required": ["reasons", "state"], "type": "object" },
+    "configuration": { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "origin": { "minLength": 1, "not": { "pattern": "(^/|^[A-Za-z]:)" }, "type": "string" }, "trust": { "enum": ["built-in", "trusted-policy", "repository"] } }, "required": ["digest", "origin", "trust"], "type": "object" },
+    "diagnostics": { "items": { "$ref": "#/$defs/diagnostic" }, "type": "array" },
+    "digest": { "$ref": "#/$defs/digest" },
+    "semantic_digest": { "$ref": "#/$defs/digest" },
+    "gate": { "additionalProperties": false, "properties": { "exit_code": { "enum": [0, 1, 3] }, "result": { "enum": ["pass", "finding", "incomplete"] } }, "required": ["exit_code", "result"], "type": "object" },
+    "graphs": { "items": { "type": "object" }, "type": "array" },
+    "inputs": { "items": { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "path": { "minLength": 1, "not": { "pattern": "(^/|^[A-Za-z]:)" }, "type": "string" } }, "required": ["digest", "path"], "type": "object" }, "type": "array" },
+    "lock": { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" } }, "required": ["digest"], "type": "object" },
+    "persona": { "enum": ["gate", "audit", "paranoid"] },
+    "provider_profiles": { "items": { "minLength": 1, "type": "string" }, "type": "array", "uniqueItems": true },
+    "properties": { "items": { "$ref": "#/$defs/property" }, "type": "array" },
+    "schema": { "const": "report-v3" },
+    "snapshot": { "additionalProperties": false, "properties": { "digest": { "$ref": "#/$defs/digest" }, "schema": { "const": "source-manifest-v2" } }, "required": ["digest", "schema"], "type": "object" },
+    "summary": { "additionalProperties": false, "properties": { "diagnostics": { "minimum": 0, "type": "integer" }, "graphs": { "minimum": 0, "type": "integer" }, "inputs": { "minimum": 0, "type": "integer" }, "unknown_properties": { "minimum": 0, "type": "integer" } }, "required": ["diagnostics", "graphs", "inputs", "unknown_properties"], "type": "object" },
+    "tool": { "additionalProperties": false, "properties": { "build": { "additionalProperties": false, "properties": { "binary_digest": { "$ref": "#/$defs/digest" }, "compiler": { "minLength": 1, "type": "string" }, "implementation": { "minLength": 1, "type": "string" }, "source_commit": { "type": ["string", "null"] }, "target": { "minLength": 1, "type": "string" } }, "required": ["implementation", "compiler", "target", "source_commit", "binary_digest"], "type": "object" }, "name": { "const": "workflow-verifier" }, "version": { "const": "0.1.0" } }, "required": ["build", "name", "version"], "type": "object" }
+  },
+  "required": ["completeness", "configuration", "diagnostics", "digest", "semantic_digest", "gate", "graphs", "inputs", "lock", "persona", "provider_profiles", "properties", "schema", "snapshot", "summary", "tool"],
+  "title": "workflow-verifier report v3",
+  "type": "object"
+}

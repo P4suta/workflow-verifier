@@ -25,13 +25,12 @@ jobs:
         with:
           python-version: '3.13.7'
           check-latest: false
-      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
         with:
-          ocaml-compiler: 5.5.0
+          toolchain: 1.98.0
+          cache: false
       - name: Build current analyzer
-        run: |
-          opam install . --deps-only --with-test --locked --yes
-          opam exec -- dune build bin/main.exe
+        run: cargo build --locked -p workflow-verifier-cli
       - name: Observe current upstream default branches
         run: >-
           python -B scripts/fetch_official_projects.py
@@ -43,7 +42,7 @@ jobs:
           python -B scripts/official_compat.py
           --manifest official/official-projects-v1.json
           --snapshots _build/official-projects-latest
-          --analyzer _build/default/bin/main.exe
+          --analyzer target/debug/workflow-verifier
           --output _build/official-compat-latest.json
           --allow-latest
       - name: Upload drift observation

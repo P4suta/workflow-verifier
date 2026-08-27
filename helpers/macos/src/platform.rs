@@ -8,7 +8,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use workflow_verifier_helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
-    execute_native, run_command,
+    execute_native_with_exclusions, run_command,
 };
 use workflow_verifier_runner_protocol::vm::Request;
 use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, ValidatedPlan};
@@ -231,13 +231,15 @@ impl NativeSandbox for MacSandbox {
 pub(super) fn launch(
     plan: &ValidatedPlan,
     source_root: &Path,
+    trusted_exclusions: &[String],
     descriptor: &Descriptor,
 ) -> Result<RunResult, LaunchError> {
     let mut sandbox = MacSandbox::new().map_err(LaunchError::Infrastructure)?;
-    execute_native(
+    execute_native_with_exclusions(
         plan,
         descriptor,
         source_root,
+        trusted_exclusions,
         &EnvironmentSecrets,
         &mut sandbox,
     )

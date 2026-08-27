@@ -10,10 +10,13 @@ execution planner for GitHub Actions, GitLab CI, Azure Pipelines, and CircleCI
 untrusted data, secrets, capabilities, effects, dependency integrity,
 authorization dominance, and semantic changes are evaluated by one model.
 
-The analyzer libraries are pure OCaml: they contain no C stubs or foreign
-bindings and never delegate provider semantics to a subprocess linter. The
-application boundary uses Cmdliner 2.1.1, Otoml 1.0.5, and direct-argv OS
-process APIs for explicitly authorized resolver and sandbox helpers.
+The shipped Rust product uses a pure core with no
+filesystem, network, process, global mutable state, `unsafe`, or input-derived
+panic boundary. The retained OCaml executable, `workflow-verifier-reference`,
+is a development-only semantic oracle used by differential tests; it is not
+included in user binary archives. The Rust application boundary uses an
+embedded rustls HTTPS client and direct-argv OS process APIs for explicitly
+authorized resolver and sandbox helpers.
 Optional OCI and native containment helpers consume a separately versioned,
 canonical JSON protocol and fail closed when a requested control is absent.
 Architecture is the first product requirement: private libraries form a strict
@@ -52,16 +55,16 @@ Sigstore. They have no Developer ID signature or Apple notarization, so they do
 not receive standard Gatekeeper trust. The release audit is a signed
 sole-maintainer self-audit, not an independent security assessment. These are
 the only accepted v0.1 release exceptions and are also machine-readable in
-`release-evidence-v3`.
+`release-evidence-v4`.
 
 ## Development status
 
 The tree carries version `0.1.0` as the first release candidate. It is not a
 published release until the protected `v0.1.0` tag exists. Publication requires
 the license-clear 400-repository corpus, pinned official-project compatibility,
-an approved four-platform performance baseline, complete mutation and native
+an approved five-platform performance baseline, complete mutation and native
 containment runs, and a signed sole-maintainer self-audit. Missing evidence is
-never represented as a passing result. `release-evidence-v3` binds exact
+never represented as a passing result. `release-evidence-v4` binds exact
 product artifacts, per-payload SBOMs, signatures, and every gate to candidate
 commit `C` in an evidence-only child commit `E`; the future tag points to `E`
 only after offline verification and protected promotion pass.
@@ -70,7 +73,7 @@ only after offline verification and protected promotion pass.
 
 ```text
 workflow-verifier check .
-workflow-verifier check --format json --output report-v2.json .
+workflow-verifier check --format json --output report-v3.json .
 workflow-verifier resolve --allow-network .
 workflow-verifier explain WV-SEC-001 .
 workflow-verifier graph --kind dataflow --format dot .
@@ -80,6 +83,8 @@ workflow-verifier fix --apply .          # explicit source mutation
 workflow-verifier sandbox plan --job build .
 workflow-verifier sandbox run --job build --backend oci:docker .
 workflow-verifier doctor
+workflow-verifier auth status
+workflow-verifier lsp
 ```
 
 Resolution, dependency refresh, source mutation, secret use, workflow network,
@@ -92,6 +97,29 @@ configuration error, `3` strict incomplete result, `4` internal failure, and
 `5` sandbox infrastructure failure. The default `gate` persona fails only on
 proved correctness errors and high-confidence security findings. `Unknown`
 facts remain visible in every machine-readable report.
+
+## GitHub Action
+
+The official Action source is included but remains unpublished until the
+candidate is approved. Once the `v0.1.0` Action tag and matching Rust binary
+archive are published, install that verified binary on the runner and invoke:
+
+```yaml
+- uses: P4suta/workflow-verifier@v0.1.0
+  with:
+    binary: /usr/local/bin/workflow-verifier
+    path: .
+    format: sarif
+    output: workflow-verifier.sarif
+    resolve: 'true'
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+The token value is never placed in argv. During explicit resolution the Action
+passes only
+`github@github.com=WORKFLOW_VERIFIER_ACTION_GITHUB_TOKEN` to
+`--auth-from-env`, removes the credential before `check`, and deletes its
+temporary lock. The Action does not trust repository configuration implicitly.
 
 ## Trust boundary
 

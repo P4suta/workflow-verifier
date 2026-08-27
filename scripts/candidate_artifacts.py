@@ -44,6 +44,15 @@ PLATFORMS: dict[str, PlatformContract] = {
         },
         "suffix": ".tar.gz",
     },
+    "linux-arm64": {
+        "analyzer": "workflow-verifier",
+        "helpers": {
+            "workflow-verifier-linux-helper",
+            "workflow-verifier-oci-helper",
+            "workflow-verifier-vm-agent",
+        },
+        "suffix": ".tar.gz",
+    },
     "windows-x86_64": {
         "analyzer": "workflow-verifier.exe",
         "helpers": {
@@ -237,6 +246,7 @@ def _helper_spec(value: str) -> tuple[str, Path]:
 
 def package_install(
     *,
+    analyzer: Path,
     install_root: Path,
     workspace_root: Path,
     platform: str,
@@ -255,9 +265,8 @@ def package_install(
         raise ValueError("install root must be a non-symlink directory")
 
     platform_contract = PLATFORMS[platform]
-    analyzer = install / "bin" / str(platform_contract["analyzer"])
     analyzer_source = _inside(analyzer, workspace, "installed analyzer")
-    _regular(analyzer_source, "installed analyzer")
+    _regular(analyzer_source, "Rust analyzer")
     public_files: list[tuple[str, Path]] = [
         (f"bin/{platform_contract['analyzer']}", analyzer_source),
         *_walk_files(install / "doc" / "workflow-verifier", workspace, "doc/workflow-verifier"),
@@ -327,7 +336,7 @@ def write_fragment(
     document = {
         "artifacts": sorted(records, key=lambda item: item["role"]),
         "platform": platform,
-        "schema": "reproducibility-fragment-v1",
+        "schema": "reproducibility-fragment-v2",
         "source_date_epoch": source_date_epoch,
         "subject_commit": subject_commit,
     }
@@ -363,7 +372,7 @@ def _fragment(path: Path) -> dict[str, Any]:
     fields = {"artifacts", "platform", "schema", "source_date_epoch", "subject_commit"}
     if not isinstance(value, dict) or set(value) != fields:
         raise ValueError("reproducibility fragment fields are not exact")
-    if value["schema"] != "reproducibility-fragment-v1":
+    if value["schema"] != "reproducibility-fragment-v2":
         raise ValueError("unsupported reproducibility fragment schema")
     return value
 
@@ -676,6 +685,7 @@ def main() -> int:
     commands = parser.add_subparsers(dest="command", required=True)
 
     package = commands.add_parser("package-install")
+    package.add_argument("--analyzer", required=True, type=Path)
     package.add_argument("--install-root", required=True, type=Path)
     package.add_argument("--workspace-root", required=True, type=Path)
     package.add_argument("--platform", required=True, choices=tuple(PLATFORMS))
@@ -717,6 +727,7 @@ def main() -> int:
     arguments = parser.parse_args()
     if arguments.command == "package-install":
         package_install(
+            analyzer=arguments.analyzer,
             install_root=arguments.install_root,
             workspace_root=arguments.workspace_root,
             platform=arguments.platform,

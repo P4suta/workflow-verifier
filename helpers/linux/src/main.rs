@@ -5,6 +5,6 @@ fn main() {
     }
     std::process::exit(workflow_verifier_runner_protocol::helper_main(
         &workflow_verifier_linux_helper::descriptor(),
-        workflow_verifier_linux_helper::launch,
+        workflow_verifier_linux_helper::launch_with_exclusions,
     ));
 }

@@ -5,6 +5,7 @@ mod native;
 pub use native::{
     ClosureSandbox, EnvironmentSecrets, MapSecrets, NativeSandbox, NativeSandboxRequest,
     NativeStepRequest, NativeStorageParents, SecretProvider, execute_native,
+    execute_native_with_exclusions,
 };
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -125,6 +126,32 @@ pub struct SourceManifest {
 pub struct SourceSnapshot {
     pub manifest: SourceManifest,
     files: BTreeMap<String, SnapshotEntry>,
+    trusted_exclusions: Vec<String>,
+}
+
+impl SourceSnapshot {
+    /// Returns authenticated bytes for one regular snapshot entry.
+    #[must_use]
+    pub fn regular_file(&self, path: &str) -> Option<&[u8]> {
+        match self.files.get(&path.replace('\\', "/")) {
+            Some(SnapshotEntry::Regular { contents, .. }) => Some(contents),
+            Some(SnapshotEntry::Symlink { .. }) | None => None,
+        }
+    }
+
+    /// Iterates over all authenticated regular-file bytes in portable path order.
+    pub fn regular_files(&self) -> impl Iterator<Item = (&str, &[u8])> {
+        self.files.iter().filter_map(|(path, entry)| match entry {
+            SnapshotEntry::Regular { contents, .. } => Some((path.as_str(), contents.as_slice())),
+            SnapshotEntry::Symlink { .. } => None,
+        })
+    }
+
+    /// Returns the normalized trusted policy prefixes authenticated by the manifest.
+    #[must_use]
+    pub fn trusted_exclusions(&self) -> &[String] {
+        &self.trusted_exclusions
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -193,6 +220,39 @@ fn ignored_component(name: &str) -> bool {
         name.to_ascii_lowercase().as_str(),
         ".git" | ".workflow-verifier" | ".workflow-verifier-cache" | ".workflow-verifier-output"
     )
+}
+
+fn normalize_trusted_exclusions(values: &[String]) -> Result<Vec<String>, String> {
+    let mut exact = BTreeSet::new();
+    let mut portable = BTreeSet::new();
+    for value in values {
+        let normalized = value.replace('\\', "/");
+        let components: Vec<_> = normalized.split('/').collect();
+        if normalized.is_empty()
+            || normalized.starts_with('/')
+            || normalized.starts_with("//")
+            || normalized.as_bytes().get(1) == Some(&b':')
+            || normalized.contains('\0')
+            || components
+                .iter()
+                .any(|component| component.is_empty() || matches!(*component, "." | ".."))
+        {
+            return Err(format!(
+                "trusted source exclusion is not a portable relative prefix: {value}"
+            ));
+        }
+        if !portable.insert(normalized.to_ascii_lowercase()) {
+            return Err("trusted source exclusions collide under portable case folding".to_owned());
+        }
+        exact.insert(normalized);
+    }
+    Ok(exact.into_iter().collect())
+}
+
+fn path_below(path: &str, prefix: &str) -> bool {
+    let path = path.to_ascii_lowercase();
+    let prefix = prefix.to_ascii_lowercase();
+    path == prefix || path.starts_with(&format!("{prefix}/"))
 }
 
 fn checked_name(path: &Path) -> Result<&str, String> {
@@ -320,7 +380,8 @@ fn visit_files(
     root: &Path,
     current: &Path,
     output: &mut BTreeMap<String, SnapshotEntry>,
-    exclusions: &mut Vec<String>,
+    exclusions: &mut Vec<(String, &'static str)>,
+    trusted_exclusions: &[String],
     identities: &mut BTreeSet<String>,
     total_size: &mut u64,
 ) -> Result<(), String> {
@@ -334,16 +395,29 @@ fn visit_files(
         for entry in entries {
             let path = entry.path();
             let name = checked_name(&path)?;
+            let relative = path
+                .strip_prefix(root)
+                .map_err(|error| error.to_string())?
+                .to_str()
+                .ok_or_else(|| format!("non-UTF-8 source path: {}", path.display()))?
+                .replace('\\', "/");
             if ignored_component(name) {
-                let relative = path
-                    .strip_prefix(root)
-                    .map_err(|error| error.to_string())?
-                    .to_str()
-                    .ok_or_else(|| format!("non-UTF-8 source path: {}", path.display()))?
-                    .replace('\\', "/");
-                exclusions.push(relative);
+                exclusions.push((relative, "product-default"));
+            } else if trusted_exclusions
+                .iter()
+                .any(|prefix| path_below(&relative, prefix))
+            {
+                exclusions.push((relative, "trusted-policy"));
             } else {
-                visit_files(root, &path, output, exclusions, identities, total_size)?;
+                visit_files(
+                    root,
+                    &path,
+                    output,
+                    exclusions,
+                    trusted_exclusions,
+                    identities,
+                    total_size,
+                )?;
             }
         }
         let after = fs::symlink_metadata(current).map_err(|error| error.to_string())?;
@@ -428,13 +502,12 @@ fn validate_symlink_cycles(files: &BTreeMap<String, SnapshotEntry>) -> Result<()
         if let Some(SnapshotEntry::Symlink {
             resolved_target, ..
         }) = files.get(path)
-        {
-            if matches!(
+            && matches!(
                 files.get(resolved_target),
                 Some(SnapshotEntry::Symlink { .. })
-            ) {
-                visit(resolved_target, files, visiting, visited)?;
-            }
+            )
+        {
+            visit(resolved_target, files, visiting, visited)?;
         }
         visiting.remove(path);
         visited.insert(path.to_owned());
@@ -451,7 +524,8 @@ fn validate_symlink_cycles(files: &BTreeMap<String, SnapshotEntry>) -> Result<()
 
 fn manifest(
     files: &BTreeMap<String, SnapshotEntry>,
-    exclusions: &[String],
+    exclusions: &[(String, &'static str)],
+    trusted_exclusions: &[String],
     total_size: u64,
 ) -> SourceManifest {
     let entries = files
@@ -469,10 +543,11 @@ fn manifest(
         .join(",");
     let exclusions = exclusions
         .iter()
-        .map(|path| {
+        .map(|(path, reason)| {
             format!(
-                "{{\"path\":{},\"reason\":\"product-default\"}}",
-                quote_json(path)
+                "{{\"path\":{},\"reason\":{}}}",
+                quote_json(path),
+                quote_json(reason)
             )
         })
         .collect::<Vec<_>>()
@@ -482,7 +557,13 @@ fn manifest(
         .map(|value| quote_json(value))
         .collect::<Vec<_>>()
         .join(",");
-    let policy = format!("{{\"default\":[{default_exclusions}],\"trusted\":[]}}");
+    let trusted_exclusions = trusted_exclusions
+        .iter()
+        .map(|value| quote_json(value))
+        .collect::<Vec<_>>()
+        .join(",");
+    let policy =
+        format!("{{\"default\":[{default_exclusions}],\"trusted\":[{trusted_exclusions}]}}");
     let policy_digest = sha256_hex(policy.as_bytes());
     let unsigned_json = format!(
         "{{\"entries\":[{entries}],\"exclusion_policy_digest\":\"sha256:{policy_digest}\",\"exclusions\":[{exclusions}],\"limits\":{{\"max_entries\":{MAX_ENTRIES},\"max_file_bytes\":{MAX_FILE_BYTES},\"max_snapshot_bytes\":{MAX_SNAPSHOT_BYTES}}},\"schema\":\"source-manifest-v2\",\"total_size\":{total_size}}}"
@@ -504,6 +585,20 @@ fn manifest(
 ///
 /// Rejects unreadable paths, escaping symlinks, special files, and non-UTF-8 paths.
 pub fn source_snapshot(root: &Path) -> Result<SourceSnapshot, String> {
+    source_snapshot_with_exclusions(root, &[])
+}
+
+/// Reads and hashes a source tree after applying authenticated trusted prefixes.
+///
+/// # Errors
+///
+/// Rejects unsafe exclusion prefixes and the same unsafe source states as
+/// [`source_snapshot`].
+pub fn source_snapshot_with_exclusions(
+    root: &Path,
+    trusted_exclusions: &[String],
+) -> Result<SourceSnapshot, String> {
+    let trusted_exclusions = normalize_trusted_exclusions(trusted_exclusions)?;
     let mut files = BTreeMap::new();
     let mut exclusions = Vec::new();
     let mut identities = BTreeSet::new();
@@ -513,14 +608,16 @@ pub fn source_snapshot(root: &Path) -> Result<SourceSnapshot, String> {
         root,
         &mut files,
         &mut exclusions,
+        &trusted_exclusions,
         &mut identities,
         &mut total_size,
     )?;
     validate_symlink_cycles(&files)?;
     exclusions.sort();
     Ok(SourceSnapshot {
-        manifest: manifest(&files, &exclusions, total_size),
+        manifest: manifest(&files, &exclusions, &trusted_exclusions, total_size),
         files,
+        trusted_exclusions,
     })
 }
 
@@ -618,7 +715,7 @@ fn private_copy(
     storage_root: &Path,
     purpose: &str,
 ) -> Result<PathBuf, String> {
-    if source_snapshot(source)? != *baseline {
+    if source_snapshot_with_exclusions(source, &baseline.trusted_exclusions)? != *baseline {
         return Err("source changed while preparing the sandbox".to_owned());
     }
     let path = reserve_temp_directory_in(storage_root, purpose)?;
@@ -626,7 +723,7 @@ fn private_copy(
         let _ = fs::remove_dir_all(&path);
         return Err(error);
     }
-    let copied = source_snapshot(&path)?;
+    let copied = source_snapshot_with_exclusions(&path, &baseline.trusted_exclusions)?;
     if copied.files != baseline.files {
         let _ = fs::remove_dir_all(&path);
         return Err(format!(
@@ -709,7 +806,8 @@ impl ScratchTree {
     ///
     /// Fails if the scratch tree becomes unreadable or gains an unsafe entry.
     pub fn final_state(&self) -> Result<ScratchFinal, String> {
-        let current = source_snapshot(&self.path)?;
+        let current =
+            source_snapshot_with_exclusions(&self.path, &self.baseline.trusted_exclusions)?;
         let paths = self
             .baseline
             .files

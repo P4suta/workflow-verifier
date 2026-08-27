@@ -9,6 +9,7 @@ use std::time::Duration;
 pub use workflow_verifier_helper_runtime::SourceManifest;
 use workflow_verifier_helper_runtime::{
     ChangeKind, ProcessObservation, ScratchTree, run_command, source_snapshot,
+    source_snapshot_with_exclusions,
 };
 use workflow_verifier_runner_protocol::{
     BACKEND_ATTESTATION_SCHEMA, Control, Evidence, EvidenceBody, PlanStatus, Step, ValidatedPlan,
@@ -239,9 +240,25 @@ fn validate_execution(plan: &ValidatedPlan, engine: &str) -> Result<(), String> 
 // one auditable transaction boundary.
 #[allow(clippy::too_many_lines)]
 pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunResult, String> {
+    execute_with_exclusions(plan, engine, source, &[])
+}
+
+/// Executes an OCI plan under the coordinator-authenticated source policy.
+///
+/// # Errors
+///
+/// Returns the same fail-closed errors as [`execute`] and rejects malformed
+/// trusted source prefixes.
+#[allow(clippy::too_many_lines)]
+pub fn execute_with_exclusions(
+    plan: &ValidatedPlan,
+    engine: &str,
+    source: &Path,
+    trusted_exclusions: &[String],
+) -> Result<RunResult, String> {
     validate_execution(plan, engine)?;
     let source = source.canonicalize().map_err(|error| error.to_string())?;
-    let baseline = source_snapshot(&source)?;
+    let baseline = source_snapshot_with_exclusions(&source, trusted_exclusions)?;
     if baseline.manifest.digest != plan.source_digest {
         return Err(format!(
             "source digest mismatch: plan {}, actual {}",
@@ -360,6 +377,14 @@ fn argument_value(arguments: &[String], name: &str) -> Option<String> {
         .map(|pair| pair[1].clone())
 }
 
+fn argument_values(arguments: &[String], name: &str) -> Vec<String> {
+    arguments
+        .windows(2)
+        .filter(|pair| pair[0] == name && !pair[1].is_empty())
+        .map(|pair| pair[1].clone())
+        .collect()
+}
+
 /// Process entry point used by the small helper binary.
 #[must_use]
 pub fn main_entry() -> i32 {
@@ -407,6 +432,7 @@ pub fn main_entry() -> i32 {
         eprintln!("--source is required");
         return 2;
     };
+    let trusted_exclusions = argument_values(&arguments, "--exclude");
     let mut input = String::new();
     if let Err(error) = std::io::stdin().read_to_string(&mut input) {
         eprintln!("failed to read runner plan: {error}");
@@ -423,7 +449,7 @@ pub fn main_entry() -> i32 {
         eprintln!("incomplete plan: {}", reasons.join("; "));
         return 3;
     }
-    match execute(&plan, &engine, Path::new(&source)) {
+    match execute_with_exclusions(&plan, &engine, Path::new(&source), &trusted_exclusions) {
         Ok(result) => {
             print!("{}", result.canonical_json());
             if let Err(error) = std::io::stdout().flush() {

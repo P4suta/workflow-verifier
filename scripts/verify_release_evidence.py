@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify release-evidence-v3 and its evidence-only child commit offline."""
+"""Verify release-evidence-v4 and its evidence-only child commit offline."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ from typing import Any
 
 PLATFORMS = (
     "linux-x86_64",
+    "linux-arm64",
     "windows-x86_64",
     "macos-arm64",
     "macos-x86_64",
@@ -56,7 +57,7 @@ REQUIRED_GATES = {
     "mutation",
     "corpus-400",
     "determinism",
-    "performance-4-platform",
+    "performance-5-platform",
     "sandbox-oci",
     "sandbox-linux-native",
     "sandbox-windows-appcontainer",
@@ -557,8 +558,8 @@ def verify(
         canonical=True,
     )
     manifest = _exact(manifest, ROOT_FIELDS, "release evidence manifest")
-    if manifest["schema"] != "release-evidence-v3":
-        raise ValueError("release evidence schema must be release-evidence-v3")
+    if manifest["schema"] != "release-evidence-v4":
+        raise ValueError("release evidence schema must be release-evidence-v4")
     if manifest["planned_tag"] != tag:
         raise ValueError("release evidence planned_tag does not match the release tag")
     if manifest["maintainer"] != MAINTAINER:
@@ -681,9 +682,9 @@ def verify(
         elif "subject" in item:
             raise ValueError(f"{label}.subject is only valid for SPDX artifacts")
     if product_platforms != set(PLATFORMS):
-        raise ValueError("release evidence must contain all four product platforms")
+        raise ValueError("release evidence must contain all five product platforms")
     if helper_platforms != set(PLATFORMS):
-        raise ValueError("release evidence must contain helper bundles for all four platforms")
+        raise ValueError("release evidence must contain helper bundles for all five platforms")
     if macos_boot_platforms != {"macos-arm64", "macos-x86_64"}:
         raise ValueError(
             "release evidence must contain both architecture-specific macOS boot bundles"

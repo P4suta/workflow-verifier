@@ -9,7 +9,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use workflow_verifier_helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
-    execute_native, run_command_with_termination,
+    execute_native_with_exclusions, run_command_with_termination,
 };
 use workflow_verifier_runner_protocol::{
     Descriptor, LaunchError, Limits, RunResult, ValidatedPlan,
@@ -337,13 +337,15 @@ pub(super) fn broker_main(arguments: &[String]) -> Option<i32> {
 pub(super) fn launch(
     plan: &ValidatedPlan,
     source_root: &Path,
+    trusted_exclusions: &[String],
     descriptor: &Descriptor,
 ) -> Result<RunResult, LaunchError> {
     let mut sandbox = LinuxSandbox::new().map_err(LaunchError::Infrastructure)?;
-    execute_native(
+    execute_native_with_exclusions(
         plan,
         descriptor,
         source_root,
+        trusted_exclusions,
         &EnvironmentSecrets,
         &mut sandbox,
     )

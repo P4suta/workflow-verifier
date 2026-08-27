@@ -49,14 +49,12 @@ machine-readable evidence.
   boundaries, graph algorithms, fixed-point dataflow, and all verifier personas.
   Fingerprint updates therefore require an intentional test review rather than
   silently accepting changed behavior.
-- `determinism-v1` executes report, lockfile, and fix generation twice on each
-  platform and requires raw byte identity locally. `determinism-comparison-v1`
-  byte-compares the lockfile and fix output across Linux x86-64, Windows x86-64,
-  macOS arm64, and macOS x86-64. It compares canonical report semantics after
-  excluding only the authenticated root digest, executable digest, and bound
-  build commit, while retaining every platform's raw report digest and size as
-  provenance. This avoids falsely requiring PE, ELF, and Mach-O binaries to have
-  one digest without weakening any analyzer result.
+- `determinism-v2` executes report-v3, lockfile, and fix generation twice on
+  each platform and requires raw byte identity locally.
+  `determinism-comparison-v2` byte-compares lock and fix output across Linux
+  x86_64, Linux arm64, Windows x86_64, macOS arm64, and macOS x86_64. It
+  requires one report `semantic_digest` across all five while retaining each
+  platform's full report digest, binary identity, and target as provenance.
 - `dogfood-v1` requires zero diagnostics while analyzing the repository's real
   GitHub, GitLab, Azure, and CircleCI entrypoints, exercises every public CLI
   surface, recomputes the OCI evidence hash chain, and binds the verified audit
@@ -68,11 +66,11 @@ The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,
 and partial source coverage. They write outputs atomically.
 
-Publication inputs are composed by `release-evidence-v3`. Candidate commit `C`
+Publication inputs are composed by `release-evidence-v4`. Candidate commit `C`
 contains the release code and version; its single evidence-only child `E`
 contains measurements of `C` and is the future tag target. The manifest binds
 `C` and the planned tag to the corpus report, fixed official compatibility
-report, four platform performance comparisons, and signed sole-maintainer
+report, five platform performance comparisons, and signed sole-maintainer
 security attestation. `scripts/verify_release_evidence.py` validates the `E` to
 `C` parent relation and changed paths, nested proof states, every digest, the
 pinned maintainer SSH identity and namespace, and all fail-closed risk rules.
@@ -95,7 +93,7 @@ new reports receive a fresh exhaustive review before promotion.
 When a schema migration changes generated diagnostic or graph-node identities,
 `rebase-review` is an explicit aid rather than an implicit report migration. It
 accepts authenticated `report-v1` only on its named legacy side and authenticated
-`report-v2` only on its fresh side. Repository revision/source/license identity,
+`report-v3` only on its fresh side. Repository revision/source/license identity,
 the complete primary diagnostic semantics, and trace label/file shape must form
 a unique bijection. Generated IDs, the old corpus-root path prefix, graph-node
 IDs, and auxiliary trace coordinates are the only ignored values. Any added,

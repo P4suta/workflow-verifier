@@ -34,11 +34,15 @@ def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
     document: dict[str, object] = {
         "completeness": {"reasons": [], "state": "complete"},
         "configuration": {"digest": DIGEST, "origin": "built-in", "trust": "built-in"},
-        "schema": "report-v2",
-        "digest": None,
+        "schema": "report-v3",
         "tool": {
-            "binary_digest": DIGEST,
-            "build": {"dune": "3.24.2", "ocaml": "5.5.0", "source_commit": SHA},
+            "build": {
+                "binary_digest": DIGEST,
+                "compiler": "rustc test",
+                "implementation": "rust",
+                "source_commit": SHA,
+                "target": "test-target",
+            },
             "name": "workflow-verifier",
             "version": "0.1.0",
         },
@@ -58,15 +62,22 @@ def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
             "unknown_properties": 0,
         },
     }
+    semantic = json.loads(json.dumps(document))
+    semantic["tool"].pop("build")
+    document["semantic_digest"] = (
+        "sha256:"
+        + hashlib.sha256(
+            json.dumps(semantic, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+                "utf-8"
+            )
+        ).hexdigest()
+    )
     document["digest"] = (
         "sha256:"
         + hashlib.sha256(
-            json.dumps(
-                document,
-                ensure_ascii=False,
-                separators=(",", ":"),
-                sort_keys=True,
-            ).encode("utf-8")
+            json.dumps(document, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
+                "utf-8"
+            )
         ).hexdigest()
     )
     return document

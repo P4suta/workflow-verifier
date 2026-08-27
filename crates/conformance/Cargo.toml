@@ -1,0 +1,18 @@
+[package]
+name = "workflow-verifier-conformance"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[[bin]]
+name = "workflow-verifier-conformance"
+path = "src/main.rs"
+
+[dependencies]
+workflow-verifier-foundation = { path = "../foundation" }
+workflow-verifier-product = { path = "../product" }
+
+[lints]
+workspace = true

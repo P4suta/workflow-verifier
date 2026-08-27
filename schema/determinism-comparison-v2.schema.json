@@ -1,0 +1,64 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/determinism-comparison-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+          "name": { "enum": ["fix.diff", "workflow-verifier.lock"] },
+          "size": { "minimum": 1, "type": "integer" }
+        },
+        "required": ["digest", "name", "size"],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "failures": { "items": { "type": "string" }, "type": "array" },
+    "passed": { "type": "boolean" },
+    "platforms": {
+      "items": {
+        "enum": ["linux-arm64", "linux-x86_64", "macos-arm64", "macos-x86_64", "windows-x86_64"]
+      },
+      "maxItems": 5,
+      "minItems": 5,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "report_projection": {
+      "additionalProperties": false,
+      "properties": {
+        "excluded_fields": {
+          "const": ["digest", "semantic_digest", "tool.build"]
+        },
+        "reports": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "platform": {
+                "enum": ["linux-arm64", "linux-x86_64", "macos-arm64", "macos-x86_64", "windows-x86_64"]
+              },
+              "raw_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+              "raw_size": { "minimum": 1, "type": "integer" },
+              "semantic_digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+              "semantic_size": { "minimum": 1, "type": "integer" }
+            },
+            "required": ["platform", "raw_digest", "raw_size", "semantic_digest", "semantic_size"],
+            "type": "object"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "type": "array"
+        }
+      },
+      "required": ["excluded_fields", "reports"],
+      "type": "object"
+    },
+    "schema": { "const": "determinism-comparison-v2" }
+  },
+  "required": ["artifacts", "failures", "passed", "platforms", "report_projection", "schema"],
+  "title": "workflow-verifier five-platform determinism comparison v2",
+  "type": "object"
+}

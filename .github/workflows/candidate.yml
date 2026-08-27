@@ -170,6 +170,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - runner: ubuntu-24.04-arm
+            platform: linux-arm64
+            architecture: aarch64
           - runner: windows-2025
             platform: windows-x86_64
             architecture: AMD64
@@ -254,7 +257,7 @@ jobs:
           CANDIDATE: ${{ needs.identity.outputs.candidate }}
         run: |
           mapfile -d '' fragments < <(find _candidate/download -type f -name 'reproducibility-*.json' -print0 | sort -z)
-          test "${#fragments[@]}" -eq 5
+          test "${#fragments[@]}" -eq 6
           arguments=()
           for fragment in "${fragments[@]}"; do arguments+=(--fragment "$fragment"); done
           python -B scripts/candidate_artifacts.py aggregate \
@@ -298,6 +301,8 @@ jobs:
           names=(
             "workflow-verifier-$VERSION-linux-x86_64.tar.gz"
             "workflow-verifier-helpers-$VERSION-linux-x86_64.tar.gz"
+            "workflow-verifier-$VERSION-linux-arm64.tar.gz"
+            "workflow-verifier-helpers-$VERSION-linux-arm64.tar.gz"
             "workflow-verifier-$VERSION-macos-arm64.tar.gz"
             "workflow-verifier-helpers-$VERSION-macos-arm64.tar.gz"
             "workflow-verifier-$VERSION-macos-x86_64.tar.gz"

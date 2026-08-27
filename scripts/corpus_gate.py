@@ -53,9 +53,18 @@ REPORT_FIELDS = {
     "provider_profiles",
     "properties",
     "schema",
+    "semantic_digest",
     "snapshot",
     "summary",
     "tool",
+}
+TOOL_FIELDS = {"build", "name", "version"}
+BUILD_FIELDS = {
+    "binary_digest",
+    "compiler",
+    "implementation",
+    "source_commit",
+    "target",
 }
 DIAGNOSTIC_FIELDS = {
     "capabilities",
@@ -219,19 +228,45 @@ def _expectations(value: Any, label: str) -> dict[str, str]:
 
 def _report_diagnostics(path: Path) -> dict[str, str]:
     document = _load_json(path)
-    if not isinstance(document, dict) or document.get("schema") != "report-v2":
-        raise ValueError(f"{path} is not a report-v2 document")
+    if not isinstance(document, dict) or document.get("schema") != "report-v3":
+        raise ValueError(f"{path} is not a report-v3 document")
     _exact_fields(document, REPORT_FIELDS, f"{path} report")
     tool = document.get("tool")
-    if not isinstance(tool, dict) or tool.get("name") != "workflow-verifier":
+    if not isinstance(tool, dict):
+        raise ValueError(f"{path} has an invalid tool identity")
+    _exact_fields(tool, TOOL_FIELDS, f"{path} tool")
+    build = tool.get("build")
+    if not isinstance(build, dict):
+        raise ValueError(f"{path} has invalid build provenance")
+    _exact_fields(build, BUILD_FIELDS, f"{path} build")
+    if (
+        tool.get("name") != "workflow-verifier"
+        or not isinstance(tool.get("version"), str)
+        or not tool["version"]
+        or not isinstance(build.get("binary_digest"), str)
+        or not DIGEST.fullmatch(build["binary_digest"])
+        or any(
+            not isinstance(build.get(field), str)
+            for field in ("compiler", "implementation", "target")
+        )
+        or not (build.get("source_commit") is None or isinstance(build.get("source_commit"), str))
+    ):
         raise ValueError(f"{path} was not produced by workflow-verifier")
     if document.get("persona") != "audit":
         raise ValueError(f"{path} is not an audit report")
+    semantic_digest = document.get("semantic_digest")
+    if not isinstance(semantic_digest, str) or not DIGEST.fullmatch(semantic_digest):
+        raise ValueError(f"{path} has an invalid semantic report digest")
+    semantic_projection = {
+        key: value for key, value in document.items() if key not in {"digest", "semantic_digest"}
+    }
+    semantic_projection["tool"] = {key: value for key, value in tool.items() if key != "build"}
+    if semantic_digest != _sha256_bytes(_canonical(semantic_projection)):
+        raise ValueError(f"{path} semantic report digest does not authenticate canonical content")
     claimed_digest = document.get("digest")
     if not isinstance(claimed_digest, str) or not DIGEST.fullmatch(claimed_digest):
         raise ValueError(f"{path} has an invalid report digest")
-    provisional = dict(document)
-    provisional["digest"] = None
+    provisional = {key: value for key, value in document.items() if key != "digest"}
     if claimed_digest != _sha256_bytes(_canonical(provisional)):
         raise ValueError(f"{path} report digest does not authenticate canonical content")
     diagnostics = document.get("diagnostics")

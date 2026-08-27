@@ -27,7 +27,7 @@ class PromoteReleaseAssetsTests(unittest.TestCase):
         signature = staged / "artifacts" / "product.sigstore.json"
         signature.write_bytes(b"signature")
         canonical(
-            staged / "release-evidence-v3.json",
+            staged / "release-evidence-v4.json",
             {
                 "artifacts": [
                     {
@@ -43,7 +43,7 @@ class PromoteReleaseAssetsTests(unittest.TestCase):
                         },
                     }
                 ],
-                "schema": "release-evidence-v3",
+                "schema": "release-evidence-v4",
             },
         )
         return staged
@@ -72,7 +72,7 @@ class PromoteReleaseAssetsTests(unittest.TestCase):
             with gzip.open(bundle, "rb") as stream:
                 with tarfile.open(fileobj=stream) as archive:
                     self.assertIn(
-                        "workflow-verifier-release-evidence/release-evidence-v3.json",
+                        "workflow-verifier-release-evidence/release-evidence-v4.json",
                         archive.getnames(),
                     )
 

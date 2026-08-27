@@ -18,7 +18,7 @@ interpreted as a current object. New locks use `lock-v2`.
 OCaml 5.5 with Dune 3.24.2 is the release toolchain. OCaml 5.4 is a compatibility
 gate. Rust helpers use Rust 1.98 with MSRV 1.85. JSON, SARIF, lockfiles, evidence,
 and fix patches are LF-canonical. Raw report bytes must repeat for the same
-snapshot, semantic profile, and binary provenance. The four-platform gate
+snapshot, semantic profile, and binary provenance. The five-platform gate
 retains each raw report digest but compares canonical report semantics after
 removing only the authenticated root digest, binary digest, and bound source
 commit; lockfiles and fix patches remain byte-identical across platforms.

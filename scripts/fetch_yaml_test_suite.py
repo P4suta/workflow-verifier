@@ -123,13 +123,31 @@ class TreeEntry:
     object_id: str
 
 
+def git_environment() -> dict[str, str]:
+    environment = {
+        key: value for key, value in os.environ.items() if not key.upper().startswith("GIT_")
+    }
+    environment.update(
+        {
+            "GIT_CONFIG_GLOBAL": os.devnull,
+            "GIT_CONFIG_NOSYSTEM": "1",
+            "GIT_LFS_SKIP_SMUDGE": "1",
+            "GIT_TERMINAL_PROMPT": "0",
+        }
+    )
+    return environment
+
+
 def git(*arguments: str, cwd: Path | None = None) -> str:
     process = subprocess.run(
         ["git", *arguments],
         cwd=cwd,
+        env=git_environment(),
+        stdin=subprocess.DEVNULL,
         check=False,
         text=True,
         capture_output=True,
+        shell=False,
     )
     if process.returncode != 0:
         detail = process.stderr.strip() or process.stdout.strip()
@@ -141,9 +159,12 @@ def git_bytes(*arguments: str, cwd: Path, input_bytes: bytes | None = None) -> b
     process = subprocess.run(
         ["git", *arguments],
         cwd=cwd,
+        env=git_environment(),
         check=False,
         input=input_bytes,
+        stdin=subprocess.DEVNULL if input_bytes is None else None,
         capture_output=True,
+        shell=False,
     )
     if process.returncode != 0:
         detail = process.stderr.decode("utf-8", errors="replace").strip()

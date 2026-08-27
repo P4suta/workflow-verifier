@@ -4,6 +4,7 @@ import hashlib
 import json
 import tempfile
 import unittest
+from copy import deepcopy
 from pathlib import Path
 from unittest import mock
 
@@ -13,6 +14,8 @@ from scripts.official_compat import _canonical, _run_analyzer, _verify_expected,
 
 def report(provider: str, *, rule_id: str = "WV-SUPPLY-001") -> bytes:
     value = {
+        "completeness": {},
+        "configuration": {},
         "diagnostics": [
             {
                 "capabilities": [],
@@ -27,15 +30,48 @@ def report(provider: str, *, rule_id: str = "WV-SUPPLY-001") -> bytes:
                 "trace": [],
             }
         ],
-        "digest": "sha256:" + "a" * 64,
+        "digest": None,
+        "gate": {},
         "graphs": [{"provider": provider}],
         "inputs": [{"digest": "sha256:" + "b" * 64, "path": "ci.yml"}],
+        "lock": None,
         "persona": "audit",
         "properties": [],
-        "schema": "report-v2",
+        "provider_profiles": [],
+        "schema": "report-v3",
+        "semantic_digest": None,
+        "snapshot": {},
         "summary": {},
-        "tool": {"name": "workflow-verifier", "version": "0.1.0"},
+        "tool": {
+            "build": {
+                "binary_digest": "sha256:" + "c" * 64,
+                "compiler": "rustc fixture",
+                "implementation": "rust",
+                "source_commit": None,
+                "target": "fixture-target",
+            },
+            "name": "workflow-verifier",
+            "version": "0.1.0",
+        },
     }
+    semantic = deepcopy(value)
+    semantic.pop("digest")
+    semantic.pop("semantic_digest")
+    semantic["tool"].pop("build")
+    value["semantic_digest"] = (
+        "sha256:"
+        + hashlib.sha256(
+            json.dumps(semantic, separators=(",", ":"), sort_keys=True).encode()
+        ).hexdigest()
+    )
+    authenticated = deepcopy(value)
+    authenticated.pop("digest")
+    value["digest"] = (
+        "sha256:"
+        + hashlib.sha256(
+            json.dumps(authenticated, separators=(",", ":"), sort_keys=True).encode()
+        ).hexdigest()
+    )
     return json.dumps(value, separators=(",", ":"), sort_keys=True).encode("utf-8") + b"\n"
 
 
@@ -114,7 +150,29 @@ class OfficialCompatibilityTests(unittest.TestCase):
             self.assertTrue(
                 all(item["semantic_digest"].startswith("sha256:") for item in result["projects"])
             )
+            self.assertTrue(
+                all(
+                    item["semantic_digest"]
+                    == json.loads(report(item["provider"]))["semantic_digest"]
+                    for item in result["projects"]
+                )
+            )
             self.assertNotIn("message", json.dumps(result))
+
+    def test_legacy_or_tampered_reports_are_rejected_as_product_evidence(self) -> None:
+        document = json.loads(report("github"))
+        document["schema"] = "report-v2"
+        legacy = json.dumps(document, separators=(",", ":"), sort_keys=True).encode() + b"\n"
+        from scripts.official_compat import _report_summary
+
+        with self.assertRaisesRegex(ValueError, "report-v3"):
+            _report_summary(legacy, {"id": "fixture", "provider": "github", "files": 1})
+
+        document = json.loads(report("github"))
+        document["summary"] = {"tampered": True}
+        tampered = json.dumps(document, separators=(",", ":"), sort_keys=True).encode() + b"\n"
+        with self.assertRaisesRegex(ValueError, "digest"):
+            _report_summary(tampered, {"id": "fixture", "provider": "github", "files": 1})
 
     def test_expected_baseline_ignores_only_platform_bound_report_digests(self) -> None:
         base = {
