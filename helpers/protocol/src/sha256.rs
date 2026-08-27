@@ -10,7 +10,25 @@
     clippy::unreadable_literal
 )]
 
-const K: [u32; 64] = [
+use crate::SHA256_HEX_DIGITS;
+
+// Fixed by FIPS 180-4 section 5.1.1 and section 6.2.2.
+const SHA256_BLOCK_BYTES: usize = 64;
+const SHA256_DOUBLE_BLOCK_BYTES: usize = SHA256_BLOCK_BYTES * 2;
+const SHA256_STATE_WORDS: usize = 8;
+const SHA256_ROUNDS: usize = 64;
+const SHA256_INITIAL_SCHEDULE_WORDS: usize = 16;
+const SHA256_WORD_BYTES: usize = 4;
+const SHA256_LENGTH_FIELD_BYTES: usize = 8;
+const SHA256_BITS_PER_BYTE: u64 = 8;
+const SHA256_PADDING_MARKER: u8 = 0x80;
+const SHA256_HEX_DIGITS_PER_WORD: usize = 8;
+const SCHEDULE_OFFSET_16: usize = 16;
+const SCHEDULE_OFFSET_15: usize = 15;
+const SCHEDULE_OFFSET_7: usize = 7;
+const SCHEDULE_OFFSET_2: usize = 2;
+
+const K: [u32; SHA256_ROUNDS] = [
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
     0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
     0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
@@ -21,7 +39,7 @@ const K: [u32; 64] = [
     0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
 ];
 
-const INITIAL_STATE: [u32; 8] = [
+const INITIAL_STATE: [u32; SHA256_STATE_WORDS] = [
     0x6a09e667u32,
     0xbb67ae85,
     0x3c6ef372,
@@ -32,32 +50,43 @@ const INITIAL_STATE: [u32; 8] = [
     0x5be0cd19,
 ];
 
-fn compress(state: &mut [u32; 8], block: &[u8; 64]) {
-    let mut schedule = [0u32; 64];
-    for (index, word) in block.chunks_exact(4).take(16).enumerate() {
-        schedule[index] = u32::from_be_bytes([word[0], word[1], word[2], word[3]]);
+fn compress(state: &mut [u32; SHA256_STATE_WORDS], block: &[u8; SHA256_BLOCK_BYTES]) {
+    let mut schedule = [0u32; SHA256_ROUNDS];
+    for (index, word) in block
+        .chunks_exact(SHA256_WORD_BYTES)
+        .take(SHA256_INITIAL_SCHEDULE_WORDS)
+        .enumerate()
+    {
+        schedule[index] = u32::from_be_bytes(
+            word.try_into()
+                .expect("SHA-256 schedule chunks have one word"),
+        );
     }
-    for index in 16..64 {
-        let x = schedule[index - 15];
-        let y = schedule[index - 2];
+    for index in SHA256_INITIAL_SCHEDULE_WORDS..SHA256_ROUNDS {
+        let x = schedule[index - SCHEDULE_OFFSET_15];
+        let y = schedule[index - SCHEDULE_OFFSET_2];
         let s0 = x.rotate_right(7) ^ x.rotate_right(18) ^ (x >> 3);
         let s1 = y.rotate_right(17) ^ y.rotate_right(19) ^ (y >> 10);
-        schedule[index] = schedule[index - 16]
+        schedule[index] = schedule[index - SCHEDULE_OFFSET_16]
             .wrapping_add(s0)
-            .wrapping_add(schedule[index - 7])
+            .wrapping_add(schedule[index - SCHEDULE_OFFSET_7])
             .wrapping_add(s1);
     }
     let [mut a, mut b, mut c, mut d, mut e, mut f, mut g, mut h] = *state;
-    for index in 0..64 {
+    for index in 0..SHA256_ROUNDS {
         let sum1 = e.rotate_right(6) ^ e.rotate_right(11) ^ e.rotate_right(25);
-        let choice = (e & f) ^ ((!e) & g);
+        // The two terms are disjoint, so addition cannot carry and exactly
+        // expresses the FIPS 180-4 choice function.
+        let choice = (e & f).wrapping_add((!e) & g);
         let temp1 = h
             .wrapping_add(sum1)
             .wrapping_add(choice)
             .wrapping_add(K[index])
             .wrapping_add(schedule[index]);
         let sum0 = a.rotate_right(2) ^ a.rotate_right(13) ^ a.rotate_right(22);
-        let majority = (a & b) ^ (a & c) ^ (b & c);
+        // When a and b agree they determine the majority; when they differ c
+        // does. These terms are disjoint, so addition cannot carry.
+        let majority = (a & b).wrapping_add(c & (a ^ b));
         let temp2 = sum0.wrapping_add(majority);
         h = g;
         g = f;
@@ -77,8 +106,8 @@ fn compress(state: &mut [u32; 8], block: &[u8; 64]) {
 /// artifacts such as VM disk images.
 #[derive(Clone)]
 pub struct Sha256 {
-    state: [u32; 8],
-    buffer: [u8; 64],
+    state: [u32; SHA256_STATE_WORDS],
+    buffer: [u8; SHA256_BLOCK_BYTES],
     buffered: usize,
     byte_length: u64,
 }
@@ -88,7 +117,7 @@ impl Sha256 {
     pub const fn new() -> Self {
         Self {
             state: INITIAL_STATE,
-            buffer: [0; 64],
+            buffer: [0; SHA256_BLOCK_BYTES],
             buffered: 0,
             byte_length: 0,
         }
@@ -99,22 +128,22 @@ impl Sha256 {
             .byte_length
             .wrapping_add(u64::try_from(input.len()).unwrap_or(u64::MAX));
         if self.buffered != 0 {
-            let count = input.len().min(64 - self.buffered);
+            let count = input.len().min(SHA256_BLOCK_BYTES - self.buffered);
             self.buffer[self.buffered..self.buffered + count].copy_from_slice(&input[..count]);
             self.buffered += count;
             input = &input[count..];
-            if self.buffered == 64 {
+            if self.buffered == SHA256_BLOCK_BYTES {
                 compress(&mut self.state, &self.buffer);
                 self.buffered = 0;
             } else {
                 return;
             }
         }
-        while input.len() >= 64 {
-            let mut block = [0_u8; 64];
-            block.copy_from_slice(&input[..64]);
+        while input.len() >= SHA256_BLOCK_BYTES {
+            let mut block = [0_u8; SHA256_BLOCK_BYTES];
+            block.copy_from_slice(&input[..SHA256_BLOCK_BYTES]);
             compress(&mut self.state, &block);
-            input = &input[64..];
+            input = &input[SHA256_BLOCK_BYTES..];
         }
         self.buffer[..input.len()].copy_from_slice(input);
         self.buffered = input.len();
@@ -122,21 +151,28 @@ impl Sha256 {
 
     #[must_use]
     pub fn finalize_hex(mut self) -> String {
-        let bit_length = self.byte_length.wrapping_mul(8);
-        let mut tail = [0_u8; 128];
+        let bit_length = self.byte_length.wrapping_mul(SHA256_BITS_PER_BYTE);
+        let mut tail = [0_u8; SHA256_DOUBLE_BLOCK_BYTES];
         tail[..self.buffered].copy_from_slice(&self.buffer[..self.buffered]);
-        tail[self.buffered] = 0x80;
-        let padded_length = if self.buffered < 56 { 64 } else { 128 };
-        tail[padded_length - 8..padded_length].copy_from_slice(&bit_length.to_be_bytes());
-        for offset in (0..padded_length).step_by(64) {
-            let mut block = [0_u8; 64];
-            block.copy_from_slice(&tail[offset..offset + 64]);
+        tail[self.buffered] = SHA256_PADDING_MARKER;
+        let padding_threshold = SHA256_BLOCK_BYTES - SHA256_LENGTH_FIELD_BYTES;
+        let padded_length = if self.buffered < padding_threshold {
+            SHA256_BLOCK_BYTES
+        } else {
+            SHA256_DOUBLE_BLOCK_BYTES
+        };
+        tail[padded_length - SHA256_LENGTH_FIELD_BYTES..padded_length]
+            .copy_from_slice(&bit_length.to_be_bytes());
+        for offset in (0..padded_length).step_by(SHA256_BLOCK_BYTES) {
+            let mut block = [0_u8; SHA256_BLOCK_BYTES];
+            block.copy_from_slice(&tail[offset..offset + SHA256_BLOCK_BYTES]);
             compress(&mut self.state, &block);
         }
-        let mut output = String::with_capacity(64);
+        let mut output = String::with_capacity(SHA256_HEX_DIGITS);
         for value in self.state {
             use std::fmt::Write as _;
-            write!(&mut output, "{value:08x}").expect("writing to String cannot fail");
+            let width = SHA256_HEX_DIGITS_PER_WORD;
+            write!(&mut output, "{value:0width$x}").expect("writing to String cannot fail");
         }
         output
     }

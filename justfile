@@ -64,6 +64,16 @@ mutation-gate report="_build/mutation-report.json" output="_build/mutation-gate-
 mutation-campaign catalog="_build/mutation-evidence/mutation-catalog.json" evidence="_build/mutation-evidence" output="_build/mutation-evidence/mutation-campaign-v1.json":
     python -B scripts/verify_mutation_campaign.py aggregate --manifest scripts/mutation-shards-v1.json --config .ocaml-mutants.toml --workspace . --catalog {{catalog}} --evidence-dir {{evidence}} --output {{output}}
 
+mutation-rust-list output="_build/rust-mutants-catalog.json":
+    mkdir -p _build
+    cargo mutants --config .cargo/mutants.toml --workspace --list --json > {{output}}
+
+mutation-rust package output="_build/rust-mutants":
+    cargo mutants --config .cargo/mutants.toml --package {{package}} --output {{output}}
+
+mutation-rust-high-value output="_build/rust-mutants-high-value":
+    cargo mutants --config .cargo/mutants.toml --package workflow-verifier-domain --package workflow-verifier-engine --package workflow-verifier-foundation --package workflow-verifier-frontend --package workflow-verifier-product --package workflow-verifier-sandbox --package workflow-verifier-syntax --package workflow-verifier-verifier --package workflow-verifier-runner-protocol --output {{output}}
+
 corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" reports_root="evaluation/reports" output="_build/corpus-report-v1.json":
     python -B scripts/corpus_gate.py --manifest {{manifest}} --corpus-root {{corpus_root}} --reports-root {{reports_root}} --output {{output}} --release
 

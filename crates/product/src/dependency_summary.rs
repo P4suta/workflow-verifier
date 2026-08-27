@@ -331,3 +331,209 @@ fn effect(value: &str) -> Option<ObservableEffect> {
         _ => return None,
     })
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_foundation::Span;
+    use workflow_verifier_frontend::DependencyLocator;
+    use workflow_verifier_syntax::YamlDocument;
+
+    fn dependency(provider: Provider, kind: DependencyKind) -> Dependency {
+        Dependency::unresolved(
+            provider,
+            kind,
+            "semantic-unit",
+            DependencyLocator::Direct,
+            Span::default(),
+        )
+    }
+
+    #[test]
+    fn inference_dispatches_only_azure_tasks_and_rejects_non_utf8() {
+        let task = DependencySummary::infer(
+            &dependency(Provider::Azure, DependencyKind::Task),
+            "task.json",
+            br#"{"execution":{"Node20":{"target":"index.js"}}}"#,
+        );
+        assert_eq!(
+            task.capabilities,
+            [Capability::FilesystemRead, Capability::Shell]
+        );
+        assert_eq!(task.effects, [ObservableEffect::CommandExecution]);
+        assert!(
+            task.reasons
+                .iter()
+                .any(|reason| reason.starts_with("Azure task implementation"))
+        );
+
+        let no_execution = DependencySummary::infer(
+            &dependency(Provider::Azure, DependencyKind::Task),
+            "task.json",
+            br#"{"execution":{}}"#,
+        );
+        assert!(no_execution.capabilities.is_empty());
+        assert!(
+            no_execution
+                .reasons
+                .iter()
+                .any(|reason| reason.contains("no declared execution"))
+        );
+
+        let malformed = DependencySummary::infer(
+            &dependency(Provider::Azure, DependencyKind::Task),
+            "task.json",
+            b"{",
+        );
+        assert!(
+            malformed
+                .reasons
+                .iter()
+                .any(|reason| reason.starts_with("Azure task metadata JSON byte"))
+        );
+
+        for candidate in [
+            dependency(Provider::Azure, DependencyKind::Template),
+            dependency(Provider::Github, DependencyKind::Task),
+        ] {
+            let summary = DependencySummary::infer(&candidate, "unit.yml", b"not: a task\n");
+            assert!(
+                summary
+                    .reasons
+                    .iter()
+                    .all(|reason| !reason.starts_with("Azure task"))
+            );
+        }
+
+        let non_utf8 = DependencySummary::infer(
+            &dependency(Provider::Github, DependencyKind::Action),
+            "action.yml",
+            &[u8::MAX],
+        );
+        assert_eq!(non_utf8.reasons, ["semantic source is not UTF-8"]);
+    }
+
+    #[test]
+    fn github_runtime_completeness_is_exact_for_each_action_kind() {
+        let document = |source| YamlDocument::parse("action.yml", source, Budget::default());
+        assert!(github_runtime_reasons(&document("name: action\n")).is_empty());
+        assert!(
+            github_runtime_reasons(&document("runs:\n  using: composite\n  steps: []\n"))
+                .is_empty()
+        );
+        assert_eq!(
+            github_runtime_reasons(&document("runs:\n  using: docker\n")),
+            ["Docker action implementation is unavailable beyond locked metadata"]
+        );
+        assert_eq!(
+            github_runtime_reasons(&document("runs:\n  using: node20\n")),
+            ["node20 action implementation is unavailable beyond locked metadata"]
+        );
+
+        let action = DependencySummary::infer(
+            &dependency(Provider::Github, DependencyKind::Action),
+            "action.yml",
+            b"name: action\nruns:\n  using: node20\n  main: index.js\n",
+        );
+        assert!(
+            action
+                .reasons
+                .iter()
+                .any(|reason| reason.starts_with("node20 action"))
+        );
+        let include = DependencySummary::infer(
+            &dependency(Provider::Github, DependencyKind::Include),
+            "action.yml",
+            b"name: action\nruns:\n  using: node20\n  main: index.js\n",
+        );
+        assert!(
+            include
+                .reasons
+                .iter()
+                .all(|reason| !reason.starts_with("node20 action"))
+        );
+    }
+
+    #[test]
+    fn effect_requirements_and_json_names_cover_every_variant() {
+        let requirement_cases = [
+            (
+                ObservableEffect::RepositoryChange,
+                vec![Capability::RepositoryWrite, Capability::TokenWrite],
+            ),
+            (ObservableEffect::NetworkRequest, vec![Capability::Network]),
+            (ObservableEffect::FileRead, Vec::new()),
+            (
+                ObservableEffect::FileWrite,
+                vec![Capability::FilesystemWrite],
+            ),
+            (ObservableEffect::CommandExecution, Vec::new()),
+            (
+                ObservableEffect::ArtifactPublish,
+                vec![Capability::ArtifactWrite],
+            ),
+            (ObservableEffect::CachePublish, vec![Capability::CacheWrite]),
+            (
+                ObservableEffect::DeploymentChange,
+                vec![Capability::Deployment],
+            ),
+            (
+                ObservableEffect::CredentialUse,
+                vec![Capability::SecretAccess],
+            ),
+            (
+                ObservableEffect::WorkflowChange,
+                vec![Capability::FilesystemWrite],
+            ),
+            (ObservableEffect::AiAgentExecution, vec![Capability::AiTool]),
+        ];
+        for (effect, expected) in requirement_cases {
+            assert_eq!(required_by_effect(effect), expected);
+        }
+
+        let capabilities = [
+            Capability::RepositoryRead,
+            Capability::RepositoryWrite,
+            Capability::TokenRead,
+            Capability::TokenWrite,
+            Capability::Oidc,
+            Capability::CloudCredential,
+            Capability::SecretAccess,
+            Capability::Network,
+            Capability::FilesystemRead,
+            Capability::FilesystemWrite,
+            Capability::Shell,
+            Capability::ArtifactRead,
+            Capability::ArtifactWrite,
+            Capability::CacheRead,
+            Capability::CacheWrite,
+            Capability::Deployment,
+            Capability::SelfHostedPersistence,
+            Capability::AiTool,
+        ];
+        for expected in capabilities {
+            assert_eq!(capability(expected.name()), Some(expected));
+        }
+        assert_eq!(capability("unknown"), None);
+
+        let effects = [
+            ObservableEffect::RepositoryChange,
+            ObservableEffect::NetworkRequest,
+            ObservableEffect::FileRead,
+            ObservableEffect::FileWrite,
+            ObservableEffect::CommandExecution,
+            ObservableEffect::ArtifactPublish,
+            ObservableEffect::CachePublish,
+            ObservableEffect::DeploymentChange,
+            ObservableEffect::CredentialUse,
+            ObservableEffect::WorkflowChange,
+            ObservableEffect::AiAgentExecution,
+        ];
+        for expected in effects {
+            assert_eq!(effect(expected.name()), Some(expected));
+        }
+        assert_eq!(effect("unknown"), None);
+        assert!(unique(&["one".to_owned(), "two".to_owned()], "values").is_ok());
+        assert!(unique(&["same".to_owned(), "same".to_owned()], "values").is_err());
+    }
+}

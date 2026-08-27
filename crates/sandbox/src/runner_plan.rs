@@ -2,11 +2,11 @@ use crate::Scenario;
 use std::collections::{BTreeMap, BTreeSet};
 use workflow_verifier_foundation::{JsonValue, content_digest, valid_content_digest};
 use workflow_verifier_runner_protocol::{
-    Control, Dependency, Limits, PlanStatus, Step, ValidatedPlan, validate_plan,
+    Control, Dependency, Limits, PlanStatus, RUNNER_V2_CPU_CORES, RUNNER_V2_MEMORY_BYTES,
+    RUNNER_V2_MEMORY_MIB, RUNNER_V2_OUTPUT_BYTES, RUNNER_V2_PROCESSES, RUNNER_V2_SCRATCH_BYTES,
+    RUNNER_V2_SCRATCH_ENTRIES, RUNNER_V2_WALL_TIME_SECONDS, Step, UNRESOLVED_CONTENT_DIGEST,
+    ValidatedPlan, validate_plan,
 };
-
-const UNRESOLVED_DIGEST: &str =
-    "sha256:0000000000000000000000000000000000000000000000000000000000000000";
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Backend {
@@ -87,7 +87,7 @@ impl RunnerPlan {
         let secret_names = request.scenario.secret_names.clone();
         for step in &mut request.steps {
             if !resolved_digest(&step.image) {
-                UNRESOLVED_DIGEST.clone_into(&mut step.image);
+                UNRESOLVED_CONTENT_DIGEST.clone_into(&mut step.image);
             }
             for (name, value) in &mut step.environment {
                 if secret_names.contains(name) {
@@ -105,7 +105,7 @@ impl RunnerPlan {
         let workload_digest = if images.len() == 1 {
             images.remove(0)
         } else {
-            UNRESOLVED_DIGEST.to_owned()
+            UNRESOLVED_CONTENT_DIGEST.to_owned()
         };
         let mut reasons = std::mem::take(&mut request.incomplete_reasons);
         reasons.extend(request.dependencies.iter().filter_map(|dependency| {
@@ -360,7 +360,8 @@ fn validate_request(request: &RunnerPlanRequest) -> Result<(), String> {
     for step in &request.steps {
         if step.id.is_empty()
             || step.argv.is_empty()
-            || !step.working_directory.starts_with("/workspace")
+            || !(step.working_directory == "/workspace"
+                || step.working_directory.starts_with("/workspace/"))
             || !step_ids.insert(step.id.as_str())
         {
             return Err("steps need unique IDs, argv, and a confined working directory".to_owned());
@@ -394,8 +395,15 @@ fn unique<T: Ord + Clone>(values: &[T], context: &str) -> Result<(), String> {
 }
 
 fn valid_destination(value: &str) -> bool {
-    value.starts_with("https://")
-        && !value.contains(['@', '\\', '?', '#', '\0', '\r', '\n'])
+    let Some(origin_and_path) = value.strip_prefix("https://") else {
+        return false;
+    };
+    let authority = origin_and_path.split('/').next().unwrap_or_default();
+    !authority.is_empty()
+        && !value.contains(['@', '\\', '?', '#', '%', '\0', '\r', '\n'])
+        && !value
+            .bytes()
+            .any(|byte| byte.is_ascii_whitespace() || byte.is_ascii_control())
         && !value.contains("..")
 }
 
@@ -408,24 +416,49 @@ fn environment_name(value: &str) -> bool {
 }
 
 fn resolved_digest(value: &str) -> bool {
-    valid_content_digest(value) && value != UNRESOLVED_DIGEST
+    valid_content_digest(value) && value != UNRESOLVED_CONTENT_DIGEST
 }
 
 fn limits_json() -> JsonValue {
     JsonValue::Object(BTreeMap::from([
-        ("cpu_cores".to_owned(), JsonValue::Integer(1)),
-        ("memory_bytes".to_owned(), JsonValue::Integer(2_147_483_648)),
+        (
+            "cpu_cores".to_owned(),
+            JsonValue::Integer(i64::try_from(RUNNER_V2_CPU_CORES).expect("schema limit fits i64")),
+        ),
+        (
+            "memory_bytes".to_owned(),
+            JsonValue::Integer(
+                i64::try_from(RUNNER_V2_MEMORY_BYTES).expect("schema limit fits i64"),
+            ),
+        ),
         (
             "output_bytes".to_owned(),
-            JsonValue::Integer(16 * 1024 * 1024),
+            JsonValue::Integer(
+                i64::try_from(RUNNER_V2_OUTPUT_BYTES).expect("schema limit fits i64"),
+            ),
         ),
-        ("processes".to_owned(), JsonValue::Integer(128)),
+        (
+            "processes".to_owned(),
+            JsonValue::Integer(i64::try_from(RUNNER_V2_PROCESSES).expect("schema limit fits i64")),
+        ),
         (
             "scratch_bytes".to_owned(),
-            JsonValue::Integer(4_294_967_296),
+            JsonValue::Integer(
+                i64::try_from(RUNNER_V2_SCRATCH_BYTES).expect("schema limit fits i64"),
+            ),
         ),
-        ("scratch_entries".to_owned(), JsonValue::Integer(100_000)),
-        ("wall_time_seconds".to_owned(), JsonValue::Integer(900)),
+        (
+            "scratch_entries".to_owned(),
+            JsonValue::Integer(
+                i64::try_from(RUNNER_V2_SCRATCH_ENTRIES).expect("schema limit fits i64"),
+            ),
+        ),
+        (
+            "wall_time_seconds".to_owned(),
+            JsonValue::Integer(
+                i64::try_from(RUNNER_V2_WALL_TIME_SECONDS).expect("schema limit fits i64"),
+            ),
+        ),
     ]))
 }
 
@@ -514,9 +547,9 @@ fn step_json(step: &Step) -> JsonValue {
 #[must_use]
 pub fn portable_limits() -> Limits {
     Limits {
-        cpu_seconds: 900,
-        memory_mb: 2048,
-        processes: 128,
-        output_bytes: 16 * 1024 * 1024,
+        cpu_seconds: RUNNER_V2_WALL_TIME_SECONDS,
+        memory_mb: RUNNER_V2_MEMORY_MIB,
+        processes: RUNNER_V2_PROCESSES,
+        output_bytes: RUNNER_V2_OUTPUT_BYTES,
     }
 }

@@ -410,3 +410,105 @@ impl Report {
             && self.digest == content_digest(self.full_digest_projection().canonical())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_verifier::{PropertyState, VerificationResult};
+
+    fn report() -> Report {
+        Report::new(
+            Persona::Gate,
+            Vec::new(),
+            Vec::new(),
+            vec![VerificationResult {
+                properties: vec![
+                    Property {
+                        id: "RULE-B".to_owned(),
+                        state: PropertyState::Proved,
+                        subject: None,
+                        explanation: "second".to_owned(),
+                    },
+                    Property {
+                        id: "RULE-A".to_owned(),
+                        state: PropertyState::Proved,
+                        subject: None,
+                        explanation: "first".to_owned(),
+                    },
+                ],
+                diagnostics: Vec::new(),
+                complete: true,
+                analyzed_nodes: 0,
+                analyzed_edges: 0,
+            }],
+            Vec::new(),
+            BuildInfo {
+                implementation: "rust".to_owned(),
+                compiler: "rustc".to_owned(),
+                target: "test-target".to_owned(),
+                source_commit: None,
+                binary_digest: content_digest("binary"),
+            },
+            ReportProvenance {
+                config_origin: "policy.toml".to_owned(),
+                config_trust: "trusted-policy".to_owned(),
+                config_digest: content_digest("config"),
+                lock_digest: content_digest("lock"),
+                source_manifest_digest: content_digest("manifest"),
+                provider_profiles: Vec::new(),
+                completeness_reasons: Vec::new(),
+                gate_result: GateResult::Pass,
+                exit_code: crate::EXIT_CODE_PASS,
+            },
+        )
+    }
+
+    #[test]
+    fn gate_names_and_public_config_origins_are_exact() {
+        assert_eq!(
+            [
+                GateResult::Pass,
+                GateResult::Finding,
+                GateResult::Incomplete
+            ]
+            .map(GateResult::name),
+            ["pass", "finding", "incomplete"]
+        );
+        for safe in [
+            "policy.toml",
+            "config/policy.toml",
+            ".config/policy.toml",
+            "C",
+        ] {
+            assert_eq!(public_origin(safe), safe.replace('\\', "/"));
+        }
+        for (private, expected) in [
+            ("/private/policy.toml", "external:policy.toml"),
+            ("C:\\private\\policy.toml", "external:policy.toml"),
+            ("config/../policy.toml", "external:policy.toml"),
+        ] {
+            assert_eq!(public_origin(private), expected);
+        }
+    }
+
+    #[test]
+    fn properties_are_sorted_and_both_report_digests_authenticate_independently() {
+        let report = report();
+        assert_eq!(
+            report
+                .properties()
+                .iter()
+                .map(|property| property.id.as_str())
+                .collect::<Vec<_>>(),
+            ["RULE-A", "RULE-B"]
+        );
+        assert!(report.verify_digests());
+
+        let mut semantic_tamper = report.clone();
+        semantic_tamper.semantic_digest = content_digest("other semantics");
+        assert!(!semantic_tamper.verify_digests());
+        let mut full_tamper = report;
+        full_tamper.digest = content_digest("other build");
+        assert!(!full_tamper.verify_digests());
+    }
+}

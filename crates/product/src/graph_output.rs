@@ -95,3 +95,63 @@ pub fn graph_to_dot(kind: GraphKind, graph: &Graph) -> String {
     output.push_str("}\n");
     output
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_domain::{Node, NodeKind, Phase, Provider};
+    use workflow_verifier_foundation::Span;
+
+    #[test]
+    fn graph_filters_classify_every_edge_kind() {
+        let kinds = [
+            EdgeKind::Control,
+            EdgeKind::Data,
+            EdgeKind::Call,
+            EdgeKind::Grant,
+            EdgeKind::Persist,
+            EdgeKind::Read,
+            EdgeKind::Write,
+        ];
+        for edge in kinds {
+            assert!(keep(GraphKind::All, edge));
+            assert_eq!(keep(GraphKind::Control, edge), edge == EdgeKind::Control);
+            assert_eq!(keep(GraphKind::Call, edge), edge == EdgeKind::Call);
+            assert_eq!(keep(GraphKind::Capability, edge), edge == EdgeKind::Grant);
+            assert_eq!(
+                keep(GraphKind::Dataflow, edge),
+                matches!(
+                    edge,
+                    EdgeKind::Data | EdgeKind::Read | EdgeKind::Write | EdgeKind::Persist
+                )
+            );
+        }
+    }
+
+    #[test]
+    fn dot_escaping_is_exact_and_does_not_change_plain_text() {
+        assert_eq!(dot_escape("plain"), "plain");
+        assert_eq!(dot_escape("back\\slash"), "back\\\\slash");
+        assert_eq!(dot_escape("quoted \"value\""), "quoted \\\"value\\\"");
+        assert_eq!(dot_escape("two\nlines"), "two\\nlines");
+        assert_eq!(dot_escape("\\\"\n"), "\\\\\\\"\\n");
+    }
+
+    #[test]
+    fn all_graph_view_retains_isolated_nodes_and_entrypoints() {
+        let isolated = Node::simple(
+            Provider::Github,
+            NodeKind::Workflow,
+            "isolated",
+            Phase::Source,
+            Span::default(),
+        );
+        let mut graph = Graph::empty(Provider::Github, "workflow.yml");
+        graph.add_entrypoint(isolated.id.clone());
+        graph.add_node(isolated.clone());
+        let all = filtered(GraphKind::All, &graph);
+        assert_eq!(all.nodes.as_slice(), std::slice::from_ref(&isolated));
+        assert_eq!(all.entrypoints, [isolated.id]);
+        assert!(filtered(GraphKind::Control, &graph).nodes.is_empty());
+    }
+}

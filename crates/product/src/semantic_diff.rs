@@ -242,3 +242,147 @@ fn change_json(change: &SemanticChange) -> JsonValue {
         ])),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::BTreeMap;
+    use workflow_verifier_domain::{
+        AbstractValue, Condition, Edge, Node, NodeKind, Phase, Provider, Secrecy, Trust,
+    };
+    use workflow_verifier_foundation::Span;
+
+    fn node(kind: NodeKind, name: &str) -> Node {
+        Node::simple(Provider::Github, kind, name, Phase::Run, Span::default())
+    }
+
+    fn path_graph(with_path: bool) -> (Graph, Node, Node) {
+        let mut source = node(NodeKind::Resource, "untrusted source");
+        source.attributes = BTreeMap::from([(
+            "value".to_owned(),
+            AbstractValue::string_constant("input", Trust::Untrusted, Secrecy::Public, Vec::new()),
+        )]);
+        let middle = node(NodeKind::Step, "middle");
+        let mut sink = node(NodeKind::Effect, "deployment");
+        sink.effects = vec![ObservableEffect::DeploymentChange];
+        let mut graph = Graph::empty(Provider::Github, "workflow.yml");
+        graph.add_entrypoint(source.id.clone());
+        for item in [&source, &middle, &sink] {
+            graph.add_node(item.clone());
+        }
+        if with_path {
+            graph.add_edge(Edge::simple(
+                EdgeKind::Data,
+                source.id.clone(),
+                middle.id.clone(),
+            ));
+            graph.add_edge(Edge::simple(
+                EdgeKind::Control,
+                middle.id.clone(),
+                sink.id.clone(),
+            ));
+        } else {
+            graph.add_edge(Edge::new(
+                EdgeKind::Grant,
+                source.id.clone(),
+                sink.id.clone(),
+                Condition::True,
+                None,
+            ));
+        }
+        graph.finalize();
+        (graph, source, sink)
+    }
+
+    #[test]
+    fn attack_path_diff_uses_only_semantic_edges_and_preserves_exact_shortest_path() {
+        let (base, _, _) = path_graph(false);
+        let (head, source, sink) = path_graph(true);
+        assert_eq!(shortest_path(&base, &source.id, &sink.id), None);
+        assert_eq!(
+            shortest_path(&head, &source.id, &sink.id),
+            Some(vec![
+                source.id.clone(),
+                head.nodes
+                    .iter()
+                    .find(|node| node.name == "middle")
+                    .expect("middle node")
+                    .id
+                    .clone(),
+                sink.id.clone(),
+            ])
+        );
+        assert_eq!(
+            shortest_path(&head, &source.id, &source.id),
+            Some(vec![source.id.clone()])
+        );
+        assert_eq!(attack_paths(&base), BTreeSet::new());
+        let paths = attack_paths(&head);
+        assert_eq!(paths.len(), 1);
+        let path = paths.first().expect("attack path");
+        assert_eq!(path.source, source.id);
+        assert_eq!(path.sink, sink.id);
+        assert_eq!(path.effect, ObservableEffect::DeploymentChange);
+
+        let difference = semantic_diff(&base, &head);
+        assert!(
+            difference
+                .changes
+                .contains(&SemanticChange::NewReachablePath(path.clone()))
+        );
+        assert!(difference.verify_digests(&base, &head));
+        assert!(!difference.verify_digests(&head, &head));
+        assert!(!difference.verify_digests(&base, &base));
+        assert!(
+            difference
+                .to_canonical_json()
+                .contains("new_reachable_path")
+        );
+    }
+
+    #[test]
+    fn capability_and_mutability_changes_require_the_right_node_shape() {
+        let mut base = Graph::empty(Provider::Github, "base.yml");
+        let mut removed = node(NodeKind::Step, "removed capability");
+        removed.capabilities = vec![Capability::RepositoryRead];
+        base.add_node(removed);
+        let mut head = Graph::empty(Provider::Github, "head.yml");
+        let mut added = node(NodeKind::Step, "added capability");
+        added.capabilities = vec![Capability::RepositoryWrite];
+        let mutable_call = node(NodeKind::Call, "owner/action@main");
+        let mutable_non_call = node(NodeKind::Step, "owner/not-a-call@main");
+        let immutable_call = node(NodeKind::Call, &format!("owner/action@{}", "a".repeat(40)));
+        for item in [
+            added,
+            mutable_call.clone(),
+            mutable_non_call,
+            immutable_call,
+        ] {
+            head.add_node(item);
+        }
+        assert_eq!(
+            mutable_calls(&head),
+            BTreeSet::from([mutable_call.name.clone()])
+        );
+        let difference = semantic_diff(&base, &head);
+        assert!(
+            difference
+                .changes
+                .contains(&SemanticChange::CapabilityAdded(
+                    Capability::RepositoryWrite
+                ))
+        );
+        assert!(
+            difference
+                .changes
+                .contains(&SemanticChange::CapabilityRemoved(
+                    Capability::RepositoryRead
+                ))
+        );
+        assert!(
+            difference
+                .changes
+                .contains(&SemanticChange::DependencyBecameMutable(mutable_call.name))
+        );
+    }
+}

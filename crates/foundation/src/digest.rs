@@ -1,3 +1,4 @@
+use crate::SHA256_HEX_DIGITS;
 use sha2::{Digest, Sha256};
 
 const HEX: &[u8; 16] = b"0123456789abcdef";
@@ -6,7 +7,7 @@ const HEX: &[u8; 16] = b"0123456789abcdef";
 #[must_use]
 pub fn sha256_hex(input: impl AsRef<[u8]>) -> String {
     let digest = Sha256::digest(input.as_ref());
-    let mut output = String::with_capacity(64);
+    let mut output = String::with_capacity(SHA256_HEX_DIGITS);
     for byte in digest {
         output.push(char::from(HEX[usize::from(byte >> 4)]));
         output.push(char::from(HEX[usize::from(byte & 0x0f)]));

@@ -5,6 +5,7 @@
 mod config;
 mod config_migration;
 mod dependency_summary;
+mod exit_code;
 mod fixer;
 mod graph_output;
 mod incremental_cache;
@@ -23,6 +24,10 @@ pub use config::{
 };
 pub use config_migration::migrate_config_v1;
 pub use dependency_summary::DependencySummary;
+pub use exit_code::{
+    EXIT_CODE_FINDING, EXIT_CODE_INCOMPLETE, EXIT_CODE_INTERNAL_FAILURE, EXIT_CODE_INVALID_INPUT,
+    EXIT_CODE_PASS, EXIT_CODE_SANDBOX_INFRASTRUCTURE,
+};
 pub use fixer::{FixProposal, FixShell};
 pub use graph_output::{GraphKind, graph_to_canonical_json, graph_to_dot};
 pub use incremental_cache::{AnalysisCacheEntry, CacheKeyInput, cache_key};

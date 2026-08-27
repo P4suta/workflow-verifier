@@ -1,7 +1,9 @@
 //! Deterministic provider request composition for immutable dependency resolution.
 
 use workflow_verifier_domain::Provider;
-use workflow_verifier_foundation::{JsonValue, content_digest};
+use workflow_verifier_foundation::{
+    GIT_SHA1_HEX_DIGITS, JsonValue, SHA256_HEX_DIGITS, content_digest,
+};
 use workflow_verifier_frontend::{Dependency, DependencyKind, DependencyLocator};
 use workflow_verifier_product::FetchedDependency;
 
@@ -216,7 +218,8 @@ fn commit_digest(source: &[u8]) -> Result<String, String> {
     } else {
         source.to_owned()
     };
-    if matches!(candidate.len(), 40 | 64) && candidate.bytes().all(|byte| byte.is_ascii_hexdigit())
+    if matches!(candidate.len(), GIT_SHA1_HEX_DIGITS | SHA256_HEX_DIGITS)
+        && candidate.bytes().all(|byte| byte.is_ascii_hexdigit())
     {
         Ok(candidate.to_ascii_lowercase())
     } else {
@@ -362,7 +365,9 @@ fn gitlab_project(
     let response = request(get, Provider::Gitlab, commit_url, Vec::new())?;
     let parsed = JsonValue::parse_bytes(&response).map_err(|error| error.to_string())?;
     let revision = member_string(&parsed, "id")?;
-    if revision.len() != 40 || !revision.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+    if revision.len() != GIT_SHA1_HEX_DIGITS
+        || !revision.bytes().all(|byte| byte.is_ascii_hexdigit())
+    {
         return Err("GitLab returned an invalid commit digest".to_owned());
     }
     let revision = revision.to_ascii_lowercase();
@@ -481,7 +486,9 @@ fn azure_repository(
         .first()
         .ok_or_else(|| "Azure repository response contains no commit".to_owned())?;
     let revision = member_string(commit, "commitId")?;
-    if revision.len() != 40 || !revision.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+    if revision.len() != GIT_SHA1_HEX_DIGITS
+        || !revision.bytes().all(|byte| byte.is_ascii_hexdigit())
+    {
         return Err("Azure returned an invalid commit digest".to_owned());
     }
     let revision = revision.to_ascii_lowercase();
@@ -755,7 +762,7 @@ fn valid_image_name(value: &str) -> bool {
 }
 
 fn valid_sha256(value: &str) -> bool {
-    value.len() == 71
-        && value.starts_with("sha256:")
-        && value[7..].bytes().all(|byte| byte.is_ascii_hexdigit())
+    value.strip_prefix("sha256:").is_some_and(|digest| {
+        digest.len() == SHA256_HEX_DIGITS && digest.bytes().all(|byte| byte.is_ascii_hexdigit())
+    })
 }

@@ -78,6 +78,18 @@ run = "python -B scripts/verify_mutation_report.py --report _build/mutation-repo
 description = "Prove that all mutation shard reports exactly cover the canonical catalog"
 run = "python -B scripts/verify_mutation_campaign.py aggregate --manifest scripts/mutation-shards-v1.json --config .ocaml-mutants.toml --workspace . --catalog _build/mutation-evidence/mutation-catalog.json --evidence-dir _build/mutation-evidence --output _build/mutation-evidence/mutation-campaign-v1.json"
 
+[tasks.mutation-rust-list]
+description = "List the explicit high-value Rust mutation catalog without executing it"
+run = "mkdir -p _build && cargo mutants --config .cargo/mutants.toml --workspace --list --json > _build/rust-mutants-catalog.json"
+
+[tasks.mutation-rust]
+description = "Run high-value Rust mutants for WV_MUTATION_PACKAGE"
+run = "cargo mutants --config .cargo/mutants.toml --package ${WV_MUTATION_PACKAGE} --output ${WV_MUTATION_OUTPUT:-_build/rust-mutants}"
+
+[tasks.mutation-rust-high-value]
+description = "Run every configured high-value Rust product mutant"
+run = "cargo mutants --config .cargo/mutants.toml --package workflow-verifier-domain --package workflow-verifier-engine --package workflow-verifier-foundation --package workflow-verifier-frontend --package workflow-verifier-product --package workflow-verifier-sandbox --package workflow-verifier-syntax --package workflow-verifier-verifier --package workflow-verifier-runner-protocol --output ${WV_MUTATION_OUTPUT:-_build/rust-mutants-high-value}"
+
 [tasks.corpus]
 description = "Enforce the 400-repository release precision and recall gate"
 run = "python -B scripts/corpus_gate.py --manifest evaluation/corpus-v1.json --corpus-root evaluation/corpus --reports-root evaluation/reports --output _build/corpus-report-v1.json --release"

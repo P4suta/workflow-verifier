@@ -1,7 +1,13 @@
 use crate::{DependencySummary, LockEntry, Lockfile};
 use workflow_verifier_domain::Provider;
-use workflow_verifier_foundation::{content_digest, valid_content_digest};
+use workflow_verifier_foundation::{
+    GIT_SHA1_HEX_DIGITS, SHA256_HEX_DIGITS, content_digest, valid_content_digest,
+};
 use workflow_verifier_frontend::{Dependency, DependencyStatus, Mutability};
+
+// Immutable revision widths are provider protocol formats: Git object IDs
+// (SHA-1/SHA-256) and Azure task GUIDs after removing hyphens.
+const AZURE_GUID_HEX_DIGITS: usize = 32;
 
 pub type SemanticSource = (String, Vec<u8>);
 
@@ -43,7 +49,10 @@ pub struct ResolutionResult {
 pub fn immutable_revision(provider: Provider, revision: &str) -> bool {
     let hexadecimal =
         |length| revision.len() == length && revision.bytes().all(|byte| byte.is_ascii_hexdigit());
-    if hexadecimal(40) || hexadecimal(64) || valid_content_digest(revision) {
+    if hexadecimal(GIT_SHA1_HEX_DIGITS)
+        || hexadecimal(SHA256_HEX_DIGITS)
+        || valid_content_digest(revision)
+    {
         return true;
     }
     match provider {
@@ -55,9 +64,142 @@ pub fn immutable_revision(provider: Provider, revision: &str) -> bool {
         }
         Provider::Azure => {
             let compact = revision.replace('-', "");
-            compact.len() == 32 && compact.bytes().all(|byte| byte.is_ascii_hexdigit())
+            compact.len() == AZURE_GUID_HEX_DIGITS
+                && compact.bytes().all(|byte| byte.is_ascii_hexdigit())
         }
         Provider::Github | Provider::Gitlab => false,
+    }
+}
+
+#[cfg(test)]
+// The production resolver follows below to keep the public API near its
+// supporting types; this local module exercises private lock construction too.
+#[allow(clippy::items_after_test_module)]
+mod tests {
+    use super::*;
+    use workflow_verifier_foundation::{Span, content_digest};
+    use workflow_verifier_frontend::{DependencyKind, DependencyLocator};
+
+    fn dependency(provider: Provider) -> Dependency {
+        Dependency::unresolved(
+            provider,
+            DependencyKind::Action,
+            "owner/unit@main",
+            DependencyLocator::Direct,
+            Span::default(),
+        )
+    }
+
+    #[test]
+    fn immutable_revision_formats_cover_every_provider_boundary() {
+        for provider in [
+            Provider::Github,
+            Provider::Gitlab,
+            Provider::Azure,
+            Provider::Circleci,
+        ] {
+            assert!(immutable_revision(
+                provider,
+                &"a".repeat(GIT_SHA1_HEX_DIGITS)
+            ));
+            assert!(immutable_revision(provider, &"b".repeat(SHA256_HEX_DIGITS)));
+            assert!(immutable_revision(provider, &content_digest("revision")));
+        }
+        for length in [
+            GIT_SHA1_HEX_DIGITS.saturating_sub(1),
+            GIT_SHA1_HEX_DIGITS.saturating_add(1),
+            SHA256_HEX_DIGITS.saturating_sub(1),
+            SHA256_HEX_DIGITS.saturating_add(1),
+        ] {
+            assert!(!immutable_revision(Provider::Github, &"a".repeat(length)));
+        }
+        assert!(!immutable_revision(
+            Provider::Github,
+            &"z".repeat(GIT_SHA1_HEX_DIGITS)
+        ));
+        assert!(!immutable_revision(Provider::Gitlab, "main"));
+
+        for revision in ["1", "1.2.3", "2026-08-27", "1.2.3+4"] {
+            assert!(immutable_revision(Provider::Circleci, revision));
+        }
+        for revision in ["", "release", "1_2"] {
+            assert!(!immutable_revision(Provider::Circleci, revision));
+        }
+
+        assert!(immutable_revision(
+            Provider::Azure,
+            "01234567-89ab-cdef-0123-456789abcdef"
+        ));
+        assert!(immutable_revision(
+            Provider::Azure,
+            &"a".repeat(AZURE_GUID_HEX_DIGITS)
+        ));
+        assert!(!immutable_revision(
+            Provider::Azure,
+            &"a".repeat(AZURE_GUID_HEX_DIGITS.saturating_sub(1))
+        ));
+        assert!(!immutable_revision(
+            Provider::Azure,
+            &"z".repeat(AZURE_GUID_HEX_DIGITS)
+        ));
+    }
+
+    #[test]
+    fn fetched_lock_allows_empty_or_matching_allowlists_and_replaces_only_identity() {
+        let dependency = dependency(Provider::Github);
+        let fetched = || FetchedDependency {
+            revision: "a".repeat(GIT_SHA1_HEX_DIGITS),
+            content: b"content".to_vec(),
+            source: "https://example.test/owner/unit".to_owned(),
+            semantic_source: None,
+        };
+        let other = LockEntry::new(
+            Provider::Gitlab,
+            dependency.reference.clone(),
+            "b".repeat(GIT_SHA1_HEX_DIGITS),
+            content_digest("other"),
+            "https://gitlab.example.test/owner/unit",
+        );
+        let current = Lockfile::new([other.clone()]).expect("current lock");
+        let (empty_allowed, entry) = lock_fetched(&dependency, fetched(), &[], &current)
+            .expect("empty allowlist permits resolver-owned transport policy");
+        assert_eq!(entry.source, "https://example.test/owner/unit");
+        assert!(
+            empty_allowed
+                .find(Provider::Gitlab, &dependency.reference)
+                .is_some()
+        );
+        assert!(
+            empty_allowed
+                .find(Provider::Github, &dependency.reference)
+                .is_some()
+        );
+
+        assert!(
+            lock_fetched(
+                &dependency,
+                fetched(),
+                &[
+                    "https://unrelated.test/".to_owned(),
+                    "https://example.test/".to_owned()
+                ],
+                &current,
+            )
+            .is_ok()
+        );
+        assert!(
+            lock_fetched(
+                &dependency,
+                fetched(),
+                &["https://unrelated.test/".to_owned()],
+                &current,
+            )
+            .is_err()
+        );
+
+        let mut mutable = fetched();
+        mutable.revision = "main".to_owned();
+        assert!(lock_fetched(&dependency, mutable, &[], &current).is_err());
     }
 }
 

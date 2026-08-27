@@ -14,6 +14,44 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  rust-high-value:
+    name: Rust high-value ${{ matrix.package }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        package:
+          - workflow-verifier-domain
+          - workflow-verifier-engine
+          - workflow-verifier-foundation
+          - workflow-verifier-frontend
+          - workflow-verifier-product
+          - workflow-verifier-sandbox
+          - workflow-verifier-syntax
+          - workflow-verifier-verifier
+          - workflow-verifier-runner-protocol
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install pinned Rust mutation runner
+        run: cargo install cargo-mutants --version 27.1.0 --locked
+      - name: Run high-value semantic mutants
+        env:
+          MUTATION_OUTPUT: _build/rust-mutants-${{ matrix.package }}
+          MUTATION_PACKAGE: ${{ matrix.package }}
+        run: >-
+          cargo mutants --config .cargo/mutants.toml
+          --package "$MUTATION_PACKAGE" --output "$MUTATION_OUTPUT"
+      - name: Upload Rust mutation evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rust-mutants-${{ matrix.package }}
+          path: _build/rust-mutants-${{ matrix.package }}
+          if-no-files-found: error
+
   catalog:
     name: Build complete mutation catalog
     runs-on: ubuntu-24.04

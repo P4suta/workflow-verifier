@@ -573,3 +573,446 @@ fn capability(value: &str) -> Option<Capability> {
         .into_iter()
         .find(|candidate| candidate.name() == value)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_domain::{Condition, Edge, Phase, Secrecy, UnknownReason};
+    use workflow_verifier_foundation::content_digest;
+
+    fn value(trust: ValueTrust) -> AbstractValue {
+        AbstractValue::string_constant("value", trust, Secrecy::Public, Vec::new())
+    }
+
+    fn node(kind: NodeKind, name: &str, trust: ValueTrust) -> Node {
+        Node::new(
+            Provider::Github,
+            kind,
+            name,
+            Phase::Run,
+            Span {
+                file: ".github/workflows/policy.yml".to_owned(),
+                ..Span::default()
+            },
+            Condition::True,
+            BTreeMap::from([("value".to_owned(), value(trust))]),
+            [],
+            [],
+            None,
+        )
+    }
+
+    #[test]
+    // This table is the exhaustive language-level selector/primitive matrix.
+    #[allow(clippy::too_many_lines)]
+    fn selector_parser_and_primitive_names_cover_every_contract_value() {
+        assert_eq!(
+            [
+                PolicyTrust::Trusted,
+                PolicyTrust::Untrusted,
+                PolicyTrust::Mixed,
+                PolicyTrust::Unknown,
+            ]
+            .map(PolicyTrust::name),
+            ["trusted", "untrusted", "mixed", "unknown"]
+        );
+        let cases = [
+            (
+                "provider",
+                "GitHub",
+                PolicyPredicate::Provider(Provider::Github),
+            ),
+            (
+                "kind",
+                "command",
+                PolicyPredicate::NodeKind(NodeKind::Command),
+            ),
+            (
+                "node_kind",
+                "gate",
+                PolicyPredicate::NodeKind(NodeKind::Gate),
+            ),
+            (
+                "path",
+                ".github\\workflows",
+                PolicyPredicate::PathPrefix(".github/workflows".to_owned()),
+            ),
+            (
+                "trust",
+                "trusted",
+                PolicyPredicate::Trust(PolicyTrust::Trusted),
+            ),
+            (
+                "trust",
+                "untrusted",
+                PolicyPredicate::Trust(PolicyTrust::Untrusted),
+            ),
+            ("trust", "mixed", PolicyPredicate::Trust(PolicyTrust::Mixed)),
+            (
+                "trust",
+                "unknown",
+                PolicyPredicate::Trust(PolicyTrust::Unknown),
+            ),
+            (
+                "effect",
+                "network",
+                PolicyPredicate::Effect(ObservableEffect::NetworkRequest),
+            ),
+            (
+                "capability",
+                "shell",
+                PolicyPredicate::Capability(Capability::Shell),
+            ),
+            (
+                "dependency_mutability",
+                "immutable",
+                PolicyPredicate::DependencyMutability(Mutability::Immutable),
+            ),
+            (
+                "mutability",
+                "mutable",
+                PolicyPredicate::DependencyMutability(Mutability::Mutable),
+            ),
+            (
+                "mutability",
+                "local",
+                PolicyPredicate::DependencyMutability(Mutability::Local),
+            ),
+            (
+                "mutability",
+                "unknown",
+                PolicyPredicate::DependencyMutability(Mutability::Unknown),
+            ),
+            ("dominance", "true", PolicyPredicate::DominatedByGate(true)),
+            (
+                "dominated_by_gate",
+                "false",
+                PolicyPredicate::DominatedByGate(false),
+            ),
+        ];
+        for (key, input, expected) in cases {
+            assert_eq!(policy_predicate(key, input), Ok(expected), "{key}={input}");
+        }
+        for (key, input, error) in [
+            ("provider", "unknown", "unknown provider"),
+            ("kind", "unknown", "unknown node kind"),
+            ("trust", "invalid", "unknown trust state"),
+            ("effect", "invalid", "unknown effect"),
+            ("capability", "invalid", "unknown capability"),
+            ("mutability", "invalid", "unknown dependency mutability"),
+            ("dominance", "invalid", "dominance must be true or false"),
+            ("invalid", "value", "unknown selector field: invalid"),
+        ] {
+            assert_eq!(policy_predicate(key, input), Err(error.to_owned()));
+        }
+
+        let providers = [
+            ("github", Provider::Github),
+            ("gitlab", Provider::Gitlab),
+            ("azure", Provider::Azure),
+            ("circleci", Provider::Circleci),
+        ];
+        for (name, expected) in providers {
+            assert_eq!(provider(name), Some(expected));
+        }
+        assert_eq!(provider("unknown"), None);
+
+        let kinds = [
+            ("trigger", NodeKind::Trigger),
+            ("parameter", NodeKind::Parameter),
+            ("workflow", NodeKind::Workflow),
+            ("stage", NodeKind::Stage),
+            ("job", NodeKind::Job),
+            ("step", NodeKind::Step),
+            ("call", NodeKind::Call),
+            ("command", NodeKind::Command),
+            ("gate", NodeKind::Gate),
+            ("resource", NodeKind::Resource),
+            ("effect", NodeKind::Effect),
+            ("opaque", NodeKind::Opaque),
+        ];
+        for (name, expected) in kinds {
+            assert_eq!(node_kind(name), Some(expected));
+        }
+        assert_eq!(node_kind("unknown"), None);
+    }
+
+    #[test]
+    fn effect_and_capability_parsers_cover_every_semantic_variant() {
+        let effects = [
+            ("repository_change", ObservableEffect::RepositoryChange),
+            ("network", ObservableEffect::NetworkRequest),
+            ("network_request", ObservableEffect::NetworkRequest),
+            ("file_read", ObservableEffect::FileRead),
+            ("file_write", ObservableEffect::FileWrite),
+            ("command_execution", ObservableEffect::CommandExecution),
+            ("artifact_publish", ObservableEffect::ArtifactPublish),
+            ("cache_publish", ObservableEffect::CachePublish),
+            ("deployment", ObservableEffect::DeploymentChange),
+            ("deployment_change", ObservableEffect::DeploymentChange),
+            ("credential_use", ObservableEffect::CredentialUse),
+            ("workflow_change", ObservableEffect::WorkflowChange),
+            ("ai_agent_execution", ObservableEffect::AiAgentExecution),
+        ];
+        for (name, expected) in effects {
+            assert_eq!(effect(name), Some(expected));
+        }
+        assert_eq!(effect("unknown"), None);
+
+        let capabilities = [
+            Capability::RepositoryRead,
+            Capability::RepositoryWrite,
+            Capability::TokenRead,
+            Capability::TokenWrite,
+            Capability::Oidc,
+            Capability::CloudCredential,
+            Capability::SecretAccess,
+            Capability::Network,
+            Capability::FilesystemRead,
+            Capability::FilesystemWrite,
+            Capability::Shell,
+            Capability::ArtifactRead,
+            Capability::ArtifactWrite,
+            Capability::CacheRead,
+            Capability::CacheWrite,
+            Capability::Deployment,
+            Capability::SelfHostedPersistence,
+            Capability::AiTool,
+        ];
+        for expected in capabilities {
+            assert_eq!(capability(expected.name()), Some(expected));
+        }
+        assert_eq!(capability("unknown"), None);
+    }
+
+    #[test]
+    fn trust_mutability_and_effect_helpers_fail_closed_at_each_boundary() {
+        let mut joined = node(NodeKind::Resource, "joined", ValueTrust::Trusted);
+        joined
+            .attributes
+            .insert("other".to_owned(), value(ValueTrust::Mixed));
+        assert_eq!(joined_value(&joined).trust, ValueTrust::Mixed);
+        joined.attributes.insert(
+            "unknown".to_owned(),
+            AbstractValue::unknown(UnknownReason::DynamicString("unknown value".to_owned())),
+        );
+        assert!(matches!(
+            joined_value(&joined).trust,
+            ValueTrust::Unknown(_)
+        ));
+
+        let non_call = node(NodeKind::Command, "owner/action@main", ValueTrust::Trusted);
+        assert_eq!(mutability(&non_call), Mutability::Unknown);
+        let local = node(NodeKind::Call, "./action.yml", ValueTrust::Trusted);
+        assert_eq!(mutability(&local), Mutability::Local);
+        let mutable = node(NodeKind::Call, "owner/action@main", ValueTrust::Trusted);
+        assert_eq!(mutability(&mutable), Mutability::Mutable);
+        let immutable = node(
+            NodeKind::Call,
+            &format!("owner/action@{}", "a".repeat(40)),
+            ValueTrust::Trusted,
+        );
+        assert_eq!(mutability(&immutable), Mutability::Immutable);
+        let mut locked = mutable.clone();
+        locked.attributes.insert(
+            "dependency.digest".to_owned(),
+            AbstractValue::string_constant(
+                content_digest("locked source"),
+                ValueTrust::Trusted,
+                Secrecy::Public,
+                Vec::new(),
+            ),
+        );
+        assert_eq!(mutability(&locked), Mutability::Immutable);
+        locked.attributes.insert(
+            "dependency.digest".to_owned(),
+            AbstractValue::string_constant(
+                "invalid digest",
+                ValueTrust::Trusted,
+                Secrecy::Public,
+                Vec::new(),
+            ),
+        );
+        assert_eq!(mutability(&locked), Mutability::Mutable);
+
+        let explicit = Node::new(
+            Provider::Github,
+            NodeKind::Effect,
+            "explicit",
+            Phase::Run,
+            Span::default(),
+            Condition::True,
+            BTreeMap::new(),
+            [],
+            [ObservableEffect::FileRead],
+            None,
+        );
+        assert_eq!(
+            effects(&explicit),
+            BTreeSet::from([ObservableEffect::FileRead])
+        );
+        let command_effects = [
+            (
+                "curl https://example.test",
+                ObservableEffect::NetworkRequest,
+            ),
+            (
+                "wget https://example.test",
+                ObservableEffect::NetworkRequest,
+            ),
+            ("Invoke-WebRequest uri", ObservableEffect::NetworkRequest),
+            ("fetch(url)", ObservableEffect::NetworkRequest),
+            ("requests.get(url)", ObservableEffect::NetworkRequest),
+            ("git push origin HEAD", ObservableEffect::RepositoryChange),
+            ("gh pr merge 1", ObservableEffect::RepositoryChange),
+            ("gh release create v", ObservableEffect::RepositoryChange),
+        ];
+        for (command, expected) in command_effects {
+            let inferred = effects(&node(NodeKind::Command, command, ValueTrust::Trusted));
+            assert!(inferred.contains(&ObservableEffect::CommandExecution));
+            assert!(inferred.contains(&expected), "effect for {command:?}");
+        }
+        assert_eq!(
+            effects(&node(NodeKind::Command, "echo safe", ValueTrust::Trusted)),
+            BTreeSet::from([ObservableEffect::CommandExecution])
+        );
+    }
+
+    #[test]
+    // Graph topology and every policy rule kind form one end-to-end matrix.
+    #[allow(clippy::too_many_lines)]
+    fn graph_index_and_policy_rules_preserve_paths_dominance_and_rule_kinds() {
+        let source = node(NodeKind::Resource, "source", ValueTrust::Untrusted);
+        let gate = node(NodeKind::Gate, "approval", ValueTrust::Trusted);
+        let middle = node(NodeKind::Step, "middle", ValueTrust::Trusted);
+        let mut sink = node(
+            NodeKind::Command,
+            "git push origin HEAD",
+            ValueTrust::Trusted,
+        );
+        sink.capabilities = vec![Capability::RepositoryWrite];
+        let mut graph = Graph::empty(Provider::Github, ".github/workflows/policy.yml");
+        graph.add_entrypoint(source.id.clone());
+        for item in [&source, &gate, &middle, &sink] {
+            graph.add_node(item.clone());
+        }
+        for (from, to) in [
+            (&source.id, &gate.id),
+            (&gate.id, &middle.id),
+            (&middle.id, &sink.id),
+        ] {
+            graph.add_edge(Edge::simple(EdgeKind::Control, from.clone(), to.clone()));
+        }
+        let index = GraphIndex::new(&graph);
+        assert_eq!(
+            index
+                .shortest_path(&source.id, &sink.id)
+                .expect("source-to-sink path")
+                .into_iter()
+                .map(|item| item.name.as_str())
+                .collect::<Vec<_>>(),
+            ["source", "approval", "middle", "git push origin HEAD"]
+        );
+        assert_eq!(index.shortest_path(&sink.id, &source.id), None);
+        assert!(index.dominates(&source.id, &sink.id));
+        assert!(index.dominates(&gate.id, &sink.id));
+        assert!(index.dominates(&sink.id, &sink.id));
+        assert!(!index.dominates(&middle.id, &gate.id));
+        assert!(index.gate_dominates(&sink));
+
+        let predicates = vec![
+            PolicyPredicate::Provider(Provider::Github),
+            PolicyPredicate::NodeKind(NodeKind::Command),
+            PolicyPredicate::PathPrefix(".github/workflows".to_owned()),
+            PolicyPredicate::Trust(PolicyTrust::Trusted),
+            PolicyPredicate::Effect(ObservableEffect::RepositoryChange),
+            PolicyPredicate::Capability(Capability::RepositoryWrite),
+            PolicyPredicate::DependencyMutability(Mutability::Unknown),
+            PolicyPredicate::DominatedByGate(true),
+        ];
+        assert!(selector_matches(
+            &index,
+            &sink,
+            &PolicySelector::All(predicates.clone())
+        ));
+        assert!(selector_matches(
+            &index,
+            &sink,
+            &PolicySelector::Any(vec![
+                PolicyPredicate::Provider(Provider::Gitlab),
+                PolicyPredicate::Capability(Capability::RepositoryWrite),
+            ])
+        ));
+        assert!(selector_matches(
+            &index,
+            &sink,
+            &PolicySelector::NoneOf(vec![PolicyPredicate::Provider(Provider::Gitlab)])
+        ));
+        assert!(!selector_matches(
+            &index,
+            &sink,
+            &PolicySelector::NoneOf(vec![PolicyPredicate::Provider(Provider::Github)])
+        ));
+
+        let rule = |id: &str, kind| PolicyRule {
+            id: id.to_owned(),
+            kind,
+            selector: PolicySelector::All(vec![PolicyPredicate::NodeKind(NodeKind::Command)]),
+            message: "policy contract".to_owned(),
+            severity: Severity::Error,
+        };
+        assert_eq!(
+            evaluate_policy(&[rule("FORBID", PolicyRuleKind::Forbid)], &graph).len(),
+            1
+        );
+        assert!(evaluate_policy(&[rule("REQUIRE", PolicyRuleKind::Require)], &graph).is_empty());
+        let missing = PolicyRule {
+            selector: PolicySelector::All(vec![PolicyPredicate::Provider(Provider::Gitlab)]),
+            ..rule("REQUIRE-MISSING", PolicyRuleKind::Require)
+        };
+        assert_eq!(evaluate_policy(&[missing], &graph).len(), 1);
+        assert!(evaluate_policy(&[rule("LIMIT", PolicyRuleKind::Limit(1))], &graph).is_empty());
+
+        let path_rule = PolicyRule {
+            id: "PATH".to_owned(),
+            kind: PolicyRuleKind::ForbidPath,
+            selector: PolicySelector::All(vec![PolicyPredicate::NodeKind(NodeKind::Command)]),
+            message: "untrusted path".to_owned(),
+            severity: Severity::Error,
+        };
+        let diagnostics = evaluate_policy(&[path_rule], &graph);
+        assert_eq!(diagnostics.len(), 1);
+        assert_eq!(
+            diagnostics[0]
+                .trace
+                .iter()
+                .map(|hop| hop.label.as_str())
+                .collect::<Vec<_>>(),
+            [
+                "untrusted source",
+                "reachable semantic path",
+                "reachable semantic path",
+                "policy-selected effect",
+            ]
+        );
+        assert_eq!(diagnostics[0].capabilities, [Capability::RepositoryWrite]);
+
+        graph.add_edge(Edge::simple(EdgeKind::Control, source.id, sink.id.clone()));
+        let bypass = GraphIndex::new(&graph);
+        assert!(!bypass.gate_dominates(&sink));
+
+        let implicit_source = node(NodeKind::Trigger, "implicit source", ValueTrust::Trusted);
+        let implicit_sink = node(NodeKind::Job, "implicit sink", ValueTrust::Trusted);
+        let mut implicit = Graph::empty(Provider::Github, "implicit.yml");
+        implicit.add_node(implicit_source.clone());
+        implicit.add_node(implicit_sink.clone());
+        implicit.add_edge(Edge::simple(
+            EdgeKind::Control,
+            implicit_source.id.clone(),
+            implicit_sink.id.clone(),
+        ));
+        let implicit_index = GraphIndex::new(&implicit);
+        assert!(implicit_index.dominates(&implicit_source.id, &implicit_sink.id));
+        assert!(!implicit_index.dominates(&implicit_sink.id, &implicit_source.id));
+    }
+}

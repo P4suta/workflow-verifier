@@ -10,6 +10,41 @@ use workflow_verifier_verifier::{Diagnostic, Persona, Severity};
 
 type TomlTable = toml::map::Map<String, TomlValue>;
 
+// The serialized limits are owned by schema/config-v2.schema.json and
+// schema/runner-v2.schema.json. Defaults below are the built-in v0.1 analysis
+// profile; validation floors and portable sandbox values are schema constants.
+pub(crate) const CONFIG_V2_SCHEMA_VERSION: u64 = 2;
+pub(crate) const ANALYSIS_MIN_FILE_BYTES: u64 = 16_777_216;
+pub(crate) const ANALYSIS_MIN_ENTRIES: u64 = 100_000;
+pub(crate) const ANALYSIS_MIN_SNAPSHOT_BYTES: u64 = 4_294_967_296;
+pub(crate) const ANALYSIS_DEFAULT_YAML_DEPTH: u64 = 256;
+pub(crate) const ANALYSIS_DEFAULT_YAML_ALIASES: u64 = 10_000;
+pub(crate) const ANALYSIS_DEFAULT_EXPANSION_DEPTH: u64 = 64;
+pub(crate) const ANALYSIS_DEFAULT_GRAPH_NODES: u64 = 1_000_000;
+pub(crate) const ANALYSIS_DEFAULT_BDD_NODES: u64 = 2_000_000;
+pub(crate) const ANALYSIS_DEFAULT_RESOLVER_BYTES: u64 = 16_777_216;
+pub(crate) const ANALYSIS_DEFAULT_REPORT_BYTES: u64 = 268_435_456;
+pub(crate) const SANDBOX_WALL_TIME_SECONDS: u64 = 900;
+pub(crate) const SANDBOX_CPU_CORES: u64 = 1;
+pub(crate) const SANDBOX_MEMORY_BYTES: u64 = 2_147_483_648;
+pub(crate) const SANDBOX_PROCESSES: u64 = 128;
+pub(crate) const SANDBOX_OUTPUT_BYTES: u64 = 16_777_216;
+pub(crate) const SANDBOX_SCRATCH_BYTES: u64 = 4_294_967_296;
+pub(crate) const SANDBOX_SCRATCH_ENTRIES: u64 = 100_000;
+/// Text suffix for IANA's registered default HTTPS port.
+pub(crate) const HTTPS_DEFAULT_PORT_SUFFIX: &str = ":443";
+
+// ISO 8601 calendar-date layout and proleptic Gregorian calendar rules.
+const DATE_TEXT_LENGTH: usize = "YYYY-MM-DD".len();
+const DATE_YEAR_END: usize = "YYYY".len();
+const DATE_MONTH_START: usize = "YYYY-".len();
+const DATE_MONTH_END: usize = "YYYY-MM".len();
+const DATE_DAY_START: usize = "YYYY-MM-".len();
+const GREGORIAN_EPOCH_YEAR: u32 = 1970;
+const GREGORIAN_LEAP_CYCLE_YEARS: u32 = 400;
+const GREGORIAN_LEAP_INTERVAL_YEARS: u32 = 4;
+const GREGORIAN_CENTURY_YEARS: u32 = 100;
+
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub enum ConfigTrust {
     BuiltIn,
@@ -75,16 +110,16 @@ pub struct AnalysisBudget {
 impl Default for AnalysisBudget {
     fn default() -> Self {
         Self {
-            max_file_bytes: 16 * 1024 * 1024,
-            max_entries: 100_000,
-            max_snapshot_bytes: 4_294_967_296,
-            max_yaml_depth: 256,
-            max_yaml_aliases: 10_000,
-            max_expansion_depth: 64,
-            max_graph_nodes: 1_000_000,
-            max_bdd_nodes: 2_000_000,
-            max_resolver_bytes: 16 * 1024 * 1024,
-            max_report_bytes: 256 * 1024 * 1024,
+            max_file_bytes: ANALYSIS_MIN_FILE_BYTES,
+            max_entries: ANALYSIS_MIN_ENTRIES,
+            max_snapshot_bytes: ANALYSIS_MIN_SNAPSHOT_BYTES,
+            max_yaml_depth: ANALYSIS_DEFAULT_YAML_DEPTH,
+            max_yaml_aliases: ANALYSIS_DEFAULT_YAML_ALIASES,
+            max_expansion_depth: ANALYSIS_DEFAULT_EXPANSION_DEPTH,
+            max_graph_nodes: ANALYSIS_DEFAULT_GRAPH_NODES,
+            max_bdd_nodes: ANALYSIS_DEFAULT_BDD_NODES,
+            max_resolver_bytes: ANALYSIS_DEFAULT_RESOLVER_BYTES,
+            max_report_bytes: ANALYSIS_DEFAULT_REPORT_BYTES,
         }
     }
 }
@@ -109,13 +144,13 @@ impl Default for SandboxConfig {
             backend: "oci:docker".to_owned(),
             capsule_digest: "sha256:unresolved".to_owned(),
             network: "deny".to_owned(),
-            wall_time_seconds: 900,
-            cpu_cores: 1,
-            memory_bytes: 2_147_483_648,
-            processes: 128,
-            output_bytes: 16 * 1024 * 1024,
-            scratch_bytes: 4_294_967_296,
-            scratch_entries: 100_000,
+            wall_time_seconds: SANDBOX_WALL_TIME_SECONDS,
+            cpu_cores: SANDBOX_CPU_CORES,
+            memory_bytes: SANDBOX_MEMORY_BYTES,
+            processes: SANDBOX_PROCESSES,
+            output_bytes: SANDBOX_OUTPUT_BYTES,
+            scratch_bytes: SANDBOX_SCRATCH_BYTES,
+            scratch_entries: SANDBOX_SCRATCH_ENTRIES,
         }
     }
 }
@@ -163,7 +198,7 @@ impl Default for ConfigParseOptions {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            version: 2,
+            version: CONFIG_V2_SCHEMA_VERSION,
             persona: Persona::Gate,
             frontends: all_providers(),
             offline: true,
@@ -222,7 +257,7 @@ impl Config {
         )
         .map_err(|error| vec![error])?;
         let version = required_integer(root, "version", "configuration")?;
-        if version != 2 {
+        if version != CONFIG_V2_SCHEMA_VERSION {
             return Err(vec!["configuration version must be 2".to_owned()]);
         }
         let persona = match optional_string(root, "persona")?.unwrap_or("gate") {
@@ -527,9 +562,9 @@ fn parse_analysis(value: &TomlValue) -> Result<AnalysisBudget, Vec<String>> {
 }
 
 fn validate_analysis(value: &AnalysisBudget) -> Result<(), Vec<String>> {
-    if value.max_file_bytes < 16 * 1024 * 1024
-        || value.max_entries < 100_000
-        || value.max_snapshot_bytes < 4_294_967_296
+    if value.max_file_bytes < ANALYSIS_MIN_FILE_BYTES
+        || value.max_entries < ANALYSIS_MIN_ENTRIES
+        || value.max_snapshot_bytes < ANALYSIS_MIN_SNAPSHOT_BYTES
     {
         return Err(vec![
             "analysis snapshot budgets must meet the published 16 MiB/file, 100000-entry, 4 GiB floor"
@@ -641,7 +676,9 @@ fn normalize_origin(value: &str) -> Result<String, Vec<String>> {
         ]);
     }
     let lower = authority.to_ascii_lowercase();
-    let host = lower.strip_suffix(":443").unwrap_or(&lower);
+    let host = lower
+        .strip_suffix(HTTPS_DEFAULT_PORT_SUFFIX)
+        .unwrap_or(&lower);
     if host.contains(':')
         || host.is_empty()
         || host
@@ -964,19 +1001,20 @@ fn portable_identifier(value: &str) -> bool {
 }
 
 fn valid_date(value: &str) -> bool {
-    if value.len() != 10
-        || value.as_bytes().get(4) != Some(&b'-')
-        || value.as_bytes().get(7) != Some(&b'-')
+    if value.len() != DATE_TEXT_LENGTH
+        || value.as_bytes().get(DATE_YEAR_END) != Some(&b'-')
+        || value.as_bytes().get(DATE_MONTH_END) != Some(&b'-')
     {
         return false;
     }
-    let year = value[..4].parse::<u32>().ok();
-    let month = value[5..7].parse::<u32>().ok();
-    let day = value[8..].parse::<u32>().ok();
+    let year = value[..DATE_YEAR_END].parse::<u32>().ok();
+    let month = value[DATE_MONTH_START..DATE_MONTH_END].parse::<u32>().ok();
+    let day = value[DATE_DAY_START..].parse::<u32>().ok();
     let (Some(year), Some(month), Some(day)) = (year, month, day) else {
         return false;
     };
-    let leap = year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+    let leap = year % GREGORIAN_LEAP_CYCLE_YEARS == 0
+        || (year % GREGORIAN_LEAP_INTERVAL_YEARS == 0 && year % GREGORIAN_CENTURY_YEARS != 0);
     let days = match month {
         1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
         4 | 6 | 9 | 11 => 30,
@@ -984,7 +1022,7 @@ fn valid_date(value: &str) -> bool {
         2 => 28,
         _ => 0,
     };
-    year >= 1970 && day >= 1 && day <= days
+    year >= GREGORIAN_EPOCH_YEAR && day >= 1 && day <= days
 }
 
 fn resolver_origin_json(value: &ResolverOrigin) -> JsonValue {
@@ -1081,4 +1119,403 @@ fn suppression_json(value: &Suppression) -> JsonValue {
 
 fn integer(value: u64) -> JsonValue {
     JsonValue::Integer(i64::try_from(value).unwrap_or(i64::MAX))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn table(source: &str) -> TomlTable {
+        source.parse::<TomlTable>().expect("valid test TOML")
+    }
+
+    #[test]
+    fn calendar_dates_and_portable_owners_cover_gregorian_boundaries() {
+        for value in [
+            "1970-01-01",
+            "2000-02-29",
+            "2024-02-29",
+            "2025-02-28",
+            "2025-04-30",
+            "2025-12-31",
+        ] {
+            assert!(valid_date(value), "valid date {value:?}");
+        }
+        for value in [
+            "1969-12-31",
+            "1900-02-29",
+            "2023-02-29",
+            "2100-02-29",
+            "2025-00-01",
+            "2025-01-00",
+            "2025-04-31",
+            "2025-13-01",
+            "2025/01/01",
+            "2025/01-01",
+            "2025-01/01",
+            "2025-01-001",
+            "2025-1-01",
+            "not-a-date",
+        ] {
+            assert!(!valid_date(value), "invalid date {value:?}");
+        }
+
+        for value in ["platform", "platform_team", "Team-1", "team.owner"] {
+            assert!(portable_identifier(value), "valid owner {value:?}");
+        }
+        for value in ["", "9team", "team/name", "team owner", "team@owner"] {
+            assert!(!portable_identifier(value), "invalid owner {value:?}");
+        }
+    }
+
+    #[test]
+    fn trusted_origin_and_prefix_normalization_rejects_each_unsafe_component() {
+        assert_eq!(
+            normalize_origin("https://Git.Example.test:443"),
+            Ok("https://git.example.test".to_owned())
+        );
+        assert_eq!(
+            normalize_origin("https://git.example.test"),
+            Ok("https://git.example.test".to_owned())
+        );
+        for value in [
+            "http://git.example.test",
+            "https://",
+            "https://git.example.test/path",
+            "https://git.example.test?query",
+            "https://git.example.test#fragment",
+            "https://user@git.example.test",
+            "https://git\\example.test",
+            "https://git%2eexample.test",
+            "https://localhost",
+            "https://service.localhost",
+            "https://git.example.test:444",
+            "https://127.0.0.1",
+        ] {
+            assert!(normalize_origin(value).is_err(), "unsafe origin {value:?}");
+        }
+
+        assert_eq!(normalize_prefix("/"), Ok("/".to_owned()));
+        assert_eq!(normalize_prefix("/org"), Ok("/org/".to_owned()));
+        assert_eq!(
+            normalize_prefix("/org/project/"),
+            Ok("/org/project/".to_owned())
+        );
+        for value in [
+            "org",
+            "/org\\project",
+            "/org?query",
+            "/org#fragment",
+            "/org%2fproject",
+            "/org/./project",
+            "/org/../project",
+        ] {
+            assert!(normalize_prefix(value).is_err(), "unsafe prefix {value:?}");
+        }
+    }
+
+    #[test]
+    // Analysis and sandbox limits are two complete schema matrices whose
+    // independent field boundaries are clearest when reviewed together.
+    #[allow(clippy::too_many_lines)]
+    fn analysis_and_sandbox_schema_boundaries_are_independently_enforced() {
+        assert_eq!(validate_analysis(&AnalysisBudget::default()), Ok(()));
+        for invalid in [
+            AnalysisBudget {
+                max_file_bytes: ANALYSIS_MIN_FILE_BYTES.saturating_sub(1),
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_entries: ANALYSIS_MIN_ENTRIES.saturating_sub(1),
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_snapshot_bytes: ANALYSIS_MIN_SNAPSHOT_BYTES.saturating_sub(1),
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_yaml_depth: 0,
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_yaml_aliases: 0,
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_expansion_depth: 0,
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_graph_nodes: 0,
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_bdd_nodes: 0,
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_resolver_bytes: 0,
+                ..AnalysisBudget::default()
+            },
+            AnalysisBudget {
+                max_report_bytes: 0,
+                ..AnalysisBudget::default()
+            },
+        ] {
+            assert!(validate_analysis(&invalid).is_err(), "{invalid:?}");
+        }
+
+        for backend in ["linux-native", "windows-native", "macos-vm", "oci:docker"] {
+            let sandbox = SandboxConfig {
+                backend: backend.to_owned(),
+                ..SandboxConfig::default()
+            };
+            assert_eq!(validate_sandbox(&sandbox), Ok(()), "{backend:?}");
+        }
+        let resolved = SandboxConfig {
+            capsule_digest: content_digest("capsule"),
+            ..SandboxConfig::default()
+        };
+        assert_eq!(validate_sandbox(&resolved), Ok(()));
+        for backend in ["", "oci:", "oci:bad/engine", "native", "OCI:docker"] {
+            let sandbox = SandboxConfig {
+                backend: backend.to_owned(),
+                ..SandboxConfig::default()
+            };
+            assert!(validate_sandbox(&sandbox).is_err(), "{backend:?}");
+        }
+        let default = SandboxConfig::default();
+        let invalid_limits = [
+            SandboxConfig {
+                wall_time_seconds: default.wall_time_seconds.saturating_add(1),
+                ..default.clone()
+            },
+            SandboxConfig {
+                cpu_cores: default.cpu_cores.saturating_add(1),
+                ..default.clone()
+            },
+            SandboxConfig {
+                memory_bytes: default.memory_bytes.saturating_add(1),
+                ..default.clone()
+            },
+            SandboxConfig {
+                processes: default.processes.saturating_add(1),
+                ..default.clone()
+            },
+            SandboxConfig {
+                output_bytes: default.output_bytes.saturating_add(1),
+                ..default.clone()
+            },
+            SandboxConfig {
+                scratch_bytes: default.scratch_bytes.saturating_add(1),
+                ..default.clone()
+            },
+            SandboxConfig {
+                scratch_entries: default.scratch_entries.saturating_add(1),
+                ..default
+            },
+        ];
+        for invalid in invalid_limits {
+            assert!(validate_sandbox(&invalid).is_err(), "{invalid:?}");
+        }
+        assert!(
+            validate_sandbox(&SandboxConfig {
+                network: "allow".to_owned(),
+                ..SandboxConfig::default()
+            })
+            .is_err()
+        );
+        assert!(
+            validate_sandbox(&SandboxConfig {
+                capsule_digest: "not-a-digest".to_owned(),
+                ..SandboxConfig::default()
+            })
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn every_policy_rule_selector_severity_and_allowlist_variant_parses() {
+        for (kind, expected) in [
+            ("forbid", PolicyRuleKind::Forbid),
+            ("require", PolicyRuleKind::Require),
+            ("forbid_path", PolicyRuleKind::ForbidPath),
+            ("limit", PolicyRuleKind::Limit(1)),
+        ] {
+            let limit = if kind == "limit" { "limit = 1" } else { "" };
+            let rule = parse_rule(&table(&format!(
+                "id = \"RULE\"\nkind = \"{kind}\"\n{limit}\n"
+            )))
+            .expect("rule kind");
+            assert_eq!(rule.kind, expected, "{kind:?}");
+        }
+        for (severity, expected) in [
+            ("critical", Severity::Critical),
+            ("error", Severity::Error),
+            ("warning", Severity::Warning),
+            ("note", Severity::Note),
+        ] {
+            let rule = parse_rule(&table(&format!(
+                "id = \"RULE\"\nkind = \"forbid\"\nseverity = \"{severity}\"\n"
+            )))
+            .expect("rule severity");
+            assert_eq!(rule.severity, expected, "{severity:?}");
+        }
+        for (mode, expected) in [
+            ("all", PolicySelector::All(Vec::new())),
+            ("any", PolicySelector::Any(Vec::new())),
+            ("none", PolicySelector::NoneOf(Vec::new())),
+        ] {
+            let selector = parse_selector(
+                "RULE",
+                &TomlValue::Table(table(&format!("mode = \"{mode}\"\n"))),
+            )
+            .expect("selector mode");
+            assert_eq!(selector, expected, "{mode:?}");
+        }
+        for kind in ["dependency", "network_host", "source"] {
+            let entry = parse_allowlist(&table(&format!(
+                "kind = \"{kind}\"\nvalue = \"owned\"\nreason = \"reviewed\"\n"
+            )))
+            .expect("allowlist kind");
+            assert_eq!(entry.kind, kind);
+        }
+        for source in [
+            "kind = \"unknown\"\nvalue = \"owned\"\nreason = \"reviewed\"\n",
+            "kind = \"source\"\nvalue = \"\"\nreason = \"reviewed\"\n",
+            "kind = \"source\"\nvalue = \"owned\"\nreason = \" \"\n",
+        ] {
+            assert!(parse_allowlist(&table(source)).is_err());
+        }
+    }
+
+    #[test]
+    fn repository_trust_and_suppression_expiry_each_fail_closed() {
+        let mut repository = Config::default();
+        assert_eq!(validate_repository(&repository), Ok(()));
+        repository.persona = Persona::Audit;
+        assert!(validate_repository(&repository).is_err());
+
+        let variants = vec![
+            Config {
+                frontends: vec![Provider::Github],
+                ..Config::default()
+            },
+            Config {
+                resolver: ResolverConfig {
+                    allowed_origins: vec![ResolverOrigin {
+                        origin: "https://git.example.test".to_owned(),
+                        path_prefixes: Vec::new(),
+                    }],
+                    ..default_resolver()
+                },
+                ..Config::default()
+            },
+            Config {
+                suppressions: vec![Suppression {
+                    rule: "RULE".to_owned(),
+                    path: "**".to_owned(),
+                    reason: "reviewed".to_owned(),
+                    owner: "platform".to_owned(),
+                    expiry: "2027-01-01".to_owned(),
+                }],
+                ..Config::default()
+            },
+            Config {
+                allowlist: vec![AllowlistEntry {
+                    kind: "source".to_owned(),
+                    value: "owned".to_owned(),
+                    reason: "reviewed".to_owned(),
+                }],
+                ..Config::default()
+            },
+            Config {
+                source_exclusions: vec!["generated".to_owned()],
+                ..Config::default()
+            },
+            Config {
+                sandbox: SandboxConfig {
+                    backend: "linux-native".to_owned(),
+                    ..SandboxConfig::default()
+                },
+                ..Config::default()
+            },
+        ];
+        for variant in variants {
+            assert!(validate_repository(&variant).is_err(), "{variant:?}");
+        }
+
+        let suppression = |expiry: &str| {
+            table(&format!(
+                "rule = \"RULE\"\npath = \"**\"\nreason = \"reviewed\"\nowner = \"platform\"\nexpiry = \"{expiry}\"\n"
+            ))
+        };
+        assert!(parse_suppression(&suppression("2027-01-01"), Some("2026-12-31")).is_ok());
+        assert!(parse_suppression(&suppression("2027-01-01"), Some("2027-01-01")).is_ok());
+        assert!(parse_suppression(&suppression("2027-01-01"), Some("2027-01-02")).is_err());
+        assert!(parse_suppression(&suppression("invalid"), None).is_err());
+        let invalid_owner = table(
+            "rule = \"RULE\"\npath = \"**\"\nreason = \"reviewed\"\nowner = \"not portable\"\nexpiry = \"2027-01-01\"\n",
+        );
+        assert!(parse_suppression(&invalid_owner, None).is_err());
+    }
+
+    #[test]
+    fn primitive_options_exclusions_and_analysis_parsing_preserve_explicit_values() {
+        assert_eq!(optional_bool(&table(""), "flag"), Ok(None));
+        assert_eq!(
+            optional_bool(&table("flag = true\n"), "flag"),
+            Ok(Some(true))
+        );
+        assert_eq!(
+            optional_bool(&table("flag = false\n"), "flag"),
+            Ok(Some(false))
+        );
+        assert!(optional_bool(&table("flag = \"false\"\n"), "flag").is_err());
+
+        assert_eq!(
+            parse_exclusions(&table("source_exclusions = [\"generated\", \"vendor\"]\n")),
+            Ok(vec!["generated".to_owned(), "vendor".to_owned()])
+        );
+        for value in [
+            "windows\\path",
+            "drive:path",
+            "../escape",
+            ".workflow-verifier.toml",
+            "workflow-verifier.lock",
+        ] {
+            let exclusions = TomlTable::from_iter([(
+                "source_exclusions".to_owned(),
+                TomlValue::Array(vec![TomlValue::String(value.to_owned())]),
+            )]);
+            assert!(
+                parse_exclusions(&exclusions).is_err(),
+                "excluded path {value:?}"
+            );
+        }
+        assert!(
+            parse_exclusions(&table(
+                "source_exclusions = [\"Generated\", \"generated\"]\n"
+            ))
+            .is_err()
+        );
+
+        let defaults = AnalysisBudget::default();
+        let custom_yaml_depth = defaults.max_yaml_depth.saturating_add(1);
+        let parsed = parse_analysis(&TomlValue::Table(table(&format!(
+            "max_yaml_depth = {custom_yaml_depth}\n"
+        ))))
+        .expect("custom analysis budget");
+        assert_eq!(parsed.max_yaml_depth, custom_yaml_depth);
+        assert_eq!(parsed.max_file_bytes, defaults.max_file_bytes);
+        assert_eq!(parsed.max_entries, defaults.max_entries);
+        assert_eq!(parsed.max_snapshot_bytes, defaults.max_snapshot_bytes);
+        assert_eq!(parsed.max_yaml_aliases, defaults.max_yaml_aliases);
+        assert_eq!(parsed.max_expansion_depth, defaults.max_expansion_depth);
+        assert_eq!(parsed.max_graph_nodes, defaults.max_graph_nodes);
+        assert_eq!(parsed.max_bdd_nodes, defaults.max_bdd_nodes);
+        assert_eq!(parsed.max_resolver_bytes, defaults.max_resolver_bytes);
+        assert_eq!(parsed.max_report_bytes, defaults.max_report_bytes);
+        assert!(parse_analysis(&TomlValue::String("not a table".to_owned())).is_err());
+    }
 }

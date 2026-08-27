@@ -555,39 +555,43 @@ impl Dataflow {
                 (node.id.clone(), value)
             })
             .collect();
-        let propagating = [
+        let propagating_kinds = [
             EdgeKind::Data,
             EdgeKind::Read,
             EdgeKind::Write,
             EdgeKind::Persist,
         ];
-        let limit = graph
-            .nodes
-            .len()
-            .saturating_mul(graph.edges.len().max(1))
-            .saturating_add(1);
-        let mut changed = true;
-        let mut rounds = 0usize;
-        while changed && rounds < limit {
-            changed = false;
-            rounds = rounds.saturating_add(1);
-            for edge in graph
-                .edges
-                .iter()
-                .filter(|edge| propagating.contains(&edge.kind))
-            {
-                let source = values.get(&edge.from).cloned().unwrap_or_default();
+        let mut outgoing: BTreeMap<&str, Vec<&Edge>> = BTreeMap::new();
+        for edge in graph
+            .edges
+            .iter()
+            .filter(|edge| propagating_kinds.contains(&edge.kind))
+        {
+            outgoing.entry(&edge.from).or_default().push(edge);
+        }
+        for edges in outgoing.values_mut() {
+            edges.sort_by(|left, right| left.id.cmp(&right.id));
+        }
+
+        let mut queue: VecDeque<String> = graph.nodes.iter().map(|node| node.id.clone()).collect();
+        let mut queued: BTreeSet<String> = queue.iter().cloned().collect();
+        while let Some(source_id) = queue.pop_front() {
+            queued.remove(&source_id);
+            let source = values.get(&source_id).cloned().unwrap_or_default();
+            for edge in outgoing.get(source_id.as_str()).into_iter().flatten() {
                 let target = values.get(&edge.to).cloned().unwrap_or_default();
                 let joined = target.join(&source);
                 if joined != target {
                     values.insert(edge.to.clone(), joined);
-                    changed = true;
+                    if queued.insert(edge.to.clone()) {
+                        queue.push_back(edge.to.clone());
+                    }
                 }
             }
         }
         Self {
             values,
-            complete: !changed,
+            complete: true,
         }
     }
 
@@ -1034,7 +1038,8 @@ fn secret_reference(source: &str) -> bool {
                 || text.contains('!')
                 || text.contains("secrets.")
                 || text.contains("environ")
-                || text.contains("getenv"))
+                || text.contains("getenv")
+                || text.contains("process.env"))
     })
 }
 
@@ -1084,48 +1089,46 @@ fn separator_width(separator: TopLevelSeparator, source: &[u8], index: usize) ->
 fn split_top_level(source: &str, separator: TopLevelSeparator) -> Vec<&str> {
     let bytes = source.as_bytes();
     let mut parts = Vec::new();
-    let mut index = 0usize;
     let mut start = 0usize;
     let mut quote = None;
     let mut escaped = false;
     let mut depth = 0usize;
-    while index < bytes.len() {
-        let character = bytes[index];
+    let mut characters = source.char_indices();
+    while let Some((index, character)) = characters.next() {
+        let character_width = character.len_utf8();
         if let Some(delimiter) = quote {
             if escaped {
                 escaped = false;
-            } else if character == b'\\' && delimiter == b'"' {
+            } else if character == '\\' && delimiter == '"' {
                 escaped = true;
             } else if character == delimiter {
                 quote = None;
             }
-            index += 1;
             continue;
         }
         if escaped {
             escaped = false;
-            index += 1;
             continue;
         }
         match character {
-            b'\\' => escaped = true,
-            b'\'' | b'"' => quote = Some(character),
-            b'(' => depth = depth.saturating_add(1),
-            b')' => depth = depth.saturating_sub(1),
+            '\\' => escaped = true,
+            '\'' | '"' => quote = Some(character),
+            '(' => depth = depth.saturating_add(1),
+            ')' => depth = depth.saturating_sub(1),
             _ if depth == 0 => {
                 if let Some(width) = separator_width(separator, bytes, index) {
                     let part = source[start..index].trim();
                     if !part.is_empty() {
                         parts.push(part);
                     }
-                    index += width;
-                    start = index;
-                    continue;
+                    for _ in character_width..width {
+                        let _ = characters.next();
+                    }
+                    start = index.saturating_add(width);
                 }
             }
             _ => {}
         }
-        index += 1;
     }
     let part = source[start..].trim();
     if !part.is_empty() {
@@ -1152,47 +1155,43 @@ fn output_destination(shell: &ScriptShell, source: &str) -> OutputDestination {
         };
     }
 
-    let bytes = source.as_bytes();
     let mut redirects = Vec::new();
-    let mut index = 0usize;
     let mut quote = None;
     let mut escaped = false;
     let mut depth = 0usize;
-    while index < bytes.len() {
-        let character = bytes[index];
+    let mut characters = source.char_indices().peekable();
+    while let Some((index, character)) = characters.next() {
         if let Some(delimiter) = quote {
             if escaped {
                 escaped = false;
-            } else if character == b'\\' && delimiter == b'"' {
+            } else if character == '\\' && delimiter == '"' {
                 escaped = true;
             } else if character == delimiter {
                 quote = None;
             }
-            index += 1;
             continue;
         }
         match character {
-            b'\'' | b'"' => quote = Some(character),
-            b'(' => depth = depth.saturating_add(1),
-            b')' => depth = depth.saturating_sub(1),
-            b'>' if depth == 0 => {
-                let descriptor = index
-                    .checked_sub(1)
-                    .and_then(|value| bytes.get(value))
-                    .is_some_and(|previous| {
-                        previous.is_ascii_digit() || matches!(previous, b'&' | b'>')
-                    });
-                let following = bytes.get(index + 1).copied();
-                if !descriptor && following != Some(b'=') {
-                    let after = index + usize::from(following == Some(b'>')) + 1;
+            '\'' | '"' => quote = Some(character),
+            '(' => depth = depth.saturating_add(1),
+            ')' => depth = depth.saturating_sub(1),
+            '>' if depth == 0 => {
+                let descriptor = source.as_bytes()[..index].last().is_some_and(|previous| {
+                    previous.is_ascii_digit() || matches!(previous, b'&' | b'>')
+                });
+                let following = characters.peek().map(|(_, value)| *value);
+                if !descriptor && following != Some('=') {
+                    let mut after = index.saturating_add(character.len_utf8());
+                    if following == Some('>')
+                        && let Some((following_index, following_character)) = characters.next()
+                    {
+                        after = following_index.saturating_add(following_character.len_utf8());
+                    }
                     redirects.push(after);
-                    index = after;
-                    continue;
                 }
             }
             _ => {}
         }
-        index += 1;
     }
     match redirects.as_slice() {
         [] => OutputDestination::StandardOutput,
@@ -1271,7 +1270,7 @@ fn secret_observability(shell: &ScriptShell, source: &str) -> (bool, bool, Vec<U
                             ]
                             .into_iter()
                             .any(|marker| final_stage.contains(marker));
-                        if stages.len() > 1 && !output {
+                        if !output {
                             unknowns.insert(UnknownReason::UnsupportedSyntax(
                                 "unresolved pipeline stdout behavior".to_owned(),
                             ));
@@ -1337,11 +1336,19 @@ fn secret_rule(graph: &Graph, index: &GraphIndex<'_>, dataflow: &Dataflow) -> Ru
         let (network, output) = summary.as_ref().map_or_else(
             || {
                 (
-                    sink.effects.contains(&ObservableEffect::NetworkRequest),
+                    sink.effects.contains(&ObservableEffect::NetworkRequest)
+                        || sink.capabilities.contains(&Capability::Network),
                     false,
                 )
             },
-            |summary| (summary.secret_to_network, summary.secret_to_output),
+            |summary| {
+                (
+                    summary.secret_to_network
+                        || sink.effects.contains(&ObservableEffect::NetworkRequest)
+                        || sink.capabilities.contains(&Capability::Network),
+                    summary.secret_to_output,
+                )
+            },
         );
         let uncertainty = secret_sink_uncertainty(sink, summary.as_ref());
         let observable = network || output;
@@ -2308,9 +2315,11 @@ fn normalized_source(graph: &Graph) -> String {
 
 fn local_reference(name: &str) -> Option<String> {
     let name = name.strip_prefix("child:").unwrap_or(name);
-    let name = match name.find('@') {
-        Some(index) if !name.starts_with('@') => &name[..index],
-        _ => name,
+    let name = if name.starts_with('@') {
+        name
+    } else {
+        name.split_once('@')
+            .map_or(name, |(reference, _)| reference)
     };
     let normalized = normalize_slashes(name);
     (normalized.starts_with("./")
@@ -2348,4 +2357,1669 @@ fn normalize_relative(value: &str) -> Option<String> {
 pub fn verify_program(persona: Persona, graphs: &[Graph]) -> VerificationResult {
     let composed = compose_program(graphs);
     verify(persona, &composed)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const TEST_SOURCE: &str = "workflow.yml";
+
+    fn test_span() -> Span {
+        Span {
+            file: TEST_SOURCE.to_owned(),
+            ..Span::default()
+        }
+    }
+
+    fn test_value(value: &str, trust: Trust, secrecy: Secrecy) -> AbstractValue {
+        AbstractValue::string_constant(value, trust, secrecy, Vec::new())
+    }
+
+    fn test_node(kind: NodeKind, name: &str) -> Node {
+        test_node_in(TEST_SOURCE, kind, name)
+    }
+
+    fn test_node_in(source: &str, kind: NodeKind, name: &str) -> Node {
+        let span = Span {
+            file: source.to_owned(),
+            ..Span::default()
+        };
+        Node::simple(
+            Provider::Github,
+            kind,
+            name,
+            workflow_verifier_domain::Phase::Run,
+            span,
+        )
+    }
+
+    fn test_command(source: &str) -> Node {
+        Node::new(
+            Provider::Github,
+            NodeKind::Command,
+            source,
+            workflow_verifier_domain::Phase::Run,
+            test_span(),
+            Condition::True,
+            BTreeMap::from([(
+                "command".to_owned(),
+                AbstractValue::string_constant(source, Trust::Trusted, Secrecy::Public, Vec::new()),
+            )]),
+            [Capability::Shell],
+            [],
+            None,
+        )
+    }
+
+    fn state<'a>(result: &'a VerificationResult, rule_id: &str) -> &'a PropertyState {
+        &result
+            .properties
+            .iter()
+            .find(|property| property.id == rule_id)
+            .expect("rule property must be explicit")
+            .state
+    }
+
+    #[test]
+    fn public_names_json_and_total_diagnostic_order_are_exact() {
+        assert_eq!(
+            [
+                Severity::Critical,
+                Severity::Error,
+                Severity::Warning,
+                Severity::Note,
+            ]
+            .map(Severity::name),
+            ["critical", "error", "warning", "note"]
+        );
+        assert_eq!(
+            [Confidence::High, Confidence::Medium, Confidence::Low].map(Confidence::name),
+            ["high", "medium", "low"]
+        );
+        assert_eq!(
+            [
+                PropertyState::Proved,
+                PropertyState::Violated,
+                PropertyState::Unknown(Vec::new()),
+                PropertyState::NotApplicable,
+            ]
+            .map(|property| property.name()),
+            ["Proved", "Violated", "Unknown", "NotApplicable"]
+        );
+        assert_eq!(
+            [Persona::Gate, Persona::Audit, Persona::Paranoid].map(Persona::name),
+            ["gate", "audit", "paranoid"]
+        );
+
+        let reason = UnknownReason::MissingEvidence("semantic summary".to_owned());
+        let property = Property {
+            id: "WV-TEST-001".to_owned(),
+            state: PropertyState::Unknown(vec![reason.clone()]),
+            subject: Some("subject".to_owned()),
+            explanation: "explanation".to_owned(),
+        };
+        let property_json = property.to_json();
+        assert!(
+            matches!(property_json, JsonValue::Object(_)),
+            "property JSON must be an object"
+        );
+        let JsonValue::Object(fields) = property_json else {
+            return;
+        };
+        assert_eq!(
+            fields.get("reasons"),
+            Some(&JsonValue::Array(vec![reason.to_json()]))
+        );
+        assert_eq!(
+            fields.get("state"),
+            Some(&JsonValue::String("Unknown".to_owned()))
+        );
+
+        let first = Diagnostic::new(
+            "WV-TEST-001",
+            Severity::Note,
+            Confidence::Low,
+            "first",
+            test_span(),
+            Vec::new(),
+            [],
+            Vec::<String>::new(),
+            None,
+        );
+        let second = Diagnostic::new(
+            "WV-TEST-002",
+            Severity::Note,
+            Confidence::Low,
+            "second",
+            test_span(),
+            Vec::new(),
+            [],
+            Vec::<String>::new(),
+            None,
+        );
+        assert_eq!(first.partial_cmp(&second), Some(first.cmp(&second)));
+    }
+
+    #[test]
+    fn graph_index_obeys_edge_filters_reachability_dominance_and_cycle_order() {
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let entry = test_node(NodeKind::Workflow, "entry");
+        let gate = test_node(NodeKind::Gate, "gate");
+        let sink = test_node(NodeKind::Command, "sink");
+        let bypass = test_node(NodeKind::Step, "bypass");
+        for node in [&entry, &gate, &sink, &bypass] {
+            graph.add_node(node.clone());
+        }
+        graph.add_entrypoint(entry.id.clone());
+        graph.add_edge(Edge::simple(
+            EdgeKind::Control,
+            entry.id.clone(),
+            gate.id.clone(),
+        ));
+        graph.add_edge(Edge::simple(
+            EdgeKind::Control,
+            gate.id.clone(),
+            sink.id.clone(),
+        ));
+        graph.add_edge(Edge::simple(
+            EdgeKind::Data,
+            entry.id.clone(),
+            bypass.id.clone(),
+        ));
+        graph.finalize();
+
+        let index = GraphIndex::new(&graph);
+        assert_eq!(
+            index
+                .shortest_path(&entry.id, &sink.id, &[EdgeKind::Control])
+                .expect("control path")
+                .iter()
+                .map(|node| node.name.as_str())
+                .collect::<Vec<_>>(),
+            vec!["entry", "gate", "sink"]
+        );
+        assert!(
+            index
+                .shortest_path(&entry.id, &bypass.id, &[EdgeKind::Control])
+                .is_none()
+        );
+        assert_eq!(
+            index
+                .reachable(&entry.id)
+                .iter()
+                .map(|node| node.name.as_str())
+                .collect::<BTreeSet<_>>(),
+            BTreeSet::from(["entry", "gate", "sink", "bypass"])
+        );
+        assert!(index.dominates(&entry.id, &entry.id));
+        assert!(index.dominates(&gate.id, &sink.id));
+        assert!(!index.path_avoiding(&entry.id, &sink.id, &gate.id));
+
+        let mut bypassed = graph.clone();
+        bypassed.add_edge(Edge::simple(
+            EdgeKind::Control,
+            entry.id.clone(),
+            bypass.id.clone(),
+        ));
+        bypassed.add_edge(Edge::simple(
+            EdgeKind::Call,
+            bypass.id.clone(),
+            sink.id.clone(),
+        ));
+        bypassed.finalize();
+        let bypassed_index = GraphIndex::new(&bypassed);
+        assert!(bypassed_index.path_avoiding(&entry.id, &sink.id, &gate.id));
+        assert!(!bypassed_index.dominates(&gate.id, &sink.id));
+
+        let mut inferred_entrypoints = graph.clone();
+        inferred_entrypoints.entrypoints.clear();
+        let inferred_index = GraphIndex::new(&inferred_entrypoints);
+        assert!(inferred_index.dominates(&gate.id, &sink.id));
+
+        assert_eq!(
+            canonical_cycle(vec![
+                "beta".to_owned(),
+                "gamma".to_owned(),
+                "alpha".to_owned(),
+                "beta".to_owned(),
+            ]),
+            vec![
+                "alpha".to_owned(),
+                "beta".to_owned(),
+                "gamma".to_owned(),
+                "alpha".to_owned(),
+            ]
+        );
+        assert_eq!(canonical_cycle(Vec::new()), Vec::<String>::new());
+        assert_eq!(
+            canonical_cycle(vec!["only".to_owned()]),
+            vec!["only".to_owned(), "only".to_owned()]
+        );
+    }
+
+    #[test]
+    fn dataflow_and_unknown_reason_collection_follow_semantic_edges_only() {
+        let value_reason = UnknownReason::DynamicString("value".to_owned());
+        let trust_reason = UnknownReason::ExternalState("trust".to_owned());
+        let secrecy_reason = UnknownReason::MissingEvidence("secrecy".to_owned());
+        let composite = AbstractValue {
+            value_type: workflow_verifier_domain::ValueType::Dynamic,
+            value: Value::Unknown(vec![value_reason.clone()]),
+            trust: Trust::Unknown(vec![trust_reason.clone()]),
+            secrecy: Secrecy::Unknown(vec![secrecy_reason.clone()]),
+            provenance: Vec::new(),
+        };
+        assert_eq!(
+            reasons(&composite),
+            vec![trust_reason, value_reason, secrecy_reason]
+        );
+
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut source = test_node(NodeKind::Resource, "source");
+        source.attributes.insert(
+            "value".to_owned(),
+            AbstractValue::string_constant(
+                "tainted",
+                Trust::Untrusted,
+                Secrecy::Secret,
+                Vec::new(),
+            ),
+        );
+        let middle = test_node(NodeKind::Resource, "middle");
+        let target = test_node(NodeKind::Command, "target");
+        let control_only = test_node(NodeKind::Command, "control-only");
+        for node in [&source, &middle, &target, &control_only] {
+            graph.add_node(node.clone());
+        }
+        graph.add_edge(Edge::simple(
+            EdgeKind::Data,
+            source.id.clone(),
+            middle.id.clone(),
+        ));
+        graph.add_edge(Edge::simple(
+            EdgeKind::Read,
+            middle.id.clone(),
+            target.id.clone(),
+        ));
+        graph.add_edge(Edge::simple(
+            EdgeKind::Control,
+            source.id.clone(),
+            control_only.id.clone(),
+        ));
+        graph.finalize();
+
+        let dataflow = Dataflow::solve(&graph);
+        assert!(dataflow.complete);
+        assert!(dataflow.at(&source).is_untrusted());
+        assert!(dataflow.at(&middle).is_untrusted());
+        assert!(dataflow.at(&target).is_untrusted());
+        assert!(!dataflow.at(&control_only).is_untrusted());
+        assert_eq!(
+            data_trace(&graph, &GraphIndex::new(&graph), &dataflow, &target)
+                .iter()
+                .map(|hop| hop.label.as_str())
+                .collect::<Vec<_>>(),
+            vec!["untrusted source", "data flow", "command sink"]
+        );
+
+        let mut direct_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut direct_target = test_command("echo $UNTRUSTED");
+        direct_target.attributes.insert(
+            "input".to_owned(),
+            test_value("untrusted", Trust::Untrusted, Secrecy::Public),
+        );
+        direct_graph.add_node(direct_target.clone());
+        let direct_dataflow = Dataflow::solve(&direct_graph);
+        assert_eq!(
+            data_trace(
+                &direct_graph,
+                &GraphIndex::new(&direct_graph),
+                &direct_dataflow,
+                &direct_target,
+            )
+            .iter()
+            .map(|hop| hop.label.as_str())
+            .collect::<Vec<_>>(),
+            vec!["command sink contains untrusted data"]
+        );
+    }
+
+    #[test]
+    #[expect(
+        clippy::too_many_lines,
+        reason = "one table-driven contract covers the shell lexer and its derived effects"
+    )]
+    fn shell_lexing_expansion_boundaries_and_effects_are_exact() {
+        assert_eq!(
+            script_tokens(r#"plain '$QUOTED' "escaped \"$DOUBLE" tail"#),
+            vec![
+                ScriptToken {
+                    text: "plain".to_owned(),
+                    quoted: false,
+                },
+                ScriptToken {
+                    text: "$QUOTED".to_owned(),
+                    quoted: true,
+                },
+                ScriptToken {
+                    text: "escaped \"$DOUBLE".to_owned(),
+                    quoted: true,
+                },
+                ScriptToken {
+                    text: "tail".to_owned(),
+                    quoted: false,
+                },
+            ]
+        );
+
+        let tokens = vec![
+            ScriptToken {
+                text: "$POSIX".to_owned(),
+                quoted: false,
+            },
+            ScriptToken {
+                text: "`command`".to_owned(),
+                quoted: true,
+            },
+            ScriptToken {
+                text: "%CMD%".to_owned(),
+                quoted: false,
+            },
+            ScriptToken {
+                text: "!DELAYED!".to_owned(),
+                quoted: false,
+            },
+        ];
+        assert_eq!(
+            script_expansions(&ScriptShell::Bash, &tokens),
+            vec![
+                ScriptExpansion {
+                    text: "$POSIX".to_owned(),
+                    quoted: false,
+                },
+                ScriptExpansion {
+                    text: "`command`".to_owned(),
+                    quoted: true,
+                },
+            ]
+        );
+        assert_eq!(
+            script_expansions(&ScriptShell::Cmd, &tokens),
+            vec![
+                ScriptExpansion {
+                    text: "%CMD%".to_owned(),
+                    quoted: false,
+                },
+                ScriptExpansion {
+                    text: "!DELAYED!".to_owned(),
+                    quoted: false,
+                },
+            ]
+        );
+        assert!(
+            script_expansions(
+                &ScriptShell::Cmd,
+                &[
+                    ScriptToken {
+                        text: "%".to_owned(),
+                        quoted: false,
+                    },
+                    ScriptToken {
+                        text: "!".to_owned(),
+                        quoted: false,
+                    },
+                ],
+            )
+            .is_empty()
+        );
+        assert!(script_expansions(&ScriptShell::Python, &tokens).is_empty());
+
+        assert!(shell_identifier_byte(b'a'));
+        assert!(shell_identifier_byte(b'0'));
+        assert!(shell_identifier_byte(b'_'));
+        assert!(!shell_identifier_byte(b'A'));
+        assert!(!shell_identifier_byte(b'-'));
+        assert!(bounded_variable("$token-suffix", "$token"));
+        assert!(!bounded_variable("$token_suffix", "$token"));
+        assert!(!bounded_variable("prefix $token_suffix", "$token"));
+        assert!(bounded_variable("$other $token", "$token"));
+        assert!(expansion_mentions("TOKEN", "$TOKEN"));
+        assert!(expansion_mentions("TOKEN", "$env:TOKEN"));
+        assert!(expansion_mentions("TOKEN", "${TOKEN}"));
+        assert!(expansion_mentions("TOKEN", "${env:TOKEN}"));
+        assert!(expansion_mentions("TOKEN", "%TOKEN%"));
+        assert!(expansion_mentions("TOKEN", "!TOKEN!"));
+        assert!(!expansion_mentions("TOKEN", "$TOKEN_SUFFIX"));
+
+        let all_effects = inferred_effects(&test_command(
+            "curl https://example.test > .github/workflows/release.yml; git push; terraform apply",
+        ));
+        assert_eq!(
+            all_effects,
+            vec![
+                ObservableEffect::RepositoryChange,
+                ObservableEffect::NetworkRequest,
+                ObservableEffect::FileWrite,
+                ObservableEffect::CommandExecution,
+                ObservableEffect::DeploymentChange,
+                ObservableEffect::WorkflowChange,
+            ]
+        );
+        assert_eq!(
+            inferred_effects(&test_command("printf harmless")),
+            vec![ObservableEffect::CommandExecution]
+        );
+        for source in [
+            "git push origin HEAD",
+            "gh pr merge 1",
+            "gh release create v1",
+        ] {
+            assert!(
+                inferred_effects(&test_command(source))
+                    .contains(&ObservableEffect::RepositoryChange),
+                "missing repository effect for {source:?}"
+            );
+        }
+        assert!(
+            !inferred_effects(&test_command("cat .github/workflows/ci.yml"))
+                .contains(&ObservableEffect::WorkflowChange)
+        );
+        assert!(
+            !inferred_effects(&test_command("printf changed > ordinary.txt"))
+                .contains(&ObservableEffect::WorkflowChange)
+        );
+    }
+
+    #[test]
+    fn secret_source_sink_markers_and_observability_do_not_cross_command_groups() {
+        for source in [
+            "echo $SECRET",
+            "printf %s %TOKEN%",
+            "write-output !PASSWORD!",
+            "console.log(process.env.PRIVATE_KEY)",
+            "print(os.getenv('ACCESS_KEY'))",
+            "echo $CREDENTIAL",
+            "use secrets.token",
+            "read environ['password']",
+            "read getenv('passwd')",
+        ] {
+            assert!(
+                secret_reference(source),
+                "missing secret marker in {source:?}"
+            );
+        }
+        for source in ["echo secret", "echo $PUBLIC", "tokenize $VALUE"] {
+            assert!(
+                !secret_reference(source),
+                "false secret marker in {source:?}"
+            );
+        }
+        for source in [
+            "echo value",
+            "printf value",
+            "write-output value",
+            "print(value)",
+        ] {
+            assert!(output_command(source));
+        }
+        assert!(!output_command("cat value"));
+        for source in [
+            "curl https://example.test",
+            "wget https://example.test",
+            "invoke-restmethod https://example.test",
+            "requests.get(url)",
+            "fetch(url)",
+        ] {
+            assert!(network_command(source));
+        }
+        assert!(!network_command("echo offline"));
+
+        assert_eq!(
+            secret_observability(&ScriptShell::Bash, "echo $TOKEN"),
+            (false, true, Vec::new())
+        );
+        assert_eq!(
+            secret_observability(&ScriptShell::Bash, "echo $TOKEN > private.txt"),
+            (false, false, Vec::new())
+        );
+        assert_eq!(
+            secret_observability(
+                &ScriptShell::Bash,
+                "echo setup; curl -H 'Authorization: Bearer '$TOKEN https://example.test",
+            ),
+            (true, false, Vec::new())
+        );
+        assert_eq!(
+            secret_observability(&ScriptShell::Bash, "echo $TOKEN | base64"),
+            (false, true, Vec::new())
+        );
+        assert!(matches!(
+            secret_observability(&ScriptShell::Bash, "echo $TOKEN | custom-filter"),
+            (false, false, reasons)
+                if reasons == vec![UnknownReason::UnsupportedSyntax(
+                    "unresolved pipeline stdout behavior".to_owned()
+                )]
+        ));
+        assert_eq!(
+            secret_observability(&ScriptShell::Bash, "echo setup; echo $TOKEN > private.txt"),
+            (false, false, Vec::new())
+        );
+    }
+
+    #[test]
+    fn capability_effect_matching_is_exhaustive_and_least_privilege_preserving() {
+        let non_privileged = [
+            Capability::RepositoryRead,
+            Capability::TokenRead,
+            Capability::FilesystemRead,
+            Capability::Shell,
+        ];
+        for capability in non_privileged {
+            assert!(!privileged_capability(capability));
+            assert!(permission_capability_matches(capability, &BTreeSet::new()));
+        }
+
+        let cases: &[(Capability, &[ObservableEffect])] = &[
+            (
+                Capability::RepositoryWrite,
+                &[ObservableEffect::RepositoryChange],
+            ),
+            (
+                Capability::RepositoryWrite,
+                &[ObservableEffect::WorkflowChange],
+            ),
+            (
+                Capability::TokenWrite,
+                &[ObservableEffect::RepositoryChange],
+            ),
+            (Capability::Oidc, &[ObservableEffect::DeploymentChange]),
+            (Capability::Oidc, &[ObservableEffect::CredentialUse]),
+            (
+                Capability::CloudCredential,
+                &[ObservableEffect::DeploymentChange],
+            ),
+            (
+                Capability::CloudCredential,
+                &[ObservableEffect::CredentialUse],
+            ),
+            (Capability::SecretAccess, &[ObservableEffect::CredentialUse]),
+            (Capability::Network, &[ObservableEffect::NetworkRequest]),
+            (Capability::FilesystemWrite, &[ObservableEffect::FileWrite]),
+            (
+                Capability::FilesystemWrite,
+                &[ObservableEffect::WorkflowChange],
+            ),
+            (
+                Capability::ArtifactRead,
+                &[ObservableEffect::ArtifactPublish],
+            ),
+            (
+                Capability::ArtifactWrite,
+                &[ObservableEffect::ArtifactPublish],
+            ),
+            (Capability::CacheRead, &[ObservableEffect::CachePublish]),
+            (Capability::CacheWrite, &[ObservableEffect::CachePublish]),
+            (
+                Capability::Deployment,
+                &[ObservableEffect::DeploymentChange],
+            ),
+            (
+                Capability::SelfHostedPersistence,
+                &[ObservableEffect::FileWrite],
+            ),
+            (
+                Capability::SelfHostedPersistence,
+                &[ObservableEffect::WorkflowChange],
+            ),
+            (Capability::AiTool, &[ObservableEffect::AiAgentExecution]),
+        ];
+        for (capability, effects) in cases {
+            assert!(privileged_capability(*capability));
+            assert!(
+                permission_capability_matches(*capability, &effects.iter().copied().collect()),
+                "{capability:?} must match {effects:?}"
+            );
+            assert!(
+                !permission_capability_matches(*capability, &BTreeSet::new()),
+                "{capability:?} must not match an empty effect set"
+            );
+        }
+    }
+
+    #[test]
+    fn authorization_gate_trust_and_environment_uncertainty_are_explicit() {
+        let trusted_value =
+            AbstractValue::string_constant("manual", Trust::Trusted, Secrecy::Public, Vec::new());
+        let untrusted_value =
+            AbstractValue::string_constant("manual", Trust::Untrusted, Secrecy::Public, Vec::new());
+        let mut trusted = test_node(NodeKind::Gate, "trusted");
+        trusted
+            .attributes
+            .insert("mechanism".to_owned(), trusted_value);
+        let mut untrusted = test_node(NodeKind::Gate, "untrusted");
+        untrusted
+            .attributes
+            .insert("mechanism".to_owned(), untrusted_value);
+        let mut protected = test_node(NodeKind::Gate, "protected");
+        protected.condition = Condition::atom("github.ref_protected");
+        let mut circle = test_node(NodeKind::Gate, "approval:release");
+        circle.provider = Provider::Circleci;
+        let github_named_approval = test_node(NodeKind::Gate, "approval:release");
+        let unrelated_condition = {
+            let mut node = test_node(NodeKind::Gate, "condition");
+            node.condition = Condition::atom("github.actor");
+            node
+        };
+        let unrelated = test_node(NodeKind::Gate, "reviewed");
+
+        for gate in [
+            &trusted,
+            &untrusted,
+            &protected,
+            &circle,
+            &github_named_approval,
+            &unrelated_condition,
+            &unrelated,
+        ] {
+            let mut graph = Graph::empty(gate.provider, TEST_SOURCE);
+            graph.add_node(gate.clone());
+            let dataflow = Dataflow::solve(&graph);
+            let expected = matches!(gate.name.as_str(), "trusted" | "protected")
+                || (gate.provider == Provider::Circleci && gate.name == "approval:release");
+            assert_eq!(trusted_authorization_gate(gate, &dataflow), expected);
+        }
+
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let environment = Node::new(
+            Provider::Github,
+            NodeKind::Resource,
+            "environment:production",
+            workflow_verifier_domain::Phase::Run,
+            test_span(),
+            Condition::True,
+            BTreeMap::new(),
+            [],
+            [],
+            Some(UnknownReason::ExternalState(
+                "production protection".to_owned(),
+            )),
+        );
+        let unrelated_environment = test_node(NodeKind::Resource, "environment:staging");
+        let sink = test_node(NodeKind::Command, "deploy");
+        for node in [&environment, &unrelated_environment, &sink] {
+            graph.add_node(node.clone());
+        }
+        graph.add_edge(Edge::simple(
+            EdgeKind::Grant,
+            environment.id.clone(),
+            sink.id.clone(),
+        ));
+        graph.finalize();
+        assert_eq!(
+            environment_authorization_reasons(&graph, &GraphIndex::new(&graph), &sink),
+            vec![UnknownReason::ExternalState(
+                "production protection".to_owned()
+            )]
+        );
+    }
+
+    #[test]
+    fn local_reference_normalization_accepts_only_unambiguous_local_yaml_targets() {
+        let cases = [
+            ("./action", Some("./action")),
+            ("../shared/action", Some("../shared/action")),
+            (
+                ".github/workflows/reuse.yml",
+                Some(".github/workflows/reuse.yml"),
+            ),
+            ("child:./action@local", Some("./action")),
+            ("workflow.yaml", Some("workflow.yaml")),
+            ("workflow.YML", Some("workflow.YML")),
+            ("owner/action@revision", None),
+            ("@scope/action", None),
+            ("workflow.json", None),
+        ];
+        for (input, expected) in cases {
+            assert_eq!(local_reference(input).as_deref(), expected, "{input:?}");
+        }
+        assert!(yaml_reference("nested/workflow.yml"));
+        assert!(yaml_reference("nested/workflow.YAML"));
+        assert!(!yaml_reference("nested/workflow.yml.txt"));
+        assert_eq!(
+            normalize_relative("jobs/./nested/../action.yml").as_deref(),
+            Some("jobs/action.yml")
+        );
+        assert_eq!(normalize_relative("../escape.yml"), None);
+        assert_eq!(normalize_relative("jobs/../../escape.yml"), None);
+
+        let mut caller = Graph::empty(Provider::Github, "jobs/caller.yml");
+        let call = test_node(NodeKind::Call, "./action/action.yml");
+        caller.add_node(call.clone());
+        let target = Graph::empty(Provider::Github, "jobs/action/action.yml");
+        assert_eq!(
+            local_call_target(&[caller.clone(), target.clone()], &caller, &call)
+                .map(|graph| graph.source.as_str()),
+            Some("jobs/action/action.yml")
+        );
+
+        let duplicate = target.clone();
+        assert!(
+            local_call_target(&[caller.clone(), target, duplicate], &caller, &call).is_none(),
+            "ambiguous local targets must fail closed"
+        );
+    }
+
+    #[test]
+    fn script_summary_preserves_each_provider_substitution_and_shell_unknown() {
+        let summarize = |source: &str, shell: &str| {
+            let mut node = test_command(source);
+            node.attributes.insert(
+                "shell".to_owned(),
+                test_value(shell, Trust::Trusted, Secrecy::Public),
+            );
+            script_summary(&node)
+        };
+
+        let safe = summarize("printf '%s' \"$TOKEN\"", "bash");
+        assert!(!safe.unsafe_interpolation);
+        assert_eq!(
+            safe.expansions,
+            vec![ScriptExpansion {
+                text: "$TOKEN".to_owned(),
+                quoted: true,
+            }]
+        );
+        for source in [
+            "echo ${{ inputs.value }}",
+            "echo << pipeline.value >>",
+            "echo $[variables.value]",
+        ] {
+            assert!(
+                summarize(source, "bash").unsafe_interpolation,
+                "provider substitution must be unsafe in {source:?}"
+            );
+        }
+        assert!(summarize("eval(user_input)", "python").unsafe_interpolation);
+        assert!(summarize("exec(user_input)", "python3").unsafe_interpolation);
+        assert!(!summarize("print(user_input)", "python").unsafe_interpolation);
+        assert!(summarize("write-output $(get-value)", "pwsh").unsafe_interpolation);
+        assert!(summarize("write-output '$(get-value)'", "pwsh").unsafe_interpolation);
+        assert!(summarize("echo \"$(value)\"", "cmd").unsafe_interpolation);
+        assert!(!summarize("echo '$(value)'", "bash").unsafe_interpolation);
+
+        let unknown = summarize("use $TOKEN", "fish");
+        assert_eq!(
+            unknown.unknowns,
+            vec![UnknownReason::UnsupportedSyntax("shell fish".to_owned())]
+        );
+    }
+
+    #[test]
+    fn program_composition_links_local_entrypoints_and_avoids_same_file_recursion() {
+        let mut caller = Graph::empty(Provider::Github, "workflows/ci.yml");
+        let mut call = Node::new(
+            Provider::Github,
+            NodeKind::Call,
+            "local action",
+            workflow_verifier_domain::Phase::Run,
+            test_span(),
+            Condition::True,
+            BTreeMap::from([(
+                "dependency.revision".to_owned(),
+                test_value(
+                    "local:actions/build/action.yml",
+                    Trust::Trusted,
+                    Secrecy::Public,
+                ),
+            )]),
+            [],
+            [],
+            Some(UnknownReason::UnresolvedDependency(
+                "local action".to_owned(),
+            )),
+        );
+        caller.add_node(call.clone());
+
+        let mut target = Graph::empty(Provider::Github, "actions/build/action.yml");
+        let entrypoint = test_node(NodeKind::Step, "local entrypoint");
+        target.add_node(entrypoint.clone());
+        target.add_entrypoint(entrypoint.id.clone());
+        let program = compose_program(&[caller, target]);
+        call.unknown = None;
+        assert_eq!(
+            program
+                .nodes
+                .iter()
+                .find(|node| node.id == call.id)
+                .and_then(|node| node.unknown.as_ref()),
+            None
+        );
+        for kind in [EdgeKind::Call, EdgeKind::Control] {
+            assert!(program.edges.iter().any(|edge| {
+                edge.kind == kind && edge.from == call.id && edge.to == entrypoint.id
+            }));
+        }
+
+        let mut same_file = Graph::empty(Provider::Github, "action.yml");
+        let mut recursive_call = Node::new(
+            Provider::Github,
+            NodeKind::Call,
+            "self",
+            workflow_verifier_domain::Phase::Run,
+            test_span(),
+            Condition::True,
+            BTreeMap::from([(
+                "dependency.revision".to_owned(),
+                test_value("local:action.yml", Trust::Trusted, Secrecy::Public),
+            )]),
+            [],
+            [],
+            Some(UnknownReason::RecursiveCall("action.yml".to_owned())),
+        );
+        let same_entrypoint = test_node(NodeKind::Step, "same-file entrypoint");
+        same_file.add_node(recursive_call.clone());
+        same_file.add_node(same_entrypoint.clone());
+        same_file.add_entrypoint(same_entrypoint.id.clone());
+        let same_program = compose_program(&[same_file]);
+        recursive_call.unknown = None;
+        assert_eq!(
+            same_program
+                .nodes
+                .iter()
+                .find(|node| node.id == recursive_call.id)
+                .and_then(|node| node.unknown.as_ref()),
+            None
+        );
+        assert!(
+            !same_program
+                .edges
+                .iter()
+                .any(|edge| { edge.from == recursive_call.id && edge.to == same_entrypoint.id })
+        );
+    }
+
+    #[test]
+    fn program_composition_does_not_invent_cross_file_resource_edges() {
+        let mut producer = Graph::empty(Provider::Github, "producer.yml");
+        let legitimate_writer = test_node_in("producer.yml", NodeKind::Resource, "legitimate");
+        let producer_step = test_node_in("producer.yml", NodeKind::Step, "producer step");
+        let unwritten_resource = test_node_in("producer.yml", NodeKind::Resource, "writer-filter");
+        let written_non_resource = test_node_in("producer.yml", NodeKind::Job, "writer-filter");
+        let reader_filter_writer =
+            test_node_in("producer.yml", NodeKind::Resource, "reader-filter");
+        for node in [
+            &legitimate_writer,
+            &producer_step,
+            &unwritten_resource,
+            &written_non_resource,
+            &reader_filter_writer,
+        ] {
+            producer.add_node(node.clone());
+        }
+        for target in [
+            &legitimate_writer,
+            &written_non_resource,
+            &reader_filter_writer,
+        ] {
+            producer.add_edge(Edge::simple(
+                EdgeKind::Write,
+                producer_step.id.clone(),
+                target.id.clone(),
+            ));
+        }
+
+        let mut consumer = Graph::empty(Provider::Github, "consumer.yml");
+        let legitimate_reader = test_node_in("consumer.yml", NodeKind::Resource, "legitimate");
+        let writer_filter_reader =
+            test_node_in("consumer.yml", NodeKind::Resource, "writer-filter");
+        let unwritten_reader = test_node_in("consumer.yml", NodeKind::Resource, "reader-filter");
+        let read_non_resource = test_node_in("consumer.yml", NodeKind::Job, "reader-filter");
+        let consumer_step = test_node_in("consumer.yml", NodeKind::Step, "consumer step");
+        for node in [
+            &legitimate_reader,
+            &writer_filter_reader,
+            &unwritten_reader,
+            &read_non_resource,
+            &consumer_step,
+        ] {
+            consumer.add_node(node.clone());
+        }
+        for source in [
+            &legitimate_reader,
+            &writer_filter_reader,
+            &read_non_resource,
+        ] {
+            consumer.add_edge(Edge::simple(
+                EdgeKind::Read,
+                source.id.clone(),
+                consumer_step.id.clone(),
+            ));
+        }
+
+        let program = compose_program(&[producer, consumer]);
+        assert_eq!(
+            program
+                .edges
+                .iter()
+                .filter(|edge| edge.label.as_deref() == Some("cross-file resource"))
+                .map(|edge| (edge.from.as_str(), edge.to.as_str()))
+                .collect::<Vec<_>>(),
+            vec![(legitimate_writer.id.as_str(), legitimate_reader.id.as_str(),)]
+        );
+    }
+
+    #[test]
+    #[expect(
+        clippy::too_many_lines,
+        reason = "one contract compares all supply and permission outcomes"
+    )]
+    fn supply_and_permission_rules_cover_locked_mutable_used_and_unknown_cases() {
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mutable = test_node(NodeKind::Call, "owner/action@main");
+        let local = test_node(NodeKind::Call, "./local-action");
+        let immutable = test_node(
+            NodeKind::Call,
+            "owner/action@0123456789abcdef0123456789abcdef01234567",
+        );
+        let mut locked = test_node(NodeKind::Call, "owner/action@main-locked");
+        locked.attributes.insert(
+            "dependency.digest".to_owned(),
+            test_value(
+                &format!("sha256:{}", sha256_hex("locked dependency")),
+                Trust::Trusted,
+                Secrecy::Public,
+            ),
+        );
+        let mut invalid_digest = test_node(NodeKind::Call, "owner/action@invalid-digest");
+        invalid_digest.attributes.insert(
+            "dependency.digest".to_owned(),
+            test_value("not-a-content-digest", Trust::Trusted, Secrecy::Public),
+        );
+        let mut empty_digest_set = test_node(NodeKind::Call, "owner/action@empty-digest-set");
+        empty_digest_set.attributes.insert(
+            "dependency.digest".to_owned(),
+            AbstractValue {
+                value_type: workflow_verifier_domain::ValueType::String,
+                value: Value::String(
+                    workflow_verifier_domain::abstract_value::StringValue::Constants(Vec::new()),
+                ),
+                trust: Trust::Trusted,
+                secrecy: Secrecy::Public,
+                provenance: Vec::new(),
+            },
+        );
+        for node in [
+            &mutable,
+            &local,
+            &immutable,
+            &locked,
+            &invalid_digest,
+            &empty_digest_set,
+        ] {
+            graph.add_node(node.clone());
+        }
+        let result = verify(Persona::Gate, &graph);
+        assert_eq!(state(&result, "WV-SUPPLY-001"), &PropertyState::Violated);
+        assert_eq!(
+            result
+                .diagnostics
+                .iter()
+                .filter(|diagnostic| diagnostic.rule_id == "WV-SUPPLY-001")
+                .map(|diagnostic| diagnostic.message.as_str())
+                .collect::<BTreeSet<_>>(),
+            BTreeSet::from([
+                "dependency is not pinned to immutable content: owner/action@empty-digest-set",
+                "dependency is not pinned to immutable content: owner/action@invalid-digest",
+                "dependency is not pinned to immutable content: owner/action@main",
+            ])
+        );
+
+        let mut used = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut owner = test_node(NodeKind::Workflow, "used-network");
+        owner.capabilities = vec![Capability::Network];
+        let network = test_command("curl https://example.test");
+        used.add_node(owner.clone());
+        used.add_node(network.clone());
+        used.add_entrypoint(owner.id.clone());
+        used.add_edge(Edge::simple(
+            EdgeKind::Control,
+            owner.id.clone(),
+            network.id.clone(),
+        ));
+        used.finalize();
+        assert_eq!(
+            state(&verify(Persona::Gate, &used), "WV-PERM-001"),
+            &PropertyState::Proved
+        );
+
+        let mut excessive = Graph::empty(Provider::Github, TEST_SOURCE);
+        excessive.add_node(owner.clone());
+        assert_eq!(
+            state(&verify(Persona::Gate, &excessive), "WV-PERM-001"),
+            &PropertyState::Violated
+        );
+
+        let mut unresolved = Graph::empty(Provider::Github, TEST_SOURCE);
+        let unknown = Node::new(
+            Provider::Github,
+            NodeKind::Call,
+            "unknown work",
+            workflow_verifier_domain::Phase::Run,
+            test_span(),
+            Condition::True,
+            BTreeMap::new(),
+            [],
+            [],
+            Some(UnknownReason::MissingEvidence("call summary".to_owned())),
+        );
+        unresolved.add_node(owner.clone());
+        unresolved.add_node(unknown.clone());
+        unresolved.add_edge(Edge::simple(EdgeKind::Control, owner.id, unknown.id));
+        unresolved.finalize();
+        assert_eq!(
+            state(&verify(Persona::Gate, &unresolved), "WV-PERM-001"),
+            &PropertyState::Unknown(vec![UnknownReason::MissingEvidence(
+                "call summary".to_owned()
+            )])
+        );
+    }
+
+    #[test]
+    fn a_known_secret_reaching_a_network_capable_call_is_a_violation() {
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut call = test_node(NodeKind::Call, "owner/uploader@revision");
+        call.capabilities = vec![Capability::Network, Capability::SecretAccess];
+        call.attributes.insert(
+            "token".to_owned(),
+            test_value("secret", Trust::Trusted, Secrecy::Secret),
+        );
+        graph.add_node(call);
+
+        let result = verify(Persona::Gate, &graph);
+        assert_eq!(state(&result, "WV-SEC-002"), &PropertyState::Violated);
+        assert!(result.diagnostics.iter().any(|diagnostic| {
+            diagnostic.rule_id == "WV-SEC-002"
+                && diagnostic.capabilities.contains(&Capability::Network)
+        }));
+    }
+
+    #[test]
+    // Every secret sink and the non-sink uncertainty cases form one rule
+    // decision table and are intentionally reviewed together.
+    #[allow(clippy::too_many_lines)]
+    fn secret_rule_distinguishes_each_sink_shape_and_uncertain_non_sink() {
+        let secret = test_value("secret", Trust::Trusted, Secrecy::Secret);
+        let mut command = test_command("echo $TOKEN");
+        command
+            .attributes
+            .insert("token".to_owned(), secret.clone());
+        let mut effect_sink = test_node(NodeKind::Resource, "network effect");
+        effect_sink.effects = vec![ObservableEffect::NetworkRequest];
+        effect_sink
+            .attributes
+            .insert("token".to_owned(), secret.clone());
+        let mut parsed_network = test_command("curl $TOKEN https://example.test");
+        parsed_network
+            .attributes
+            .insert("token".to_owned(), secret.clone());
+        let mut declared_network = test_command("use $TOKEN through declared effect");
+        declared_network.effects = vec![ObservableEffect::NetworkRequest];
+        declared_network
+            .attributes
+            .insert("token".to_owned(), secret.clone());
+        let mut capable_network = test_command("use $TOKEN through capability");
+        capable_network.capabilities.push(Capability::Network);
+        capable_network
+            .attributes
+            .insert("token".to_owned(), secret.clone());
+        let mut call_without_network = test_node(NodeKind::Call, "local secret consumer");
+        call_without_network
+            .attributes
+            .insert("token".to_owned(), secret.clone());
+        let mut resource_with_capability = test_node(NodeKind::Resource, "network capability");
+        resource_with_capability.capabilities = vec![Capability::Network];
+        resource_with_capability
+            .attributes
+            .insert("token".to_owned(), secret.clone());
+        let uncertain_reason = UnknownReason::MissingEvidence("opaque resource".to_owned());
+        let uncertain_non_sink = Node::new(
+            Provider::Github,
+            NodeKind::Resource,
+            "uncertain local resource",
+            workflow_verifier_domain::Phase::Run,
+            test_span(),
+            Condition::True,
+            BTreeMap::new(),
+            [],
+            [],
+            Some(uncertain_reason),
+        );
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        for node in [
+            &command,
+            &effect_sink,
+            &parsed_network,
+            &declared_network,
+            &capable_network,
+            &call_without_network,
+            &resource_with_capability,
+            &uncertain_non_sink,
+        ] {
+            graph.add_node(node.clone());
+        }
+        let result = verify(Persona::Gate, &graph);
+        assert_eq!(state(&result, "WV-SEC-002"), &PropertyState::Violated);
+        let diagnostics: Vec<_> = result
+            .diagnostics
+            .iter()
+            .filter(|diagnostic| diagnostic.rule_id == "WV-SEC-002")
+            .collect();
+        assert_eq!(
+            diagnostics.len(),
+            [
+                &command,
+                &effect_sink,
+                &parsed_network,
+                &declared_network,
+                &capable_network,
+            ]
+            .len()
+        );
+        assert!(diagnostics.iter().any(|diagnostic| {
+            diagnostic.capabilities.contains(&Capability::Shell)
+                && !diagnostic.capabilities.contains(&Capability::Network)
+        }));
+        assert!(diagnostics.iter().any(|diagnostic| {
+            diagnostic.capabilities.contains(&Capability::Network)
+                && !diagnostic.capabilities.contains(&Capability::Shell)
+        }));
+
+        let secrecy_reason = UnknownReason::ExternalState("secret classification".to_owned());
+        let mut uncertain_output = test_command("echo $TOKEN");
+        uncertain_output.attributes.insert(
+            "token".to_owned(),
+            AbstractValue {
+                value_type: workflow_verifier_domain::ValueType::String,
+                value: Value::String(
+                    workflow_verifier_domain::abstract_value::StringValue::Constants(vec![
+                        "token".to_owned(),
+                    ]),
+                ),
+                trust: Trust::Trusted,
+                secrecy: Secrecy::Unknown(vec![secrecy_reason.clone()]),
+                provenance: Vec::new(),
+            },
+        );
+        let mut uncertain_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        uncertain_graph.add_node(uncertain_output);
+        assert_eq!(
+            state(&verify(Persona::Gate, &uncertain_graph), "WV-SEC-002"),
+            &PropertyState::Unknown(vec![secrecy_reason])
+        );
+
+        let shell_reason = UnknownReason::UnsupportedSyntax("shell fish".to_owned());
+        for (secrecy, expected) in [
+            (
+                Secrecy::Secret,
+                PropertyState::Unknown(vec![shell_reason.clone()]),
+            ),
+            (Secrecy::Public, PropertyState::Proved),
+        ] {
+            let mut unknown_shell = test_command("use $TOKEN");
+            unknown_shell.attributes.insert(
+                "shell".to_owned(),
+                test_value("fish", Trust::Trusted, Secrecy::Public),
+            );
+            unknown_shell.attributes.insert(
+                "token".to_owned(),
+                test_value("token", Trust::Trusted, secrecy),
+            );
+            let mut shell_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+            shell_graph.add_node(unknown_shell);
+            assert_eq!(
+                state(&verify(Persona::Gate, &shell_graph), "WV-SEC-002"),
+                &expected
+            );
+        }
+
+        let missing = UnknownReason::MissingEvidence("network behavior".to_owned());
+        for (capabilities, expected) in [
+            (
+                vec![Capability::Network],
+                PropertyState::Unknown(vec![missing.clone()]),
+            ),
+            (Vec::new(), PropertyState::Proved),
+        ] {
+            let mut sink = Node::new(
+                Provider::Github,
+                NodeKind::Resource,
+                "uncertain network effect",
+                workflow_verifier_domain::Phase::Run,
+                test_span(),
+                Condition::True,
+                BTreeMap::new(),
+                capabilities,
+                [ObservableEffect::NetworkRequest],
+                Some(missing.clone()),
+            );
+            sink.attributes.insert(
+                "value".to_owned(),
+                test_value("public", Trust::Trusted, Secrecy::Public),
+            );
+            let mut sink_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+            sink_graph.add_node(sink);
+            assert_eq!(
+                state(&verify(Persona::Gate, &sink_graph), "WV-SEC-002"),
+                &expected
+            );
+        }
+    }
+
+    #[test]
+    fn credential_ai_and_self_rule_filters_fail_closed_without_false_candidates() {
+        let secret = test_value("secret", Trust::Trusted, Secrecy::Secret);
+        let mut persistence_command = test_command("persistent command");
+        persistence_command.capabilities = vec![Capability::SelfHostedPersistence];
+        persistence_command
+            .attributes
+            .insert("credential".to_owned(), secret.clone());
+        let mut ordinary_call = test_node(NodeKind::Call, "ordinary call");
+        ordinary_call
+            .attributes
+            .insert("credential".to_owned(), secret);
+        let mut credential_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        credential_graph.add_node(persistence_command);
+        credential_graph.add_node(ordinary_call);
+        assert_eq!(
+            state(&verify(Persona::Gate, &credential_graph), "WV-CRED-001"),
+            &PropertyState::NotApplicable
+        );
+
+        let agent = |name: &str,
+                     trust: Trust,
+                     capabilities: Vec<Capability>,
+                     effects: Vec<ObservableEffect>| {
+            let mut node = test_node(NodeKind::Call, name);
+            node.capabilities = capabilities;
+            node.effects = effects;
+            node.attributes.insert(
+                "prompt".to_owned(),
+                test_value("prompt", trust, Secrecy::Public),
+            );
+            node
+        };
+        let trusted_network = agent(
+            "openai trusted",
+            Trust::Trusted,
+            vec![Capability::Network],
+            Vec::new(),
+        );
+        let isolated_untrusted = agent("claude isolated", Trust::Untrusted, Vec::new(), Vec::new());
+        let effect_agent = agent(
+            "semantic executor",
+            Trust::Trusted,
+            Vec::new(),
+            vec![ObservableEffect::AiAgentExecution],
+        );
+        let tool_agent = agent(
+            "semantic tool",
+            Trust::Untrusted,
+            vec![Capability::AiTool],
+            Vec::new(),
+        );
+        let unrelated_call = agent(
+            "ordinary call",
+            Trust::Untrusted,
+            vec![Capability::Network],
+            Vec::new(),
+        );
+        let mut named_resource = test_node(NodeKind::Resource, "openai configuration");
+        named_resource.capabilities = vec![Capability::Network];
+        named_resource.attributes.insert(
+            "prompt".to_owned(),
+            test_value("prompt", Trust::Untrusted, Secrecy::Public),
+        );
+        let mut ai_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        for node in [
+            &trusted_network,
+            &isolated_untrusted,
+            &effect_agent,
+            &tool_agent,
+            &unrelated_call,
+            &named_resource,
+        ] {
+            ai_graph.add_node(node.clone());
+        }
+        let ai_result = verify(Persona::Gate, &ai_graph);
+        assert_eq!(state(&ai_result, "WV-AI-001"), &PropertyState::Violated);
+        assert_eq!(
+            ai_result
+                .diagnostics
+                .iter()
+                .filter(|diagnostic| diagnostic.rule_id == "WV-AI-001")
+                .map(|diagnostic| diagnostic.span.clone())
+                .collect::<Vec<_>>()
+                .len(),
+            [tool_agent].len()
+        );
+
+        let mut self_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut owner = test_node(NodeKind::Workflow, "write grant");
+        owner.capabilities = vec![Capability::RepositoryWrite];
+        let harmless_command = test_command("printf harmless");
+        let mut non_command_rewrite = test_node(NodeKind::Call, "rewrite metadata");
+        non_command_rewrite.effects = vec![ObservableEffect::WorkflowChange];
+        for node in [&owner, &harmless_command, &non_command_rewrite] {
+            self_graph.add_node(node.clone());
+        }
+        assert_eq!(
+            state(&verify(Persona::Gate, &self_graph), "WV-SELF-001"),
+            &PropertyState::Proved
+        );
+    }
+
+    #[test]
+    #[expect(
+        clippy::too_many_lines,
+        reason = "one table-driven contract compares the remaining verifier rule outcomes"
+    )]
+    fn integrity_toctou_credential_ai_and_self_modification_rules_reach_each_outcome() {
+        let privileged_sink = || {
+            let mut node = test_command("git push origin HEAD");
+            node.effects = vec![ObservableEffect::RepositoryChange];
+            node
+        };
+
+        for (resource_name, rule_id) in [
+            ("artifact:bundle", "WV-ARTIFACT-001"),
+            ("cache:build", "WV-CACHE-001"),
+        ] {
+            let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+            let mut resource = test_node(NodeKind::Resource, resource_name);
+            resource.attributes.insert(
+                "value".to_owned(),
+                test_value("attacker controlled", Trust::Untrusted, Secrecy::Public),
+            );
+            let sink = privileged_sink();
+            graph.add_node(resource.clone());
+            graph.add_node(sink.clone());
+            graph.add_edge(Edge::simple(EdgeKind::Data, resource.id, sink.id));
+            graph.finalize();
+            let result = verify(Persona::Gate, &graph);
+            assert_eq!(state(&result, rule_id), &PropertyState::Violated);
+            assert!(
+                result
+                    .diagnostics
+                    .iter()
+                    .any(|diagnostic| diagnostic.rule_id == rule_id)
+            );
+        }
+
+        for (capability, rule_id) in [
+            (Capability::ArtifactRead, "WV-ARTIFACT-001"),
+            (Capability::CacheWrite, "WV-CACHE-001"),
+        ] {
+            let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+            let mut resource = test_node(NodeKind::Resource, "semantic resource");
+            resource.capabilities = vec![capability];
+            graph.add_node(resource);
+            assert_eq!(
+                state(&verify(Persona::Gate, &graph), rule_id),
+                &PropertyState::Proved
+            );
+        }
+        let mut non_resource = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut artifact_named_call = test_node(NodeKind::Call, "artifact:bundle");
+        artifact_named_call.capabilities = vec![Capability::ArtifactRead];
+        non_resource.add_node(artifact_named_call);
+        assert_eq!(
+            state(&verify(Persona::Gate, &non_resource), "WV-ARTIFACT-001"),
+            &PropertyState::NotApplicable
+        );
+
+        let mut toctou = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut checkout = test_node(NodeKind::Call, "actions/checkout@main");
+        checkout.attributes.insert(
+            "ref".to_owned(),
+            test_value("pull request head", Trust::Untrusted, Secrecy::Public),
+        );
+        let sink = privileged_sink();
+        toctou.add_node(checkout.clone());
+        toctou.add_node(sink.clone());
+        toctou.add_edge(Edge::simple(EdgeKind::Control, checkout.id, sink.id));
+        toctou.finalize();
+        assert_eq!(
+            state(&verify(Persona::Gate, &toctou), "WV-TOCTOU-001"),
+            &PropertyState::Violated
+        );
+
+        for (name, trust) in [
+            (
+                "actions/checkout@0123456789abcdef0123456789abcdef01234567",
+                Trust::Untrusted,
+            ),
+            ("actions/checkout@main", Trust::Trusted),
+        ] {
+            let mut safe_graph = Graph::empty(Provider::Github, TEST_SOURCE);
+            let mut safe_checkout = test_node(NodeKind::Call, name);
+            safe_checkout.attributes.insert(
+                "ref".to_owned(),
+                test_value("selector", trust, Secrecy::Public),
+            );
+            let safe_sink = privileged_sink();
+            safe_graph.add_node(safe_checkout.clone());
+            safe_graph.add_node(safe_sink.clone());
+            safe_graph.add_edge(Edge::simple(
+                EdgeKind::Control,
+                safe_checkout.id,
+                safe_sink.id,
+            ));
+            safe_graph.finalize();
+            assert_eq!(
+                state(&verify(Persona::Gate, &safe_graph), "WV-TOCTOU-001"),
+                &PropertyState::Proved
+            );
+        }
+        let mut command_named_checkout = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut non_call = test_command("checkout dynamic workspace");
+        non_call.attributes.insert(
+            "selector".to_owned(),
+            test_value("selector", Trust::Untrusted, Secrecy::Public),
+        );
+        command_named_checkout.add_node(non_call);
+        assert_eq!(
+            state(
+                &verify(Persona::Gate, &command_named_checkout),
+                "WV-TOCTOU-001"
+            ),
+            &PropertyState::NotApplicable
+        );
+
+        let mut credential = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut persistent = test_node(NodeKind::Call, "self-hosted cache");
+        persistent.capabilities = vec![Capability::SelfHostedPersistence];
+        persistent.attributes.insert(
+            "credential".to_owned(),
+            test_value("secret", Trust::Trusted, Secrecy::Secret),
+        );
+        credential.add_node(persistent);
+        assert_eq!(
+            state(&verify(Persona::Gate, &credential), "WV-CRED-001"),
+            &PropertyState::Violated
+        );
+
+        let mut ai = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut agent = test_node(NodeKind::Call, "openai agent");
+        agent.capabilities = vec![Capability::Network];
+        agent.attributes.insert(
+            "prompt".to_owned(),
+            test_value("untrusted prompt", Trust::Untrusted, Secrecy::Public),
+        );
+        ai.add_node(agent);
+        assert_eq!(
+            state(&verify(Persona::Gate, &ai), "WV-AI-001"),
+            &PropertyState::Violated
+        );
+
+        let mut self_modifying = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut owner = test_node(NodeKind::Workflow, "write grant");
+        owner.capabilities = vec![Capability::RepositoryWrite];
+        let rewrite = test_command("printf changed > .github/workflows/ci.yml");
+        self_modifying.add_node(owner);
+        self_modifying.add_node(rewrite);
+        assert_eq!(
+            state(&verify(Persona::Gate, &self_modifying), "WV-SELF-001"),
+            &PropertyState::Violated
+        );
+
+        let empty = Graph::empty(Provider::Github, TEST_SOURCE);
+        let empty_result = verify(Persona::Gate, &empty);
+        for rule_id in [
+            "WV-ARTIFACT-001",
+            "WV-CACHE-001",
+            "WV-TOCTOU-001",
+            "WV-CRED-001",
+            "WV-AI-001",
+            "WV-SELF-001",
+        ] {
+            assert_eq!(state(&empty_result, rule_id), &PropertyState::NotApplicable);
+        }
+    }
+
+    #[test]
+    fn top_level_split_respects_quotes_escapes_nesting_and_separator_width() {
+        let sequence = "echo '$TOKEN;still' && (printf x | cat) || echo one\\;two; echo end";
+        assert_eq!(
+            split_top_level(sequence, TopLevelSeparator::Sequence),
+            vec![
+                "echo '$TOKEN;still'",
+                "(printf x | cat)",
+                "echo one\\;two",
+                "echo end",
+            ]
+        );
+
+        let pipeline = "printf '%s|x' \"$TOKEN\" | base64 | (cat | sed s/x/y/)";
+        assert_eq!(
+            split_top_level(pipeline, TopLevelSeparator::Pipeline),
+            vec!["printf '%s|x' \"$TOKEN\"", "base64", "(cat | sed s/x/y/)",]
+        );
+        assert_eq!(
+            split_top_level(
+                "printf \"escaped \\\"; still quoted\"; echo done",
+                TopLevelSeparator::Sequence,
+            ),
+            vec!["printf \"escaped \\\"; still quoted\"", "echo done"]
+        );
+
+        assert_eq!(
+            separator_width(TopLevelSeparator::Sequence, b";", 0),
+            Some(b";".len())
+        );
+        assert_eq!(
+            separator_width(TopLevelSeparator::Sequence, b"&&", 0),
+            Some(b"&&".len())
+        );
+        assert_eq!(
+            separator_width(TopLevelSeparator::Sequence, b"||", 0),
+            Some(b"||".len())
+        );
+        assert_eq!(
+            separator_width(TopLevelSeparator::Pipeline, b"|", 0),
+            Some(b"|".len())
+        );
+        assert_eq!(separator_width(TopLevelSeparator::Sequence, b"&", 0), None);
+        assert_eq!(separator_width(TopLevelSeparator::Sequence, b"|", 0), None);
+    }
+
+    #[test]
+    fn output_destination_distinguishes_stdout_private_and_unresolved_targets() {
+        let stdout = [
+            "echo $TOKEN",
+            "echo $TOKEN 2>errors.log",
+            "echo $TOKEN &>combined.log",
+            "echo $TOKEN > /dev/stdout",
+            "echo $TOKEN > '/dev/stderr'",
+            "echo $TOKEN > /proc/self/fd/1",
+            "echo '$TOKEN > private.txt'",
+            "echo $TOKEN $(printf '>')",
+            "(echo $TOKEN > private.txt)",
+            "echo \"escaped \\\" > still quoted\"",
+        ];
+        for source in stdout {
+            assert!(
+                matches!(
+                    output_destination(&ScriptShell::Bash, source),
+                    OutputDestination::StandardOutput
+                ),
+                "expected stdout for {source:?}"
+            );
+        }
+
+        for source in [
+            "echo $TOKEN > private.txt",
+            "echo $TOKEN >> 'private.txt'",
+            "(echo nested); echo $TOKEN > private.txt",
+        ] {
+            assert!(
+                matches!(
+                    output_destination(&ScriptShell::Bash, source),
+                    OutputDestination::PrivateFile
+                ),
+                "expected a private file for {source:?}"
+            );
+        }
+
+        for source in [
+            "echo $TOKEN >",
+            "echo $TOKEN > first > second",
+            "echo $TOKEN > two words",
+        ] {
+            assert!(
+                matches!(
+                    output_destination(&ScriptShell::Bash, source),
+                    OutputDestination::StandardOutput | OutputDestination::Unknown(_)
+                ),
+                "expected a non-private destination for {source:?}"
+            );
+        }
+        assert!(matches!(
+            output_destination(&ScriptShell::Bash, "echo $TOKEN > $TARGET"),
+            OutputDestination::Unknown(UnknownReason::DynamicString(_))
+        ));
+        for source in [
+            "echo $TOKEN > %TARGET%",
+            "echo $TOKEN > !TARGET!",
+            "echo $TOKEN > $target$",
+            "echo $TOKEN > 'private$",
+        ] {
+            assert!(
+                matches!(
+                    output_destination(&ScriptShell::Bash, source),
+                    OutputDestination::Unknown(UnknownReason::DynamicString(_))
+                ),
+                "expected a dynamic target for {source:?}"
+            );
+        }
+        assert!(matches!(
+            output_destination(&ScriptShell::Bash, "echo $TOKEN > first > second"),
+            OutputDestination::Unknown(UnknownReason::UnsupportedSyntax(_))
+        ));
+        assert!(matches!(
+            output_destination(&ScriptShell::Bash, "echo $TOKEN > two words"),
+            OutputDestination::Unknown(UnknownReason::UnsupportedSyntax(_))
+        ));
+        assert!(matches!(
+            output_destination(&ScriptShell::Python, "print(secret) > file"),
+            OutputDestination::StandardOutput
+        ));
+        assert!(matches!(
+            output_destination(
+                &ScriptShell::Unknown("fish".to_owned()),
+                "echo $TOKEN > file"
+            ),
+            OutputDestination::Unknown(UnknownReason::UnsupportedSyntax(_))
+        ));
+    }
 }

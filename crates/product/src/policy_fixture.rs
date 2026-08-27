@@ -138,3 +138,66 @@ pub fn evaluate_policy_fixture(
 fn strings(values: &[String]) -> JsonValue {
     JsonValue::Array(values.iter().cloned().map(JsonValue::String).collect())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_foundation::Span;
+    use workflow_verifier_verifier::{Confidence, Severity};
+
+    fn diagnostic(rule: &str) -> Diagnostic {
+        Diagnostic::new(
+            rule,
+            Severity::Error,
+            Confidence::High,
+            "policy finding",
+            Span::default(),
+            Vec::new(),
+            [],
+            Vec::<String>::new(),
+            None,
+        )
+    }
+
+    #[test]
+    fn expectation_and_result_accessors_preserve_complete_rule_sets() {
+        let expectation = PolicyExpectation::parse(
+            r#"{"expected_rules":["RULE-A","RULE-B"],"schema":"policy-fixture-v1"}"#,
+        )
+        .expect("expectation");
+        assert_eq!(expectation.schema(), "policy-fixture-v1");
+        assert_eq!(expectation.expected_rules(), ["RULE-A", "RULE-B"]);
+
+        let passed = evaluate_policy_fixture(
+            "fixtures\\policy.yml",
+            &expectation,
+            &[
+                diagnostic("RULE-B"),
+                diagnostic("RULE-A"),
+                diagnostic("RULE-A"),
+            ],
+        );
+        assert_eq!(passed.fixture(), "fixtures/policy.yml");
+        assert!(passed.passed());
+        assert!(passed.missing_rules().is_empty());
+        assert!(passed.unexpected_rules().is_empty());
+
+        let failed = evaluate_policy_fixture(
+            "fixtures/policy.yml",
+            &expectation,
+            &[diagnostic("RULE-A"), diagnostic("RULE-C")],
+        );
+        assert!(!failed.passed());
+        assert_eq!(failed.missing_rules(), ["RULE-B"]);
+        assert_eq!(failed.unexpected_rules(), ["RULE-C"]);
+        assert_eq!(
+            failed
+                .to_json()
+                .member("unexpected_rules")
+                .and_then(JsonValue::as_array)
+                .and_then(|rules| rules.first())
+                .and_then(JsonValue::as_str),
+            Some("RULE-C")
+        );
+    }
+}

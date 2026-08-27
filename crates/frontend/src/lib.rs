@@ -1523,6 +1523,366 @@ fn lower_github(
     (graph, problems)
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn yaml(source: &str) -> YamlDocument {
+        YamlDocument::parse("test.yml", source, Budget::default())
+    }
+
+    #[test]
+    fn github_expression_words_and_gate_spans_exclude_quoted_literals() {
+        assert_eq!(
+            unquoted_expression_words(
+                "github.ref == 'literal.fake' && \"also.fake\" || inputs.flag"
+            )
+            .into_iter()
+            .map(|(_, word)| word)
+            .collect::<Vec<_>>(),
+            vec!["github.ref", "inputs.flag"]
+        );
+        assert_eq!(
+            unquoted_expression_words(r#"github.ref == "escaped \"fake.ref" && inputs.flag"#)
+                .into_iter()
+                .map(|(_, word)| word)
+                .collect::<Vec<_>>(),
+            vec!["github.ref", "inputs.flag"]
+        );
+
+        let source = "${{ github.ref == 'literal.fake' && inputs.flag }}";
+        let parent = Span::new(
+            "test.yml",
+            Position::default(),
+            Position {
+                byte: source.len(),
+                column: u32::try_from(source.chars().count().saturating_add(1))
+                    .expect("fixture column fits u32"),
+                ..Position::default()
+            },
+        );
+        let references = github_gate_references(source, &parent, Phase::Plan);
+        assert_eq!(
+            references
+                .iter()
+                .map(|reference| reference.name.as_str())
+                .collect::<Vec<_>>(),
+            vec!["github.ref", "inputs.flag"]
+        );
+        for reference in references {
+            assert_eq!(
+                source.get(reference.span.start.byte..reference.span.stop.byte),
+                Some(reference.name.as_str())
+            );
+        }
+
+        let repeated_source = "${{ github.ref == github.ref }}";
+        let repeated_parent = Span::new(
+            "test.yml",
+            Position::default(),
+            Position {
+                byte: repeated_source.len(),
+                column: u32::try_from(repeated_source.chars().count().saturating_add(1))
+                    .expect("fixture column fits u32"),
+                ..Position::default()
+            },
+        );
+        let repeated = github_gate_references(repeated_source, &repeated_parent, Phase::Plan);
+        assert_eq!(repeated.len(), 2);
+        assert!(
+            repeated
+                .iter()
+                .all(|reference| reference.name == "github.ref")
+        );
+        assert_ne!(repeated[0].span, repeated[1].span);
+    }
+
+    #[test]
+    fn github_action_profiles_and_permission_spellings_are_exact() {
+        let cases = [
+            ("./local", Vec::new(), Vec::new()),
+            (
+                "actions/checkout@main",
+                vec![Capability::RepositoryRead, Capability::FilesystemWrite],
+                vec![ObservableEffect::FileWrite],
+            ),
+            (
+                "actions/upload-artifact@main",
+                vec![
+                    Capability::ArtifactWrite,
+                    Capability::FilesystemRead,
+                    Capability::Network,
+                ],
+                vec![
+                    ObservableEffect::ArtifactPublish,
+                    ObservableEffect::NetworkRequest,
+                ],
+            ),
+            (
+                "actions/download-artifact@main",
+                vec![
+                    Capability::ArtifactRead,
+                    Capability::FilesystemWrite,
+                    Capability::Network,
+                ],
+                vec![
+                    ObservableEffect::FileWrite,
+                    ObservableEffect::NetworkRequest,
+                ],
+            ),
+            (
+                "actions/cache@main",
+                vec![
+                    Capability::CacheRead,
+                    Capability::CacheWrite,
+                    Capability::FilesystemRead,
+                    Capability::FilesystemWrite,
+                ],
+                vec![ObservableEffect::CachePublish],
+            ),
+        ];
+        for (reference, capabilities, effects) in cases {
+            assert_eq!(github_call_profile(reference), (capabilities, effects));
+        }
+        for reference in ["owner/openai-action@main", "owner/ai_agent@main"] {
+            let (capabilities, effects) = github_call_profile(reference);
+            assert!(capabilities.contains(&Capability::AiTool));
+            assert!(capabilities.contains(&Capability::Network));
+            assert!(effects.contains(&ObservableEffect::AiAgentExecution));
+        }
+        assert_eq!(
+            github_call_profile("owner/ordinary@main"),
+            (vec![Capability::Network], Vec::new())
+        );
+
+        let permissions = |source: &str| {
+            let document = yaml(source);
+            github_permissions(document.root().expect("permissions root"))
+        };
+        assert_eq!(
+            permissions("permissions: write-all\n"),
+            vec![Capability::RepositoryWrite, Capability::TokenWrite]
+        );
+        assert_eq!(
+            permissions("permissions: read-all\n"),
+            vec![Capability::RepositoryRead, Capability::TokenRead]
+        );
+        assert_eq!(
+            permissions("permissions:\n  id-token: write\n"),
+            vec![Capability::Oidc]
+        );
+        assert_eq!(
+            permissions("permissions:\n  models: read\n"),
+            vec![Capability::Network, Capability::AiTool]
+        );
+        assert_eq!(
+            permissions("permissions:\n  attestations: write\n"),
+            vec![Capability::ArtifactWrite]
+        );
+        assert_eq!(
+            permissions("permissions:\n  artifact-metadata: read\n"),
+            vec![Capability::ArtifactRead]
+        );
+        assert_eq!(
+            permissions("permissions:\n  deployments: write\n"),
+            vec![Capability::TokenWrite, Capability::Deployment]
+        );
+        assert_eq!(
+            permissions("permissions:\n  pages: read\n"),
+            vec![Capability::RepositoryRead, Capability::TokenRead]
+        );
+        assert_eq!(permissions("permissions:\n  contents: none\n"), Vec::new());
+    }
+
+    #[test]
+    fn gitlab_condition_parser_respects_quotes_precedence_and_balanced_wrappers() {
+        assert_eq!(gitlab_condition("true"), Condition::True);
+        assert_eq!(gitlab_condition("false"), Condition::False);
+        assert_eq!(gitlab_condition("null"), Condition::False);
+        assert_eq!(gitlab_condition("!true"), Condition::False);
+        assert_eq!(
+            gitlab_condition("$LEFT == 'x'"),
+            Condition::atom("(LEFT==\"x\")")
+        );
+        assert_eq!(
+            gitlab_condition("($LEFT == 'x' && ($RIGHT != 'y' || !false))"),
+            gitlab_condition("$LEFT == 'x'")
+                .and(&gitlab_condition("$RIGHT != 'y'").or(&Condition::True))
+        );
+        assert_eq!(
+            split_condition("call('a || b') || $RIGHT", "||"),
+            Some(("call('a || b') ", " $RIGHT"))
+        );
+        assert_eq!(split_condition("($LEFT || $RIGHT)", "||"), None);
+        assert_eq!(trim_wrapping_parentheses("((a && b))"), "a && b");
+        assert_eq!(trim_wrapping_parentheses("(a) || b"), "(a) || b");
+        assert_eq!(trim_wrapping_parentheses("(')')"), "')'");
+    }
+
+    #[test]
+    // This is the complete expression lexer/domain cross-product contract.
+    #[allow(clippy::too_many_lines)]
+    fn expression_reference_lexing_trust_secrecy_and_phase_are_exhaustive() {
+        for reference in ["github.ref", "UPPER_CASE", "A1", "123"] {
+            assert!(looks_like_reference(reference), "reference {reference:?}");
+        }
+        for literal in ["", "A", "lower_case", "UPPER-CASE"] {
+            assert!(!looks_like_reference(literal), "literal {literal:?}");
+        }
+
+        let source = "prefix $(PAREN) $UPPER_2 $lower $9 $() $(unterminated";
+        let references = dollar_references(source, Phase::Run);
+        assert_eq!(
+            references,
+            [
+                (
+                    source.find("PAREN").expect("parenthesized offset"),
+                    "PAREN".to_owned(),
+                    Phase::Run,
+                ),
+                (
+                    source.find("UPPER_2").expect("uppercase offset"),
+                    "UPPER_2".to_owned(),
+                    Phase::Run,
+                ),
+                (
+                    source.find("$()").expect("empty parenthesized offset") + "$(".len(),
+                    String::new(),
+                    Phase::Run,
+                ),
+            ]
+        );
+
+        let unknown_github = Trust::Unknown(vec![UnknownReason::DynamicString(
+            "unresolved GitHub dataflow value env.VALUE".to_owned(),
+        )]);
+        let trust_cases = [
+            (
+                Provider::Github,
+                "github.event.pull_request.title",
+                Trust::Untrusted,
+            ),
+            (Provider::Github, "inputs.name", Trust::Untrusted),
+            (Provider::Github, "github.actor", Trust::Untrusted),
+            (Provider::Github, "env.VALUE", unknown_github.clone()),
+            (
+                Provider::Github,
+                "needs.build.result",
+                Trust::Unknown(vec![UnknownReason::DynamicString(
+                    "unresolved GitHub dataflow value needs.build.result".to_owned(),
+                )]),
+            ),
+            (
+                Provider::Github,
+                "steps.build.outputs.value",
+                Trust::Unknown(vec![UnknownReason::DynamicString(
+                    "unresolved GitHub dataflow value steps.build.outputs.value".to_owned(),
+                )]),
+            ),
+            (Provider::Github, "steps.build.conclusion", Trust::Trusted),
+            (
+                Provider::Gitlab,
+                "CI_MERGE_REQUEST_DIFF_BASE_SHA",
+                Trust::Trusted,
+            ),
+            (Provider::Gitlab, "CI_MERGE_REQUEST_TITLE", Trust::Untrusted),
+            (
+                Provider::Gitlab,
+                "CI_EXTERNAL_PULL_REQUEST_TITLE",
+                Trust::Untrusted,
+            ),
+            (Provider::Gitlab, "CI_COMMIT_MESSAGE", Trust::Untrusted),
+            (Provider::Gitlab, "CI_PROJECT_ID", Trust::Trusted),
+            (
+                Provider::Azure,
+                "System.PullRequest.PullRequestNumber",
+                Trust::Trusted,
+            ),
+            (
+                Provider::Azure,
+                "System.PullRequest.SourceBranch",
+                Trust::Untrusted,
+            ),
+            (Provider::Azure, "Build.SourceBranch", Trust::Untrusted),
+            (Provider::Azure, "Build.BuildId", Trust::Trusted),
+            (
+                Provider::Circleci,
+                "pipeline.parameters.target",
+                Trust::Untrusted,
+            ),
+            (Provider::Circleci, "CIRCLE_BRANCH", Trust::Untrusted),
+            (Provider::Circleci, "CIRCLE_BUILD_NUM", Trust::Trusted),
+        ];
+        for (provider, name, expected) in trust_cases {
+            assert_eq!(
+                reference_trust(provider, name),
+                expected,
+                "trust for {name}"
+            );
+        }
+
+        for secret in [
+            "secrets.TOKEN",
+            "password",
+            "ACCESSKEY",
+            "access_token",
+            "tokenize",
+            "secretary",
+        ] {
+            assert_eq!(reference_secrecy(secret), Secrecy::Secret);
+        }
+        for public in ["github.ref", "credential", "key"] {
+            assert_eq!(reference_secrecy(public), Secrecy::Public);
+        }
+
+        assert_eq!(
+            [
+                Phase::Source,
+                Phase::Compile,
+                Phase::Plan,
+                Phase::Run,
+                Phase::Post
+            ]
+            .map(phase_rank),
+            [0, 1, 2, 3, 4]
+        );
+        let phase_cases = [
+            (Provider::Github, "steps.build.outcome", Phase::Run),
+            (Provider::Github, "runner.os", Phase::Run),
+            (Provider::Github, "job.status", Phase::Run),
+            (Provider::Github, "secrets.TOKEN", Phase::Run),
+            (Provider::Github, "needs.build.result", Phase::Plan),
+            (Provider::Github, "matrix.os", Phase::Plan),
+            (Provider::Github, "strategy.job-total", Phase::Plan),
+            (Provider::Github, "github.ref", Phase::Source),
+            (Provider::Github, "inputs.name", Phase::Compile),
+            (Provider::Gitlab, "CI_COMMIT_SHA", Phase::Plan),
+            (Provider::Gitlab, "CUSTOM", Phase::Run),
+            (Provider::Azure, "dependencies.build.result", Phase::Run),
+            (
+                Provider::Azure,
+                "stageDependencies.build.result",
+                Phase::Run,
+            ),
+            (Provider::Azure, "parameters.target", Phase::Compile),
+            (Provider::Azure, "variables.target", Phase::Plan),
+            (
+                Provider::Circleci,
+                "pipeline.parameters.target",
+                Phase::Compile,
+            ),
+            (Provider::Circleci, "CIRCLE_BRANCH", Phase::Run),
+        ];
+        for (provider, name, expected) in phase_cases {
+            assert_eq!(
+                minimum_reference_phase(provider, name),
+                expected,
+                "phase for {name}"
+            );
+        }
+    }
+}
+
 #[allow(clippy::too_many_lines)]
 fn lower_github_action(
     path: &str,
@@ -1658,7 +2018,10 @@ fn add_github_steps(
             .field("name")
             .and_then(YamlNode::scalar)
             .or_else(|| step_body.field("id").and_then(YamlNode::scalar))
-            .map_or_else(|| format!("step {}", index + 1), str::to_owned);
+            .map_or_else(
+                || format!("step {}", index.saturating_add(1)),
+                str::to_owned,
+            );
         let step = Node::simple(
             Provider::Github,
             NodeKind::Step,
@@ -2282,9 +2645,7 @@ fn split_condition<'a>(source: &'a str, operator: &str) -> Option<(&'a str, &'a 
     let mut quote = None;
     let mut escaped = false;
     let mut depth = 0usize;
-    let mut index = 0usize;
-    while index + operator_bytes.len() <= bytes.len() {
-        let byte = bytes[index];
+    for (index, byte) in bytes.iter().copied().enumerate() {
         if escaped {
             escaped = false;
         } else if byte == b'\\' && quote == Some(b'"') {
@@ -2299,15 +2660,17 @@ fn split_condition<'a>(source: &'a str, operator: &str) -> Option<(&'a str, &'a 
             };
         } else if quote.is_none() {
             match byte {
-                b'(' => depth += 1,
+                b'(' => depth = depth.saturating_add(1),
                 b')' => depth = depth.saturating_sub(1),
                 _ if depth == 0 && bytes[index..].starts_with(operator_bytes) => {
-                    return Some((&source[..index], &source[index + operator.len()..]));
+                    return Some((
+                        &source[..index],
+                        &source[index.saturating_add(operator.len())..],
+                    ));
                 }
                 _ => {}
             }
         }
-        index += 1;
     }
     None
 }
@@ -2333,10 +2696,10 @@ fn trim_wrapping_parentheses(mut source: &str) -> &str {
                     quote
                 };
             } else if quote.is_none() && byte == b'(' {
-                depth += 1;
+                depth = depth.saturating_add(1);
             } else if quote.is_none() && byte == b')' {
                 depth = depth.saturating_sub(1);
-                if depth == 0 && index + 1 != source.len() {
+                if depth == 0 && index.saturating_add(1) != source.len() {
                     closes_early = true;
                     break;
                 }
@@ -2400,10 +2763,10 @@ fn condition_call(value: &str) -> Option<(&str, &str)> {
                 quote
             };
         } else if quote.is_none() && byte == b'(' {
-            depth += 1;
+            depth = depth.saturating_add(1);
         } else if quote.is_none() && byte == b')' {
             depth = depth.saturating_sub(1);
-            if depth == 0 && index + 1 != value.len() {
+            if depth == 0 && index.saturating_add(1) != value.len() {
                 return None;
             }
         }
@@ -2411,7 +2774,9 @@ fn condition_call(value: &str) -> Option<(&str, &str)> {
     (depth == 0 && quote.is_none()).then(|| {
         (
             name,
-            value.get(open + 1..value.len() - 1).unwrap_or_default(),
+            value
+                .get(open.saturating_add(1)..value.len().saturating_sub(1))
+                .unwrap_or_default(),
         )
     })
 }
@@ -2438,12 +2803,12 @@ fn split_call_arguments(value: &str) -> Vec<&str> {
                 quote
             };
         } else if quote.is_none() && byte == b'(' {
-            depth += 1;
+            depth = depth.saturating_add(1);
         } else if quote.is_none() && byte == b')' {
             depth = depth.saturating_sub(1);
         } else if quote.is_none() && depth == 0 && byte == b',' {
             output.push(value.get(start..index).unwrap_or_default());
-            start = index + 1;
+            start = index.saturating_add(1);
         }
     }
     if start < value.len() || !value.trim().is_empty() {
@@ -2508,7 +2873,7 @@ fn add_gitlab_scripts(
         let step = Node::simple(
             Provider::Gitlab,
             NodeKind::Step,
-            format!("script:{}", index + 1),
+            format!("script:{}", index.saturating_add(1)),
             Phase::Run,
             script.span().clone(),
         );
@@ -2639,7 +3004,7 @@ fn delimited_references(
         let body_stop = body_start.saturating_add(relative_close);
         if let Some(body) = source.get(body_start..body_stop) {
             output.extend(
-                expression_words(body)
+                unquoted_expression_words(body)
                     .into_iter()
                     .filter(|(_, name)| looks_like_reference(name))
                     .map(|(offset, name)| (body_start + offset, name.to_owned(), phase)),
@@ -2650,61 +3015,37 @@ fn delimited_references(
     output
 }
 
-fn expression_words(value: &str) -> Vec<(usize, &str)> {
-    let bytes = value.as_bytes();
-    let mut output = Vec::new();
-    let mut start = None;
-    for (index, byte) in bytes.iter().copied().enumerate() {
-        if expression_identifier_byte(byte) {
-            start.get_or_insert(index);
-        } else if let Some(begin) = start.take() {
-            output.push((begin, &value[begin..index]));
-        }
-    }
-    if let Some(begin) = start {
-        output.push((begin, &value[begin..]));
-    }
-    output
-}
-
 fn dollar_references(source: &str, phase: Phase) -> Vec<(usize, String, Phase)> {
     let bytes = source.as_bytes();
     let mut output = Vec::new();
-    let mut index = 0usize;
-    while index + 1 < bytes.len() {
-        if bytes[index] != b'$' {
-            index += 1;
+    for (index, _) in source.match_indices('$') {
+        let following = index.saturating_add('$'.len_utf8());
+        let Some(following_byte) = bytes.get(following).copied() else {
             continue;
-        }
-        match bytes[index + 1] {
+        };
+        match following_byte {
             b'(' => {
-                let name_start = index + 2;
+                let name_start = following.saturating_add(1);
                 let Some(relative_stop) = bytes[name_start..].iter().position(|byte| *byte == b')')
                 else {
-                    index += 1;
                     continue;
                 };
-                let stop = name_start + relative_stop;
+                let stop = name_start.saturating_add(relative_stop);
                 if let Some(name) = source.get(name_start..stop) {
                     output.push((name_start, name.to_owned(), phase));
                 }
-                index = stop + 1;
             }
             b'A'..=b'Z' | b'_' => {
-                let name_start = index + 1;
-                let mut stop = name_start;
-                while bytes
-                    .get(stop)
-                    .is_some_and(|byte| expression_identifier_byte(*byte))
-                {
-                    stop += 1;
-                }
+                let name_start = following;
+                let stop = bytes[name_start..]
+                    .iter()
+                    .position(|byte| !expression_identifier_byte(*byte))
+                    .map_or(bytes.len(), |relative| name_start.saturating_add(relative));
                 if let Some(name) = source.get(name_start..stop) {
                     output.push((name_start, name.to_owned(), phase));
                 }
-                index = stop;
             }
-            _ => index += 1,
+            _ => {}
         }
     }
     output
@@ -3105,7 +3446,7 @@ fn link_dependencies(
                 return Some(path);
             }
         }
-        visiting.retain(|item| item != name);
+        let _ = visiting.pop();
         visited.insert(name.to_owned());
         None
     }
@@ -3396,7 +3737,10 @@ fn add_azure_steps(graph: &mut Graph, dependencies: &[Dependency], job: &Node, b
             let name = body
                 .field("displayName")
                 .and_then(YamlNode::scalar)
-                .map_or_else(|| format!("step {}", index + 1), str::to_owned);
+                .map_or_else(
+                    || format!("step {}", index.saturating_add(1)),
+                    str::to_owned,
+                );
             let step = Node::simple(
                 Provider::Azure,
                 NodeKind::Step,
@@ -4088,7 +4432,10 @@ fn add_circleci_steps(
             let name = step_body
                 .scalar()
                 .or_else(|| circleci_mapping_head(step_body).map(|(name, _)| name))
-                .map_or_else(|| format!("step {}", index + 1), str::to_owned);
+                .map_or_else(
+                    || format!("step {}", index.saturating_add(1)),
+                    str::to_owned,
+                );
             let step = Node::simple(
                 Provider::Circleci,
                 NodeKind::Step,
@@ -4342,7 +4689,7 @@ fn link_circleci_invocations(
                 }
             }
         }
-        visiting.retain(|candidate| candidate != name);
+        let _ = visiting.pop();
         visited.insert(name.to_owned());
         false
     }
@@ -4619,4 +4966,160 @@ fn lower_circleci(
         }
     }
     (graph, problems)
+}
+
+#[cfg(test)]
+mod circleci_tests {
+    use super::*;
+
+    fn yaml(source: &str) -> YamlDocument {
+        YamlDocument::parse(".circleci/config.yml", source, Budget::default())
+    }
+
+    #[test]
+    fn local_parameter_names_and_argument_values_preserve_exact_dataflow() {
+        assert_eq!(
+            circleci_local_parameter_name("parameters.name"),
+            Some("name")
+        );
+        assert_eq!(
+            circleci_local_parameter_name("PARAMETERS.Name"),
+            Some("Name")
+        );
+        assert_eq!(circleci_local_parameter_name("parameters."), Some(""));
+        assert_eq!(
+            circleci_local_parameter_name("pipeline.parameters.name"),
+            None
+        );
+        assert_eq!(circleci_local_parameter_name("parameter.name"), None);
+
+        let scalar = yaml("value: literal\n");
+        let scalar_value = circleci_argument_value(
+            scalar
+                .root()
+                .and_then(|root| root.field("value"))
+                .expect("scalar"),
+        );
+        assert_eq!(scalar_value.constants(), Some(&["literal".to_owned()][..]));
+        assert_eq!(scalar_value.trust, Trust::Trusted);
+        assert_eq!(scalar_value.provenance.len(), 1);
+        assert_eq!(scalar_value.provenance[0].operation, "bind");
+
+        let expression = yaml("value: << pipeline.parameters.branch >>\n");
+        let expression_value = circleci_argument_value(
+            expression
+                .root()
+                .and_then(|root| root.field("value"))
+                .expect("expression"),
+        );
+        assert_eq!(expression_value.trust, Trust::Untrusted);
+        let mapping = yaml("value: {nested: data}\n");
+        assert!(matches!(
+            circleci_argument_value(
+                mapping
+                    .root()
+                    .and_then(|root| root.field("value"))
+                    .expect("mapping")
+            )
+            .trust,
+            Trust::Unknown(_)
+        ));
+    }
+
+    #[test]
+    fn argument_binding_ignores_unknown_keys_and_targets_the_declared_parameter() {
+        let parameter = Node::simple(
+            Provider::Circleci,
+            NodeKind::Parameter,
+            "command.subject",
+            Phase::Compile,
+            Span::default(),
+        );
+        let bindings = BTreeMap::from([("subject".to_owned(), parameter.clone())]);
+        let body = yaml("subject: world\nunknown: ignored\n");
+        let mut graph = Graph::empty(Provider::Circleci, ".circleci/config.yml");
+        graph.add_node(parameter.clone());
+        bind_circleci_arguments(
+            &mut graph,
+            "greet",
+            &bindings,
+            body.root().expect("argument mapping"),
+        );
+        let argument = graph
+            .nodes
+            .iter()
+            .find(|node| node.name == "argument:greet.subject")
+            .expect("bound argument");
+        assert!(
+            graph
+                .nodes
+                .iter()
+                .all(|node| node.name != "argument:greet.unknown")
+        );
+        assert!(graph.edges.iter().any(|edge| {
+            edge.kind == EdgeKind::Data
+                && edge.from == argument.id
+                && edge.to == parameter.id
+                && edge.label.as_deref() == Some("subject")
+        }));
+    }
+
+    #[test]
+    fn builtin_profiles_cover_every_circleci_storage_operation() {
+        let cases = [
+            (
+                "checkout",
+                vec![Capability::RepositoryRead, Capability::FilesystemWrite],
+                vec![ObservableEffect::FileWrite],
+                EdgeKind::Read,
+            ),
+            (
+                "save_cache",
+                vec![Capability::CacheWrite, Capability::FilesystemRead],
+                vec![ObservableEffect::CachePublish],
+                EdgeKind::Write,
+            ),
+            (
+                "restore_cache",
+                vec![Capability::CacheRead, Capability::FilesystemWrite],
+                vec![ObservableEffect::FileWrite],
+                EdgeKind::Read,
+            ),
+            (
+                "store_artifacts",
+                vec![Capability::ArtifactWrite, Capability::FilesystemRead],
+                vec![ObservableEffect::ArtifactPublish],
+                EdgeKind::Write,
+            ),
+            (
+                "store_test_results",
+                vec![Capability::ArtifactWrite, Capability::FilesystemRead],
+                vec![ObservableEffect::ArtifactPublish],
+                EdgeKind::Write,
+            ),
+            (
+                "persist_to_workspace",
+                vec![Capability::ArtifactWrite, Capability::FilesystemRead],
+                vec![ObservableEffect::ArtifactPublish],
+                EdgeKind::Persist,
+            ),
+            (
+                "attach_workspace",
+                vec![Capability::ArtifactRead, Capability::FilesystemWrite],
+                vec![ObservableEffect::FileWrite],
+                EdgeKind::Read,
+            ),
+            ("unknown", Vec::new(), Vec::new(), EdgeKind::Call),
+        ];
+        for (name, capabilities, effects, edge) in cases {
+            assert_eq!(
+                circleci_builtin_profile(name),
+                (capabilities, effects, edge)
+            );
+        }
+        assert_eq!(
+            circleci_builtin_profile("CHECKOUT"),
+            circleci_builtin_profile("checkout")
+        );
+    }
 }

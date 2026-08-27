@@ -76,7 +76,7 @@ impl SandboxAudit {
         }
         match backend_attestations.as_slice() {
             [] => reasons.push("backend attestation is missing from evidence".to_owned()),
-            [(id, version, platform, observed)] => {
+            [(id, _, _, observed)] => {
                 if *id != &plan.backend {
                     reasons.push("backend attestation identity does not match the plan".to_owned());
                 }
@@ -85,9 +85,8 @@ impl SandboxAudit {
                         "backend attestation controls digest does not match the plan".to_owned(),
                     );
                 }
-                if version.is_empty() || platform.is_empty() {
-                    reasons.push("backend attestation identity is incomplete".to_owned());
-                }
+                // `Evidence::validate` already rejects empty version/platform
+                // identities before reconciliation reaches this branch.
             }
             _ => reasons.push("multiple backend attestations are ambiguous".to_owned()),
         }

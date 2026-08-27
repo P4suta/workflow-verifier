@@ -1,5 +1,16 @@
 use std::fmt;
 
+// The v0.1 pure-core envelope is contract-visible and intentionally fixed.
+// Byte limits align with source-manifest-v2; graph limits align with the
+// built-in config-v2 profile. The edge budget permits the documented
+// four-edge average fanout without silently widening the node budget.
+const BYTES_PER_MEBIBYTE: u64 = 1_048_576;
+const DEFAULT_INPUT_MEBIBYTES: u64 = 16;
+const DEFAULT_SNAPSHOT_MEBIBYTES: u64 = 4_096;
+const DEFAULT_GRAPH_NODES: u64 = 1_000_000;
+const DEFAULT_GRAPH_EDGE_FANOUT: u64 = 4;
+const DEFAULT_NESTING_DEPTH: u32 = 128;
+
 /// A deterministic resource envelope. A caller may make it smaller, but an
 /// untrusted document cannot widen it.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -16,13 +27,13 @@ pub struct Budget {
 impl Default for Budget {
     fn default() -> Self {
         Self {
-            max_input_bytes: 16 * 1024 * 1024,
-            max_file_bytes: 16 * 1024 * 1024,
-            max_snapshot_bytes: 4 * 1024 * 1024 * 1024,
-            max_entries: 1_000_000,
-            max_nodes: 1_000_000,
-            max_edges: 4_000_000,
-            max_nesting: 128,
+            max_input_bytes: DEFAULT_INPUT_MEBIBYTES * BYTES_PER_MEBIBYTE,
+            max_file_bytes: DEFAULT_INPUT_MEBIBYTES * BYTES_PER_MEBIBYTE,
+            max_snapshot_bytes: DEFAULT_SNAPSHOT_MEBIBYTES * BYTES_PER_MEBIBYTE,
+            max_entries: DEFAULT_GRAPH_NODES,
+            max_nodes: DEFAULT_GRAPH_NODES,
+            max_edges: DEFAULT_GRAPH_NODES * DEFAULT_GRAPH_EDGE_FANOUT,
+            max_nesting: DEFAULT_NESTING_DEPTH,
         }
     }
 }

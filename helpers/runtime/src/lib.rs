@@ -22,6 +22,9 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use workflow_verifier_runner_protocol::{quote_json, sha256_hex};
 
 const TEMP_RESOURCE_ATTEMPTS: usize = 256;
+// Native child supervision polls often enough to observe cancellation without
+// busy-spinning; the same cadence is used by the CLI supervisor.
+const PROCESS_POLL_MILLISECONDS: u64 = 10;
 static NEXT_TEMP_RESOURCE: AtomicU64 = AtomicU64::new(0);
 
 fn validate_temp_name(purpose: &str, suffix: &str) -> Result<(), String> {
@@ -968,7 +971,7 @@ where
             terminate(&mut child)?;
             break child.wait().map_err(|error| error.to_string())?;
         }
-        std::thread::sleep(Duration::from_millis(10));
+        std::thread::sleep(Duration::from_millis(PROCESS_POLL_MILLISECONDS));
     };
     let mut output = stdout_thread
         .join()

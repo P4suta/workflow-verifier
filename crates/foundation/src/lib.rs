@@ -14,7 +14,10 @@ pub mod path;
 pub mod span;
 
 pub use budget::{Budget, BudgetError, BudgetKind, BudgetTracker};
-pub use dependency_identity::{DependencyClass, classify_reference, valid_content_digest};
+pub use dependency_identity::{
+    DependencyClass, GIT_SHA1_HEX_DIGITS, SHA256_HEX_DIGITS, classify_reference,
+    valid_content_digest,
+};
 pub use digest::{content_digest, sha256_hex};
 pub use json::{JsonError, JsonLimits, JsonValue};
 pub use path::{PathError, PublicPath, normalize_slashes, portable_path_key};

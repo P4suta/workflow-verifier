@@ -195,7 +195,14 @@ let expression_contract_test () =
       expect
         (name ^ " has a provider-enforced shell-safe shape")
         (reference.value.trust = Abstract_value.Trusted))
-    safe_identifiers
+    safe_identifiers;
+  let quoted =
+    Expression.scan Ir.Github ~default_phase:Ir.Plan ~span
+      "${{ github.ref == 'literal.fake' && \"also.fake\" || inputs.flag }}"
+    |> List.map (fun reference -> reference.Expression.name)
+  in
+  expect "quoted expression literals are not semantic references"
+    (quoted = [ "github.ref"; "inputs.flag" ])
 
 let unresolved_dependency_test () =
   let cases =

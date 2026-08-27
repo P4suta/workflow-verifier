@@ -11,7 +11,9 @@ use workflow_verifier_helper_runtime::{
     execute_native_with_exclusions, run_command,
 };
 use workflow_verifier_runner_protocol::vm::Request;
-use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, ValidatedPlan};
+use workflow_verifier_runner_protocol::{
+    Descriptor, LaunchError, RunResult, SHA256_HEX_DIGITS, ValidatedPlan,
+};
 
 use crate::{VmBundle, VmExecution, VmTransport, execute_vm_step};
 
@@ -20,6 +22,22 @@ const ENV_MANIFEST_DIGEST: &str = "WORKFLOW_VERIFIER_MACOS_VM_MANIFEST_DIGEST";
 const ENV_SHIM: &str = "WORKFLOW_VERIFIER_MACOS_VM_SHIM";
 const PROBE_RESPONSE: &[u8] = b"{\"available\":true,\"schema\":\"vm-shim-probe-v1\"}\n";
 const PROBE_PREFIX: &str = "workflow-verifier-vm-probe-";
+
+// Minimal deterministic VM-shim health-check profile. The probe receives only
+// enough resources to start `/bin/true`; it is not a workload budget.
+const PROBE_CPU_COUNT: u64 = 1;
+const PROBE_MEMORY_MIB: u64 = 512;
+const PROBE_PROCESS_LIMIT: u64 = 2;
+const PROBE_GUEST_TIMEOUT_SECONDS: u64 = 5;
+const BYTES_PER_KIBIBYTE: u64 = 1_024;
+const PROBE_OUTPUT_KIBIBYTES: u64 = 4;
+const PROBE_SHIM_TIMEOUT_SECONDS: u64 = 30;
+const PROBE_SHIM_OUTPUT_KIBIBYTES: u64 = 64;
+const PROCESS_EXIT_SUCCESS: i32 = 0;
+// POSIX permission masks for private probe resources and executable checks.
+const OWNER_DIRECTORY_MODE: u32 = 0o700;
+const OWNER_FILE_MODE: u32 = 0o600;
+const EXECUTABLE_MODE_MASK: u32 = 0o111;
 
 static PROBE_REASONS: OnceLock<Vec<String>> = OnceLock::new();
 static NEXT_PROBE: AtomicU64 = AtomicU64::new(0);
@@ -55,7 +73,7 @@ fn configured_shim() -> Result<PathBuf, String> {
         .map_err(|error| format!("inspect VM shim {}: {error}", path.display()))?;
     if metadata.file_type().is_symlink()
         || !metadata.is_file()
-        || metadata.permissions().mode() & 0o111 == 0
+        || metadata.permissions().mode() & EXECUTABLE_MODE_MASK == 0
     {
         return Err(format!(
             "VM shim must be an executable regular non-symlink file: {}",
@@ -89,7 +107,7 @@ impl ProbeTree {
         let control = root.join("control");
         for path in [&root, &source, &scratch, &control] {
             std::fs::create_dir(path).map_err(|error| format!("create VM probe tree: {error}"))?;
-            std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o700))
+            std::fs::set_permissions(path, std::fs::Permissions::from_mode(OWNER_DIRECTORY_MODE))
                 .map_err(|error| format!("protect VM probe tree: {error}"))?;
         }
         Ok(Self {
@@ -116,7 +134,7 @@ impl Drop for ProbeTree {
 
 fn probe_request(bundle: &VmBundle, tree: &ProbeTree) -> Result<PathBuf, String> {
     let request = Request {
-        plan_digest: format!("sha256:{}", "0".repeat(64)),
+        plan_digest: format!("sha256:{}", "0".repeat(SHA256_HEX_DIGITS)),
         image: bundle.image(),
         source_root: tree.source.to_string_lossy().into_owned(),
         scratch_root: tree.scratch.to_string_lossy().into_owned(),
@@ -124,18 +142,18 @@ fn probe_request(bundle: &VmBundle, tree: &ProbeTree) -> Result<PathBuf, String>
         working_directory: "/workspace".to_owned(),
         argv: vec!["/bin/true".to_owned()],
         environment: std::collections::BTreeMap::new(),
-        cpu_count: 1,
-        memory_mb: 512,
-        processes: 2,
-        timeout_seconds: 5,
-        output_bytes: 4096,
+        cpu_count: PROBE_CPU_COUNT,
+        memory_mb: PROBE_MEMORY_MIB,
+        processes: PROBE_PROCESS_LIMIT,
+        timeout_seconds: PROBE_GUEST_TIMEOUT_SECONDS,
+        output_bytes: PROBE_OUTPUT_KIBIBYTES * BYTES_PER_KIBIBYTE,
         network: false,
     };
     let path = tree.control.join("probe-request.json");
     OpenOptions::new()
         .create_new(true)
         .write(true)
-        .mode(0o600)
+        .mode(OWNER_FILE_MODE)
         .open(&path)
         .and_then(|mut file| {
             use std::io::Write as _;
@@ -153,8 +171,12 @@ fn probe_uncached() -> Vec<String> {
         let request = probe_request(&bundle, &tree)?;
         let mut command = Command::new(shim);
         command.arg("--probe").arg(request).env_clear();
-        let observation = run_command(&mut command, Duration::from_secs(30), 64 * 1024)?;
-        if observation.code != Some(0)
+        let observation = run_command(
+            &mut command,
+            Duration::from_secs(PROBE_SHIM_TIMEOUT_SECONDS),
+            PROBE_SHIM_OUTPUT_KIBIBYTES * BYTES_PER_KIBIBYTE,
+        )?;
+        if observation.code != Some(PROCESS_EXIT_SUCCESS)
             || observation.timed_out
             || observation.output_exceeded
             || observation.output != PROBE_RESPONSE

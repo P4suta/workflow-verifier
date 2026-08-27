@@ -12,7 +12,7 @@ use workflow_verifier_engine::{
 use workflow_verifier_foundation::{
     Budget, JsonValue, Span, Utf16Position, byte_to_utf16, content_digest, utf16_to_byte,
 };
-use workflow_verifier_product::FixProposal;
+use workflow_verifier_product::{EXIT_CODE_INVALID_INPUT, EXIT_CODE_PASS, FixProposal};
 use workflow_verifier_syntax::YamlDocument;
 use workflow_verifier_verifier::{Diagnostic, Persona, Severity};
 
@@ -959,10 +959,10 @@ impl Server {
 #[must_use]
 pub fn run_stdio() -> i32 {
     match serve(BufReader::new(io::stdin()), io::stdout()) {
-        Ok(()) => 0,
+        Ok(()) => super::process_exit_code(EXIT_CODE_PASS),
         Err(error) => {
             let _ = writeln!(io::stderr().lock(), "workflow-verifier lsp: {error}");
-            2
+            super::process_exit_code(EXIT_CODE_INVALID_INPUT)
         }
     }
 }
@@ -1607,9 +1607,19 @@ mod performance_tests {
     use std::hint::black_box;
     use std::time::{Duration, Instant};
 
+    // v0.1 release acceptance criteria; these are gates, not runtime tuning.
+    const PERFORMANCE_FIXTURE_NODES: usize = 900;
+    const PERFORMANCE_SAMPLE_COUNT: usize = 20;
+    // Nearest-rank p95 for exactly twenty sorted observations (zero-based).
+    const PERFORMANCE_P95_INDEX: usize = 18;
+    const DIAGNOSTICS_P95_MILLISECONDS: u64 = 150;
+    const CANCELLATION_INJECTION_MILLISECONDS: u64 = 10;
+    const CANCELLATION_P95_MILLISECONDS: u64 = 50;
+    const TRANSITIVE_INVALIDATION_P95_MILLISECONDS: u64 = 500;
+
     fn large_workflow(marker: usize) -> String {
         let mut source = "on: push\njobs:\n".to_owned();
-        for index in 0..900 {
+        for index in 0..PERFORMANCE_FIXTURE_NODES {
             writeln!(
                 source,
                 "  job_{index}:\n    steps:\n      - run: echo {index}_{marker:02}"
@@ -1621,7 +1631,7 @@ mod performance_tests {
 
     fn large_workflow_with_local_action() -> String {
         let mut source = "on: push\njobs:\n".to_owned();
-        for index in 0..900 {
+        for index in 0..PERFORMANCE_FIXTURE_NODES {
             if index == 0 {
                 writeln!(
                     source,
@@ -1660,7 +1670,7 @@ mod performance_tests {
         black_box(server.diagnostics(document, &CancellationToken::new()));
 
         let mut samples = Vec::new();
-        for marker in 1..=20 {
+        for marker in 1..=PERFORMANCE_SAMPLE_COUNT {
             let document = server
                 .documents
                 .get_mut(uri)
@@ -1673,11 +1683,11 @@ mod performance_tests {
             samples.push(started.elapsed());
         }
         samples.sort_unstable();
-        let p95 = samples[18];
-        eprintln!("900-node edit-to-diagnostics p95: {p95:?}");
+        let p95 = samples[PERFORMANCE_P95_INDEX];
+        eprintln!("{PERFORMANCE_FIXTURE_NODES}-node edit-to-diagnostics p95: {p95:?}");
         assert!(
-            p95 <= Duration::from_millis(150),
-            "900-node edit-to-diagnostics p95 was {p95:?}; samples={samples:?}"
+            p95 <= Duration::from_millis(DIAGNOSTICS_P95_MILLISECONDS),
+            "{PERFORMANCE_FIXTURE_NODES}-node edit-to-diagnostics p95 was {p95:?}; samples={samples:?}"
         );
     }
 
@@ -1700,7 +1710,7 @@ mod performance_tests {
         );
 
         let mut samples = Vec::new();
-        for marker in 1..=20 {
+        for marker in 1..=PERFORMANCE_SAMPLE_COUNT {
             let document = server
                 .documents
                 .get_mut(uri)
@@ -1713,7 +1723,7 @@ mod performance_tests {
                 let worker_token = cancellation.clone();
                 let (sender, receiver) = std::sync::mpsc::channel();
                 scope.spawn(move || {
-                    std::thread::sleep(Duration::from_millis(10));
+                    std::thread::sleep(Duration::from_millis(CANCELLATION_INJECTION_MILLISECONDS));
                     let cancelled_at = Instant::now();
                     worker_token.cancel();
                     sender
@@ -1731,10 +1741,10 @@ mod performance_tests {
             samples.push(result.1);
         }
         samples.sort_unstable();
-        let p95 = samples[18];
-        eprintln!("900-node cancellation p95: {p95:?}");
+        let p95 = samples[PERFORMANCE_P95_INDEX];
+        eprintln!("{PERFORMANCE_FIXTURE_NODES}-node cancellation p95: {p95:?}");
         assert!(
-            p95 <= Duration::from_millis(50),
+            p95 <= Duration::from_millis(CANCELLATION_P95_MILLISECONDS),
             "cancellation p95 was {p95:?}; samples={samples:?}"
         );
     }
@@ -1777,7 +1787,7 @@ mod performance_tests {
             .expect("initial analysis");
         let mut previous_digest = initial.report.semantic_digest;
         let mut samples = Vec::new();
-        for marker in 1..=20 {
+        for marker in 1..=PERFORMANCE_SAMPLE_COUNT {
             let action = server
                 .documents
                 .get_mut(action_uri)
@@ -1799,10 +1809,10 @@ mod performance_tests {
             previous_digest = result.report.semantic_digest;
         }
         samples.sort_unstable();
-        let p95 = samples[18];
-        eprintln!("900-node transitive invalidation p95: {p95:?}");
+        let p95 = samples[PERFORMANCE_P95_INDEX];
+        eprintln!("{PERFORMANCE_FIXTURE_NODES}-node transitive invalidation p95: {p95:?}");
         assert!(
-            p95 <= Duration::from_millis(500),
+            p95 <= Duration::from_millis(TRANSITIVE_INVALIDATION_P95_MILLISECONDS),
             "transitive invalidation p95 was {p95:?}; samples={samples:?}"
         );
     }

@@ -9,6 +9,30 @@ pub use sha256::Sha256;
 use std::collections::BTreeMap;
 
 pub const BACKEND_ATTESTATION_SCHEMA: &str = "backend-attestation-v1";
+/// Hexadecimal width fixed by the SHA-256 digest format.
+pub const SHA256_HEX_DIGITS: usize = 64;
+/// Sentinel mandated by runner-v2 for a workload that cannot be bound yet.
+pub const UNRESOLVED_CONTENT_DIGEST: &str =
+    "sha256:0000000000000000000000000000000000000000000000000000000000000000";
+
+// These values are the published runner-v2 portable profile. Their authority is
+// `schema/runner-v2.schema.json`, where every corresponding property is `const`.
+pub const RUNNER_V2_CPU_CORES: u64 = 1;
+pub const RUNNER_V2_WALL_TIME_SECONDS: u64 = 900;
+pub const RUNNER_V2_MEMORY_BYTES: u64 = 2_147_483_648;
+pub const RUNNER_V2_OUTPUT_BYTES: u64 = 16_777_216;
+pub const RUNNER_V2_PROCESSES: u64 = 128;
+pub const RUNNER_V2_SCRATCH_BYTES: u64 = 4_294_967_296;
+pub const RUNNER_V2_SCRATCH_ENTRIES: u64 = 100_000;
+const BYTES_PER_MEBIBYTE: u64 = 1_048_576;
+pub const RUNNER_V2_MEMORY_MIB: u64 = RUNNER_V2_MEMORY_BYTES / BYTES_PER_MEBIBYTE;
+
+// Stable workflow-verifier process outcomes shared by the CLI and native
+// helpers. These values are part of the published 0..=5 invocation contract.
+const HELPER_EXIT_SUCCESS: i32 = 0;
+const HELPER_EXIT_INVALID_INPUT: i32 = 2;
+const HELPER_EXIT_INCOMPLETE: i32 = 3;
+const HELPER_EXIT_INFRASTRUCTURE: i32 = 5;
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum Control {
@@ -220,11 +244,16 @@ fn strings(values: &[String]) -> json::Value {
 
 fn limits_json(limits: &Limits) -> json::Value {
     object([
-        ("cpu_cores", json::Value::Integer(1)),
+        (
+            "cpu_cores",
+            json::Value::Integer(
+                i64::try_from(RUNNER_V2_CPU_CORES).expect("portable CPU limit fits i64"),
+            ),
+        ),
         (
             "memory_bytes",
             json::Value::Integer(
-                i64::try_from(limits.memory_mb.saturating_mul(1024 * 1024))
+                i64::try_from(limits.memory_mb.saturating_mul(BYTES_PER_MEBIBYTE))
                     .expect("portable memory limit fits i64"),
             ),
         ),
@@ -240,8 +269,19 @@ fn limits_json(limits: &Limits) -> json::Value {
                 i64::try_from(limits.processes).expect("portable process limit fits i64"),
             ),
         ),
-        ("scratch_bytes", json::Value::Integer(4_294_967_296)),
-        ("scratch_entries", json::Value::Integer(100_000)),
+        (
+            "scratch_bytes",
+            json::Value::Integer(
+                i64::try_from(RUNNER_V2_SCRATCH_BYTES).expect("portable scratch limit fits i64"),
+            ),
+        ),
+        (
+            "scratch_entries",
+            json::Value::Integer(
+                i64::try_from(RUNNER_V2_SCRATCH_ENTRIES)
+                    .expect("portable scratch entry limit fits i64"),
+            ),
+        ),
         (
             "wall_time_seconds",
             json::Value::Integer(
@@ -429,12 +469,7 @@ impl Evidence {
     #[must_use]
     pub fn new(plan_digest: impl Into<String>) -> Self {
         let plan_digest = plan_digest.into();
-        let limits = Limits {
-            cpu_seconds: 900,
-            memory_mb: 2048,
-            processes: 128,
-            output_bytes: 16 * 1024 * 1024,
-        };
+        let limits = portable_limits();
         Self {
             bindings: EvidenceBindings {
                 scenario_digest: plan_digest.clone(),
@@ -763,7 +798,9 @@ impl Evidence {
         if self.bindings != expected.bindings {
             return Err("evidence provenance bindings do not match runner-v2".to_owned());
         }
-        if self.requested_limits != plan.limits || self.effective_limits != plan.limits {
+        // `self.validate()` has already proved that requested and effective
+        // limits are the same portable profile, so one comparison is complete.
+        if self.requested_limits != plan.limits {
             return Err("evidence limits do not match runner-v2".to_owned());
         }
         let backend_attestations: Vec<_> = self
@@ -772,28 +809,21 @@ impl Evidence {
             .filter_map(|event| match &event.body {
                 EvidenceBody::BackendAttested {
                     id,
-                    version,
-                    platform,
                     controls_digest,
-                } => Some((
-                    id.as_str(),
-                    version.as_str(),
-                    platform.as_str(),
-                    controls_digest.as_str(),
-                )),
+                    ..
+                } => Some((id.as_str(), controls_digest.as_str())),
                 _ => None,
             })
             .collect();
         if backend_attestations.len() != 1 {
             return Err("evidence-v2 requires exactly one backend attestation".to_owned());
         }
-        let (backend_id, version, platform, attested_controls) = backend_attestations[0];
+        let (backend_id, attested_controls) = backend_attestations[0];
         if backend_id != plan.backend {
             return Err("backend attestation identity does not match runner-v2".to_owned());
         }
-        if version.trim().is_empty() || platform.trim().is_empty() {
-            return Err("backend attestation identity is incomplete".to_owned());
-        }
+        // Non-empty backend identity fields were authenticated by
+        // `validate_evidence_body` during `self.validate()` above.
         if attested_controls != expected.bindings.controls_digest {
             return Err("backend attestation controls do not match runner-v2".to_owned());
         }
@@ -912,10 +942,10 @@ impl EvidenceBodyKind {
 
 fn portable_limits() -> Limits {
     Limits {
-        cpu_seconds: 900,
-        memory_mb: 2048,
-        processes: 128,
-        output_bytes: 16 * 1024 * 1024,
+        cpu_seconds: RUNNER_V2_WALL_TIME_SECONDS,
+        memory_mb: RUNNER_V2_MEMORY_MIB,
+        processes: RUNNER_V2_PROCESSES,
+        output_bytes: RUNNER_V2_OUTPUT_BYTES,
     }
 }
 
@@ -1010,14 +1040,14 @@ fn parse_evidence_limits(value: &json::Value) -> Result<Limits, String> {
     )?;
     let limits = Limits {
         cpu_seconds: integer_field(fields, "wall_time_seconds")?,
-        memory_mb: integer_field(fields, "memory_bytes")? / (1024 * 1024),
+        memory_mb: integer_field(fields, "memory_bytes")? / BYTES_PER_MEBIBYTE,
         processes: integer_field(fields, "processes")?,
         output_bytes: integer_field(fields, "output_bytes")?,
     };
-    if integer_field(fields, "cpu_cores")? != 1
-        || integer_field(fields, "memory_bytes")? != 2_147_483_648
-        || integer_field(fields, "scratch_bytes")? != 4_294_967_296
-        || integer_field(fields, "scratch_entries")? != 100_000
+    if integer_field(fields, "cpu_cores")? != RUNNER_V2_CPU_CORES
+        || integer_field(fields, "memory_bytes")? != RUNNER_V2_MEMORY_BYTES
+        || integer_field(fields, "scratch_bytes")? != RUNNER_V2_SCRATCH_BYTES
+        || integer_field(fields, "scratch_entries")? != RUNNER_V2_SCRATCH_ENTRIES
         || limits != portable_limits()
     {
         return Err("evidence-v2 portable limits do not match runner-v2".to_owned());
@@ -1504,9 +1534,10 @@ fn exact_fields(
     expected: &[&str],
     context: &str,
 ) -> Result<(), String> {
-    let exact = object.len() == expected.len()
-        && object.keys().all(|name| expected.contains(&name.as_str()));
-    if exact {
+    let actual = object.keys().map(String::as_str).collect::<Vec<_>>();
+    let mut sorted_expected = expected.to_vec();
+    sorted_expected.sort_unstable();
+    if actual == sorted_expected {
         Ok(())
     } else {
         Err(format!(
@@ -1657,17 +1688,15 @@ fn parse_limits(object: &BTreeMap<String, json::Value>) -> Result<Limits, String
     let scratch_entries = integer_field(fields, "scratch_entries")?;
     let limits = Limits {
         cpu_seconds: integer_field(fields, "wall_time_seconds")?,
-        memory_mb: memory_bytes / (1024 * 1024),
+        memory_mb: memory_bytes / BYTES_PER_MEBIBYTE,
         processes: integer_field(fields, "processes")?,
         output_bytes: integer_field(fields, "output_bytes")?,
     };
-    if cpu_cores == 1
-        && memory_bytes == 2_147_483_648
-        && limits.cpu_seconds == 900
-        && limits.processes == 128
-        && limits.output_bytes == 16 * 1024 * 1024
-        && scratch_bytes == 4_294_967_296
-        && scratch_entries == 100_000
+    if cpu_cores == RUNNER_V2_CPU_CORES
+        && memory_bytes == RUNNER_V2_MEMORY_BYTES
+        && limits == portable_limits()
+        && scratch_bytes == RUNNER_V2_SCRATCH_BYTES
+        && scratch_entries == RUNNER_V2_SCRATCH_ENTRIES
     {
         Ok(limits)
     } else {
@@ -1879,7 +1908,7 @@ fn validate_status(
 
 fn valid_content_digest(value: &str) -> bool {
     value.strip_prefix("sha256:").is_some_and(|digest| {
-        digest.len() == 64
+        digest.len() == SHA256_HEX_DIGITS
             && digest
                 .bytes()
                 .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
@@ -1887,7 +1916,7 @@ fn valid_content_digest(value: &str) -> bool {
 }
 
 fn resolved_content_digest(value: &str) -> bool {
-    valid_content_digest(value) && value != format!("sha256:{}", "0".repeat(64))
+    valid_content_digest(value) && value != UNRESOLVED_CONTENT_DIGEST
 }
 
 /// Parses canonical runner-v2 JSON and verifies its content digest.
@@ -1976,11 +2005,10 @@ pub fn validate_plan(source: &str) -> Result<ValidatedPlan, String> {
     let mut images = steps.iter().map(|step| &step.image).collect::<Vec<_>>();
     images.sort_unstable();
     images.dedup();
-    let unresolved = format!("sha256:{}", "0".repeat(64));
     let expected_workload = if images.len() == 1 {
         images[0].as_str()
     } else {
-        unresolved.as_str()
+        UNRESOLVED_CONTENT_DIGEST
     };
     if runtime.workload_digest != expected_workload {
         return Err("runtime workload digest contradicts selected steps".to_owned());
@@ -2101,7 +2129,6 @@ pub fn parse_helper_arguments(arguments: &[String]) -> Result<HelperMode, String
                 trusted_exclusions,
             })
         }
-        [mode, ..] if mode == "--run" => Err("--run requires --source SOURCE_ROOT".to_owned()),
         _ => Err(
             "usage: helper --doctor|--validate|--run --source SOURCE_ROOT [--exclude PREFIX ...]"
                 .to_owned(),
@@ -2118,28 +2145,28 @@ pub fn helper_main(
         Ok(mode) => mode,
         Err(error) => {
             eprintln!("{error}");
-            return 2;
+            return HELPER_EXIT_INVALID_INPUT;
         }
     };
     if mode == HelperMode::Doctor {
         print!("{}", descriptor.canonical_json());
-        return 0;
+        return HELPER_EXIT_SUCCESS;
     }
     let mut source = String::new();
     if let Err(error) = std::io::Read::read_to_string(&mut std::io::stdin(), &mut source) {
         eprintln!("failed to read runner plan: {error}");
-        return 2;
+        return HELPER_EXIT_INVALID_INPUT;
     }
     let plan = match validate_plan(&source) {
         Ok(plan) => plan,
         Err(error) => {
             eprintln!("invalid runner plan: {error}");
-            return 2;
+            return HELPER_EXIT_INVALID_INPUT;
         }
     };
     if mode == HelperMode::Validate {
         println!("{{\"digest\":\"{}\",\"valid\":true}}", plan.digest);
-        return 0;
+        return HELPER_EXIT_SUCCESS;
     }
     let HelperMode::Run {
         source_root,
@@ -2151,11 +2178,11 @@ pub fn helper_main(
     match launch(&plan, &source_root, &trusted_exclusions) {
         Ok(result) => {
             print!("{}", result.canonical_json());
-            0
+            HELPER_EXIT_SUCCESS
         }
         Err(LaunchError::IncompletePlan(reasons)) => {
             eprintln!("incomplete plan: {}", reasons.join("; "));
-            3
+            HELPER_EXIT_INCOMPLETE
         }
         Err(
             error @ (LaunchError::BackendMismatch { .. }
@@ -2163,22 +2190,114 @@ pub fn helper_main(
             | LaunchError::InvalidPlan(_)),
         ) => {
             eprintln!("invalid sandbox input: {error}");
-            2
+            HELPER_EXIT_INVALID_INPUT
         }
         Err(error) => {
             eprintln!("sandbox infrastructure failure: {error}");
-            5
+            HELPER_EXIT_INFRASTRUCTURE
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        HelperMode, PlanStatus, RuntimeProfile, Step, parse_helper_arguments, valid_content_digest,
-        validate_status,
-    };
+    #[allow(clippy::wildcard_imports)]
+    use super::*;
     use std::collections::BTreeMap;
+
+    const PLAN_SOURCE: &str =
+        include_str!("../../../test/fixtures/protocol/runner-v2-complete.json");
+    // IANA's default HTTPS port; used to exercise the network evidence field.
+    const HTTPS_PORT: u16 = 443;
+    // A non-zero signed process result used to prove exact i32 preservation.
+    const FIXTURE_PROCESS_EXIT: i32 = 17;
+
+    fn content_digest(digit: char) -> String {
+        format!("sha256:{}", digit.to_string().repeat(SHA256_HEX_DIGITS))
+    }
+
+    fn fixture_plan() -> ValidatedPlan {
+        validate_plan(PLAN_SOURCE).expect("published complete runner-v2 fixture")
+    }
+
+    fn nested_object_mut<'a>(
+        fields: &'a mut BTreeMap<String, json::Value>,
+        name: &str,
+    ) -> &'a mut BTreeMap<String, json::Value> {
+        let Some(json::Value::Object(value)) = fields.get_mut(name) else {
+            panic!("fixture field {name} must be an object")
+        };
+        value
+    }
+
+    fn signed_plan(mutator: impl FnOnce(&mut BTreeMap<String, json::Value>)) -> String {
+        let mut root = json::parse(PLAN_SOURCE).expect("runner fixture JSON");
+        let json::Value::Object(fields) = &mut root else {
+            panic!("runner fixture must be an object")
+        };
+        mutator(fields);
+        fields.remove("digest");
+        let unsigned = json::Value::Object(fields.clone());
+        let digest = format!(
+            "sha256:{}",
+            sha256::digest(json::canonical(&unsigned).as_bytes())
+        );
+        fields.insert("digest".to_owned(), json::Value::String(digest));
+        json::canonical(&root)
+    }
+
+    fn standard_evidence_bodies(plan: &ValidatedPlan) -> Vec<EvidenceBody> {
+        let mut bodies = vec![EvidenceBody::BackendAttested {
+            id: plan.backend.clone(),
+            version: env!("CARGO_PKG_VERSION").to_owned(),
+            platform: "portable-test".to_owned(),
+            controls_digest: controls_digest(&plan.controls),
+        }];
+        bodies.extend(
+            plan.controls
+                .iter()
+                .map(|control| EvidenceBody::ControlAttested(control.name().to_owned())),
+        );
+        for step in &plan.steps {
+            let (executable, argv) = step.argv.split_first().expect("validated non-empty argv");
+            bodies.push(EvidenceBody::ProcessStarted {
+                executable: executable.clone(),
+                argv: argv.to_vec(),
+            });
+            bodies.push(EvidenceBody::ProcessExited {
+                code: HELPER_EXIT_SUCCESS,
+            });
+        }
+        bodies.extend([
+            EvidenceBody::ResourceObserved {
+                wall_time_ms: 1,
+                cpu_time_ms: 0,
+                peak_memory_bytes: 0,
+                processes: 1,
+                output_bytes: 0,
+                scratch_bytes: 0,
+                scratch_entries: 0,
+            },
+            EvidenceBody::LogRecorded {
+                digest: format!("sha256:{}", sha256::digest(b"")),
+            },
+            EvidenceBody::FilesystemFinal {
+                digest: plan.source_digest.clone(),
+            },
+        ]);
+        bodies
+    }
+
+    fn evidence_from_bodies(
+        plan: &ValidatedPlan,
+        bodies: impl IntoIterator<Item = EvidenceBody>,
+    ) -> Evidence {
+        let mut evidence = Evidence::for_plan(plan);
+        for body in bodies {
+            evidence.append(body);
+        }
+        evidence
+    }
 
     #[test]
     fn complete_status_rejects_an_unpinned_execution_image() {
@@ -2254,7 +2373,1049 @@ mod tests {
 
     #[test]
     fn content_digests_require_lowercase_canonical_hex() {
-        assert!(valid_content_digest(&format!("sha256:{}", "a".repeat(64))));
-        assert!(!valid_content_digest(&format!("sha256:{}", "A".repeat(64))));
+        assert!(valid_content_digest(&format!(
+            "sha256:{}",
+            "a".repeat(SHA256_HEX_DIGITS)
+        )));
+        assert!(!valid_content_digest(&format!(
+            "sha256:{}",
+            "A".repeat(SHA256_HEX_DIGITS)
+        )));
+        assert!(!resolved_content_digest(UNRESOLVED_CONTENT_DIGEST));
+        assert!(resolved_content_digest(&content_digest('a')));
+    }
+
+    #[test]
+    fn every_control_name_is_a_total_round_trip() {
+        let controls = [
+            Control::SourceReadOnly,
+            Control::ScratchOverlay,
+            Control::NetworkDeny,
+            Control::EgressBroker,
+            Control::ProcessIsolation,
+            Control::ResourceLimits,
+            Control::SecretRedaction,
+            Control::Namespace,
+            Control::Seccomp,
+            Control::Landlock,
+            Control::CgroupV2,
+            Control::AppContainer,
+            Control::RestrictedToken,
+            Control::JobObject,
+            Control::AppSandbox,
+            Control::VirtualMachine,
+        ];
+        for control in controls {
+            assert_eq!(
+                Control::parse(control.name()),
+                Some(control),
+                "{}",
+                control.name()
+            );
+        }
+        assert_eq!(Control::parse("unknown"), None);
+    }
+
+    #[test]
+    fn every_evidence_body_round_trips_its_tagged_union() {
+        let digest = content_digest('a');
+        let bodies = vec![
+            EvidenceBody::BackendAttested {
+                id: "oci:test".to_owned(),
+                version: env!("CARGO_PKG_VERSION").to_owned(),
+                platform: "linux-x86_64".to_owned(),
+                controls_digest: digest.clone(),
+            },
+            EvidenceBody::ControlAttested(Control::Namespace.name().to_owned()),
+            EvidenceBody::ProcessStarted {
+                executable: "/bin/tool".to_owned(),
+                argv: vec!["argument".to_owned()],
+            },
+            EvidenceBody::ProcessExited {
+                code: FIXTURE_PROCESS_EXIT,
+            },
+            EvidenceBody::FilesystemAccess {
+                path: "workspace/file".to_owned(),
+                operation: "read".to_owned(),
+                allowed: true,
+            },
+            EvidenceBody::NetworkAttempt {
+                host: "example.test".to_owned(),
+                port: HTTPS_PORT,
+                allowed: false,
+            },
+            EvidenceBody::ArtifactRecorded {
+                path: "artifacts/result".to_owned(),
+                digest: digest.clone(),
+            },
+            EvidenceBody::SecretRedacted {
+                name: "TOKEN".to_owned(),
+            },
+            EvidenceBody::ResourceObserved {
+                wall_time_ms: 1,
+                cpu_time_ms: 2,
+                peak_memory_bytes: 3,
+                processes: 4,
+                output_bytes: 5,
+                scratch_bytes: 6,
+                scratch_entries: 7,
+            },
+            EvidenceBody::LogRecorded {
+                digest: digest.clone(),
+            },
+            EvidenceBody::FilesystemFinal {
+                digest: digest.clone(),
+            },
+            EvidenceBody::BackendError("backend unavailable".to_owned()),
+        ];
+        for body in bodies {
+            let encoded = evidence_body_json(&body);
+            assert_eq!(parse_evidence_body(&encoded), Ok(body.clone()), "{body:?}");
+            assert!(validate_evidence_body(&body).is_ok(), "{body:?}");
+        }
+    }
+
+    #[test]
+    fn evidence_body_identity_and_root_relative_paths_fail_closed() {
+        for valid in ["artifact", "directory/artifact"] {
+            assert!(root_relative_path(valid), "{valid:?}");
+        }
+        for invalid in [
+            "",
+            "/artifact",
+            "\\artifact",
+            "directory\\artifact",
+            "directory//artifact",
+            ".",
+            "..",
+            "directory/./artifact",
+            "directory/../artifact",
+        ] {
+            assert!(!root_relative_path(invalid), "{invalid:?}");
+        }
+
+        let digest = content_digest('b');
+        let invalid_bodies = [
+            EvidenceBody::BackendAttested {
+                id: String::new(),
+                version: "v".to_owned(),
+                platform: "p".to_owned(),
+                controls_digest: digest.clone(),
+            },
+            EvidenceBody::BackendAttested {
+                id: "id".to_owned(),
+                version: String::new(),
+                platform: "p".to_owned(),
+                controls_digest: digest.clone(),
+            },
+            EvidenceBody::BackendAttested {
+                id: "id".to_owned(),
+                version: "v".to_owned(),
+                platform: String::new(),
+                controls_digest: digest.clone(),
+            },
+            EvidenceBody::FilesystemAccess {
+                path: String::new(),
+                operation: "read".to_owned(),
+                allowed: false,
+            },
+            EvidenceBody::FilesystemAccess {
+                path: "path".to_owned(),
+                operation: String::new(),
+                allowed: false,
+            },
+            EvidenceBody::NetworkAttempt {
+                host: String::new(),
+                port: HTTPS_PORT,
+                allowed: false,
+            },
+            EvidenceBody::NetworkAttempt {
+                host: "example.test".to_owned(),
+                port: 0,
+                allowed: false,
+            },
+            EvidenceBody::ArtifactRecorded {
+                path: "/absolute".to_owned(),
+                digest: digest.clone(),
+            },
+            EvidenceBody::SecretRedacted {
+                name: String::new(),
+            },
+            EvidenceBody::LogRecorded {
+                digest: "not-a-digest".to_owned(),
+            },
+            EvidenceBody::BackendError(String::new()),
+        ];
+        for body in invalid_bodies {
+            assert!(validate_evidence_body(&body).is_err(), "{body:?}");
+        }
+    }
+
+    #[test]
+    fn evidence_validation_checks_each_independent_envelope_invariant() {
+        let valid = Evidence::new(content_digest('c'));
+        assert!(valid.validate().is_ok());
+
+        let mut invalids = Vec::new();
+        let mut invalid = valid.clone();
+        invalid.plan_digest = "bad".to_owned();
+        invalids.push(invalid);
+        let mut invalid = valid.clone();
+        invalid.bindings.lock_digest = "bad".to_owned();
+        invalids.push(invalid);
+        let mut invalid = valid.clone();
+        invalid.source_digest = content_digest('d');
+        invalids.push(invalid);
+        let mut invalid = valid.clone();
+        invalid.requested_limits.cpu_seconds =
+            invalid.requested_limits.cpu_seconds.saturating_sub(1);
+        invalids.push(invalid);
+        let mut invalid = valid.clone();
+        invalid.effective_limits.processes = invalid.effective_limits.processes.saturating_sub(1);
+        invalids.push(invalid);
+        let mut invalid = valid.clone();
+        invalid.forensic_sidecars.push(ForensicSidecar {
+            kind: String::new(),
+            digest: content_digest('e'),
+        });
+        invalids.push(invalid);
+        let mut invalid = valid;
+        invalid.forensic_sidecars.push(ForensicSidecar {
+            kind: "trace".to_owned(),
+            digest: "bad".to_owned(),
+        });
+        invalids.push(invalid);
+
+        for evidence in invalids {
+            assert!(evidence.validate().is_err(), "{evidence:?}");
+        }
+    }
+
+    #[test]
+    fn evidence_summary_tail_and_sidecars_are_authenticated_data() {
+        let plan = fixture_plan();
+        let log_digest = content_digest('1');
+        let filesystem_digest = content_digest('2');
+        let mut evidence = Evidence::for_plan(&plan);
+        assert_eq!(evidence.tail_digest(), plan.digest);
+        evidence.append(EvidenceBody::ResourceObserved {
+            wall_time_ms: 11,
+            cpu_time_ms: 12,
+            peak_memory_bytes: 13,
+            processes: 14,
+            output_bytes: 15,
+            scratch_bytes: 16,
+            scratch_entries: 17,
+        });
+        evidence.append(EvidenceBody::LogRecorded {
+            digest: log_digest.clone(),
+        });
+        evidence.append(EvidenceBody::FilesystemFinal {
+            digest: filesystem_digest.clone(),
+        });
+        let tail = evidence.tail_digest().to_owned();
+        assert_ne!(tail, plan.digest);
+        assert!(valid_content_digest(&tail));
+
+        let source = evidence.canonical_json();
+        assert!(source.contains(&format!("\"redacted_log_digest\":\"{log_digest}\"")));
+        assert!(source.contains(&format!(
+            "\"final_filesystem_digest\":\"{filesystem_digest}\""
+        )));
+        assert!(source.contains("\"wall_time_ms\":11"));
+        assert_eq!(Evidence::parse(&source), Ok(evidence));
+
+        let sidecars = json::Value::Array(vec![object([
+            ("digest", json::Value::String(content_digest('3'))),
+            ("kind", json::Value::String("system-trace".to_owned())),
+        ])]);
+        assert_eq!(
+            parse_forensic_sidecars(&sidecars),
+            Ok(vec![ForensicSidecar {
+                kind: "system-trace".to_owned(),
+                digest: content_digest('3'),
+            }])
+        );
+    }
+
+    #[test]
+    fn every_evidence_limit_field_is_independently_constant() {
+        let canonical = limits_json(&portable_limits());
+        assert_eq!(parse_evidence_limits(&canonical), Ok(portable_limits()));
+        let json::Value::Object(fields) = canonical else {
+            panic!("limits must serialize as an object")
+        };
+        for name in [
+            "cpu_cores",
+            "memory_bytes",
+            "output_bytes",
+            "processes",
+            "scratch_bytes",
+            "scratch_entries",
+            "wall_time_seconds",
+        ] {
+            let mut changed = fields.clone();
+            changed.insert(name.to_owned(), json::Value::Integer(0));
+            assert!(
+                parse_evidence_limits(&json::Value::Object(changed)).is_err(),
+                "changed evidence limit {name}"
+            );
+        }
+    }
+
+    #[test]
+    fn complete_evidence_checks_attestations_required_records_and_lifecycle() {
+        let plan = fixture_plan();
+        let standard = standard_evidence_bodies(&plan);
+        let evidence = evidence_from_bodies(&plan, standard.clone());
+        evidence
+            .validate_for_plan(&plan)
+            .expect("complete evidence must bind to the plan");
+
+        let mut wrong_binding = Evidence::for_plan(&plan);
+        wrong_binding.bindings.lock_digest = content_digest('4');
+        assert!(wrong_binding.validate_for_plan(&plan).is_err());
+        let wrong_plan = Evidence::new(content_digest('5'));
+        assert!(wrong_plan.validate_for_plan(&plan).is_err());
+
+        let backend_index = standard
+            .iter()
+            .position(|body| matches!(body, EvidenceBody::BackendAttested { .. }))
+            .expect("backend attestation");
+        let mut missing_backend = standard.clone();
+        missing_backend.remove(backend_index);
+        assert!(
+            evidence_from_bodies(&plan, missing_backend)
+                .validate_for_plan(&plan)
+                .is_err()
+        );
+        let mut duplicate_backend = standard.clone();
+        duplicate_backend.insert(backend_index, standard[backend_index].clone());
+        assert!(
+            evidence_from_bodies(&plan, duplicate_backend)
+                .validate_for_plan(&plan)
+                .is_err()
+        );
+
+        for mutation in ["id", "controls"] {
+            let mut bodies = standard.clone();
+            let EvidenceBody::BackendAttested {
+                id,
+                controls_digest: attested_controls,
+                ..
+            } = &mut bodies[backend_index]
+            else {
+                unreachable!()
+            };
+            match mutation {
+                "id" => *id = "oci:other".to_owned(),
+                "controls" => *attested_controls = content_digest('6'),
+                _ => unreachable!(),
+            }
+            assert!(
+                evidence_from_bodies(&plan, bodies)
+                    .validate_for_plan(&plan)
+                    .is_err(),
+                "backend {mutation} mismatch"
+            );
+        }
+
+        let mut missing_control = standard.clone();
+        let control_index = missing_control
+            .iter()
+            .position(|body| matches!(body, EvidenceBody::ControlAttested(_)))
+            .expect("control attestation");
+        missing_control.remove(control_index);
+        assert!(
+            evidence_from_bodies(&plan, missing_control)
+                .validate_for_plan(&plan)
+                .is_err()
+        );
+
+        for kind in [
+            EvidenceBodyKind::Resource,
+            EvidenceBodyKind::Log,
+            EvidenceBodyKind::FilesystemFinal,
+        ] {
+            let mut missing = standard.clone();
+            missing.retain(|body| !kind.matches(body));
+            assert!(
+                evidence_from_bodies(&plan, missing)
+                    .validate_for_plan(&plan)
+                    .is_err()
+            );
+
+            let mut duplicate = standard.clone();
+            let body = duplicate
+                .iter()
+                .find(|body| kind.matches(body))
+                .expect("required evidence body")
+                .clone();
+            duplicate.push(body);
+            assert!(
+                evidence_from_bodies(&plan, duplicate)
+                    .validate_for_plan(&plan)
+                    .is_err()
+            );
+        }
+
+        let mut no_exit = standard.clone();
+        no_exit.retain(|body| !matches!(body, EvidenceBody::ProcessExited { .. }));
+        assert!(
+            evidence_from_bodies(&plan, no_exit)
+                .validate_for_plan(&plan)
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn process_lifecycle_accepts_a_failed_prefix_but_rejects_identity_drift() {
+        let plan = fixture_plan();
+        let standard = standard_evidence_bodies(&plan);
+        let start_index = standard
+            .iter()
+            .position(|body| matches!(body, EvidenceBody::ProcessStarted { .. }))
+            .expect("process start");
+
+        for mutation in ["executable", "argv"] {
+            let mut bodies = standard.clone();
+            let EvidenceBody::ProcessStarted { executable, argv } = &mut bodies[start_index] else {
+                unreachable!()
+            };
+            match mutation {
+                "executable" => *executable = "/bin/other".to_owned(),
+                "argv" => argv.push("other".to_owned()),
+                _ => unreachable!(),
+            }
+            assert!(
+                evidence_from_bodies(&plan, bodies)
+                    .validate_for_plan(&plan)
+                    .is_err(),
+                "process {mutation} mismatch"
+            );
+        }
+
+        let mut two_step_plan = plan.clone();
+        let mut second = two_step_plan.steps[0].clone();
+        second.id = "build:step2".to_owned();
+        two_step_plan.steps.push(second);
+        evidence_from_bodies(&two_step_plan, standard.clone())
+            .validate_for_plan(&two_step_plan)
+            .expect("a balanced ordered prefix records a failed run");
+
+        let mut empty_plan = plan;
+        empty_plan.steps.clear();
+        empty_plan.runtime.workload_digest = UNRESOLVED_CONTENT_DIGEST.to_owned();
+        empty_plan.runtime.rootfs_digest = Some(UNRESOLVED_CONTENT_DIGEST.to_owned());
+        empty_plan.status = PlanStatus::Incomplete(vec!["no executable steps".to_owned()]);
+        let no_processes = standard_evidence_bodies(&empty_plan);
+        evidence_from_bodies(&empty_plan, no_processes)
+            .validate_for_plan(&empty_plan)
+            .expect("an empty plan has no process lifecycle");
+    }
+
+    #[test]
+    fn sandbox_outcomes_preserve_nullable_codes_and_nonempty_step_ids() {
+        for (source, expected) in [
+            (r#"{"state":"completed"}"#, Outcome::Completed),
+            (
+                r#"{"code":null,"state":"step_failed","step":"build"}"#,
+                Outcome::StepFailed {
+                    step: "build".to_owned(),
+                    code: None,
+                },
+            ),
+            (
+                r#"{"code":17,"state":"step_failed","step":"build"}"#,
+                Outcome::StepFailed {
+                    step: "build".to_owned(),
+                    code: Some(FIXTURE_PROCESS_EXIT),
+                },
+            ),
+            (
+                r#"{"state":"timed_out","step":"build"}"#,
+                Outcome::TimedOut {
+                    step: "build".to_owned(),
+                },
+            ),
+            (
+                r#"{"state":"output_limit_exceeded","step":"build"}"#,
+                Outcome::OutputLimitExceeded {
+                    step: "build".to_owned(),
+                },
+            ),
+        ] {
+            let value = json::parse(source).expect("outcome JSON");
+            assert_eq!(parse_outcome(&value), Ok(expected));
+        }
+        for source in [
+            r#"{"code":"bad","state":"step_failed","step":"build"}"#,
+            r#"{"code":null,"state":"step_failed","step":" "}"#,
+            r#"{"state":"timed_out","step":""}"#,
+            r#"{"state":"unknown"}"#,
+        ] {
+            let value = json::parse(source).expect("invalid outcome JSON remains valid JSON");
+            assert!(parse_outcome(&value).is_err(), "{source}");
+        }
+    }
+
+    #[test]
+    fn private_json_field_and_descriptor_helpers_are_exact() {
+        let fields =
+            BTreeMap::from([("name".to_owned(), json::Value::String(" value ".to_owned()))]);
+        assert_eq!(
+            nonempty_string_field(&fields, "name"),
+            Ok(" value ".to_owned())
+        );
+        let empty = BTreeMap::from([("name".to_owned(), json::Value::String(" \t".to_owned()))]);
+        assert!(nonempty_string_field(&empty, "name").is_err());
+        assert_eq!(
+            quote_json("quote \" and newline\n"),
+            "\"quote \\\" and newline\\n\""
+        );
+
+        assert!(exact_fields(&fields, &["name"], "fixture").is_ok());
+        assert!(exact_fields(&fields, &[], "fixture").is_err());
+        let extra = BTreeMap::from([
+            ("name".to_owned(), json::Value::Null),
+            ("other".to_owned(), json::Value::Null),
+        ]);
+        assert!(exact_fields(&extra, &["name"], "fixture").is_err());
+
+        let descriptor = Descriptor {
+            id: "test-backend",
+            version: env!("CARGO_PKG_VERSION"),
+            platform: std::env::consts::OS,
+            available: true,
+            controls: vec![Control::Namespace],
+            reasons: vec!["reason \"quoted\"".to_owned()],
+        };
+        let descriptor_json = descriptor.canonical_json();
+        assert!(descriptor_json.ends_with('\n'));
+        assert!(descriptor_json.contains("\"schema\":\"backend-attestation-v1\""));
+        assert!(descriptor_json.contains("\"controls\":[\"namespace\"]"));
+        assert!(descriptor_json.contains("reason \\\"quoted\\\""));
+
+        let display = LaunchError::BackendMismatch {
+            expected: "expected".to_owned(),
+            actual: "actual".to_owned(),
+        }
+        .to_string();
+        assert!(display.contains("expected"));
+        assert!(display.contains("actual"));
+    }
+
+    #[test]
+    // Keeping the complete parser matrix together makes independent schema
+    // fields and policy operators reviewable as one contract.
+    #[allow(clippy::too_many_lines)]
+    fn backend_limits_runtime_network_and_dependencies_parse_independently() {
+        for backend in [
+            "linux-native",
+            "windows-native",
+            "macos-vm",
+            "oci:docker_1.0",
+        ] {
+            let fields = BTreeMap::from([(
+                "backend".to_owned(),
+                json::Value::String(backend.to_owned()),
+            )]);
+            assert_eq!(parse_backend(&fields), Ok(backend.to_owned()));
+        }
+        for backend in ["", "native", "oci:", "oci:bad/name"] {
+            let fields = BTreeMap::from([(
+                "backend".to_owned(),
+                json::Value::String(backend.to_owned()),
+            )]);
+            assert!(parse_backend(&fields).is_err(), "{backend:?}");
+        }
+
+        let root = json::parse(PLAN_SOURCE).expect("runner fixture");
+        let fields = root.object().expect("runner object");
+        assert_eq!(parse_limits(fields), Ok(portable_limits()));
+        for name in [
+            "cpu_cores",
+            "memory_bytes",
+            "output_bytes",
+            "processes",
+            "scratch_bytes",
+            "scratch_entries",
+            "wall_time_seconds",
+        ] {
+            let mut changed = fields.clone();
+            nested_object_mut(&mut changed, "limits")
+                .insert(name.to_owned(), json::Value::Integer(0));
+            assert!(
+                parse_limits(&changed).is_err(),
+                "changed runner limit {name}"
+            );
+        }
+
+        assert!(parse_runtime(fields).is_ok());
+        let mut invalid_workload = fields.clone();
+        nested_object_mut(&mut invalid_workload, "runtime").insert(
+            "workload_digest".to_owned(),
+            json::Value::String("bad".to_owned()),
+        );
+        assert!(parse_runtime(&invalid_workload).is_err());
+        let mut invalid_optional = fields.clone();
+        nested_object_mut(&mut invalid_optional, "runtime").insert(
+            "helper_digest".to_owned(),
+            json::Value::String("bad".to_owned()),
+        );
+        assert!(parse_runtime(&invalid_optional).is_err());
+
+        assert_eq!(
+            parse_network(fields, &[Control::NetworkDeny]),
+            Ok(Vec::new())
+        );
+        let enabled = BTreeMap::from([(
+            "network".to_owned(),
+            object([
+                (
+                    "destinations",
+                    json::Value::Array(vec![json::Value::String(
+                        "https://example.test/path".to_owned(),
+                    )]),
+                ),
+                ("mode", json::Value::String("allowlist".to_owned())),
+            ]),
+        )]);
+        assert_eq!(
+            parse_network(&enabled, &[]),
+            Ok(vec!["https://example.test/path".to_owned()])
+        );
+        for invalid_destination in [
+            "http://example.test",
+            "https://user@example.test",
+            "https://example.test\\path",
+            "https://example.test?query",
+            "https://example.test#fragment",
+            "https://example..test",
+            "https://example.test/%2f",
+        ] {
+            let invalid = BTreeMap::from([(
+                "network".to_owned(),
+                object([
+                    (
+                        "destinations",
+                        json::Value::Array(vec![json::Value::String(
+                            invalid_destination.to_owned(),
+                        )]),
+                    ),
+                    ("mode", json::Value::String("allowlist".to_owned())),
+                ]),
+            )]);
+            assert!(
+                parse_network(&invalid, &[]).is_err(),
+                "{invalid_destination:?}"
+            );
+        }
+        let deny_with_destination = BTreeMap::from([(
+            "network".to_owned(),
+            object([
+                (
+                    "destinations",
+                    json::Value::Array(vec![json::Value::String(
+                        "https://example.test".to_owned(),
+                    )]),
+                ),
+                ("mode", json::Value::String("deny".to_owned())),
+            ]),
+        )]);
+        assert!(parse_network(&deny_with_destination, &[Control::NetworkDeny]).is_err());
+        let allowlist_without_destination = BTreeMap::from([(
+            "network".to_owned(),
+            object([
+                ("destinations", json::Value::Array(Vec::new())),
+                ("mode", json::Value::String("allowlist".to_owned())),
+            ]),
+        )]);
+        assert!(parse_network(&allowlist_without_destination, &[]).is_err());
+        assert!(parse_network(&enabled, &[Control::NetworkDeny]).is_err());
+        let denied_but_allowlist_mode = BTreeMap::from([(
+            "network".to_owned(),
+            object([
+                ("destinations", json::Value::Array(Vec::new())),
+                ("mode", json::Value::String("allowlist".to_owned())),
+            ]),
+        )]);
+        assert!(parse_network(&denied_but_allowlist_mode, &[Control::NetworkDeny]).is_err());
+        let enabled_but_deny_mode = BTreeMap::from([(
+            "network".to_owned(),
+            object([
+                (
+                    "destinations",
+                    json::Value::Array(vec![json::Value::String(
+                        "https://example.test".to_owned(),
+                    )]),
+                ),
+                ("mode", json::Value::String("deny".to_owned())),
+            ]),
+        )]);
+        assert!(parse_network(&enabled_but_deny_mode, &[]).is_err());
+
+        let dependency = Dependency {
+            reference: "owner/repository".to_owned(),
+            digest: Some(content_digest('7')),
+            available: true,
+        };
+        let dependency_fields = BTreeMap::from([(
+            "dependencies".to_owned(),
+            json::Value::Array(vec![object([
+                ("available", json::Value::Bool(dependency.available)),
+                (
+                    "digest",
+                    json::Value::String(dependency.digest.clone().expect("digest")),
+                ),
+                (
+                    "reference",
+                    json::Value::String(dependency.reference.clone()),
+                ),
+            ])]),
+        )]);
+        assert_eq!(parse_dependencies(&dependency_fields), Ok(vec![dependency]));
+    }
+
+    #[test]
+    fn plan_status_derives_each_incomplete_reason_from_semantic_state() {
+        let plan = fixture_plan();
+        assert!(
+            validate_status(
+                &PlanStatus::Complete,
+                &plan.backend,
+                &plan.runtime,
+                &plan.dependencies,
+                &plan.steps,
+            )
+            .is_ok()
+        );
+
+        let resolved_dependency = Dependency {
+            reference: "dependency".to_owned(),
+            digest: Some(content_digest('8')),
+            available: true,
+        };
+        let mut unavailable = resolved_dependency.clone();
+        unavailable.available = false;
+        let mut unpinned = resolved_dependency;
+        unpinned.digest = None;
+        for dependency in [unavailable, unpinned] {
+            assert!(
+                validate_status(
+                    &PlanStatus::Complete,
+                    &plan.backend,
+                    &plan.runtime,
+                    &[dependency],
+                    &plan.steps,
+                )
+                .is_err()
+            );
+        }
+
+        let mut unsupported = plan.steps[0].clone();
+        unsupported.supported = false;
+        assert!(
+            validate_status(
+                &PlanStatus::Complete,
+                &plan.backend,
+                &plan.runtime,
+                &[],
+                &[unsupported],
+            )
+            .is_err()
+        );
+
+        let mut native_runtime = plan.runtime.clone();
+        native_runtime.kind = "linux-capsule".to_owned();
+        native_runtime.helper_digest = None;
+        assert!(
+            validate_status(
+                &PlanStatus::Complete,
+                "linux-native",
+                &native_runtime,
+                &[],
+                &plan.steps,
+            )
+            .is_err()
+        );
+        native_runtime.helper_digest = Some(content_digest('9'));
+        native_runtime.boot_digest = None;
+        assert!(
+            validate_status(
+                &PlanStatus::Complete,
+                "macos-vm",
+                &native_runtime,
+                &[],
+                &plan.steps,
+            )
+            .is_err()
+        );
+
+        assert!(
+            validate_status(
+                &PlanStatus::Incomplete(vec!["explicitly incomplete".to_owned()]),
+                &plan.backend,
+                &plan.runtime,
+                &[],
+                &plan.steps,
+            )
+            .is_ok()
+        );
+    }
+
+    #[test]
+    // This is one cross-backend matrix; splitting it would hide shared
+    // runner/runtime binding invariants.
+    #[allow(clippy::too_many_lines)]
+    fn signed_runner_variants_cover_every_backend_and_cross_field_binding() {
+        let oci = fixture_plan();
+        assert_eq!(oci.backend, "oci:docker");
+
+        let linux = signed_plan(|fields| {
+            fields.insert(
+                "backend".to_owned(),
+                json::Value::String("linux-native".to_owned()),
+            );
+            let runtime = nested_object_mut(fields, "runtime");
+            runtime.insert(
+                "kind".to_owned(),
+                json::Value::String("linux-capsule".to_owned()),
+            );
+            runtime.insert(
+                "helper_digest".to_owned(),
+                json::Value::String(content_digest('1')),
+            );
+        });
+        assert_eq!(
+            validate_plan(&linux).expect("linux-native plan").backend,
+            "linux-native"
+        );
+
+        let windows = signed_plan(|fields| {
+            fields.insert(
+                "backend".to_owned(),
+                json::Value::String("windows-native".to_owned()),
+            );
+            let runtime = nested_object_mut(fields, "runtime");
+            runtime.insert(
+                "kind".to_owned(),
+                json::Value::String("windows-runtime-profile".to_owned()),
+            );
+            runtime.insert(
+                "runner_platform".to_owned(),
+                json::Value::String("windows-x86_64".to_owned()),
+            );
+            runtime.insert("rootfs_digest".to_owned(), json::Value::Null);
+            runtime.insert(
+                "helper_digest".to_owned(),
+                json::Value::String(content_digest('2')),
+            );
+        });
+        assert_eq!(
+            validate_plan(&windows)
+                .expect("windows-native plan")
+                .backend,
+            "windows-native"
+        );
+
+        let macos = signed_plan(|fields| {
+            fields.insert(
+                "backend".to_owned(),
+                json::Value::String("macos-vm".to_owned()),
+            );
+            let runtime = nested_object_mut(fields, "runtime");
+            runtime.insert(
+                "kind".to_owned(),
+                json::Value::String("macos-vm".to_owned()),
+            );
+            runtime.insert(
+                "runner_platform".to_owned(),
+                json::Value::String("macos-arm64".to_owned()),
+            );
+            runtime.insert(
+                "helper_digest".to_owned(),
+                json::Value::String(content_digest('3')),
+            );
+            runtime.insert(
+                "boot_digest".to_owned(),
+                json::Value::String(content_digest('4')),
+            );
+        });
+        assert_eq!(
+            validate_plan(&macos).expect("macos-vm plan").backend,
+            "macos-vm"
+        );
+
+        for field_name in ["scenario_digest", "source_digest", "lock_digest"] {
+            let invalid = signed_plan(|fields| {
+                fields.insert(
+                    field_name.to_owned(),
+                    json::Value::String("invalid".to_owned()),
+                );
+            });
+            assert!(validate_plan(&invalid).is_err(), "invalid {field_name}");
+        }
+        let empty_profile = signed_plan(|fields| {
+            fields.insert(
+                "provider_profile".to_owned(),
+                json::Value::String(" ".to_owned()),
+            );
+        });
+        assert!(validate_plan(&empty_profile).is_err());
+        let empty_jobs = signed_plan(|fields| {
+            fields.insert("selected_jobs".to_owned(), json::Value::Array(Vec::new()));
+        });
+        assert!(validate_plan(&empty_jobs).is_err());
+
+        for field_name in ["runner_platform", "kind"] {
+            let invalid = signed_plan(|fields| {
+                nested_object_mut(fields, "runtime").insert(
+                    field_name.to_owned(),
+                    json::Value::String("wrong".to_owned()),
+                );
+            });
+            assert!(
+                validate_plan(&invalid).is_err(),
+                "invalid runtime {field_name}"
+            );
+        }
+        let wrong_workload = signed_plan(|fields| {
+            nested_object_mut(fields, "runtime").insert(
+                "workload_digest".to_owned(),
+                json::Value::String(content_digest('5')),
+            );
+        });
+        assert!(validate_plan(&wrong_workload).is_err());
+
+        for invalid_binding in ["rootfs_digest", "boot_digest"] {
+            let invalid_windows = signed_plan(|fields| {
+                fields.insert(
+                    "backend".to_owned(),
+                    json::Value::String("windows-native".to_owned()),
+                );
+                let runtime = nested_object_mut(fields, "runtime");
+                runtime.insert(
+                    "kind".to_owned(),
+                    json::Value::String("windows-runtime-profile".to_owned()),
+                );
+                runtime.insert(
+                    "runner_platform".to_owned(),
+                    json::Value::String("windows-x86_64".to_owned()),
+                );
+                runtime.insert("rootfs_digest".to_owned(), json::Value::Null);
+                runtime.insert(
+                    "helper_digest".to_owned(),
+                    json::Value::String(content_digest('6')),
+                );
+                runtime.insert(
+                    invalid_binding.to_owned(),
+                    json::Value::String(content_digest('7')),
+                );
+            });
+            assert!(
+                validate_plan(&invalid_windows).is_err(),
+                "windows {invalid_binding} must be absent"
+            );
+        }
+
+        let root = json::parse(PLAN_SOURCE).expect("fixture JSON");
+        let supplied =
+            string_field(root.object().expect("fixture object"), "digest").expect("fixture digest");
+        assert!(validate_digest(&root, &supplied).is_ok());
+        assert!(validate_digest(&root, &content_digest('8')).is_err());
+    }
+
+    #[test]
+    fn launch_validation_checks_status_backend_platform_availability_and_controls() {
+        let plan = fixture_plan();
+        let descriptor = Descriptor {
+            id: "oci:docker",
+            version: env!("CARGO_PKG_VERSION"),
+            platform: std::env::consts::OS,
+            available: true,
+            controls: plan.controls.clone(),
+            reasons: Vec::new(),
+        };
+        assert_eq!(validate_launch(&descriptor, &plan), Ok(()));
+
+        let mut incomplete = plan.clone();
+        incomplete.status = PlanStatus::Incomplete(vec!["unresolved".to_owned()]);
+        assert!(matches!(
+            validate_launch(&descriptor, &incomplete),
+            Err(LaunchError::IncompletePlan(_))
+        ));
+
+        let wrong_backend = Descriptor {
+            id: "oci:other",
+            ..descriptor.clone()
+        };
+        assert!(matches!(
+            validate_launch(&wrong_backend, &plan),
+            Err(LaunchError::BackendMismatch { .. })
+        ));
+        let wrong_platform = Descriptor {
+            platform: "unsupported-test-platform",
+            ..descriptor.clone()
+        };
+        assert!(matches!(
+            validate_launch(&wrong_platform, &plan),
+            Err(LaunchError::UnsupportedPlatform { .. })
+        ));
+        let unavailable = Descriptor {
+            available: false,
+            ..descriptor.clone()
+        };
+        assert!(matches!(
+            validate_launch(&unavailable, &plan),
+            Err(LaunchError::UnsupportedPlatform { .. })
+        ));
+        let missing_control = Descriptor {
+            controls: Vec::new(),
+            ..descriptor
+        };
+        assert!(matches!(
+            validate_launch(&missing_control, &plan),
+            Err(LaunchError::MissingControls(_))
+        ));
+    }
+
+    #[test]
+    fn helper_argument_grammar_rejects_every_reordered_or_partial_form() {
+        assert_eq!(parse_helper_arguments(&[]), Ok(HelperMode::Doctor));
+        assert_eq!(
+            parse_helper_arguments(&["--doctor".to_owned()]),
+            Ok(HelperMode::Doctor)
+        );
+        assert_eq!(
+            parse_helper_arguments(&["--validate".to_owned()]),
+            Ok(HelperMode::Validate)
+        );
+        for invalid in [
+            vec!["--unknown".to_owned()],
+            vec!["--run".to_owned(), "--wrong".to_owned(), "/repo".to_owned()],
+            vec!["--run".to_owned(), "--source".to_owned(), String::new()],
+            vec![
+                "--unknown".to_owned(),
+                "--source".to_owned(),
+                "/repo".to_owned(),
+            ],
+            vec![
+                "--run".to_owned(),
+                "--source".to_owned(),
+                "/repo".to_owned(),
+                "--wrong".to_owned(),
+                "value".to_owned(),
+            ],
+            vec![
+                "--run".to_owned(),
+                "--source".to_owned(),
+                "/repo".to_owned(),
+                "--exclude".to_owned(),
+                String::new(),
+            ],
+        ] {
+            assert!(parse_helper_arguments(&invalid).is_err(), "{invalid:?}");
+        }
     }
 }

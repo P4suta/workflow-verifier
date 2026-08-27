@@ -368,3 +368,219 @@ fn diff_lines(source: &str) -> Vec<&str> {
     }
     lines
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn document(source: &str) -> YamlDocument {
+        YamlDocument::parse("fix.yml", source, Budget::default())
+    }
+
+    #[test]
+    fn lexical_fix_helpers_observe_every_boundary() {
+        assert_eq!(
+            exactly_once("prefix TOKEN suffix", "TOKEN"),
+            Some("prefix ".len())
+        );
+        assert_eq!(exactly_once("TOKEN TOKEN", "TOKEN"), None);
+        assert_eq!(exactly_once("missing", "TOKEN"), None);
+
+        for valid in ["A", "_A", "A0", "name_with_digits_42"] {
+            assert!(environment_name(valid), "valid environment name {valid:?}");
+        }
+        for invalid in ["", "0A", "-A", "A-B", "A B", "Ä"] {
+            assert!(
+                !environment_name(invalid),
+                "invalid environment name {invalid:?}"
+            );
+        }
+
+        assert_eq!(
+            line_insertion("run: x\nnext: y\n", "run: x".len()),
+            ("run: x\n".len(), true)
+        );
+        assert_eq!(
+            line_insertion("run: value suffix\nnext: y\n", "run: ".len()),
+            ("run: value suffix\n".len(), true)
+        );
+        assert_eq!(
+            line_insertion("run: x\r\nnext: y\r\n", "run: x".len()),
+            ("run: x\r\n".len(), true)
+        );
+        assert_eq!(
+            line_insertion("run: value suffix\r\nnext: y\r\n", "run: ".len()),
+            ("run: value suffix\r\n".len(), true)
+        );
+        assert_eq!(
+            line_insertion("run: x\rnext: y\r", "run: x".len()),
+            ("run: x\r".len(), true)
+        );
+        assert_eq!(
+            line_insertion("run: x", "run: x".len()),
+            ("run: x".len(), false)
+        );
+        assert_eq!(
+            line_insertion("run: x", usize::MAX),
+            ("run: x".len(), false)
+        );
+
+        assert_eq!(diff_lines(""), Vec::<&str>::new());
+        assert_eq!(diff_lines("one"), ["one"]);
+        assert_eq!(diff_lines("one\n"), ["one"]);
+        assert_eq!(diff_lines("one\ntwo"), ["one", "two"]);
+        assert_eq!(diff_lines("one\n\n"), ["one", ""]);
+    }
+
+    #[test]
+    fn run_lookup_requires_a_plain_unique_expression_outside_env() {
+        let nested =
+            document("jobs:\n  build:\n    steps:\n      - run: echo ${{ inputs.value }}\n");
+        let (entry, scalar) = find_run(nested.root().expect("nested root"), "${{ inputs.value }}")
+            .expect("nested run");
+        assert_eq!(entry.key, "run");
+        assert_eq!(scalar.scalar(), Some("echo ${{ inputs.value }}"));
+
+        let environment = document("env:\n  TOKEN: ${{ inputs.value }}\nrun: echo safe\n");
+        assert!(
+            find_run(
+                environment.root().expect("environment root"),
+                "${{ inputs.value }}"
+            )
+            .is_none()
+        );
+        let absent = document("run: echo safe\n");
+        assert!(find_run(absent.root().expect("absent root"), "${{ inputs.value }}").is_none());
+    }
+
+    #[test]
+    fn binding_contract_covers_shells_rejections_and_line_endings() {
+        let cases = [
+            (FixShell::Posix, "\"${INPUT_VALUE}\""),
+            (FixShell::Bash, "\"${INPUT_VALUE}\""),
+            (FixShell::PowerShell, "\"$env:INPUT_VALUE\""),
+            (FixShell::Cmd, "\"%INPUT_VALUE%\""),
+        ];
+        for (shell, replacement) in cases {
+            let source = "steps:\n  - run: echo ${{ inputs.value }}\n";
+            let proposal = FixProposal::bind_expression_to_environment(
+                &document(source),
+                shell,
+                "${{ inputs.value }}",
+                "INPUT_VALUE",
+            )
+            .expect("supported binding");
+            let output = proposal.apply(&document(source)).expect("binding applies");
+            assert!(output.contains(&format!("run: echo {replacement}")));
+            assert!(output.contains("    env:\n      INPUT_VALUE: ${{ inputs.value }}\n"));
+        }
+
+        let crlf = "steps:\r\n  - run: echo $[[ inputs.value ]]\r\n";
+        let proposal = FixProposal::bind_expression_to_environment(
+            &document(crlf),
+            FixShell::Bash,
+            "$[[ inputs.value ]]",
+            "INPUT_VALUE",
+        )
+        .expect("GitLab expression binding");
+        assert!(
+            proposal
+                .apply(&document(crlf))
+                .expect("CRLF binding")
+                .contains("    env:\r\n      INPUT_VALUE: $[[ inputs.value ]]\r\n")
+        );
+
+        let plain = document("run: echo ${{ inputs.value }}\n");
+        for shell in [FixShell::Python, FixShell::Unknown] {
+            assert!(
+                FixProposal::bind_expression_to_environment(
+                    &plain,
+                    shell,
+                    "${{ inputs.value }}",
+                    "INPUT_VALUE",
+                )
+                .is_none()
+            );
+        }
+        for (expression, name) in [
+            ("inputs.value", "INPUT_VALUE"),
+            ("${{ inputs.value }}", "0INVALID"),
+        ] {
+            assert!(
+                FixProposal::bind_expression_to_environment(
+                    &plain,
+                    FixShell::Bash,
+                    expression,
+                    name,
+                )
+                .is_none()
+            );
+        }
+        for source in [
+            "run: echo ${{ inputs.value }} ${{ inputs.value }}\n",
+            "run: 'echo ${{ inputs.value }}'\n",
+            "env:\n  INPUT_VALUE: existing\nrun: echo ${{ inputs.value }}\n",
+        ] {
+            assert!(
+                FixProposal::bind_expression_to_environment(
+                    &document(source),
+                    FixShell::Bash,
+                    "${{ inputs.value }}",
+                    "INPUT_VALUE",
+                )
+                .is_none()
+            );
+        }
+    }
+
+    #[test]
+    fn transaction_contract_rejects_each_unsafe_shape_and_reproves_output() {
+        let insertion = |at, replacement: &str| {
+            FixProposal::new("insert", vec![Edit::replace(at, at, replacement)], true)
+        };
+        assert!(FixProposal::combine(&[]).is_err());
+        let unsafe_proposal = FixProposal {
+            id: "unsafe".to_owned(),
+            description: "unsafe".to_owned(),
+            edits: vec![Edit::replace(0, 0, "key: value\n")],
+            safe: false,
+        };
+        assert!(FixProposal::combine(std::slice::from_ref(&unsafe_proposal)).is_err());
+        assert!(unsafe_proposal.apply(&document("key: value\n")).is_err());
+
+        let replacing = FixProposal::replace_span(0, "key".len(), "name", "replace key");
+        assert!(FixProposal::combine(&[replacing.clone(), insertion("k".len(), "x")]).is_err());
+        assert!(FixProposal::combine(&[insertion(0, "a"), insertion(0, "b")]).is_err());
+        assert!(FixProposal::combine(&[insertion(0, "a"), insertion(1, "b")]).is_ok());
+        assert!(
+            FixProposal::combine(&[
+                FixProposal::replace_span(0, "a".len(), "A", "replace first"),
+                FixProposal::replace_span("a".len(), "ab".len(), "B", "replace second",),
+            ])
+            .is_ok()
+        );
+
+        let source = "key: value\n";
+        let valid = FixProposal::replace_span(0, "key".len(), "name", "replace key");
+        let mut proof_input = String::new();
+        let output = valid
+            .apply_verified(&document(source), |candidate| {
+                proof_input = candidate.to_owned();
+                Ok(())
+            })
+            .expect("reproved fix");
+        assert_eq!(output, "name: value\n");
+        assert_eq!(proof_input, output);
+        assert!(
+            valid
+                .apply_verified(&document(source), |_| Err("proof rejected".to_owned()))
+                .is_err()
+        );
+
+        let empty = FixProposal::replace_span(0, source.len(), "", "empty document");
+        assert!(empty.apply(&document(source)).is_err());
+        let malformed =
+            FixProposal::replace_span(0, source.len(), "key: [\n", "malformed document");
+        assert!(malformed.apply(&document(source)).is_err());
+    }
+}

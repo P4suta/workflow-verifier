@@ -7,10 +7,11 @@ use workflow_verifier_foundation::{Budget, JsonValue, Span, content_digest, vali
 use workflow_verifier_product::{
     AnalysisCacheEntry, CacheKeyInput, Config, ConfigParseOptions, ConfigTrust, DependencySummary,
     FixProposal, LockEntry, Lockfile, PolicyExpectation, PolicyPredicate, PolicyRule,
-    PolicyRuleKind, PolicySelector, Report, Severity, cache_key, evaluate_policy,
+    PolicyRuleKind, PolicySelector, Report, Severity, Suppression, cache_key, evaluate_policy,
     evaluate_policy_fixture, link_local, migrate_config_v1, report_to_sarif,
 };
 use workflow_verifier_syntax::YamlDocument;
+use workflow_verifier_verifier::{Confidence, Diagnostic, Persona};
 
 fn node_with_capability(capability: Capability) -> Node {
     Node::new(
@@ -163,6 +164,67 @@ allowed_origins = [{ origin = "https://git.example.test:443", path_prefixes = ["
         )
         .is_err()
     );
+}
+
+#[test]
+fn config_trust_persona_and_suppression_matching_are_exact() {
+    assert_eq!(
+        [
+            ConfigTrust::BuiltIn,
+            ConfigTrust::TrustedPolicy,
+            ConfigTrust::Repository,
+        ]
+        .map(ConfigTrust::name),
+        ["built-in", "trusted-policy", "repository"]
+    );
+    let paranoid = Config::parse(
+        "version = 2\npersona = \"paranoid\"\n",
+        ConfigParseOptions::default(),
+    )
+    .expect("paranoid is a supported persona");
+    assert_eq!(paranoid.persona, Persona::Paranoid);
+
+    let diagnostic = Diagnostic::new(
+        "WV-SEC-001",
+        Severity::Error,
+        Confidence::High,
+        "finding",
+        Span {
+            file: ".github\\workflows\\ci.yml".to_owned(),
+            ..Span::default()
+        },
+        Vec::new(),
+        [],
+        Vec::<String>::new(),
+        None,
+    );
+    let suppression = |rule: &str, path: &str| Suppression {
+        rule: rule.to_owned(),
+        path: path.to_owned(),
+        reason: "owned exception".to_owned(),
+        owner: "platform".to_owned(),
+        expiry: "not-evaluated-by-matcher".to_owned(),
+    };
+    for entry in [
+        suppression("WV-SEC-001", "**"),
+        suppression("WV-SEC-001", ".github/workflows/ci.yml"),
+    ] {
+        let config = Config {
+            suppressions: vec![entry],
+            ..Config::default()
+        };
+        assert!(config.suppressed(&diagnostic));
+    }
+    for entry in [
+        suppression("WV-SEC-002", "**"),
+        suppression("WV-SEC-001", ".github/workflows/other.yml"),
+    ] {
+        let config = Config {
+            suppressions: vec![entry],
+            ..Config::default()
+        };
+        assert!(!config.suppressed(&diagnostic));
+    }
 }
 
 #[test]

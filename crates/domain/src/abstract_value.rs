@@ -321,7 +321,6 @@ fn join_strings(left: &StringValue, right: &StringValue) -> StringValue {
 
 fn join_value(left: &Value, right: &Value) -> Value {
     match (left, right) {
-        (Value::Bottom, value) | (value, Value::Bottom) => value.clone(),
         (Value::Null, Value::Null) => Value::Null,
         (Value::Boolean(left), Value::Boolean(right)) => Value::Boolean(if left == right {
             *left

@@ -1,6 +1,29 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
+// Defensive defaults are the v0.1 canonical-product JSON envelope. Unicode
+// widths, surrogate bounds, and digit values below come directly from RFC 8259
+// JSON string grammar and the Unicode scalar-value definition.
+const BYTES_PER_MEBIBYTE: usize = 1_048_576;
+const DEFAULT_JSON_MEBIBYTES: usize = 16;
+const DEFAULT_JSON_DEPTH: u32 = 128;
+const DEFAULT_JSON_VALUES: usize = 1_000_000;
+const JSON_UNICODE_ESCAPE_DIGITS: usize = 4;
+const BITS_PER_HEX_DIGIT: u32 = 4;
+const HEX_ALPHA_DIGIT_OFFSET: u32 = 10;
+const UTF16_HIGH_SURROGATE_START: u32 = 0xd800;
+const UTF16_HIGH_SURROGATE_END: u32 = 0xdbff;
+const UTF16_LOW_SURROGATE_START: u32 = 0xdc00;
+const UTF16_LOW_SURROGATE_END: u32 = 0xdfff;
+const UTF16_SUPPLEMENTARY_PLANE_START: u32 = 0x1_0000;
+const UTF16_SURROGATE_PAYLOAD_BITS: u32 = 10;
+const JSON_CONTROL_CHARACTER_LIMIT: u8 = 0x20;
+const JSON_LAST_CONTROL_CHARACTER: char = '\u{1f}';
+const JSON_BACKSPACE: char = '\u{08}';
+const JSON_FORM_FEED: char = '\u{0c}';
+const JSON_BACKSPACE_BYTE: u8 = 0x08;
+const JSON_FORM_FEED_BYTE: u8 = 0x0c;
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum JsonValue {
     Null,
@@ -21,9 +44,9 @@ pub struct JsonLimits {
 impl Default for JsonLimits {
     fn default() -> Self {
         Self {
-            max_bytes: 16 * 1024 * 1024,
-            max_depth: 128,
-            max_values: 1_000_000,
+            max_bytes: DEFAULT_JSON_MEBIBYTES * BYTES_PER_MEBIBYTE,
+            max_depth: DEFAULT_JSON_DEPTH,
+            max_values: DEFAULT_JSON_VALUES,
         }
     }
 }
@@ -202,12 +225,12 @@ fn write_string(output: &mut String, value: &str) {
         match character {
             '"' => output.push_str("\\\""),
             '\\' => output.push_str("\\\\"),
-            '\u{08}' => output.push_str("\\b"),
-            '\u{0c}' => output.push_str("\\f"),
+            JSON_BACKSPACE => output.push_str("\\b"),
+            JSON_FORM_FEED => output.push_str("\\f"),
             '\n' => output.push_str("\\n"),
             '\r' => output.push_str("\\r"),
             '\t' => output.push_str("\\t"),
-            control if control <= '\u{1f}' => {
+            control if control <= JSON_LAST_CONTROL_CHARACTER => {
                 use std::fmt::Write as _;
                 let _ = write!(output, "\\u{:04x}", u32::from(control));
             }
@@ -245,12 +268,11 @@ impl Parser<'_> {
     }
 
     fn whitespace(&mut self) {
-        while self
-            .peek()
-            .is_some_and(|byte| matches!(byte, b' ' | b'\t' | b'\r' | b'\n'))
-        {
-            self.offset += 1;
-        }
+        let consumed = self.source[self.offset..]
+            .iter()
+            .take_while(|byte| matches!(byte, b' ' | b'\t' | b'\r' | b'\n'))
+            .count();
+        self.offset = self.offset.saturating_add(consumed);
     }
 
     fn value(&mut self, depth: u32) -> Result<JsonValue, JsonError> {
@@ -298,25 +320,34 @@ impl Parser<'_> {
                     b'"' => output.push(b'"'),
                     b'\\' => output.push(b'\\'),
                     b'/' => output.push(b'/'),
-                    b'b' => output.push(0x08),
-                    b'f' => output.push(0x0c),
+                    b'b' => output.push(JSON_BACKSPACE_BYTE),
+                    b'f' => output.push(JSON_FORM_FEED_BYTE),
                     b'n' => output.push(b'\n'),
                     b'r' => output.push(b'\r'),
                     b't' => output.push(b'\t'),
                     b'u' => {
                         let first = self.unicode_escape()?;
-                        let scalar = if (0xd800..=0xdbff).contains(&first) {
+                        let scalar = if (UTF16_HIGH_SURROGATE_START..=UTF16_HIGH_SURROGATE_END)
+                            .contains(&first)
+                        {
                             if self.take()? != b'\\' || self.take()? != b'u' {
                                 return Err(self
                                     .error("high surrogate must be followed by a low surrogate"));
                             }
                             let second = self.unicode_escape()?;
-                            if !(0xdc00..=0xdfff).contains(&second) {
+                            if !(UTF16_LOW_SURROGATE_START..=UTF16_LOW_SURROGATE_END)
+                                .contains(&second)
+                            {
                                 return Err(self
                                     .error("high surrogate must be followed by a low surrogate"));
                             }
-                            0x1_0000 + ((first - 0xd800) << 10) + (second - 0xdc00)
-                        } else if (0xdc00..=0xdfff).contains(&first) {
+                            UTF16_SUPPLEMENTARY_PLANE_START
+                                + ((first - UTF16_HIGH_SURROGATE_START)
+                                    << UTF16_SURROGATE_PAYLOAD_BITS)
+                                + (second - UTF16_LOW_SURROGATE_START)
+                        } else if (UTF16_LOW_SURROGATE_START..=UTF16_LOW_SURROGATE_END)
+                            .contains(&first)
+                        {
                             return Err(self.error("lone low surrogate is invalid"));
                         } else {
                             first
@@ -324,12 +355,12 @@ impl Parser<'_> {
                         let Some(character) = char::from_u32(scalar) else {
                             return Err(self.error("invalid Unicode scalar"));
                         };
-                        let mut encoded = [0u8; 4];
+                        let mut encoded = [0u8; char::MAX_LEN_UTF8];
                         output.extend_from_slice(character.encode_utf8(&mut encoded).as_bytes());
                     }
                     _ => return Err(self.error("invalid string escape")),
                 },
-                control if control < 0x20 => {
+                control if control < JSON_CONTROL_CHARACTER_LIMIT => {
                     return Err(self.error("unescaped control character"));
                 }
                 byte => output.push(byte),
@@ -339,14 +370,14 @@ impl Parser<'_> {
 
     fn unicode_escape(&mut self) -> Result<u32, JsonError> {
         let mut value = 0u32;
-        for _ in 0..4 {
+        for _ in 0..JSON_UNICODE_ESCAPE_DIGITS {
             let digit = match self.take()? {
                 byte @ b'0'..=b'9' => u32::from(byte - b'0'),
-                byte @ b'a'..=b'f' => u32::from(byte - b'a' + 10),
-                byte @ b'A'..=b'F' => u32::from(byte - b'A' + 10),
+                byte @ b'a'..=b'f' => u32::from(byte - b'a') + HEX_ALPHA_DIGIT_OFFSET,
+                byte @ b'A'..=b'F' => u32::from(byte - b'A') + HEX_ALPHA_DIGIT_OFFSET,
                 _ => return Err(self.error("invalid Unicode escape")),
             };
-            value = (value << 4) | digit;
+            value = (value << BITS_PER_HEX_DIGIT) + digit;
         }
         Ok(value)
     }
@@ -354,19 +385,21 @@ impl Parser<'_> {
     fn number(&mut self) -> Result<JsonValue, JsonError> {
         let start = self.offset;
         if self.peek() == Some(b'-') {
-            self.offset += 1;
+            let _ = self.take()?;
         }
         match self.peek() {
             Some(b'0') => {
-                self.offset += 1;
+                let _ = self.take()?;
                 if self.peek().is_some_and(|byte| byte.is_ascii_digit()) {
                     return Err(self.error("leading zero in JSON number"));
                 }
             }
             Some(b'1'..=b'9') => {
-                while self.peek().is_some_and(|byte| byte.is_ascii_digit()) {
-                    self.offset += 1;
-                }
+                let consumed = self.source[self.offset..]
+                    .iter()
+                    .take_while(|byte| byte.is_ascii_digit())
+                    .count();
+                self.offset = self.offset.saturating_add(consumed);
             }
             _ => return Err(self.error("invalid number")),
         }

@@ -10,14 +10,16 @@ use workflow_verifier_domain::{
     AbstractValue, Graph, NodeKind, Provenance, Provider, Secrecy, Trust, UnknownReason,
 };
 use workflow_verifier_foundation::{
-    Budget, JsonValue, PublicPath, content_digest, portable_path_key, valid_content_digest,
+    Budget, JsonValue, PublicPath, SHA256_HEX_DIGITS, content_digest, portable_path_key,
+    valid_content_digest,
 };
 use workflow_verifier_frontend::{
     Compilation, DependencyStatus, compile_parsed, detect, entrypoint,
 };
 use workflow_verifier_product::{
-    BuildInfo, Config, ConfigParseOptions, ConfigTrust, DependencySummary, GateResult, Lockfile,
-    Report, ReportInput, ReportProvenance, evaluate_policy, link_local,
+    BuildInfo, Config, ConfigParseOptions, ConfigTrust, DependencySummary, EXIT_CODE_FINDING,
+    EXIT_CODE_INCOMPLETE, EXIT_CODE_PASS, GateResult, Lockfile, Report, ReportInput,
+    ReportProvenance, evaluate_policy, link_local,
 };
 use workflow_verifier_syntax::YamlDocument;
 use workflow_verifier_verifier::{
@@ -300,10 +302,13 @@ impl AnalysisEngine {
     pub fn new() -> Self {
         Self::with_build(BuildInfo {
             implementation: "rust".to_owned(),
-            compiler: format!("rustc {}", option_env!("RUSTC_VERSION").unwrap_or("1.98.0")),
+            compiler: format!(
+                "rustc {}",
+                option_env!("RUSTC_VERSION").unwrap_or(env!("CARGO_PKG_RUST_VERSION"))
+            ),
             target: option_env!("TARGET").unwrap_or("unknown-target").to_owned(),
             source_commit: option_env!("WORKFLOW_VERIFIER_SOURCE_COMMIT").map(str::to_owned),
-            binary_digest: format!("sha256:{}", "0".repeat(64)),
+            binary_digest: format!("sha256:{}", "0".repeat(SHA256_HEX_DIGITS)),
         })
     }
 
@@ -394,12 +399,12 @@ impl AnalysisEngine {
         for compilation in &mut compilations {
             check_cancelled(&request.cancellation)?;
             apply_lock(compilation, &lock);
-            self.index_dependencies(&compilation.graph.source, compilation)?;
             inputs.push(ReportInput {
                 path: compilation.graph.source.clone(),
                 digest: content_digest(compilation.cst.print()),
             });
         }
+        self.replace_dependency_index(&compilations)?;
         compilations.sort_by(|left, right| left.graph.source.cmp(&right.graph.source));
         let graphs: Vec<_> = compilations
             .iter()
@@ -444,11 +449,11 @@ impl AnalysisEngine {
             .any(|verification| should_fail(request.persona, verification))
             || (request.persona != Persona::Audit && !policy_diagnostics.is_empty());
         let (gate_result, exit_code) = if gate_failure {
-            (GateResult::Finding, 1)
+            (GateResult::Finding, EXIT_CODE_FINDING)
         } else if request.strict && !completeness_reasons.is_empty() {
-            (GateResult::Incomplete, 3)
+            (GateResult::Incomplete, EXIT_CODE_INCOMPLETE)
         } else {
-            (GateResult::Pass, 0)
+            (GateResult::Pass, EXIT_CODE_PASS)
         };
         let provider_profiles: Vec<_> = compilations
             .iter()
@@ -547,24 +552,59 @@ impl AnalysisEngine {
         Ok(compilation)
     }
 
-    fn index_dependencies(
-        &self,
-        owner: &str,
-        compilation: &Compilation,
-    ) -> Result<(), AnalysisError> {
+    fn replace_dependency_index(&self, compilations: &[Compilation]) -> Result<(), AnalysisError> {
+        let mut next = BTreeMap::<String, BTreeSet<String>>::new();
+        for compilation in compilations {
+            for dependency in &compilation.dependencies {
+                if dependency.mutability != workflow_verifier_frontend::Mutability::Local {
+                    continue;
+                }
+                let target = match &dependency.status {
+                    DependencyStatus::Locked { revision, .. } => revision
+                        .strip_prefix("local:")
+                        .unwrap_or(&dependency.reference),
+                    DependencyStatus::Unresolved(_) => &dependency.reference,
+                };
+                next.entry(target.to_owned())
+                    .or_default()
+                    .insert(compilation.graph.source.clone());
+            }
+        }
         let mut reverse = self
             .reverse_dependencies
             .lock()
             .map_err(|_| AnalysisError::internal("dependency index lock was poisoned"))?;
-        for dependency in &compilation.dependencies {
-            if dependency.mutability == workflow_verifier_frontend::Mutability::Local {
-                reverse
-                    .entry(dependency.reference.clone())
-                    .or_default()
-                    .insert(owner.to_owned());
+        *reverse = next;
+        Ok(())
+    }
+
+    /// Return changed sources and every transitively dependent local source.
+    ///
+    /// # Errors
+    /// Rejects non-portable changed paths and a poisoned dependency index.
+    pub fn affected_sources(&self, changed_paths: &[String]) -> Result<Vec<String>, AnalysisError> {
+        let mut affected = BTreeSet::new();
+        let mut pending = BTreeSet::new();
+        for path in changed_paths {
+            PublicPath::new(path.clone())
+                .map_err(|error| AnalysisError::invalid(format!("{path}: {error}")))?;
+            affected.insert(path.clone());
+            pending.insert(path.clone());
+        }
+        let reverse = self
+            .reverse_dependencies
+            .lock()
+            .map_err(|_| AnalysisError::internal("dependency index lock was poisoned"))?;
+        while let Some(path) = pending.pop_first() {
+            if let Some(owners) = reverse.get(&path) {
+                for owner in owners {
+                    if affected.insert(owner.clone()) {
+                        pending.insert(owner.clone());
+                    }
+                }
             }
         }
-        Ok(())
+        Ok(affected.into_iter().collect())
     }
 
     #[must_use]

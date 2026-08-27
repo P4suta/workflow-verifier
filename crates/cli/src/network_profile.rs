@@ -4,10 +4,16 @@ use std::fs;
 use std::path::{Component, Path};
 use toml::Value;
 
-const MAX_PROFILE_BYTES: u64 = 1024 * 1024;
-const MAX_CA_BYTES: u64 = 1024 * 1024;
+// network-profile-v1 deliberately permits only a small, user-owned trust
+// bundle: one MiB per file, eight MiB total, and sixteen roots. These limits
+// are security-contract boundaries exercised by the profile attack fixtures.
+const NETWORK_PROFILE_SCHEMA_VERSION: i64 = 1;
+const BYTES_PER_MEBIBYTE: u64 = 1_048_576;
+const BYTES_PER_MEBIBYTE_USIZE: usize = 1_048_576;
+const MAX_PROFILE_BYTES: u64 = BYTES_PER_MEBIBYTE;
+const MAX_CA_BYTES: u64 = BYTES_PER_MEBIBYTE;
 const MAX_CA_FILES: usize = 16;
-const MAX_CA_TOTAL_BYTES: usize = 8 * 1024 * 1024;
+const MAX_CA_TOTAL_BYTES: usize = 8 * BYTES_PER_MEBIBYTE_USIZE;
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct TrustedNetworkProfile {
@@ -60,7 +66,7 @@ fn parse_fields(table: &toml::Table) -> Result<(Option<ProxyEndpoint>, Vec<Strin
             actual.difference(&expected).collect::<Vec<_>>()
         ));
     }
-    if table.get("version").and_then(Value::as_integer) != Some(1) {
+    if table.get("version").and_then(Value::as_integer) != Some(NETWORK_PROFILE_SCHEMA_VERSION) {
         return Err("trusted network profile version must be 1".to_owned());
     }
     let proxy = table
@@ -89,7 +95,9 @@ fn parse_fields(table: &toml::Table) -> Result<(Option<ProxyEndpoint>, Vec<Strin
         .transpose()?
         .unwrap_or_default();
     if ca_names.len() > MAX_CA_FILES {
-        return Err("network profile exceeds 16 custom CA files".to_owned());
+        return Err(format!(
+            "network profile exceeds {MAX_CA_FILES} custom CA files"
+        ));
     }
     Ok((proxy, ca_names))
 }

@@ -67,7 +67,7 @@ pub fn link_local(
                 compilations.push(target_compilation);
             }
         }
-        index += 1;
+        index = index.saturating_add(1);
     }
     for compilation in &mut compilations {
         apply_resolutions(compilation, &sources, &resolutions, &local_intents)?;
@@ -276,4 +276,258 @@ fn apply_resolutions(
     }
     compilation.graph.finalize();
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_frontend::DependencyLocator;
+
+    fn dependency(provider: Provider, kind: DependencyKind, reference: &str) -> Dependency {
+        Dependency::unresolved(
+            provider,
+            kind,
+            reference,
+            DependencyLocator::Direct,
+            Span::default(),
+        )
+    }
+
+    #[test]
+    fn workspace_path_helpers_are_platform_neutral_and_fail_closed() {
+        assert_eq!(normalize("./a\\b.yml"), "a/b.yml");
+        assert_eq!(normalize("././a.yml"), "a.yml");
+        assert_eq!(
+            normalize_relative("./a//b/../c.yml"),
+            Some("a/c.yml".to_owned())
+        );
+        assert_eq!(normalize_relative("a/../../escape.yml"), None);
+        assert_eq!(normalize_relative("../escape.yml"), None);
+        assert_eq!(dirname("a/b/file.yml"), "a/b");
+        assert_eq!(dirname("file.yml"), "");
+        for path in ["a.yml", "a.YML", "a.yaml", "a.YaMl"] {
+            assert!(yaml_extension(path), "YAML extension {path:?}");
+        }
+        for path in ["a", "a.json", "a.yml.txt"] {
+            assert!(!yaml_extension(path), "non-YAML extension {path:?}");
+        }
+
+        let sources = BTreeMap::from([
+            ("a/./b.yml".to_owned(), "first".to_owned()),
+            ("a/b.yml".to_owned(), "second".to_owned()),
+        ]);
+        assert!(normalized_sources(&sources).is_err());
+        assert!(
+            normalized_sources(&BTreeMap::from([(
+                "../escape.yml".to_owned(),
+                "source".to_owned(),
+            )]))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn provider_local_candidates_cover_every_accepted_and_remote_shape() {
+        let github_directory = dependency(Provider::Github, DependencyKind::Action, "./action");
+        assert_eq!(
+            local_candidates(".github/workflows/ci.yml", &github_directory),
+            Ok(Some(vec![
+                "action/action.yml".to_owned(),
+                "action/action.yaml".to_owned(),
+            ]))
+        );
+        let github_file = dependency(Provider::Github, DependencyKind::Action, "./action.YML");
+        assert_eq!(
+            local_candidates(".github/workflows/ci.yml", &github_file),
+            Ok(Some(vec!["action.YML".to_owned()]))
+        );
+        for reference in ["owner/action@main", "action", "https://example.test/action"] {
+            assert_eq!(
+                local_candidates(
+                    ".github/workflows/ci.yml",
+                    &dependency(Provider::Github, DependencyKind::Action, reference),
+                ),
+                Ok(None)
+            );
+        }
+        assert!(
+            local_candidates(
+                ".github/workflows/ci.yml",
+                &dependency(Provider::Github, DependencyKind::Action, "../../../escape"),
+            )
+            .is_err()
+        );
+
+        for (reference, expected) in [
+            ("include.yml", "include.yml"),
+            ("/root", "root"),
+            ("./relative", "relative"),
+        ] {
+            assert_eq!(
+                local_candidates(
+                    ".gitlab-ci.yml",
+                    &dependency(Provider::Gitlab, DependencyKind::Include, reference),
+                ),
+                Ok(Some(vec![expected.to_owned()]))
+            );
+        }
+        for reference in [
+            "plain",
+            "https://example.test/include.yml",
+            "component@example",
+        ] {
+            assert_eq!(
+                local_candidates(
+                    ".gitlab-ci.yml",
+                    &dependency(Provider::Gitlab, DependencyKind::Include, reference),
+                ),
+                Ok(None)
+            );
+        }
+        assert!(
+            local_candidates(
+                ".gitlab-ci.yml",
+                &dependency(Provider::Gitlab, DependencyKind::Include, "../parent"),
+            )
+            .is_err()
+        );
+
+        let azure = |reference| {
+            local_candidates(
+                "pipelines/root.yml",
+                &dependency(Provider::Azure, DependencyKind::Template, reference),
+            )
+        };
+        assert_eq!(
+            azure("steps.yml"),
+            Ok(Some(vec!["pipelines/steps.yml".to_owned()]))
+        );
+        assert_eq!(
+            azure("/shared/steps.yml"),
+            Ok(Some(vec!["shared/steps.yml".to_owned()]))
+        );
+        assert_eq!(
+            azure("steps.yml@SELF"),
+            Ok(Some(vec!["pipelines/steps.yml".to_owned()]))
+        );
+        assert_eq!(azure("steps.yml@external"), Ok(None));
+        assert_eq!(azure("${{ parameters.template }}"), Ok(None));
+        assert_eq!(
+            local_candidates(
+                "pipelines/root.yml",
+                &dependency(Provider::Azure, DependencyKind::Task, "steps.yml"),
+            ),
+            Ok(None)
+        );
+    }
+
+    #[test]
+    fn evidence_and_call_matching_do_not_cross_semantic_identity() {
+        let evidence = local_evidence("local digest", "sha256:value");
+        assert_eq!(evidence.trust, Trust::Trusted);
+        assert_eq!(evidence.secrecy, Secrecy::Public);
+        assert_eq!(evidence.constants(), Some(&["sha256:value".to_owned()][..]));
+        assert_eq!(evidence.provenance.len(), 1);
+        assert_eq!(evidence.provenance[0].origin, "workspace source");
+        assert_eq!(evidence.provenance[0].operation, "local digest");
+
+        let direct = Node::simple(
+            Provider::Github,
+            NodeKind::Call,
+            "./action",
+            workflow_verifier_domain::Phase::Run,
+            Span::default(),
+        );
+        let child = Node::simple(
+            Provider::Gitlab,
+            NodeKind::Call,
+            "child:include.yml",
+            workflow_verifier_domain::Phase::Run,
+            Span::default(),
+        );
+        assert!(call_matches(&direct, "./action"));
+        assert!(call_matches(&child, "include.yml"));
+        assert!(!call_matches(&direct, "include.yml"));
+        assert!(!call_matches(&child, "./action"));
+    }
+
+    #[test]
+    fn ambiguous_action_metadata_is_rejected_and_missing_local_source_stays_explicit() {
+        let workflow = "on: push\njobs:\n  build:\n    steps:\n      - uses: ./action\n";
+        let root = compile(
+            Provider::Github,
+            ".github/workflows/ci.yml",
+            workflow,
+            Budget::default(),
+        )
+        .expect("root workflow");
+        let ambiguous = BTreeMap::from([
+            (".github/workflows/ci.yml".to_owned(), workflow.to_owned()),
+            (
+                "action/action.yml".to_owned(),
+                "name: first\nruns:\n  using: composite\n  steps: []\n".to_owned(),
+            ),
+            (
+                "action/action.yaml".to_owned(),
+                "name: second\nruns:\n  using: composite\n  steps: []\n".to_owned(),
+            ),
+        ]);
+        assert!(link_local(&ambiguous, vec![root.clone()], Budget::default()).is_err());
+
+        let linked = link_local(&BTreeMap::new(), vec![root], Budget::default())
+            .expect("missing source remains unresolved");
+        assert_eq!(linked.len(), 1);
+        assert_eq!(linked[0].dependencies[0].mutability, Mutability::Local);
+        assert!(matches!(
+            linked[0].dependencies[0].status,
+            DependencyStatus::Unresolved(_)
+        ));
+        let call = linked[0]
+            .graph
+            .nodes
+            .iter()
+            .find(|node| node.kind == NodeKind::Call)
+            .expect("local call");
+        assert!(call.unknown.is_some());
+        assert!(!call.attributes.contains_key("dependency.digest"));
+    }
+
+    #[test]
+    fn resolution_application_requires_both_provider_and_owner_identity() {
+        let workflow = "on: push\njobs:\n  build:\n    steps:\n      - uses: ./action.yml\n";
+        let original = compile(
+            Provider::Github,
+            ".github/workflows/ci.yml",
+            workflow,
+            Budget::default(),
+        )
+        .expect("root workflow");
+        let sources = BTreeMap::from([(
+            "action.yml".to_owned(),
+            "name: action\nruns:\n  using: composite\n  steps: []\n".to_owned(),
+        )]);
+        let dependency = original.dependencies.first().expect("local dependency");
+        let wrong_keys = [
+            resolution_key(Provider::Gitlab, ".github/workflows/ci.yml", dependency),
+            resolution_key(Provider::Github, "other/workflow.yml", dependency),
+        ];
+        for wrong_key in wrong_keys {
+            let mut compilation = original.clone();
+            apply_resolutions(
+                &mut compilation,
+                &sources,
+                &BTreeMap::from([(wrong_key, "action.yml".to_owned())]),
+                &BTreeSet::new(),
+            )
+            .expect("unrelated resolution is ignored");
+            let call = compilation
+                .graph
+                .nodes
+                .iter()
+                .find(|node| node.kind == NodeKind::Call)
+                .expect("call node");
+            assert!(call.unknown.is_some());
+            assert!(!call.attributes.contains_key("dependency.digest"));
+        }
+    }
 }

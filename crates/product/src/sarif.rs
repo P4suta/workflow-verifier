@@ -1,4 +1,4 @@
-use crate::{Report, TOOL_NAME};
+use crate::{EXIT_CODE_INTERNAL_FAILURE, EXIT_CODE_SANDBOX_INFRASTRUCTURE, Report, TOOL_NAME};
 use std::collections::{BTreeMap, BTreeSet};
 use workflow_verifier_foundation::{JsonValue, Span, normalize_slashes};
 use workflow_verifier_verifier::{Diagnostic, Fix, Severity, TraceHop};
@@ -48,7 +48,10 @@ fn invocation(report: &Report) -> JsonValue {
     JsonValue::Object(BTreeMap::from([
         (
             "executionSuccessful".to_owned(),
-            JsonValue::Boolean(!matches!(report.provenance.exit_code, 4 | 5)),
+            JsonValue::Boolean(!matches!(
+                report.provenance.exit_code,
+                EXIT_CODE_INTERNAL_FAILURE | EXIT_CODE_SANDBOX_INFRASTRUCTURE
+            )),
         ),
         (
             "exitCode".to_owned(),
@@ -324,4 +327,109 @@ fn fix_json(fix: &Fix) -> JsonValue {
             )])),
         ),
     ]))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{
+        BuildInfo, EXIT_CODE_FINDING, EXIT_CODE_INCOMPLETE, EXIT_CODE_INVALID_INPUT,
+        EXIT_CODE_PASS, GateResult, ReportProvenance,
+    };
+    use workflow_verifier_foundation::{Position, content_digest};
+    use workflow_verifier_verifier::Persona;
+
+    fn report(exit_code: i64) -> Report {
+        Report::new(
+            Persona::Gate,
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            Vec::new(),
+            BuildInfo {
+                implementation: "rust".to_owned(),
+                compiler: "rustc".to_owned(),
+                target: "test-target".to_owned(),
+                source_commit: None,
+                binary_digest: content_digest("binary"),
+            },
+            ReportProvenance {
+                config_origin: "policy.toml".to_owned(),
+                config_trust: "trusted-policy".to_owned(),
+                config_digest: content_digest("config"),
+                lock_digest: content_digest("lock"),
+                source_manifest_digest: content_digest("manifest"),
+                provider_profiles: Vec::new(),
+                completeness_reasons: Vec::new(),
+                gate_result: GateResult::Pass,
+                exit_code,
+            },
+        )
+    }
+
+    #[test]
+    fn sarif_invocation_success_and_levels_follow_public_protocol() {
+        for exit_code in [
+            EXIT_CODE_PASS,
+            EXIT_CODE_FINDING,
+            EXIT_CODE_INVALID_INPUT,
+            EXIT_CODE_INCOMPLETE,
+        ] {
+            assert_eq!(
+                invocation(&report(exit_code))
+                    .member("executionSuccessful")
+                    .and_then(JsonValue::as_bool),
+                Some(true)
+            );
+        }
+        for exit_code in [EXIT_CODE_INTERNAL_FAILURE, EXIT_CODE_SANDBOX_INFRASTRUCTURE] {
+            assert_eq!(
+                invocation(&report(exit_code))
+                    .member("executionSuccessful")
+                    .and_then(JsonValue::as_bool),
+                Some(false)
+            );
+        }
+        assert_eq!(level(Severity::Critical), "error");
+        assert_eq!(level(Severity::Error), "error");
+        assert_eq!(level(Severity::Warning), "warning");
+        assert_eq!(level(Severity::Note), "note");
+    }
+
+    #[test]
+    fn sarif_fix_requires_both_span_and_replacement() {
+        let span = Span::new(
+            "workflow.yml",
+            Position {
+                byte: 0,
+                line: 1,
+                column: 1,
+            },
+            Position {
+                byte: "old".len(),
+                line: 1,
+                column: u32::try_from("old".chars().count().saturating_add(1))
+                    .expect("fixture column fits u32"),
+            },
+        );
+        let fix = |replacement, span| Fix {
+            kind: "replace".to_owned(),
+            description: "replace old value".to_owned(),
+            replacement,
+            span,
+        };
+        let changes = |fix: &Fix| {
+            fix_json(fix)
+                .member("artifactChanges")
+                .and_then(JsonValue::as_array)
+                .map(<[_]>::len)
+        };
+        assert_eq!(
+            changes(&fix(Some("new".to_owned()), Some(span.clone()))),
+            Some(1)
+        );
+        assert_eq!(changes(&fix(None, Some(span))), Some(0));
+        assert_eq!(changes(&fix(Some("new".to_owned()), None)), Some(0));
+        assert_eq!(changes(&fix(None, None)), Some(0));
+    }
 }

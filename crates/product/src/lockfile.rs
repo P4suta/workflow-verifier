@@ -259,3 +259,70 @@ fn require_exact(
         Err(format!("{context} has missing fields"))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn valid_entry(provider: Provider, reference: &str) -> LockEntry {
+        LockEntry::new(
+            provider,
+            reference,
+            "immutable-revision",
+            content_digest("locked content"),
+            "https://example.test/source",
+        )
+    }
+
+    #[test]
+    fn entry_validation_and_lookup_require_every_identity_field() {
+        let valid = valid_entry(Provider::Github, "owner/action@main");
+        assert!(valid.validate().is_ok());
+        for invalid in [
+            LockEntry {
+                reference: " ".to_owned(),
+                ..valid.clone()
+            },
+            LockEntry {
+                revision: " ".to_owned(),
+                ..valid.clone()
+            },
+            LockEntry {
+                digest: "invalid".to_owned(),
+                ..valid.clone()
+            },
+            LockEntry {
+                source: " ".to_owned(),
+                ..valid.clone()
+            },
+        ] {
+            assert!(invalid.validate().is_err());
+            assert!(Lockfile::new([invalid]).is_err());
+        }
+
+        let gitlab = valid_entry(Provider::Gitlab, "owner/action@main");
+        let other = valid_entry(Provider::Github, "owner/other@main");
+        let lock = Lockfile::new([valid.clone(), gitlab, other]).expect("lockfile");
+        assert_eq!(lock.find(Provider::Github, &valid.reference), Some(&valid));
+        assert_eq!(lock.find(Provider::Gitlab, "owner/other@main"), None);
+        assert_eq!(lock.find(Provider::Github, "missing"), None);
+    }
+
+    #[test]
+    fn integrity_and_exact_field_contracts_reject_independent_tampering() {
+        let lock =
+            Lockfile::new([valid_entry(Provider::Github, "owner/action@main")]).expect("lockfile");
+        assert!(lock.verify_integrity());
+        let mut tampered = lock.clone();
+        tampered.entries[0].revision = "other-revision".to_owned();
+        assert!(!tampered.verify_integrity());
+
+        let exact = BTreeMap::from([
+            ("first".to_owned(), JsonValue::Null),
+            ("second".to_owned(), JsonValue::Null),
+        ]);
+        assert!(require_exact(&exact, &["first", "second"], "fixture").is_ok());
+        assert!(require_exact(&exact, &["first"], "fixture").is_err());
+        assert!(require_exact(&exact, &["first", "other"], "fixture").is_err());
+    }
+}

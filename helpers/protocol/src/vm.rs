@@ -11,6 +11,11 @@ use super::{
 pub const REQUEST_SCHEMA: &str = "vm-shim-request-v1";
 pub const OBSERVATION_SCHEMA: &str = "vm-observation-v1";
 pub const IMAGE_MANIFEST_SCHEMA: &str = "vm-image-v1";
+const HEX_DIGITS: &[u8; 16] = b"0123456789abcdef";
+const HEX_RADIX: u32 = 16;
+const HEX_DIGITS_PER_BYTE: usize = 2;
+const BITS_PER_HEX_DIGIT: u32 = 4;
+const LOW_HEX_DIGIT_MASK: u8 = 0x0f;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct VmImage {
@@ -144,32 +149,35 @@ impl Request {
 }
 
 fn hex_encode(value: &[u8]) -> String {
-    const DIGITS: &[u8; 16] = b"0123456789abcdef";
-    let mut encoded = String::with_capacity(value.len() * 2);
+    let mut encoded = String::with_capacity(value.len() * HEX_DIGITS_PER_BYTE);
     for byte in value {
-        encoded.push(char::from(DIGITS[usize::from(byte >> 4)]));
-        encoded.push(char::from(DIGITS[usize::from(byte & 0x0f)]));
+        encoded.push(char::from(
+            HEX_DIGITS[usize::from(byte >> BITS_PER_HEX_DIGIT)],
+        ));
+        encoded.push(char::from(
+            HEX_DIGITS[usize::from(byte & LOW_HEX_DIGIT_MASK)],
+        ));
     }
     encoded
 }
 
+// `as_chunks` is newer than the workspace's Rust 1.85 MSRV.
+#[allow(clippy::chunks_exact_to_as_chunks)]
 fn hex_decode(value: &str) -> Result<Vec<u8>, String> {
-    if value.len() & 1 != 0 {
+    let mut pairs = value.as_bytes().chunks_exact(HEX_DIGITS_PER_BYTE);
+    if !pairs.remainder().is_empty() {
         return Err("output_hex must contain complete bytes".to_owned());
     }
-    let bytes = value.as_bytes();
-    bytes
-        .iter()
-        .step_by(2)
-        .zip(bytes.iter().skip(1).step_by(2))
-        .map(|(high, low)| {
-            let high = char::from(*high)
-                .to_digit(16)
+    pairs
+        .by_ref()
+        .map(|pair| {
+            let high = char::from(pair[0])
+                .to_digit(HEX_RADIX)
                 .ok_or_else(|| "output_hex contains a non-hex character".to_owned())?;
-            let low = char::from(*low)
-                .to_digit(16)
+            let low = char::from(pair[1])
+                .to_digit(HEX_RADIX)
                 .ok_or_else(|| "output_hex contains a non-hex character".to_owned())?;
-            u8::try_from((high << 4) | low).map_err(|error| error.to_string())
+            u8::try_from((high << BITS_PER_HEX_DIGIT) + low).map_err(|error| error.to_string())
         })
         .collect()
 }
@@ -250,7 +258,6 @@ fn digest(value: String, name: &str) -> Result<String, String> {
 
 fn absolute_path(value: String, name: &str) -> Result<String, String> {
     let safe = value.starts_with('/')
-        && value.len() > 1
         && !value.contains('\0')
         && value
             .split('/')
@@ -481,4 +488,222 @@ pub fn parse_image_manifest(source: &str) -> Result<ImageManifest, String> {
         agent_digest: digest(string_field(value, "agent_digest")?, "agent_digest")?,
         version,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn content_digest(character: char) -> String {
+        format!(
+            "sha256:{}",
+            character.to_string().repeat(crate::SHA256_HEX_DIGITS)
+        )
+    }
+
+    fn image() -> VmImage {
+        VmImage {
+            architecture: "arm64".to_owned(),
+            kernel_path: "/image/kernel".to_owned(),
+            kernel_digest: content_digest('1'),
+            initrd_path: "/image/initrd".to_owned(),
+            initrd_digest: content_digest('2'),
+            rootfs_path: "/image/rootfs".to_owned(),
+            rootfs_digest: content_digest('3'),
+            manifest_digest: content_digest('4'),
+        }
+    }
+
+    fn request() -> Request {
+        Request {
+            plan_digest: content_digest('0'),
+            image: image(),
+            source_root: "/source".to_owned(),
+            scratch_root: "/scratch".to_owned(),
+            control_root: "/control".to_owned(),
+            working_directory: "/workspace/project".to_owned(),
+            argv: vec!["/bin/tool".to_owned(), "argument".to_owned()],
+            environment: BTreeMap::from([("NAME".to_owned(), "value".to_owned())]),
+            cpu_count: 1,
+            memory_mb: 2,
+            processes: 3,
+            timeout_seconds: 4,
+            output_bytes: 5,
+            network: false,
+        }
+    }
+
+    #[test]
+    fn private_path_environment_and_hex_boundaries_are_exhaustive() {
+        for valid in ["/a", "/a/b"] {
+            assert_eq!(
+                absolute_path(valid.to_owned(), "path"),
+                Ok(valid.to_owned())
+            );
+        }
+        for invalid in [
+            "", "/", "relative", "/a/", "/a//b", "/a/./b", "/a/../b", "/a\0b",
+        ] {
+            assert!(
+                absolute_path(invalid.to_owned(), "path").is_err(),
+                "{invalid:?}"
+            );
+        }
+
+        let valid = json::Value::Object(BTreeMap::from([
+            ("A".to_owned(), json::Value::String(String::new())),
+            ("B".to_owned(), json::Value::String("value".to_owned())),
+        ]));
+        assert_eq!(parse_environment(&valid).unwrap().len(), 2);
+        for (name, value) in [
+            ("", "value"),
+            ("A=B", "value"),
+            ("A\0B", "value"),
+            ("A", "value\0tail"),
+        ] {
+            let invalid = json::Value::Object(BTreeMap::from([(
+                name.to_owned(),
+                json::Value::String(value.to_owned()),
+            )]));
+            assert!(parse_environment(&invalid).is_err(), "{name:?}={value:?}");
+        }
+        assert_eq!(hex_decode("00ff10"), Ok(vec![0x00, 0xff, 0x10]));
+        for invalid in ["0", "0g", "gg"] {
+            assert!(hex_decode(invalid).is_err(), "{invalid:?}");
+        }
+    }
+
+    #[test]
+    fn request_rejects_each_command_path_limit_and_root_violation_independently() {
+        assert_eq!(parse_request(&request().canonical_json()), Ok(request()));
+
+        let mut empty_argv = request();
+        empty_argv.argv.clear();
+        assert!(parse_request(&empty_argv.canonical_json()).is_err());
+        let mut nul_argv = request();
+        nul_argv.argv.push("bad\0argument".to_owned());
+        assert!(parse_request(&nul_argv.canonical_json()).is_err());
+
+        for valid in ["/workspace", "/workspace/sub"] {
+            let mut fixture = request();
+            fixture.working_directory = valid.to_owned();
+            assert!(
+                parse_request(&fixture.canonical_json()).is_ok(),
+                "{valid:?}"
+            );
+        }
+        for invalid in [
+            "",
+            "/workspaces",
+            "/workspace/",
+            "/workspace//sub",
+            "/workspace/./sub",
+            "/workspace/../sub",
+        ] {
+            let mut fixture = request();
+            fixture.working_directory = invalid.to_owned();
+            assert!(
+                parse_request(&fixture.canonical_json()).is_err(),
+                "{invalid:?}"
+            );
+        }
+
+        for field in [
+            "cpu_count",
+            "memory_mb",
+            "processes",
+            "timeout_seconds",
+            "output_bytes",
+        ] {
+            let source = request().canonical_json();
+            let source = source.replace(
+                &format!(
+                    "\"{field}\":{}",
+                    match field {
+                        "cpu_count" => 1,
+                        "memory_mb" => 2,
+                        "processes" => 3,
+                        "timeout_seconds" => 4,
+                        "output_bytes" => 5,
+                        _ => unreachable!(),
+                    }
+                ),
+                &format!("\"{field}\":0"),
+            );
+            assert!(parse_request(&source).is_err(), "zero {field}");
+        }
+
+        for (left, right) in [
+            ("source_root", "scratch_root"),
+            ("source_root", "control_root"),
+            ("scratch_root", "control_root"),
+        ] {
+            let mut fixture = request();
+            let duplicate = match left {
+                "source_root" => fixture.source_root.clone(),
+                "scratch_root" => fixture.scratch_root.clone(),
+                _ => unreachable!(),
+            };
+            match right {
+                "scratch_root" => fixture.scratch_root = duplicate,
+                "control_root" => fixture.control_root = duplicate,
+                _ => unreachable!(),
+            }
+            assert!(
+                parse_request(&fixture.canonical_json()).is_err(),
+                "{left}={right}"
+            );
+        }
+    }
+
+    #[test]
+    fn every_vm_document_rejects_the_wrong_schema_and_nullable_code_is_preserved() {
+        let request_source = request().canonical_json();
+        assert!(parse_request(&request_source.replace(REQUEST_SCHEMA, "wrong-v1")).is_err());
+
+        let observation = Observation {
+            code: None,
+            timed_out: false,
+            output_exceeded: false,
+            output: vec![0, 255],
+        };
+        assert_eq!(
+            parse_observation(&observation.canonical_json()),
+            Ok(observation.clone())
+        );
+        assert!(
+            parse_observation(
+                &observation
+                    .canonical_json()
+                    .replace(OBSERVATION_SCHEMA, "wrong-v1")
+            )
+            .is_err()
+        );
+
+        let manifest = ImageManifest {
+            architecture: "x86_64".to_owned(),
+            kernel_digest: content_digest('1'),
+            initrd_digest: content_digest('2'),
+            rootfs_digest: content_digest('3'),
+            agent_digest: content_digest('4'),
+            version: "1.0".to_owned(),
+        };
+        assert_eq!(
+            parse_image_manifest(&manifest.canonical_json()),
+            Ok(manifest.clone())
+        );
+        assert!(
+            parse_image_manifest(
+                &manifest
+                    .canonical_json()
+                    .replace(IMAGE_MANIFEST_SCHEMA, "wrong-v1")
+            )
+            .is_err()
+        );
+        for invalid in ["", "1\0tail"] {
+            let mut fixture = manifest.clone();
+            fixture.version = invalid.to_owned();
+            assert!(parse_image_manifest(&fixture.canonical_json()).is_err());
+        }
+    }
 }

@@ -8,6 +8,24 @@ use std::time::Duration;
 use zeroize::Zeroize;
 use zeroize::Zeroizing;
 
+// DNS wire/text limits and the HTTPS default port are protocol constraints.
+const MAX_DNS_HOST_BYTES: usize = 253;
+const MAX_DNS_LABEL_BYTES: usize = 63;
+const MAX_TCP_PORT_DIGITS: usize = 5;
+const AUTHORITY_SEPARATOR_BYTES: usize = 1;
+const MAX_DNS_AUTHORITY_BYTES: usize =
+    MAX_DNS_HOST_BYTES + AUTHORITY_SEPARATOR_BYTES + MAX_TCP_PORT_DIGITS;
+const HTTPS_DEFAULT_PORT: u16 = 443;
+
+// The v0.1 credential boundary caps provider tokens and OS-store subprocess
+// traffic before data enters a platform adapter.
+const BYTES_PER_KIBIBYTE: usize = 1_024;
+const BYTES_PER_KIBIBYTE_U64: u64 = 1_024;
+const MAX_CREDENTIAL_KIBIBYTES: usize = 16;
+const CREDENTIAL_COMMAND_TIMEOUT_SECONDS: u64 = 5;
+const CREDENTIAL_COMMAND_STDIN_KIBIBYTES: u64 = 32;
+const CREDENTIAL_COMMAND_OUTPUT_KIBIBYTES: u64 = 64;
+
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub enum ProviderKind {
     Github,
@@ -87,7 +105,7 @@ impl CredentialKey {
 
 fn canonical_host(value: &str) -> Result<String, String> {
     if value.is_empty()
-        || value.len() > 259
+        || value.len() > MAX_DNS_AUTHORITY_BYTES
         || value.contains(['/', '\\', '@', '?', '#', '%'])
         || value.contains("://")
         || value.parse::<std::net::IpAddr>().is_ok()
@@ -107,10 +125,10 @@ fn canonical_host(value: &str) -> Result<String, String> {
     if hostname.eq_ignore_ascii_case("localhost")
         || hostname.ends_with(".localhost")
         || hostname.is_empty()
-        || hostname.len() > 253
+        || hostname.len() > MAX_DNS_HOST_BYTES
         || hostname.split('.').any(|label| {
             label.is_empty()
-                || label.len() > 63
+                || label.len() > MAX_DNS_LABEL_BYTES
                 || label.starts_with('-')
                 || label.ends_with('-')
                 || !label
@@ -121,7 +139,7 @@ fn canonical_host(value: &str) -> Result<String, String> {
         return Err("credential host is not a portable DNS authority".to_owned());
     }
     Ok(match port {
-        None | Some(443) => hostname.to_owned(),
+        None | Some(HTTPS_DEFAULT_PORT) => hostname.to_owned(),
         Some(port) => format!("{hostname}:{port}"),
     })
 }
@@ -136,7 +154,7 @@ impl SecretString {
     pub fn new(value: impl Into<String>) -> Result<Self, String> {
         let value = value.into();
         if value.is_empty()
-            || value.len() > 16 * 1024
+            || value.len() > MAX_CREDENTIAL_KIBIBYTES * BYTES_PER_KIBIBYTE
             || !value.bytes().all(|byte| byte.is_ascii_graphic())
         {
             return Err("credential must be a non-empty single-line ASCII token".to_owned());
@@ -294,8 +312,14 @@ fn run_credential_command(
     command: &mut Command,
     input: Option<&[u8]>,
 ) -> Result<crate::SupervisedOutput, String> {
-    crate::supervise_process(command, input, Duration::from_secs(5), 32 * 1024, 64 * 1024)
-        .map_err(|_| "OS credential store is unavailable".to_owned())
+    crate::supervise_process(
+        command,
+        input,
+        Duration::from_secs(CREDENTIAL_COMMAND_TIMEOUT_SECONDS),
+        CREDENTIAL_COMMAND_STDIN_KIBIBYTES * BYTES_PER_KIBIBYTE_U64,
+        CREDENTIAL_COMMAND_OUTPUT_KIBIBYTES * BYTES_PER_KIBIBYTE_U64,
+    )
+    .map_err(|_| "OS credential store is unavailable".to_owned())
 }
 
 fn wipe_output(output: &mut crate::SupervisedOutput) {

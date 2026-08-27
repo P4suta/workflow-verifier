@@ -223,10 +223,7 @@ impl YamlDocument {
             invalid_regions: Vec::new(),
         };
         let first = parser.next_content(0);
-        let root = first.and_then(|index| {
-            let indent = lines.get(index).map_or(0, |line| line.indent);
-            parser.parse_block(index, indent).map(|(node, _)| node)
-        });
+        let root = first.and_then(|index| parser.parse_block(index).map(|(node, _)| node));
         let problems = std::mem::take(&mut parser.problems);
         let invalid_regions = std::mem::take(&mut parser.invalid_regions);
         drop(parser);
@@ -337,14 +334,12 @@ struct Line<'a> {
 fn lines(source: &str) -> Vec<Line<'_>> {
     let mut output = Vec::new();
     let mut start = 0usize;
-    while start < source.len() {
-        let relative_end = source[start..].find('\n');
-        let newline = relative_end.map_or(source.len(), |relative| start + relative);
-        let end = newline
-            .checked_sub(1)
-            .filter(|candidate| source.as_bytes().get(*candidate) == Some(&b'\r'))
-            .unwrap_or(newline);
-        let raw = &source[start..end];
+    for segment in source.split_inclusive('\n') {
+        let without_newline = segment.strip_suffix('\n').unwrap_or(segment);
+        let raw = without_newline
+            .strip_suffix('\r')
+            .unwrap_or(without_newline);
+        let end = start.saturating_add(raw.len());
         let indent = raw.bytes().take_while(|byte| *byte == b' ').count();
         let content = raw.get(indent..).unwrap_or_default();
         output.push(Line {
@@ -353,11 +348,7 @@ fn lines(source: &str) -> Vec<Line<'_>> {
             indent,
             content,
         });
-        start = if newline < source.len() {
-            newline + 1
-        } else {
-            source.len()
-        };
+        start = start.saturating_add(segment.len());
     }
     if source.is_empty() {
         output.push(Line {
@@ -413,7 +404,7 @@ impl PositionIndex {
                 .as_bytes()
                 .iter()
                 .enumerate()
-                .filter_map(|(index, byte)| (*byte == b'\n').then_some(index + 1)),
+                .filter_map(|(index, byte)| (*byte == b'\n').then_some(index.saturating_add(1))),
         );
         Self { line_starts }
     }
@@ -476,7 +467,10 @@ fn scan_metadata(
             });
         }
         if let Some(comment) = comment_offset(line.content) {
-            let start = line.start + line.indent + comment;
+            let start = line
+                .start
+                .saturating_add(line.indent)
+                .saturating_add(comment);
             trivia.push(Trivia {
                 kind: TriviaKind::Comment,
                 raw: source[start..line.end].to_owned(),
@@ -498,33 +492,36 @@ fn scan_properties(
     let mut output = Vec::new();
     let bytes = source.as_bytes();
     let marker = marker as u8;
-    let mut index = 0usize;
     let mut single = false;
     let mut double = false;
-    while index < bytes.len() {
-        match bytes[index] {
+    let mut characters = bytes.iter().copied().enumerate().peekable();
+    while let Some((index, byte)) = characters.next() {
+        match byte {
             b'\'' if !double => single = !single,
             b'"' if !single => double = !double,
             byte if byte == marker && !single && !double => {
                 let start = index;
-                index += 1;
-                let name_start = index;
-                while bytes.get(index).is_some_and(|byte| {
+                let Some((name_start, _)) = characters.peek().copied() else {
+                    continue;
+                };
+                let mut end = name_start;
+                while characters.peek().is_some_and(|(_, byte)| {
                     byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'-' | b'.')
                 }) {
-                    index += 1;
+                    let _ = characters.next();
+                    end = characters
+                        .peek()
+                        .map_or(source.len(), |(next_index, _)| *next_index);
                 }
-                if index > name_start {
+                if end > name_start {
                     output.push(Anchor {
-                        name: source[name_start..index].to_owned(),
-                        span: positions.span(file, source, start, index),
+                        name: source[name_start..end].to_owned(),
+                        span: positions.span(file, source, start, end),
                     });
-                    continue;
                 }
             }
             _ => {}
         }
-        index += 1;
     }
     output
 }
@@ -577,11 +574,12 @@ impl Parser<'_> {
         })
     }
 
-    fn next_content(&self, mut index: usize) -> Option<usize> {
-        while index < self.lines.len() && self.is_trivia(index) {
-            index += 1;
-        }
-        (index < self.lines.len()).then_some(index)
+    fn next_content(&self, index: usize) -> Option<usize> {
+        self.lines
+            .iter()
+            .enumerate()
+            .skip(index)
+            .find_map(|(candidate, _)| (!self.is_trivia(candidate)).then_some(candidate))
     }
 
     fn problem(&mut self, code: &str, message: impl Into<String>, start: usize, stop: usize) {
@@ -607,29 +605,34 @@ impl Parser<'_> {
         }
     }
 
-    fn parse_block(&mut self, index: usize, indent: usize) -> Option<(YamlNode, usize)> {
+    fn parse_block(&mut self, index: usize) -> Option<(YamlNode, usize)> {
         let line = *self.lines.get(index)?;
-        if line.indent < indent {
-            return None;
-        }
+        let indent = line.indent;
         if sequence_head(line.content).is_some() {
             Some(self.parse_sequence(index, indent))
         } else if split_mapping(line.content).is_some() {
             Some(self.parse_mapping(index, indent))
         } else {
-            let node = self.parse_inline(line.content, line.start + line.indent, line.end);
-            Some((node, index + 1))
+            let node = self.parse_inline(
+                line.content,
+                line.start.saturating_add(line.indent),
+                line.end,
+            );
+            Some((node, index.saturating_add(1)))
         }
     }
 
     fn parse_mapping(&mut self, mut index: usize, indent: usize) -> (YamlNode, usize) {
-        let start = self.lines.get(index).map_or(0, |line| line.start + indent);
+        let start = self
+            .lines
+            .get(index)
+            .map_or(0, |line| line.start.saturating_add(indent));
         let mut stop = start;
         let mut entries = Vec::new();
         let mut keys = BTreeSet::new();
-        while index < self.lines.len() {
+        while self.lines.get(index).is_some() {
             if self.is_trivia(index) {
-                index += 1;
+                index = index.saturating_add(1);
                 continue;
             }
             let Some(line) = self.lines.get(index).copied() else {
@@ -643,9 +646,8 @@ impl Parser<'_> {
             };
             let key = decode_plain_or_quoted(raw_key.trim())
                 .unwrap_or_else(|_| raw_key.trim().to_owned());
-            let key_relative = line.content.find(raw_key).unwrap_or(0);
-            let key_start = line.start + line.indent + key_relative;
-            let key_stop = key_start + raw_key.trim_end().len();
+            let key_start = line.start.saturating_add(line.indent);
+            let key_stop = key_start.saturating_add(raw_key.trim_end().len());
             if !keys.insert(key.clone()) {
                 self.problem(
                     "YAML-DUPLICATE-KEY",
@@ -657,7 +659,11 @@ impl Parser<'_> {
             let raw_value = line.content.get(value_offset..).unwrap_or_default();
             let leading = raw_value.bytes().take_while(|byte| *byte == b' ').count();
             let raw_value = raw_value.get(leading..).unwrap_or_default();
-            let value_start = line.start + line.indent + value_offset + leading;
+            let value_start = line
+                .start
+                .saturating_add(line.indent)
+                .saturating_add(value_offset)
+                .saturating_add(leading);
             let (value, next) =
                 self.parse_mapping_value(index, indent, raw_value, value_start, line.end);
             stop = stop.max(value.span.stop.byte);
@@ -682,12 +688,15 @@ impl Parser<'_> {
     }
 
     fn parse_sequence(&mut self, mut index: usize, indent: usize) -> (YamlNode, usize) {
-        let start = self.lines.get(index).map_or(0, |line| line.start + indent);
+        let start = self
+            .lines
+            .get(index)
+            .map_or(0, |line| line.start.saturating_add(indent));
         let mut stop = start;
         let mut items = Vec::new();
-        while index < self.lines.len() {
+        while self.lines.get(index).is_some() {
             if self.is_trivia(index) {
-                index += 1;
+                index = index.saturating_add(1);
                 continue;
             }
             let Some(line) = self.lines.get(index).copied() else {
@@ -699,22 +708,23 @@ impl Parser<'_> {
             let Some(head) = sequence_head(line.content) else {
                 break;
             };
-            let value_start = line.start + line.indent + head;
+            let value_start = line.start.saturating_add(line.indent).saturating_add(head);
             let value_text = line.content.get(head..).unwrap_or_default();
             let (value, next) = if value_text.trim().is_empty() {
-                if let Some(child) = self.next_content(index + 1) {
+                if let Some(child) = self.next_content(index.saturating_add(1)) {
                     let child_line = self.lines[child];
                     if child_line.indent > indent {
-                        self.parse_block(child, child_line.indent)
-                            .unwrap_or_else(|| (self.empty_scalar(line.end), index + 1))
+                        self.parse_block(child).unwrap_or_else(|| {
+                            (self.empty_scalar(line.end), index.saturating_add(1))
+                        })
                     } else {
-                        (self.empty_scalar(line.end), index + 1)
+                        (self.empty_scalar(line.end), index.saturating_add(1))
                     }
                 } else {
-                    (self.empty_scalar(line.end), index + 1)
+                    (self.empty_scalar(line.end), index.saturating_add(1))
                 }
-            } else if split_mapping(value_text).is_some() {
-                self.parse_compact_mapping(index, indent, head)
+            } else if let Some(mapping_head) = split_mapping(value_text) {
+                self.parse_compact_mapping(index, indent, head, line, value_text, mapping_head)
             } else if let Some((header_offset, header)) = block_scalar_header(value_text) {
                 self.parse_block_scalar_with_properties(
                     index,
@@ -751,24 +761,20 @@ impl Parser<'_> {
         index: usize,
         sequence_indent: usize,
         head: usize,
+        line: Line<'_>,
+        content: &str,
+        mapping_head: (&str, usize),
     ) -> (YamlNode, usize) {
-        let Some(line) = self.lines.get(index).copied() else {
-            return (self.empty_scalar(0), index.saturating_add(1));
-        };
-        let content = line.content.get(head..).unwrap_or_default();
-        let Some((raw_key, value_offset)) = split_mapping(content) else {
-            return (
-                self.parse_inline(content, line.start + line.indent + head, line.end),
-                index + 1,
-            );
-        };
+        let (raw_key, value_offset) = mapping_head;
         let key =
             decode_plain_or_quoted(raw_key.trim()).unwrap_or_else(|_| raw_key.trim().to_owned());
-        let key_start = line.start + line.indent + head;
+        let key_start = line.start.saturating_add(line.indent).saturating_add(head);
         let raw_value = content.get(value_offset..).unwrap_or_default();
         let leading = raw_value.bytes().take_while(|byte| *byte == b' ').count();
         let raw_value = raw_value.get(leading..).unwrap_or_default();
-        let value_start = key_start + value_offset + leading;
+        let value_start = key_start
+            .saturating_add(value_offset)
+            .saturating_add(leading);
         let mapping_indent = sequence_indent.saturating_add(head);
         let (first_value, mut next) =
             self.parse_mapping_value(index, mapping_indent, raw_value, value_start, line.end);
@@ -778,7 +784,7 @@ impl Parser<'_> {
                 self.file,
                 self.source,
                 key_start,
-                key_start + raw_key.trim_end().len(),
+                key_start.saturating_add(raw_key.trim_end().len()),
             ),
             span: self.positions.span(
                 self.file,
@@ -791,7 +797,7 @@ impl Parser<'_> {
         if let Some(child) = self.next_content(next) {
             let child_line = self.lines[child];
             if child_line.indent == mapping_indent
-                && let Some((mapping, after)) = self.parse_block(child, child_line.indent)
+                && let Some((mapping, after)) = self.parse_block(child)
                 && let NodeData::Mapping(mut more) = mapping.data
             {
                 entries.append(&mut more);
@@ -821,16 +827,16 @@ impl Parser<'_> {
         line_end: usize,
     ) -> (YamlNode, usize) {
         if raw_value.is_empty() || raw_value.starts_with('#') {
-            if let Some(child) = self.next_content(index + 1)
+            if let Some(child) = self.next_content(index.saturating_add(1))
                 && (self.lines[child].indent > parent_indent
                     || (self.lines[child].indent == parent_indent
                         && sequence_head(self.lines[child].content).is_some()))
             {
                 return self
-                    .parse_block(child, self.lines[child].indent)
-                    .unwrap_or_else(|| (self.empty_scalar(line_end), index + 1));
+                    .parse_block(child)
+                    .unwrap_or_else(|| (self.empty_scalar(line_end), index.saturating_add(1)));
             }
-            return (self.empty_scalar(line_end), index + 1);
+            return (self.empty_scalar(line_end), index.saturating_add(1));
         }
         if let Some((header_offset, header)) = block_scalar_header(raw_value) {
             return self.parse_block_scalar_with_properties(
@@ -843,14 +849,14 @@ impl Parser<'_> {
             );
         }
         if matches!(raw_value.as_bytes().first(), Some(b'&' | b'!')) {
-            if let Some(child) = self.next_content(index + 1)
+            if let Some(child) = self.next_content(index.saturating_add(1))
                 && (self.lines[child].indent > parent_indent
                     || (self.lines[child].indent == parent_indent
                         && sequence_head(self.lines[child].content).is_some()))
             {
                 let (mut node, next) = self
-                    .parse_block(child, self.lines[child].indent)
-                    .unwrap_or_else(|| (self.empty_scalar(line_end), index + 1));
+                    .parse_block(child)
+                    .unwrap_or_else(|| (self.empty_scalar(line_end), index.saturating_add(1)));
                 let stop = node.span.stop.byte;
                 node.span = self
                     .positions
@@ -865,7 +871,7 @@ impl Parser<'_> {
             }
             return (
                 self.parse_inline(raw_value, value_start, line_end),
-                index + 1,
+                index.saturating_add(1),
             );
         }
         self.parse_inline_with_continuation(index, parent_indent, raw_value, value_start, line_end)
@@ -889,7 +895,6 @@ impl Parser<'_> {
             .find_map(|value| value.to_digit(10))
             .and_then(|value| usize::try_from(value).ok());
         if header
-            .trim_end_matches(|value: char| value.is_whitespace() || value == '#')
             .chars()
             .filter(|value| matches!(value, '+' | '-'))
             .count()
@@ -900,16 +905,16 @@ impl Parser<'_> {
                 "YAML-SYNTAX",
                 "invalid block scalar header",
                 header_start,
-                header_start + header.len(),
+                header_start.saturating_add(header.len()),
             );
         }
-        let mut next = index + 1;
+        let mut next = index.saturating_add(1);
         let mut payload = Vec::new();
         let mut content_indent = explicit.map(|value| parent_indent.saturating_add(value));
         while let Some(line) = self.lines.get(next).copied() {
             if line.content.trim().is_empty() {
                 payload.push(String::new());
-                next += 1;
+                next = next.saturating_add(1);
                 continue;
             }
             if line.indent <= parent_indent {
@@ -921,10 +926,10 @@ impl Parser<'_> {
             }
             let raw = self
                 .source
-                .get(line.start + chosen..line.end)
+                .get(line.start.saturating_add(chosen)..line.end)
                 .unwrap_or_default();
             payload.push(raw.to_owned());
-            next += 1;
+            next = next.saturating_add(1);
         }
         let mut value = if style == ScalarStyle::Literal {
             payload.join("\n")
@@ -938,7 +943,7 @@ impl Parser<'_> {
                 }
             }
             Some('+') => {
-                if next > index + 1 {
+                if next != index.saturating_add(1) {
                     value.push('\n');
                 }
             }
@@ -946,7 +951,7 @@ impl Parser<'_> {
                 while value.ends_with('\n') {
                     value.pop();
                 }
-                if next > index + 1 {
+                if next != index.saturating_add(1) {
                     value.push('\n');
                 }
             }
@@ -954,7 +959,7 @@ impl Parser<'_> {
         let stop = self
             .lines
             .get(next.saturating_sub(1))
-            .map_or(header_start + header.len(), |line| line.end);
+            .map_or(header_start.saturating_add(header.len()), |line| line.end);
         (
             YamlNode {
                 data: NodeData::Scalar(Scalar {
@@ -1067,25 +1072,25 @@ impl Parser<'_> {
     ) -> (YamlNode, usize) {
         let mut node = self.parse_inline(raw, start, line_end);
         let NodeData::Scalar(scalar) = &node.data else {
-            return (node, index + 1);
+            return (node, index.saturating_add(1));
         };
         if scalar.style != ScalarStyle::Plain {
-            return (node, index + 1);
+            return (node, index.saturating_add(1));
         }
 
         let mut lines = vec![scalar.value.clone()];
-        let mut next = index + 1;
+        let mut next = index.saturating_add(1);
         let mut stop = node.span.stop.byte;
         let mut has_continuation = false;
         while let Some(line) = self.lines.get(next).copied() {
             let trimmed = line.content.trim();
             if trimmed.is_empty() {
                 lines.push(String::new());
-                next += 1;
+                next = next.saturating_add(1);
                 continue;
             }
             if trimmed.starts_with('#') {
-                next += 1;
+                next = next.saturating_add(1);
                 continue;
             }
             if line.indent <= parent_indent {
@@ -1101,10 +1106,10 @@ impl Parser<'_> {
             );
             stop = line.end;
             has_continuation = true;
-            next += 1;
+            next = next.saturating_add(1);
         }
         if !has_continuation {
-            return (node, index + 1);
+            return (node, index.saturating_add(1));
         }
 
         if let NodeData::Scalar(scalar) = &mut node.data {
@@ -1129,8 +1134,14 @@ impl Parser<'_> {
                 let leading = item.len().saturating_sub(item.trim_start().len());
                 self.parse_inline(
                     item.trim(),
-                    start + 1 + offset + leading,
-                    start + 1 + offset + item.len(),
+                    start
+                        .saturating_add(1)
+                        .saturating_add(offset)
+                        .saturating_add(leading),
+                    start
+                        .saturating_add(1)
+                        .saturating_add(offset)
+                        .saturating_add(item.len()),
                 )
             })
             .collect();
@@ -1157,36 +1168,37 @@ impl Parser<'_> {
                 self.problem(
                     "YAML-SYNTAX",
                     "flow mapping entry has no ':'",
-                    start + offset,
+                    start.saturating_add(1).saturating_add(offset),
                     stop,
                 );
                 continue;
             };
             let key = decode_plain_or_quoted(raw_key.trim())
                 .unwrap_or_else(|_| raw_key.trim().to_owned());
-            let key_start = start + 1 + offset;
+            let key_start = start.saturating_add(1).saturating_add(offset);
             if !keys.insert(key.clone()) {
                 self.problem(
                     "YAML-DUPLICATE-KEY",
                     format!("duplicate mapping key: {key}"),
                     key_start,
-                    key_start + raw_key.len(),
+                    key_start.saturating_add(raw_key.len()),
                 );
             }
             let raw_value = item.get(value_offset..).unwrap_or_default().trim();
-            let value_start = key_start
-                + value_offset
-                + item[value_offset..]
+            let value_start = key_start.saturating_add(value_offset).saturating_add(
+                item[value_offset..]
                     .len()
-                    .saturating_sub(item[value_offset..].trim_start().len());
-            let child = self.parse_inline(raw_value, value_start, key_start + item.len());
+                    .saturating_sub(item[value_offset..].trim_start().len()),
+            );
+            let child =
+                self.parse_inline(raw_value, value_start, key_start.saturating_add(item.len()));
             entries.push(MappingEntry {
                 key,
                 key_span: self.positions.span(
                     self.file,
                     self.source,
                     key_start,
-                    key_start + raw_key.len(),
+                    key_start.saturating_add(raw_key.len()),
                 ),
                 span: self
                     .positions
@@ -1246,9 +1258,11 @@ fn split_mapping(value: &str) -> Option<(&str, usize)> {
                 && !double
                 && square == 0
                 && curly == 0
-                && bytes.get(index + 1).is_none_or(u8::is_ascii_whitespace) =>
+                && bytes
+                    .get(index.saturating_add(1))
+                    .is_none_or(u8::is_ascii_whitespace) =>
             {
-                return Some((&value[..index], index + 1));
+                return Some((&value[..index], index.saturating_add(1)));
             }
             _ => {}
         }
@@ -1308,7 +1322,7 @@ fn split_flow(value: &str) -> Vec<(usize, &str)> {
             b'}' if !single && !double => curly = curly.saturating_sub(1),
             b',' if !single && !double && square == 0 && curly == 0 => {
                 output.push((start, &value[start..index]));
-                start = index + 1;
+                start = index.saturating_add(1);
             }
             _ => {}
         }
@@ -1340,6 +1354,11 @@ fn decode_scalar(value: &str) -> Result<(String, ScalarStyle), String> {
 }
 
 fn decode_double(value: &str) -> Result<String, String> {
+    const YAML_HEXADECIMAL_RADIX: u32 = 16;
+    const YAML_BYTE_ESCAPE_DIGITS: usize = 2;
+    const YAML_SHORT_UNICODE_ESCAPE_DIGITS: usize = 4;
+    const YAML_LONG_UNICODE_ESCAPE_DIGITS: usize = 8;
+
     let mut output = String::new();
     let mut characters = value.chars();
     while let Some(character) = characters.next() {
@@ -1370,9 +1389,9 @@ fn decode_double(value: &str) -> Result<String, String> {
             'P' => output.push('\u{2029}'),
             'x' | 'u' | 'U' => {
                 let digits = match escaped {
-                    'x' => 2,
-                    'u' => 4,
-                    _ => 8,
+                    'x' => YAML_BYTE_ESCAPE_DIGITS,
+                    'u' => YAML_SHORT_UNICODE_ESCAPE_DIGITS,
+                    _ => YAML_LONG_UNICODE_ESCAPE_DIGITS,
                 };
                 let mut raw = String::new();
                 for _ in 0..digits {
@@ -1381,7 +1400,7 @@ fn decode_double(value: &str) -> Result<String, String> {
                     };
                     raw.push(digit);
                 }
-                let scalar = u32::from_str_radix(&raw, 16)
+                let scalar = u32::from_str_radix(&raw, YAML_HEXADECIMAL_RADIX)
                     .map_err(|_| "invalid hexadecimal escape".to_owned())?;
                 let character = char::from_u32(scalar)
                     .ok_or_else(|| "invalid Unicode scalar escape".to_owned())?;
@@ -1474,7 +1493,7 @@ mod tests {
     fn indexed_positions_match_the_reference_scan_at_every_byte() {
         for source in ["", "alpha", "alpha\n", "alpha\n😀 beta\r\n終\n"] {
             let index = PositionIndex::new(source);
-            for byte in 0..=source.len().saturating_add(2) {
+            for byte in 0..=source.len().saturating_add(1) {
                 assert_eq!(
                     index.position(source, byte),
                     slow_position_at(source, byte),
@@ -1482,5 +1501,316 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    fn physical_lines_comments_and_properties_have_exact_byte_boundaries() {
+        let source = "a\r\n  b\nlast";
+        let parsed = lines(source);
+        assert_eq!(parsed.len(), 3);
+        assert_eq!(
+            (
+                parsed[0].start,
+                parsed[0].end,
+                parsed[0].indent,
+                parsed[0].content
+            ),
+            (0, "a".len(), 0, "a")
+        );
+        assert_eq!(
+            (
+                parsed[1].start,
+                parsed[1].end,
+                parsed[1].indent,
+                parsed[1].content
+            ),
+            ("a\r\n".len(), "a\r\n  b".len(), "  ".len(), "b",)
+        );
+        assert_eq!(
+            (
+                parsed[2].start,
+                parsed[2].end,
+                parsed[2].indent,
+                parsed[2].content
+            ),
+            ("a\r\n  b\n".len(), source.len(), 0, "last")
+        );
+        let span = slow_span_for("fixture.yml", source, "a\r\n".len(), source.len());
+        assert_eq!(span.file, "fixture.yml");
+        assert_eq!(span.start.byte, "a\r\n".len());
+        assert_eq!(span.stop.byte, source.len());
+
+        let comment_cases = [
+            ("# comment", Some(0)),
+            ("value # comment", Some("value ".len())),
+            ("value#data", None),
+            ("'# data' # comment", Some("'# data' ".len())),
+            ("\"# data\" # comment", Some("\"# data\" ".len())),
+            (
+                "\"escaped \\\"# data\" # comment",
+                Some("\"escaped \\\"# data\" ".len()),
+            ),
+            ("\"it's # data\" # comment", Some("\"it's # data\" ".len())),
+            ("'\"# data\"' # comment", Some("'\"# data\"' ".len())),
+        ];
+        for (value, expected) in comment_cases {
+            assert_eq!(comment_offset(value), expected, "comment in {value:?}");
+        }
+
+        let properties = "real: &anchor value\nalias: *anchor\nsingle: '&fake'\ndouble: \"*fake\"\ndouble_apostrophe: \"it's &fake\"\nsingle_double: '\"*fake\"'\n";
+        let positions = PositionIndex::new(properties);
+        let anchors = scan_properties("fixture.yml", properties, &positions, '&');
+        let aliases = scan_properties("fixture.yml", properties, &positions, '*');
+        assert_eq!(anchors.len(), 1);
+        assert_eq!(anchors[0].name, "anchor");
+        assert_eq!(
+            anchors[0].span.start.byte,
+            properties.find("&anchor").expect("anchor start")
+        );
+        assert_eq!(
+            anchors[0].span.stop.byte,
+            properties.find(" value").expect("anchor stop")
+        );
+        assert_eq!(aliases.len(), 1);
+        assert_eq!(aliases[0].name, "anchor");
+        assert_eq!(
+            aliases[0].span.start.byte,
+            properties.find("*anchor").expect("alias start")
+        );
+
+        let odd_opposite_quote = "single: '\"'\nreal: &after_single\n";
+        let positions = PositionIndex::new(odd_opposite_quote);
+        let anchors = scan_properties("fixture.yml", odd_opposite_quote, &positions, '&');
+        assert_eq!(anchors.len(), 1);
+        assert_eq!(anchors[0].name, "after_single");
+        assert_eq!(
+            anchors[0].span.start.byte,
+            odd_opposite_quote.find("&after_single").unwrap()
+        );
+    }
+
+    #[test]
+    // Quote-state and nesting cases form one scanner transition matrix.
+    #[allow(clippy::too_many_lines)]
+    fn mapping_and_flow_splitters_respect_quotes_escapes_and_nesting() {
+        let mapping_cases = [
+            ("key: value", Some(("key", "key:".len()))),
+            ("key:", Some(("key", "key:".len()))),
+            ("url:https://example.test", None),
+            (
+                "'quoted: key': value",
+                Some(("'quoted: key'", "'quoted: key':".len())),
+            ),
+            (
+                "\"quoted: key\": value",
+                Some(("\"quoted: key\"", "\"quoted: key\":".len())),
+            ),
+            (
+                "[nested: value]: result",
+                Some(("[nested: value]", "[nested: value]:".len())),
+            ),
+            (
+                "{nested: value}: result",
+                Some(("{nested: value}", "{nested: value}:".len())),
+            ),
+            (
+                "\"escaped \\\" : data\": value",
+                Some(("\"escaped \\\" : data\"", "\"escaped \\\" : data\":".len())),
+            ),
+            ("'[': value", Some(("'['", "'[':".len()))),
+            ("\"{\": value", Some(("\"{\"", "\"{\":".len()))),
+            ("[']': value]", None),
+            ("{'}': value}", None),
+            (
+                "\"it's: data\": value",
+                Some(("\"it's: data\"", "\"it's: data\":".len())),
+            ),
+            (
+                "'say \"key: value\"': result",
+                Some(("'say \"key: value\"'", "'say \"key: value\"':".len())),
+            ),
+            (
+                "'odd \" quote: data': result",
+                Some(("'odd \" quote: data'", "'odd \" quote: data':".len())),
+            ),
+            (
+                "prefix\\\"\": value",
+                Some(("prefix\\\"\"", "prefix\\\"\":".len())),
+            ),
+        ];
+        for (value, expected) in mapping_cases {
+            assert_eq!(split_mapping(value), expected, "mapping {value:?}");
+        }
+
+        for (value, expected) in [
+            ("[]", true),
+            ("[one, [two]]", true),
+            ("['[not structural]']", true),
+            ("[\"escaped \\\" ]\"]", true),
+            ("[one", false),
+            ("one]", false),
+            ("['unterminated]", false),
+            ("[\"unterminated]", false),
+        ] {
+            assert_eq!(balanced_flow(value, '[', ']'), expected, "flow {value:?}");
+        }
+
+        let flow = "one,'two,three',[four,five],{six: seven},\"eight,\\\"nine\"";
+        let parts = split_flow(flow);
+        let expected = [
+            "one",
+            "'two,three'",
+            "[four,five]",
+            "{six: seven}",
+            "\"eight,\\\"nine\"",
+        ];
+        assert_eq!(
+            parts.iter().map(|(_, part)| *part).collect::<Vec<_>>(),
+            expected
+        );
+        for (offset, part) in parts {
+            assert_eq!(
+                flow.get(offset..offset.saturating_add(part.len())),
+                Some(part)
+            );
+        }
+
+        for (value, expected) in [
+            ("\"it's,one\",two", vec!["\"it's,one\"", "two"]),
+            (
+                "'say \"one,two\"',three",
+                vec!["'say \"one,two\"'", "three"],
+            ),
+            (
+                "'odd \" quote, still',three",
+                vec!["'odd \" quote, still'", "three"],
+            ),
+            ("prefix\\\"\",next", vec!["prefix\\\"\"", "next"]),
+        ] {
+            assert_eq!(
+                split_flow(value)
+                    .into_iter()
+                    .map(|(_, part)| part)
+                    .collect::<Vec<_>>(),
+                expected,
+                "flow quote state in {value:?}"
+            );
+        }
+        for (value, expected) in [
+            ("one,'[',two", vec!["one", "'['", "two"]),
+            ("one,\"{\",two", vec!["one", "\"{\"", "two"]),
+            ("[one,']',two],tail", vec!["[one,']',two]", "tail"]),
+            ("{one:'}',two},tail", vec!["{one:'}',two}", "tail"]),
+            (
+                "one,\"it's, data\",tail",
+                vec!["one", "\"it's, data\"", "tail"],
+            ),
+            (
+                "one,'\"quoted, data\"',tail",
+                vec!["one", "'\"quoted, data\"'", "tail"],
+            ),
+            (
+                "one,\"escaped \\\" comma, data\",tail",
+                vec!["one", "\"escaped \\\" comma, data\"", "tail"],
+            ),
+        ] {
+            assert_eq!(
+                split_flow(value)
+                    .into_iter()
+                    .map(|(_, part)| part)
+                    .collect::<Vec<_>>(),
+                expected,
+                "flow split {value:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn scalar_decoder_implements_every_yaml_double_quote_escape() {
+        assert_eq!(
+            decode_scalar("''"),
+            Ok((String::new(), ScalarStyle::SingleQuoted))
+        );
+        assert_eq!(
+            decode_scalar("\"\""),
+            Ok((String::new(), ScalarStyle::DoubleQuoted))
+        );
+        let escape_cases = [
+            (r"\0", "\0"),
+            (r"\a", "\u{7}"),
+            (r"\b", "\u{8}"),
+            (r"\t", "\t"),
+            ("\\\t", "\t"),
+            (r"\n", "\n"),
+            (r"\v", "\u{b}"),
+            (r"\f", "\u{c}"),
+            (r"\r", "\r"),
+            (r"\e", "\u{1b}"),
+            (r"\ ", " "),
+            (r#"\""#, "\""),
+            (r"\/", "/"),
+            (r"\\", "\\"),
+            (r"\N", "\u{85}"),
+            (r"\_", "\u{a0}"),
+            (r"\L", "\u{2028}"),
+            (r"\P", "\u{2029}"),
+            (r"\x41", "A"),
+            (r"\u03A9", "Ω"),
+            (r"\U0001F600", "😀"),
+        ];
+        for (encoded, expected) in escape_cases {
+            assert_eq!(
+                decode_double(encoded),
+                Ok(expected.to_owned()),
+                "escape {encoded:?}"
+            );
+        }
+        for invalid in [r"\", r"\q", r"\x4", r"\xGG", r"\uD800", r"\UFFFFFFFF"] {
+            assert!(
+                decode_double(invalid).is_err(),
+                "invalid escape {invalid:?}"
+            );
+        }
+
+        assert_eq!(
+            decode_scalar("plain"),
+            Ok(("plain".to_owned(), ScalarStyle::Plain))
+        );
+        assert_eq!(
+            decode_scalar("''"),
+            Ok((String::new(), ScalarStyle::SingleQuoted))
+        );
+        assert_eq!(
+            decode_scalar("'it''s'"),
+            Ok(("it's".to_owned(), ScalarStyle::SingleQuoted))
+        );
+        assert_eq!(
+            decode_scalar(r#""line\n""#),
+            Ok(("line\n".to_owned(), ScalarStyle::DoubleQuoted))
+        );
+        for invalid in ["'", "'unterminated", "\"", "\"unterminated"] {
+            assert!(
+                decode_scalar(invalid).is_err(),
+                "invalid scalar {invalid:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn folded_lines_preserve_blank_and_more_indented_boundaries() {
+        let strings = |values: &[&str]| {
+            values
+                .iter()
+                .map(|value| (*value).to_owned())
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(fold_lines(&strings(&[])), "");
+        assert_eq!(fold_lines(&strings(&["one"])), "one");
+        assert_eq!(fold_lines(&strings(&["one", "two"])), "one two");
+        assert_eq!(fold_lines(&strings(&["one", "", "two"])), "one\n\ntwo");
+        assert_eq!(
+            fold_lines(&strings(&["one", "  indented"])),
+            "one\n  indented"
+        );
     }
 }

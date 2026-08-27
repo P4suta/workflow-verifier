@@ -2,7 +2,10 @@ use workflow_verifier_domain::{
     Capability, EdgeKind, NodeKind, ObservableEffect, Provider, UnknownReason,
 };
 use workflow_verifier_foundation::Budget;
-use workflow_verifier_frontend::{DependencyKind, PipelinePhase, compile_auto, detect, entrypoint};
+use workflow_verifier_frontend::{
+    DependencyKind, DependencyLocator, PipelinePhase, compile_auto, detect, entrypoint,
+    semantic_shape,
+};
 
 #[test]
 fn detects_all_four_provider_identities() {
@@ -32,6 +35,146 @@ fn detects_all_four_provider_identities() {
         assert_eq!(detect(path, source), Some(provider));
         assert!(entrypoint(provider, path, source));
     }
+}
+
+#[test]
+fn dependency_kind_names_and_every_provider_path_identity_are_exact() {
+    assert_eq!(
+        [
+            DependencyKind::Action,
+            DependencyKind::Include,
+            DependencyKind::Component,
+            DependencyKind::ContainerImage,
+            DependencyKind::Task,
+            DependencyKind::Orb,
+            DependencyKind::Repository,
+            DependencyKind::Template,
+            DependencyKind::Unknown,
+        ]
+        .map(DependencyKind::name),
+        [
+            "action",
+            "include",
+            "component",
+            "container_image",
+            "task",
+            "orb",
+            "repository",
+            "template",
+            "unknown",
+        ]
+    );
+
+    let identities = [
+        (".github/workflows/ci.yml", Provider::Github),
+        ("repository/.github/workflows/ci.yaml", Provider::Github),
+        ("action.yml", Provider::Github),
+        ("action.yaml", Provider::Github),
+        ("actions/local/action.yml", Provider::Github),
+        ("actions/local/action.yaml", Provider::Github),
+        (".gitlab-ci.yml", Provider::Gitlab),
+        ("repository/.gitlab-ci.yml", Provider::Gitlab),
+        ("azure-pipelines.yml", Provider::Azure),
+        ("azure-pipelines.yaml", Provider::Azure),
+        ("repository/azure-pipelines.yml", Provider::Azure),
+        ("repository/azure-pipelines.yaml", Provider::Azure),
+        (".circleci/config.yml", Provider::Circleci),
+        (".circleci/config.yaml", Provider::Circleci),
+        ("repository/.circleci/config.yml", Provider::Circleci),
+        ("repository/.circleci/config.yaml", Provider::Circleci),
+    ];
+    for (path, provider) in identities {
+        assert_eq!(detect(path, ""), Some(provider), "{path:?}");
+    }
+    for path in [
+        ".github/workflows-ci.yml",
+        "repository/action.yml.backup",
+        "prefix.gitlab-ci.yml",
+        "azure-pipelines.yml.backup",
+        ".circleci/config.yml.backup",
+    ] {
+        assert_eq!(detect(path, ""), None, "near-miss path {path:?}");
+    }
+}
+
+#[test]
+fn shape_detection_requires_complete_provider_signatures() {
+    let cases = [
+        ("on: push\n", None),
+        ("jobs: {}\n", None),
+        ("on: push\njobs: {}\n", Some(Provider::Github)),
+        ("workflows: {}\n", None),
+        ("version: 2.1\n", None),
+        ("version: 2.1\nworkflows: {}\n", Some(Provider::Circleci)),
+        ("stages: [test]\n", None),
+        ("job:\n  script: echo ok\n", None),
+        (
+            "stages: [test]\njob:\n  script: echo ok\n",
+            Some(Provider::Gitlab),
+        ),
+        ("trigger: [main]\n", None),
+        ("trigger: [main]\njobs: []\n", Some(Provider::Azure)),
+        ("trigger: [main]\nsteps: []\n", Some(Provider::Azure)),
+        ("  jobs: {}\n", None),
+    ];
+    for (source, expected) in cases {
+        assert_eq!(detect("unidentified.yml", source), expected, "{source:?}");
+    }
+
+    let github = "on: push\njobs: {}\n";
+    assert!(entrypoint(
+        Provider::Github,
+        ".github/workflows/ci.yml",
+        github
+    ));
+    assert!(!entrypoint(
+        Provider::Github,
+        ".github/workflows/nested/ci.yml",
+        github
+    ));
+    assert!(!entrypoint(
+        Provider::Github,
+        ".github/workflows/ci.json",
+        github
+    ));
+    assert!(!entrypoint(Provider::Github, "action.yml", github));
+}
+
+#[test]
+fn semantic_shape_counts_every_owned_node_and_edge_kind() {
+    let compilation = compile_auto(
+        ".github/workflows/shape.yml",
+        "on: push\njobs:\n  build:\n    steps:\n      - uses: owner/action@main\n      - run: echo ok\n",
+        Budget::default(),
+    )
+    .expect("shape fixture compiles");
+    let shape = semantic_shape(&compilation.graph);
+    let count_node = |kind| {
+        compilation
+            .graph
+            .nodes
+            .iter()
+            .filter(|node| node.kind == kind)
+            .count()
+    };
+    let count_edge = |kind| {
+        compilation
+            .graph
+            .edges
+            .iter()
+            .filter(|edge| edge.kind == kind)
+            .count()
+    };
+    assert_eq!(shape.workflows, count_node(NodeKind::Workflow));
+    assert_eq!(shape.stages, count_node(NodeKind::Stage));
+    assert_eq!(shape.jobs, count_node(NodeKind::Job));
+    assert_eq!(shape.steps, count_node(NodeKind::Step));
+    assert_eq!(shape.calls, count_node(NodeKind::Call));
+    assert_eq!(shape.commands, count_node(NodeKind::Command));
+    assert_eq!(shape.parameters, count_node(NodeKind::Parameter));
+    assert_eq!(shape.control_edges, count_edge(EdgeKind::Control));
+    assert_eq!(shape.data_edges, count_edge(EdgeKind::Data));
+    assert_eq!(shape.call_edges, count_edge(EdgeKind::Call));
 }
 
 #[test]
@@ -881,6 +1024,49 @@ workflows:
 }
 
 #[test]
+fn circleci_requirement_cycle_detection_distinguishes_acyclic_and_three_node_graphs() {
+    let source = |requirements: [&str; 3]| {
+        format!(
+            "version: 2.1\njobs:\n  a:\n    steps: [checkout]\n  b:\n    steps: [checkout]\n  c:\n    steps: [checkout]\nworkflows:\n  delivery:\n    jobs:\n      - a:{}\n      - b:{}\n      - c:{}\n",
+            requirements[0], requirements[1], requirements[2]
+        )
+    };
+    let acyclic = compile_auto(
+        ".circleci/config.yml",
+        &source(["\n          requires: [b]", "\n          requires: [c]", ""]),
+        Budget::default(),
+    )
+    .expect("acyclic CircleCI workflow compiles");
+    assert!(
+        acyclic
+            .problems
+            .iter()
+            .all(|problem| problem.code != "CC-REQUIRES-CYCLE"),
+        "{:?}",
+        acyclic.problems
+    );
+
+    let cyclic = compile_auto(
+        ".circleci/config.yml",
+        &source([
+            "\n          requires: [c]",
+            "\n          requires: [a]",
+            "\n          requires: [b]",
+        ]),
+        Budget::default(),
+    )
+    .expect("cyclic CircleCI workflow remains analyzable");
+    assert_eq!(
+        cyclic
+            .problems
+            .iter()
+            .filter(|problem| problem.code == "CC-REQUIRES-CYCLE")
+            .count(),
+        1
+    );
+}
+
+#[test]
 fn malformed_yaml_never_disappears_into_an_empty_success() {
     let problems = compile_auto(".github/workflows/ci.yml", "jobs: [\n", Budget::default())
         .expect_err("malformed source is rejected");
@@ -1200,6 +1386,129 @@ extends:
     assert!(compilation.dependencies.iter().any(|dependency| {
         dependency.kind == DependencyKind::Template
             && dependency.reference == "steps/build.yml@shared"
+            && dependency.locator
+                == DependencyLocator::RepositoryFile {
+                    repository: "acme/templates".to_owned(),
+                    revision: Some("refs/tags/v1".to_owned()),
+                    path: "steps/build.yml".to_owned(),
+                    repository_type: Some("github".to_owned()),
+                }
+    }));
+    assert!(compilation.dependencies.iter().any(|dependency| {
+        dependency.kind == DependencyKind::Task
+            && dependency.reference == "PublishBuildArtifacts@1"
+            && dependency.locator == DependencyLocator::Direct
     }));
     assert!(graph.validate().is_empty(), "{:?}", graph.validate());
+}
+
+#[test]
+fn azure_literal_values_and_condition_references_retain_abstract_semantics() {
+    let source = r"parameters:
+  - name: release
+    default: stable
+variables:
+  literal: value
+jobs:
+  - job: build
+    condition: ${{ eq(variables.literal, parameters.release) }}
+    steps: []
+";
+    let compilation = compile_auto("azure-pipelines.yml", source, Budget::default())
+        .expect("Azure values compile");
+    let graph = &compilation.graph;
+    let named = |kind, name| {
+        graph
+            .nodes
+            .iter()
+            .find(|node| node.kind == kind && node.name == name)
+            .expect("named Azure node")
+    };
+    for (kind, name, expected) in [
+        (NodeKind::Parameter, "release", "stable"),
+        (NodeKind::Resource, "variable:literal", "value"),
+    ] {
+        let value = named(kind, name)
+            .attributes
+            .get("value")
+            .expect("abstract value");
+        assert_eq!(value.constants(), Some(&[expected.to_owned()][..]));
+        assert_eq!(value.provenance.len(), 1);
+        assert_eq!(value.provenance[0].origin, "Azure YAML");
+        assert_eq!(value.provenance[0].operation, "value");
+    }
+
+    let gate = named(NodeKind::Gate, "condition:job:build");
+    for reference in ["variables.literal", "parameters.release"] {
+        assert!(
+            gate.attributes
+                .contains_key(&format!("reference:{reference}")),
+            "missing gate attribute for {reference}"
+        );
+        let resource = named(NodeKind::Resource, reference);
+        assert!(graph.edges.iter().any(|edge| {
+            edge.kind == EdgeKind::Data
+                && edge.from == resource.id
+                && edge.to == gate.id
+                && edge.label.as_deref() == Some(reference)
+        }));
+    }
+}
+
+#[test]
+fn azure_dependency_cycle_detection_distinguishes_acyclic_and_three_node_graphs() {
+    let compile = |dependencies: [&str; 3]| {
+        let source = format!(
+            "stages:\n  - stage: A{}\n    jobs: []\n  - stage: B{}\n    jobs: []\n  - stage: C{}\n    jobs: []\n",
+            dependencies[0], dependencies[1], dependencies[2]
+        );
+        compile_auto("azure-pipelines.yml", &source, Budget::default())
+            .expect("Azure dependency graph remains analyzable")
+    };
+    let acyclic = compile(["\n    dependsOn: B", "\n    dependsOn: C", ""]);
+    assert!(
+        acyclic
+            .problems
+            .iter()
+            .all(|problem| problem.code != "AZ-DEPENDENCY-CYCLE"),
+        "{:?}",
+        acyclic.problems
+    );
+    let cyclic = compile([
+        "\n    dependsOn: C",
+        "\n    dependsOn: A",
+        "\n    dependsOn: B",
+    ]);
+    assert_eq!(
+        cyclic
+            .problems
+            .iter()
+            .filter(|problem| problem.code == "AZ-DEPENDENCY-CYCLE")
+            .count(),
+        1
+    );
+}
+
+#[test]
+fn gitlab_reserved_and_hidden_mappings_never_become_jobs() {
+    let source = "stages: [build]\ndefault:\n  stage: missing\n.hidden:\n  stage: missing\n";
+    let compilation = compile_auto(".gitlab-ci.yml", source, Budget::default())
+        .expect("reserved-only GitLab document compiles");
+    assert!(
+        compilation
+            .problems
+            .iter()
+            .all(|problem| !problem.code.starts_with("GL-UNKNOWN-")),
+        "{:?}",
+        compilation.problems
+    );
+    assert_eq!(
+        compilation
+            .graph
+            .nodes
+            .iter()
+            .filter(|node| node.kind == NodeKind::Job)
+            .count(),
+        0
+    );
 }

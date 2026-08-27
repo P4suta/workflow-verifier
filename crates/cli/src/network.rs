@@ -9,7 +9,31 @@ use std::time::Duration;
 use url::{Host, Url};
 use zeroize::Zeroizing;
 
+// Fixed v0.1 resolver transport profile. The response cap is the config-v2
+// resolver budget; the remaining limits bound handshake, framing, and redirect
+// amplification independently of server behavior.
 const MAX_REDIRECTS: usize = 10;
+const DEFAULT_CONNECT_TIMEOUT_SECONDS: u64 = 10;
+const DEFAULT_IO_TIMEOUT_SECONDS: u64 = 30;
+const BYTES_PER_KIBIBYTE: usize = 1_024;
+const DEFAULT_MAX_HEADER_KIBIBYTES: usize = 64;
+const BYTES_PER_MEBIBYTE: usize = 1_048_576;
+const DEFAULT_MAX_RESPONSE_MEBIBYTES: usize = 16;
+const MAX_WIRE_FRAMING_MEBIBYTES: usize = 1;
+
+// HTTP/1 framing and status widths are protocol grammar, not tuning values.
+const HTTP_HEAD_TERMINATOR: &[u8] = b"\r\n\r\n";
+const HTTP_LINE_TERMINATOR: &[u8] = b"\r\n";
+const HTTP_STATUS_DIGITS: usize = 3;
+const HTTP_INFORMATIONAL_STATUS_MIN: u16 = 100;
+const HTTP_SERVER_ERROR_STATUS_MAX: u16 = 599;
+const HTTP_SUCCESS_STATUS_MIN: u16 = 200;
+const HTTP_SUCCESS_STATUS_MAX: u16 = 299;
+const HTTP_REDIRECT_STATUSES: [u16; 5] = [301, 302, 303, 307, 308];
+const HTTPS_DEFAULT_PORT: u16 = 443;
+const HEX_RADIX: u32 = 16;
+const HEX_DIGITS_PER_BYTE: usize = 2;
+const MAX_CHUNK_SIZE_HEX_DIGITS: usize = std::mem::size_of::<usize>() * HEX_DIGITS_PER_BYTE;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct HttpLimits {
@@ -22,10 +46,10 @@ pub struct HttpLimits {
 impl Default for HttpLimits {
     fn default() -> Self {
         Self {
-            connect_timeout: Duration::from_secs(10),
-            io_timeout: Duration::from_secs(30),
-            max_header_bytes: 64 * 1024,
-            max_response_bytes: 16 * 1024 * 1024,
+            connect_timeout: Duration::from_secs(DEFAULT_CONNECT_TIMEOUT_SECONDS),
+            io_timeout: Duration::from_secs(DEFAULT_IO_TIMEOUT_SECONDS),
+            max_header_bytes: DEFAULT_MAX_HEADER_KIBIBYTES * BYTES_PER_KIBIBYTE,
+            max_response_bytes: DEFAULT_MAX_RESPONSE_MEBIBYTES * BYTES_PER_MEBIBYTE,
         }
     }
 }
@@ -83,9 +107,9 @@ fn decode_http1_head(
     maximum: usize,
 ) -> Result<(u16, BTreeMap<String, String>, usize), String> {
     let boundary = bytes
-        .windows(4)
-        .position(|window| window == b"\r\n\r\n")
-        .map(|offset| offset + 4);
+        .windows(HTTP_HEAD_TERMINATOR.len())
+        .position(|window| window == HTTP_HEAD_TERMINATOR)
+        .map(|offset| offset.saturating_add(HTTP_HEAD_TERMINATOR.len()));
     let Some(header_end) = boundary else {
         return Err(if bytes.len() > maximum {
             "HTTP response header exceeded byte limit".to_owned()
@@ -96,8 +120,9 @@ fn decode_http1_head(
     if header_end > maximum {
         return Err("HTTP response header exceeded byte limit".to_owned());
     }
-    let header = std::str::from_utf8(&bytes[..header_end - 4])
-        .map_err(|_| "HTTP response header is not UTF-8".to_owned())?;
+    let header =
+        std::str::from_utf8(&bytes[..header_end.saturating_sub(HTTP_HEAD_TERMINATOR.len())])
+            .map_err(|_| "HTTP response header is not UTF-8".to_owned())?;
     let mut lines = header.split("\r\n");
     let status_line = lines
         .next()
@@ -112,13 +137,15 @@ fn decode_http1_head(
     let status_text = status_parts
         .next()
         .ok_or_else(|| "HTTP response has no status".to_owned())?;
-    if status_text.len() != 3 || !status_text.bytes().all(|byte| byte.is_ascii_digit()) {
+    if status_text.len() != HTTP_STATUS_DIGITS
+        || !status_text.bytes().all(|byte| byte.is_ascii_digit())
+    {
         return Err("HTTP response status is malformed".to_owned());
     }
     let status = status_text
         .parse::<u16>()
         .map_err(|_| "HTTP response status is out of range".to_owned())?;
-    if !(100..=599).contains(&status) {
+    if !(HTTP_INFORMATIONAL_STATUS_MIN..=HTTP_SERVER_ERROR_STATUS_MAX).contains(&status) {
         return Err("HTTP response status is out of range".to_owned());
     }
     let mut headers = BTreeMap::new();
@@ -170,20 +197,20 @@ fn decode_chunked(bytes: &[u8], maximum: usize) -> Result<Vec<u8>, String> {
     let mut output = Vec::new();
     loop {
         let line_end = bytes[cursor..]
-            .windows(2)
-            .position(|window| window == b"\r\n")
-            .map(|offset| cursor + offset)
+            .windows(HTTP_LINE_TERMINATOR.len())
+            .position(|window| window == HTTP_LINE_TERMINATOR)
+            .map(|offset| cursor.saturating_add(offset))
             .ok_or_else(|| "HTTP chunk size is incomplete".to_owned())?;
         let line = std::str::from_utf8(&bytes[cursor..line_end])
             .map_err(|_| "HTTP chunk size is not ASCII".to_owned())?;
-        if line.is_empty() || line.contains(';') || line.len() > 16 {
+        if line.is_empty() || line.contains(';') || line.len() > MAX_CHUNK_SIZE_HEX_DIGITS {
             return Err("HTTP chunk size is malformed".to_owned());
         }
-        let length = usize::from_str_radix(line, 16)
+        let length = usize::from_str_radix(line, HEX_RADIX)
             .map_err(|_| "HTTP chunk size is malformed".to_owned())?;
-        cursor = line_end + 2;
+        cursor = line_end.saturating_add(HTTP_LINE_TERMINATOR.len());
         if length == 0 {
-            if bytes.get(cursor..) != Some(&b"\r\n"[..]) {
+            if bytes.get(cursor..) != Some(HTTP_LINE_TERMINATOR) {
                 return Err("HTTP chunk trailer is malformed".to_owned());
             }
             return Ok(output);
@@ -197,11 +224,13 @@ fn decode_chunked(bytes: &[u8], maximum: usize) -> Result<Vec<u8>, String> {
         let data = bytes
             .get(cursor..end)
             .ok_or_else(|| "HTTP chunk data is incomplete".to_owned())?;
-        if bytes.get(end..end.saturating_add(2)) != Some(&b"\r\n"[..]) {
+        if bytes.get(end..end.saturating_add(HTTP_LINE_TERMINATOR.len()))
+            != Some(HTTP_LINE_TERMINATOR)
+        {
             return Err("HTTP chunk delimiter is malformed".to_owned());
         }
         output.extend_from_slice(data);
-        cursor = end + 2;
+        cursor = end.saturating_add(HTTP_LINE_TERMINATOR.len());
     }
 }
 
@@ -381,7 +410,7 @@ impl HttpsTransport for RustlsTransport {
         let wire_limit = limits
             .max_header_bytes
             .saturating_add(limits.max_response_bytes)
-            .saturating_add(1024 * 1024);
+            .saturating_add(MAX_WIRE_FRAMING_MEBIBYTES * BYTES_PER_MEBIBYTE);
         let take_limit = u64::try_from(wire_limit.saturating_add(1)).unwrap_or(u64::MAX);
         let mut wire = Vec::new();
         stream
@@ -514,7 +543,7 @@ fn request_bytes(
         .host_str()
         .ok_or_else(|| "HTTPS URL has no DNS host".to_owned())?;
     let authority = match url.port() {
-        Some(port) if port != 443 => format!("{host}:{port}"),
+        Some(port) if port != HTTPS_DEFAULT_PORT => format!("{host}:{port}"),
         _ => host.to_owned(),
     };
     let mut target = url.path().to_owned();
@@ -806,7 +835,7 @@ where
                     self.limits.max_response_bytes
                 ));
             }
-            if matches!(response.status, 301 | 302 | 303 | 307 | 308) {
+            if HTTP_REDIRECT_STATUSES.contains(&response.status) {
                 let location = response
                     .headers
                     .get("location")
@@ -816,7 +845,8 @@ where
                     forward_headers = false;
                 }
                 state = next;
-            } else if (200..=299).contains(&response.status) {
+            } else if (HTTP_SUCCESS_STATUS_MIN..=HTTP_SUCCESS_STATUS_MAX).contains(&response.status)
+            {
                 return Ok(response);
             } else {
                 return Err(format!("HTTPS request returned status {}", response.status));
@@ -995,7 +1025,7 @@ fn canonical_origin(url: &Url) -> Result<String, String> {
         .ok_or_else(|| "HTTPS URL has no host".to_owned())?
         .to_ascii_lowercase();
     Ok(match url.port_or_known_default() {
-        Some(443) => format!("https://{host}"),
+        Some(HTTPS_DEFAULT_PORT) => format!("https://{host}"),
         Some(port) => format!("https://{host}:{port}"),
         None => return Err("HTTPS URL has no effective port".to_owned()),
     })
@@ -1057,6 +1087,10 @@ pub fn is_forbidden_address(address: IpAddr) -> bool {
 }
 
 fn forbidden_v4(address: Ipv4Addr) -> bool {
+    // Fail-closed union of the IANA IPv4 Special-Purpose Address Registry
+    // blocks relevant to outbound resolver SSRF (RFC 6890), including the
+    // documentation, benchmarking, shared, loopback, link-local, private,
+    // multicast, reserved, and limited-broadcast ranges.
     let [a, b, c, d] = address.octets();
     a == 0
         || a == 10
@@ -1079,6 +1113,9 @@ fn forbidden_v6(address: Ipv6Addr) -> bool {
     if let Some(mapped) = address.to_ipv4_mapped() {
         return forbidden_v4(mapped);
     }
+    // The same IANA registry plus the RFC-defined documentation, Teredo,
+    // benchmarking, ORCHID, and 6to4 allocations. Only ordinary global
+    // unicast remains eligible for pinning.
     let segments = address.segments();
     let global_unicast = (segments[0] & 0xe000) == 0x2000;
     let documentation = segments[0] == 0x2001 && segments[1] == 0x0db8;

@@ -1,3 +1,4 @@
+use crate::exit_code::{PUBLIC_EXIT_CODE_MAX, PUBLIC_EXIT_CODE_MIN};
 use std::collections::BTreeMap;
 use workflow_verifier_foundation::{JsonValue, content_digest, normalize_slashes};
 
@@ -75,8 +76,10 @@ impl AnalysisCacheEntry {
         exit_code: i64,
         report: impl Into<String>,
     ) -> Result<Self, String> {
-        if !(0..=5).contains(&exit_code) {
-            return Err("cache exit code must be 0..5".to_owned());
+        if !(PUBLIC_EXIT_CODE_MIN..=PUBLIC_EXIT_CODE_MAX).contains(&exit_code) {
+            return Err(format!(
+                "cache exit code must be {PUBLIC_EXIT_CODE_MIN}..{PUBLIC_EXIT_CODE_MAX}"
+            ));
         }
         let mut entry = Self {
             key: key.into(),
@@ -152,5 +155,75 @@ impl AnalysisCacheEntry {
             return Err("analysis cache integrity mismatch".to_owned());
         }
         Ok(rebuilt)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_foundation::valid_content_digest;
+
+    #[test]
+    fn cache_key_authenticates_each_semantic_input_and_normalizes_paths() {
+        let inputs = [CacheKeyInput {
+            path: "workflows\\ci.yml".to_owned(),
+            digest: "sha256:input".to_owned(),
+        }];
+        let baseline = cache_key("tool", "config", "lock", &inputs);
+        assert!(valid_content_digest(&baseline));
+        assert_eq!(
+            baseline,
+            cache_key(
+                "tool",
+                "config",
+                "lock",
+                &[CacheKeyInput {
+                    path: "workflows/ci.yml".to_owned(),
+                    digest: "sha256:input".to_owned(),
+                }],
+            )
+        );
+        for changed in [
+            cache_key("other-tool", "config", "lock", &inputs),
+            cache_key("tool", "other-config", "lock", &inputs),
+            cache_key("tool", "config", "other-lock", &inputs),
+            cache_key(
+                "tool",
+                "config",
+                "lock",
+                &[CacheKeyInput {
+                    path: "workflows/ci.yml".to_owned(),
+                    digest: "sha256:other-input".to_owned(),
+                }],
+            ),
+        ] {
+            assert_ne!(baseline, changed);
+        }
+    }
+
+    #[test]
+    fn cache_integrity_and_public_exit_code_boundaries_fail_closed() {
+        for exit_code in [PUBLIC_EXIT_CODE_MIN, PUBLIC_EXIT_CODE_MAX] {
+            let entry = AnalysisCacheEntry::new("key", exit_code, "report")
+                .expect("public exit-code boundary");
+            assert!(entry.verify_integrity());
+            assert_eq!(
+                AnalysisCacheEntry::parse(&entry.to_canonical_json()),
+                Ok(entry)
+            );
+        }
+        for exit_code in [
+            PUBLIC_EXIT_CODE_MIN.saturating_sub(1),
+            PUBLIC_EXIT_CODE_MAX.saturating_add(1),
+        ] {
+            assert!(AnalysisCacheEntry::new("key", exit_code, "report").is_err());
+        }
+
+        let entry =
+            AnalysisCacheEntry::new("key", PUBLIC_EXIT_CODE_MIN, "report").expect("cache entry");
+        let mut tampered = entry.clone();
+        tampered.report.push_str(" changed");
+        assert!(!tampered.verify_integrity());
+        assert!(AnalysisCacheEntry::parse(&tampered.to_canonical_json()).is_err());
     }
 }

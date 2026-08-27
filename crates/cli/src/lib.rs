@@ -30,10 +30,12 @@ use workflow_verifier_helper_runtime::{
     SourceSnapshot as RuntimeSourceSnapshot, source_snapshot_with_exclusions,
 };
 use workflow_verifier_product::{
-    BuildInfo, Config, ConfigParseOptions, ConfigTrust, DependencyFetcher, FetchedDependency,
-    FixProposal, GraphKind, Lockfile, PolicyExpectation, ResolverOrigin, evaluate_policy,
-    evaluate_policy_fixture, graph_to_canonical_json, graph_to_dot, link_local, migrate_config_v1,
-    report_to_sarif, resolve_dependencies, semantic_diff,
+    BuildInfo, Config, ConfigParseOptions, ConfigTrust, DependencyFetcher, EXIT_CODE_FINDING,
+    EXIT_CODE_INCOMPLETE, EXIT_CODE_INTERNAL_FAILURE, EXIT_CODE_INVALID_INPUT, EXIT_CODE_PASS,
+    EXIT_CODE_SANDBOX_INFRASTRUCTURE, FetchedDependency, FixProposal, GraphKind, Lockfile,
+    PolicyExpectation, ResolverOrigin, evaluate_policy, evaluate_policy_fixture,
+    graph_to_canonical_json, graph_to_dot, link_local, migrate_config_v1, report_to_sarif,
+    resolve_dependencies, semantic_diff,
 };
 use workflow_verifier_sandbox::{
     Backend as SandboxBackend, Control as SandboxControl, Dependency as SandboxDependency,
@@ -66,6 +68,24 @@ Commands:
 
 static TEMP_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
+// Process-adapter bounds are fixed product contracts: runner output follows
+// runner-v2's 16 MiB cap, diagnostics get a separate one MiB channel, and
+// doctor probes are short, bounded control requests.
+const BYTES_PER_MEBIBYTE: u64 = 1_048_576;
+const SANDBOX_HELPER_STDOUT_MEBIBYTES: u64 = 16;
+const SANDBOX_HELPER_STDERR_MEBIBYTES: u64 = 1;
+const DOCTOR_TIMEOUT_SECONDS: u64 = 5;
+const DOCTOR_STREAM_MEBIBYTES: u64 = 1;
+const SUPERVISOR_POLL_MILLISECONDS: u64 = 10;
+const SECONDS_PER_DAY: u64 = 86_400;
+const DETERMINISTIC_WORKER_COUNT: usize = 1;
+// IANA's registered default port for HTTPS URL authorities.
+const HTTPS_DEFAULT_PORT: u16 = 443;
+
+fn process_exit_code(code: i64) -> i32 {
+    i32::try_from(code).expect("the documented public exit-code range fits i32")
+}
+
 #[derive(Debug)]
 struct CliError {
     code: i32,
@@ -75,21 +95,21 @@ struct CliError {
 impl CliError {
     fn invalid(message: impl Into<String>) -> Self {
         Self {
-            code: 2,
+            code: process_exit_code(EXIT_CODE_INVALID_INPUT),
             message: message.into(),
         }
     }
 
     fn internal(message: impl Into<String>) -> Self {
         Self {
-            code: 4,
+            code: process_exit_code(EXIT_CODE_INTERNAL_FAILURE),
             message: message.into(),
         }
     }
 
     fn infrastructure(message: impl Into<String>) -> Self {
         Self {
-            code: 5,
+            code: process_exit_code(EXIT_CODE_SANDBOX_INFRASTRUCTURE),
             message: message.into(),
         }
     }
@@ -105,7 +125,7 @@ struct CommandOutput {
 impl CommandOutput {
     fn success(stdout: impl Into<String>) -> Self {
         Self {
-            code: 0,
+            code: process_exit_code(EXIT_CODE_PASS),
             stdout: stdout.into(),
             stderr: String::new(),
         }
@@ -150,7 +170,7 @@ pub fn run_env() -> i32 {
         Ok(path) => path,
         Err(error) => {
             let _ = writeln!(io::stderr().lock(), "workflow-verifier: {error}");
-            return 4;
+            return process_exit_code(EXIT_CODE_INTERNAL_FAILURE);
         }
     };
     let output = match utf8_arguments(&arguments).and_then(|values| dispatch(&cwd, &values)) {
@@ -172,7 +192,7 @@ pub fn run_env() -> i32 {
     if stdout_ok && stderr_ok {
         output.code
     } else {
-        4
+        process_exit_code(EXIT_CODE_INTERNAL_FAILURE)
     }
 }
 
@@ -357,7 +377,7 @@ fn sandbox_run(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliErr
     let planned = build_sandbox_plan(cwd, arguments)?;
     if let SandboxPlanStatus::Incomplete(reasons) = planned.plan.status() {
         return Ok(CommandOutput {
-            code: 3,
+            code: process_exit_code(EXIT_CODE_INCOMPLETE),
             stdout: String::new(),
             stderr: format!("{}\n", reasons.join("\n")),
         });
@@ -370,10 +390,10 @@ fn sandbox_run(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliErr
             CliError::infrastructure(format!("sandbox evidence validation failed: {error}"))
         })?;
     let code = match &execution.outcome {
-        SandboxOutcome::Completed => 0,
+        SandboxOutcome::Completed => process_exit_code(EXIT_CODE_PASS),
         SandboxOutcome::StepFailed { .. }
         | SandboxOutcome::TimedOut { .. }
-        | SandboxOutcome::OutputLimitExceeded { .. } => 1,
+        | SandboxOutcome::OutputLimitExceeded { .. } => process_exit_code(EXIT_CODE_FINDING),
     };
     Ok(CommandOutput {
         code,
@@ -394,8 +414,8 @@ fn execute_sandbox_helper(planned: &PlannedSandbox) -> Result<SandboxRun, CliErr
         &mut command,
         Some(plan.as_bytes()),
         Duration::from_secs(planned.plan.validated().limits.cpu_seconds),
-        16 * 1024 * 1024,
-        1024 * 1024,
+        SANDBOX_HELPER_STDOUT_MEBIBYTES * BYTES_PER_MEBIBYTE,
+        SANDBOX_HELPER_STDERR_MEBIBYTES * BYTES_PER_MEBIBYTE,
     )
     .map_err(|error| {
         CliError::infrastructure(format!("sandbox helper supervision failed: {error}"))
@@ -589,7 +609,7 @@ fn supervise_process(
         match child.try_wait() {
             Ok(Some(status)) => break status,
             Ok(None) if started.elapsed() < timeout && !exceeded.load(Ordering::Acquire) => {
-                std::thread::sleep(Duration::from_millis(10));
+                std::thread::sleep(Duration::from_millis(SUPERVISOR_POLL_MILLISECONDS));
             }
             Ok(None) => {
                 timed_out = started.elapsed() >= timeout;
@@ -918,9 +938,9 @@ fn sandbox_audit(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
     }
     let audit = SandboxAudit::evaluate(&plan, &evidence).map_err(CliError::invalid)?;
     let code = if audit.status() == &SandboxAuditStatus::Verified {
-        0
+        process_exit_code(EXIT_CODE_PASS)
     } else {
-        3
+        process_exit_code(EXIT_CODE_INCOMPLETE)
     };
     Ok(CommandOutput {
         code,
@@ -1072,7 +1092,11 @@ fn command_policy(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, Cli
         ),
     ]));
     Ok(CommandOutput {
-        code: i32::from(!passed),
+        code: process_exit_code(if passed {
+            EXIT_CODE_PASS
+        } else {
+            EXIT_CODE_FINDING
+        }),
         stdout: json.canonical_line(),
         stderr: String::new(),
     })
@@ -1178,13 +1202,15 @@ fn current_utc_date() -> Result<String, CliError> {
         .duration_since(std::time::UNIX_EPOCH)
         .map_err(|_| CliError::internal("system clock is before the Unix epoch"))?
         .as_secs()
-        / 86_400;
+        / SECONDS_PER_DAY;
     let days = i64::try_from(days)
         .map_err(|_| CliError::internal("system clock date exceeds the supported range"))?;
     Ok(utc_date_from_days(days))
 }
 
 fn utc_date_from_days(days_since_epoch: i64) -> String {
+    // Integer civil-date conversion by Howard Hinnant. Its era constants are
+    // derived from the proleptic Gregorian 400-year cycle, not tuning knobs.
     let days = days_since_epoch + 719_468;
     let era = if days >= 0 { days } else { days - 146_096 } / 146_097;
     let day_of_era = days - era * 146_097;
@@ -1487,9 +1513,9 @@ fn probe_backend(path: &Path, id: &str, engine: &str) -> Result<BackendAttestati
     let output = supervise_process(
         &mut command,
         None,
-        Duration::from_secs(5),
-        1024 * 1024,
-        1024 * 1024,
+        Duration::from_secs(DOCTOR_TIMEOUT_SECONDS),
+        DOCTOR_STREAM_MEBIBYTES * BYTES_PER_MEBIBYTE,
+        DOCTOR_STREAM_MEBIBYTES * BYTES_PER_MEBIBYTE,
     )
     .map_err(|error| format!("helper doctor failed: {error}"))?;
     if output.timed_out {
@@ -2117,7 +2143,11 @@ fn command_resolve(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, Cl
     messages.sort();
     messages.dedup();
     Ok(CommandOutput {
-        code: i32::from(!messages.is_empty()) * 3,
+        code: process_exit_code(if messages.is_empty() {
+            EXIT_CODE_PASS
+        } else {
+            EXIT_CODE_INCOMPLETE
+        }),
         stdout: result.lockfile.to_canonical_json(),
         stderr: if messages.is_empty() {
             String::new()
@@ -2361,7 +2391,7 @@ fn analyze_target(target: &Path, common: &CommonOptions) -> Result<AnalyzedWorks
             persona,
             budget: Budget::default(),
             cancellation: CancellationToken::new(),
-            worker_count: 1,
+            worker_count: DETERMINISTIC_WORKER_COUNT,
             strict: common.strict,
         })
         .map_err(|error| CliError::invalid(error.to_string()))?;
@@ -2708,7 +2738,8 @@ fn render_text(result: &AnalysisResult, sources: &BTreeMap<String, String>) -> S
 }
 
 fn check_exit_code(result: &AnalysisResult) -> i32 {
-    i32::try_from(result.report.provenance.exit_code).unwrap_or(4)
+    i32::try_from(result.report.provenance.exit_code)
+        .unwrap_or_else(|_| process_exit_code(EXIT_CODE_INTERNAL_FAILURE))
 }
 
 fn frontend_error(problems: &[workflow_verifier_frontend::FrontendProblem]) -> CliError {
@@ -2868,7 +2899,7 @@ fn resolver_credential<'a>(
         .host_str()
         .ok_or_else(|| "resolver URL has no host".to_owned())?;
     let authority = match url.port() {
-        Some(port) if port != 443 => format!("{host}:{port}"),
+        Some(port) if port != HTTPS_DEFAULT_PORT => format!("{host}:{port}"),
         _ => host.to_owned(),
     };
     let actual = CredentialKey::new(provider, Some(&authority))?;

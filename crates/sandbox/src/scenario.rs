@@ -408,3 +408,40 @@ fn parse_matrix(
         Err("scenario matrix values must be scalar strings, booleans, or integers".to_owned())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn scenario() -> Scenario {
+        Scenario::new(
+            Provider::Github,
+            ".github/workflows/ci.yml",
+            "build",
+            "push",
+            RunnerPlatform::LinuxX86_64,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn validation_checks_binding_and_matrix_names_independently() {
+        let mut invalid_input = scenario();
+        invalid_input
+            .inputs
+            .insert("9input".to_owned(), "value".to_owned());
+        assert_eq!(
+            invalid_input.validate().unwrap_err(),
+            "scenario input, matrix, and variable names must be portable"
+        );
+
+        let mut invalid_matrix = scenario();
+        invalid_matrix
+            .matrix
+            .insert("9matrix".to_owned(), JsonValue::Boolean(true));
+        assert_eq!(
+            invalid_matrix.validate().unwrap_err(),
+            "scenario input, matrix, and variable names must be portable"
+        );
+    }
+}

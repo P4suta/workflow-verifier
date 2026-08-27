@@ -237,34 +237,35 @@ fn topological_nodes<'a>(graph: &'a Graph, selected: &BTreeSet<String>) -> Vec<&
     let mut emitted = BTreeSet::new();
     let mut output = Vec::new();
     while !remaining.is_empty() {
-        let mut ready: Vec<_> = remaining
+        let mut ready_ids: Vec<_> = remaining
             .iter()
-            .filter_map(|id| graph.nodes.iter().find(|node| node.id == *id))
-            .filter(|node| {
+            .filter(|id| {
                 graph.edges.iter().all(|edge| {
                     !matches!(edge.kind, EdgeKind::Control | EdgeKind::Call)
-                        || edge.to != node.id
+                        || edge.to != ***id
                         || !selected.contains(&edge.from)
                         || emitted.contains(&edge.from)
                 })
             })
+            .cloned()
             .collect();
-        if ready.is_empty() {
-            ready = remaining
-                .iter()
-                .filter_map(|id| graph.nodes.iter().find(|node| node.id == *id))
-                .collect();
+        if ready_ids.is_empty() {
+            // Cycles are emitted in the same total order as acyclic peers. Most
+            // importantly, every pass owns IDs from `remaining`, so progress is
+            // structural and cannot depend on a node lookup predicate.
+            ready_ids.extend(remaining.iter().cloned());
         }
-        ready.sort_by(|left, right| {
-            left.span
-                .cmp(&right.span)
-                .then(left.kind.cmp(&right.kind))
-                .then(left.name.cmp(&right.name))
-                .then(left.id.cmp(&right.id))
+        ready_ids.sort_by(|left_id, right_id| {
+            let left = graph.find_node(left_id);
+            let right = graph.find_node(right_id);
+            left.map(|node| (&node.span, node.kind, &node.name, &node.id))
+                .cmp(&right.map(|node| (&node.span, node.kind, &node.name, &node.id)))
+                .then(left_id.cmp(right_id))
         });
-        for node in ready {
-            if remaining.remove(&node.id) {
-                emitted.insert(node.id.clone());
+        for id in ready_ids {
+            remaining.remove(&id);
+            emitted.insert(id.clone());
+            if let Some(node) = graph.find_node(&id) {
                 output.push(node);
             }
         }
@@ -441,5 +442,353 @@ fn unsupported_reason(node: &Node) -> Option<String> {
             ))
         }
         _ => None,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use workflow_verifier_domain::{AbstractValue, Condition, Edge, Secrecy, Trust, UnknownReason};
+    use workflow_verifier_foundation::{JsonValue, Span};
+
+    fn scenario(platform: crate::RunnerPlatform) -> Scenario {
+        Scenario::new(
+            workflow_verifier_domain::Provider::Github,
+            ".github/workflows/ci.yml",
+            "build",
+            "push",
+            platform,
+        )
+        .unwrap()
+    }
+
+    fn node(kind: NodeKind, name: &str, phase: Phase) -> Node {
+        Node::simple(
+            workflow_verifier_domain::Provider::Github,
+            kind,
+            name,
+            phase,
+            Span::default(),
+        )
+    }
+
+    fn constant(value: &str) -> AbstractValue {
+        AbstractValue::string_constant(value, Trust::Trusted, Secrecy::Public, Vec::new())
+    }
+
+    #[test]
+    fn truth_operators_cover_the_complete_three_valued_table() {
+        let values = [Truth::False, Truth::True, Truth::Unknown];
+        let expected_and = [
+            [Truth::False, Truth::False, Truth::False],
+            [Truth::False, Truth::True, Truth::Unknown],
+            [Truth::False, Truth::Unknown, Truth::Unknown],
+        ];
+        let expected_or = [
+            [Truth::False, Truth::True, Truth::Unknown],
+            [Truth::True, Truth::True, Truth::True],
+            [Truth::Unknown, Truth::True, Truth::Unknown],
+        ];
+        for (left_index, left) in values.into_iter().enumerate() {
+            for (right_index, right) in values.into_iter().enumerate() {
+                assert_eq!(
+                    truth_and(left, right),
+                    expected_and[left_index][right_index]
+                );
+                assert_eq!(truth_or(left, right), expected_or[left_index][right_index]);
+            }
+        }
+    }
+
+    #[test]
+    fn scenario_event_facts_support_equality_inequality_and_unknown_atoms() {
+        let scenario = scenario(crate::RunnerPlatform::LinuxX86_64);
+        assert_eq!(
+            scenario_fact(&scenario, "github.event_name == 'push'"),
+            Some(true)
+        );
+        assert_eq!(
+            scenario_fact(&scenario, "github.event_name != 'push'"),
+            Some(false)
+        );
+        assert_eq!(
+            scenario_fact(&scenario, "github.event_name != \"schedule\""),
+            Some(true)
+        );
+        assert_eq!(
+            scenario_fact(&scenario, "CI_PIPELINE_SOURCE == 'push'"),
+            Some(true)
+        );
+        assert_eq!(scenario_fact(&scenario, "github.ref == 'main'"), None);
+    }
+
+    #[test]
+    fn concretization_covers_all_scalar_matrix_and_platform_secret_forms() {
+        let scenario = scenario(crate::RunnerPlatform::LinuxX86_64)
+            .with_input("input", "input-value")
+            .unwrap()
+            .with_variable("variable", "variable-value")
+            .unwrap()
+            .with_matrix("string", JsonValue::String("text".to_owned()))
+            .unwrap()
+            .with_matrix("boolean", JsonValue::Boolean(true))
+            .unwrap()
+            .with_matrix("integer", JsonValue::Integer(-1))
+            .unwrap()
+            .with_secret("TOKEN")
+            .unwrap();
+        let source = "${{ inputs.input }} ${{ vars.variable }} ${{ matrix.string }} ${{ matrix.boolean }} ${{ matrix.integer }} ${{ secrets.TOKEN }}";
+        assert_eq!(
+            concretize(&scenario, "bash", source),
+            "input-value variable-value text true -1 \"${TOKEN}\""
+        );
+        assert!(concretize(&scenario, "pwsh", source).ends_with("$env:TOKEN"));
+        assert!(concretize(&scenario, "cmd", source).ends_with("%TOKEN%"));
+    }
+
+    #[test]
+    fn shell_selection_attributes_and_confinement_are_all_semantic() {
+        let mut command = node(NodeKind::Command, "echo portable", Phase::Run);
+        command
+            .attributes
+            .insert("shell".to_owned(), constant("sh"));
+        command.attributes.insert(
+            "working_directory".to_owned(),
+            constant("/workspace/subdirectory"),
+        );
+        assert_eq!(attribute_constant(&command, "shell"), Some("sh"));
+        let step = shell_step(
+            &scenario(crate::RunnerPlatform::LinuxX86_64),
+            "sha256:image",
+            &command,
+        );
+        assert_eq!(step.argv[0], "/bin/sh");
+        assert!(step.supported);
+
+        command.attributes.insert(
+            "working_directory".to_owned(),
+            constant("/workspace-escape"),
+        );
+        assert!(
+            !shell_step(
+                &scenario(crate::RunnerPlatform::LinuxX86_64),
+                "sha256:image",
+                &command
+            )
+            .supported
+        );
+        command
+            .attributes
+            .insert("shell".to_owned(), constant("python"));
+        assert!(
+            !shell_step(
+                &scenario(crate::RunnerPlatform::LinuxX86_64),
+                "sha256:image",
+                &command
+            )
+            .supported
+        );
+
+        let multiple = constant("bash").join(&constant("sh"));
+        command.attributes.insert("shell".to_owned(), multiple);
+        assert_eq!(attribute_constant(&command, "shell"), None);
+
+        for unresolved in [
+            "echo ${{ unresolved.value }}",
+            "echo $[[ unresolved.value ]]",
+            "echo << unresolved.value >>",
+        ] {
+            let unresolved_command = node(NodeKind::Command, unresolved, Phase::Run);
+            assert!(
+                !shell_step(
+                    &scenario(crate::RunnerPlatform::LinuxX86_64),
+                    "sha256:image",
+                    &unresolved_command,
+                )
+                .supported
+            );
+        }
+    }
+
+    #[test]
+    fn unsupported_nodes_are_classified_by_kind_phase_and_marker() {
+        let mut call = node(NodeKind::Call, "external/action@v1", Phase::Run);
+        assert_eq!(unsupported_reason(&call), None);
+        call.unknown = Some(UnknownReason::UnresolvedDependency("external".to_owned()));
+        assert!(
+            unsupported_reason(&call)
+                .unwrap()
+                .contains("Unresolved_call")
+        );
+
+        let opaque_plan = node(NodeKind::Opaque, "dynamic", Phase::Plan);
+        let opaque_run = node(NodeKind::Opaque, "dynamic", Phase::Run);
+        assert_eq!(unsupported_reason(&opaque_plan), None);
+        assert!(
+            unsupported_reason(&opaque_run)
+                .unwrap()
+                .contains("Unsupported_feature")
+        );
+
+        let resource = node(NodeKind::Resource, "artifact upload", Phase::Run);
+        let benign = node(NodeKind::Resource, "workspace", Phase::Run);
+        assert!(unsupported_reason(&resource).is_some());
+        assert_eq!(unsupported_reason(&benign), None);
+    }
+
+    #[test]
+    fn job_closure_follows_only_control_edges_from_jobs_and_handles_cycles() {
+        let prerequisite = node(NodeKind::Job, "prerequisite", Phase::Run);
+        let selected = node(NodeKind::Job, "selected", Phase::Run);
+        let command = node(NodeKind::Command, "command", Phase::Run);
+        let mut graph = Graph::empty(workflow_verifier_domain::Provider::Github, "ci.yml");
+        graph.nodes = vec![prerequisite.clone(), selected.clone(), command.clone()];
+        graph.edges = vec![
+            Edge::simple(
+                EdgeKind::Control,
+                prerequisite.id.clone(),
+                selected.id.clone(),
+            ),
+            Edge::simple(
+                EdgeKind::Control,
+                selected.id.clone(),
+                prerequisite.id.clone(),
+            ),
+            Edge::simple(EdgeKind::Control, command.id.clone(), selected.id.clone()),
+            Edge::simple(EdgeKind::Data, command.id.clone(), selected.id.clone()),
+        ];
+        assert_eq!(
+            job_closure(&graph, &selected.id),
+            BTreeSet::from([prerequisite.id, selected.id])
+        );
+    }
+
+    #[test]
+    fn descendants_respect_gates_edge_kinds_and_local_job_boundaries() {
+        let mut gate = node(NodeKind::Gate, "event gate", Phase::Plan);
+        gate.condition = Condition::atom("github.event_name == 'push'");
+        let selected = node(NodeKind::Job, "selected", Phase::Run);
+        let selected_command = node(NodeKind::Command, "selected command", Phase::Run);
+        let local_job = node(NodeKind::Job, "local", Phase::Run);
+        let local_command = node(NodeKind::Command, "local command", Phase::Run);
+        let foreign_job = node(NodeKind::Job, "foreign", Phase::Run);
+        let foreign_command = node(NodeKind::Command, "foreign command", Phase::Run);
+        let mut graph = Graph::empty(workflow_verifier_domain::Provider::Github, "ci.yml");
+        graph.nodes = vec![
+            gate.clone(),
+            selected.clone(),
+            selected_command.clone(),
+            local_job.clone(),
+            local_command.clone(),
+            foreign_job.clone(),
+            foreign_command.clone(),
+        ];
+        graph.edges = vec![
+            Edge::new(
+                EdgeKind::Control,
+                gate.id.clone(),
+                selected.id.clone(),
+                Condition::True,
+                Some("gate".to_owned()),
+            ),
+            Edge::simple(
+                EdgeKind::Control,
+                selected.id.clone(),
+                selected_command.id.clone(),
+            ),
+            Edge::new(
+                EdgeKind::Call,
+                selected.id.clone(),
+                local_job.id.clone(),
+                Condition::True,
+                Some("local-unit".to_owned()),
+            ),
+            Edge::simple(
+                EdgeKind::Control,
+                local_job.id.clone(),
+                local_command.id.clone(),
+            ),
+            Edge::simple(EdgeKind::Call, selected.id.clone(), foreign_job.id.clone()),
+            Edge::simple(
+                EdgeKind::Control,
+                foreign_job.id.clone(),
+                foreign_command.id.clone(),
+            ),
+        ];
+        let reachable = descendants(
+            &graph,
+            &BTreeSet::from([selected.id.clone()]),
+            &scenario(crate::RunnerPlatform::LinuxX86_64),
+        );
+        assert_eq!(reachable.get(&selected_command.id), Some(&Truth::True));
+        assert_eq!(reachable.get(&local_command.id), Some(&Truth::True));
+        assert!(!reachable.contains_key(&foreign_job.id));
+        assert!(!reachable.contains_key(&foreign_command.id));
+    }
+
+    #[test]
+    fn only_a_gate_edge_to_the_selected_job_can_replace_the_job_root() {
+        for (target_selected_job, gate_label) in [(false, Some("gate")), (true, Some("not-a-gate"))]
+        {
+            let mut false_gate = node(NodeKind::Gate, "distractor gate", Phase::Plan);
+            false_gate.condition = Condition::False;
+            let selected = node(NodeKind::Job, "selected", Phase::Run);
+            let other = node(NodeKind::Job, "other", Phase::Run);
+            let command = node(NodeKind::Command, "selected command", Phase::Run);
+            let gate_target = if target_selected_job {
+                selected.id.clone()
+            } else {
+                other.id.clone()
+            };
+            let mut graph = Graph::empty(workflow_verifier_domain::Provider::Github, "ci.yml");
+            graph.nodes = vec![false_gate.clone(), selected.clone(), other, command.clone()];
+            graph.edges = vec![
+                Edge::new(
+                    EdgeKind::Control,
+                    false_gate.id.clone(),
+                    gate_target,
+                    Condition::True,
+                    gate_label.map(str::to_owned),
+                ),
+                Edge::simple(EdgeKind::Control, selected.id.clone(), command.id.clone()),
+            ];
+            let reachable = descendants(
+                &graph,
+                &BTreeSet::from([selected.id]),
+                &scenario(crate::RunnerPlatform::LinuxX86_64),
+            );
+            assert_eq!(reachable.get(&command.id), Some(&Truth::True));
+        }
+    }
+
+    #[test]
+    fn topological_order_honors_only_selected_control_or_call_dependencies() {
+        let target = node(NodeKind::Command, "a-target", Phase::Run);
+        let predecessor = node(NodeKind::Command, "z-predecessor", Phase::Run);
+        let external = node(NodeKind::Command, "external", Phase::Run);
+        let mut graph = Graph::empty(workflow_verifier_domain::Provider::Github, "ci.yml");
+        graph.nodes = vec![target.clone(), predecessor.clone(), external.clone()];
+        graph.edges = vec![
+            Edge::simple(EdgeKind::Control, predecessor.id.clone(), target.id.clone()),
+            Edge::simple(EdgeKind::Data, target.id.clone(), predecessor.id.clone()),
+            Edge::simple(EdgeKind::Control, external.id, predecessor.id.clone()),
+        ];
+        let selected = BTreeSet::from([target.id.clone(), predecessor.id.clone()]);
+        let ordered: Vec<_> = topological_nodes(&graph, &selected)
+            .into_iter()
+            .map(|node| node.name.as_str())
+            .collect();
+        assert_eq!(ordered, ["z-predecessor", "a-target"]);
+
+        graph.edges.push(Edge::simple(
+            EdgeKind::Call,
+            target.id.clone(),
+            predecessor.id.clone(),
+        ));
+        let cyclic: Vec<_> = topological_nodes(&graph, &selected)
+            .into_iter()
+            .map(|node| node.name.as_str())
+            .collect();
+        assert_eq!(cyclic, ["a-target", "z-predecessor"]);
     }
 }

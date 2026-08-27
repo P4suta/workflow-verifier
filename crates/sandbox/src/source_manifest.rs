@@ -3,12 +3,17 @@ use workflow_verifier_foundation::{
     JsonValue, PublicPath, content_digest, normalize_slashes, portable_path_key,
 };
 
-const GENERATED_DIRECTORIES: [&str; 4] = [
+const GENERATED_DIRECTORIES: &[&str] = &[
     ".git",
     ".workflow-verifier",
     ".workflow-verifier-cache",
     ".workflow-verifier-output",
 ];
+
+// Published minima from `schema/source-manifest-v2.schema.json`.
+pub const SOURCE_MANIFEST_V2_MIN_FILE_BYTES: u64 = 16_777_216;
+pub const SOURCE_MANIFEST_V2_MIN_ENTRIES: usize = 100_000;
+pub const SOURCE_MANIFEST_V2_MIN_SNAPSHOT_BYTES: u64 = 4_294_967_296;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ManifestBudget {
@@ -20,9 +25,9 @@ pub struct ManifestBudget {
 impl Default for ManifestBudget {
     fn default() -> Self {
         Self {
-            max_file_bytes: 16 * 1024 * 1024,
-            max_entries: 100_000,
-            max_snapshot_bytes: 4_294_967_296,
+            max_file_bytes: SOURCE_MANIFEST_V2_MIN_FILE_BYTES,
+            max_entries: SOURCE_MANIFEST_V2_MIN_ENTRIES,
+            max_snapshot_bytes: SOURCE_MANIFEST_V2_MIN_SNAPSHOT_BYTES,
         }
     }
 }
@@ -232,7 +237,7 @@ impl SourceManifest {
                 }
             };
             let size = u64::try_from(bytes.len()).map_err(|_| "source file is too large")?;
-            if size > budget.max_file_bytes {
+            if limit_exceeded(size, budget.max_file_bytes) {
                 return Err(format!(
                     "Incomplete.Resource_limit: file exceeds 16 MiB: {relative}"
                 ));
@@ -240,7 +245,7 @@ impl SourceManifest {
             total_size = total_size
                 .checked_add(size)
                 .ok_or_else(|| "Incomplete.Resource_limit: snapshot size overflow".to_owned())?;
-            if total_size > budget.max_snapshot_bytes {
+            if limit_exceeded(total_size, budget.max_snapshot_bytes) {
                 return Err("Incomplete.Resource_limit: snapshot exceeds 4 GiB".to_owned());
             }
             entries.push(ManifestEntry {
@@ -445,4 +450,20 @@ fn validate_symlinks(entries: &[ManifestEntry]) -> Result<(), String> {
         }
     }
     Ok(())
+}
+
+fn limit_exceeded(observed: u64, limit: u64) -> bool {
+    observed > limit
+}
+
+#[cfg(test)]
+mod tests {
+    use super::limit_exceeded;
+
+    #[test]
+    fn resource_limit_is_inclusive_at_the_published_boundary() {
+        let limit = u64::MAX - 1;
+        assert!(!limit_exceeded(limit, limit));
+        assert!(limit_exceeded(limit + 1, limit));
+    }
 }
