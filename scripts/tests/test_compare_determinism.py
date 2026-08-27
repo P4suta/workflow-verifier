@@ -102,6 +102,17 @@ class CompareDeterminismTests(unittest.TestCase):
             )
             self.assertEqual(result["schema"], "determinism-comparison-v2")
 
+    def test_github_artifact_wrapper_names_are_projected_to_platform_names(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            platforms = [
+                self.platform(root, f"determinism-{platform}")
+                for platform in sorted(RELEASE_PLATFORMS)
+            ]
+            result = compare(platforms)
+            self.assertTrue(result["passed"])
+            self.assertEqual(result["platforms"], sorted(RELEASE_PLATFORMS))
+
     def test_platform_bound_report_provenance_is_recorded_but_not_compared(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

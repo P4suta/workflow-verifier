@@ -1333,11 +1333,14 @@ fn secret_rule(graph: &Graph, index: &GraphIndex<'_>, dataflow: &Dataflow) -> Ru
     }) {
         let value = dataflow.at(sink);
         let summary = (sink.kind == NodeKind::Command).then(|| script_summary(sink));
+        let explicit_credential_transport =
+            sink.kind == NodeKind::Call && sink.effects.contains(&ObservableEffect::CredentialUse);
         let (network, output) = summary.as_ref().map_or_else(
             || {
                 (
-                    sink.effects.contains(&ObservableEffect::NetworkRequest)
-                        || sink.capabilities.contains(&Capability::Network),
+                    !explicit_credential_transport
+                        && (sink.effects.contains(&ObservableEffect::NetworkRequest)
+                            || sink.capabilities.contains(&Capability::Network)),
                     false,
                 )
             },
@@ -3442,6 +3445,28 @@ mod tests {
             diagnostic.rule_id == "WV-SEC-002"
                 && diagnostic.capabilities.contains(&Capability::Network)
         }));
+    }
+
+    #[test]
+    fn an_explicit_credential_transport_is_not_secret_exfiltration() {
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let mut call = test_node(NodeKind::Call, "docker/login-action@revision");
+        call.capabilities = vec![Capability::Network, Capability::SecretAccess];
+        call.effects = vec![ObservableEffect::CredentialUse];
+        call.attributes.insert(
+            "password".to_owned(),
+            test_value("secret", Trust::Trusted, Secrecy::Secret),
+        );
+        graph.add_node(call);
+
+        let result = verify(Persona::Gate, &graph);
+        assert_eq!(state(&result, "WV-SEC-002"), &PropertyState::Proved);
+        assert!(
+            result
+                .diagnostics
+                .iter()
+                .all(|diagnostic| diagnostic.rule_id != "WV-SEC-002")
+        );
     }
 
     #[test]

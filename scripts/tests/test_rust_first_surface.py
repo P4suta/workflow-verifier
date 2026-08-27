@@ -59,13 +59,30 @@ class RustFirstSurfaceTests(unittest.TestCase):
                 relative,
             )
 
-        setup = (
-            ROOT / ".github" / "actions" / "setup-repository-rust" / "action.yml"
-        ).read_text(encoding="utf-8")
+        setup = (ROOT / ".github" / "actions" / "setup-repository-rust" / "action.yml").read_text(
+            encoding="utf-8"
+        )
         self.assertIn("rustup show active-toolchain", setup)
         self.assertIn("rustc --version --verbose", setup)
         self.assertIn("cargo --version --verbose", setup)
         self.assertNotIn("uses:", setup)
+
+    def test_os_credential_service_constant_is_compiled_only_where_it_is_used(self) -> None:
+        auth = (ROOT / "crates" / "cli" / "src" / "auth.rs").read_text(encoding="utf-8")
+        self.assertIn(
+            '#[cfg(any(target_os = "macos", test))]\n'
+            'const CREDENTIAL_SERVICE: &str = "workflow-verifier";',
+            auth,
+        )
+
+    def test_dependency_policy_names_every_reviewed_transport_license(self) -> None:
+        policy = (ROOT / "deny.toml").read_text(encoding="utf-8")
+        for license_id in ("BSD-3-Clause", "ISC", "MIT-0", "Unicode-3.0"):
+            self.assertIn(f'  "{license_id}",', policy)
+        self.assertIn(
+            '{ name = "syn", version = "=2.0.119" }',
+            policy,
+        )
 
     def test_live_and_official_product_gates_execute_the_rust_cli(self) -> None:
         ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")

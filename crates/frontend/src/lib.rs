@@ -1154,6 +1154,11 @@ fn github_call_profile(reference: &str) -> (Vec<Capability>, Vec<ObservableEffec
             ],
             vec![ObservableEffect::CachePublish],
         )
+    } else if lower.starts_with("docker/login-action@") {
+        (
+            vec![Capability::Network, Capability::SecretAccess],
+            vec![ObservableEffect::CredentialUse],
+        )
     } else if ["openai", "anthropic", "copilot", "ai-agent", "ai_agent"]
         .into_iter()
         .any(|name| lower.contains(name))
@@ -1639,6 +1644,11 @@ mod tests {
                     Capability::FilesystemWrite,
                 ],
                 vec![ObservableEffect::CachePublish],
+            ),
+            (
+                "docker/login-action@v4.4.0",
+                vec![Capability::Network, Capability::SecretAccess],
+                vec![ObservableEffect::CredentialUse],
             ),
         ];
         for (reference, capabilities, effects) in cases {

@@ -10,8 +10,14 @@ yanked = "deny"
 version = 2
 allow = [
   "Apache-2.0",
+  # Reviewed transitive licenses in the rustls/aws-lc HTTPS stack.
+  "BSD-3-Clause",
+  "ISC",
   "MIT",
+  "MIT-0",
   "Unlicense",
+  # Reviewed transitive license in the URL/ICU normalization stack.
+  "Unicode-3.0",
 ]
 confidence-threshold = 0.8
 
@@ -20,7 +26,9 @@ multiple-versions = "deny"
 wildcards = "deny"
 highlight = "all"
 deny = []
-skip = []
+# ICU derives remain on syn 2 while serde derives use syn 3. Both versions are
+# locked, build-only dependencies and cannot currently be unified upstream.
+skip = [{ name = "syn", version = "=2.0.119" }]
 skip-tree = []
 
 [sources]

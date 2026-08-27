@@ -174,7 +174,7 @@ impl std::fmt::Debug for SecretString {
     }
 }
 
-#[cfg(any(target_os = "macos", target_os = "windows", test))]
+#[cfg(any(target_os = "macos", test))]
 const CREDENTIAL_SERVICE: &str = "workflow-verifier";
 const SECRET_PAYLOAD_PREFIX: &str = "wv1:";
 

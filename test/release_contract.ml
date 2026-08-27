@@ -47,6 +47,7 @@ let required =
     "../.github/workflows/candidate.yml";
     "../.github/workflows/sign-windows.yml";
     "../.github/workflows/official-compat.yml";
+    "../.github/actions/setup-repository-rust/action.yml";
     "../.gitlab-ci.yml";
     "../azure-pipelines.yml";
     "../.circleci/config.yml";
@@ -504,7 +505,7 @@ let () =
       "runner: macos-15";
       "runner: macos-15-intel";
       "rockylinux/rockylinux@sha256:f5529992e67440c1a4ae7788244d4381c6909159a88eacd95b7523ae47ced82e";
-      "actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659";
+      "uses: ./.github/actions/setup-repository-rust";
       "rustc 1.98.0 (88d9e12ae 2026-08-18)";
       "opam install . --deps-only --locked --yes";
       "build_candidate_platform.sh";

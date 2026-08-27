@@ -795,6 +795,23 @@ fn sandbox_replay_verify_and_audit_authenticate_persisted_protocol_data() {
         Some("verified")
     );
 
+    let trusted_audit = invoke(
+        &fixture.0,
+        &[
+            "sandbox",
+            "audit",
+            "--trust-repository-config",
+            "plan.json",
+            "evidence.json",
+        ],
+    );
+    assert_eq!(
+        trusted_audit.status.code(),
+        Some(0),
+        "{}",
+        text(&trusted_audit.stderr)
+    );
+
     let tampered = evidence_source.replacen("\"sequence\":0", "\"sequence\":2", 1);
     fixture.write("tampered.json", &tampered);
     let rejected = invoke(

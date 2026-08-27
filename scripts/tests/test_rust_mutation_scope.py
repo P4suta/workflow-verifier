@@ -5,7 +5,6 @@ import tomllib
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 HIGH_VALUE_SOURCES = [

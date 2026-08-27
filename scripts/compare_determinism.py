@@ -40,6 +40,20 @@ RELEASE_PLATFORMS = {
     "macos-x86_64",
     "windows-x86_64",
 }
+# GitHub Actions downloads each named artifact into a directory with this
+# documented upload name, while local probes use the bare platform name.
+GITHUB_ARTIFACT_PREFIX = "determinism-"
+
+
+def _platform_name(directory: Path) -> str:
+    name = directory.name
+    if name in RELEASE_PLATFORMS:
+        return name
+    if name.startswith(GITHUB_ARTIFACT_PREFIX):
+        projected = name.removeprefix(GITHUB_ARTIFACT_PREFIX)
+        if projected in RELEASE_PLATFORMS:
+            return projected
+    return name
 
 
 def _manifest(directory: Path) -> dict[str, Any]:
@@ -66,7 +80,7 @@ def compare(directories: list[Path]) -> dict[str, Any]:
     platforms: dict[str, Path] = {}
     manifests: dict[str, dict[str, Any]] = {}
     for directory in directories:
-        platform = directory.name
+        platform = _platform_name(directory)
         if not PLATFORM.fullmatch(platform):
             raise ValueError(f"invalid platform directory name: {platform}")
         if platform in platforms:

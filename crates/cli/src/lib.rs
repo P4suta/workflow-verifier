@@ -910,24 +910,25 @@ fn sandbox_verify(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, Cli
 }
 
 fn sandbox_audit(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliError> {
-    if !(2..=3).contains(&arguments.len()) {
+    let (common, positional) = parse_options(cwd, arguments, |_name, _value| Ok(false))?;
+    if !(2..=3).contains(&positional.len()) {
         return Err(CliError::invalid(
             "sandbox audit requires PLAN EVIDENCE [TARGET]",
         ));
     }
-    let plan_source = read_utf8_file(&absolute(cwd, Path::new(&arguments[0])))?;
-    let evidence_source = read_utf8_file(&absolute(cwd, Path::new(&arguments[1])))?;
+    let plan_source = read_utf8_file(&absolute(cwd, Path::new(&positional[0])))?;
+    let evidence_source = read_utf8_file(&absolute(cwd, Path::new(&positional[1])))?;
     let plan = validate_plan(&plan_source).map_err(CliError::invalid)?;
     let evidence = Evidence::parse(&evidence_source).map_err(CliError::invalid)?;
     evidence
         .validate_for_plan(&plan)
         .map_err(CliError::invalid)?;
-    if let Some(target) = arguments.get(2) {
+    if let Some(target) = positional.get(2) {
         let analyzed = analyze_target(
             &absolute(cwd, Path::new(target)),
             &CommonOptions {
                 persona: Some(Persona::Audit),
-                ..CommonOptions::default()
+                ..common
             },
         )?;
         if analyzed.result.report.provenance.source_manifest_digest != plan.source_digest {
