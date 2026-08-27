@@ -663,19 +663,32 @@ fn terminate_process_tree(child: &mut std::process::Child) {
     }
     #[cfg(windows)]
     {
-        let executable = std::env::var_os("SystemRoot").map_or_else(
-            || PathBuf::from("taskkill.exe"),
-            |root| PathBuf::from(root).join("System32").join("taskkill.exe"),
-        );
-        let _ = std::process::Command::new(executable)
-            .args(["/F", "/T", "/PID", &child.id().to_string()])
-            .env_clear()
-            .stdin(std::process::Stdio::null())
-            .stdout(std::process::Stdio::null())
-            .stderr(std::process::Stdio::null())
-            .status();
+        let _ = windows_tree_termination_command(child.id()).status();
     }
     let _ = child.kill();
+}
+
+#[cfg(windows)]
+fn windows_tree_termination_command(process_id: u32) -> std::process::Command {
+    const SYSTEM_ROOT: &str = "SystemRoot";
+    let system_root = std::env::var_os(SYSTEM_ROOT);
+    let executable = system_root.as_ref().map_or_else(
+        || PathBuf::from("taskkill.exe"),
+        |root| PathBuf::from(root).join("System32").join("taskkill.exe"),
+    );
+    let mut command = std::process::Command::new(executable);
+    command
+        .args(["/F", "/T", "/PID", &process_id.to_string()])
+        .env_clear()
+        .stdin(std::process::Stdio::null())
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null());
+    // Windows system tools require the OS loader root even at this otherwise
+    // empty process boundary. No ambient user or credential variables cross it.
+    if let Some(root) = system_root {
+        command.env(SYSTEM_ROOT, root);
+    }
+    command
 }
 
 fn set_once(target: &mut Option<String>, name: &str, value: &str) -> Result<bool, CliError> {
@@ -3010,6 +3023,27 @@ mod tests {
             command.args(["-c", script]);
             command
         }
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn windows_tree_termination_keeps_only_the_required_loader_root() {
+        const SYSTEM_ROOT: &str = "SystemRoot";
+        let process_id = std::process::id();
+        let process_id_text = process_id.to_string();
+        let command = super::windows_tree_termination_command(process_id);
+        let environment = command.get_envs().collect::<Vec<_>>();
+
+        assert_eq!(environment.len(), 1);
+        assert_eq!(environment[0].0, std::ffi::OsStr::new(SYSTEM_ROOT));
+        assert_eq!(environment[0].1, std::env::var_os(SYSTEM_ROOT).as_deref());
+        assert_eq!(
+            command.get_args().collect::<Vec<_>>(),
+            ["/F", "/T", "/PID", process_id_text.as_str()]
+                .into_iter()
+                .map(std::ffi::OsStr::new)
+                .collect::<Vec<_>>()
+        );
     }
 
     #[test]
