@@ -323,6 +323,24 @@ impl AnalysisEngine {
         }
     }
 
+    /// Parse a source through the engine's content-addressed CST cache.
+    ///
+    /// Product adapters use this when they need syntax problems before a full
+    /// analysis. A subsequent analysis of the same logical file and bytes then
+    /// reuses the exact immutable document instead of parsing it again.
+    ///
+    /// # Errors
+    /// Returns an internal error if the parse cache lock was poisoned.
+    pub fn parse_document(
+        &self,
+        path: &str,
+        source: &str,
+        budget: Budget,
+    ) -> Result<Arc<YamlDocument>, AnalysisError> {
+        let digest = content_digest(source);
+        self.memoize_parse(path, source, &digest, budget)
+    }
+
     /// Analyze one immutable request snapshot plus unsaved overlays.
     ///
     /// # Errors

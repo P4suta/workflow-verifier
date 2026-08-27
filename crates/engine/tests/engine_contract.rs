@@ -620,6 +620,23 @@ fn analysis_is_reentrant_memoized_and_worker_order_independent() {
 }
 
 #[test]
+fn adapter_parse_populates_the_analysis_cst_cache() {
+    let engine = AnalysisEngine::new();
+    let source = "on: push\njobs:\n  build:\n    steps:\n      - run: echo cached\n";
+    let document = engine
+        .parse_document(".github/workflows/ci.yml", source, Budget::default())
+        .expect("adapter parse succeeds");
+    assert!(document.problems().is_empty());
+    assert_eq!(engine.statistics().parse_misses, 1);
+
+    engine
+        .analyze(&request(snapshot(source)))
+        .expect("analysis reuses the parsed document");
+    assert_eq!(engine.statistics().parse_misses, 1);
+    assert_eq!(engine.statistics().parse_hits, 1);
+}
+
+#[test]
 fn identical_content_in_distinct_files_keeps_path_scoped_spans() {
     let source = b"on: push\njobs:\n  build:\n    steps:\n      - run: echo ok\n".to_vec();
     let snapshot = SourceSnapshot::new(BTreeMap::from([

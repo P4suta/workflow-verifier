@@ -447,11 +447,12 @@ impl Server {
     }
 
     fn diagnostics(&self, document: &Document, cancellation: &CancellationToken) -> Vec<Value> {
-        let syntax = YamlDocument::parse(
-            document.logical_path.clone(),
-            &document.text,
-            Budget::default(),
-        );
+        let Ok(syntax) =
+            self.engine
+                .parse_document(&document.logical_path, &document.text, Budget::default())
+        else {
+            return Vec::new();
+        };
         if !syntax.problems().is_empty() {
             return syntax
                 .problems()
@@ -518,11 +519,16 @@ impl Server {
                 let text = replacements
                     .get(&candidate.uri)
                     .map_or(candidate.text.as_str(), String::as_str);
-                let syntax =
-                    YamlDocument::parse(candidate.logical_path.clone(), text, Budget::default());
-                if candidate.uri == document.uri
-                    || (syntax.root().is_some() && syntax.invalid_regions().is_empty())
-                {
+                let include = if candidate.uri == document.uri {
+                    true
+                } else {
+                    let syntax = self
+                        .engine
+                        .parse_document(&candidate.logical_path, text, Budget::default())
+                        .map_err(|error| error.to_string())?;
+                    syntax.root().is_some() && syntax.invalid_regions().is_empty()
+                };
+                if include {
                     sources.insert(candidate.logical_path.clone(), text.as_bytes().to_vec());
                 }
             }
@@ -1597,6 +1603,37 @@ mod cancellation_tests {
             .unwrap_or_else(std::sync::PoisonError::into_inner);
         assert_eq!(state.completed.len(), MAX_COMPLETED_REQUEST_IDS);
         assert_eq!(state.completed_order.len(), MAX_COMPLETED_REQUEST_IDS);
+    }
+}
+
+#[cfg(test)]
+mod diagnostics_cache_tests {
+    use super::*;
+
+    #[test]
+    fn diagnostics_reuses_the_engine_parse_for_analysis() {
+        let uri = "file:///workspace/.github/workflows/cache.yml";
+        let cancellations = Arc::new(RequestCancellations::default());
+        let observed = Arc::new(ObservedDocuments::default());
+        let mut server = Server::new(cancellations, observed);
+        server.documents.insert(
+            uri.to_owned(),
+            Document {
+                uri: uri.to_owned(),
+                workspace: "file:///workspace".to_owned(),
+                logical_path: ".github/workflows/cache.yml".to_owned(),
+                version: 1,
+                text: "on: push\njobs:\n  check:\n    steps:\n      - run: echo checked\n"
+                    .to_owned(),
+            },
+        );
+
+        let document = server.documents.get(uri).expect("fixture document");
+        let _ = server.diagnostics(document, &CancellationToken::new());
+
+        let statistics = server.engine.statistics();
+        assert_eq!(statistics.parse_misses, 1);
+        assert_eq!(statistics.parse_hits, 1);
     }
 }
 
