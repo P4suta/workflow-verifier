@@ -1,6 +1,8 @@
 mod support;
 
 use support::valid_request;
+use workflow_verifier_domain::{Graph, Node, NodeKind, Phase, Provider, UnknownReason};
+use workflow_verifier_foundation::{JsonValue, Span};
 use workflow_verifier_runner_protocol::{EvidenceBody, controls_digest};
 use workflow_verifier_sandbox::{
     Evidence, RunnerPlan, SandboxAudit, SandboxAuditStatus, ValidatedPlan, validate_plan,
@@ -208,4 +210,103 @@ fn verified_audit_requires_no_reconciliation_reasons() {
     let evidence = complete_evidence(&plan);
     let audit = SandboxAudit::evaluate(&plan, &evidence).unwrap();
     assert_eq!(audit.status(), &SandboxAuditStatus::Verified);
+}
+
+fn command_graph(script: &str, unknown: Option<UnknownReason>) -> Graph {
+    let mut graph = Graph::empty(Provider::Github, "workflow.yml");
+    let mut command = Node::simple(
+        Provider::Github,
+        NodeKind::Command,
+        script,
+        Phase::Run,
+        Span::default(),
+    );
+    command.unknown = unknown;
+    graph.add_node(command);
+    graph.finalize();
+    graph
+}
+
+fn reconciliation_state(audit: &SandboxAudit) -> String {
+    let document = JsonValue::parse(&audit.to_canonical_json()).expect("canonical audit JSON");
+    document
+        .member("reconciliation")
+        .and_then(|value| value.member("state"))
+        .and_then(JsonValue::as_str)
+        .expect("explicit reconciliation state")
+        .to_owned()
+}
+
+#[test]
+fn static_and_runtime_effect_envelopes_reconcile_to_proved() {
+    let plan = fixture_plan();
+    let mut evidence = complete_evidence(&plan);
+    evidence.append(EvidenceBody::ProcessStarted {
+        executable: "/bin/sh".to_owned(),
+        argv: vec!["-c".to_owned(), "printf result > result.txt".to_owned()],
+    });
+    evidence.append(EvidenceBody::FilesystemAccess {
+        path: "result.txt".to_owned(),
+        operation: "write".to_owned(),
+        allowed: true,
+    });
+    let graph = command_graph("printf result > result.txt", None);
+
+    let audit = SandboxAudit::evaluate_with_graphs(&plan, &evidence, &[graph])
+        .expect("authenticated reconciliation");
+
+    assert_eq!(audit.status(), &SandboxAuditStatus::Verified);
+    assert_eq!(reconciliation_state(&audit), "Proved");
+    assert!(
+        audit
+            .to_canonical_json()
+            .contains("observed runtime effects are contained in the static effect envelope")
+    );
+}
+
+#[test]
+fn unexpected_runtime_effects_preserve_static_uncertainty() {
+    let plan = fixture_plan();
+    let mut evidence = complete_evidence(&plan);
+    evidence.append(EvidenceBody::NetworkAttempt {
+        host: "example.invalid".to_owned(),
+        port: HTTPS_DEFAULT_PORT,
+        allowed: false,
+    });
+    let graph = command_graph(
+        "echo safe",
+        Some(UnknownReason::ExternalState("remote API".to_owned())),
+    );
+
+    let audit = SandboxAudit::evaluate_with_graphs(&plan, &evidence, &[graph])
+        .expect("authenticated reconciliation");
+
+    assert_eq!(reconciliation_state(&audit), "Unknown");
+    assert!(
+        reasons(audit.status())
+            .iter()
+            .any(|reason| reason.contains("network_request"))
+    );
+}
+
+#[test]
+fn unexpected_runtime_effects_violate_a_complete_static_envelope() {
+    let plan = fixture_plan();
+    let mut evidence = complete_evidence(&plan);
+    evidence.append(EvidenceBody::NetworkAttempt {
+        host: "example.invalid".to_owned(),
+        port: HTTPS_DEFAULT_PORT,
+        allowed: false,
+    });
+    let graph = command_graph("echo safe", None);
+
+    let audit = SandboxAudit::evaluate_with_graphs(&plan, &evidence, &[graph])
+        .expect("authenticated reconciliation");
+
+    assert_eq!(reconciliation_state(&audit), "Violated");
+    assert!(
+        reasons(audit.status())
+            .iter()
+            .any(|reason| reason.contains("network_request"))
+    );
 }

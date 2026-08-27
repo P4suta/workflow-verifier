@@ -1,9 +1,15 @@
 use std::collections::{BTreeMap, BTreeSet};
-use workflow_verifier_domain::ObservableEffect;
+use workflow_verifier_domain::{Graph, ObservableEffect, UnknownReason};
 use workflow_verifier_foundation::JsonValue;
 use workflow_verifier_runner_protocol::{
     Evidence, EvidenceBody, PlanStatus, ValidatedPlan, controls_digest,
 };
+use workflow_verifier_verifier::{Property, PropertyState, observable_effects};
+
+const RUNTIME_ENVELOPE_RULE_ID: &str = "WV-RUNTIME-001";
+const CONTAINED_EFFECTS_EXPLANATION: &str =
+    "observed runtime effects are contained in the static effect envelope";
+const MISSING_STATIC_GRAPHS_DETAIL: &str = "static graphs were not supplied";
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum SandboxAuditStatus {
@@ -19,6 +25,7 @@ pub struct SandboxAudit {
     controls_digest: String,
     status: SandboxAuditStatus,
     observed_effects: Vec<ObservableEffect>,
+    reconciliation: Option<Property>,
     event_count: usize,
     evidence_tail: String,
 }
@@ -29,6 +36,26 @@ impl SandboxAudit {
     /// # Errors
     /// Rejects structurally invalid evidence or evidence bound to another plan.
     pub fn evaluate(plan: &ValidatedPlan, evidence: &Evidence) -> Result<Self, String> {
+        Self::evaluate_internal(plan, evidence, None)
+    }
+
+    /// Reconcile an authenticated evidence chain with its plan and static IR.
+    ///
+    /// # Errors
+    /// Rejects structurally invalid evidence or evidence bound to another plan.
+    pub fn evaluate_with_graphs(
+        plan: &ValidatedPlan,
+        evidence: &Evidence,
+        graphs: &[Graph],
+    ) -> Result<Self, String> {
+        Self::evaluate_internal(plan, evidence, Some(graphs))
+    }
+
+    fn evaluate_internal(
+        plan: &ValidatedPlan,
+        evidence: &Evidence,
+        graphs: Option<&[Graph]>,
+    ) -> Result<Self, String> {
         if evidence.plan_digest() != plan.digest {
             return Err("evidence is bound to a different execution plan".to_owned());
         }
@@ -95,6 +122,14 @@ impl SandboxAudit {
                 reasons.push(format!("control not attested: {}", control.name()));
             }
         }
+        let reconciliation =
+            graphs.map(|graphs| reconcile_runtime_envelope(graphs, &observed_effects));
+        if let Some(property) = reconciliation
+            .as_ref()
+            .filter(|property| reconciliation_requires_incomplete_status(property))
+        {
+            reasons.push(property.explanation.clone());
+        }
         reasons.sort();
         reasons.dedup();
         let status = if reasons.is_empty() {
@@ -109,6 +144,7 @@ impl SandboxAudit {
             controls_digest: expected_controls_digest,
             status,
             observed_effects: observed_effects.into_iter().collect(),
+            reconciliation,
             event_count: evidence.event_count(),
             evidence_tail: evidence.tail_digest().to_owned(),
         })
@@ -172,7 +208,12 @@ impl SandboxAudit {
                 "plan_digest".to_owned(),
                 JsonValue::String(self.plan_digest.clone()),
             ),
-            ("reconciliation".to_owned(), JsonValue::Null),
+            (
+                "reconciliation".to_owned(),
+                self.reconciliation
+                    .as_ref()
+                    .map_or(JsonValue::Null, Property::to_json),
+            ),
             (
                 "schema".to_owned(),
                 JsonValue::String("sandbox-audit-v1".to_owned()),
@@ -188,5 +229,59 @@ impl SandboxAudit {
     #[must_use]
     pub fn to_canonical_json(&self) -> String {
         self.to_json().canonical_line()
+    }
+}
+
+fn reconciliation_requires_incomplete_status(property: &Property) -> bool {
+    matches!(
+        property.state,
+        PropertyState::Violated | PropertyState::Unknown(_)
+    )
+}
+
+fn reconcile_runtime_envelope(
+    graphs: &[Graph],
+    observed_effects: &BTreeSet<ObservableEffect>,
+) -> Property {
+    let static_effects: BTreeSet<_> = observable_effects(graphs).into_iter().collect();
+    let unknowns: Vec<_> = graphs
+        .iter()
+        .flat_map(|graph| &graph.nodes)
+        .filter_map(|node| node.unknown.clone())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect();
+    let unexpected: Vec<_> = observed_effects
+        .difference(&static_effects)
+        .copied()
+        .collect();
+    let state = if unexpected.is_empty() {
+        PropertyState::Proved
+    } else if graphs.is_empty() {
+        PropertyState::Unknown(vec![UnknownReason::ExternalState(
+            MISSING_STATIC_GRAPHS_DETAIL.to_owned(),
+        )])
+    } else if unknowns.is_empty() {
+        PropertyState::Violated
+    } else {
+        PropertyState::Unknown(unknowns)
+    };
+    let explanation = if unexpected.is_empty() {
+        CONTAINED_EFFECTS_EXPLANATION.to_owned()
+    } else {
+        format!(
+            "runtime observed effects outside the static envelope: {}",
+            unexpected
+                .iter()
+                .map(|effect| effect.name())
+                .collect::<Vec<_>>()
+                .join(", ")
+        )
+    };
+    Property {
+        id: RUNTIME_ENVELOPE_RULE_ID.to_owned(),
+        state,
+        subject: None,
+        explanation,
     }
 }

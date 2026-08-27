@@ -6,7 +6,10 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use workflow_verifier_domain::Provider;
 use workflow_verifier_foundation::{JsonValue, content_digest};
 use workflow_verifier_helper_runtime::{source_snapshot, source_snapshot_with_exclusions};
-use workflow_verifier_product::{Config, ConfigParseOptions, ConfigTrust, LockEntry, Lockfile};
+use workflow_verifier_product::{
+    Config, ConfigParseOptions, ConfigTrust, EXIT_CODE_PASS, LockEntry, Lockfile,
+};
+use workflow_verifier_sandbox::{Evidence, EvidenceBody, controls_digest, validate_plan};
 
 static NEXT: AtomicU64 = AtomicU64::new(0);
 
@@ -820,6 +823,104 @@ fn sandbox_replay_verify_and_audit_authenticate_persisted_protocol_data() {
     );
     assert_eq!(rejected.status.code(), Some(2));
     assert!(rejected.stdout.is_empty());
+}
+
+#[test]
+fn sandbox_audit_with_a_target_reconciles_static_and_runtime_effects() {
+    let fixture = Fixture::new();
+    fixture.write(
+        "workspace/.workflow-verifier.toml",
+        "version = 2\npersona = \"audit\"\noffline = true\n\n[sandbox]\nbackend = \"oci:docker\"\ncapsule_digest = \"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"\n",
+    );
+    fixture.write(
+        "workspace/.github/workflows/ci.yml",
+        "on: workflow_dispatch\njobs:\n  build:\n    steps:\n      - run: printf result > result.txt\n",
+    );
+    let planned = invoke(
+        &fixture.0,
+        &[
+            "sandbox",
+            "plan",
+            "--trust-repository-config",
+            "--job",
+            "build",
+            "workspace",
+        ],
+    );
+    assert_eq!(planned.status.code(), Some(0), "{}", text(&planned.stderr));
+    let plan_source = text(&planned.stdout);
+    let plan = validate_plan(plan_source).expect("generated runner-v2 plan");
+    let mut evidence = Evidence::for_plan(&plan);
+    evidence.append(EvidenceBody::BackendAttested {
+        id: plan.backend.clone(),
+        version: env!("CARGO_PKG_VERSION").to_owned(),
+        platform: std::env::consts::OS.to_owned(),
+        controls_digest: controls_digest(&plan.controls),
+    });
+    for control in &plan.controls {
+        evidence.append(EvidenceBody::ControlAttested(control.name().to_owned()));
+    }
+    for step in &plan.steps {
+        let (executable, argv) = step.argv.split_first().expect("planned command");
+        evidence.append(EvidenceBody::ProcessStarted {
+            executable: executable.clone(),
+            argv: argv.to_vec(),
+        });
+        evidence.append(EvidenceBody::ProcessExited {
+            code: i32::try_from(EXIT_CODE_PASS).expect("public pass code fits i32"),
+        });
+    }
+    evidence.append(EvidenceBody::FilesystemAccess {
+        path: "result.txt".to_owned(),
+        operation: "write".to_owned(),
+        allowed: true,
+    });
+    evidence.append(EvidenceBody::ResourceObserved {
+        wall_time_ms: 0,
+        cpu_time_ms: 0,
+        peak_memory_bytes: 0,
+        processes: u64::try_from(plan.steps.len()).expect("step count fits u64"),
+        output_bytes: 0,
+        scratch_bytes: 0,
+        scratch_entries: 0,
+    });
+    evidence.append(EvidenceBody::LogRecorded {
+        digest: content_digest([]),
+    });
+    evidence.append(EvidenceBody::FilesystemFinal {
+        digest: content_digest(b"fixture-final-filesystem"),
+    });
+    fixture.write("plan.json", plan_source);
+    fixture.write("evidence.json", &evidence.canonical_json());
+
+    let audited = invoke(
+        &fixture.0,
+        &[
+            "sandbox",
+            "audit",
+            "--trust-repository-config",
+            "plan.json",
+            "evidence.json",
+            "workspace",
+        ],
+    );
+
+    assert_eq!(audited.status.code(), Some(0), "{}", text(&audited.stderr));
+    let audit = JsonValue::parse(text(&audited.stdout)).expect("canonical sandbox audit");
+    assert_eq!(
+        audit
+            .member("reconciliation")
+            .and_then(|value| value.member("id"))
+            .and_then(JsonValue::as_str),
+        Some("WV-RUNTIME-001")
+    );
+    assert_eq!(
+        audit
+            .member("reconciliation")
+            .and_then(|value| value.member("state"))
+            .and_then(JsonValue::as_str),
+        Some("Proved")
+    );
 }
 
 #[test]

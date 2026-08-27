@@ -923,7 +923,7 @@ fn sandbox_audit(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
     evidence
         .validate_for_plan(&plan)
         .map_err(CliError::invalid)?;
-    if let Some(target) = positional.get(2) {
+    let graphs = if let Some(target) = positional.get(2) {
         let analyzed = analyze_target(
             &absolute(cwd, Path::new(target)),
             &CommonOptions {
@@ -936,8 +936,15 @@ fn sandbox_audit(cwd: &Path, arguments: &[String]) -> Result<CommandOutput, CliE
                 "audit target source digest does not match the execution plan",
             ));
         }
+        Some(analyzed.result.report.graphs)
+    } else {
+        None
+    };
+    let audit = match graphs.as_deref() {
+        Some(graphs) => SandboxAudit::evaluate_with_graphs(&plan, &evidence, graphs),
+        None => SandboxAudit::evaluate(&plan, &evidence),
     }
-    let audit = SandboxAudit::evaluate(&plan, &evidence).map_err(CliError::invalid)?;
+    .map_err(CliError::invalid)?;
     let code = if audit.status() == &SandboxAuditStatus::Verified {
         process_exit_code(EXIT_CODE_PASS)
     } else {
@@ -2974,14 +2981,19 @@ fn atomic_write(path: &Path, bytes: &[u8]) -> Result<(), CliError> {
 #[cfg(test)]
 mod tests {
     use super::{
-        helper_environment, load_auth_bindings_with, parse_auth_binding_keys, supervise_process,
-        trusted_resolver_hosts, utc_date_from_days,
+        DOCTOR_TIMEOUT_SECONDS, helper_environment, load_auth_bindings_with,
+        parse_auth_binding_keys, supervise_process, trusted_resolver_hosts, utc_date_from_days,
     };
     use std::collections::BTreeMap;
     use std::ffi::OsString;
     use std::process::Command;
     use std::time::Duration;
     use workflow_verifier_product::ResolverOrigin;
+
+    // Test shell startup is a control-process launch, so it shares the product's
+    // bounded doctor-probe contract. This accommodates cold PowerShell startup
+    // without weakening the supervisor's production timeout behavior.
+    const CONTROL_PROCESS_TEST_TIMEOUT: Duration = Duration::from_secs(DOCTOR_TIMEOUT_SECONDS);
 
     fn shell_command(script: &str) -> Command {
         #[cfg(windows)]
@@ -3037,6 +3049,8 @@ mod tests {
 
     #[test]
     fn child_supervisor_separates_bounded_stdout_and_stderr() {
+        const EXPECTED_STDOUT: &[u8] = b"stdout";
+        const EXPECTED_STDERR: &[u8] = b"stderr";
         #[cfg(windows)]
         let script = "[Console]::Out.Write('stdout'); [Console]::Error.Write('stderr')";
         #[cfg(not(windows))]
@@ -3044,15 +3058,15 @@ mod tests {
         let observed = supervise_process(
             &mut shell_command(script),
             None,
-            Duration::from_secs(2),
-            64,
-            64,
+            CONTROL_PROCESS_TEST_TIMEOUT,
+            u64::try_from(EXPECTED_STDOUT.len()).expect("fixture length fits u64"),
+            u64::try_from(EXPECTED_STDERR.len()).expect("fixture length fits u64"),
         )
         .expect("supervise child");
 
         assert!(observed.status.success());
-        assert_eq!(observed.stdout, b"stdout");
-        assert_eq!(observed.stderr, b"stderr");
+        assert_eq!(observed.stdout, EXPECTED_STDOUT);
+        assert_eq!(observed.stderr, EXPECTED_STDERR);
         assert!(!observed.timed_out);
         assert!(!observed.output_exceeded);
     }
@@ -3084,6 +3098,7 @@ mod tests {
 
     #[test]
     fn child_supervisor_terminates_when_output_exceeds_its_cap() {
+        const CAPTURED_PREFIX: &[u8] = b"01234567";
         #[cfg(windows)]
         let script = "[Console]::Out.Write('0123456789abcdef')";
         #[cfg(not(windows))]
@@ -3091,14 +3106,14 @@ mod tests {
         let observed = supervise_process(
             &mut shell_command(script),
             None,
-            Duration::from_secs(2),
-            8,
-            8,
+            CONTROL_PROCESS_TEST_TIMEOUT,
+            u64::try_from(CAPTURED_PREFIX.len()).expect("fixture length fits u64"),
+            u64::try_from(CAPTURED_PREFIX.len()).expect("fixture length fits u64"),
         )
         .expect("supervise child");
 
         assert!(observed.output_exceeded);
-        assert_eq!(observed.stdout, b"01234567");
+        assert_eq!(observed.stdout, CAPTURED_PREFIX);
         assert!(observed.stderr.is_empty());
     }
 

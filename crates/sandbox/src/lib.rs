@@ -18,6 +18,6 @@ pub use source_manifest::{
     SOURCE_MANIFEST_V2_MIN_SNAPSHOT_BYTES, SourceFile, SourceManifest,
 };
 pub use workflow_verifier_runner_protocol::{
-    Control, Dependency, Evidence, Limits, Outcome, PlanStatus, RunResult, Step, ValidatedPlan,
-    validate_plan,
+    Control, Dependency, Evidence, EvidenceBody, Limits, Outcome, PlanStatus, RunResult, Step,
+    ValidatedPlan, controls_digest, validate_plan,
 };

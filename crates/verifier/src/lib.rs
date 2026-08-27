@@ -769,6 +769,21 @@ pub fn inferred_effects(node: &Node) -> Vec<ObservableEffect> {
         .collect()
 }
 
+/// Return the deterministic static effect envelope for a graph collection.
+///
+/// Command effects include the same script-derived facts used by verification,
+/// so runtime reconciliation cannot disagree with the verifier's own model.
+#[must_use]
+pub fn observable_effects(graphs: &[Graph]) -> Vec<ObservableEffect> {
+    graphs
+        .iter()
+        .flat_map(|graph| &graph.nodes)
+        .flat_map(inferred_effects)
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect()
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 enum ScriptShell {
     Posix,
