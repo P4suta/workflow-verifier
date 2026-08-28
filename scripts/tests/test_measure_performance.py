@@ -20,6 +20,19 @@ class MeasurePerformanceTests(unittest.TestCase):
                 [str((cwd / "../_build/default/bin/main.exe").resolve()), "check"],
             )
 
+    def test_extensionless_rust_executable_resolves_to_windows_binary(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            cwd = Path(temporary) / "test"
+            executable = Path(temporary) / "target" / "release" / "workflow-verifier.exe"
+            cwd.mkdir()
+            executable.parent.mkdir(parents=True)
+            executable.write_bytes(b"fixture")
+            with mock.patch.object(measurement.sys, "platform", "win32"):
+                resolved = measurement._native_argv(
+                    ["../target/release/workflow-verifier", "check"], cwd
+                )
+            self.assertEqual(resolved, [str(executable.resolve()), "check"])
+
     def test_current_cache_contract_is_lowered_to_fresh_legacy_analysis(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             workspace = Path(temporary)
@@ -56,6 +69,53 @@ class MeasurePerformanceTests(unittest.TestCase):
             )
         )
         self.assertGreaterEqual(invoked.call_count, 16)
+
+    def test_committed_rust_suite_measures_fresh_distinct_mode_workloads(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        suite = root / "performance" / "rust-suite-v1.json"
+        document = json.loads(suite.read_text(encoding="utf-8"))
+        self.assertEqual(document["environment"]["suite"], "rust-suite-v1")
+        self.assertEqual(document["environment"]["implementation"], "rust")
+        self.assertEqual(document["environment"]["cache_semantics"], "fresh-process-analysis")
+        for scenario in document["scenarios"]:
+            modes = scenario["modes"]
+            for specification in modes.values():
+                self.assertIn("../target/release/workflow-verifier", specification["command"])
+                self.assertIn(
+                    ["--cache-mode", "off"],
+                    [
+                        specification["command"][index : index + 2]
+                        for index in range(len(specification["command"]) - 1)
+                    ],
+                )
+            self.assertEqual(modes["cold"]["before_each"], [])
+            self.assertNotIn(modes["cold"]["command"], modes["cold"]["setup"])
+            self.assertEqual(modes["warm"]["before_each"], [])
+            self.assertEqual(modes["warm"]["setup"][-1], modes["warm"]["command"])
+            self.assertEqual(modes["incremental"]["setup"][-1], modes["incremental"]["command"])
+            self.assertEqual(len(modes["incremental"]["before_each"]), 1)
+            self.assertIn("toggle", modes["incremental"]["before_each"][0])
+
+        with mock.patch.object(measurement, "_run") as invoked:
+            result = measure(suite, root, revision="c" * 40, samples=1)
+        self.assertEqual(result["environment"]["suite"], "rust-suite-v1")
+        self.assertEqual(result["environment"]["cache_semantics"], "fresh-process-analysis")
+        self.assertEqual(len(result["scenarios"]), 2)
+        self.assertGreaterEqual(invoked.call_count, 18)
+
+    def test_ci_period_balances_and_separates_ocaml_and_rust_evidence(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        workflow = (root / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        self.assertIn("performance-regression:", workflow)
+        self.assertIn("rust-performance-regression:", workflow)
+        self.assertIn("--suite performance/suite-v1.json", workflow)
+        self.assertIn("--suite performance/rust-suite-v1.json", workflow)
+        self.assertIn("performance-ocaml-${{ matrix.platform }}", workflow)
+        self.assertIn("performance-rust-${{ matrix.platform }}", workflow)
+        self.assertIn("_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}", workflow)
+        self.assertIn("_performance-evidence/rust/${PERFORMANCE_PLATFORM}", workflow)
+        self.assertGreaterEqual(workflow.count("--samples 24"), 2)
+        self.assertGreaterEqual(workflow.count("scripts/performance_gate.py"), 2)
 
     def suite(self, root: Path, command: list[str]) -> Path:
         document = {

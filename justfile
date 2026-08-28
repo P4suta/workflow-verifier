@@ -104,6 +104,15 @@ performance-measure revision suite="performance/suite-v1.json" output="_build/pe
 performance-pair baseline_workspace baseline_revision current_revision suite="performance/suite-v1.json" output_dir="_build/performance-pair" samples="24":
     python -B scripts/measure_performance_pair.py --suite {{suite}} --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
 
+performance-measure-rust revision output="_build/performance-rust-current.json" samples="7":
+    WORKFLOW_VERIFIER_SOURCE_COMMIT={{revision}} cargo build --locked --release -p workflow-verifier-cli
+    python -B scripts/measure_performance.py --suite performance/rust-suite-v1.json --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
+
+performance-pair-rust baseline_workspace baseline_revision current_revision output_dir="_build/performance-rust-pair" samples="24":
+    WORKFLOW_VERIFIER_SOURCE_COMMIT={{baseline_revision}} cargo build --locked --release --manifest-path {{baseline_workspace}}/Cargo.toml -p workflow-verifier-cli
+    WORKFLOW_VERIFIER_SOURCE_COMMIT={{current_revision}} cargo build --locked --release -p workflow-verifier-cli
+    python -B scripts/measure_performance_pair.py --suite performance/rust-suite-v1.json --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
+
 performance-gate baseline current="_build/performance-current.json" output="_build/performance-comparison-v1.json":
     python -B scripts/performance_gate.py --baseline {{baseline}} --current {{current}} --output {{output}}
 

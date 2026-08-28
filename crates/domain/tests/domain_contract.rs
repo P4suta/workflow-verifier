@@ -1,8 +1,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 use workflow_verifier_domain::abstract_value::{AbstractTruth, StringValue};
 use workflow_verifier_domain::{
-    AbstractValue, Condition, Edge, EdgeKind, Graph, Node, NodeKind, Phase, Provider, Secrecy,
-    Trust, Truth, UnknownReason, Value, ValueType,
+    AbstractValue, Condition, Edge, EdgeKind, Graph, Node, NodeKind, Phase, Provenance, Provider,
+    Secrecy, Trust, Truth, UnknownReason, Value, ValueType,
 };
 use workflow_verifier_foundation::{Position, Span};
 
@@ -326,6 +326,152 @@ fn unknown_survives_joins() {
             .canonical()
             .contains("incompatible value join")
     );
+}
+
+#[test]
+fn join_assign_reports_changes_and_canonicalizes_only_non_bottom_joins() {
+    let provenance = |origin: &str, offset: usize| Provenance {
+        origin: origin.to_owned(),
+        span: span(offset, offset + 1),
+        operation: format!("operation-{origin}"),
+    };
+    let alpha = provenance("alpha", 1);
+    let beta = provenance("beta", 2);
+    let gamma = provenance("gamma", 3);
+    let unsorted = AbstractValue::string_constant(
+        "value",
+        Trust::Trusted,
+        Secrecy::Public,
+        vec![gamma.clone(), alpha.clone(), alpha.clone()],
+    );
+
+    let mut from_bottom = AbstractValue::default();
+    assert!(from_bottom.join_assign(&unsorted));
+    assert_eq!(from_bottom, unsorted);
+    assert!(!from_bottom.join_assign(&AbstractValue::default()));
+
+    let duplicate = from_bottom.clone();
+    assert!(from_bottom.join_assign(&duplicate));
+    assert_eq!(from_bottom.provenance, vec![alpha.clone(), gamma.clone()]);
+
+    let additional = AbstractValue::string_constant(
+        "value",
+        Trust::Trusted,
+        Secrecy::Public,
+        vec![beta.clone(), alpha.clone(), beta.clone()],
+    );
+    assert!(from_bottom.join_assign(&additional));
+    assert_eq!(from_bottom.provenance, vec![alpha, beta, gamma]);
+    let stable = from_bottom.clone();
+    assert!(!from_bottom.join_assign(&stable));
+    assert_eq!(from_bottom, stable);
+}
+
+#[test]
+fn join_assign_updates_nested_values_in_place_with_the_same_lattice_result() {
+    let alpha = string_value(StringValue::Constants(vec!["alpha".to_owned()]));
+    let beta = string_value(StringValue::Constants(vec!["beta".to_owned()]));
+    let mut left = abstract_value(
+        ValueType::List,
+        Value::List(Some(vec![abstract_value(
+            ValueType::Object,
+            Value::Object(Some(BTreeMap::from([("item".to_owned(), alpha)]))),
+        )])),
+    );
+    let right = abstract_value(
+        ValueType::List,
+        Value::List(Some(vec![abstract_value(
+            ValueType::Object,
+            Value::Object(Some(BTreeMap::from([("item".to_owned(), beta)]))),
+        )])),
+    );
+    let expected = abstract_value(
+        ValueType::List,
+        Value::List(Some(vec![abstract_value(
+            ValueType::Object,
+            Value::Object(Some(BTreeMap::from([(
+                "item".to_owned(),
+                string_value(StringValue::Constants(vec![
+                    "alpha".to_owned(),
+                    "beta".to_owned(),
+                ])),
+            )]))),
+        )])),
+    );
+
+    assert!(left.join_assign(&right));
+    assert_eq!(left, expected);
+    assert!(!left.join_assign(&right));
+
+    let external = UnknownReason::ExternalState("remote".to_owned());
+    let evidence = UnknownReason::MissingEvidence("attestation".to_owned());
+    let mut unknown = abstract_value(
+        ValueType::Dynamic,
+        Value::Unknown(vec![external.clone(), external.clone()]),
+    );
+    let other = abstract_value(ValueType::Dynamic, Value::Unknown(vec![evidence.clone()]));
+    assert!(unknown.join_assign(&other));
+    assert_eq!(unknown.value, Value::Unknown(vec![external, evidence]));
+    assert!(!unknown.join_assign(&other));
+}
+
+#[test]
+fn join_assign_reuses_canonical_string_and_classification_state() {
+    let external = UnknownReason::ExternalState("remote".to_owned());
+    let evidence = UnknownReason::MissingEvidence("attestation".to_owned());
+    let mut classified = AbstractValue::string_constant(
+        "value",
+        Trust::Unknown(vec![evidence.clone(), external.clone(), external.clone()]),
+        Secrecy::Unknown(vec![evidence.clone(), external.clone(), external.clone()]),
+        Vec::new(),
+    );
+    let other = AbstractValue::string_constant(
+        "value",
+        Trust::Unknown(vec![external.clone(), evidence.clone()]),
+        Secrecy::Unknown(vec![external.clone(), evidence.clone()]),
+        Vec::new(),
+    );
+
+    assert!(classified.join_assign(&other));
+    let canonical_reasons = vec![external, evidence];
+    assert_eq!(classified.trust, Trust::Unknown(canonical_reasons.clone()));
+    assert_eq!(classified.secrecy, Secrecy::Unknown(canonical_reasons));
+    assert!(!classified.join_assign(&other));
+
+    let dominant =
+        AbstractValue::string_constant("value", Trust::Untrusted, Secrecy::Secret, Vec::new());
+    assert!(classified.join_assign(&dominant));
+    assert_eq!(classified.trust, Trust::Untrusted);
+    assert_eq!(classified.secrecy, Secrecy::Secret);
+    assert!(!classified.join_assign(&dominant));
+}
+
+#[test]
+fn join_assign_canonicalizes_string_constants_and_caps_the_domain() {
+    let mut constants = string_value(StringValue::Constants(vec![
+        "beta".to_owned(),
+        "alpha".to_owned(),
+        "beta".to_owned(),
+    ]));
+    let other = string_value(StringValue::Constants(vec![
+        "gamma".to_owned(),
+        "alpha".to_owned(),
+        "gamma".to_owned(),
+    ]));
+    assert!(constants.join_assign(&other));
+    assert_eq!(
+        constants.constants(),
+        Some(["alpha".to_owned(), "beta".to_owned(), "gamma".to_owned()].as_slice())
+    );
+    assert!(!constants.join_assign(&other));
+
+    let mut bounded = string_value(StringValue::Constants(
+        (0..8).map(|index| format!("value-{index}")).collect(),
+    ));
+    let ninth = string_value(StringValue::Constants(vec!["value-8".to_owned()]));
+    assert!(bounded.join_assign(&ninth));
+    assert_eq!(bounded.value, Value::String(StringValue::Top));
+    assert!(!bounded.join_assign(&ninth));
 }
 
 #[test]

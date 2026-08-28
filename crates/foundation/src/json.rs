@@ -1,3 +1,4 @@
+use crate::digest::ContentDigestWriter;
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
@@ -116,8 +117,17 @@ impl JsonValue {
     #[must_use]
     pub fn canonical(&self) -> String {
         let mut output = String::new();
-        self.write_canonical(&mut output);
+        let _ = self.write_canonical(&mut output);
         output
+    }
+
+    /// Hash the exact canonical JSON bytes without materializing them in a
+    /// temporary `String`.
+    #[must_use]
+    pub fn canonical_digest(&self) -> String {
+        let mut output = ContentDigestWriter::default();
+        let _ = self.write_canonical(&mut output);
+        output.finish()
     }
 
     #[must_use]
@@ -127,34 +137,34 @@ impl JsonValue {
         output
     }
 
-    fn write_canonical(&self, output: &mut String) {
+    fn write_canonical(&self, output: &mut impl fmt::Write) -> fmt::Result {
         match self {
-            Self::Null => output.push_str("null"),
-            Self::Boolean(true) => output.push_str("true"),
-            Self::Boolean(false) => output.push_str("false"),
-            Self::Integer(value) => output.push_str(&value.to_string()),
+            Self::Null => output.write_str("null"),
+            Self::Boolean(true) => output.write_str("true"),
+            Self::Boolean(false) => output.write_str("false"),
+            Self::Integer(value) => write!(output, "{value}"),
             Self::String(value) => write_string(output, value),
             Self::Array(values) => {
-                output.push('[');
+                output.write_char('[')?;
                 for (index, value) in values.iter().enumerate() {
                     if index != 0 {
-                        output.push(',');
+                        output.write_char(',')?;
                     }
-                    value.write_canonical(output);
+                    value.write_canonical(output)?;
                 }
-                output.push(']');
+                output.write_char(']')
             }
             Self::Object(fields) => {
-                output.push('{');
+                output.write_char('{')?;
                 for (index, (name, value)) in fields.iter().enumerate() {
                     if index != 0 {
-                        output.push(',');
+                        output.write_char(',')?;
                     }
-                    write_string(output, name);
-                    output.push(':');
-                    value.write_canonical(output);
+                    write_string(output, name)?;
+                    output.write_char(':')?;
+                    value.write_canonical(output)?;
                 }
-                output.push('}');
+                output.write_char('}')
             }
         }
     }
@@ -219,25 +229,24 @@ impl JsonValue {
     }
 }
 
-fn write_string(output: &mut String, value: &str) {
-    output.push('"');
+fn write_string(output: &mut impl fmt::Write, value: &str) -> fmt::Result {
+    output.write_char('"')?;
     for character in value.chars() {
         match character {
-            '"' => output.push_str("\\\""),
-            '\\' => output.push_str("\\\\"),
-            JSON_BACKSPACE => output.push_str("\\b"),
-            JSON_FORM_FEED => output.push_str("\\f"),
-            '\n' => output.push_str("\\n"),
-            '\r' => output.push_str("\\r"),
-            '\t' => output.push_str("\\t"),
+            '"' => output.write_str("\\\"")?,
+            '\\' => output.write_str("\\\\")?,
+            JSON_BACKSPACE => output.write_str("\\b")?,
+            JSON_FORM_FEED => output.write_str("\\f")?,
+            '\n' => output.write_str("\\n")?,
+            '\r' => output.write_str("\\r")?,
+            '\t' => output.write_str("\\t")?,
             control if control <= JSON_LAST_CONTROL_CHARACTER => {
-                use std::fmt::Write as _;
-                let _ = write!(output, "\\u{:04x}", u32::from(control));
+                write!(output, "\\u{:04x}", u32::from(control))?;
             }
-            other => output.push(other),
+            other => output.write_char(other)?,
         }
     }
-    output.push('"');
+    output.write_char('"')
 }
 
 struct Parser<'a> {

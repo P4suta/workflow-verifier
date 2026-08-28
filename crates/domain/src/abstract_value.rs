@@ -146,11 +146,26 @@ impl AbstractValue {
 
     #[must_use]
     pub fn join(&self, other: &Self) -> Self {
+        let mut joined = self.clone();
+        let _ = joined.join_assign(other);
+        joined
+    }
+
+    /// Join `other` into this value without rebuilding unchanged state.
+    ///
+    /// Returns `true` exactly when the resulting abstract value differs from
+    /// the value on entry. Provenance remains sorted and duplicate-free after
+    /// every non-bottom join.
+    pub fn join_assign(&mut self, other: &Self) -> bool {
         if self.value == Value::Bottom {
-            return other.clone();
+            if self == other {
+                return false;
+            }
+            self.clone_from(other);
+            return true;
         }
         if other.value == Value::Bottom {
-            return self.clone();
+            return false;
         }
         let value_type = if self.value_type == ValueType::Never {
             other.value_type
@@ -159,15 +174,16 @@ impl AbstractValue {
         } else {
             ValueType::Dynamic
         };
-        let mut provenance: BTreeSet<Provenance> = self.provenance.iter().cloned().collect();
-        provenance.extend(other.provenance.iter().cloned());
-        Self {
-            value_type,
-            value: join_value(&self.value, &other.value),
-            trust: join_trust(&self.trust, &other.trust),
-            secrecy: join_secrecy(&self.secrecy, &other.secrecy),
-            provenance: provenance.into_iter().collect(),
+        let mut changed = false;
+        if self.value_type != value_type {
+            self.value_type = value_type;
+            changed = true;
         }
+        changed |= join_value_assign(&mut self.value, &other.value);
+        changed |= join_trust_assign(&mut self.trust, &other.trust);
+        changed |= join_secrecy_assign(&mut self.secrecy, &other.secrecy);
+        changed |= join_provenance_assign(&mut self.provenance, &other.provenance);
+        changed
     }
 
     #[must_use]
@@ -218,6 +234,43 @@ impl AbstractValue {
             ("value".to_owned(), value_json(&self.value)),
         ]))
     }
+}
+
+fn assign_if_changed<T: Eq>(target: &mut T, value: T) -> bool {
+    if *target == value {
+        false
+    } else {
+        *target = value;
+        true
+    }
+}
+
+fn join_sorted_unique_assign<T: Clone + Ord>(left: &mut Vec<T>, right: &[T]) -> bool {
+    let canonical = left.windows(2).all(|pair| pair[0] < pair[1]);
+    if !canonical {
+        left.sort_unstable();
+        left.dedup();
+    }
+
+    let mut additions: Vec<_> = right
+        .iter()
+        .filter(|item| left.binary_search(item).is_err())
+        .collect();
+    additions.sort_unstable();
+    additions.dedup();
+    if additions.is_empty() {
+        return !canonical;
+    }
+    for addition in additions {
+        if let Err(position) = left.binary_search(addition) {
+            left.insert(position, addition.clone());
+        }
+    }
+    true
+}
+
+fn join_provenance_assign(left: &mut Vec<Provenance>, right: &[Provenance]) -> bool {
+    join_sorted_unique_assign(left, right)
 }
 
 fn common_prefix(left: &str, right: &str) -> Option<String> {
@@ -319,6 +372,48 @@ fn join_strings(left: &StringValue, right: &StringValue) -> StringValue {
     }
 }
 
+fn join_strings_assign(left: &mut StringValue, right: &StringValue) -> bool {
+    if matches!(left, StringValue::Bottom) {
+        if matches!(right, StringValue::Bottom) {
+            return false;
+        }
+        left.clone_from(right);
+        return true;
+    }
+    if matches!(right, StringValue::Bottom) {
+        return false;
+    }
+    let constants_join = if let (StringValue::Constants(values), StringValue::Constants(right)) =
+        (&mut *left, right)
+    {
+        let changed = join_sorted_unique_assign(values, right);
+        Some((changed, values.len() > 8))
+    } else {
+        None
+    };
+    if let Some((changed, overflow)) = constants_join {
+        if overflow {
+            *left = StringValue::Top;
+            return true;
+        }
+        return changed;
+    }
+    if let (StringValue::Pattern(left), StringValue::Pattern(right)) = (&*left, right)
+        && left == right
+    {
+        return false;
+    }
+    if matches!(left, StringValue::Top) {
+        return false;
+    }
+    if matches!(right, StringValue::Top) {
+        *left = StringValue::Top;
+        return true;
+    }
+    let joined = join_strings(left, right);
+    assign_if_changed(left, joined)
+}
+
 fn join_value(left: &Value, right: &Value) -> Value {
     match (left, right) {
         (Value::Null, Value::Null) => Value::Null,
@@ -375,29 +470,85 @@ fn join_value(left: &Value, right: &Value) -> Value {
     }
 }
 
-fn join_trust(left: &Trust, right: &Trust) -> Trust {
-    match (left, right) {
-        (Trust::Untrusted, _) | (_, Trust::Untrusted) => Trust::Untrusted,
-        (Trust::Unknown(left), Trust::Unknown(right)) => {
-            Trust::Unknown(deduplicate_reasons(left.iter().chain(right).cloned()))
+fn join_value_assign(left: &mut Value, right: &Value) -> bool {
+    match (&mut *left, right) {
+        (Value::String(left), Value::String(right)) => join_strings_assign(left, right),
+        (Value::List(Some(left)), Value::List(Some(right))) if left.len() == right.len() => left
+            .iter_mut()
+            .zip(right)
+            .fold(false, |changed, (left, right)| {
+                left.join_assign(right) || changed
+            }),
+        (Value::Object(Some(left)), Value::Object(Some(right))) => {
+            let mut changed = false;
+            for (key, right) in right {
+                if let Some(left) = left.get_mut(key) {
+                    changed |= left.join_assign(right);
+                } else {
+                    left.insert(key.clone(), right.clone());
+                    changed = true;
+                }
+            }
+            changed
         }
-        (Trust::Unknown(values), _) | (_, Trust::Unknown(values)) => Trust::Unknown(values.clone()),
-        (Trust::Mixed, _) | (_, Trust::Mixed) => Trust::Mixed,
-        (Trust::Trusted, Trust::Trusted) => Trust::Trusted,
+        (Value::Unknown(left), Value::Unknown(right)) => join_sorted_unique_assign(left, right),
+        (Value::Unknown(left), _) => {
+            let reason = UnknownReason::UnsupportedSyntax("incompatible value join".to_owned());
+            join_sorted_unique_assign(left, std::slice::from_ref(&reason))
+        }
+        (_, Value::Unknown(right)) => {
+            let mut reasons = right.clone();
+            let reason = UnknownReason::UnsupportedSyntax("incompatible value join".to_owned());
+            let _ = join_sorted_unique_assign(&mut reasons, std::slice::from_ref(&reason));
+            *left = Value::Unknown(reasons);
+            true
+        }
+        _ => {
+            let joined = join_value(left, right);
+            assign_if_changed(left, joined)
+        }
     }
 }
 
-fn join_secrecy(left: &Secrecy, right: &Secrecy) -> Secrecy {
-    match (left, right) {
-        (Secrecy::Secret, _) | (_, Secrecy::Secret) => Secrecy::Secret,
-        (Secrecy::Unknown(left), Secrecy::Unknown(right)) => {
-            Secrecy::Unknown(deduplicate_reasons(left.iter().chain(right).cloned()))
+fn join_trust_assign(left: &mut Trust, right: &Trust) -> bool {
+    match (&mut *left, right) {
+        (Trust::Untrusted, _) | (Trust::Trusted, Trust::Trusted) => false,
+        (slot, Trust::Untrusted) => {
+            *slot = Trust::Untrusted;
+            true
         }
-        (Secrecy::Unknown(values), _) | (_, Secrecy::Unknown(values)) => {
-            Secrecy::Unknown(values.clone())
+        (Trust::Unknown(left), Trust::Unknown(right)) => join_sorted_unique_assign(left, right),
+        (Trust::Unknown(_), _) => false,
+        (slot, Trust::Unknown(reasons)) => {
+            *slot = Trust::Unknown(reasons.clone());
+            true
         }
-        (Secrecy::Sensitive, _) | (_, Secrecy::Sensitive) => Secrecy::Sensitive,
-        (Secrecy::Public, Secrecy::Public) => Secrecy::Public,
+        (Trust::Mixed, _) => false,
+        (slot, Trust::Mixed) => {
+            *slot = Trust::Mixed;
+            true
+        }
+    }
+}
+
+fn join_secrecy_assign(left: &mut Secrecy, right: &Secrecy) -> bool {
+    match (&mut *left, right) {
+        (Secrecy::Secret, _) | (Secrecy::Public, Secrecy::Public) => false,
+        (slot, Secrecy::Secret) => {
+            *slot = Secrecy::Secret;
+            true
+        }
+        (Secrecy::Unknown(left), Secrecy::Unknown(right)) => join_sorted_unique_assign(left, right),
+        (Secrecy::Unknown(_), _) => false,
+        (slot, Secrecy::Unknown(reasons)) => {
+            *slot = Secrecy::Unknown(reasons.clone());
+            true
+        }
+        (Secrecy::Sensitive, _) => false,
+        (slot, Secrecy::Sensitive) => {
+            *slot = Secrecy::Sensitive;
+            true
+        }
     }
 }
 

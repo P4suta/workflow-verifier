@@ -536,23 +536,28 @@ fn canonical_cycle(mut cycle: Vec<String>) -> Vec<String> {
 
 #[derive(Clone)]
 struct Dataflow {
-    values: BTreeMap<String, AbstractValue>,
+    node_indices: BTreeMap<String, usize>,
+    values: Vec<AbstractValue>,
     complete: bool,
 }
 
 impl Dataflow {
     fn solve(graph: &Graph) -> Self {
-        let mut values: BTreeMap<String, AbstractValue> = graph
+        let mut node_indices: BTreeMap<_, _> = graph
+            .nodes
+            .iter()
+            .enumerate()
+            .map(|(index, node)| (node.id.clone(), index))
+            .collect();
+        let mut values: Vec<_> = graph
             .nodes
             .iter()
             .map(|node| {
-                let value = node
-                    .attributes
-                    .values()
-                    .fold(AbstractValue::default(), |current, value| {
-                        current.join(value)
-                    });
-                (node.id.clone(), value)
+                let mut joined = AbstractValue::default();
+                for value in node.attributes.values() {
+                    let _ = joined.join_assign(value);
+                }
+                joined
             })
             .collect();
         let propagating_kinds = [
@@ -561,42 +566,81 @@ impl Dataflow {
             EdgeKind::Write,
             EdgeKind::Persist,
         ];
-        let mut outgoing: BTreeMap<&str, Vec<&Edge>> = BTreeMap::new();
-        for edge in graph
+        let mut propagating_edges: Vec<_> = graph
             .edges
             .iter()
             .filter(|edge| propagating_kinds.contains(&edge.kind))
-        {
-            outgoing.entry(&edge.from).or_default().push(edge);
+            .collect();
+        propagating_edges.sort_by(|left, right| left.id.cmp(&right.id));
+        for edge in &propagating_edges {
+            let _ = ensure_value_index(&mut node_indices, &mut values, &edge.from);
+            let _ = ensure_value_index(&mut node_indices, &mut values, &edge.to);
         }
-        for edges in outgoing.values_mut() {
-            edges.sort_by(|left, right| left.id.cmp(&right.id));
+        let mut outgoing = vec![Vec::new(); values.len()];
+        for edge in propagating_edges {
+            let source = node_indices[&edge.from];
+            let target = node_indices[&edge.to];
+            outgoing[source].push(target);
         }
 
-        let mut queue: VecDeque<String> = graph.nodes.iter().map(|node| node.id.clone()).collect();
-        let mut queued: BTreeSet<String> = queue.iter().cloned().collect();
-        while let Some(source_id) = queue.pop_front() {
-            queued.remove(&source_id);
-            let source = values.get(&source_id).cloned().unwrap_or_default();
-            for edge in outgoing.get(source_id.as_str()).into_iter().flatten() {
-                let target = values.get(&edge.to).cloned().unwrap_or_default();
-                let joined = target.join(&source);
-                if joined != target {
-                    values.insert(edge.to.clone(), joined);
-                    if queued.insert(edge.to.clone()) {
-                        queue.push_back(edge.to.clone());
-                    }
+        let mut queue: VecDeque<_> = graph
+            .nodes
+            .iter()
+            .map(|node| node_indices[&node.id])
+            .collect();
+        let mut queued = vec![false; values.len()];
+        for index in &queue {
+            queued[*index] = true;
+        }
+        while let Some(source) = queue.pop_front() {
+            queued[source] = false;
+            for &target in &outgoing[source] {
+                if join_indexed_value(&mut values, target, source) && !queued[target] {
+                    queued[target] = true;
+                    queue.push_back(target);
                 }
             }
         }
         Self {
+            node_indices,
             values,
             complete: true,
         }
     }
 
-    fn at(&self, node: &Node) -> AbstractValue {
-        self.values.get(&node.id).cloned().unwrap_or_default()
+    fn at(&self, node: &Node) -> &AbstractValue {
+        self.node_indices
+            .get(&node.id)
+            .and_then(|index| self.values.get(*index))
+            .expect("dataflow contains every graph node")
+    }
+}
+
+fn ensure_value_index(
+    indices: &mut BTreeMap<String, usize>,
+    values: &mut Vec<AbstractValue>,
+    id: &str,
+) -> usize {
+    if let Some(index) = indices.get(id) {
+        return *index;
+    }
+    let index = values.len();
+    values.push(AbstractValue::default());
+    indices.insert(id.to_owned(), index);
+    index
+}
+
+fn join_indexed_value(values: &mut [AbstractValue], target: usize, source: usize) -> bool {
+    if target == source {
+        let source = values[source].clone();
+        return values[target].join_assign(&source);
+    }
+    if target < source {
+        let (targets, sources) = values.split_at_mut(source);
+        targets[target].join_assign(&sources[0])
+    } else {
+        let (sources, targets) = values.split_at_mut(target);
+        targets[0].join_assign(&sources[source])
     }
 }
 
@@ -1014,7 +1058,7 @@ fn injection_rule(graph: &Graph, index: &GraphIndex<'_>, dataflow: &Dataflow) ->
                 }),
             ));
         } else {
-            let unknowns = reasons(&value);
+            let unknowns = reasons(value);
             states.push(if unknowns.is_empty() {
                 PropertyState::Proved
             } else {
@@ -1715,7 +1759,7 @@ fn trusted_authorization_gate(node: &Node, dataflow: &Dataflow) -> bool {
     let value = dataflow.at(node);
     (mechanism || protected_reference || explicit_approval)
         && !value.is_untrusted()
-        && reasons(&value).is_empty()
+        && reasons(value).is_empty()
 }
 
 fn environment_authorization_reasons(
@@ -1881,7 +1925,7 @@ fn integrity_rule(
                 None,
             ));
         } else {
-            let unknowns = reasons(&value);
+            let unknowns = reasons(value);
             states.push(if unknowns.is_empty() {
                 PropertyState::Proved
             } else {
@@ -1995,7 +2039,7 @@ fn credential_rule(graph: &Graph, dataflow: &Dataflow) -> RuleResult {
                 None,
             ));
         } else {
-            let unknowns = reasons(&value);
+            let unknowns = reasons(value);
             states.push(if unknowns.is_empty() {
                 PropertyState::Proved
             } else {
@@ -2380,6 +2424,7 @@ pub fn verify_program(persona: Persona, graphs: &[Graph]) -> VerificationResult 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use workflow_verifier_domain::Provenance;
 
     const TEST_SOURCE: &str = "workflow.yml";
 
@@ -2701,6 +2746,92 @@ mod tests {
             .collect::<Vec<_>>(),
             vec!["command sink contains untrusted data"]
         );
+    }
+
+    #[test]
+    fn dataflow_handles_high_fan_in_cycles_and_self_edges_canonically() {
+        const SOURCE_COUNT: usize = 12;
+        let mut graph = Graph::empty(Provider::Github, TEST_SOURCE);
+        let hub = test_node(NodeKind::Resource, "fan-in-hub");
+        let cycle_a = test_node(NodeKind::Resource, "cycle-a");
+        let cycle_b = test_node(NodeKind::Command, "cycle-b");
+        for node in [&hub, &cycle_a, &cycle_b] {
+            graph.add_node(node.clone());
+        }
+
+        for index in 0..SOURCE_COUNT {
+            let mut source = test_node(NodeKind::Resource, &format!("source-{index:02}"));
+            let provenance = Provenance {
+                origin: format!("origin-{index:02}"),
+                span: source.span.clone(),
+                operation: "fan-in".to_owned(),
+            };
+            source.attributes.insert(
+                "value".to_owned(),
+                AbstractValue::string_constant(
+                    format!("value-{index:02}"),
+                    if index == 0 {
+                        Trust::Untrusted
+                    } else {
+                        Trust::Trusted
+                    },
+                    Secrecy::Public,
+                    vec![provenance.clone(), provenance],
+                ),
+            );
+            graph.add_edge(Edge::simple(
+                EdgeKind::Data,
+                source.id.clone(),
+                hub.id.clone(),
+            ));
+            graph.add_node(source);
+        }
+        graph.add_edge(Edge::simple(
+            EdgeKind::Read,
+            hub.id.clone(),
+            cycle_a.id.clone(),
+        ));
+        graph.add_edge(Edge::simple(
+            EdgeKind::Write,
+            cycle_a.id.clone(),
+            cycle_b.id.clone(),
+        ));
+        graph.add_edge(Edge::simple(
+            EdgeKind::Persist,
+            cycle_b.id.clone(),
+            hub.id.clone(),
+        ));
+        graph.add_edge(Edge::simple(EdgeKind::Data, hub.id.clone(), hub.id.clone()));
+        graph.finalize();
+
+        let dataflow = Dataflow::solve(&graph);
+        let expected_origins: Vec<_> = (0..SOURCE_COUNT)
+            .map(|index| format!("origin-{index:02}"))
+            .collect();
+        for node in [&hub, &cycle_a, &cycle_b] {
+            let value = dataflow.at(node);
+            assert!(value.is_untrusted());
+            assert_eq!(
+                value
+                    .provenance
+                    .iter()
+                    .map(|item| item.origin.clone())
+                    .collect::<Vec<_>>(),
+                expected_origins
+            );
+            assert_eq!(
+                value.value,
+                Value::String(workflow_verifier_domain::abstract_value::StringValue::Top)
+            );
+        }
+
+        let mut reordered = graph.clone();
+        reordered.nodes.reverse();
+        reordered.edges.reverse();
+        let reordered_dataflow = Dataflow::solve(&reordered);
+        assert_eq!(dataflow.at(&hub), reordered_dataflow.at(&hub));
+        assert_eq!(dataflow.at(&cycle_a), reordered_dataflow.at(&cycle_a));
+        assert_eq!(dataflow.at(&cycle_b), reordered_dataflow.at(&cycle_b));
     }
 
     #[test]

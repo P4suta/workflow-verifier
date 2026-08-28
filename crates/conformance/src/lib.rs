@@ -3,7 +3,7 @@
 //! Cross-implementation semantic report comparison.
 
 use std::collections::{BTreeMap, BTreeSet};
-use workflow_verifier_foundation::{JsonValue, content_digest, valid_content_digest};
+use workflow_verifier_foundation::{JsonValue, valid_content_digest};
 
 const V2_FIELDS: [&str; 15] = [
     "completeness",
@@ -135,8 +135,8 @@ struct AuthenticatedReport {
 pub fn compare_reports(left: &str, right: &str) -> Result<ReportComparison, String> {
     let left = authenticate_report(left, "left report")?;
     let right = authenticate_report(right, "right report")?;
-    let left_semantic_digest = content_digest(left.semantic.canonical());
-    let right_semantic_digest = content_digest(right.semantic.canonical());
+    let left_semantic_digest = left.semantic.canonical_digest();
+    let right_semantic_digest = right.semantic.canonical_digest();
     let mut differences = Vec::new();
     collect_differences("", &left.semantic, &right.semantic, &mut differences);
     Ok(ReportComparison {
@@ -172,7 +172,7 @@ fn authenticate_v2(value: &JsonValue, context: &str) -> Result<AuthenticatedRepo
     let digest = digest_field(fields, "digest", context)?;
     let mut unsigned = fields.clone();
     unsigned.insert("digest".to_owned(), JsonValue::Null);
-    if digest != content_digest(JsonValue::Object(unsigned).canonical()) {
+    if digest != JsonValue::Object(unsigned).canonical_digest() {
         return Err(format!("{context} report-v2 digest mismatch"));
     }
     Ok(AuthenticatedReport {
@@ -191,13 +191,13 @@ fn authenticate_v3(value: &JsonValue, context: &str) -> Result<AuthenticatedRepo
     semantic.remove("digest");
     semantic.remove("semantic_digest");
     remove_v3_build(&mut semantic)?;
-    if semantic_digest != content_digest(JsonValue::Object(semantic).canonical()) {
+    if semantic_digest != JsonValue::Object(semantic).canonical_digest() {
         return Err(format!("{context} report-v3 semantic digest mismatch"));
     }
 
     let mut full = fields.clone();
     full.remove("digest");
-    if digest != content_digest(JsonValue::Object(full).canonical()) {
+    if digest != JsonValue::Object(full).canonical_digest() {
         return Err(format!("{context} report-v3 digest mismatch"));
     }
     Ok(AuthenticatedReport {

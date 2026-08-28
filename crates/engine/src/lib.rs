@@ -122,16 +122,14 @@ fn snapshot_digest(files: &BTreeMap<String, Vec<u8>>) -> String {
             ]))
         })
         .collect();
-    content_digest(
-        JsonValue::Object(BTreeMap::from([
-            ("files".to_owned(), JsonValue::Array(entries)),
-            (
-                "schema".to_owned(),
-                JsonValue::String("source-manifest-v2".to_owned()),
-            ),
-        ]))
-        .canonical(),
-    )
+    JsonValue::Object(BTreeMap::from([
+        ("files".to_owned(), JsonValue::Array(entries)),
+        (
+            "schema".to_owned(),
+            JsonValue::String("source-manifest-v2".to_owned()),
+        ),
+    ]))
+    .canonical_digest()
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -360,17 +358,17 @@ impl AnalysisEngine {
                     .any(|prefix| path == prefix || path.starts_with(&format!("{prefix}/")))
             });
         }
-        let effective_bytes: BTreeMap<_, _> = effective
-            .iter()
-            .map(|(path, source)| (path.clone(), source.as_bytes().to_vec()))
-            .collect();
         let effective_digest = if request.overlays.is_empty() {
             request.snapshot.manifest_digest().to_owned()
         } else {
+            let effective_bytes: BTreeMap<_, _> = effective
+                .iter()
+                .map(|(path, source)| (path.clone(), source.as_bytes().to_vec()))
+                .collect();
             snapshot_digest(&effective_bytes)
         };
         let mut compilations = Vec::new();
-        let mut inputs = Vec::new();
+        let mut source_digests = BTreeMap::new();
         for (path, source) in &effective {
             check_cancelled(&request.cancellation)?;
             let Some(provider) = detect(path, source) else {
@@ -390,10 +388,7 @@ impl AnalysisEngine {
                 continue;
             }
             let source_digest = content_digest(source);
-            inputs.push(ReportInput {
-                path: path.clone(),
-                digest: source_digest.clone(),
-            });
+            source_digests.insert(path.clone(), source_digest.clone());
             let document = self.memoize_parse(path, source, &source_digest, request.budget)?;
             check_cancelled(&request.cancellation)?;
             let lower_key = content_digest(
@@ -413,14 +408,18 @@ impl AnalysisEngine {
         compilations = link_local(&effective, compilations, request.budget)
             .map_err(|errors| AnalysisError::invalid(errors.join("; ")))?;
         check_cancelled(&request.cancellation)?;
-        inputs.clear();
+        let mut inputs = Vec::with_capacity(compilations.len());
         for compilation in &mut compilations {
             check_cancelled(&request.cancellation)?;
             apply_lock(compilation, &lock);
-            inputs.push(ReportInput {
-                path: compilation.graph.source.clone(),
-                digest: content_digest(compilation.cst.print()),
+            let path = compilation.graph.source.clone();
+            let digest = source_digests.get(&path).cloned().unwrap_or_else(|| {
+                effective
+                    .get(&path)
+                    .map_or_else(|| content_digest(compilation.cst.print()), content_digest)
             });
+            source_digests.insert(path.clone(), digest.clone());
+            inputs.push(ReportInput { path, digest });
         }
         self.replace_dependency_index(&compilations)?;
         compilations.sort_by(|left, right| left.graph.source.cmp(&right.graph.source));

@@ -1,6 +1,6 @@
 use crate::Scenario;
 use std::collections::{BTreeMap, BTreeSet};
-use workflow_verifier_foundation::{JsonValue, content_digest, valid_content_digest};
+use workflow_verifier_foundation::{JsonValue, valid_content_digest};
 use workflow_verifier_runner_protocol::{
     Control, Dependency, Limits, PlanStatus, RUNNER_V2_CPU_CORES, RUNNER_V2_MEMORY_BYTES,
     RUNNER_V2_MEMORY_MIB, RUNNER_V2_OUTPUT_BYTES, RUNNER_V2_PROCESSES, RUNNER_V2_SCRATCH_BYTES,
@@ -265,7 +265,7 @@ impl RunnerPlan {
                 JsonValue::Array(request.steps.iter().map(step_json).collect()),
             ),
         ]));
-        let digest = content_digest(unsigned.canonical());
+        let digest = unsigned.canonical_digest();
         let JsonValue::Object(mut fields) = unsigned else {
             return Err("runner plan construction did not produce an object".to_owned());
         };

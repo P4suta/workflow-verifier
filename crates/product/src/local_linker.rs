@@ -30,13 +30,14 @@ pub fn link_local(
     let mut local_intents = BTreeSet::new();
     let mut index = 0;
     while index < compilations.len() {
-        let compilation = compilations[index].clone();
-        let caller = normalize(&compilation.graph.source);
-        for dependency in &compilation.dependencies {
+        let provider = compilations[index].provider;
+        let caller = normalize(&compilations[index].graph.source);
+        let dependencies = compilations[index].dependencies.clone();
+        for dependency in &dependencies {
             let Some(candidates) = local_candidates(&caller, dependency)? else {
                 continue;
             };
-            let key = resolution_key(compilation.provider, &caller, dependency);
+            let key = resolution_key(provider, &caller, dependency);
             local_intents.insert(key.clone());
             let matches: Vec<_> = candidates
                 .into_iter()
@@ -52,13 +53,13 @@ pub fn link_local(
                 continue;
             };
             resolutions.insert(key, target.clone());
-            let target_key = (compilation.provider, target.clone());
+            let target_key = (provider, target.clone());
             if seen.insert(target_key) {
                 let Some(source) = sources.get(target) else {
                     return Err(vec!["local source index changed during linking".to_owned()]);
                 };
-                let target_compilation = compile(compilation.provider, target, source, budget)
-                    .map_err(|problems| {
+                let target_compilation =
+                    compile(provider, target, source, budget).map_err(|problems| {
                         problems
                             .into_iter()
                             .map(|problem| format!("{}: {}", problem.code, problem.message))
@@ -82,12 +83,12 @@ pub fn link_local(
 
 fn normalized_sources(
     sources: &BTreeMap<String, String>,
-) -> Result<BTreeMap<String, String>, Vec<String>> {
+) -> Result<BTreeMap<String, &str>, Vec<String>> {
     let mut output = BTreeMap::new();
     for (path, source) in sources {
         let normalized = normalize_relative(path)
             .ok_or_else(|| vec![format!("workspace source path escapes the root: {path}")])?;
-        if output.insert(normalized.clone(), source.clone()).is_some() {
+        if output.insert(normalized.clone(), source.as_str()).is_some() {
             return Err(vec![format!(
                 "duplicate normalized source path: {normalized}"
             )]);
@@ -220,9 +221,9 @@ fn call_matches(node: &Node, reference: &str) -> bool {
     node.name == reference || node.name == format!("child:{reference}")
 }
 
-fn apply_resolutions(
+fn apply_resolutions<S: AsRef<str>>(
     compilation: &mut Compilation,
-    sources: &BTreeMap<String, String>,
+    sources: &BTreeMap<String, S>,
     resolutions: &BTreeMap<ResolutionKey, String>,
     local_intents: &BTreeSet<ResolutionKey>,
 ) -> Result<(), Vec<String>> {
@@ -236,7 +237,7 @@ fn apply_resolutions(
             dependency.mutability = Mutability::Local;
             dependency.status = DependencyStatus::Locked {
                 revision: format!("local:{target}"),
-                digest: content_digest(source),
+                digest: content_digest(source.as_ref()),
             };
         } else if local_intents.contains(&key) {
             dependency.mutability = Mutability::Local;
@@ -270,7 +271,7 @@ fn apply_resolutions(
         );
         node.attributes.insert(
             "dependency.digest".to_owned(),
-            local_evidence("local digest", &content_digest(source)),
+            local_evidence("local digest", &content_digest(source.as_ref())),
         );
         node.unknown = None;
     }

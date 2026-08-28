@@ -10,9 +10,11 @@ machine-readable evidence.
 - `corpus-report-v1` covers at least 100 distinct, license-reviewed repositories
   for each provider. Precision must be at least 95% and recall over the owned
   vulnerability fixtures must be 100%.
-- `performance-comparison-v1` compares cold, warm, and incremental samples on an
-  identical declared environment. An increase above 10% needs a substantive
-  explanation and an HTTPS review reference.
+- Separate `performance-comparison-v1` ledgers compare the retained OCaml
+  reference and shipped Rust CLI in cold, warm, and incremental modes on an
+  identical declared environment. Each implementation independently rejects an
+  increase above 10% unless it has a substantive explanation and HTTPS review
+  reference; no minimum improvement is required.
 - `official-compat-v1` summarizes two fixed repositories for each provider.
   Sparse acquisition authenticates the pinned commit and tree and copies only
   selected CI definitions. Analysis then runs twice without network access,
@@ -101,7 +103,9 @@ missing, ambiguous, or semantically changed finding is rejected and must be
 reviewed from the fresh draft.
 
 Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
-`just corpus-rebase-review`, `just corpus-review`, `just corpus`, `just performance-measure`,
+`just corpus-rebase-review`, `just corpus-review`, `just corpus`,
+`just performance-measure`, `just performance-pair`,
+`just performance-measure-rust`, `just performance-pair-rust`,
 `just performance-gate`, `just mutation-gate`, `just mutation-campaign`,
 `just determinism-probe`, and `just determinism-compare`.
 `just official-fetch`, `just official-compat`, and

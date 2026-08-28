@@ -184,7 +184,7 @@ impl SourceManifest {
                 JsonValue::Array(trusted.iter().cloned().map(JsonValue::String).collect()),
             ),
         ]));
-        let exclusion_policy_digest = content_digest(exclusion_policy.canonical());
+        let exclusion_policy_digest = exclusion_policy.canonical_digest();
         let mut entries = Vec::new();
         let mut exclusions = Vec::new();
         let mut exact_paths = BTreeSet::new();
@@ -266,7 +266,7 @@ impl SourceManifest {
             total_size,
             digest: String::new(),
         };
-        manifest.digest = content_digest(manifest.body_json().canonical());
+        manifest.digest = manifest.body_json().canonical_digest();
         Ok(manifest)
     }
 
@@ -302,7 +302,7 @@ impl SourceManifest {
 
     #[must_use]
     pub fn verify_digest(&self) -> bool {
-        self.digest == content_digest(self.body_json().canonical())
+        self.digest == self.body_json().canonical_digest()
     }
 
     #[must_use]

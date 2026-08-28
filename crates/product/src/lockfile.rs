@@ -1,7 +1,7 @@
 use crate::DependencySummary;
 use std::collections::{BTreeMap, BTreeSet};
 use workflow_verifier_domain::Provider;
-use workflow_verifier_foundation::{JsonValue, content_digest, valid_content_digest};
+use workflow_verifier_foundation::{JsonValue, valid_content_digest};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct LockEntry {
@@ -125,7 +125,7 @@ impl Lockfile {
         Ok(Self {
             schema: schema.to_owned(),
             entries: unique,
-            integrity: content_digest(unsigned.canonical()),
+            integrity: unsigned.canonical_digest(),
         })
     }
 
@@ -153,8 +153,7 @@ impl Lockfile {
 
     #[must_use]
     pub fn verify_integrity(&self) -> bool {
-        self.integrity
-            == content_digest(Self::unsigned_json(&self.schema, &self.entries).canonical())
+        self.integrity == Self::unsigned_json(&self.schema, &self.entries).canonical_digest()
     }
 
     fn to_json(&self) -> JsonValue {
@@ -263,6 +262,7 @@ fn require_exact(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use workflow_verifier_foundation::content_digest;
 
     fn valid_entry(provider: Provider, reference: &str) -> LockEntry {
         LockEntry::new(

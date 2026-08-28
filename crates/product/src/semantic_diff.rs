@@ -1,8 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
 use workflow_verifier_domain::{Capability, EdgeKind, Graph, ObservableEffect};
-use workflow_verifier_foundation::{
-    DependencyClass, JsonValue, classify_reference, content_digest,
-};
+use workflow_verifier_foundation::{DependencyClass, JsonValue, classify_reference};
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct PathChange {
@@ -61,7 +59,7 @@ impl SemanticDiff {
 }
 
 fn graph_digest(graph: &Graph) -> String {
-    content_digest(graph.to_json().canonical())
+    graph.to_json().canonical_digest()
 }
 
 fn capabilities(graph: &Graph) -> BTreeSet<Capability> {
