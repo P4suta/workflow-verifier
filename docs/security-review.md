@@ -29,8 +29,10 @@ The threat model is in [threat-model.md](threat-model.md).
 
 Repository dogfood uses
 [`examples/dogfood-policy-v2.toml`](../examples/dogfood-policy-v2.toml) only
-with the explicit repository-trust grant. Its two path-scoped, owned, expiring
-suppressions document the protected Windows signing boundary: strict workflow
-inputs are validated before use, and HSM credentials intentionally reach the
-pinned SSL.com signing action. Expiry makes this exception fail closed unless it
-is reviewed again.
+with the explicit repository-trust grant. Its path-scoped, owned, expiring
+suppressions document two protected boundaries. For Windows signing, strict
+workflow inputs are validated before use and HSM credentials intentionally
+reach the pinned SSL.com signing action. For Draft Release PR preparation, the
+pinned token action uses the App private key to mint one short-lived,
+repository-scoped token, and only the pinned release-plz action receives that
+token. Expiry makes each exception fail closed unless it is reviewed again.
