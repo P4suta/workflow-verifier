@@ -44,7 +44,10 @@ use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 
-const HELP: &str = "workflow-verifier 0.1.0
+const HELP: &str = concat!(
+    "workflow-verifier ",
+    env!("CARGO_PKG_VERSION"),
+    "
 
 Usage: workflow-verifier COMMAND [OPTIONS]
 
@@ -62,7 +65,8 @@ Commands:
   version     Print the version
   lsp         Run the stdio language server
   auth        Manage credentials in the OS credential store
-";
+"
+);
 
 static TEMP_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
@@ -275,7 +279,11 @@ fn dispatch(
     let rest = &arguments[1..];
     match command {
         "--help" | "-h" | "help" => Ok(CommandOutput::success(HELP)),
-        "--version" | "version" => Ok(CommandOutput::success("workflow-verifier 0.1.0\n")),
+        "--version" | "version" => Ok(CommandOutput::success(concat!(
+            "workflow-verifier ",
+            env!("CARGO_PKG_VERSION"),
+            "\n"
+        ))),
         "check" => command_check(cwd, rest, context),
         "graph" => command_graph(cwd, rest, context),
         "diff" => command_diff(cwd, rest, context),
@@ -1506,7 +1514,7 @@ fn inspect_backend(id: &str, executable: &str, platform: &str, engine: &str) -> 
     let mut controls = Vec::new();
     let mut reasons = Vec::new();
     let mut reported_platform = platform.to_owned();
-    let mut version = "0.1.0".to_owned();
+    let mut version = env!("CARGO_PKG_VERSION").to_owned();
     if let Some(candidate) = &path {
         match probe_backend(candidate, id, engine) {
             Ok(attestation) => {
@@ -3178,7 +3186,10 @@ mod tests {
         let context = AnalysisContext::default();
         let help = dispatch(Path::new("."), &["--help".to_owned()], &context)
             .expect("help dispatch succeeds");
-        assert!(help.stdout.starts_with("workflow-verifier 0.1.0"));
+        assert!(
+            help.stdout
+                .starts_with(concat!("workflow-verifier ", env!("CARGO_PKG_VERSION")))
+        );
         assert!(context.analyzer.get().is_none());
 
         let initializations = AtomicUsize::new(0);

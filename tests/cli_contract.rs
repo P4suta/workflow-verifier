@@ -70,7 +70,10 @@ fn version_help_and_invalid_input_follow_the_public_exit_contract() {
     let fixture = Fixture::new();
     let version = invoke(&fixture.0, &["version"]);
     assert_eq!(version.status.code(), Some(0));
-    assert_eq!(text(&version.stdout), "workflow-verifier 0.1.0\n");
+    assert_eq!(
+        text(&version.stdout),
+        concat!("workflow-verifier ", env!("CARGO_PKG_VERSION"), "\n")
+    );
     assert!(version.stderr.is_empty());
 
     let help = invoke(&fixture.0, &["--help"]);

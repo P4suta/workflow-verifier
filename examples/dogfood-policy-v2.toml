@@ -2,7 +2,7 @@ version = 2
 persona = "audit"
 frontends = ["github", "gitlab", "azure", "circleci"]
 offline = true
-source_exclusions = ["_build", "_candidate", "_dogfood", "_dogfood-v0.1.0", "_opam", "evaluation", "fuzz", "helpers/target", "target", "test"]
+source_exclusions = ["_build", "_candidate", "_dogfood", "_dogfood-v0.1.0", "_opam", "_performance-base", "evaluation", "fuzz", "helpers/target", "target", "test"]
 
 [[suppressions]]
 rule = "WV-SEC-001"
@@ -17,3 +17,10 @@ path = ".github/workflows/sign-windows.yml"
 reason = "The pinned SSL.com action intentionally sends signing credentials to the protected cloud HSM."
 owner = "release-security"
 expiry = "2027-08-26"
+
+[[suppressions]]
+rule = "WV-SEC-002"
+path = ".github/workflows/release-pr.yml"
+reason = "The pinned token action mints one short-lived repository-scoped App token for the pinned release-plz action to update only the Draft Release PR."
+owner = "release-security"
+expiry = "2027-08-29"

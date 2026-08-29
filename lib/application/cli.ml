@@ -1752,7 +1752,7 @@ _arguments '1:command:(check resolve explain graph diff fix policy sandbox docto
 let dispatch io services (invocation : Cli_parser.invocation) =
   match invocation.command with
   | "version" ->
-      io.stdout "workflow-verifier 0.1.0\n";
+      io.stdout (Product_version.cli_banner ^ "\n");
       0
   | "check" -> check io invocation.arguments
   | "explain" -> explain io invocation.arguments

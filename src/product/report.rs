@@ -6,7 +6,7 @@ use serde::ser::{Serialize, SerializeMap, SerializeSeq, Serializer};
 use std::collections::BTreeSet;
 
 pub const TOOL_NAME: &str = "workflow-verifier";
-pub const TOOL_VERSION: &str = "0.1.0";
+pub const TOOL_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ReportInput {

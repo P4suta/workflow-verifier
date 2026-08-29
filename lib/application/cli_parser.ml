@@ -396,7 +396,8 @@ let root =
   in
   let default = Term.(ret (const (`Help (`Plain, None)))) in
   Cmd.group ~default
-    (Cmd.info "workflow-verifier" ~version:"0.1.0" ~doc ~man ~exits)
+    (Cmd.info "workflow-verifier" ~version:Product_version.version ~doc ~man
+       ~exits)
     [
       check_cmd;
       resolve_cmd;

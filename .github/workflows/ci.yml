@@ -23,6 +23,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  pr-title:
+    name: Conventional PR title
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - name: Validate the future squash commit subject
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: python -B scripts/verify_pr_title.py "$PR_TITLE"
+
   task-surface:
     name: Pinned task surface
     runs-on: ubuntu-24.04
@@ -84,6 +102,9 @@ jobs:
           ruff check .
           ruff format --check .
           mypy \
+            scripts/sync_release_version.py \
+            scripts/verify_pr_title.py \
+            scripts/verify_release_version.py \
             scripts/candidate_artifacts.py \
             scripts/package_crate.py \
             scripts/generate_sbom.py \
@@ -100,6 +121,8 @@ jobs:
             scripts/prepare_corpus.py \
             scripts/corpus_gate.py
           python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
+      - name: Reject derived release version drift
+        run: python -B scripts/sync_release_version.py --check
       - name: Verify OCaml formatting
         run: |
           opam install ocamlformat.0.28.1 --yes

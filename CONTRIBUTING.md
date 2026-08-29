@@ -13,8 +13,18 @@ Every production change follows red, green, refactor:
 
 Run `just check` before submitting changes. At minimum, run `dune build @all`,
 `dune runtest`, the Python tooling tests, and the relevant Rust workspace tests.
-Commits must be signed, use a descriptive imperative subject, and avoid mixing
-unrelated mechanical changes with semantic behavior.
+Commits must be signed and avoid mixing unrelated mechanical changes with
+semantic behavior.
+
+The repository is squash-only, and the squash subject is the pull request
+title. Titles must use `type(optional-scope)(optional-!): summary`, where type
+is one of `feat`, `fix`, `perf`, `refactor`, `docs`, `test`, `build`, `ci`,
+`chore`, `deps`, `revert`, or `style`. The summary must be nonempty. Dependabot
+uses `deps(actions): ...` and `deps(rust): ...`; the automated Release PR uses
+`chore: release vX.Y.Z`. Put `!` in the title for every breaking change; a
+`BREAKING CHANGE` body without title `!` is insufficient. Branch protection
+must require signed commits, the Conventional PR title check, and squash merge
+subjects copied from the PR title.
 
 Analyzer code must remain pure OCaml: do not add foreign stubs, dynamic
 libraries, or subprocess-based linters. Optional operating-system containment

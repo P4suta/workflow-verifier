@@ -552,7 +552,12 @@ fn request_bytes(
         target.push_str(query);
     }
     let mut request = Zeroizing::new(format!(
-        "GET {target} HTTP/1.1\r\nHost: {authority}\r\nUser-Agent: workflow-verifier/0.1.0\r\nAccept: application/json\r\nAccept-Encoding: identity\r\nConnection: close\r\n"
+        concat!(
+            "GET {} HTTP/1.1\r\nHost: {}\r\nUser-Agent: workflow-verifier/",
+            env!("CARGO_PKG_VERSION"),
+            "\r\nAccept: application/json\r\nAccept-Encoding: identity\r\nConnection: close\r\n"
+        ),
+        target, authority
     ));
     if let Some(value) = credential {
         request.push_str("Authorization: Bearer ");
