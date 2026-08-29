@@ -13,9 +13,7 @@ class ReleasePlzContractTests(unittest.TestCase):
         self.assertEqual(changelog.count("## [Unreleased]\n"), 1)
 
         prefix = f"## [{version}]"
-        release_headings = [
-            line for line in changelog.splitlines() if line.startswith(prefix)
-        ]
+        release_headings = [line for line in changelog.splitlines() if line.startswith(prefix)]
         self.assertLessEqual(len(release_headings), 1)
         if release_headings:
             escaped = re.escape(version)
