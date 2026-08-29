@@ -9,6 +9,20 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class ReleasePlzContractTests(unittest.TestCase):
+    def assert_changelog_state(self, changelog: str, version: str) -> None:
+        self.assertEqual(changelog.count("## [Unreleased]\n"), 1)
+
+        prefix = f"## [{version}]"
+        release_headings = [line for line in changelog.splitlines() if line.startswith(prefix)]
+        self.assertLessEqual(len(release_headings), 1)
+        if release_headings:
+            escaped = re.escape(version)
+            self.assertRegex(
+                release_headings[0],
+                rf"^## \[{escaped}\]\(https://github\.com/P4suta/"
+                rf"workflow-verifier/releases/tag/v{escaped}\) - \d{{4}}-\d{{2}}-\d{{2}}$",
+            )
+
     def workspace_config(self) -> dict[str, object]:
         document = tomllib.loads((ROOT / "release-plz.toml").read_text(encoding="utf-8"))
         workspace = document.get("workspace")
@@ -54,12 +68,19 @@ class ReleasePlzContractTests(unittest.TestCase):
             with self.subTest(subject=subject):
                 self.assertIsNone(pattern.match(subject))
 
-    def test_unpublished_bootstrap_keeps_cargo_0_1_0_and_starts_unreleased(self) -> None:
+    def test_development_and_generated_release_pr_keep_cargo_authoritative(self) -> None:
         cargo = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
-        self.assertEqual(cargo["workspace"]["package"]["version"], "0.1.0")
+        version = str(cargo["workspace"]["package"]["version"])
         changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-        self.assertIn("## [Unreleased]\n", changelog)
-        self.assertNotRegex(changelog, r"(?m)^## \[0\.1\.0\]")
+        self.assert_changelog_state(changelog, version)
+
+    def test_linked_release_plz_heading_is_an_allowed_contract_state(self) -> None:
+        self.assert_changelog_state(
+            "## [Unreleased]\n\n"
+            "## [0.1.0](https://github.com/P4suta/"
+            "workflow-verifier/releases/tag/v0.1.0) - 2026-08-29\n",
+            "0.1.0",
+        )
 
 
 if __name__ == "__main__":
