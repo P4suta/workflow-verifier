@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:339bea94c1510baeedc54f3d80a5260f9286599e4168c4baf94b08ffc984e3b1",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: DotNetCoreCLI@2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = DotNetCoreCLI@2"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 451,
             "column": 9,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_88fe7eeb056e598a0540",
+      "id": "diag_1b6c6c841a4ee45941c165c17373ff4b4cf7a5c2ae51e139c218d47f5fc9ee72",
       "message": "dependency is not pinned to immutable content: DotNetCoreCLI@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 451,
           "column": 9,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_fe0437d076b543b9975f",
+          "node": 8,
           "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 451,
               "column": 9,
@@ -62,559 +69,110 @@
       ]
     }
   ],
-  "digest": "sha256:6db9286fc31da7327a67acdd1b2aac6fa14cc15c7c5c0425a235cd0ae9b6f30e",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_e83aa83df233a5e789c7",
-          "id": "wv_039d4562fcb481dfb44f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e8ff84d486969b47f78f"
-        },
-        {
-          "condition": true,
-          "from": "wv_79c3d480b4eaf3f42bec",
-          "id": "wv_514de307bfacaf46c682",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_b83368af39d315b5f7d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_6519d04c7a338ce52220",
-          "id": "wv_6f6a007c8a8826182531",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_e8ff84d486969b47f78f"
-        },
-        {
-          "condition": true,
-          "from": "wv_b816ebc4877cbf4a1350",
-          "id": "wv_8d01941a9e0143643b24",
-          "kind": "call",
-          "label": null,
-          "to": "wv_fe0437d076b543b9975f"
-        },
-        {
-          "condition": true,
-          "from": "wv_116d1e9411264fd3d602",
-          "id": "wv_a060b97a5cd266d62016",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b83368af39d315b5f7d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_e83aa83df233a5e789c7",
-          "id": "wv_ad54926caab45fb00672",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b816ebc4877cbf4a1350"
-        },
-        {
-          "condition": true,
-          "from": "wv_b816ebc4877cbf4a1350",
-          "id": "wv_bda707fdb146e92f86b3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fe0437d076b543b9975f"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2675d5382a540542095",
-          "id": "wv_c823266e54fdabe2725f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e83aa83df233a5e789c7"
-        },
-        {
-          "condition": true,
-          "from": "wv_b83368af39d315b5f7d4",
-          "id": "wv_d14465d64e295305b32d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b2675d5382a540542095"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2675d5382a540542095",
-          "id": "wv_e62513dd6d51f2c31c95",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b816ebc4877cbf4a1350"
-        }
-      ],
-      "entrypoints": [
-        "wv_b83368af39d315b5f7d4"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_116d1e9411264fd3d602",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 229,
-              "column": 1,
-              "line": 7
-            },
-            "stop": {
-              "byte": 237,
-              "column": 9,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-                    "start": {
-                      "byte": 371,
-                      "column": 49,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 389,
-                      "column": 67,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "buildConfiguration"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6519d04c7a338ce52220",
-          "kind": "resource",
-          "name": "buildConfiguration",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 371,
-              "column": 49,
-              "line": 16
-            },
-            "stop": {
-              "byte": 389,
-              "column": 67,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-                    "start": {
-                      "byte": 305,
-                      "column": 23,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 314,
-                      "column": 32,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Release"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_79c3d480b4eaf3f42bec",
-          "kind": "resource",
-          "name": "variable:buildConfiguration",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 285,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 314,
-              "column": 32,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b2675d5382a540542095",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 220,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 583,
-              "column": 55,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b816ebc4877cbf4a1350",
-          "kind": "step",
-          "name": "step 2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 445,
-              "column": 3,
-              "line": 18
-            },
-            "stop": {
-              "byte": 583,
-              "column": 55,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b83368af39d315b5f7d4",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 220,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 583,
-              "column": 55,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e83aa83df233a5e789c7",
-          "kind": "step",
-          "name": "dotnet build $(buildConfiguration)",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 325,
-              "column": 3,
-              "line": 16
-            },
-            "stop": {
-              "byte": 442,
-              "column": 52,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-                    "start": {
-                      "byte": 371,
-                      "column": 49,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 389,
-                      "column": 67,
-                      "line": 16
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-                    "start": {
-                      "byte": 333,
-                      "column": 11,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 390,
-                      "column": 68,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "buildConfiguration",
-                  "dotnet build 'src/' --configuration $(buildConfiguration)"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_e8ff84d486969b47f78f",
-          "kind": "command",
-          "name": "dotnet build 'src/' --configuration $(buildConfiguration)",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 333,
-              "column": 11,
-              "line": 16
-            },
-            "stop": {
-              "byte": 390,
-              "column": 68,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_fe0437d076b543b9975f",
-          "kind": "call",
-          "name": "DotNetCoreCLI@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml",
-            "start": {
-              "byte": 451,
-              "column": 9,
-              "line": 18
-            },
-            "stop": {
-              "byte": 466,
-              "column": 24,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "DotNetCoreCLI@2",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:59df3cf051f1bff44ded42fa3ac5086aaabf6126246101b4fcb7bf3124b57653",
-      "path": "azure/zhaytam/smartbreadcrumbs/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:bf3941984aef1ac3378cb36fb66f68eb97c0a1d5494df0dbd279b1d3ba514923",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:bbd7c4acf7e7b77bcabc69929f31670fba8bbfdc9917517ddced48e11433d15a",
+    "sources": [
+      {
+        "digest": "sha256:59df3cf051f1bff44ded42fa3ac5086aaabf6126246101b4fcb7bf3124b57653",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 10,
+    "nodes": 9,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

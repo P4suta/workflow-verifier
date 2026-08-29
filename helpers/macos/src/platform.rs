@@ -6,12 +6,12 @@ use std::sync::OnceLock;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-use workflow_verifier_helper_runtime::{
+use workflow_verifier_internal::internal::helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
     execute_native_with_exclusions, run_command,
 };
-use workflow_verifier_runner_protocol::vm::Request;
-use workflow_verifier_runner_protocol::{
+use workflow_verifier_internal::internal::runner_protocol::vm::Request;
+use workflow_verifier_internal::internal::runner_protocol::{
     Descriptor, LaunchError, RunResult, SHA256_HEX_DIGITS, ValidatedPlan,
 };
 

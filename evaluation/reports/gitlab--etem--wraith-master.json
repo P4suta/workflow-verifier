@@ -1,661 +1,88 @@
 {
+  "analysis_digest": "sha256:263706933790dae5eb6b44cde80291fb20c012ef770962f15ba3ee007caa6e49",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: registry.gitlab.com/serebit/wraith-master:latest"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:93cdbce46d53d3cc41e4c462c2a0ee5861927e79ccb15c3a5e15ffd2cc64725b",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_dabd837b4fddcdacb046",
-          "id": "wv_0f0fb0a567ed8ba8f542",
-          "kind": "data",
-          "label": "GRADLE_OPTS",
-          "to": "wv_6a8a2b69474d63bdf125"
-        },
-        {
-          "condition": true,
-          "from": "wv_9d92d9a2cb0424312cce",
-          "id": "wv_2299496967cf2d1c32ea",
-          "kind": "data",
-          "label": "GRADLE_USER_HOME",
-          "to": "wv_6a8a2b69474d63bdf125"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a8a2b69474d63bdf125",
-          "id": "wv_3c5272ff814f0b2f2699",
-          "kind": "call",
-          "label": null,
-          "to": "wv_8433292e5168d1dd5c87"
-        },
-        {
-          "condition": true,
-          "from": "wv_923841ad4a2b3aacfb68",
-          "id": "wv_4b44702aaa2477650c2e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b3a36ccba4e647da9671"
-        },
-        {
-          "condition": true,
-          "from": "wv_b3a36ccba4e647da9671",
-          "id": "wv_5e3fbea021d2f9c5fff5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e88f2853304df24e03de"
-        },
-        {
-          "condition": true,
-          "from": "wv_a9df4dbf5d76af3605d1",
-          "id": "wv_7467e51b51a5fc7b6dff",
-          "kind": "write",
-          "label": null,
-          "to": "wv_6731196c1d62031d7cb2"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a8a2b69474d63bdf125",
-          "id": "wv_9e79e721f5a6ffb8df0f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8433292e5168d1dd5c87"
-        },
-        {
-          "condition": true,
-          "from": "wv_599aaede7ff6895e2034",
-          "id": "wv_c3a8e6d8223e337b6655",
-          "kind": "data",
-          "label": "KONAN_DATA_DIR",
-          "to": "wv_6a8a2b69474d63bdf125"
-        },
-        {
-          "condition": true,
-          "from": "wv_525d21ee422df6be7789",
-          "id": "wv_c6e7de33b58c61d874d5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_923841ad4a2b3aacfb68"
-        },
-        {
-          "condition": true,
-          "from": "wv_e88f2853304df24e03de",
-          "id": "wv_d1ce854dca371aae1602",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7c3b451028e11e64e9c0"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a8a2b69474d63bdf125",
-          "id": "wv_e9c2783d968aee903d15",
-          "kind": "control",
-          "label": null,
-          "to": "wv_525d21ee422df6be7789"
-        },
-        {
-          "condition": true,
-          "from": "wv_a9df4dbf5d76af3605d1",
-          "id": "wv_fcc86fed4044a50d2860",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e4d6116ac9ebc570b75f"
-        },
-        {
-          "condition": true,
-          "from": "wv_e4d6116ac9ebc570b75f",
-          "id": "wv_fd4b679f657495473ecd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_75e75177e2380a67e93c"
-        },
-        {
-          "condition": true,
-          "from": "wv_b3a36ccba4e647da9671",
-          "id": "wv_fdc8a582eced50385269",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a9df4dbf5d76af3605d1"
-        }
-      ],
-      "entrypoints": [
-        "wv_6a8a2b69474d63bdf125"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_525d21ee422df6be7789",
-          "kind": "stage",
-          "name": ".post",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 847,
-              "column": 20,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_599aaede7ff6895e2034",
-          "kind": "resource",
-          "name": "variable:KONAN_DATA_DIR",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 157,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 195,
-              "column": 41,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_6731196c1d62031d7cb2",
-          "kind": "resource",
-          "name": "artifact:build",
-          "phase": "post",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 710,
-              "column": 5,
-              "line": 26
-            },
-            "stop": {
-              "byte": 767,
-              "column": 24,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6a8a2b69474d63bdf125",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 847,
-              "column": 20,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 677,
-                      "column": 11,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 692,
-                      "column": 26,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./gradlew build"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_75e75177e2380a67e93c",
-          "kind": "command",
-          "name": "./gradlew build",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 677,
-              "column": 11,
-              "line": 24
-            },
-            "stop": {
-              "byte": 692,
-              "column": 26,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "4"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7c3b451028e11e64e9c0",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 847,
-              "column": 20,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8433292e5168d1dd5c87",
-          "kind": "call",
-          "name": "registry.gitlab.com/serebit/wraith-master:latest",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 7,
-              "column": 8,
-              "line": 1
-            },
-            "stop": {
-              "byte": 55,
-              "column": 56,
-              "line": 1
-            }
-          },
-          "unknown": {
-            "detail": "registry.gitlab.com/serebit/wraith-master:latest",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_923841ad4a2b3aacfb68",
-          "kind": "stage",
-          "name": ".pre",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 847,
-              "column": 20,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9d92d9a2cb0424312cce",
-          "kind": "resource",
-          "name": "variable:GRADLE_USER_HOME",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 113,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 154,
-              "column": 44,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a9df4dbf5d76af3605d1",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 645,
-              "column": 1,
-              "line": 22
-            },
-            "stop": {
-              "byte": 847,
-              "column": 20,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b3a36ccba4e647da9671",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 847,
-              "column": 20,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dabd837b4fddcdacb046",
-          "kind": "resource",
-          "name": "variable:GRADLE_OPTS",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 70,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 110,
-              "column": 43,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e4d6116ac9ebc570b75f",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 677,
-              "column": 11,
-              "line": 24
-            },
-            "stop": {
-              "byte": 692,
-              "column": 26,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e88f2853304df24e03de",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/etem/wraith-master/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 847,
-              "column": 20,
-              "line": 33
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/etem/wraith-master/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:8bedf7bce8032c5d4218f6424b409cf9a2e51bb5f4abbf016836eed015a9833b",
-      "path": "gitlab/etem/wraith-master/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:c126b176025f879bbc7f235654e6e1317fb679684a320ab14f3832b4fbcd8b5c",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:515c7ded8264a4c13de90e75ffb7500a0cc7ff2ff85dec4d1d08e23b9bca62e8",
+    "sources": [
+      {
+        "digest": "sha256:8bedf7bce8032c5d4218f6424b409cf9a2e51bb5f4abbf016836eed015a9833b",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -666,26 +93,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 14,
+    "nodes": 14,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

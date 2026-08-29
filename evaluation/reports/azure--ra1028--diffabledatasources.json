@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:fb4c17b60aff6aa8add602bf430a8e1323120d8e8a75b10d3776d3d4dbd0f564",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: PublishTestResults@2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PublishTestResults@2"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1671,
             "column": 13,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_469b70d03bc042f86e32",
+      "id": "diag_d41f373140507affa31aeaeefefd0354fd68141ea9da8b3cb64a1b07609bd385",
       "message": "dependency is not pinned to immutable content: PublishTestResults@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1671,
           "column": 13,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_455d425b9ae34e412893",
+          "node": 20,
           "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1671,
               "column": 13,
@@ -62,1248 +69,70 @@
       ]
     }
   ],
-  "digest": "sha256:1603fdb2b57bdb2ba064cf21024d472ff3d22072e914fd8f58f1b7fe79500a5b",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_0e0db9b7ce55fe29e1d4",
-          "id": "wv_004d7e06f667f2ba4569",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7ad5e9a55d5bad419acd"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc78f55b093056c48291",
-          "id": "wv_009d5475b7c36ecb4ef5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_455d425b9ae34e412893"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "from": "wv_7ad5e9a55d5bad419acd",
-          "id": "wv_04ceff89d5c72619d9c1",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_dc78f55b093056c48291"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "from": "wv_03a0e97ea3e21cf6b824",
-          "id": "wv_07637ec46a617d59ad1c",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_70352c4f48b4597a62b7"
-        },
-        {
-          "condition": true,
-          "from": "wv_b02678c774af9db5223d",
-          "id": "wv_0ba58991db9e1a832ca1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7ad5e9a55d5bad419acd"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b7b8a2578866ad66f07",
-          "id": "wv_18d825c7e41c00979116",
-          "kind": "control",
-          "label": null,
-          "to": "wv_483f3a5bf6230ac6c1ea"
-        },
-        {
-          "condition": true,
-          "from": "wv_b02678c774af9db5223d",
-          "id": "wv_1d9c0bfb7885324d3b62",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8ef7366975c344d379e2"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b7b8a2578866ad66f07",
-          "id": "wv_1da646d1c3dc11ed2de3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_483f3a5bf6230ac6c1ea"
-        },
-        {
-          "condition": true,
-          "from": "wv_a0a69f6a12930c77314d",
-          "id": "wv_2dcf18567ca34dcfdc02",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6d17ccac24c8d579cbf9"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e0db9b7ce55fe29e1d4",
-          "id": "wv_34b6a0453d0e44f85287",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a0d88b947806e24db869"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc78f55b093056c48291",
-          "id": "wv_490261e482829a952dd9",
-          "kind": "call",
-          "label": null,
-          "to": "wv_455d425b9ae34e412893"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "from": "wv_672ddc68d1587f198a8c",
-          "id": "wv_4b8d66126afca201e3bf",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_b02678c774af9db5223d"
-        },
-        {
-          "condition": true,
-          "from": "wv_db0439edf5621c205588",
-          "id": "wv_57e5fdf8e76f9b343617",
-          "kind": "control",
-          "label": null,
-          "to": "wv_57326399cb04633659d2"
-        },
-        {
-          "condition": true,
-          "from": "wv_70352c4f48b4597a62b7",
-          "id": "wv_61242e3a645441a30886",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a0d88b947806e24db869"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e0db9b7ce55fe29e1d4",
-          "id": "wv_761d8b82689b42399a21",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1b7b8a2578866ad66f07"
-        },
-        {
-          "condition": true,
-          "from": "wv_6d17ccac24c8d579cbf9",
-          "id": "wv_79c94aeec1ad5db678c5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0e0db9b7ce55fe29e1d4"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "from": "wv_24eedf943ae358911388",
-          "id": "wv_7a12f6fc6b59556d30d1",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_6574d2c5ae33f0c1cba3"
-        },
-        {
-          "condition": true,
-          "from": "wv_9b5b232fa511d8fefeb8",
-          "id": "wv_937dd9b9c6921f7bb4b0",
-          "kind": "data",
-          "label": "xcode11_2_1",
-          "to": "wv_0e0db9b7ce55fe29e1d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_6574d2c5ae33f0c1cba3",
-          "id": "wv_a2ce245cd4a3547663e4",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_03a0e97ea3e21cf6b824"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e0db9b7ce55fe29e1d4",
-          "id": "wv_a47b3ab159d706d42290",
-          "kind": "control",
-          "label": null,
-          "to": "wv_672ddc68d1587f198a8c"
-        },
-        {
-          "condition": true,
-          "from": "wv_70352c4f48b4597a62b7",
-          "id": "wv_ac769345e039fd83615b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5fd825b36c49d39e8491"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "from": "wv_a0d88b947806e24db869",
-          "id": "wv_ba9f9bedb7641c327727",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_db0439edf5621c205588"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e0db9b7ce55fe29e1d4",
-          "id": "wv_bfc8a44510bc674f7ef6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_03a0e97ea3e21cf6b824"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e0db9b7ce55fe29e1d4",
-          "id": "wv_d1040a71fb9eaa8169fc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_24eedf943ae358911388"
-        },
-        {
-          "condition": true,
-          "from": "wv_6574d2c5ae33f0c1cba3",
-          "id": "wv_d63e5fd5d6b543ec7ddf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7b5108b0dfa3980e6c5a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b7b8a2578866ad66f07",
-          "id": "wv_e4f2924278f4f3526b7e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_24eedf943ae358911388"
-        },
-        {
-          "condition": true,
-          "from": "wv_db0439edf5621c205588",
-          "id": "wv_eac3b9201b85bdf7e9c7",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_672ddc68d1587f198a8c"
-        },
-        {
-          "condition": true,
-          "from": "wv_750d7ddd11fea62ac715",
-          "id": "wv_f746e6a15486ed28f090",
-          "kind": "data",
-          "label": "xcode10_2",
-          "to": "wv_0e0db9b7ce55fe29e1d4"
-        }
-      ],
-      "entrypoints": [
-        "wv_6d17ccac24c8d579cbf9"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 765,
-                      "column": 18,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 784,
-                      "column": 37,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeededOrFailed()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "effects": [],
-          "id": "wv_03a0e97ea3e21cf6b824",
-          "kind": "gate",
-          "name": "condition:macOS:xcodebuild test macOS",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 765,
-              "column": 18,
-              "line": 26
-            },
-            "stop": {
-              "byte": 784,
-              "column": 37,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0e0db9b7ce55fe29e1d4",
-          "kind": "job",
-          "name": "macOS",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 27,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 1811,
-              "column": 37,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1b7b8a2578866ad66f07",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 274,
-              "column": 7,
-              "line": 16
-            },
-            "stop": {
-              "byte": 311,
-              "column": 23,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 402,
-                      "column": 18,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 421,
-                      "column": 37,
-                      "line": 20
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeededOrFailed()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "effects": [],
-          "id": "wv_24eedf943ae358911388",
-          "kind": "gate",
-          "name": "condition:macOS:xcodebuild -version",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 402,
-              "column": 18,
-              "line": 20
-            },
-            "stop": {
-              "byte": 421,
-              "column": 37,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_455d425b9ae34e412893",
-          "kind": "call",
-          "name": "PublishTestResults@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 1671,
-              "column": 13,
-              "line": 39
-            },
-            "stop": {
-              "byte": 1691,
-              "column": 33,
-              "line": 39
-            }
-          },
-          "unknown": {
-            "detail": "PublishTestResults@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_483f3a5bf6230ac6c1ea",
-          "kind": "call",
-          "name": "checkout:self",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 284,
-              "column": 17,
-              "line": 16
-            },
-            "stop": {
-              "byte": 288,
-              "column": 21,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 799,
-                      "column": 15,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 1143,
-                      "column": 65,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "set -o pipefail &&\nxcodebuild build-for-testing test-without-building -workspace DiffableDataSources.xcworkspace -scheme DiffableDataSources -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8' ENABLE_TESTABILITY=YES |\nxcpretty -c -r junit -o build/reports/xcodebuild-iOS.xml\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_57326399cb04633659d2",
-          "kind": "command",
-          "name": "set -o pipefail &&\nxcodebuild build-for-testing test-without-building -workspace DiffableDataSources.xcworkspace -scheme DiffableDataSources -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8' ENABLE_TESTABILITY=YES |\nxcpretty -c -r junit -o build/reports/xcodebuild-iOS.xml\n",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 799,
-              "column": 15,
-              "line": 27
-            },
-            "stop": {
-              "byte": 1143,
-              "column": 65,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 436,
-                      "column": 15,
-                      "line": 21
-                    },
-                    "stop": {
-                      "byte": 706,
-                      "column": 66,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "set -o pipefail &&\nxcodebuild build-for-testing test-without-building -workspace DiffableDataSources.xcworkspace -scheme DiffableDataSources -configuration Release ENABLE_TESTABILITY=YES |\nxcpretty -c -r junit -o build/reports/xcodebuild-macOS.xml\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5fd825b36c49d39e8491",
-          "kind": "command",
-          "name": "set -o pipefail &&\nxcodebuild build-for-testing test-without-building -workspace DiffableDataSources.xcworkspace -scheme DiffableDataSources -configuration Release ENABLE_TESTABILITY=YES |\nxcpretty -c -r junit -o build/reports/xcodebuild-macOS.xml\n",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 436,
-              "column": 15,
-              "line": 21
-            },
-            "stop": {
-              "byte": 706,
-              "column": 66,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6574d2c5ae33f0c1cba3",
-          "kind": "step",
-          "name": "xcodebuild -version",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 318,
-              "column": 7,
-              "line": 18
-            },
-            "stop": {
-              "byte": 421,
-              "column": 37,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1639,
-                      "column": 18,
-                      "line": 38
-                    },
-                    "stop": {
-                      "byte": 1658,
-                      "column": 37,
-                      "line": 38
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeededOrFailed()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "effects": [],
-          "id": "wv_672ddc68d1587f198a8c",
-          "kind": "gate",
-          "name": "condition:macOS:xcodebuild test tvOS",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 1639,
-              "column": 18,
-              "line": 38
-            },
-            "stop": {
-              "byte": 1658,
-              "column": 37,
-              "line": 38
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6d17ccac24c8d579cbf9",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1811,
-              "column": 37,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_70352c4f48b4597a62b7",
-          "kind": "step",
-          "name": "xcodebuild test macOS",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 428,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 784,
-              "column": 37,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_750d7ddd11fea62ac715",
-          "kind": "parameter",
-          "name": "matrix.xcode10_2",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 123,
-              "column": 7,
-              "line": 11
-            },
-            "stop": {
-              "byte": 185,
-              "column": 52,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1792,
-                      "column": 18,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1811,
-                      "column": 37,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeededOrFailed()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "effects": [],
-          "id": "wv_7ad5e9a55d5bad419acd",
-          "kind": "gate",
-          "name": "condition:macOS:step 6",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 1792,
-              "column": 18,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1811,
-              "column": 37,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 326,
-                      "column": 15,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 345,
-                      "column": 34,
-                      "line": 18
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "xcodebuild -version"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7b5108b0dfa3980e6c5a",
-          "kind": "command",
-          "name": "xcodebuild -version",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 326,
-              "column": 15,
-              "line": 18
-            },
-            "stop": {
-              "byte": 345,
-              "column": 34,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1234,
-                      "column": 15,
-                      "line": 33
-                    },
-                    "stop": {
-                      "byte": 1581,
-                      "column": 66,
-                      "line": 36
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "set -o pipefail &&\nxcodebuild build-for-testing test-without-building -workspace DiffableDataSources.xcworkspace -scheme DiffableDataSources -configuration Release -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV' ENABLE_TESTABILITY=YES |\nxcpretty -c -r junit -o build/reports/xcodebuild-tvOS.xml\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8ef7366975c344d379e2",
-          "kind": "command",
-          "name": "set -o pipefail &&\nxcodebuild build-for-testing test-without-building -workspace DiffableDataSources.xcworkspace -scheme DiffableDataSources -configuration Release -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV' ENABLE_TESTABILITY=YES |\nxcpretty -c -r junit -o build/reports/xcodebuild-tvOS.xml\n",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 1234,
-              "column": 15,
-              "line": 33
-            },
-            "stop": {
-              "byte": 1581,
-              "column": 66,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9b5b232fa511d8fefeb8",
-          "kind": "parameter",
-          "name": "matrix.xcode11_2_1",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 192,
-              "column": 7,
-              "line": 13
-            },
-            "stop": {
-              "byte": 258,
-              "column": 54,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a0a69f6a12930c77314d",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 9,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 17,
-              "column": 9,
-              "line": 2
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1200,
-                      "column": 18,
-                      "line": 32
-                    },
-                    "stop": {
-                      "byte": 1219,
-                      "column": 37,
-                      "line": 32
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeededOrFailed()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeededOrFailed()"
-          },
-          "effects": [],
-          "id": "wv_a0d88b947806e24db869",
-          "kind": "gate",
-          "name": "condition:macOS:xcodebuild test iOS",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 1200,
-              "column": 18,
-              "line": 32
-            },
-            "stop": {
-              "byte": 1219,
-              "column": 37,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b02678c774af9db5223d",
-          "kind": "step",
-          "name": "xcodebuild test tvOS",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 1226,
-              "column": 7,
-              "line": 33
-            },
-            "stop": {
-              "byte": 1658,
-              "column": 37,
-              "line": 38
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_db0439edf5621c205588",
-          "kind": "step",
-          "name": "xcodebuild test iOS",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 791,
-              "column": 7,
-              "line": 27
-            },
-            "stop": {
-              "byte": 1219,
-              "column": 37,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dc78f55b093056c48291",
-          "kind": "step",
-          "name": "step 6",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ra1028/diffabledatasources/azure-pipelines.yml",
-            "start": {
-              "byte": 1665,
-              "column": 7,
-              "line": 39
-            },
-            "stop": {
-              "byte": 1811,
-              "column": 37,
-              "line": 43
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/ra1028/diffabledatasources/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:dbe4fd4fc4d7600a6d9c756edce8906737e54c3d6bf3c85ddd95e291c667efd4",
-      "path": "azure/ra1028/diffabledatasources/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:cb1f4db1470c5d27e8ca4e72ea4266016f7ee1426ef77d002f7a7bc33bcab5af",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:f673528c05483a6b7f45d6ed7ebfb431ca3f95d36dc0974f6425139c4eb89fe5",
+    "sources": [
+      {
+        "digest": "sha256:dbe4fd4fc4d7600a6d9c756edce8906737e54c3d6bf3c85ddd95e291c667efd4",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1314,40 +143,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 28,
+    "nodes": 22,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

@@ -82,7 +82,6 @@ let option_names_with_values =
     "--secret";
     "--fixtures";
     "--cache";
-    "--cache-mode";
     "--scenario";
     "--job";
     "--event";
@@ -91,8 +90,6 @@ let option_names_with_values =
     "--matrix";
     "--variable";
     "--network-destination";
-    "--suppression-owner";
-    "--suppression-expiry";
   ]
 
 let positional arguments =
@@ -439,7 +436,7 @@ let analyze io arguments target =
         else (Report.Pass, 0)
       in
       let report =
-        Report.make_v2 ~persona:config.persona
+        Report.create ~persona:config.persona
           ~inputs:
             (List.map
                (fun (path, source) ->
@@ -474,78 +471,6 @@ let output_or_write io arguments text =
       Ok ()
   | Some path -> io.write_file path text
 
-let migrate_error io ~target messages =
-  List.iter
-    (fun message ->
-      io.stderr
-        (Printf.sprintf
-           "migration error: %s: %s\n\
-            fix: correct the legacy input or migration options\n\
-            documentation: https://workflow-verifier.dev/docs/migrate-v0.1\n"
-           target message))
-    messages;
-  2
-
-let migrate_command io arguments =
-  match positional arguments with
-  | [ input ] -> (
-      match io.read_file input with
-      | Error message -> migrate_error io ~target:input [ message ]
-      | Ok source -> (
-          let trimmed = String.trim source in
-          let migrated =
-            if trimmed <> "" && trimmed.[0] = '{' then
-              match Json.parse source with
-              | Error error ->
-                  Error
-                    [
-                      Printf.sprintf "invalid legacy JSON at byte %d: %s"
-                        error.offset error.message;
-                    ]
-              | Ok json -> (
-                  match
-                    Option.bind (Json.member "schema" json) Json.as_string
-                  with
-                  | Some "lock-v1" -> (
-                      match Lockfile.parse source with
-                      | Error message -> Error [ message ]
-                      | Ok old_lock -> (
-                          match Lockfile.create old_lock.entries with
-                          | Error message -> Error [ message ]
-                          | Ok lock -> Ok (Lockfile.to_canonical_json lock)))
-                  | Some "lock-v2" -> Error [ "input is already lock-v2" ]
-                  | Some schema ->
-                      Error
-                        [
-                          Printf.sprintf
-                            "%s is not migratable; only config-v1 and lock-v1 \
-                             are accepted"
-                            schema;
-                        ]
-                  | None ->
-                      Error
-                        [
-                          "legacy JSON needs a string schema field; only \
-                           lock-v1 is migratable";
-                        ])
-            else
-              Config_migration.migrate_v1
-                ?suppression_owner:
-                  (option_value "--suppression-owner" arguments)
-                ?suppression_expiry:
-                  (option_value "--suppression-expiry" arguments)
-                ~today:(io.today ()) source
-          in
-          match migrated with
-          | Error messages -> migrate_error io ~target:input messages
-          | Ok text -> (
-              match output_or_write io arguments text with
-              | Ok () -> 0
-              | Error message -> migrate_error io ~target:input [ message ])))
-  | _ ->
-      migrate_error io ~target:"command line"
-        [ "migrate expects exactly one config-v1 or lock-v1 input path" ]
-
 let text_report report =
   let diagnostics = Report.diagnostics report in
   let buffer = Buffer.create 512 in
@@ -568,44 +493,6 @@ let report_output format report =
   | "text" -> Ok (text_report report)
   | other -> Error ("unknown report format: " ^ other)
 
-type cache_context = { cache_path : string; cache_key : string }
-
-let cache_context io arguments target analysis =
-  let root = root_for_target io target in
-  if option_value "--cache-mode" arguments <> Some "user" then None
-  else
-    let config_material =
-      Json.Object
-        [
-          ("config", Config.to_json analysis.config);
-          ("strict", Json.Bool (has "--strict" arguments));
-        ]
-      |> Json.to_string
-    in
-    Option.map
-      (fun cache_root ->
-        let repository_key =
-          "sha256:" ^ Sha256.digest_string (normalize root)
-        in
-        {
-          cache_path =
-            path_join
-              (path_join cache_root "workflow-verifier")
-              (repository_key ^ ".analysis-cache-v2.json");
-          cache_key =
-            Incremental_cache.key ~tool_version:"0.1.0"
-              ~config_digest:("sha256:" ^ Sha256.digest_string config_material)
-              ~lock_digest:analysis.lock.integrity
-              [ ("source-manifest-v2", analysis.manifest.digest) ];
-        })
-      (io.user_cache_dir ())
-
-let cached_check io arguments format context : Incremental_cache.t option =
-  (* Cache entries may accelerate parsing in a later release, but v0.1 never
-     lets a cached report manufacture a pass. Every gate is freshly analyzed. *)
-  ignore (io, arguments, format, context);
-  None
-
 let check io arguments =
   let target = positional arguments |> List.rev |> first_or "." in
   let format =
@@ -616,7 +503,6 @@ let check io arguments =
       List.iter (fun message -> io.stderr (message ^ "\n")) errors;
       2
   | Ok analysis -> (
-      let context = cache_context io arguments target analysis in
       match report_output format analysis.report with
       | Error message ->
           io.stderr (message ^ "\n");
@@ -626,27 +512,7 @@ let check io arguments =
           | Error message ->
               io.stderr (message ^ "\n");
               2
-          | Ok () ->
-              let exit_code = analysis.report.provenance.exit_code in
-              (match context with
-              | Some context
-                when option_value "--cache-mode" arguments = Some "user"
-                     && String.lowercase_ascii format = "json" -> (
-                  match
-                    Incremental_cache.create ~key:context.cache_key ~exit_code
-                      ~report:text
-                  with
-                  | Error message -> io.stderr ("cache: " ^ message ^ "\n")
-                  | Ok entry -> (
-                      match
-                        io.write_file context.cache_path
-                          (Incremental_cache.to_canonical_json entry)
-                      with
-                      | Ok () -> ()
-                      | Error message -> io.stderr ("cache: " ^ message ^ "\n"))
-                  )
-              | _ -> ());
-              exit_code))
+          | Ok () -> analysis.report.provenance.exit_code))
 
 let explain io arguments =
   match positional arguments with
@@ -1861,22 +1727,22 @@ let policy_command io arguments =
 let completion_script = function
   | "bash" ->
       {|_workflow_verifier() {
-  local commands="check resolve explain graph diff fix policy sandbox doctor completion migrate version"
+  local commands="check resolve explain graph diff fix policy sandbox doctor completion version"
   COMPREPLY=( $(compgen -W "$commands" -- "${COMP_WORDS[COMP_CWORD]}") )
 }
 complete -F _workflow_verifier workflow-verifier
 |}
   | "zsh" ->
       {|#compdef workflow-verifier
-_arguments '1:command:(check resolve explain graph diff fix policy sandbox doctor completion migrate version)' '*::argument:->args'
+_arguments '1:command:(check resolve explain graph diff fix policy sandbox doctor completion version)' '*::argument:->args'
 |}
   | "fish" ->
       "complete -c workflow-verifier -f -a 'check resolve explain graph diff \
-       fix policy sandbox doctor completion migrate version'\n"
+       fix policy sandbox doctor completion version'\n"
   | "powershell" ->
       {|Register-ArgumentCompleter -Native -CommandName workflow-verifier -ScriptBlock {
   param($wordToComplete)
-  'check','resolve','explain','graph','diff','fix','policy','sandbox','doctor','completion','migrate','version' |
+  'check','resolve','explain','graph','diff','fix','policy','sandbox','doctor','completion','version' |
     Where-Object { $_ -like "$wordToComplete*" } |
     ForEach-Object { [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_) }
 }
@@ -1903,10 +1769,19 @@ let dispatch io services (invocation : Cli_parser.invocation) =
           io.stdout (completion_script shell);
           0
       | _ -> 2)
-  | "migrate" -> migrate_command io invocation.arguments
   | unknown ->
       io.stderr ("internal error: unhandled parsed command " ^ unknown ^ "\n");
       4
+
+let semantic_conformance_command io arguments =
+  let target = positional arguments |> List.rev |> first_or (io.cwd ()) in
+  match analyze io arguments target with
+  | Ok analysis ->
+      io.stdout (Semantic_conformance.to_canonical_json analysis.report);
+      0
+  | Error messages ->
+      List.iter (fun message -> io.stderr (message ^ "\n")) messages;
+      2
 
 let run ~io ~services argv =
   let input_footer =
@@ -1914,25 +1789,32 @@ let run ~io ~services argv =
      docs: https://workflow-verifier.dev/docs/cli-v0.1#input-errors\n"
   in
   try
-    match Cli_parser.parse ~argv with
-    | Help text | Version text ->
-        io.stdout text;
-        0
-    | Error text ->
-        io.stderr text;
-        if not (Util.ends_with ~suffix:"\n" text) then io.stderr "\n";
-        io.stderr input_footer;
-        2
-    | Invoke invocation ->
-        let errors = Buffer.create 256 in
-        let buffered_io =
-          { io with stderr = (fun message -> Buffer.add_string errors message) }
-        in
-        let code = dispatch buffered_io services invocation in
-        let error_text = Buffer.contents errors in
-        if error_text <> "" then io.stderr error_text;
-        if code = 2 then io.stderr input_footer;
-        code
+    if Array.length argv >= 2 && argv.(1) = "__semantic-conformance" then
+      semantic_conformance_command io
+        (Array.sub argv 2 (Array.length argv - 2) |> Array.to_list)
+    else
+      match Cli_parser.parse ~argv with
+      | Help text | Version text ->
+          io.stdout text;
+          0
+      | Error text ->
+          io.stderr text;
+          if not (Util.ends_with ~suffix:"\n" text) then io.stderr "\n";
+          io.stderr input_footer;
+          2
+      | Invoke invocation ->
+          let errors = Buffer.create 256 in
+          let buffered_io =
+            {
+              io with
+              stderr = (fun message -> Buffer.add_string errors message);
+            }
+          in
+          let code = dispatch buffered_io services invocation in
+          let error_text = Buffer.contents errors in
+          if error_text <> "" then io.stderr error_text;
+          if code = 2 then io.stderr input_footer;
+          code
   with exception_ ->
     io.stderr
       ("internal error: "

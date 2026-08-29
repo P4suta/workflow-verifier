@@ -1,0 +1,20 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/semantic-conformance-1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "completeness": { "type": "object" },
+    "diagnostics": { "items": { "type": "object" }, "type": "array" },
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "edges": { "items": { "type": "object" }, "type": "array" },
+    "entrypoints": { "items": { "minimum": 0, "type": "integer" }, "type": "array" },
+    "gate": { "type": "object" },
+    "nodes": { "items": { "type": "object" }, "type": "array" },
+    "properties": { "items": { "type": "object" }, "type": "array" },
+    "schema": { "const": "semantic-conformance/1" },
+    "sources": { "items": { "type": "object" }, "type": "array" }
+  },
+  "required": ["completeness", "diagnostics", "digest", "edges", "entrypoints", "gate", "nodes", "properties", "schema", "sources"],
+  "title": "workflow-verifier test-only semantic conformance 1",
+  "type": "object"
+}

@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:675f6bf22abfffb91ddf4357cb00df0145fc7829d40ab773e3022193d3013b11",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: XamariniOS@2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = XamariniOS@2"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 186,
             "column": 11,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_336310e52e00e33ddd8b",
+      "id": "diag_770651287f5995f4e2172a89eb0a9eb55a918c0a4c7cf605f3da4272cca5dfbe",
       "message": "dependency is not pinned to immutable content: XamariniOS@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 186,
           "column": 11,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_514dd2aff283df6e8ea9",
+          "node": 4,
           "span": {
-            "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 186,
               "column": 11,
@@ -62,294 +69,110 @@
       ]
     }
   ],
-  "digest": "sha256:b5169338cc36635c948c6260b0dbce36bb6391af25d94835fec64bb89a5e1f5f",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_103da2628d5e3e5f47a6",
-          "id": "wv_06d733a7761346f7bd09",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0fd97e3700524ac74c8b"
-        },
-        {
-          "condition": true,
-          "from": "wv_22bce8787fe042976cfc",
-          "id": "wv_07ffae2d233c7fe4772d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_514dd2aff283df6e8ea9"
-        },
-        {
-          "condition": true,
-          "from": "wv_0fd97e3700524ac74c8b",
-          "id": "wv_2f36912d95b1e0c7236d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_22bce8787fe042976cfc"
-        },
-        {
-          "condition": true,
-          "from": "wv_22bce8787fe042976cfc",
-          "id": "wv_3517f293c4e5aaf97be2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_514dd2aff283df6e8ea9"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b0035f199eb99670b0e",
-          "id": "wv_f6a043bfd2ce46beb310",
-          "kind": "control",
-          "label": null,
-          "to": "wv_103da2628d5e3e5f47a6"
-        }
-      ],
-      "entrypoints": [
-        "wv_103da2628d5e3e5f47a6"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0fd97e3700524ac74c8b",
-          "kind": "job",
-          "name": "macOS",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
-            "start": {
-              "byte": 119,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 407,
-              "column": 28,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_103da2628d5e3e5f47a6",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 407,
-              "column": 28,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_22bce8787fe042976cfc",
-          "kind": "step",
-          "name": "Build Xamarin.iOS solution **/*.sln",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
-            "start": {
-              "byte": 180,
-              "column": 5,
-              "line": 17
-            },
-            "stop": {
-              "byte": 407,
-              "column": 28,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_514dd2aff283df6e8ea9",
-          "kind": "call",
-          "name": "XamariniOS@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
-            "start": {
-              "byte": 186,
-              "column": 11,
-              "line": 17
-            },
-            "stop": {
-              "byte": 198,
-              "column": 23,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "XamariniOS@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8b0035f199eb99670b0e",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/softeq/mapbox-xamarin/azure-pipelines.yml",
-            "start": {
-              "byte": 35,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 109,
-              "column": 18,
-              "line": 9
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/softeq/mapbox-xamarin/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:d9f162d471ef957cb0c65b46189f2a2d173c5edb3849ac99f9b552b1ee6a3e15",
-      "path": "azure/softeq/mapbox-xamarin/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:cb142ea4c2b4c6609db58000290c07593f70fd021422553c68888edec886b4b6",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:d641a8e7fc015ab907f1ef8c13c23ec2cc747b00c5088a7e55b5d96033dfeb5b",
+    "sources": [
+      {
+        "digest": "sha256:d9f162d471ef957cb0c65b46189f2a2d173c5edb3849ac99f9b552b1ee6a3e15",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 5,
+    "nodes": 5,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

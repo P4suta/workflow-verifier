@@ -45,35 +45,20 @@ PERMISSIVE_LICENSES = {
     "MIT",
 }
 REVISION = re.compile(r"^[0-9a-f]{40}$")
-DIAGNOSTIC_ID = re.compile(r"^diag_[0-9a-f]{20}$")
+DIAGNOSTIC_ID = re.compile(r"^diag_[0-9a-f]{64}$")
 RULE_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
 SPDX_EXPRESSION = re.compile(r"^[A-Za-z0-9.+() -]+$")
 MAX_SOURCE_BYTES = 4 * 1024 * 1024
-REPORT_V3_FIELDS = {
+REPORT_FIELDS = {
+    "analysis_digest",
     "completeness",
-    "configuration",
     "diagnostics",
     "digest",
     "gate",
-    "graphs",
-    "inputs",
-    "lock",
-    "persona",
-    "provider_profiles",
-    "properties",
-    "schema",
-    "semantic_digest",
-    "snapshot",
-    "summary",
-    "tool",
-}
-LEGACY_REPORT_V1_FIELDS = {
-    "diagnostics",
-    "digest",
-    "graphs",
     "inputs",
     "persona",
     "properties",
+    "providers",
     "schema",
     "summary",
     "tool",
@@ -174,37 +159,42 @@ def _verify_document_digest(document: dict[str, Any], label: str) -> None:
         raise ValueError(f"{label}.digest does not authenticate its canonical content")
 
 
-def _verify_report_v3_digests(document: dict[str, Any], label: str) -> None:
-    claimed_semantic = document.get("semantic_digest")
+def _domain_digest(domain: bytes, value: Any) -> str:
+    digest = hashlib.sha256()
+    for field in (domain, _canonical_content(value)):
+        digest.update(len(field).to_bytes(8, byteorder="big"))
+        digest.update(field)
+    return "sha256:" + digest.hexdigest()
+
+
+def _verify_report_digests(document: dict[str, Any], label: str) -> None:
+    claimed_semantic = document.get("analysis_digest")
     if not isinstance(claimed_semantic, str) or not re.fullmatch(
         r"sha256:[0-9a-f]{64}", claimed_semantic
     ):
-        raise ValueError(f"{label}.semantic_digest is invalid")
+        raise ValueError(f"{label}.analysis_digest is invalid")
     tool = document.get("tool")
-    if not isinstance(tool, dict) or set(tool) != {"build", "name", "version"}:
-        raise ValueError(f"{label}.tool is invalid")
-    build = tool.get("build")
-    build_fields = {
-        "binary_digest",
+    if not isinstance(tool, dict) or set(tool) != {
+        "commit",
         "compiler",
-        "implementation",
-        "source_commit",
+        "name",
         "target",
-    }
-    if not isinstance(build, dict) or set(build) != build_fields:
-        raise ValueError(f"{label}.tool.build is invalid")
+        "version",
+    }:
+        raise ValueError(f"{label}.tool is invalid")
     semantic = {
-        key: value for key, value in document.items() if key not in {"digest", "semantic_digest"}
+        key: value
+        for key, value in document.items()
+        if key not in {"analysis_digest", "digest", "tool"}
     }
-    semantic["tool"] = {key: value for key, value in tool.items() if key != "build"}
-    actual_semantic = "sha256:" + hashlib.sha256(_canonical_content(semantic)).hexdigest()
+    actual_semantic = _domain_digest(b"workflow-verifier-report/1/analysis", semantic)
     if claimed_semantic != actual_semantic:
-        raise ValueError(f"{label}.semantic_digest does not authenticate canonical content")
+        raise ValueError(f"{label}.analysis_digest does not authenticate canonical content")
     claimed = document.get("digest")
     if not isinstance(claimed, str) or not re.fullmatch(r"sha256:[0-9a-f]{64}", claimed):
         raise ValueError(f"{label}.digest is invalid")
     full = {key: value for key, value in document.items() if key != "digest"}
-    actual = "sha256:" + hashlib.sha256(_canonical_content(full)).hexdigest()
+    actual = _domain_digest(b"workflow-verifier-report/1/document", full)
     if claimed != actual:
         raise ValueError(f"{label}.digest does not authenticate its canonical content")
 
@@ -306,30 +296,24 @@ def _validate_snapshot(
 def _validated_diagnostics(
     report: Any,
     label: str,
-    *,
-    schema: str,
-    fields: set[str],
 ) -> list[dict[str, Any]]:
-    report = _exact_fields(report, fields, label)
-    if report["schema"] != schema or report["persona"] != "audit":
-        raise ValueError(f"{label} must be an audit {schema} document")
+    report = _exact_fields(report, REPORT_FIELDS, label)
+    if report["schema"] != "workflow-verifier-report/1" or report["persona"] != "audit":
+        raise ValueError(f"{label} must be an audit workflow-verifier-report/1 document")
     tool = report["tool"]
     if not isinstance(tool, dict) or tool.get("name") != "workflow-verifier":
         raise ValueError(f"{label} was not produced by workflow-verifier")
-    if schema == "report-v3":
-        _verify_report_v3_digests(report, label)
-    else:
-        _verify_document_digest(report, label)
+    _verify_report_digests(report, label)
     diagnostics = report["diagnostics"]
     if not isinstance(diagnostics, list):
         raise ValueError(f"{label}.diagnostics must be an array")
     seen: set[str] = set()
     for index, diagnostic in enumerate(diagnostics):
-        diagnostic = _exact_fields(
-            diagnostic,
-            DIAGNOSTIC_FIELDS,
-            f"{label}.diagnostics[{index}]",
-        )
+        if not isinstance(diagnostic, dict):
+            raise ValueError(f"{label}.diagnostics[{index}] must be an object")
+        required = {"confidence", "id", "message", "rule_id", "severity", "span"}
+        if set(diagnostic) - DIAGNOSTIC_FIELDS or not required.issubset(diagnostic):
+            raise ValueError(f"{label}.diagnostics[{index}] fields are invalid")
         identifier = diagnostic.get("id")
         rule_id = diagnostic.get("rule_id")
         if not isinstance(identifier, str) or not DIAGNOSTIC_ID.fullmatch(identifier):
@@ -343,22 +327,7 @@ def _validated_diagnostics(
 
 
 def _diagnostics(report: Any, label: str) -> list[dict[str, Any]]:
-    return _validated_diagnostics(
-        report,
-        label,
-        schema="report-v3",
-        fields=REPORT_V3_FIELDS,
-    )
-
-
-def _legacy_diagnostics(report: Any, label: str) -> list[dict[str, Any]]:
-    """Decode report-v1 only for an explicit, fail-closed review rebase."""
-    return _validated_diagnostics(
-        report,
-        label,
-        schema="report-v1",
-        fields=LEGACY_REPORT_V1_FIELDS,
-    )
+    return _validated_diagnostics(report, label)
 
 
 def _sha256(payload: bytes) -> str:
@@ -729,166 +698,6 @@ def apply_review(manifest_path: Path, reports_root: Path, review_path: Path) -> 
     return manifest
 
 
-def _normalize_review_value(value: Any, repository_id: str) -> Any:
-    if isinstance(value, dict):
-        normalized: dict[str, Any] = {}
-        for key, item in value.items():
-            if key == "file":
-                if not isinstance(item, str):
-                    raise ValueError("diagnostic span file must be a string")
-                prefix = repository_id + "/"
-                normalized[key] = item[len(prefix) :] if item.startswith(prefix) else item
-            else:
-                normalized[key] = _normalize_review_value(item, repository_id)
-        return normalized
-    if isinstance(value, list):
-        return [_normalize_review_value(item, repository_id) for item in value]
-    return value
-
-
-def _diagnostic_review_key(diagnostic: dict[str, Any], repository_id: str) -> bytes:
-    diagnostic = _exact_fields(diagnostic, DIAGNOSTIC_FIELDS, "review rebase diagnostic")
-    trace = diagnostic["trace"]
-    if not isinstance(trace, list):
-        raise ValueError("review rebase diagnostic trace must be an array")
-    core = {
-        key: _normalize_review_value(value, repository_id)
-        for key, value in diagnostic.items()
-        if key not in {"id", "trace"}
-    }
-    trace_shape: list[dict[str, Any]] = []
-    for index, value in enumerate(trace):
-        if not isinstance(value, dict):
-            raise ValueError(f"review rebase trace[{index}] must be an object")
-        shape = {
-            key: _normalize_review_value(item, repository_id)
-            for key, item in value.items()
-            if key not in {"node_id", "span"}
-        }
-        if "span" in value:
-            span = value["span"]
-            if not isinstance(span, dict) or not isinstance(span.get("file"), str):
-                raise ValueError(f"review rebase trace[{index}].span is invalid")
-            shape["span"] = _normalize_review_value({"file": span["file"]}, repository_id)
-        trace_shape.append(shape)
-    return _canonical_content({"diagnostic": core, "trace_shape": trace_shape})
-
-
-def _rebase_documents(
-    manifest_path: Path,
-    reports_root: Path,
-    *,
-    legacy: bool,
-) -> tuple[dict[str, Any], dict[str, list[dict[str, Any]]]]:
-    manifest = _exact_fields(
-        _load_json(manifest_path),
-        {"repositories", "schema"},
-        "corpus manifest",
-    )
-    if manifest["schema"] != "corpus-v1" or not isinstance(manifest["repositories"], list):
-        raise ValueError("review rebase manifest must be a corpus-v1 document")
-    result: dict[str, list[dict[str, Any]]] = {}
-    for index, value in enumerate(manifest["repositories"]):
-        repository = _exact_fields(
-            value,
-            CORPUS_REPOSITORY_FIELDS,
-            f"corpus manifest.repositories[{index}]",
-        )
-        identifier = repository["id"]
-        if not isinstance(identifier, str) or identifier in result:
-            raise ValueError("review rebase manifest contains an invalid or duplicate repository")
-        report_relative = _relative(repository["report"], "review rebase report path")
-        report_path = reports_root.joinpath(*report_relative.parts)
-        report = _load_json(report_path)
-        result[identifier] = (
-            _legacy_diagnostics(report, f"legacy report for {identifier}")
-            if legacy
-            else _diagnostics(report, f"fresh report for {identifier}")
-        )
-    return manifest, result
-
-
-def _semantic_index(
-    diagnostics: list[dict[str, Any]], repository_id: str, label: str
-) -> dict[bytes, dict[str, Any]]:
-    result: dict[bytes, dict[str, Any]] = {}
-    for diagnostic in diagnostics:
-        key = _diagnostic_review_key(diagnostic, repository_id)
-        if key in result:
-            raise ValueError(f"{label} has ambiguous review semantics for {repository_id}")
-        result[key] = diagnostic
-    return result
-
-
-def rebase_review(
-    old_manifest_path: Path,
-    old_reports_root: Path,
-    old_review_path: Path,
-    new_manifest_path: Path,
-    new_reports_root: Path,
-    output_path: Path,
-) -> dict[str, Any]:
-    """Explicitly map reviewed report-v1 diagnostics onto equivalent report-v3 diagnostics."""
-    old_manifest, old_documents = _rebase_documents(
-        old_manifest_path, old_reports_root, legacy=True
-    )
-    new_manifest, new_documents = _rebase_documents(
-        new_manifest_path, new_reports_root, legacy=False
-    )
-    old_actual = {
-        repository_id: {item["id"]: item["rule_id"] for item in diagnostics}
-        for repository_id, diagnostics in old_documents.items()
-    }
-    reviewed = _review_classifications(old_actual, old_review_path)
-    old_repositories = {item["id"]: item for item in old_manifest["repositories"]}
-    new_repositories = {item["id"]: item for item in new_manifest["repositories"]}
-    if set(old_repositories) != set(new_repositories):
-        raise ValueError("review rebase repository set changed")
-
-    rebased: list[dict[str, Any]] = []
-    for repository_id in sorted(old_repositories, key=lambda value: value.encode("utf-8")):
-        old_repository = dict(old_repositories[repository_id])
-        new_repository = dict(new_repositories[repository_id])
-        old_repository.pop("expected_diagnostics")
-        old_repository.pop("allowed_diagnostics")
-        new_repository.pop("expected_diagnostics")
-        new_repository.pop("allowed_diagnostics")
-        if old_repository != new_repository:
-            raise ValueError(
-                f"review rebase immutable repository identity changed: {repository_id}"
-            )
-
-        old_index = _semantic_index(old_documents[repository_id], repository_id, "legacy reports")
-        new_index = _semantic_index(new_documents[repository_id], repository_id, "fresh reports")
-        if set(old_index) != set(new_index):
-            raise ValueError(f"review rebase diagnostic semantics changed: {repository_id}")
-        classifications = reviewed.get(repository_id, {})
-        diagnostics: list[dict[str, str]] = []
-        for key, old_diagnostic in old_index.items():
-            classification, rule_id, reason = classifications[old_diagnostic["id"]]
-            new_diagnostic = new_index[key]
-            if new_diagnostic["rule_id"] != rule_id:
-                raise ValueError(f"review rebase rule changed: {repository_id}")
-            diagnostics.append(
-                {
-                    "classification": classification,
-                    "id": new_diagnostic["id"],
-                    "reason": reason,
-                    "rule_id": rule_id,
-                }
-            )
-        if diagnostics:
-            rebased.append(
-                {
-                    "diagnostics": sorted(diagnostics, key=lambda item: item["id"].encode("utf-8")),
-                    "id": repository_id,
-                }
-            )
-    result = {"repositories": rebased, "schema": "corpus-review-v1"}
-    _atomic_json(output_path, result)
-    return result
-
-
 class GitHubSource:
     def __init__(self, token: str, *, pages: int = 10) -> None:
         if not token or "\x00" in token:
@@ -1070,8 +879,6 @@ def analyzer_command(path: Path) -> Analyzer:
                 [
                     str(analyzer),
                     "check",
-                    "--cache-mode",
-                    "off",
                     "--persona",
                     "audit",
                     "--format",
@@ -1092,7 +899,9 @@ def analyzer_command(path: Path) -> Analyzer:
         try:
             value = json.loads(completed.stdout.decode("utf-8"), object_pairs_hook=_strict_object)
         except (UnicodeError, json.JSONDecodeError) as error:
-            raise RuntimeError(f"analyzer did not return report-v3 JSON: {error}") from error
+            raise RuntimeError(
+                f"analyzer did not return workflow-verifier-report/1 JSON: {error}"
+            ) from error
         if not isinstance(value, dict):
             raise RuntimeError("analyzer report must be an object")
         return value
@@ -1118,13 +927,6 @@ def main() -> int:
     review_parser.add_argument("--manifest", required=True, type=Path)
     review_parser.add_argument("--reports-root", required=True, type=Path)
     review_parser.add_argument("--review", required=True, type=Path)
-    rebase_parser = subcommands.add_parser("rebase-review")
-    rebase_parser.add_argument("--old-manifest", required=True, type=Path)
-    rebase_parser.add_argument("--old-reports-root", required=True, type=Path)
-    rebase_parser.add_argument("--old-review", required=True, type=Path)
-    rebase_parser.add_argument("--new-manifest", required=True, type=Path)
-    rebase_parser.add_argument("--new-reports-root", required=True, type=Path)
-    rebase_parser.add_argument("--output", required=True, type=Path)
     arguments = parser.parse_args()
     try:
         if arguments.command == "acquire":
@@ -1154,19 +956,6 @@ def main() -> int:
             print(
                 "corpus review: "
                 f"{len(manifest['repositories'])} repositories exhaustively classified"
-            )
-        else:
-            review = rebase_review(
-                arguments.old_manifest,
-                arguments.old_reports_root,
-                arguments.old_review,
-                arguments.new_manifest,
-                arguments.new_reports_root,
-                arguments.output,
-            )
-            diagnostics = sum(len(item["diagnostics"]) for item in review["repositories"])
-            print(
-                f"corpus review rebase: {diagnostics} diagnostics mapped by exact primary semantics"
             )
     except (KeyError, OSError, RuntimeError, TypeError, ValueError) as error:
         print(f"corpus preparation: {error}", file=sys.stderr)

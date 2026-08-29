@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:58b94b04535692f95b686d57dbb0ab86bef28994227cd992445b2cf04f7211b8",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v4"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
+          "source": 0,
           "start": {
             "byte": 225,
             "column": 15,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_7ce57cfc1e5d076a844c",
+      "id": "diag_4515304d4e91ad95b9c409f34549aaf606cdab4e9175957502cd75d104f4fb3a",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
+        "source": 0,
         "start": {
           "byte": 225,
           "column": 15,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_cfbaf3ee80ddfb9f6355",
+          "node": 4,
           "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
+            "source": 0,
             "start": {
               "byte": 225,
               "column": 15,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v4"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
+          "source": 0,
           "start": {
             "byte": 310,
             "column": 15,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_e723a363ecc189df4163",
+      "id": "diag_416759f2494c8843c67bb7a2520cc1dba5e13d66af82f347ac9ea702d9067211",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
+        "source": 0,
         "start": {
           "byte": 310,
           "column": 15,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_bdcbf522be5bbcdeb275",
+          "node": 6,
           "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
+            "source": 0,
             "start": {
               "byte": 310,
               "column": 15,
@@ -123,814 +129,70 @@
       ]
     }
   ],
-  "digest": "sha256:7428afe951009f612ab30f8a75b7e7629ef1e7623fd78ceaec2fb1c679b066d9",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_73757c9c35274bd1cf22",
-          "id": "wv_0163d98939daf98a5a41",
-          "kind": "control",
-          "label": null,
-          "to": "wv_25e225776f16652d8c46"
-        },
-        {
-          "condition": true,
-          "from": "wv_e35ac8c9c097bb3db85f",
-          "id": "wv_08040ca7f10be8c7cbc3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_85d95573f49cc309a04b"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f83d7e4fb08148e4224",
-          "id": "wv_13b95bcca4cf0495e71a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_15383b080602459f570a"
-        },
-        {
-          "condition": true,
-          "from": "wv_01570b006568bba8be00",
-          "id": "wv_255986dbfa745a76b620",
-          "kind": "data",
-          "label": "secrets.NPM_TOKEN",
-          "to": "wv_ee574385e55b84c8aca4"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f83d7e4fb08148e4224",
-          "id": "wv_2af92e52d29af92f3793",
-          "kind": "control",
-          "label": null,
-          "to": "wv_85d95573f49cc309a04b"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f83d7e4fb08148e4224",
-          "id": "wv_403801e8b622648c8834",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e35ac8c9c097bb3db85f"
-        },
-        {
-          "condition": true,
-          "from": "wv_e35ac8c9c097bb3db85f",
-          "id": "wv_48a0bb9bdec04a0f6676",
-          "kind": "call",
-          "label": null,
-          "to": "wv_cfbaf3ee80ddfb9f6355"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f83d7e4fb08148e4224",
-          "id": "wv_51e215f5e3c3c61b059d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_73757c9c35274bd1cf22"
-        },
-        {
-          "condition": true,
-          "from": "wv_e35ac8c9c097bb3db85f",
-          "id": "wv_70be0532398031f5f0e4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cfbaf3ee80ddfb9f6355"
-        },
-        {
-          "condition": true,
-          "from": "wv_15383b080602459f570a",
-          "id": "wv_7b2169e10584c74fe875",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_73757c9c35274bd1cf22"
-        },
-        {
-          "condition": true,
-          "from": "wv_072d995462b68ccb1174",
-          "id": "wv_8242ab0a2df0289ada88",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8031a092267247bbb895"
-        },
-        {
-          "condition": true,
-          "from": "wv_ee574385e55b84c8aca4",
-          "id": "wv_90620b1b8549baa047d8",
-          "kind": "data",
-          "label": "NODE_AUTH_TOKEN",
-          "to": "wv_c625c748788bf9e5c201"
-        },
-        {
-          "condition": true,
-          "from": "wv_85d95573f49cc309a04b",
-          "id": "wv_ac3b46672e5bcde9dd0c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bdcbf522be5bbcdeb275"
-        },
-        {
-          "condition": true,
-          "from": "wv_73757c9c35274bd1cf22",
-          "id": "wv_c06672edc5d7bbfb4a7e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c38e57760d36bb59f72c"
-        },
-        {
-          "condition": true,
-          "from": "wv_85d95573f49cc309a04b",
-          "id": "wv_c3a13bee06890ab1d920",
-          "kind": "call",
-          "label": null,
-          "to": "wv_bdcbf522be5bbcdeb275"
-        },
-        {
-          "condition": true,
-          "from": "wv_c38e57760d36bb59f72c",
-          "id": "wv_cb7f6193b0c1c582d5a7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c625c748788bf9e5c201"
-        },
-        {
-          "condition": true,
-          "from": "wv_85d95573f49cc309a04b",
-          "id": "wv_d17bb969eab708b214a3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_15383b080602459f570a"
-        },
-        {
-          "condition": true,
-          "from": "wv_8031a092267247bbb895",
-          "id": "wv_d6569e45a92a4b533d5b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4f83d7e4fb08148e4224"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f83d7e4fb08148e4224",
-          "id": "wv_d90611a7e849f2d5bcab",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c38e57760d36bb59f72c"
-        },
-        {
-          "condition": true,
-          "from": "wv_15383b080602459f570a",
-          "id": "wv_ea3a19998f8ba83474c5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_57196e735eaca2c86a99"
-        }
-      ],
-      "entrypoints": [
-        "wv_8031a092267247bbb895"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.NPM_TOKEN",
-                  "span": {
-                    "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-                    "start": {
-                      "byte": 840,
-                      "column": 32,
-                      "line": 36
-                    },
-                    "stop": {
-                      "byte": 857,
-                      "column": 49,
-                      "line": 36
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.NPM_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_01570b006568bba8be00",
-          "kind": "resource",
-          "name": "secrets.NPM_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 840,
-              "column": 32,
-              "line": 36
-            },
-            "stop": {
-              "byte": 857,
-              "column": 49,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_072d995462b68ccb1174",
-          "kind": "trigger",
-          "name": "release",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 28,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 59,
-              "column": 23,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_15383b080602459f570a",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 514,
-              "column": 9,
-              "line": 24
-            },
-            "stop": {
-              "byte": 596,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-                    "start": {
-                      "byte": 675,
-                      "column": 14,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 688,
-                      "column": 27,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm run build"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_25e225776f16652d8c46",
-          "kind": "command",
-          "name": "npm run build",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 675,
-              "column": 14,
-              "line": 30
-            },
-            "stop": {
-              "byte": 688,
-              "column": 27,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4f83d7e4fb08148e4224",
-          "kind": "job",
-          "name": "publish",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 114,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 860,
-              "column": 52,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-                    "start": {
-                      "byte": 590,
-                      "column": 14,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 596,
-                      "column": 20,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm ci"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_57196e735eaca2c86a99",
-          "kind": "command",
-          "name": "npm ci",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 590,
-              "column": 14,
-              "line": 26
-            },
-            "stop": {
-              "byte": 596,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_73757c9c35274bd1cf22",
-          "kind": "step",
-          "name": "Build library",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 606,
-              "column": 9,
-              "line": 28
-            },
-            "stop": {
-              "byte": 688,
-              "column": 27,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8031a092267247bbb895",
-          "kind": "workflow",
-          "name": "Publish to npm",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 860,
-              "column": 52,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_85d95573f49cc309a04b",
-          "kind": "step",
-          "name": "Setup Node (with npm registry auth)",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 254,
-              "column": 9,
-              "line": 16
-            },
-            "stop": {
-              "byte": 504,
-              "column": 60,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bdcbf522be5bbcdeb275",
-          "kind": "call",
-          "name": "actions/setup-node@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 310,
-              "column": 15,
-              "line": 17
-            },
-            "stop": {
-              "byte": 331,
-              "column": 36,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c38e57760d36bb59f72c",
-          "kind": "step",
-          "name": "Publish to npm",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 698,
-              "column": 9,
-              "line": 32
-            },
-            "stop": {
-              "byte": 860,
-              "column": 52,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-                    "start": {
-                      "byte": 768,
-                      "column": 14,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 795,
-                      "column": 41,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm publish --access public"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c625c748788bf9e5c201",
-          "kind": "command",
-          "name": "npm publish --access public",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 768,
-              "column": 14,
-              "line": 34
-            },
-            "stop": {
-              "byte": 795,
-              "column": 41,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_cfbaf3ee80ddfb9f6355",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 225,
-              "column": 15,
-              "line": 14
-            },
-            "stop": {
-              "byte": 244,
-              "column": 34,
-              "line": 14
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e35ac8c9c097bb3db85f",
-          "kind": "step",
-          "name": "Checkout",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 196,
-              "column": 9,
-              "line": 13
-            },
-            "stop": {
-              "byte": 244,
-              "column": 34,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "NODE_AUTH_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ee574385e55b84c8aca4",
-          "kind": "resource",
-          "name": "env:NODE_AUTH_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/finnley07/clearvue/.github/workflows/publish-npm.yml",
-            "start": {
-              "byte": 819,
-              "column": 11,
-              "line": 36
-            },
-            "stop": {
-              "byte": 860,
-              "column": 52,
-              "line": 36
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/finnley07/clearvue/.github/workflows/publish-npm.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:926c64c774fead5d98f24b10b482e3c1c118b500068d3ab57b08f0f0b1c8f870",
-      "path": "github/finnley07/clearvue/.github/workflows/publish-npm.yml"
-    }
-  ],
+  "digest": "sha256:26127bf900b387383ee02cf2897f3399c36b154bc1783b075ae384bf0f6b49a6",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:f535957e329ed21533239bd48b15dbf26483a23a3a14ead967787107c078e40e",
+    "sources": [
+      {
+        "digest": "sha256:926c64c774fead5d98f24b10b482e3c1c118b500068d3ab57b08f0f0b1c8f870",
+        "id": 0,
+        "path": ".github/workflows/publish-npm.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -945,40 +207,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 20,
+    "nodes": 15,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

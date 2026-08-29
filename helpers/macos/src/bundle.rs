@@ -2,8 +2,10 @@ use std::fs::File;
 use std::io::Read as _;
 use std::path::{Path, PathBuf};
 
-use workflow_verifier_runner_protocol::Sha256;
-use workflow_verifier_runner_protocol::vm::{ImageManifest, VmImage, parse_image_manifest};
+use workflow_verifier_internal::internal::runner_protocol::Sha256;
+use workflow_verifier_internal::internal::runner_protocol::vm::{
+    ImageManifest, VmImage, parse_image_manifest,
+};
 
 const MANIFEST: &str = "manifest.json";
 const KERNEL: &str = "vmlinuz";

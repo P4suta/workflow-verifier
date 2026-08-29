@@ -7,11 +7,10 @@ from scripts.verify_release_version import validate
 
 class VerifyReleaseVersionTests(unittest.TestCase):
     def fixture(self, root: Path, version: str) -> None:
-        (root / "helpers").mkdir()
         (root / "lib" / "application").mkdir(parents=True)
         (root / "dune-project").write_text(f"(version {version})\n", encoding="utf-8")
         (root / "workflow-verifier.opam").write_text(f'version: "{version}"\n', encoding="utf-8")
-        (root / "helpers" / "Cargo.toml").write_text(
+        (root / "Cargo.toml").write_text(
             f'[workspace.package]\nversion = "{version}"\n', encoding="utf-8"
         )
         (root / "lib" / "application" / "cli.ml").write_text(
@@ -26,7 +25,7 @@ class VerifyReleaseVersionTests(unittest.TestCase):
             self.assertEqual(validate(root, "v1.2.3-rc.1"), "1.2.3-rc.1")
             with self.assertRaisesRegex(ValueError, "tag"):
                 validate(root, "v1.2.3")
-            (root / "helpers" / "Cargo.toml").write_text('version = "9.9.9"\n', encoding="utf-8")
+            (root / "Cargo.toml").write_text('version = "9.9.9"\n', encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "Cargo"):
                 validate(root, "v1.2.3-rc.1")
 

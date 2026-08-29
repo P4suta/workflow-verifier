@@ -1,4 +1,13 @@
 {
+  "analysis_digest": "sha256:93a4b380a5ff15f54e2a914d02db45fc79160da1fce86289bf4050a3147a53ac",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: registry.cn-hangzhou.aliyuncs.com/masa/dotnet_sdk:6.0-nodejs14.17.6"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
       "capabilities": [
@@ -12,9 +21,8 @@
       "fix": {
         "description": "pass the value through an environment variable and quote it in the target shell",
         "kind": "environment-boundary",
-        "replacement": null,
         "span": {
-          "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
+          "source": 0,
           "start": {
             "byte": 236,
             "column": 7,
@@ -27,12 +35,12 @@
           }
         }
       },
-      "id": "diag_846bcf475b18f4c5a653",
+      "id": "diag_8da51be381f70e3998d3d7f4afc639abd928a95d5f16f4b613acd3d643cfa52f",
       "message": "untrusted workflow data reaches a shell command boundary",
       "rule_id": "WV-SEC-001",
       "severity": "error",
       "span": {
-        "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
+        "source": 0,
         "start": {
           "byte": 236,
           "column": 7,
@@ -47,9 +55,9 @@
       "trace": [
         {
           "label": "untrusted source",
-          "node_id": "wv_59f0f3566c81c6d34b36",
+          "node": 14,
           "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
+            "source": 0,
             "start": {
               "byte": 278,
               "column": 49,
@@ -64,9 +72,9 @@
         },
         {
           "label": "command sink",
-          "node_id": "wv_7bf8ee7ee640b6356f54",
+          "node": 13,
           "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
+            "source": 0,
             "start": {
               "byte": 236,
               "column": 7,
@@ -82,1058 +90,80 @@
       ]
     }
   ],
-  "digest": "sha256:4751f57fbd439dbcaeae86fdc75f847a79beaef31e535d9cf038e524fc91de6a",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_855c3c3243daf78834b4",
-          "id": "wv_040260f747d975b81439",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_554923ecabb18792300a"
-        },
-        {
-          "condition": true,
-          "from": "wv_68e36f07dd1129309c00",
-          "id": "wv_291c23bc861f742fbf5c",
-          "kind": "data",
-          "label": "NUGET_TOKEN",
-          "to": "wv_1d453749c7a5e5fd49fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_48ea3d9b6365b4c5d325",
-          "id": "wv_2a23765b2b10ef354283",
-          "kind": "control",
-          "label": null,
-          "to": "wv_554923ecabb18792300a"
-        },
-        {
-          "condition": true,
-          "from": "wv_48ea3d9b6365b4c5d325",
-          "id": "wv_31584a63f38842545d0a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_533a87d6a943c00c1aa7"
-        },
-        {
-          "condition": true,
-          "from": "wv_533a87d6a943c00c1aa7",
-          "id": "wv_3c44c7747a02d80a5c3a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_96c508550ae094319d4c"
-        },
-        {
-          "condition": true,
-          "from": "wv_40eaab309d2e673c007c",
-          "id": "wv_4d5eca07cb962b46485e",
-          "kind": "call",
-          "label": null,
-          "to": "wv_e99ed090cbcf6a189608"
-        },
-        {
-          "condition": true,
-          "from": "wv_554923ecabb18792300a",
-          "id": "wv_4ff32b4a19d7bab463a7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a7dd8df782f7d7bb7761"
-        },
-        {
-          "condition": true,
-          "from": "wv_59f0f3566c81c6d34b36",
-          "id": "wv_5370a701da498fc49dbd",
-          "kind": "data",
-          "label": "CI_COMMIT_TAG",
-          "to": "wv_7bf8ee7ee640b6356f54"
-        },
-        {
-          "condition": true,
-          "from": "wv_f2cb82736e7e5a90d251",
-          "id": "wv_56502d6cb4c5f12a7ce0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_48ea3d9b6365b4c5d325"
-        },
-        {
-          "condition": true,
-          "from": "wv_40eaab309d2e673c007c",
-          "id": "wv_5c1ecb73c69cdfcfc245",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f2cb82736e7e5a90d251"
-        },
-        {
-          "condition": true,
-          "from": "wv_855c3c3243daf78834b4",
-          "id": "wv_5e83b51c26180976d93c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a53a431de49473fdd0d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_96c508550ae094319d4c",
-          "id": "wv_60b4b13e73b8dfe76a0f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_82a8273c081fcda79773"
-        },
-        {
-          "condition": true,
-          "from": "wv_554923ecabb18792300a",
-          "id": "wv_6e583c24f5a3c0853c7d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_533a87d6a943c00c1aa7"
-        },
-        {
-          "condition": true,
-          "from": "wv_48ea3d9b6365b4c5d325",
-          "id": "wv_71d4ca9d007e2cec4ad0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5ecff7f3bdb13b4fa703"
-        },
-        {
-          "condition": true,
-          "from": "wv_40eaab309d2e673c007c",
-          "id": "wv_8745ad0d42476f4791af",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e99ed090cbcf6a189608"
-        },
-        {
-          "condition": true,
-          "from": "wv_48ea3d9b6365b4c5d325",
-          "id": "wv_88e9843e4f7a0a1b452e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_96c508550ae094319d4c"
-        },
-        {
-          "condition": true,
-          "from": "wv_48ea3d9b6365b4c5d325",
-          "id": "wv_a0b1f56b6637f63436ed",
-          "kind": "control",
-          "label": null,
-          "to": "wv_855c3c3243daf78834b4"
-        },
-        {
-          "condition": true,
-          "from": "wv_533a87d6a943c00c1aa7",
-          "id": "wv_c54ba84e1a087ae5b797",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cf81bf0cca7cb3e84df8"
-        },
-        {
-          "condition": true,
-          "from": "wv_96c508550ae094319d4c",
-          "id": "wv_d4033633b5b23eead408",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7bf8ee7ee640b6356f54"
-        },
-        {
-          "condition": true,
-          "from": "wv_5ecff7f3bdb13b4fa703",
-          "id": "wv_e1e0a4032b7f932e08b7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d6c5674c29267378ec21"
-        },
-        {
-          "condition": true,
-          "from": "wv_82a8273c081fcda79773",
-          "id": "wv_e304064e373419dd6902",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1d453749c7a5e5fd49fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_5ecff7f3bdb13b4fa703",
-          "id": "wv_e79f14fcc621c20a9917",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_855c3c3243daf78834b4"
-        },
-        {
-          "condition": true,
-          "from": "wv_48ea3d9b6365b4c5d325",
-          "id": "wv_eb3eb1f9bbbc96bab0bf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_82a8273c081fcda79773"
-        }
-      ],
-      "entrypoints": [
-        "wv_40eaab309d2e673c007c"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "NUGET_TOKEN",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 407,
-                      "column": 41,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 418,
-                      "column": 52,
-                      "line": 16
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 373,
-                      "column": 7,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 459,
-                      "column": 93,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "NUGET_TOKEN",
-                  "dotnet nuget push \"./*.nupkg\" -k $NUGET_TOKEN   -s https://api.nuget.org/v3/index.json"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_1d453749c7a5e5fd49fb",
-          "kind": "command",
-          "name": "dotnet nuget push \"./*.nupkg\" -k $NUGET_TOKEN   -s https://api.nuget.org/v3/index.json",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 373,
-              "column": 7,
-              "line": 16
-            },
-            "stop": {
-              "byte": 459,
-              "column": 93,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_40eaab309d2e673c007c",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 459,
-              "column": 93,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_48ea3d9b6365b4c5d325",
-          "kind": "job",
-          "name": "packer",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 20,
-              "column": 1,
-              "line": 4
-            },
-            "stop": {
-              "byte": 459,
-              "column": 93,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_533a87d6a943c00c1aa7",
-          "kind": "step",
-          "name": "script:4",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 202,
-              "column": 7,
-              "line": 13
-            },
-            "stop": {
-              "byte": 208,
-              "column": 13,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_554923ecabb18792300a",
-          "kind": "step",
-          "name": "script:3",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 179,
-              "column": 7,
-              "line": 12
-            },
-            "stop": {
-              "byte": 195,
-              "column": 23,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_TAG",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 278,
-                      "column": 49,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 291,
-                      "column": 62,
-                      "line": 15
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_TAG"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_59f0f3566c81c6d34b36",
-          "kind": "resource",
-          "name": "CI_COMMIT_TAG",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 278,
-              "column": 49,
-              "line": 15
-            },
-            "stop": {
-              "byte": 291,
-              "column": 62,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5ecff7f3bdb13b4fa703",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 156,
-              "column": 7,
-              "line": 10
-            },
-            "stop": {
-              "byte": 158,
-              "column": 9,
-              "line": 10
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "NUGET_TOKEN",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 407,
-                      "column": 41,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 418,
-                      "column": 52,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "NUGET_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_68e36f07dd1129309c00",
-          "kind": "resource",
-          "name": "NUGET_TOKEN",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 407,
-              "column": 41,
-              "line": 16
-            },
-            "stop": {
-              "byte": 418,
-              "column": 52,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_TAG",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 278,
-                      "column": 49,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 291,
-                      "column": 62,
-                      "line": 15
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 236,
-                      "column": 7,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 366,
-                      "column": 137,
-                      "line": 15
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_TAG",
-                  "dotnet pack src.csproj -p:PackageVersion=$CI_COMMIT_TAG -p:NoDefaultExcludes=true -o ./ -p:PackageId=Masa.Template -p:NoBuild=true"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7bf8ee7ee640b6356f54",
-          "kind": "command",
-          "name": "dotnet pack src.csproj -p:PackageVersion=$CI_COMMIT_TAG -p:NoDefaultExcludes=true -o ./ -p:PackageId=Masa.Template -p:NoBuild=true",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 236,
-              "column": 7,
-              "line": 15
-            },
-            "stop": {
-              "byte": 366,
-              "column": 137,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_82a8273c081fcda79773",
-          "kind": "step",
-          "name": "script:6",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 373,
-              "column": 7,
-              "line": 16
-            },
-            "stop": {
-              "byte": 459,
-              "column": 93,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_855c3c3243daf78834b4",
-          "kind": "step",
-          "name": "script:2",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 165,
-              "column": 7,
-              "line": 11
-            },
-            "stop": {
-              "byte": 172,
-              "column": 14,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_96c508550ae094319d4c",
-          "kind": "step",
-          "name": "script:5",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 236,
-              "column": 7,
-              "line": 15
-            },
-            "stop": {
-              "byte": 366,
-              "column": 137,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 165,
-                      "column": 7,
-                      "line": 11
-                    },
-                    "stop": {
-                      "byte": 172,
-                      "column": 14,
-                      "line": 11
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "node -v"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a53a431de49473fdd0d4",
-          "kind": "command",
-          "name": "node -v",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 165,
-              "column": 7,
-              "line": 11
-            },
-            "stop": {
-              "byte": 172,
-              "column": 14,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 179,
-                      "column": 7,
-                      "line": 12
-                    },
-                    "stop": {
-                      "byte": 195,
-                      "column": 23,
-                      "line": 12
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "dotnet --version"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a7dd8df782f7d7bb7761",
-          "kind": "command",
-          "name": "dotnet --version",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 179,
-              "column": 7,
-              "line": 12
-            },
-            "stop": {
-              "byte": 195,
-              "column": 23,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 202,
-                      "column": 7,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 208,
-                      "column": 13,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cd src"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_cf81bf0cca7cb3e84df8",
-          "kind": "command",
-          "name": "cd src",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 202,
-              "column": 7,
-              "line": 13
-            },
-            "stop": {
-              "byte": 208,
-              "column": 13,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 156,
-                      "column": 7,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 158,
-                      "column": 9,
-                      "line": 10
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ls"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d6c5674c29267378ec21",
-          "kind": "command",
-          "name": "ls",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 156,
-              "column": 7,
-              "line": 10
-            },
-            "stop": {
-              "byte": 158,
-              "column": 9,
-              "line": 10
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e99ed090cbcf6a189608",
-          "kind": "call",
-          "name": "registry.cn-hangzhou.aliyuncs.com/masa/dotnet_sdk:6.0-nodejs14.17.6",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 37,
-              "column": 10,
-              "line": 5
-            },
-            "stop": {
-              "byte": 104,
-              "column": 77,
-              "line": 5
-            }
-          },
-          "unknown": {
-            "detail": "registry.cn-hangzhou.aliyuncs.com/masa/dotnet_sdk:6.0-nodejs14.17.6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f2cb82736e7e5a90d251",
-          "kind": "stage",
-          "name": "packer",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/masastack/masa.template/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 18,
-              "column": 11,
-              "line": 2
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/masastack/masa.template/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:9affd38416a3dba93e19ed4eb795ac5f648c05ccb92a70e353e555e85edc9461",
-      "path": "gitlab/masastack/masa.template/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:fd4759f79162d4b794bf85b166b76dfd1ee712f681c7ba13dc0944d1c34c9852",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:a955c6b8dc24bfa77b93d8f61bc00f33211ceb822f71fb332848e4d6102e6605",
+    "sources": [
+      {
+        "digest": "sha256:9affd38416a3dba93e19ed4eb795ac5f648c05ccb92a70e353e555e85edc9461",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -1144,26 +174,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 23,
+    "nodes": 18,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

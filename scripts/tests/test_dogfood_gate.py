@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from scripts.dogfood_gate import extract_evidence, prepare_image, verify
+from scripts.tests.report_fixture import report_document
 
 
 def canonical(value: object) -> str:
@@ -32,24 +33,41 @@ class DogfoodGateTests(unittest.TestCase):
         plan_digest = "sha256:" + "3" * 64
         runtime_evidence = evidence(plan_digest)
         documents = {
-            "report.json": {
-                "diagnostics": [],
-                "inputs": [
-                    {"path": ".github/workflows/ci.yml"},
-                    {"path": ".gitlab-ci.yml"},
-                    {"path": "azure-pipelines.yml"},
-                    {"path": ".circleci/config.yml"},
+            "report.json": report_document(
+                paths=[
+                    ".github/workflows/ci.yml",
+                    ".gitlab-ci.yml",
+                    "azure-pipelines.yml",
+                    ".circleci/config.yml",
                 ],
-                "persona": "audit",
-                "properties": [{"state": "Proved"}],
-                "schema": "report-v3",
-            },
+                properties=[{"id": "WV-CORRECT-001", "state": "Proved"}],
+            ),
             "report.sarif.json": {
                 "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
                 "runs": [],
                 "version": "2.1.0",
             },
-            "graph.json": {"edges": [], "entrypoints": ["entry"], "nodes": [{"id": "entry"}]},
+            "graph.json": {
+                "digest": "sha256:" + "4" * 64,
+                "edges": [],
+                "entrypoints": [0],
+                "nodes": [
+                    {
+                        "id": 0,
+                        "kind": "workflow",
+                        "name": "fixture",
+                        "phase": "workflow",
+                        "source": 0,
+                        "span": {
+                            "source": 0,
+                            "start": {"byte": 0, "column": 1, "line": 1},
+                            "stop": {"byte": 1, "column": 2, "line": 1},
+                        },
+                    }
+                ],
+                "schema": "workflow-verifier-graph/1",
+                "sources": [{"id": 0, "path": ".github/workflows/ci.yml", "provider": "github"}],
+            },
             "diff.json": {
                 "base_digest": "sha256:" + "0" * 64,
                 "changes": [],
@@ -134,7 +152,7 @@ class DogfoodGateTests(unittest.TestCase):
             root = Path(directory)
             self.fixture(root)
             report = json.loads((root / "report.json").read_text(encoding="utf-8"))
-            report["inputs"] = report["inputs"][:-1]
+            report["inputs"]["sources"] = report["inputs"]["sources"][:-1]
             (root / "report.json").write_text(canonical(report), encoding="utf-8", newline="\n")
             with self.assertRaisesRegex(ValueError, "four provider"):
                 verify(root)
@@ -151,14 +169,14 @@ class DogfoodGateTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "exactly four frontends"):
                 verify(root)
 
-    def test_legacy_reference_report_is_not_product_dogfood_evidence(self) -> None:
+    def test_unknown_report_schema_is_not_product_dogfood_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             self.fixture(root)
             report = json.loads((root / "report.json").read_text(encoding="utf-8"))
-            report["schema"] = "report-v2"
+            report["schema"] = "unknown-report"
             (root / "report.json").write_text(canonical(report), encoding="utf-8", newline="\n")
-            with self.assertRaisesRegex(ValueError, "report-v3"):
+            with self.assertRaisesRegex(ValueError, "workflow-verifier-report/1"):
                 verify(root)
 
     def test_runtime_hash_chain_and_audit_tail_are_recomputed(self) -> None:

@@ -1,7 +1,18 @@
 {
+  "analysis_digest": "sha256:624c606c11b5929479f53a56831018efb9a039450a00420518809888f2a4aa3f",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: Bash@3",
+      "Incomplete.Unresolved_dependency: PowerShell@2",
+      "Incomplete.Unresolved_dependency: PublishTestResults@2",
+      "Incomplete.Unresolved_dependency: azure-template.yml"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PowerShell@2"
@@ -9,9 +20,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/windos/poshnotify/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 847,
             "column": 11,
@@ -24,12 +34,12 @@
           }
         }
       },
-      "id": "diag_cad5c5be2407857cf566",
+      "id": "diag_b54e5dee2b638ed2d6267a938113918a10c4b481d3b9793e83b0ac1f9b4af5b6",
       "message": "dependency is not pinned to immutable content: PowerShell@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/windos/poshnotify/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 847,
           "column": 11,
@@ -44,9 +54,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_1b113ada0552a3e7fa2a",
+          "node": 15,
           "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 847,
               "column": 11,
@@ -62,7 +72,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PublishTestResults@2"
@@ -70,9 +79,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/windos/poshnotify/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1001,
             "column": 11,
@@ -85,12 +93,12 @@
           }
         }
       },
-      "id": "diag_e5491ade8c1b0b6a23d9",
+      "id": "diag_6c7434b94c814ba5c72cc0b2073e847294a8989a20869cbe883a1e9e015b5086",
       "message": "dependency is not pinned to immutable content: PublishTestResults@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/windos/poshnotify/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1001,
           "column": 11,
@@ -105,9 +113,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_71d29010002fb0fe7392",
+          "node": 17,
           "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1001,
               "column": 11,
@@ -123,7 +131,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Bash@3"
@@ -131,9 +138,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/windos/poshnotify/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1151,
             "column": 11,
@@ -146,12 +152,12 @@
           }
         }
       },
-      "id": "diag_a03baf9d9b2f8c8e1b68",
+      "id": "diag_66d920dc0fe463b57a67f01d8f6f13fad8c4bf82145a6cfb02683e761c015e46",
       "message": "dependency is not pinned to immutable content: Bash@3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/windos/poshnotify/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1151,
           "column": 11,
@@ -166,9 +172,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a40c01841568e072acf3",
+          "node": 19,
           "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1151,
               "column": 11,
@@ -184,7 +190,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PowerShell@2"
@@ -192,9 +197,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/windos/poshnotify/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1721,
             "column": 11,
@@ -207,12 +211,12 @@
           }
         }
       },
-      "id": "diag_e306e713de957e51fa47",
+      "id": "diag_604d06cf5c8a813bfcfcad11b667c76b3af4dfeeafc1001d0856370d1a2090d5",
       "message": "dependency is not pinned to immutable content: PowerShell@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/windos/poshnotify/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1721,
           "column": 11,
@@ -227,9 +231,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f85f4a83e77b224bb194",
+          "node": 23,
           "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1721,
               "column": 11,
@@ -245,1367 +249,70 @@
       ]
     }
   ],
-  "digest": "sha256:067601cf134eb1240544a29a27567cd025e1d900e555f0dcf0528ab3acce71f9",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_7afa9c9065e7b268af36",
-          "id": "wv_014a6612eab7fbf0a2a6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2fdca65fa1cfd46dbed9"
-        },
-        {
-          "condition": true,
-          "from": "wv_d63fd82b89b2b2ec5f30",
-          "id": "wv_0d513c1cf9ec9cd6459d",
-          "kind": "data",
-          "label": "variables.Build.Reason",
-          "to": "wv_08a85503103ea820c3c9"
-        },
-        {
-          "condition": true,
-          "from": "wv_9f67fdb5d08222e88dae",
-          "id": "wv_14d4db31219ad7d83e44",
-          "kind": "control",
-          "label": null,
-          "to": "wv_16cc5d3e7d96bb49801c"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),in(variables.Build.Reason,\"IndividualCI\",\"BatchedCI\"))"
-          },
-          "from": "wv_9ce64e2176e855d5a4ec",
-          "id": "wv_1cea48086036e74af8c5",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_75b2b341ae1791c45c3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_9f67fdb5d08222e88dae",
-          "id": "wv_2058a671eb0285503cf4",
-          "kind": "call",
-          "label": null,
-          "to": "wv_16cc5d3e7d96bb49801c"
-        },
-        {
-          "condition": true,
-          "from": "wv_4a458c8f812930eb360f",
-          "id": "wv_23daf12d13603f4f42a5",
-          "kind": "data",
-          "label": "variables.Build.Reason",
-          "to": "wv_2fdca65fa1cfd46dbed9"
-        },
-        {
-          "condition": true,
-          "from": "wv_36ea88a3f91a1496d6e0",
-          "id": "wv_23f8400421b0c9a43b67",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0b6d1ecdde02457c948d"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),in(variables.Build.Reason,\"IndividualCI\",\"BatchedCI\"))"
-          },
-          "from": "wv_2fdca65fa1cfd46dbed9",
-          "id": "wv_2619f71c08be29b6325c",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_36ea88a3f91a1496d6e0"
-        },
-        {
-          "condition": true,
-          "from": "wv_0b6d1ecdde02457c948d",
-          "id": "wv_3449c3d01205885cf6fd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f85f4a83e77b224bb194"
-        },
-        {
-          "condition": true,
-          "from": "wv_7afa9c9065e7b268af36",
-          "id": "wv_39890664764c19e5d4d4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9ce64e2176e855d5a4ec"
-        },
-        {
-          "condition": true,
-          "from": "wv_106f95f9502f2080f464",
-          "id": "wv_3a26ace1eb844942c0e3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a40c01841568e072acf3"
-        },
-        {
-          "condition": true,
-          "from": "wv_7afa9c9065e7b268af36",
-          "id": "wv_3ccc195cc96acd94dd00",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5aee479ea66272c7ebe1"
-        },
-        {
-          "condition": true,
-          "from": "wv_d1bab9558d241d99f9e1",
-          "id": "wv_5198019a7e035b84f90b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_1b113ada0552a3e7fa2a"
-        },
-        {
-          "condition": true,
-          "from": "wv_114e68c0529541edf409",
-          "id": "wv_51a5efd7d01ff67914d2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9ad68ff934a4010264fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_7afa9c9065e7b268af36",
-          "id": "wv_52f7ff999c03fb92417e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_08a85503103ea820c3c9"
-        },
-        {
-          "condition": true,
-          "from": "wv_75b2b341ae1791c45c3b",
-          "id": "wv_5841d624d2572d5226fb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d63ff913ee677dbe4651"
-        },
-        {
-          "condition": true,
-          "from": "wv_75b2b341ae1791c45c3b",
-          "id": "wv_5b0ae926e371b62f1de3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_106f95f9502f2080f464"
-        },
-        {
-          "condition": true,
-          "from": "wv_7afa9c9065e7b268af36",
-          "id": "wv_5d48c28d48f0e5919375",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8413bfc74b49b9377159"
-        },
-        {
-          "condition": true,
-          "from": "wv_3ee885215b0b851d25a5",
-          "id": "wv_798ffa1f67a05d129b16",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ed4bc45391acd84c1dba"
-        },
-        {
-          "condition": true,
-          "from": "wv_75b2b341ae1791c45c3b",
-          "id": "wv_8dd67f3d63d3f5d16360",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d1bab9558d241d99f9e1"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),eq(variables.Build.Reason,\"PullRequest\"))"
-          },
-          "from": "wv_08a85503103ea820c3c9",
-          "id": "wv_963d17a782030e25579f",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_5833885f98d7b6b5b556"
-        },
-        {
-          "condition": true,
-          "from": "wv_d1bab9558d241d99f9e1",
-          "id": "wv_a5aee36d45237ba9c956",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1b113ada0552a3e7fa2a"
-        },
-        {
-          "condition": true,
-          "from": "wv_d1bab9558d241d99f9e1",
-          "id": "wv_ab187a2f5c35a6aba383",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d63ff913ee677dbe4651"
-        },
-        {
-          "condition": true,
-          "from": "wv_3ee885215b0b851d25a5",
-          "id": "wv_af001adf3db17203cfd3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_ed4bc45391acd84c1dba"
-        },
-        {
-          "condition": true,
-          "from": "wv_114e68c0529541edf409",
-          "id": "wv_b997b7d0313ef79fa1ed",
-          "kind": "call",
-          "label": null,
-          "to": "wv_9ad68ff934a4010264fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_5833885f98d7b6b5b556",
-          "id": "wv_d57625ef821ecdcf8c44",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3ee885215b0b851d25a5"
-        },
-        {
-          "condition": true,
-          "from": "wv_8413bfc74b49b9377159",
-          "id": "wv_d72c3965bafb8cbb8791",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9f67fdb5d08222e88dae"
-        },
-        {
-          "condition": true,
-          "from": "wv_0b6d1ecdde02457c948d",
-          "id": "wv_dbf9d81f4f631380658d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f85f4a83e77b224bb194"
-        },
-        {
-          "condition": true,
-          "from": "wv_892dcf7b58c04dd6791a",
-          "id": "wv_dc7149623f9765e3a5bf",
-          "kind": "data",
-          "label": "variables.Build.Reason",
-          "to": "wv_9ce64e2176e855d5a4ec"
-        },
-        {
-          "condition": true,
-          "from": "wv_5aee479ea66272c7ebe1",
-          "id": "wv_df1f8e184c5cfefcaa60",
-          "kind": "control",
-          "label": null,
-          "to": "wv_114e68c0529541edf409"
-        },
-        {
-          "condition": true,
-          "from": "wv_d63ff913ee677dbe4651",
-          "id": "wv_e2c78edaf2ec907a6d41",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_106f95f9502f2080f464"
-        },
-        {
-          "condition": true,
-          "from": "wv_106f95f9502f2080f464",
-          "id": "wv_e4ac993f2b1c95f6d63b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a40c01841568e072acf3"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b3c913a85889ca0ba5e",
-          "id": "wv_f0dd4b4c7f6c52bdb496",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7afa9c9065e7b268af36"
-        },
-        {
-          "condition": true,
-          "from": "wv_d63ff913ee677dbe4651",
-          "id": "wv_f42f5eb286f79217cb4a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_71d29010002fb0fe7392"
-        },
-        {
-          "condition": true,
-          "from": "wv_d63ff913ee677dbe4651",
-          "id": "wv_f618a8f8a4b8a1bfc1bd",
-          "kind": "call",
-          "label": null,
-          "to": "wv_71d29010002fb0fe7392"
-        }
-      ],
-      "entrypoints": [
-        "wv_7afa9c9065e7b268af36"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 478,
-                      "column": 14,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 540,
-                      "column": 76,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))"
-                ]
-              }
-            },
-            "reference:variables.Build.Reason": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Build.Reason",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 498,
-                      "column": 34,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 523,
-                      "column": 59,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Build.Reason"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),eq(variables.Build.Reason,\"PullRequest\"))"
-          },
-          "effects": [],
-          "id": "wv_08a85503103ea820c3c9",
-          "kind": "gate",
-          "name": "condition:job:Linux",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 478,
-              "column": 14,
-              "line": 26
-            },
-            "stop": {
-              "byte": 540,
-              "column": 76,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0b6d1ecdde02457c948d",
-          "kind": "step",
-          "name": "Run publish task",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1715,
-              "column": 5,
-              "line": 64
-            },
-            "stop": {
-              "byte": 1882,
-              "column": 35,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_106f95f9502f2080f464",
-          "kind": "step",
-          "name": "step 3",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1145,
-              "column": 5,
-              "line": 50
-            },
-            "stop": {
-              "byte": 1319,
-              "column": 54,
-              "line": 54
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_114e68c0529541edf409",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 284,
-              "column": 5,
-              "line": 17
-            },
-            "stop": {
-              "byte": 312,
-              "column": 33,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_16cc5d3e7d96bb49801c",
-          "kind": "call",
-          "name": "azure-template.yml",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 411,
-              "column": 15,
-              "line": 23
-            },
-            "stop": {
-              "byte": 429,
-              "column": 33,
-              "line": 23
-            }
-          },
-          "unknown": {
-            "detail": "azure-template.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_1b113ada0552a3e7fa2a",
-          "kind": "call",
-          "name": "PowerShell@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 847,
-              "column": 11,
-              "line": 38
-            },
-            "stop": {
-              "byte": 859,
-              "column": 23,
-              "line": 38
-            }
-          },
-          "unknown": {
-            "detail": "PowerShell@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1587,
-                      "column": 14,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1663,
-                      "column": 90,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))"
-                ]
-              }
-            },
-            "reference:variables.Build.Reason": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Build.Reason",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1607,
-                      "column": 34,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1632,
-                      "column": 59,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Build.Reason"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),in(variables.Build.Reason,\"IndividualCI\",\"BatchedCI\"))"
-          },
-          "effects": [],
-          "id": "wv_2fdca65fa1cfd46dbed9",
-          "kind": "gate",
-          "name": "condition:job:Publish",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1587,
-              "column": 14,
-              "line": 60
-            },
-            "stop": {
-              "byte": 1663,
-              "column": 90,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_36ea88a3f91a1496d6e0",
-          "kind": "job",
-          "name": "Publish",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1561,
-              "column": 3,
-              "line": 59
-            },
-            "stop": {
-              "byte": 1882,
-              "column": 35,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3ee885215b0b851d25a5",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 591,
-              "column": 5,
-              "line": 30
-            },
-            "stop": {
-              "byte": 619,
-              "column": 33,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Build.Reason",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1607,
-                      "column": 34,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1632,
-                      "column": 59,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Build.Reason"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4a458c8f812930eb360f",
-          "kind": "resource",
-          "name": "variables.Build.Reason",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1607,
-              "column": 34,
-              "line": 60
-            },
-            "stop": {
-              "byte": 1632,
-              "column": 59,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5833885f98d7b6b5b556",
-          "kind": "job",
-          "name": "Linux",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 454,
-              "column": 3,
-              "line": 25
-            },
-            "stop": {
-              "byte": 619,
-              "column": 33,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5aee479ea66272c7ebe1",
-          "kind": "job",
-          "name": "macOS",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 224,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 312,
-              "column": 33,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_71d29010002fb0fe7392",
-          "kind": "call",
-          "name": "PublishTestResults@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1001,
-              "column": 11,
-              "line": 44
-            },
-            "stop": {
-              "byte": 1021,
-              "column": 31,
-              "line": 44
-            }
-          },
-          "unknown": {
-            "detail": "PublishTestResults@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_75b2b341ae1791c45c3b",
-          "kind": "job",
-          "name": "Linux_Coverage",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 644,
-              "column": 3,
-              "line": 32
-            },
-            "stop": {
-              "byte": 1319,
-              "column": 54,
-              "line": 54
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7afa9c9065e7b268af36",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 119,
-              "column": 1,
-              "line": 4
-            },
-            "stop": {
-              "byte": 1882,
-              "column": 35,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8413bfc74b49b9377159",
-          "kind": "job",
-          "name": "Windows",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 337,
-              "column": 3,
-              "line": 19
-            },
-            "stop": {
-              "byte": 429,
-              "column": 33,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Build.Reason",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 734,
-                      "column": 34,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 759,
-                      "column": 59,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Build.Reason"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_892dcf7b58c04dd6791a",
-          "kind": "resource",
-          "name": "variables.Build.Reason",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 734,
-              "column": 34,
-              "line": 34
-            },
-            "stop": {
-              "byte": 759,
-              "column": 59,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8b3c913a85889ca0ba5e",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 130,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 214,
-              "column": 27,
-              "line": 10
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9ad68ff934a4010264fb",
-          "kind": "call",
-          "name": "azure-template.yml",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 294,
-              "column": 15,
-              "line": 17
-            },
-            "stop": {
-              "byte": 312,
-              "column": 33,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "azure-template.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 714,
-                      "column": 14,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 790,
-                      "column": 90,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))"
-                ]
-              }
-            },
-            "reference:variables.Build.Reason": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Build.Reason",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 734,
-                      "column": 34,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 759,
-                      "column": 59,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Build.Reason"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),in(variables.Build.Reason,\"IndividualCI\",\"BatchedCI\"))"
-          },
-          "effects": [],
-          "id": "wv_9ce64e2176e855d5a4ec",
-          "kind": "gate",
-          "name": "condition:job:Linux_Coverage",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 714,
-              "column": 14,
-              "line": 34
-            },
-            "stop": {
-              "byte": 790,
-              "column": 90,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9f67fdb5d08222e88dae",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 401,
-              "column": 5,
-              "line": 23
-            },
-            "stop": {
-              "byte": 429,
-              "column": 33,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a40c01841568e072acf3",
-          "kind": "call",
-          "name": "Bash@3",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1151,
-              "column": 11,
-              "line": 50
-            },
-            "stop": {
-              "byte": 1157,
-              "column": 17,
-              "line": 50
-            }
-          },
-          "unknown": {
-            "detail": "Bash@3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d1bab9558d241d99f9e1",
-          "kind": "step",
-          "name": "Run tests & coverage",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 841,
-              "column": 5,
-              "line": 38
-            },
-            "stop": {
-              "byte": 989,
-              "column": 53,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Build.Reason",
-                  "span": {
-                    "file": "azure/windos/poshnotify/azure-pipelines.yml",
-                    "start": {
-                      "byte": 498,
-                      "column": 34,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 523,
-                      "column": 59,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Build.Reason"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d63fd82b89b2b2ec5f30",
-          "kind": "resource",
-          "name": "variables.Build.Reason",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 498,
-              "column": 34,
-              "line": 26
-            },
-            "stop": {
-              "byte": 523,
-              "column": 59,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d63ff913ee677dbe4651",
-          "kind": "step",
-          "name": "step 2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 995,
-              "column": 5,
-              "line": 44
-            },
-            "stop": {
-              "byte": 1139,
-              "column": 37,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ed4bc45391acd84c1dba",
-          "kind": "call",
-          "name": "azure-template.yml",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 601,
-              "column": 15,
-              "line": 30
-            },
-            "stop": {
-              "byte": 619,
-              "column": 33,
-              "line": 30
-            }
-          },
-          "unknown": {
-            "detail": "azure-template.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f85f4a83e77b224bb194",
-          "kind": "call",
-          "name": "PowerShell@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/windos/poshnotify/azure-pipelines.yml",
-            "start": {
-              "byte": 1721,
-              "column": 11,
-              "line": 64
-            },
-            "stop": {
-              "byte": 1733,
-              "column": 23,
-              "line": 64
-            }
-          },
-          "unknown": {
-            "detail": "PowerShell@2",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/windos/poshnotify/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:0ee81436b0b0c69a940349dc5231e5137bfdc3b9f0238255760c87dbafe91fab",
-      "path": "azure/windos/poshnotify/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:6e313d6561d5d0187a3ad22909549a8345e309bdd3e522aacdd2dd4d5b84fe51",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:0d86b813222c9659e944217b329afed358e9ffea7f7101d3a4f75449a730158a",
+    "sources": [
+      {
+        "digest": "sha256:0ee81436b0b0c69a940349dc5231e5137bfdc3b9f0238255760c87dbafe91fab",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1616,40 +323,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 4,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 32,
+    "nodes": 24,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

@@ -161,7 +161,7 @@ let build ~persona ~inputs ~graphs ~verifications ~policy_diagnostics provenance
     =
   let provisional =
     {
-      schema = "report-v2";
+      schema = "workflow-verifier-report/1";
       tool_version = "0.1.0";
       persona;
       inputs = normalize_inputs inputs;
@@ -178,7 +178,7 @@ let build ~persona ~inputs ~graphs ~verifications ~policy_diagnostics provenance
   in
   { provisional with digest }
 
-let make_v2 ~persona ~inputs ~graphs ~verifications ~policy_diagnostics
+let create ~persona ~inputs ~graphs ~verifications ~policy_diagnostics
     ~binary_digest ~source_commit ~config ~lock_digest ~source_manifest_digest
     ~provider_profiles ~completeness_reasons ~gate_result ~exit_code =
   let public_origin origin =
@@ -203,43 +203,6 @@ let make_v2 ~persona ~inputs ~graphs ~verifications ~policy_diagnostics
       source_manifest_digest;
       provider_profiles = Util.deduplicate_strings provider_profiles;
       completeness_reasons = Util.deduplicate_strings completeness_reasons;
-      gate_result;
-      exit_code;
-    }
-  in
-  build ~persona ~inputs ~graphs ~verifications ~policy_diagnostics provenance
-
-let make ~persona ~inputs ~graphs ~verifications ~policy_diagnostics =
-  let incomplete =
-    if List.exists (fun result -> not result.Verifier.complete) verifications
-    then [ "Incomplete.Static_analysis" ]
-    else []
-  in
-  let has_findings =
-    policy_diagnostics <> []
-    || List.exists
-         (fun result -> result.Verifier.diagnostics <> [])
-         verifications
-  in
-  let gate_result, exit_code =
-    if has_findings then (Finding, 1)
-    else if incomplete <> [] then (Incomplete, 3)
-    else (Pass, 0)
-  in
-  let provenance =
-    {
-      binary_digest = "sha256:" ^ String.make 64 '0';
-      source_commit = None;
-      config_origin = "unspecified";
-      config_trust = "built-in";
-      config_digest = "sha256:" ^ String.make 64 '0';
-      lock_digest = "sha256:" ^ String.make 64 '0';
-      source_manifest_digest = "sha256:" ^ String.make 64 '0';
-      provider_profiles =
-        graphs
-        |> List.map (fun graph ->
-            Ir.provider_name graph.Ir.provider ^ "-semantic-v1");
-      completeness_reasons = incomplete;
       gate_result;
       exit_code;
     }

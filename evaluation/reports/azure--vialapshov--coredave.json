@@ -1,7 +1,19 @@
 {
+  "analysis_digest": "sha256:d12d177f857b3cd5e181e94d3c906ce5082e003f57de61be10d564c8a12ed2b9",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: Docker@2",
+      "Incomplete.Unresolved_dependency: DownloadPipelineArtifact@2",
+      "Incomplete.Unresolved_dependency: KubernetesManifest@0",
+      "Incomplete.Unresolved_dependency: PublishPipelineArtifact@1",
+      "Incomplete.Unresolved_dependency: replacetokens@3"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Docker@2"
@@ -9,9 +21,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/vialapshov/coredave/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 261,
             "column": 13,
@@ -24,12 +35,12 @@
           }
         }
       },
-      "id": "diag_19f9266c869aaff48a3b",
+      "id": "diag_f7710b8e92cd9d8692535a9b704c79d798f0db69700924701b8d93893008dd56",
       "message": "dependency is not pinned to immutable content: Docker@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/vialapshov/coredave/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 261,
           "column": 13,
@@ -44,9 +55,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_97b2805ca6d47c91b261",
+          "node": 7,
           "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 261,
               "column": 13,
@@ -62,7 +73,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PublishPipelineArtifact@1"
@@ -70,9 +80,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/vialapshov/coredave/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 537,
             "column": 13,
@@ -85,12 +94,12 @@
           }
         }
       },
-      "id": "diag_70f369dd475c54c0a537",
+      "id": "diag_4ca3cbe2eb28b8bfc902be7e014d32ce1ca4cbc29b772edd107baa1e502e8646",
       "message": "dependency is not pinned to immutable content: PublishPipelineArtifact@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/vialapshov/coredave/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 537,
           "column": 13,
@@ -105,9 +114,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_b04ff2f29d4eed0ff266",
+          "node": 9,
           "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 537,
               "column": 13,
@@ -123,593 +132,40 @@
       ]
     }
   ],
-  "digest": "sha256:a2c5dd7cb6839b5bb7a93854513b8a2dceeed04d6ece2f9290775194ea251bb9",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_9856d9f66b825896ea79",
-          "id": "wv_09df68507a16b944dac7",
-          "kind": "call",
-          "label": null,
-          "to": "wv_97b2805ca6d47c91b261"
-        },
-        {
-          "condition": true,
-          "from": "wv_26dd3cf90ebad72c1750",
-          "id": "wv_44153ab873066fec0e54",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_8683ae4b54df0f3341c5"
-        },
-        {
-          "condition": true,
-          "from": "wv_26dd3cf90ebad72c1750",
-          "id": "wv_4e0516bb8e183dc261ad",
-          "kind": "control",
-          "label": null,
-          "to": "wv_45af2da58945d6ed7edf"
-        },
-        {
-          "condition": true,
-          "from": "wv_9856d9f66b825896ea79",
-          "id": "wv_545e063163d8c1a3049e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_de5734ee8e701ef5479f"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7ff9e2c9c64e0e12efb",
-          "id": "wv_6520a9c9677193b24a35",
-          "kind": "control",
-          "label": null,
-          "to": "wv_26dd3cf90ebad72c1750"
-        },
-        {
-          "condition": true,
-          "from": "wv_2b1d09892e1dbd23fde7",
-          "id": "wv_7cea4a17333e3bd549b6",
-          "kind": "data",
-          "label": "imageRepo",
-          "to": "wv_b7ff9e2c9c64e0e12efb"
-        },
-        {
-          "condition": true,
-          "from": "wv_45af2da58945d6ed7edf",
-          "id": "wv_958556d1789d2dfbcb18",
-          "kind": "control",
-          "label": null,
-          "to": "wv_de5734ee8e701ef5479f"
-        },
-        {
-          "condition": true,
-          "from": "wv_8683ae4b54df0f3341c5",
-          "id": "wv_9b8db35e39d2b1ed08ba",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d9a9bb09725aa87a48eb"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7ff9e2c9c64e0e12efb",
-          "id": "wv_9d827e56641957c3e510",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8683ae4b54df0f3341c5"
-        },
-        {
-          "condition": true,
-          "from": "wv_5eab6fb906b994a875d1",
-          "id": "wv_aeadbbead4cfed42dc93",
-          "kind": "data",
-          "label": "tag",
-          "to": "wv_b7ff9e2c9c64e0e12efb"
-        },
-        {
-          "condition": true,
-          "from": "wv_5cec1c256382f7aa3335",
-          "id": "wv_bb20dcc2d0e956419f79",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b7ff9e2c9c64e0e12efb"
-        },
-        {
-          "condition": true,
-          "from": "wv_de5734ee8e701ef5479f",
-          "id": "wv_bf1ce560e527f6e6d6db",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b04ff2f29d4eed0ff266"
-        },
-        {
-          "condition": true,
-          "from": "wv_9856d9f66b825896ea79",
-          "id": "wv_c0b79c64e685197adba5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_97b2805ca6d47c91b261"
-        },
-        {
-          "condition": true,
-          "from": "wv_8e885c427657410d8da7",
-          "id": "wv_c6e3274f4613bfecd46f",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_d9a9bb09725aa87a48eb"
-        },
-        {
-          "condition": true,
-          "from": "wv_de5734ee8e701ef5479f",
-          "id": "wv_f83131749a3276b08a45",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b04ff2f29d4eed0ff266"
-        },
-        {
-          "condition": true,
-          "from": "wv_45af2da58945d6ed7edf",
-          "id": "wv_fcd397516dcae9734752",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9856d9f66b825896ea79"
-        }
-      ],
-      "entrypoints": [
-        "wv_b7ff9e2c9c64e0e12efb"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_26dd3cf90ebad72c1750",
-          "kind": "stage",
-          "name": "Build",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 113,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 699,
-              "column": 36,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-                    "start": {
-                      "byte": 66,
-                      "column": 14,
-                      "line": 8
-                    },
-                    "stop": {
-                      "byte": 75,
-                      "column": 23,
-                      "line": 8
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "sampleapp"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2b1d09892e1dbd23fde7",
-          "kind": "resource",
-          "name": "variable:imageRepo",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 55,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 75,
-              "column": 23,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_45af2da58945d6ed7edf",
-          "kind": "job",
-          "name": "Build",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 165,
-              "column": 5,
-              "line": 15
-            },
-            "stop": {
-              "byte": 699,
-              "column": 36,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5cec1c256382f7aa3335",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 9,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 15,
-              "column": 7,
-              "line": 2
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-                    "start": {
-                      "byte": 83,
-                      "column": 8,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 101,
-                      "column": 26,
-                      "line": 9
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.BuildId",
-                  "span": {
-                    "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-                    "start": {
-                      "byte": 85,
-                      "column": 10,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 98,
-                      "column": 23,
-                      "line": 9
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "$(Build.BuildId)",
-                  "Build.BuildId"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5eab6fb906b994a875d1",
-          "kind": "resource",
-          "name": "variable:tag",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 78,
-              "column": 3,
-              "line": 9
-            },
-            "stop": {
-              "byte": 101,
-              "column": 26,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8683ae4b54df0f3341c5",
-          "kind": "stage",
-          "name": "Deploy",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 711,
-              "column": 3,
-              "line": 35
-            },
-            "stop": {
-              "byte": 2435,
-              "column": 47,
-              "line": 86
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8e885c427657410d8da7",
-          "kind": "resource",
-          "name": "environment:k8sdev.default",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 959,
-              "column": 18,
-              "line": 45
-            },
-            "stop": {
-              "byte": 975,
-              "column": 34,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_97b2805ca6d47c91b261",
-          "kind": "call",
-          "name": "Docker@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 261,
-              "column": 13,
-              "line": 20
-            },
-            "stop": {
-              "byte": 269,
-              "column": 21,
-              "line": 20
-            }
-          },
-          "unknown": {
-            "detail": "Docker@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9856d9f66b825896ea79",
-          "kind": "step",
-          "name": "Build an image",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 255,
-              "column": 7,
-              "line": 20
-            },
-            "stop": {
-              "byte": 524,
-              "column": 17,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_b04ff2f29d4eed0ff266",
-          "kind": "call",
-          "name": "PublishPipelineArtifact@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 537,
-              "column": 13,
-              "line": 29
-            },
-            "stop": {
-              "byte": 562,
-              "column": 38,
-              "line": 29
-            }
-          },
-          "unknown": {
-            "detail": "PublishPipelineArtifact@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b7ff9e2c9c64e0e12efb",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 2435,
-              "column": 47,
-              "line": 86
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_d9a9bb09725aa87a48eb",
-          "kind": "job",
-          "name": "Deploy",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 892,
-              "column": 5,
-              "line": 43
-            },
-            "stop": {
-              "byte": 2435,
-              "column": 47,
-              "line": 86
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_de5734ee8e701ef5479f",
-          "kind": "step",
-          "name": "step 2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/vialapshov/coredave/azure-pipelines.yml",
-            "start": {
-              "byte": 531,
-              "column": 7,
-              "line": 29
-            },
-            "stop": {
-              "byte": 699,
-              "column": 36,
-              "line": 33
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/vialapshov/coredave/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:d261fa0b891987e66204c75f73e5a8a3b77675a2a8be3a51880341565e0044e3",
-      "path": "azure/vialapshov/coredave/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:7d117668668d1c290154c8fef4f2c7a7a3e25f95bd1ffb96ecc1ed1d0ddd5bad",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:2c9589c1ede68f6916353da4a709bf813cf0a7f60dfe3c12103794bc5c56d300",
+    "sources": [
+      {
+        "digest": "sha256:d261fa0b891987e66204c75f73e5a8a3b77675a2a8be3a51880341565e0044e3",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
@@ -720,43 +176,32 @@
           "kind": "external_state"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -767,40 +212,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "edges": 16,
+    "nodes": 13,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 2,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

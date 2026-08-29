@@ -1,10 +1,12 @@
 use std::collections::BTreeMap;
+use std::io::Write as _;
 use std::path::PathBuf;
+use std::process::{Command, Stdio};
 
-use workflow_verifier_oci_helper::{build_arguments, source_manifest};
-use workflow_verifier_runner_protocol::{
+use workflow_verifier_internal::internal::runner_protocol::{
     Control, Limits, PlanStatus, RuntimeProfile, Step, ValidatedPlan,
 };
+use workflow_verifier_oci_helper::{build_arguments, source_manifest};
 
 fn plan() -> ValidatedPlan {
     ValidatedPlan {
@@ -117,4 +119,39 @@ fn source_manifest_matches_the_shared_ocaml_fixture() {
         manifest.digest,
         "sha256:d70c409989907fb9194417d737ec25d8dd56e7ab36911dbf5b43db5d620b3594"
     );
+}
+
+#[test]
+fn process_boundary_does_not_log_untrusted_exclusion_arguments() {
+    let repository = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let plan = std::fs::read(repository.join("test/fixtures/protocol/runner-v2-complete.json"))
+        .expect("runner plan fixture");
+    let sensitive_argument = "../private-policy-name";
+    let mut child = Command::new(env!("CARGO_BIN_EXE_workflow-verifier-oci-helper"))
+        .args([
+            "--run",
+            "--engine",
+            "docker",
+            "--source",
+            repository.to_str().expect("UTF-8 repository path"),
+            "--exclude",
+            sensitive_argument,
+        ])
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .expect("start OCI helper");
+    child
+        .stdin
+        .take()
+        .expect("helper stdin")
+        .write_all(&plan)
+        .expect("write runner plan");
+
+    let output = child.wait_with_output().expect("collect helper output");
+    let stderr = String::from_utf8(output.stderr).expect("UTF-8 helper stderr");
+    assert_eq!(output.status.code(), Some(5));
+    assert_eq!(stderr, "sandbox infrastructure failure\n");
+    assert!(!stderr.contains(sensitive_argument));
 }

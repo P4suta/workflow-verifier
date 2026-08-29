@@ -15,6 +15,11 @@ from collections.abc import Iterable
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+try:
+    from scripts.package_crate import inspect_crate
+except ModuleNotFoundError:  # Direct execution from the repository root.
+    from package_crate import inspect_crate  # type: ignore[no-redef]
+
 PLATFORMS = (
     "linux-x86_64",
     "linux-arm64",
@@ -84,6 +89,7 @@ ARTIFACT_KINDS = {
     "sbom-cyclonedx",
     "third-party-notices",
     "corresponding-source",
+    "crate-package",
 }
 SIGNED_KINDS = {
     "product",
@@ -105,6 +111,7 @@ REQUIRED_ARTIFACT_KINDS = {
     "sbom-cyclonedx",
     "third-party-notices",
     "corresponding-source",
+    "crate-package",
 }
 DISCLOSURES = {
     "independent_audit": "sole-maintainer-self-audit",
@@ -596,6 +603,8 @@ def verify(
     spdx_subjects: set[str] = set()
     cyclonedx = 0
     source_artifacts = 0
+    crate_packages = 0
+    crate_digest = ""
     for index, raw in enumerate(artifacts):
         label = f"artifact[{index}]"
         item = _object(
@@ -646,6 +655,13 @@ def verify(
             source_artifacts += 1
             if item["digest"] != source_archive_digest:
                 raise ValueError("candidate source archive digest does not match source artifact")
+        if kind == "crate-package":
+            crate_packages += 1
+            expected_name = f"workflow-verifier-{tag.removeprefix('v')}.crate"
+            if platform != "any" or name != expected_name:
+                raise ValueError("crate package name or platform contradicts the planned tag")
+            inspect_crate(path, version=tag.removeprefix("v"), subject_commit=subject_commit)
+            crate_digest = item["digest"]
         if kind in SIGNED_KINDS:
             payload_names.add(name)
             if "signature" not in item:
@@ -691,6 +707,8 @@ def verify(
         )
     if source_artifacts != 1:
         raise ValueError("release evidence must contain exactly one source archive")
+    if crate_packages != 1:
+        raise ValueError("release evidence must contain exactly one crates.io package")
     if not REQUIRED_ARTIFACT_KINDS.issubset(kinds):
         raise ValueError(
             f"release evidence omits artifact kinds {sorted(REQUIRED_ARTIFACT_KINDS - kinds)}"
@@ -747,6 +765,7 @@ def verify(
         "attestation": attestation,
         "signature": signature,
         "subject_commit": subject_commit,
+        "crate_digest": crate_digest,
     }
 
 
@@ -756,7 +775,7 @@ def _append_github_output(path: Path, values: dict[str, str]) -> None:
         if path.is_symlink() or not stat.S_ISREG(metadata.st_mode):
             raise ValueError("GitHub output must be a regular non-symlink file")
         with path.open("a", encoding="utf-8", newline="\n") as stream:
-            for key in ("attestation", "signature", "subject_commit"):
+            for key in ("attestation", "signature", "subject_commit", "crate_digest"):
                 stream.write(f"{key}={values[key]}\n")
             stream.flush()
             os.fsync(stream.fileno())
@@ -788,7 +807,7 @@ def main() -> int:
         return 1
     print(
         "release evidence gate: candidate, artifacts, SBOMs, all quality gates, "
-        "signatures, disclosures, and signed sole-maintainer self-audit verified"
+        "crate package, signatures, disclosures, and signed sole-maintainer self-audit verified"
     )
     return 0
 

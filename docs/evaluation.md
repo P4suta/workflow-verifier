@@ -10,11 +10,10 @@ machine-readable evidence.
 - `corpus-report-v1` covers at least 100 distinct, license-reviewed repositories
   for each provider. Precision must be at least 95% and recall over the owned
   vulnerability fixtures must be 100%.
-- Separate `performance-comparison-v1` ledgers compare the retained OCaml
-  reference and shipped Rust CLI in cold, warm, and incremental modes on an
-  identical declared environment. Each implementation independently rejects an
-  increase above 10% unless it has a substantive explanation and HTTPS review
-  reference; no minimum improvement is required.
+- Five platform-specific `performance-comparison-v2` ledgers compare the Rust
+  product in cold check, graph JSON, LSP initial/no-op/edit, mixed-workspace,
+  and dogfood scenarios. Each rejects an increase above 10% unless it has a
+  substantive explanation and HTTPS review reference.
 - `official-compat-v1` summarizes two fixed repositories for each provider.
   Sparse acquisition authenticates the pinned commit and tree and copies only
   selected CI definitions. Analysis then runs twice without network access,
@@ -51,18 +50,20 @@ machine-readable evidence.
   boundaries, graph algorithms, fixed-point dataflow, and all verifier personas.
   Fingerprint updates therefore require an intentional test review rather than
   silently accepting changed behavior.
-- `determinism-v2` executes report-v3, lockfile, and fix generation twice on
+- `determinism-v2` executes `workflow-verifier-report/1`, lockfile, and fix
+  generation twice on
   each platform and requires raw byte identity locally.
   `determinism-comparison-v2` byte-compares lock and fix output across Linux
   x86_64, Linux arm64, Windows x86_64, macOS arm64, and macOS x86_64. It
-  requires one report `semantic_digest` across all five while retaining each
-  platform's full report digest, binary identity, and target as provenance.
+  requires one report semantic projection across all five while retaining each
+  platform's full report digest and tool target as provenance.
 - `dogfood-v1` requires zero diagnostics while analyzing the repository's real
   GitHub, GitLab, Azure, and CircleCI entrypoints, exercises every public CLI
   surface, recomputes the OCI evidence hash chain, and binds the verified audit
   tail and static/runtime reconciliation to the execution plan.
-- The AFL campaign must execute a nonempty corpus and finish with no crash or
-  hang artifact.
+- Pull requests replay every fixed malformed-input corpus entry. A scheduled
+  AFL campaign must execute a nonempty corpus and finish with no crash or hang
+  artifact.
 
 The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,
@@ -92,23 +93,13 @@ recorded source digests and then reanalyzes those exact snapshots into a new
 transaction without network access. The source evaluation is immutable; the
 new reports receive a fresh exhaustive review before promotion.
 
-When a schema migration changes generated diagnostic or graph-node identities,
-`rebase-review` is an explicit aid rather than an implicit report migration. It
-accepts authenticated `report-v1` only on its named legacy side and authenticated
-`report-v3` only on its fresh side. Repository revision/source/license identity,
-the complete primary diagnostic semantics, and trace label/file shape must form
-a unique bijection. Generated IDs, the old corpus-root path prefix, graph-node
-IDs, and auxiliary trace coordinates are the only ignored values. Any added,
-missing, ambiguous, or semantically changed finding is rejected and must be
-reviewed from the fresh draft.
-
 Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
-`just corpus-rebase-review`, `just corpus-review`, `just corpus`,
+`just corpus-review`, `just corpus`,
 `just performance-measure`, `just performance-pair`,
 `just performance-measure-rust`, `just performance-pair-rust`,
 `just performance-gate`, `just mutation-gate`, `just mutation-campaign`,
 `just determinism-probe`, and `just determinism-compare`.
 `just official-fetch`, `just official-compat`, and
-`just release-evidence REVISION TAG` close the fixed compatibility and evidence
+`just release-evidence REVISION TAG` close the fixed-project and evidence
 composition gates. Equivalent `mise` tasks use the conventional `evaluation/`,
 `performance/`, `_build/`, and `release-evidence/` paths.

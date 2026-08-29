@@ -1,379 +1,88 @@
 {
+  "analysis_digest": "sha256:b054bb01573fec899bd467ae8dc1ef626a1e14b92c3ee257b24e1b331837756a",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: circleci/openjdk:8-jdk"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:06b7916693607461a286647a082c8338a0dab4c151fdc5f65d06fcb907063014",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_3aa6a3c5730bff300a96",
-          "id": "wv_0be823bdc39057f409e2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d6984bf61edef151f852"
-        },
-        {
-          "condition": true,
-          "from": "wv_55f854cea840255a410b",
-          "id": "wv_0da0b42ddf64e3dbd349",
-          "kind": "read",
-          "label": null,
-          "to": "wv_7979a8c9ef34137ff8f2"
-        },
-        {
-          "condition": true,
-          "from": "wv_55f854cea840255a410b",
-          "id": "wv_2b545a8a5ca3e14eb55a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3aa6a3c5730bff300a96"
-        },
-        {
-          "condition": true,
-          "from": "wv_55f854cea840255a410b",
-          "id": "wv_2b8a7596f7e53da786cf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7979a8c9ef34137ff8f2"
-        },
-        {
-          "condition": true,
-          "from": "wv_0b21903dc7d26067c10d",
-          "id": "wv_5a6fe3cd0c6185560fd0",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c8c503fb3ce6b74eab1e"
-        },
-        {
-          "condition": true,
-          "from": "wv_bf63a343cc5a48fe362a",
-          "id": "wv_5f09ad53e07a83ee7d7f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55f854cea840255a410b"
-        },
-        {
-          "condition": true,
-          "from": "wv_bf63a343cc5a48fe362a",
-          "id": "wv_a3754d2932c15a4a8c78",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3aa6a3c5730bff300a96"
-        },
-        {
-          "condition": true,
-          "from": "wv_0b21903dc7d26067c10d",
-          "id": "wv_d5a31bb5a9335d84fdf9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c8c503fb3ce6b74eab1e"
-        }
-      ],
-      "entrypoints": [
-        "wv_0b21903dc7d26067c10d"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0b21903dc7d26067c10d",
-          "kind": "workflow",
-          "name": "CircleCI config",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 262,
-              "column": 24,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3aa6a3c5730bff300a96",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-            "start": {
-              "byte": 247,
-              "column": 9,
-              "line": 13
-            },
-            "stop": {
-              "byte": 262,
-              "column": 24,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_55f854cea840255a410b",
-          "kind": "step",
-          "name": "checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-            "start": {
-              "byte": 230,
-              "column": 9,
-              "line": 12
-            },
-            "stop": {
-              "byte": 238,
-              "column": 17,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_7979a8c9ef34137ff8f2",
-          "kind": "call",
-          "name": "builtin:checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-            "start": {
-              "byte": 230,
-              "column": 9,
-              "line": 12
-            },
-            "stop": {
-              "byte": 238,
-              "column": 17,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bf63a343cc5a48fe362a",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-            "start": {
-              "byte": 19,
-              "column": 3,
-              "line": 3
-            },
-            "stop": {
-              "byte": 262,
-              "column": 24,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c8c503fb3ce6b74eab1e",
-          "kind": "call",
-          "name": "circleci/openjdk:8-jdk",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-            "start": {
-              "byte": 53,
-              "column": 16,
-              "line": 5
-            },
-            "stop": {
-              "byte": 75,
-              "column": 38,
-              "line": 5
-            }
-          },
-          "unknown": {
-            "detail": "circleci/openjdk:8-jdk",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-                    "start": {
-                      "byte": 252,
-                      "column": 14,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 262,
-                      "column": 24,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./build.sh"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d6984bf61edef151f852",
-          "kind": "command",
-          "name": "./build.sh",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml",
-            "start": {
-              "byte": 252,
-              "column": 14,
-              "line": 13
-            },
-            "stop": {
-              "byte": 262,
-              "column": 24,
-              "line": 13
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "circleci",
-      "source": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:bccc123eb6c7c6bf82c59947308523733fe0402cedacae19f58b6a78bf57cbfb",
-      "path": "circleci/dnvriend/akka-persistence-inmemory/.circleci/config.yml"
-    }
-  ],
+  "digest": "sha256:3a8519b3c4beaa787134f3a228d6c86bd892e309b0984aa77e1ba120c148d730",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:f7b5e288f955f82dd9beb6c743d34f1065acf90c8a16e226d54d683d568611e3",
+    "sources": [
+      {
+        "digest": "sha256:bccc123eb6c7c6bf82c59947308523733fe0402cedacae19f58b6a78bf57cbfb",
+        "id": 0,
+        "path": ".circleci/config.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -388,26 +97,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "circleci-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 8,
+    "nodes": 7,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

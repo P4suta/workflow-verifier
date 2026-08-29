@@ -1,948 +1,88 @@
 {
+  "analysis_digest": "sha256:535ac750181863197d3a4290ed933c48e6514742508335807adba61fff7fe60e",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: docker:stable"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:4f3eea2b300594986470dc96c94baf6f519b515123f600a9565ab3f8f2dc8cd8",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_ca0cf058c53bad7b6b9b",
-          "id": "wv_07ae9f6dd833041a5905",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_19f6f84eaba9d7054312"
-        },
-        {
-          "condition": true,
-          "from": "wv_6f4e1609e1f488f82c08",
-          "id": "wv_0e743add37d22652c668",
-          "kind": "call",
-          "label": null,
-          "to": "wv_305c99cfd308d2d0ab49"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e0a3a72fd9a2f784d06",
-          "id": "wv_0e7857b8281d06001ea3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b57e03c867e70ab8a9a5"
-        },
-        {
-          "condition": true,
-          "from": "wv_09eb6f0847ac8b5a65a2",
-          "id": "wv_11312d7c7c6b775d12b1",
-          "kind": "data",
-          "label": "DOCKER_DRIVER",
-          "to": "wv_1ef0eac0b6616f0e94fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_1ef0eac0b6616f0e94fb",
-          "id": "wv_1b62ed36415adc06dee9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0148a476726eaf399647"
-        },
-        {
-          "condition": true,
-          "from": "wv_6f4e1609e1f488f82c08",
-          "id": "wv_1e734380285229fb5ad1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_305c99cfd308d2d0ab49"
-        },
-        {
-          "condition": true,
-          "from": "wv_b50a7ce11a0b36091f46",
-          "id": "wv_55f19d67f27c0bbfdf90",
-          "kind": "data",
-          "label": "PWD",
-          "to": "wv_21b0408a6ebabb251914"
-        },
-        {
-          "condition": true,
-          "from": "wv_0148a476726eaf399647",
-          "id": "wv_812f92e0997aed11ba78",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6e3799ce7d2f757f69ce"
-        },
-        {
-          "condition": true,
-          "from": "wv_07da959043599c23fca7",
-          "id": "wv_890e8aaf9e1a440a82ff",
-          "kind": "data",
-          "label": "echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\",
-          "to": "wv_365d4a4b0e41328dc7d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_6e3799ce7d2f757f69ce",
-          "id": "wv_8ee0d6e7300b485114fb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_21b0408a6ebabb251914"
-        },
-        {
-          "condition": true,
-          "from": "wv_416e083f69290e32284d",
-          "id": "wv_a281ab1453744e2846ae",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1ef0eac0b6616f0e94fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_19f6f84eaba9d7054312",
-          "id": "wv_b2b7758ca1a0e3872242",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_2e0a3a72fd9a2f784d06"
-        },
-        {
-          "condition": true,
-          "from": "wv_0148a476726eaf399647",
-          "id": "wv_bb4b733ff6eaf5477fd0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_365d4a4b0e41328dc7d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_b57e03c867e70ab8a9a5",
-          "id": "wv_c00cd8d579316cd074ba",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_416e083f69290e32284d"
-        },
-        {
-          "condition": true,
-          "from": "wv_1ef0eac0b6616f0e94fb",
-          "id": "wv_c07301bca81afae9b40d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6e3799ce7d2f757f69ce"
-        },
-        {
-          "condition": true,
-          "from": "wv_6f4e1609e1f488f82c08",
-          "id": "wv_c1014c0e3def332ed3bc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ca0cf058c53bad7b6b9b"
-        },
-        {
-          "condition": true,
-          "from": "wv_1ef0eac0b6616f0e94fb",
-          "id": "wv_cda4e94f00145d807357",
-          "kind": "write",
-          "label": null,
-          "to": "wv_2db31161474550ddb57e"
-        },
-        {
-          "condition": true,
-          "from": "wv_d2c280af693cec2dc0b0",
-          "id": "wv_fdd7d058f56729b6ecba",
-          "kind": "data",
-          "label": "SP_VERSION",
-          "to": "wv_21b0408a6ebabb251914"
-        }
-      ],
-      "entrypoints": [
-        "wv_6f4e1609e1f488f82c08"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0148a476726eaf399647",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 160,
-              "column": 7,
-              "line": 9
-            },
-            "stop": {
-              "byte": 256,
-              "column": 103,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 180,
-                      "column": 27,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 225,
-                      "column": 72,
-                      "line": 9
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_07da959043599c23fca7",
-          "kind": "resource",
-          "name": "echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 180,
-              "column": 27,
-              "line": 9
-            },
-            "stop": {
-              "byte": 225,
-              "column": 72,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_09eb6f0847ac8b5a65a2",
-          "kind": "resource",
-          "name": "variable:DOCKER_DRIVER",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 61,
-              "column": 5,
-              "line": 4
-            },
-            "stop": {
-              "byte": 84,
-              "column": 28,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_19f6f84eaba9d7054312",
-          "kind": "stage",
-          "name": ".pre",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1ef0eac0b6616f0e94fb",
-          "kind": "job",
-          "name": "dependency_scanning",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "PWD",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 365,
-                      "column": 109,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 368,
-                      "column": 112,
-                      "line": 10
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "SP_VERSION",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 498,
-                      "column": 242,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 508,
-                      "column": 252,
-                      "line": 10
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 263,
-                      "column": 7,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 539,
-                      "column": 95,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "PWD",
-                  "SP_VERSION",
-                  "docker run --env DEP_SCAN_DISABLE_REMOTE_CHECKS=\"${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}\" --volume \"$PWD:/code\" --volume /var/run/docker.sock:/var/run/docker.sock \"registry.gitlab.com/gitlab-org/security-products/dependency-scanning:$SP_VERSION\" /code"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_21b0408a6ebabb251914",
-          "kind": "command",
-          "name": "docker run --env DEP_SCAN_DISABLE_REMOTE_CHECKS=\"${DEP_SCAN_DISABLE_REMOTE_CHECKS:-false}\" --volume \"$PWD:/code\" --volume /var/run/docker.sock:/var/run/docker.sock \"registry.gitlab.com/gitlab-org/security-products/dependency-scanning:$SP_VERSION\" /code",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 263,
-              "column": 7,
-              "line": 10
-            },
-            "stop": {
-              "byte": 539,
-              "column": 95,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_2db31161474550ddb57e",
-          "kind": "resource",
-          "name": "artifact:dependency_scanning",
-          "phase": "post",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 557,
-              "column": 5,
-              "line": 16
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2e0a3a72fd9a2f784d06",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_305c99cfd308d2d0ab49",
-          "kind": "call",
-          "name": "docker:stable",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 30,
-              "column": 10,
-              "line": 2
-            },
-            "stop": {
-              "byte": 43,
-              "column": 23,
-              "line": 2
-            }
-          },
-          "unknown": {
-            "detail": "docker:stable",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 180,
-                      "column": 27,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 225,
-                      "column": 72,
-                      "line": 9
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 160,
-                      "column": 7,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 256,
-                      "column": 103,
-                      "line": 9
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\",
-                  "export SP_VERSION=$(echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\)\\.\\([0-9]*\\).*/\\1-\\2-stable/')"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_365d4a4b0e41328dc7d9",
-          "kind": "command",
-          "name": "export SP_VERSION=$(echo \"$CI_SERVER_VERSION\" | sed 's/^\\([0-9]*\\)\\.\\([0-9]*\\).*/\\1-\\2-stable/')",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 160,
-              "column": 7,
-              "line": 9
-            },
-            "stop": {
-              "byte": 256,
-              "column": 103,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "4"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_416e083f69290e32284d",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6e3799ce7d2f757f69ce",
-          "kind": "step",
-          "name": "script:2",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 263,
-              "column": 7,
-              "line": 10
-            },
-            "stop": {
-              "byte": 539,
-              "column": 95,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6f4e1609e1f488f82c08",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "PWD",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 365,
-                      "column": 109,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 368,
-                      "column": 112,
-                      "line": 10
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "PWD"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b50a7ce11a0b36091f46",
-          "kind": "resource",
-          "name": "PWD",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 365,
-              "column": 109,
-              "line": 10
-            },
-            "stop": {
-              "byte": 368,
-              "column": 112,
-              "line": 10
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b57e03c867e70ab8a9a5",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ca0cf058c53bad7b6b9b",
-          "kind": "stage",
-          "name": ".post",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 600,
-              "column": 48,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "SP_VERSION",
-                  "span": {
-                    "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 498,
-                      "column": 242,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 508,
-                      "column": 252,
-                      "line": 10
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "SP_VERSION"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d2c280af693cec2dc0b0",
-          "kind": "resource",
-          "name": "SP_VERSION",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml",
-            "start": {
-              "byte": 498,
-              "column": 242,
-              "line": 10
-            },
-            "stop": {
-              "byte": 508,
-              "column": 252,
-              "line": 10
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:3760c5d451f037f232f1335a77dc0ebab44fd44b872d757bd06d831eefbf060c",
-      "path": "gitlab/mfranzke/datalist-polyfill/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:5b093c76de02c39755b3d395d9fe18c2eee90f0db8586857a0b0abe3cee8678e",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:25756e822f2736054c7ace53cc4c885778b3357c9fd6090589a3c71be58e5bee",
+    "sources": [
+      {
+        "digest": "sha256:3760c5d451f037f232f1335a77dc0ebab44fd44b872d757bd06d831eefbf060c",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -953,26 +93,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 19,
+    "nodes": 18,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

@@ -1,0 +1,67 @@
+{
+  "environment": {
+    "compiler": "rust-1.98",
+    "executor": "github-hosted",
+    "implementation": "rust",
+    "suite": "rust-suite-v2"
+  },
+  "scenarios": [
+    {
+      "before_each": [],
+      "command": ["../target/release/workflow-verifier", "check", "--persona", "audit", "--format", "json", "fixtures/github/workflow.yml"],
+      "cwd": "test",
+      "id": "cold-check",
+      "setup": [],
+      "timeout_seconds": 60
+    },
+    {
+      "before_each": [],
+      "command": ["../target/release/workflow-verifier", "graph", "--format", "json", "fixtures/github/workflow.yml"],
+      "cwd": "test",
+      "id": "graph-json",
+      "setup": [],
+      "timeout_seconds": 60
+    },
+    {
+      "before_each": [],
+      "command": ["python", "-B", "../scripts/lsp_benchmark.py", "--analyzer", "../target/release/workflow-verifier", "--fixture", "fixtures/github/workflow.yml", "--mode", "edit"],
+      "cwd": "test",
+      "id": "lsp-edit",
+      "setup": [],
+      "timeout_seconds": 60
+    },
+    {
+      "before_each": [],
+      "command": ["python", "-B", "../scripts/lsp_benchmark.py", "--analyzer", "../target/release/workflow-verifier", "--fixture", "fixtures/github/workflow.yml", "--mode", "initial"],
+      "cwd": "test",
+      "id": "lsp-initial",
+      "setup": [],
+      "timeout_seconds": 60
+    },
+    {
+      "before_each": [],
+      "command": ["python", "-B", "../scripts/lsp_benchmark.py", "--analyzer", "../target/release/workflow-verifier", "--fixture", "fixtures/github/workflow.yml", "--mode", "noop"],
+      "cwd": "test",
+      "id": "lsp-noop",
+      "setup": [],
+      "timeout_seconds": 60
+    },
+    {
+      "before_each": [],
+      "command": ["../target/release/workflow-verifier", "check", "--persona", "audit", "--format", "json", "../_build/performance-workload"],
+      "cwd": "test",
+      "id": "mixed-workspace",
+      "setup": [["python", "-B", "../scripts/benchmark_fixture.py", "--workspace", "..", "--mode", "reset"]],
+      "timeout_seconds": 60
+    },
+    {
+      "before_each": [],
+      "command": ["target/release/workflow-verifier", "check", "--config", "examples/dogfood-policy-v2.toml", "--trust-repository-config", "--format", "json", "."],
+      "cwd": ".",
+      "id": "self-dogfood",
+      "setup": [],
+      "timeout_seconds": 60
+    }
+  ],
+  "schema": "performance-suite-v2"
+}

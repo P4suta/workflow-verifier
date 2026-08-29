@@ -5,9 +5,9 @@ import unittest
 from pathlib import Path
 
 from scripts.corpus_gate import evaluate, tree_digest
+from scripts.tests.report_fixture import report_document
 
 SHA = "a" * 40
-DIGEST = "sha256:" + ("b" * 64)
 LICENSE_DIGEST = "sha256:" + hashlib.sha256(b"MIT\n").hexdigest()
 
 
@@ -31,56 +31,7 @@ def diagnostic(identifier: str, rule_id: str) -> dict[str, object]:
 
 
 def report(diagnostics: list[dict[str, object]]) -> dict[str, object]:
-    document: dict[str, object] = {
-        "completeness": {"reasons": [], "state": "complete"},
-        "configuration": {"digest": DIGEST, "origin": "built-in", "trust": "built-in"},
-        "schema": "report-v3",
-        "tool": {
-            "build": {
-                "binary_digest": DIGEST,
-                "compiler": "rustc test",
-                "implementation": "rust",
-                "source_commit": SHA,
-                "target": "test-target",
-            },
-            "name": "workflow-verifier",
-            "version": "0.1.0",
-        },
-        "gate": {"exit_code": 0, "result": "pass"},
-        "persona": "audit",
-        "inputs": [],
-        "graphs": [],
-        "lock": {"digest": DIGEST},
-        "provider_profiles": [],
-        "properties": [],
-        "diagnostics": diagnostics,
-        "snapshot": {"digest": DIGEST, "schema": "source-manifest-v2"},
-        "summary": {
-            "diagnostics": len(diagnostics),
-            "graphs": 0,
-            "inputs": 0,
-            "unknown_properties": 0,
-        },
-    }
-    semantic = json.loads(json.dumps(document))
-    semantic["tool"].pop("build")
-    document["semantic_digest"] = (
-        "sha256:"
-        + hashlib.sha256(
-            json.dumps(semantic, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
-                "utf-8"
-            )
-        ).hexdigest()
-    )
-    document["digest"] = (
-        "sha256:"
-        + hashlib.sha256(
-            json.dumps(document, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
-                "utf-8"
-            )
-        ).hexdigest()
-    )
-    return document
+    return report_document(diagnostics=diagnostics, commit=SHA)
 
 
 class CorpusGateTests(unittest.TestCase):
@@ -120,9 +71,9 @@ class CorpusGateTests(unittest.TestCase):
     def test_metrics_are_deterministic_and_allowed_findings_are_neutral(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            expected = {"id": "diag_" + "1" * 20, "rule_id": "WV-SEC-001"}
-            allowed = {"id": "diag_" + "2" * 20, "rule_id": "WV-PERM-001"}
-            unexpected = diagnostic("diag_" + "3" * 20, "WV-NEW-001")
+            expected = {"id": "diag_" + "1" * 64, "rule_id": "WV-SEC-001"}
+            allowed = {"id": "diag_" + "2" * 64, "rule_id": "WV-PERM-001"}
+            unexpected = diagnostic("diag_" + "3" * 64, "WV-NEW-001")
             repositories = [
                 self.repository(
                     root,
@@ -164,7 +115,7 @@ class CorpusGateTests(unittest.TestCase):
     def test_missing_known_vulnerability_fails_recall(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            expected = {"id": "diag_" + "4" * 20, "rule_id": "WV-AUTH-001"}
+            expected = {"id": "diag_" + "4" * 64, "rule_id": "WV-AUTH-001"}
             repository = self.repository(root, "azure/acme/missing", "azure", [expected], [], [])
             manifest = root / "corpus.json"
             manifest.write_text(
@@ -211,7 +162,7 @@ class CorpusGateTests(unittest.TestCase):
     def test_report_digest_rejects_tampered_findings(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            finding = diagnostic("diag_" + "6" * 20, "WV-SUPPLY-001")
+            finding = diagnostic("diag_" + "6" * 64, "WV-SUPPLY-001")
             repository = self.repository(
                 root,
                 "github/acme/tampered-report",

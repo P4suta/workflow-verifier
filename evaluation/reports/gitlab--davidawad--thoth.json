@@ -1,1051 +1,88 @@
 {
+  "analysis_digest": "sha256:b03304582c0d4d56f45b54a5196016ec49aef860d63dc163d6927289619f2a9f",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: node:20-alpine"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:4a0b2b93588e3fed11ebcf71ca19d352aa16d0b06b965268a0a77f0fa8b9f405",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_71730e13771e74c055ce",
-          "id": "wv_04ca2fccfe512f7ee1bb",
-          "kind": "write",
-          "label": null,
-          "to": "wv_67253bd37b9e51bdf618"
-        },
-        {
-          "condition": true,
-          "from": "wv_b369328a53f01b0fb17c",
-          "id": "wv_1ec59aa791bbc1d64311",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9795f55487125552f416"
-        },
-        {
-          "condition": true,
-          "from": "wv_71730e13771e74c055ce",
-          "id": "wv_24d7f3a99d588ba6cbe5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bffaa6462b6c0c6cb4da"
-        },
-        {
-          "condition": true,
-          "from": "wv_bffaa6462b6c0c6cb4da",
-          "id": "wv_2aceb1ce99b24f55357e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_30e69e9869e56244f0e7"
-        },
-        {
-          "condition": true,
-          "from": "wv_32c64796d919526c64c8",
-          "id": "wv_2ce1e15211a26e5bfec2",
-          "kind": "data",
-          "label": "JEST_JUNIT_OUTPUT_NAME",
-          "to": "wv_06704376eeff719a57bb"
-        },
-        {
-          "condition": true,
-          "from": "wv_06704376eeff719a57bb",
-          "id": "wv_2dc4226f3321e1d95986",
-          "kind": "call",
-          "label": null,
-          "to": "wv_bebef8dda65c8356b210"
-        },
-        {
-          "condition": true,
-          "from": "wv_71730e13771e74c055ce",
-          "id": "wv_2f8add3ddc4a858fdd61",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a3da04ebfbd7ac12fd8d"
-        },
-        {
-          "condition": true,
-          "from": "wv_b369328a53f01b0fb17c",
-          "id": "wv_31bdbf970fee1b2afe62",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_bffaa6462b6c0c6cb4da"
-        },
-        {
-          "condition": true,
-          "from": "wv_76ae923de9733110f86b",
-          "id": "wv_32a574de344543b5bb16",
-          "kind": "data",
-          "label": "JEST_JUNIT_OUTPUT_DIR",
-          "to": "wv_06704376eeff719a57bb"
-        },
-        {
-          "condition": true,
-          "from": "wv_71730e13771e74c055ce",
-          "id": "wv_412bd94501a7b9df82ad",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cbfc72a93eb672e98301"
-        },
-        {
-          "condition": true,
-          "from": "wv_949ecfc04cbee970d3ac",
-          "id": "wv_6a1e2ce547317bbd5b0a",
-          "kind": "data",
-          "label": "CI_PIPELINE_SOURCE",
-          "to": "wv_3e856d97d6cf09e2d7d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_cbfc72a93eb672e98301",
-          "id": "wv_70c261de549ed5daeaa1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b369328a53f01b0fb17c"
-        },
-        {
-          "condition": true,
-          "from": "wv_06704376eeff719a57bb",
-          "id": "wv_720d243f64279cca7194",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2509b02e47d999857839"
-        },
-        {
-          "condition": true,
-          "from": "wv_06704376eeff719a57bb",
-          "id": "wv_80b919ec0f325f4766af",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bebef8dda65c8356b210"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(CI_PIPELINE_SOURCE==\"merge_request_event\")"
-          },
-          "from": "wv_3e856d97d6cf09e2d7d4",
-          "id": "wv_87f68a9ae4c0db7f730b",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_71730e13771e74c055ce"
-        },
-        {
-          "condition": true,
-          "from": "wv_71730e13771e74c055ce",
-          "id": "wv_98b8fbae10135bc51c5e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bf14cec9977128aad367"
-        },
-        {
-          "condition": true,
-          "from": "wv_cbfc72a93eb672e98301",
-          "id": "wv_9940bf3e8c17b7528b4b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_addb0a091bf32d72f947"
-        },
-        {
-          "condition": true,
-          "from": "wv_bf14cec9977128aad367",
-          "id": "wv_9ac65ac4e37348dda5d6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b6d6288fb3954991be8a"
-        },
-        {
-          "condition": true,
-          "from": "wv_bffaa6462b6c0c6cb4da",
-          "id": "wv_a11f098dc41312b65015",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_bf14cec9977128aad367"
-        },
-        {
-          "condition": true,
-          "from": "wv_2509b02e47d999857839",
-          "id": "wv_bc2d48ace6440d439c8f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3e856d97d6cf09e2d7d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_71730e13771e74c055ce",
-          "id": "wv_bdfa2123b1efa9baeda0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b369328a53f01b0fb17c"
-        },
-        {
-          "condition": true,
-          "from": "wv_a3da04ebfbd7ac12fd8d",
-          "id": "wv_e6c6c65ddd584455ebdf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_59a87afca1a5e4d7833e"
-        },
-        {
-          "condition": true,
-          "from": "wv_a3da04ebfbd7ac12fd8d",
-          "id": "wv_fc275adff3e0902476e1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_cbfc72a93eb672e98301"
-        }
-      ],
-      "entrypoints": [
-        "wv_06704376eeff719a57bb"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_06704376eeff719a57bb",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 55,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 995,
-              "column": 38,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2509b02e47d999857839",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 207,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 213,
-              "column": 9,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 430,
-                      "column": 7,
-                      "line": 22
-                    },
-                    "stop": {
-                      "byte": 446,
-                      "column": 23,
-                      "line": 22
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "mkdir -p reports"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_30e69e9869e56244f0e7",
-          "kind": "command",
-          "name": "mkdir -p reports",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 430,
-              "column": 7,
-              "line": 22
-            },
-            "stop": {
-              "byte": 446,
-              "column": 23,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_32c64796d919526c64c8",
-          "kind": "resource",
-          "name": "variable:JEST_JUNIT_OUTPUT_NAME",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 960,
-              "column": 3,
-              "line": 41
-            },
-            "stop": {
-              "byte": 995,
-              "column": 38,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 623,
-                      "column": 11,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 667,
-                      "column": 55,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "$CI_PIPELINE_SOURCE == 'merge_request_event'"
-                ]
-              }
-            },
-            "reference:CI_PIPELINE_SOURCE": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_PIPELINE_SOURCE",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 623,
-                      "column": 11,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 642,
-                      "column": 30,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_PIPELINE_SOURCE"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(CI_PIPELINE_SOURCE==\"merge_request_event\")"
-          },
-          "effects": [],
-          "id": "wv_3e856d97d6cf09e2d7d4",
-          "kind": "gate",
-          "name": "rule:unit-tests",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 623,
-              "column": 11,
-              "line": 27
-            },
-            "stop": {
-              "byte": 667,
-              "column": 55,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 280,
-                      "column": 7,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 320,
-                      "column": 47,
-                      "line": 18
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn config set cache-folder .yarn-cache"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_59a87afca1a5e4d7833e",
-          "kind": "command",
-          "name": "yarn config set cache-folder .yarn-cache",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 280,
-              "column": 7,
-              "line": 18
-            },
-            "stop": {
-              "byte": 320,
-              "column": 47,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_67253bd37b9e51bdf618",
-          "kind": "resource",
-          "name": "artifact:unit-tests",
-          "phase": "post",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 804,
-              "column": 5,
-              "line": 32
-            },
-            "stop": {
-              "byte": 910,
-              "column": 22,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_71730e13771e74c055ce",
-          "kind": "job",
-          "name": "unit-tests",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 238,
-              "column": 1,
-              "line": 15
-            },
-            "stop": {
-              "byte": 910,
-              "column": 22,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_76ae923de9733110f86b",
-          "kind": "resource",
-          "name": "variable:JEST_JUNIT_OUTPUT_DIR",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 925,
-              "column": 3,
-              "line": 40
-            },
-            "stop": {
-              "byte": 957,
-              "column": 35,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_PIPELINE_SOURCE",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 623,
-                      "column": 11,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 642,
-                      "column": 30,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_PIPELINE_SOURCE"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_949ecfc04cbee970d3ac",
-          "kind": "resource",
-          "name": "CI_PIPELINE_SOURCE",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 623,
-              "column": 11,
-              "line": 27
-            },
-            "stop": {
-              "byte": 642,
-              "column": 30,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 398,
-                      "column": 7,
-                      "line": 21
-                    },
-                    "stop": {
-                      "byte": 423,
-                      "column": 32,
-                      "line": 21
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn add --dev jest-junit"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_9795f55487125552f416",
-          "kind": "command",
-          "name": "yarn add --dev jest-junit",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 398,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 423,
-              "column": 32,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a3da04ebfbd7ac12fd8d",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 280,
-              "column": 7,
-              "line": 18
-            },
-            "stop": {
-              "byte": 320,
-              "column": 47,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 327,
-                      "column": 7,
-                      "line": 19
-                    },
-                    "stop": {
-                      "byte": 357,
-                      "column": 37,
-                      "line": 19
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn install --frozen-lockfile"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_addb0a091bf32d72f947",
-          "kind": "command",
-          "name": "yarn install --frozen-lockfile",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 327,
-              "column": 7,
-              "line": 19
-            },
-            "stop": {
-              "byte": 357,
-              "column": 37,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b369328a53f01b0fb17c",
-          "kind": "step",
-          "name": "script:3",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 398,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 423,
-              "column": 32,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 495,
-                      "column": 7,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 552,
-                      "column": 64,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn test --ci --reporters=default --reporters=jest-junit"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b6d6288fb3954991be8a",
-          "kind": "command",
-          "name": "yarn test --ci --reporters=default --reporters=jest-junit",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 495,
-              "column": 7,
-              "line": 24
-            },
-            "stop": {
-              "byte": 552,
-              "column": 64,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bebef8dda65c8356b210",
-          "kind": "call",
-          "name": "node:20-alpine",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 62,
-              "column": 8,
-              "line": 2
-            },
-            "stop": {
-              "byte": 76,
-              "column": 22,
-              "line": 2
-            }
-          },
-          "unknown": {
-            "detail": "node:20-alpine",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bf14cec9977128aad367",
-          "kind": "step",
-          "name": "script:5",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 495,
-              "column": 7,
-              "line": 24
-            },
-            "stop": {
-              "byte": 552,
-              "column": 64,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bffaa6462b6c0c6cb4da",
-          "kind": "step",
-          "name": "script:4",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 430,
-              "column": 7,
-              "line": 22
-            },
-            "stop": {
-              "byte": 446,
-              "column": 23,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cbfc72a93eb672e98301",
-          "kind": "step",
-          "name": "script:2",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/davidawad/thoth/.gitlab-ci.yml",
-            "start": {
-              "byte": 327,
-              "column": 7,
-              "line": 19
-            },
-            "stop": {
-              "byte": 357,
-              "column": 37,
-              "line": 19
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/davidawad/thoth/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:27f5b13a32a1ade71247f70eedf7248fc6feaf1f558866594064aa61b6d0c3c2",
-      "path": "gitlab/davidawad/thoth/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:0627e3b7c69ecdf61c7c5ee0c746ef3f399214ed3e486b4ea084bda4e653e493",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:e4190754ec25dd2d4242fb15f65a553e57d18fa0b0153adf29db081a0bd95e57",
+    "sources": [
+      {
+        "digest": "sha256:27f5b13a32a1ade71247f70eedf7248fc6feaf1f558866594064aa61b6d0c3c2",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -1056,26 +93,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 23,
+    "nodes": 19,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

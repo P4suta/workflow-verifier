@@ -1,576 +1,88 @@
 {
+  "analysis_digest": "sha256:b640582073a5dc088575c6ceb776c187865e75c6d63941470ef52ef37acc2e23",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: circleci/node"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:dd68fae834d9e3b65a4a6ad08b6eb218e6a44ccabec2bb74870ee9e6e695da2c",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_f9219e38bba72bd03b40",
-          "id": "wv_4253bfecae87c79b19fc",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a79269ad58c3f99c2766"
-        },
-        {
-          "condition": true,
-          "from": "wv_59005a92863df445d022",
-          "id": "wv_6fe1d12addafe8c37dd9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d84ed6e8401848a001eb"
-        },
-        {
-          "condition": true,
-          "from": "wv_b989c32c479df29f94af",
-          "id": "wv_74246920d4d658a182e9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_131be224d4b152a36381"
-        },
-        {
-          "condition": true,
-          "from": "wv_83fa8607d86998d6afda",
-          "id": "wv_8acba707fafb601d45c5",
-          "kind": "read",
-          "label": null,
-          "to": "wv_ab914c2574dd3b9600d7"
-        },
-        {
-          "condition": true,
-          "from": "wv_b989c32c479df29f94af",
-          "id": "wv_97d5438beb9474e41e14",
-          "kind": "control",
-          "label": null,
-          "to": "wv_83fa8607d86998d6afda"
-        },
-        {
-          "condition": true,
-          "from": "wv_131be224d4b152a36381",
-          "id": "wv_a125cef76419a93f5578",
-          "kind": "control",
-          "label": null,
-          "to": "wv_54634d11c46a89bddf9e"
-        },
-        {
-          "condition": true,
-          "from": "wv_83fa8607d86998d6afda",
-          "id": "wv_a71ea0f35d17f51d20a8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_59005a92863df445d022"
-        },
-        {
-          "condition": true,
-          "from": "wv_b989c32c479df29f94af",
-          "id": "wv_b2a804b78835ba315311",
-          "kind": "control",
-          "label": null,
-          "to": "wv_df568031712429edd2e4"
-        },
-        {
-          "condition": true,
-          "from": "wv_59005a92863df445d022",
-          "id": "wv_b356c72cf134814a9bb1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_df568031712429edd2e4"
-        },
-        {
-          "condition": true,
-          "from": "wv_df568031712429edd2e4",
-          "id": "wv_b4f45db39d4c5abe51a8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_131be224d4b152a36381"
-        },
-        {
-          "condition": true,
-          "from": "wv_b989c32c479df29f94af",
-          "id": "wv_c593016560394572c1ee",
-          "kind": "control",
-          "label": null,
-          "to": "wv_59005a92863df445d022"
-        },
-        {
-          "condition": true,
-          "from": "wv_df568031712429edd2e4",
-          "id": "wv_d99bd89f307579369624",
-          "kind": "control",
-          "label": null,
-          "to": "wv_96bbdd58b248d166d6df"
-        },
-        {
-          "condition": true,
-          "from": "wv_f9219e38bba72bd03b40",
-          "id": "wv_e57a1af1faf4415838fe",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a79269ad58c3f99c2766"
-        },
-        {
-          "condition": true,
-          "from": "wv_131be224d4b152a36381",
-          "id": "wv_ecd6e6334d43d360986f",
-          "kind": "call",
-          "label": null,
-          "to": "wv_54634d11c46a89bddf9e"
-        },
-        {
-          "condition": true,
-          "from": "wv_83fa8607d86998d6afda",
-          "id": "wv_ff4b7a8942fcb9df6571",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ab914c2574dd3b9600d7"
-        }
-      ],
-      "entrypoints": [
-        "wv_f9219e38bba72bd03b40"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_131be224d4b152a36381",
-          "kind": "step",
-          "name": "store_test_results",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 159,
-              "column": 9,
-              "line": 10
-            },
-            "stop": {
-              "byte": 208,
-              "column": 30,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_54634d11c46a89bddf9e",
-          "kind": "call",
-          "name": "builtin:store_test_results",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 159,
-              "column": 9,
-              "line": 10
-            },
-            "stop": {
-              "byte": 208,
-              "column": 30,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_59005a92863df445d022",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 105,
-              "column": 9,
-              "line": 8
-            },
-            "stop": {
-              "byte": 122,
-              "column": 26,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_83fa8607d86998d6afda",
-          "kind": "step",
-          "name": "checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 88,
-              "column": 9,
-              "line": 7
-            },
-            "stop": {
-              "byte": 96,
-              "column": 17,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-                    "start": {
-                      "byte": 136,
-                      "column": 14,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 150,
-                      "column": 28,
-                      "line": 9
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn test:unit"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_96bbdd58b248d166d6df",
-          "kind": "command",
-          "name": "yarn test:unit",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 136,
-              "column": 14,
-              "line": 9
-            },
-            "stop": {
-              "byte": 150,
-              "column": 28,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a79269ad58c3f99c2766",
-          "kind": "call",
-          "name": "circleci/node",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 55,
-              "column": 16,
-              "line": 5
-            },
-            "stop": {
-              "byte": 68,
-              "column": 29,
-              "line": 5
-            }
-          },
-          "unknown": {
-            "detail": "circleci/node",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_ab914c2574dd3b9600d7",
-          "kind": "call",
-          "name": "builtin:checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 88,
-              "column": 9,
-              "line": 7
-            },
-            "stop": {
-              "byte": 96,
-              "column": 17,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b989c32c479df29f94af",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 21,
-              "column": 3,
-              "line": 3
-            },
-            "stop": {
-              "byte": 208,
-              "column": 30,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-                    "start": {
-                      "byte": 110,
-                      "column": 14,
-                      "line": 8
-                    },
-                    "stop": {
-                      "byte": 122,
-                      "column": 26,
-                      "line": 8
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn install"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d84ed6e8401848a001eb",
-          "kind": "command",
-          "name": "yarn install",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 110,
-              "column": 14,
-              "line": 8
-            },
-            "stop": {
-              "byte": 122,
-              "column": 26,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_df568031712429edd2e4",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 131,
-              "column": 9,
-              "line": 9
-            },
-            "stop": {
-              "byte": 150,
-              "column": 28,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f9219e38bba72bd03b40",
-          "kind": "workflow",
-          "name": "CircleCI config",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 208,
-              "column": 30,
-              "line": 11
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "circleci",
-      "source": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:a5651d7124a4a377a7565c7a5701884864e7bce5e5b83736f0fdb598a3c6976f",
-      "path": "circleci/tochoromero/vuejs-smart-table/.circleci/config.yml"
-    }
-  ],
+  "digest": "sha256:8e3be5cfb076aa8cdeb34ec792cec912e9329bfd01e645023f043e7053f82431",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:d57bc2f069394124b4d405803953066d7211b53c77e11b30a7a778375301e469",
+    "sources": [
+      {
+        "digest": "sha256:a5651d7124a4a377a7565c7a5701884864e7bce5e5b83736f0fdb598a3c6976f",
+        "id": 0,
+        "path": ".circleci/config.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -589,26 +101,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "circleci-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 15,
+    "nodes": 11,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

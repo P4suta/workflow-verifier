@@ -1,5 +1,6 @@
 const BPF_LOAD_WORD_ABSOLUTE: u16 = 0x20;
 const BPF_JUMP_EQUAL: u16 = 0x15;
+#[cfg(target_arch = "x86_64")]
 const BPF_JUMP_GREATER_OR_EQUAL: u16 = 0x35;
 const BPF_RETURN: u16 = 0x06;
 const SECCOMP_DATA_NUMBER_OFFSET: u32 = 0;

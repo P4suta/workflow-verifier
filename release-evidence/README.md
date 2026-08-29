@@ -6,12 +6,14 @@ were rebuilt.
 
 After every required check has run against the exact unsigned artifacts from
 `C`, one single-parent child commit `E` may add only `release-evidence/**`.
-`release-evidence-v3.json` binds all of the following to `C` and the planned
+`release-evidence-v4.json` binds all of the following to `C` and the planned
 tag:
 
 - the four product archives, four platform-specific helper bundles, source
   archive, runtime capsule, both architecture-specific macOS boot bundles,
   schemas, corresponding source, and notices;
+- the byte-reproducible `workflow-verifier-<version>.crate`, including its
+  packaged Cargo VCS commit and SHA-256 digest;
 - a signature record for every executable payload;
 - one SPDX 2.3 SBOM per payload and one aggregate CycloneDX SBOM;
 - every required quality, corpus, mutation, fuzz, determinism, performance,
@@ -42,8 +44,8 @@ The candidate and Windows-signing workflows produce only evidence they can
 actually observe. In particular, the candidate workflow does not synthesize a
 passing runtime capsule, macOS boot bundle, real-host containment result, or
 scanner result. Missing external assets or protected-environment runs therefore
-keep this directory without a passing v3 manifest.
+keep this directory without a passing v4 manifest.
 
-The final release index and checksum signature are created after v3 evidence
+The final release index and checksum signature are created after v4 evidence
 verification. They cover product assets, the evidence bundle, SBOMs, and the
 source archive without including their own digest, avoiding a digest cycle.

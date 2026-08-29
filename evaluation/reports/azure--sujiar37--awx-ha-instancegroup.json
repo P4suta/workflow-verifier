@@ -1,325 +1,116 @@
 {
+  "analysis_digest": "sha256:0200f94c2321d1645804f5a8bfbbcb08c4f378c0e084d2627d56a3f3433d4eae",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Unbound_build_source_commit"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:e4a8649c4b4249c2b738520198612e8cdaa7f7dc6663e0e2a162b70964fcf980",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_6d7102143ff2cc9ce431",
-          "id": "wv_0fb28dacc3e6de42793f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ebae52d144bef664d226"
-        },
-        {
-          "condition": true,
-          "from": "wv_ebae52d144bef664d226",
-          "id": "wv_4579b6fb8e6934132623",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b6809a628ac532cac75d"
-        },
-        {
-          "condition": true,
-          "from": "wv_b6809a628ac532cac75d",
-          "id": "wv_52d4767082f6cd69e7fd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8ec8a059acb30b2198c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_8bc97c201329dae67288",
-          "id": "wv_9d990999a5c7dff71a6f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6d7102143ff2cc9ce431"
-        }
-      ],
-      "entrypoints": [
-        "wv_6d7102143ff2cc9ce431"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6d7102143ff2cc9ce431",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml",
-            "start": {
-              "byte": 181,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 361,
-              "column": 44,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8bc97c201329dae67288",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml",
-            "start": {
-              "byte": 190,
-              "column": 1,
-              "line": 7
-            },
-            "stop": {
-              "byte": 198,
-              "column": 9,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml",
-                    "start": {
-                      "byte": 290,
-                      "column": 11,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 317,
-                      "column": 26,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ansible-lint *.yml -v\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8ec8a059acb30b2198c2",
-          "kind": "command",
-          "name": "ansible-lint *.yml -v\n",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml",
-            "start": {
-              "byte": 290,
-              "column": 11,
-              "line": 15
-            },
-            "stop": {
-              "byte": 317,
-              "column": 26,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b6809a628ac532cac75d",
-          "kind": "step",
-          "name": "Linting playbook and roles",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml",
-            "start": {
-              "byte": 282,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 361,
-              "column": 44,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ebae52d144bef664d226",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml",
-            "start": {
-              "byte": 181,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 361,
-              "column": 44,
-              "line": 17
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:b18c74b2a0c1d4683359df1cc33f5492d0273511ab6168f894681587d3df360e",
-      "path": "azure/sujiar37/awx-ha-instancegroup/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:cc3e968874485a7349a3404ad771f25fab5ffdba3e9dc411b712e35335f97d49",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:2e55ce4ac4b5b575a12da662651fed9c3654228e2ff5715434b02128e5f155b0",
+    "sources": [
+      {
+        "digest": "sha256:b18c74b2a0c1d4683359df1cc33f5492d0273511ab6168f894681587d3df360e",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 4,
+    "nodes": 5,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

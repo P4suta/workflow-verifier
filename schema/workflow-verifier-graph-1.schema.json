@@ -1,0 +1,22 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/workflow-verifier-graph-1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "digest": { "pattern": "^sha256:[0-9a-f]{64}$", "type": "string" },
+    "position": { "additionalProperties": false, "properties": { "byte": { "minimum": 0, "type": "integer" }, "column": { "minimum": 1, "type": "integer" }, "line": { "minimum": 1, "type": "integer" } }, "required": ["byte", "column", "line"], "type": "object" },
+    "span": { "additionalProperties": false, "properties": { "source": { "minimum": 0, "type": "integer" }, "start": { "$ref": "#/$defs/position" }, "stop": { "$ref": "#/$defs/position" } }, "required": ["source", "start", "stop"], "type": "object" },
+    "node": { "additionalProperties": false, "properties": { "attributes": { "minProperties": 1, "type": "object" }, "capabilities": { "items": { "type": "string" }, "minItems": 1, "type": "array", "uniqueItems": true }, "condition": {}, "effects": { "items": { "type": "string" }, "minItems": 1, "type": "array", "uniqueItems": true }, "id": { "minimum": 0, "type": "integer" }, "kind": { "type": "string" }, "name": { "type": "string" }, "phase": { "type": "string" }, "source": { "minimum": 0, "type": "integer" }, "span": { "$ref": "#/$defs/span" }, "unknown": { "type": "object" } }, "required": ["id", "kind", "name", "phase", "source", "span"], "type": "object" }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "digest": { "$ref": "#/$defs/digest" },
+    "edges": { "items": { "additionalProperties": false, "properties": { "condition": {}, "from": { "minimum": 0, "type": "integer" }, "kind": { "type": "string" }, "label": { "type": "string" }, "to": { "minimum": 0, "type": "integer" } }, "required": ["from", "kind", "to"], "type": "object" }, "type": "array" },
+    "entrypoints": { "items": { "minimum": 0, "type": "integer" }, "type": "array", "uniqueItems": true },
+    "nodes": { "items": { "$ref": "#/$defs/node" }, "type": "array" },
+    "schema": { "const": "workflow-verifier-graph/1" },
+    "sources": { "items": { "additionalProperties": false, "properties": { "id": { "minimum": 0, "type": "integer" }, "path": { "minLength": 1, "not": { "pattern": "(^/|^[A-Za-z]:)" }, "type": "string" }, "provider": { "enum": ["github", "gitlab", "azure", "circleci"] } }, "required": ["id", "path", "provider"], "type": "object" }, "type": "array" }
+  },
+  "required": ["digest", "edges", "entrypoints", "nodes", "schema", "sources"],
+  "title": "workflow-verifier graph 1",
+  "type": "object"
+}

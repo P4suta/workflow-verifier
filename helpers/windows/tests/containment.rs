@@ -8,8 +8,8 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::Duration;
 
-use workflow_verifier_helper_runtime::source_snapshot;
-use workflow_verifier_runner_protocol::{
+use workflow_verifier_internal::internal::helper_runtime::source_snapshot;
+use workflow_verifier_internal::internal::runner_protocol::{
     Limits, Outcome, PlanStatus, RuntimeProfile, Step, ValidatedPlan,
 };
 
@@ -34,7 +34,7 @@ fn execute(
     argv: Vec<String>,
     cpu_seconds: u64,
     output_bytes: u64,
-) -> workflow_verifier_runner_protocol::RunResult {
+) -> workflow_verifier_internal::internal::runner_protocol::RunResult {
     let descriptor = workflow_verifier_windows_helper::descriptor();
     let source_digest = source_snapshot(root)
         .expect("source snapshot")

@@ -1,7 +1,21 @@
 {
+  "analysis_digest": "sha256:4372733c829ac3cad250340ffc099562ce634ff914bb16842019a23183899911",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/deploy-pages@v4",
+      "Incomplete.Unresolved_dependency: actions/download-artifact@v4",
+      "Incomplete.Unresolved_dependency: actions/setup-python@v5",
+      "Incomplete.Unresolved_dependency: actions/upload-artifact@v4",
+      "Incomplete.Unresolved_dependency: actions/upload-pages-artifact@v3",
+      "Incomplete.Unresolved_dependency: stacynoland/install-poetry@v1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +23,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+          "source": 0,
           "start": {
             "byte": 192,
             "column": 13,
@@ -24,12 +37,12 @@
           }
         }
       },
-      "id": "diag_22d1f26e52c1bafbe5a4",
+      "id": "diag_f28dddcb71504d736572540bf35daca586e1a816a0cf64854dc4df1ca2b1c56a",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+        "source": 0,
         "start": {
           "byte": 192,
           "column": 13,
@@ -44,9 +57,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_10785e74643108defe31",
+          "node": 4,
           "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+            "source": 0,
             "start": {
               "byte": 192,
               "column": 13,
@@ -62,7 +75,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v5"
@@ -70,9 +82,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+          "source": 0,
           "start": {
             "byte": 320,
             "column": 13,
@@ -85,12 +96,12 @@
           }
         }
       },
-      "id": "diag_ee2d89a12e310384113d",
+      "id": "diag_a16f95f7769c5adff7a81292072cc5d2539e2efaaeb104ef7d8031a161fa266b",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+        "source": 0,
         "start": {
           "byte": 320,
           "column": 13,
@@ -105,9 +116,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_dc6f65eddfdeb2a20245",
+          "node": 7,
           "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+            "source": 0,
             "start": {
               "byte": 320,
               "column": 13,
@@ -123,7 +134,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = stacynoland/install-poetry@v1"
@@ -131,9 +141,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+          "source": 0,
           "start": {
             "byte": 426,
             "column": 13,
@@ -146,12 +155,12 @@
           }
         }
       },
-      "id": "diag_70a95ea49dd07b0c42a4",
+      "id": "diag_915872a43b70e63bab304e488235fe4af261565244ca8c101b2c01694ca77912",
       "message": "dependency is not pinned to immutable content: stacynoland/install-poetry@v1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+        "source": 0,
         "start": {
           "byte": 426,
           "column": 13,
@@ -166,9 +175,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c16e86ae65368f98aea7",
+          "node": 9,
           "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+            "source": 0,
             "start": {
               "byte": 426,
               "column": 13,
@@ -184,7 +193,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v4"
@@ -192,9 +200,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+          "source": 0,
           "start": {
             "byte": 719,
             "column": 13,
@@ -207,12 +214,12 @@
           }
         }
       },
-      "id": "diag_c0373d650fa423ea8b53",
+      "id": "diag_a8b0763f79ac7f72456bbde22f701325ebafc09189690eed98ee5653c89f37f4",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+        "source": 0,
         "start": {
           "byte": 719,
           "column": 13,
@@ -227,9 +234,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_4be19d481d03a6f1c5fc",
+          "node": 15,
           "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+            "source": 0,
             "start": {
               "byte": 719,
               "column": 13,
@@ -245,7 +252,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/download-artifact@v4"
@@ -253,9 +259,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+          "source": 0,
           "start": {
             "byte": 1111,
             "column": 15,
@@ -268,12 +273,12 @@
           }
         }
       },
-      "id": "diag_2e6231c36fcb24912a01",
+      "id": "diag_624ca44ddb2bbb4a7d5c63af2f1a667961f9ac4c42dafb05ec42334b0e529293",
       "message": "dependency is not pinned to immutable content: actions/download-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+        "source": 0,
         "start": {
           "byte": 1111,
           "column": 15,
@@ -288,9 +293,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_1d1bf055265561d279fc",
+          "node": 19,
           "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+            "source": 0,
             "start": {
               "byte": 1111,
               "column": 15,
@@ -306,7 +311,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-pages-artifact@v3"
@@ -314,9 +318,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+          "source": 0,
           "start": {
             "byte": 1291,
             "column": 15,
@@ -329,12 +332,12 @@
           }
         }
       },
-      "id": "diag_b78bebf659682be2e3cb",
+      "id": "diag_e5485e6fe39a234af04d1dc709a887e11c1fca67670de22983579b5aa6bfc1d4",
       "message": "dependency is not pinned to immutable content: actions/upload-pages-artifact@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+        "source": 0,
         "start": {
           "byte": 1291,
           "column": 15,
@@ -349,9 +352,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_3f5bba96b6359ffc0e91",
+          "node": 21,
           "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+            "source": 0,
             "start": {
               "byte": 1291,
               "column": 15,
@@ -367,7 +370,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/deploy-pages@v4"
@@ -375,9 +377,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+          "source": 0,
           "start": {
             "byte": 1438,
             "column": 15,
@@ -390,12 +391,12 @@
           }
         }
       },
-      "id": "diag_fb3b03b1571d762f2d58",
+      "id": "diag_1fdc6a0320b4bab5fa87eca45e118ac71860db0b8bc5af03281101b620656e30",
       "message": "dependency is not pinned to immutable content: actions/deploy-pages@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+        "source": 0,
         "start": {
           "byte": 1438,
           "column": 15,
@@ -410,9 +411,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_29660e6ee06aa98b8d8f",
+          "node": 23,
           "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
+            "source": 0,
             "start": {
               "byte": 1438,
               "column": 15,
@@ -428,1125 +429,40 @@
       ]
     }
   ],
-  "digest": "sha256:ab60de4afd2be35ff70913240feb01d920a52ff6b05e1f12799180eb7fb04b16",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_3ee7a7fe9b4a78bb9e0d",
-          "id": "wv_008c193c4b7e79deebb4",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1b78dcab2561df3511d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_0d5b975641bc594d198e",
-          "id": "wv_060f02d7abd935471fc3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_605f316c6d3639a3aa70"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b78dcab2561df3511d9",
-          "id": "wv_063bbb065a992c791818",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1cbaea4b572a8a991340"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9b071e86653f76b6b0",
-          "id": "wv_0be8adabb3100834abdc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2a51e7661cd1c30b8045"
-        },
-        {
-          "condition": true,
-          "from": "wv_2a51e7661cd1c30b8045",
-          "id": "wv_107b6915a1d1c4617b6a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c16e86ae65368f98aea7"
-        },
-        {
-          "condition": true,
-          "from": "wv_2a51e7661cd1c30b8045",
-          "id": "wv_115781972ae9c196b935",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3ee7a7fe9b4a78bb9e0d"
-        },
-        {
-          "condition": true,
-          "from": "wv_cd7acf751605d81c8d3b",
-          "id": "wv_1321124f77f04d769db0",
-          "kind": "call",
-          "label": null,
-          "to": "wv_29660e6ee06aa98b8d8f"
-        },
-        {
-          "condition": true,
-          "from": "wv_1cbaea4b572a8a991340",
-          "id": "wv_1373fa1649284ca5a3e3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_4be19d481d03a6f1c5fc"
-        },
-        {
-          "condition": true,
-          "from": "wv_f2b81cde93d21ed304bb",
-          "id": "wv_2ce5c2f0f64c494e37c8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_10785e74643108defe31"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd21937e35347bccf72f",
-          "id": "wv_2df380aecfe11b15bf23",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cd7acf751605d81c8d3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_69ccc7b3a0b5a02f87d9",
-          "id": "wv_35802a7c2a85a1a33b87",
-          "kind": "data",
-          "label": "github.event.workflow_run.head_branch",
-          "to": "wv_10785e74643108defe31"
-        },
-        {
-          "condition": true,
-          "from": "wv_605f316c6d3639a3aa70",
-          "id": "wv_424de8b7c0cf5d66bdc2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_3f5bba96b6359ffc0e91"
-        },
-        {
-          "condition": true,
-          "from": "wv_0d5b975641bc594d198e",
-          "id": "wv_51f2e12ec59c089d2b7d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1d1bf055265561d279fc"
-        },
-        {
-          "condition": true,
-          "from": "wv_f2b81cde93d21ed304bb",
-          "id": "wv_5d2103a3ec8a4554f062",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6a74f0df1547446868c3"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9b071e86653f76b6b0",
-          "id": "wv_5e58fc9c5596b7115cfc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6a74f0df1547446868c3"
-        },
-        {
-          "condition": true,
-          "from": "wv_cd7acf751605d81c8d3b",
-          "id": "wv_6450b314edd3f1429c54",
-          "kind": "control",
-          "label": null,
-          "to": "wv_29660e6ee06aa98b8d8f"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd38054c8e3cc312e417",
-          "id": "wv_7001a4b92450d81ee14a",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_fd21937e35347bccf72f"
-        },
-        {
-          "condition": true,
-          "from": "wv_7a727df417434247ac6f",
-          "id": "wv_7fb025907a0ef2a32559",
-          "kind": "control",
-          "label": null,
-          "to": "wv_72d58586d560801618d1"
-        },
-        {
-          "condition": true,
-          "from": "wv_3ee7a7fe9b4a78bb9e0d",
-          "id": "wv_8127cd175c0a29ba1a6c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_00a2b5d0532732b13332"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a74f0df1547446868c3",
-          "id": "wv_9e6646f818ca7a7380f6",
-          "kind": "call",
-          "label": null,
-          "to": "wv_dc6f65eddfdeb2a20245"
-        },
-        {
-          "condition": true,
-          "from": "wv_2a51e7661cd1c30b8045",
-          "id": "wv_a941d52ba1ff6719cb4d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c16e86ae65368f98aea7"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b78dcab2561df3511d9",
-          "id": "wv_b024573e1c263ae3a527",
-          "kind": "control",
-          "label": null,
-          "to": "wv_994a1a82af1d1bbd55f6"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd21937e35347bccf72f",
-          "id": "wv_b22a8ec80c4caad011fc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_605f316c6d3639a3aa70"
-        },
-        {
-          "condition": true,
-          "from": "wv_605f316c6d3639a3aa70",
-          "id": "wv_b80c122c8ec05163cd8d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_cd7acf751605d81c8d3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_605f316c6d3639a3aa70",
-          "id": "wv_c2f83d66eb5aa458047a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3f5bba96b6359ffc0e91"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9b071e86653f76b6b0",
-          "id": "wv_c6a94d1a68034357dfd9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1b78dcab2561df3511d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9b071e86653f76b6b0",
-          "id": "wv_cbbae160bee4070f6214",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f2b81cde93d21ed304bb"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9b071e86653f76b6b0",
-          "id": "wv_d41663a11b404ec94790",
-          "kind": "control",
-          "label": "needs",
-          "to": "wv_fd21937e35347bccf72f"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a74f0df1547446868c3",
-          "id": "wv_d4b331f1e8e587f63735",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dc6f65eddfdeb2a20245"
-        },
-        {
-          "condition": true,
-          "from": "wv_72d58586d560801618d1",
-          "id": "wv_d7b5a12e9cf7772f37a8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fd21937e35347bccf72f"
-        },
-        {
-          "condition": true,
-          "from": "wv_1cbaea4b572a8a991340",
-          "id": "wv_dd0e607d03e58e28bbab",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4be19d481d03a6f1c5fc"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9b071e86653f76b6b0",
-          "id": "wv_ddeea3158744786fe616",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3ee7a7fe9b4a78bb9e0d"
-        },
-        {
-          "condition": true,
-          "from": "wv_f2b81cde93d21ed304bb",
-          "id": "wv_dfa81af9dc735b1e020b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_10785e74643108defe31"
-        },
-        {
-          "condition": true,
-          "from": "wv_0d5b975641bc594d198e",
-          "id": "wv_ef23668bbf163005416c",
-          "kind": "call",
-          "label": null,
-          "to": "wv_1d1bf055265561d279fc"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9b071e86653f76b6b0",
-          "id": "wv_ef7ddd44825a3b2bf671",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1cbaea4b572a8a991340"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a74f0df1547446868c3",
-          "id": "wv_f1a90df36eb0b16cfcd6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_2a51e7661cd1c30b8045"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd21937e35347bccf72f",
-          "id": "wv_f3e6287cc2dc1a20467a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0d5b975641bc594d198e"
-        },
-        {
-          "condition": true,
-          "from": "wv_72d58586d560801618d1",
-          "id": "wv_f46cd27809d7e79b7cee",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4f9b071e86653f76b6b0"
-        }
-      ],
-      "entrypoints": [
-        "wv_72d58586d560801618d1"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-                    "start": {
-                      "byte": 500,
-                      "column": 12,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 564,
-                      "column": 63,
-                      "line": 25
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "poetry install --all-groups --no-interaction --no-ansi\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_00a2b5d0532732b13332",
-          "kind": "command",
-          "name": "poetry install --all-groups --no-interaction --no-ansi\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 500,
-              "column": 12,
-              "line": 24
-            },
-            "stop": {
-              "byte": 564,
-              "column": 63,
-              "line": 25
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0d5b975641bc594d198e",
-          "kind": "step",
-          "name": "Download all workflow artifacts results",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 1051,
-              "column": 9,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1240,
-              "column": 31,
-              "line": 51
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_10785e74643108defe31",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 192,
-              "column": 13,
-              "line": 14
-            },
-            "stop": {
-              "byte": 211,
-              "column": 32,
-              "line": 14
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1b78dcab2561df3511d9",
-          "kind": "step",
-          "name": "Generate coverage report",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 571,
-              "column": 7,
-              "line": 26
-            },
-            "stop": {
-              "byte": 664,
-              "column": 50,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1cbaea4b572a8a991340",
-          "kind": "step",
-          "name": "Archive code coverage results",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 671,
-              "column": 7,
-              "line": 29
-            },
-            "stop": {
-              "byte": 824,
-              "column": 28,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_write",
-            "artifact_read"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "file_write"
-          ],
-          "id": "wv_1d1bf055265561d279fc",
-          "kind": "call",
-          "name": "actions/download-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 1111,
-              "column": 15,
-              "line": 47
-            },
-            "stop": {
-              "byte": 1139,
-              "column": 43,
-              "line": 47
-            }
-          },
-          "unknown": {
-            "detail": "actions/download-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_29660e6ee06aa98b8d8f",
-          "kind": "call",
-          "name": "actions/deploy-pages@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 1438,
-              "column": 15,
-              "line": 58
-            },
-            "stop": {
-              "byte": 1461,
-              "column": 38,
-              "line": 58
-            }
-          },
-          "unknown": {
-            "detail": "actions/deploy-pages@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2a51e7661cd1c30b8045",
-          "kind": "step",
-          "name": "Install poetry",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 393,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 455,
-              "column": 42,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3ee7a7fe9b4a78bb9e0d",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 462,
-              "column": 7,
-              "line": 23
-            },
-            "stop": {
-              "byte": 564,
-              "column": 63,
-              "line": 25
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3f5bba96b6359ffc0e91",
-          "kind": "call",
-          "name": "actions/upload-pages-artifact@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 1291,
-              "column": 15,
-              "line": 53
-            },
-            "stop": {
-              "byte": 1323,
-              "column": 47,
-              "line": 53
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-pages-artifact@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_4be19d481d03a6f1c5fc",
-          "kind": "call",
-          "name": "actions/upload-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 719,
-              "column": 13,
-              "line": 30
-            },
-            "stop": {
-              "byte": 745,
-              "column": 39,
-              "line": 30
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4f9b071e86653f76b6b0",
-          "kind": "job",
-          "name": "coverage",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 105,
-              "column": 3,
-              "line": 9
-            },
-            "stop": {
-              "byte": 824,
-              "column": 28,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_605f316c6d3639a3aa70",
-          "kind": "step",
-          "name": "Upload pages artifact",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 1249,
-              "column": 9,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1367,
-              "column": 30,
-              "line": 55
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event.workflow_run.head_branch",
-                  "span": {
-                    "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-                    "start": {
-                      "byte": 241,
-                      "column": 18,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 278,
-                      "column": 55,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event.workflow_run.head_branch"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_69ccc7b3a0b5a02f87d9",
-          "kind": "resource",
-          "name": "github.event.workflow_run.head_branch",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 241,
-              "column": 18,
-              "line": 16
-            },
-            "stop": {
-              "byte": 278,
-              "column": 55,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6a74f0df1547446868c3",
-          "kind": "step",
-          "name": "Set up Python",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 288,
-              "column": 7,
-              "line": 17
-            },
-            "stop": {
-              "byte": 386,
-              "column": 31,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_72d58586d560801618d1",
-          "kind": "workflow",
-          "name": "Deploy to GitHub Pages",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1461,
-              "column": 38,
-              "line": 58
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7a727df417434247ac6f",
-          "kind": "trigger",
-          "name": "workflow_run",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 36,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 95,
-              "column": 23,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-                    "start": {
-                      "byte": 613,
-                      "column": 12,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 664,
-                      "column": 50,
-                      "line": 28
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "poetry run pytest --cov --cov-report json\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_994a1a82af1d1bbd55f6",
-          "kind": "command",
-          "name": "poetry run pytest --cov --cov-report json\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 613,
-              "column": 12,
-              "line": 27
-            },
-            "stop": {
-              "byte": 664,
-              "column": 50,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c16e86ae65368f98aea7",
-          "kind": "call",
-          "name": "stacynoland/install-poetry@v1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 426,
-              "column": 13,
-              "line": 22
-            },
-            "stop": {
-              "byte": 455,
-              "column": 42,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "stacynoland/install-poetry@v1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cd7acf751605d81c8d3b",
-          "kind": "step",
-          "name": "Deploy to GitHub Pages",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 1376,
-              "column": 9,
-              "line": 56
-            },
-            "stop": {
-              "byte": 1461,
-              "column": 38,
-              "line": 58
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dc6f65eddfdeb2a20245",
-          "kind": "call",
-          "name": "actions/setup-python@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 320,
-              "column": 13,
-              "line": 18
-            },
-            "stop": {
-              "byte": 343,
-              "column": 36,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dd38054c8e3cc312e417",
-          "kind": "resource",
-          "name": "environment:github-pages",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 937,
-              "column": 7,
-              "line": 41
-            },
-            "stop": {
-              "byte": 1003,
-              "column": 48,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f2b81cde93d21ed304bb",
-          "kind": "step",
-          "name": "Checkout code",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 160,
-              "column": 7,
-              "line": 13
-            },
-            "stop": {
-              "byte": 281,
-              "column": 58,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "token_write",
-            "oidc",
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_fd21937e35347bccf72f",
-          "kind": "job",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml",
-            "start": {
-              "byte": 828,
-              "column": 3,
-              "line": 35
-            },
-            "stop": {
-              "byte": 1461,
-              "column": 38,
-              "line": 58
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:d5cd5b486e5283a28461b46fd7193d3f6bba7efeefe99c326af9a87c5ea08233",
-      "path": "github/stacynoland/domain-validator/.github/workflows/deploy-pages.yml"
-    }
-  ],
+  "digest": "sha256:82a7d95477f08768b9e460a30c0286d13c909f7030d249c5ef447709c814317d",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:7b80a9fdb407164f5d72c55bbad73741f59a45931e0ee057dfa3e30ec8cdce7b",
+    "sources": [
+      {
+        "digest": "sha256:d5cd5b486e5283a28461b46fd7193d3f6bba7efeefe99c326af9a87c5ea08233",
+        "id": 0,
+        "path": ".github/workflows/deploy-pages.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
@@ -1557,29 +473,22 @@
           "kind": "external_state"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -1598,15 +507,12 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1637,40 +543,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 7,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 3
+    "edges": 38,
+    "nodes": 24,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 3,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

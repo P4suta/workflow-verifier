@@ -12,7 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 LINK = re.compile(r"!?\[[^\]]*\]\(([^)\s]+)(?:\s+['\"][^)]*['\"])?\)")
 SCHEMES = {"https", "mailto"}
-SKIPPED = {".git", "_build", "_opam", "evaluation"}
+SKIPPED = {".git", "_build", "_opam", "evaluation", "target"}
 
 
 def _markdown_files(root: Path) -> list[Path]:

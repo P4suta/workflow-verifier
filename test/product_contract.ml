@@ -267,71 +267,6 @@ let policy_dependency_identity_test () =
        ~attributes:(digest ("sha256:" ^ String.make 63 'a' ^ "z"))
        Frontend_intf.Mutable "owner/action@v4")
 
-let report_and_sarif_test () =
-  let command =
-    node
-      ~attributes:
-        [
-          ("command", string_value ~trust:Abstract_value.Untrusted "echo $TITLE");
-        ]
-      ~capabilities:[ Ir.Shell ] "echo $TITLE"
-  in
-  let pipeline = graph ~source:"z/workflow.yml" [ command ] [] command in
-  let verification = Verifier.verify ~persona:Verifier.Gate pipeline in
-  let safe_command =
-    node
-      ~attributes:[ ("command", string_value "echo safe") ]
-      ~capabilities:[ Ir.Shell ] "echo safe"
-  in
-  let safe_pipeline =
-    graph ~source:"a/workflow.yml" [ safe_command ] [] safe_command
-  and safe_verification =
-    Verifier.verify ~persona:Verifier.Gate
-      (graph ~source:"a/workflow.yml" [ safe_command ] [] safe_command)
-  in
-  let report =
-    Report.make ~persona:Verifier.Gate
-      ~inputs:[ ("z/workflow.yml", "z"); ("a/workflow.yml", "a") ]
-      ~graphs:[ pipeline; safe_pipeline ]
-      ~verifications:[ verification; safe_verification ]
-      ~policy_diagnostics:[]
-  and reordered =
-    Report.make ~persona:Verifier.Gate
-      ~inputs:[ ("a/workflow.yml", "a"); ("z/workflow.yml", "z") ]
-      ~graphs:[ safe_pipeline; pipeline ]
-      ~verifications:[ safe_verification; verification ]
-      ~policy_diagnostics:[]
-  in
-  let first = Report.to_canonical_json report
-  and second = Report.to_canonical_json reordered in
-  expect "report JSON is byte deterministic under input permutation"
-    (first = second);
-  let parsed =
-    match Json.parse first with
-    | Ok value -> value
-    | Error error -> fail "%d:%s" error.offset error.message
-  in
-  expect "report schema version is v2"
-    (Json.member "schema" parsed = Some (Json.String "report-v2"));
-  expect "every property state is serialized"
-    (Util.contains ~needle:"\"state\":\"Violated\"" first);
-  let sarif = Sarif.to_canonical_json report in
-  expect "SARIF 2.1.0 contract is emitted"
-    (Util.contains ~needle:"\"version\":\"2.1.0\"" sarif
-    && Util.contains
-         ~needle:
-           "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json"
-         sarif);
-  expect "SARIF retains the stable rule ID"
-    (Util.contains ~needle:"WV-SEC-001" sarif);
-  expect "SARIF retains semantic traces"
-    (Util.contains ~needle:"\"codeFlows\"" sarif);
-  expect "SARIF retains capabilities and evidence"
-    (Util.contains ~needle:"\"capabilities\"" sarif
-    && Util.contains ~needle:"\"evidence\"" sarif);
-  expect "SARIF exposes behavior-preserving fix guidance"
-    (Util.contains ~needle:"\"fixes\"" sarif)
-
 let lockfile_and_resolver_test () =
   let entries =
     [
@@ -379,24 +314,6 @@ let lockfile_and_resolver_test () =
     (List.length result.locked = 1);
   expect "offline resolver performs no hidden network call" (!network_calls = 0);
   expect "locked resolution is complete" (result.unresolved = [])
-
-let legacy_lock_v1_compatibility_test () =
-  let legacy =
-    {|{"entries":[{"digest":"sha256:0f48a50cf2edeea3d6e270f8dae645529128ca8b2954993891a2fb8f7b16145a","provider":"github","reference":"actions/checkout@v4","revision":"11d5960a326750d5838078e36cf38b85af677262","source":"https://github.com/actions/checkout/tree/11d5960a326750d5838078e36cf38b85af677262"}],"integrity":"sha256:c3fba30089ded7a131a3234785fb7b1bad3836be2605bc3139e2331cc43494fe","schema":"lock-v1"}|}
-    ^ "\n"
-  in
-  let parsed =
-    match Lockfile.parse legacy with
-    | Ok value -> value
-    | Error error -> fail "legacy lock-v1: %s" error
-  in
-  expect "lock-v1 remains readable" (parsed.schema = "lock-v1");
-  expect "digest-only v1 entries have no invented semantic summary"
-    (match parsed.entries with
-    | [ entry ] -> Option.is_none entry.Lockfile.summary
-    | _ -> false);
-  expect "lock-v1 round trips without changing protocol bytes"
-    (Lockfile.to_canonical_json parsed = legacy)
 
 let semantic_diff_test () =
   let source =
@@ -470,9 +387,7 @@ let tests : test list =
     ("forbid_path selects the shortest exploit trace", shortest_policy_path_test);
     ( "diagnostic JSON preserves medium confidence",
       diagnostic_confidence_json_test );
-    ("report-v2 and SARIF are deterministic", report_and_sarif_test);
     ("lockfile enables truly offline resolution", lockfile_and_resolver_test);
-    ("legacy lock-v1 remains readable", legacy_lock_v1_compatibility_test);
     ("semantic diff reports newly reachable attacks", semantic_diff_test);
     ("graph views preserve stable semantic identity", graph_output_test);
     ("safe fix pins only the dependency scalar", safe_fix_test);

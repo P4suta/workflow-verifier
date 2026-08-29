@@ -1,7 +1,20 @@
 {
+  "analysis_digest": "sha256:e6db533f04aae50866318d187a420745d9b9002ffdfa521beb4a5adcc12bde5b",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: ComponentGovernanceComponentDetection@0",
+      "Incomplete.Unresolved_dependency: DotNetCoreCLI@2",
+      "Incomplete.Unresolved_dependency: PostAnalysis@1",
+      "Incomplete.Unresolved_dependency: RoslynAnalyzers@2",
+      "Incomplete.Unresolved_dependency: SdtReport@1",
+      "Incomplete.Unresolved_dependency: UseDotNet@2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = UseDotNet@2"
@@ -9,9 +22,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 393,
             "column": 9,
@@ -24,12 +36,12 @@
           }
         }
       },
-      "id": "diag_810f7fbd211c09474530",
+      "id": "diag_b0dcd1d2f30f3a0ec017c6c3d9a330ba84f48e1981dbc75141931331e3993ae3",
       "message": "dependency is not pinned to immutable content: UseDotNet@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 393,
           "column": 9,
@@ -44,9 +56,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_914cc38df1a433d17d8d",
+          "node": 7,
           "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 393,
               "column": 9,
@@ -62,7 +74,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = DotNetCoreCLI@2"
@@ -70,9 +81,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 500,
             "column": 9,
@@ -85,12 +95,12 @@
           }
         }
       },
-      "id": "diag_a87e79755d57408bda8c",
+      "id": "diag_d523b5bb42acd539e37036ac10d9db9e9d65a7c550e9b52e872dc66e28c783e3",
       "message": "dependency is not pinned to immutable content: DotNetCoreCLI@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 500,
           "column": 9,
@@ -105,9 +115,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_5a7cbfa25191b51f08dc",
+          "node": 9,
           "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 500,
               "column": 9,
@@ -123,7 +133,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = DotNetCoreCLI@2"
@@ -131,9 +140,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 671,
             "column": 9,
@@ -146,12 +154,12 @@
           }
         }
       },
-      "id": "diag_0e90c38731ebe895fa6e",
+      "id": "diag_ca6db3c773bf975042ff9c21456e11ef4a6d701a82d110e7848bc8b389c5f57e",
       "message": "dependency is not pinned to immutable content: DotNetCoreCLI@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 671,
           "column": 9,
@@ -166,9 +174,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f719f4a15111f955d8dd",
+          "node": 11,
           "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 671,
               "column": 9,
@@ -184,7 +192,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = RoslynAnalyzers@2"
@@ -192,9 +199,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 855,
             "column": 9,
@@ -207,12 +213,12 @@
           }
         }
       },
-      "id": "diag_30c7b3b46e39acf8224a",
+      "id": "diag_1aa397bda6af4137bb519df199e710de8a19ff2abdc8d15cfc96c193f5fa271f",
       "message": "dependency is not pinned to immutable content: RoslynAnalyzers@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 855,
           "column": 9,
@@ -227,9 +233,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_17c09cc5fb5c460aef9a",
+          "node": 13,
           "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 855,
               "column": 9,
@@ -245,7 +251,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = SdtReport@1"
@@ -253,9 +258,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1189,
             "column": 9,
@@ -268,12 +272,12 @@
           }
         }
       },
-      "id": "diag_008512af79eec92693df",
+      "id": "diag_f5d481d8eaed812ff1108a55c47afd0247b3de510d138405c38cd5f59a927e24",
       "message": "dependency is not pinned to immutable content: SdtReport@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1189,
           "column": 9,
@@ -288,9 +292,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_0a133197b6dd0d627748",
+          "node": 15,
           "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1189,
               "column": 9,
@@ -306,7 +310,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PostAnalysis@1"
@@ -314,9 +317,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1569,
             "column": 9,
@@ -329,12 +331,12 @@
           }
         }
       },
-      "id": "diag_d1ffd9863f14956abe12",
+      "id": "diag_950e3ec75b340f325c98d2e84fa0aaccfc4a9e0ed46d8a901faf437d2d5b8e0c",
       "message": "dependency is not pinned to immutable content: PostAnalysis@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1569,
           "column": 9,
@@ -349,9 +351,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_3edb8e1f761de38eca1f",
+          "node": 17,
           "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1569,
               "column": 9,
@@ -367,7 +369,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = ComponentGovernanceComponentDetection@0"
@@ -375,9 +376,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1951,
             "column": 9,
@@ -390,12 +390,12 @@
           }
         }
       },
-      "id": "diag_6ec8d49ea1e327a25397",
+      "id": "diag_cc3be0c4bdbcb40f6ba3f67e42eefae6aeab696a7c1e69199c3bb910ce50faf7",
       "message": "dependency is not pinned to immutable content: ComponentGovernanceComponentDetection@0",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1951,
           "column": 9,
@@ -410,9 +410,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a840d095ba3781b9f9ad",
+          "node": 19,
           "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1951,
               "column": 9,
@@ -428,1017 +428,110 @@
       ]
     }
   ],
-  "digest": "sha256:c747a77f30a0e11b15c3a12d30128f653a8fb878af58f0b3f2240c3862790d9b",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_b49682f0bbb37411b0c7",
-          "id": "wv_1ed779d86b5aed328e37",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d3f451360032831d5ab2"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7f04d3f932b674daf0b",
-          "id": "wv_21f9b74ba68a7113a67f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_21adbd471e7c109c21ed"
-        },
-        {
-          "condition": true,
-          "from": "wv_95e162d16bcfe945677a",
-          "id": "wv_2349765dab55024e3ea6",
-          "kind": "data",
-          "label": "buildPlatform",
-          "to": "wv_4cb291e78fb28370f04c"
-        },
-        {
-          "condition": true,
-          "from": "wv_a09b95a542008159a3b9",
-          "id": "wv_29a24e5b17a87f2c08bc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9807c2c19004136e3924"
-        },
-        {
-          "condition": true,
-          "from": "wv_b49682f0bbb37411b0c7",
-          "id": "wv_2edf293dfd1c0a91aea2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_914cc38df1a433d17d8d"
-        },
-        {
-          "condition": true,
-          "from": "wv_319a91fb8f56d3fb9cba",
-          "id": "wv_2f6228c23ef81e9b0f3d",
-          "kind": "data",
-          "label": "solution",
-          "to": "wv_4cb291e78fb28370f04c"
-        },
-        {
-          "condition": true,
-          "from": "wv_12ce3d009ec3dc2b8f16",
-          "id": "wv_2f872b8c8fdc485ebeef",
-          "kind": "call",
-          "label": null,
-          "to": "wv_3edb8e1f761de38eca1f"
-        },
-        {
-          "condition": true,
-          "from": "wv_a09b95a542008159a3b9",
-          "id": "wv_3279af347a77434aab1e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55bd66989a1aa5772e27"
-        },
-        {
-          "condition": true,
-          "from": "wv_bb78e096266d4598be13",
-          "id": "wv_353fef3ff00d52facd14",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4cb291e78fb28370f04c"
-        },
-        {
-          "condition": true,
-          "from": "wv_55bd66989a1aa5772e27",
-          "id": "wv_48cf003889b8bb469711",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a840d095ba3781b9f9ad"
-        },
-        {
-          "condition": true,
-          "from": "wv_21adbd471e7c109c21ed",
-          "id": "wv_4e3b95c958fe9f1d5ca5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_17c09cc5fb5c460aef9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_a09b95a542008159a3b9",
-          "id": "wv_52642993d6974becbfd8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_12ce3d009ec3dc2b8f16"
-        },
-        {
-          "condition": true,
-          "from": "wv_a09b95a542008159a3b9",
-          "id": "wv_564141a5a8f704faa09c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d3f451360032831d5ab2"
-        },
-        {
-          "condition": true,
-          "from": "wv_efb9a2c181e74d1576f3",
-          "id": "wv_618af747b8bc1d979132",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_4cb291e78fb28370f04c"
-        },
-        {
-          "condition": true,
-          "from": "wv_21adbd471e7c109c21ed",
-          "id": "wv_6ac4f28967a460ecfd75",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9807c2c19004136e3924"
-        },
-        {
-          "condition": true,
-          "from": "wv_d3f451360032831d5ab2",
-          "id": "wv_6cfe59e4d4989c03e16b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5a7cbfa25191b51f08dc"
-        },
-        {
-          "condition": true,
-          "from": "wv_d3f451360032831d5ab2",
-          "id": "wv_6d61039091933431314e",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5a7cbfa25191b51f08dc"
-        },
-        {
-          "condition": true,
-          "from": "wv_d3f451360032831d5ab2",
-          "id": "wv_74b3ac3b6747162b19a8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b7f04d3f932b674daf0b"
-        },
-        {
-          "condition": true,
-          "from": "wv_55bd66989a1aa5772e27",
-          "id": "wv_924f7312bb6df6787857",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a840d095ba3781b9f9ad"
-        },
-        {
-          "condition": true,
-          "from": "wv_b49682f0bbb37411b0c7",
-          "id": "wv_958cc8edd0124b84680f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_914cc38df1a433d17d8d"
-        },
-        {
-          "condition": true,
-          "from": "wv_4cb291e78fb28370f04c",
-          "id": "wv_99c8f020fcce00c35ecc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a09b95a542008159a3b9"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7f04d3f932b674daf0b",
-          "id": "wv_9a6a191944eb00bfbd9b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f719f4a15111f955d8dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_9807c2c19004136e3924",
-          "id": "wv_a2346f142831499c656f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_12ce3d009ec3dc2b8f16"
-        },
-        {
-          "condition": true,
-          "from": "wv_12ce3d009ec3dc2b8f16",
-          "id": "wv_a8a20cf49a9eee28713d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3edb8e1f761de38eca1f"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7f04d3f932b674daf0b",
-          "id": "wv_b619840a7b2fd8979bfe",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f719f4a15111f955d8dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_a09b95a542008159a3b9",
-          "id": "wv_c33419dfecbdc086d12e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_21adbd471e7c109c21ed"
-        },
-        {
-          "condition": true,
-          "from": "wv_12ce3d009ec3dc2b8f16",
-          "id": "wv_c64a748779cd2b1f5b77",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_55bd66989a1aa5772e27"
-        },
-        {
-          "condition": true,
-          "from": "wv_9807c2c19004136e3924",
-          "id": "wv_ca6741ed16831a215682",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0a133197b6dd0d627748"
-        },
-        {
-          "condition": true,
-          "from": "wv_a09b95a542008159a3b9",
-          "id": "wv_d68ced298cc69229ac64",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b49682f0bbb37411b0c7"
-        },
-        {
-          "condition": true,
-          "from": "wv_9807c2c19004136e3924",
-          "id": "wv_e690bd35f2f75e71b88a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_0a133197b6dd0d627748"
-        },
-        {
-          "condition": true,
-          "from": "wv_21adbd471e7c109c21ed",
-          "id": "wv_ea64fd0492ef8c9b96f0",
-          "kind": "call",
-          "label": null,
-          "to": "wv_17c09cc5fb5c460aef9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_a09b95a542008159a3b9",
-          "id": "wv_eba1b7aba04881878380",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b7f04d3f932b674daf0b"
-        }
-      ],
-      "entrypoints": [
-        "wv_4cb291e78fb28370f04c"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0a133197b6dd0d627748",
-          "kind": "call",
-          "name": "SdtReport@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 1189,
-              "column": 9,
-              "line": 47
-            },
-            "stop": {
-              "byte": 1200,
-              "column": 20,
-              "line": 47
-            }
-          },
-          "unknown": {
-            "detail": "SdtReport@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_12ce3d009ec3dc2b8f16",
-          "kind": "step",
-          "name": "Analyze tool results",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 1563,
-              "column": 3,
-              "line": 61
-            },
-            "stop": {
-              "byte": 1941,
-              "column": 39,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_17c09cc5fb5c460aef9a",
-          "kind": "call",
-          "name": "RoslynAnalyzers@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 855,
-              "column": 9,
-              "line": 38
-            },
-            "stop": {
-              "byte": 872,
-              "column": 26,
-              "line": 38
-            }
-          },
-          "unknown": {
-            "detail": "RoslynAnalyzers@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_21adbd471e7c109c21ed",
-          "kind": "step",
-          "name": "Run Roslyn code analyzers",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 849,
-              "column": 3,
-              "line": 38
-            },
-            "stop": {
-              "byte": 1179,
-              "column": 25,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-                    "start": {
-                      "byte": 274,
-                      "column": 13,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 317,
-                      "column": 56,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Source/Microsoft.Teams.Apps.Timesheet.sln"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_319a91fb8f56d3fb9cba",
-          "kind": "resource",
-          "name": "variable:solution",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 264,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 317,
-              "column": 56,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_3edb8e1f761de38eca1f",
-          "kind": "call",
-          "name": "PostAnalysis@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 1569,
-              "column": 9,
-              "line": 61
-            },
-            "stop": {
-              "byte": 1583,
-              "column": 23,
-              "line": 61
-            }
-          },
-          "unknown": {
-            "detail": "PostAnalysis@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4cb291e78fb28370f04c",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 199,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 2117,
-              "column": 30,
-              "line": 80
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_55bd66989a1aa5772e27",
-          "kind": "step",
-          "name": "Component detection",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 1945,
-              "column": 3,
-              "line": 75
-            },
-            "stop": {
-              "byte": 2117,
-              "column": 30,
-              "line": 80
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5a7cbfa25191b51f08dc",
-          "kind": "call",
-          "name": "DotNetCoreCLI@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 500,
-              "column": 9,
-              "line": 24
-            },
-            "stop": {
-              "byte": 515,
-              "column": 24,
-              "line": 24
-            }
-          },
-          "unknown": {
-            "detail": "DotNetCoreCLI@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_914cc38df1a433d17d8d",
-          "kind": "call",
-          "name": "UseDotNet@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 393,
-              "column": 9,
-              "line": 18
-            },
-            "stop": {
-              "byte": 404,
-              "column": 20,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "UseDotNet@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-                    "start": {
-                      "byte": 335,
-                      "column": 18,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 344,
-                      "column": 27,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Any CPU"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_95e162d16bcfe945677a",
-          "kind": "resource",
-          "name": "variable:buildPlatform",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 320,
-              "column": 3,
-              "line": 14
-            },
-            "stop": {
-              "byte": 344,
-              "column": 27,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9807c2c19004136e3924",
-          "kind": "step",
-          "name": "Generate tool reports",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 1183,
-              "column": 3,
-              "line": 47
-            },
-            "stop": {
-              "byte": 1559,
-              "column": 39,
-              "line": 59
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a09b95a542008159a3b9",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 199,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 2117,
-              "column": 30,
-              "line": 80
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a840d095ba3781b9f9ad",
-          "kind": "call",
-          "name": "ComponentGovernanceComponentDetection@0",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 1951,
-              "column": 9,
-              "line": 75
-            },
-            "stop": {
-              "byte": 1990,
-              "column": 48,
-              "line": 75
-            }
-          },
-          "unknown": {
-            "detail": "ComponentGovernanceComponentDetection@0",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b49682f0bbb37411b0c7",
-          "kind": "step",
-          "name": ".NET Core 3.1.x",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 387,
-              "column": 3,
-              "line": 18
-            },
-            "stop": {
-              "byte": 490,
-              "column": 21,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b7f04d3f932b674daf0b",
-          "kind": "step",
-          "name": "Test",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 665,
-              "column": 3,
-              "line": 31
-            },
-            "stop": {
-              "byte": 845,
-              "column": 81,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bb78e096266d4598be13",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 208,
-              "column": 1,
-              "line": 7
-            },
-            "stop": {
-              "byte": 214,
-              "column": 7,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d3f451360032831d5ab2",
-          "kind": "step",
-          "name": "Build solution",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 494,
-              "column": 3,
-              "line": 24
-            },
-            "stop": {
-              "byte": 661,
-              "column": 55,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-                    "start": {
-                      "byte": 367,
-                      "column": 23,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 376,
-                      "column": 32,
-                      "line": 15
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Release"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_efb9a2c181e74d1576f3",
-          "kind": "resource",
-          "name": "variable:buildConfiguration",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 347,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 376,
-              "column": 32,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f719f4a15111f955d8dd",
-          "kind": "call",
-          "name": "DotNetCoreCLI@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/prasad-msft/timetally/azure-pipelines.yml",
-            "start": {
-              "byte": 671,
-              "column": 9,
-              "line": 31
-            },
-            "stop": {
-              "byte": 686,
-              "column": 24,
-              "line": 31
-            }
-          },
-          "unknown": {
-            "detail": "DotNetCoreCLI@2",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/prasad-msft/timetally/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:1b0791a7b141ffbf5251119c392bfdfb15dbc036b29d6c2e7cb9d8308c73970a",
-      "path": "azure/prasad-msft/timetally/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:3613f88b1d8d0dcec39874002103e409be759851680b28225d4bf87bd75d9ca0",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:542335cc8f58f5d2488aa939e38383323efe3c09f2e6dfa0de8788915c3529c8",
+    "sources": [
+      {
+        "digest": "sha256:1b0791a7b141ffbf5251119c392bfdfb15dbc036b29d6c2e7cb9d8308c73970a",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 7,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 32,
+    "nodes": 20,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

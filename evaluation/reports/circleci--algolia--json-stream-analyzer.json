@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:3e14f9771c7dc36cbe49fad6ff35035367ee9642b4e8bae660f253e88895908b",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: cimg/node:14.19.3",
+      "Incomplete.Unresolved_dependency: circleci/node@5.0.2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = circleci/node@5.0.2"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
+          "source": 0,
           "start": {
             "byte": 29,
             "column": 9,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_c8fd64fea2e6a6b5b42e",
+      "id": "diag_928b8ee512e8da819aeeffc739484e08e3020638e0c6425c293cbcb3b527693d",
       "message": "dependency is not pinned to immutable content: circleci/node@5.0.2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
+        "source": 0,
         "start": {
           "byte": 29,
           "column": 9,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_5c4d90e7cbcdc6abbe38",
+          "node": 1,
           "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
+            "source": 0,
             "start": {
               "byte": 29,
               "column": 9,
@@ -62,723 +70,110 @@
       ]
     }
   ],
-  "digest": "sha256:064f721b4d0778749e02132e23e731b1fd1e2629c321f00c9b6f05cdac208212",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_e7d8d70d41db8b4a13d2",
-          "id": "wv_0199c8631358e0e4b20d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5c4d90e7cbcdc6abbe38"
-        },
-        {
-          "condition": true,
-          "from": "wv_7107341247f125d3d5dc",
-          "id": "wv_10e9c8c3f97f5310e4e6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6d9589cc16c188b4e94a"
-        },
-        {
-          "condition": true,
-          "from": "wv_48fcb4d883c4434bd77a",
-          "id": "wv_159508bf91a15ac77661",
-          "kind": "read",
-          "label": null,
-          "to": "wv_96c2651ef3c93868ee23"
-        },
-        {
-          "condition": true,
-          "from": "wv_4acbc81dc16cc1f614f1",
-          "id": "wv_2a4bf404b8f250b22771",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a3eb9ba65971d1379272"
-        },
-        {
-          "condition": true,
-          "from": "wv_6d9589cc16c188b4e94a",
-          "id": "wv_3f6db292720076420d6b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_495dd491eeccddaca52d"
-        },
-        {
-          "condition": true,
-          "from": "wv_495dd491eeccddaca52d",
-          "id": "wv_440be5e9d3e3c4e72d23",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_4acbc81dc16cc1f614f1"
-        },
-        {
-          "condition": true,
-          "from": "wv_889c13fd55f621360094",
-          "id": "wv_551e389eaa8293f83e4c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6020c0315824e28d33e2"
-        },
-        {
-          "condition": true,
-          "from": "wv_1942cc813ff42cc74107",
-          "id": "wv_6c5ce21027b24f426644",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_495dd491eeccddaca52d"
-        },
-        {
-          "condition": true,
-          "from": "wv_889c13fd55f621360094",
-          "id": "wv_9b8b95e842599f057d04",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5c4d90e7cbcdc6abbe38"
-        },
-        {
-          "condition": true,
-          "from": "wv_48fcb4d883c4434bd77a",
-          "id": "wv_a50b36517f57d0c81cd3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_96c2651ef3c93868ee23"
-        },
-        {
-          "condition": true,
-          "from": "wv_6d9589cc16c188b4e94a",
-          "id": "wv_b17b391d167ff2d32186",
-          "kind": "control",
-          "label": null,
-          "to": "wv_48fcb4d883c4434bd77a"
-        },
-        {
-          "condition": true,
-          "from": "wv_495dd491eeccddaca52d",
-          "id": "wv_b73ad15a25200847ae87",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5c3084c4d5fcda718c37"
-        },
-        {
-          "condition": true,
-          "from": "wv_889c13fd55f621360094",
-          "id": "wv_bcfd4d126bda60669351",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7107341247f125d3d5dc"
-        },
-        {
-          "condition": true,
-          "from": "wv_889c13fd55f621360094",
-          "id": "wv_c81dbeb3669149bec1dc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5c4d90e7cbcdc6abbe38"
-        },
-        {
-          "condition": true,
-          "from": "wv_48fcb4d883c4434bd77a",
-          "id": "wv_d5ff1d4845fc835f0292",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1942cc813ff42cc74107"
-        },
-        {
-          "condition": true,
-          "from": "wv_1942cc813ff42cc74107",
-          "id": "wv_e435370778d3cc2d5689",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e7d8d70d41db8b4a13d2"
-        },
-        {
-          "condition": true,
-          "from": "wv_1942cc813ff42cc74107",
-          "id": "wv_e64a83444bad2c794ab3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_e7d8d70d41db8b4a13d2"
-        },
-        {
-          "condition": true,
-          "from": "wv_889c13fd55f621360094",
-          "id": "wv_f8cedbbad8f4858d6bb0",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6020c0315824e28d33e2"
-        },
-        {
-          "condition": true,
-          "from": "wv_6d9589cc16c188b4e94a",
-          "id": "wv_f95df460b89e0c4ea95c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4acbc81dc16cc1f614f1"
-        },
-        {
-          "condition": true,
-          "from": "wv_6d9589cc16c188b4e94a",
-          "id": "wv_fdbb5187490623d0d1f7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1942cc813ff42cc74107"
-        }
-      ],
-      "entrypoints": [
-        "wv_889c13fd55f621360094"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1942cc813ff42cc74107",
-          "kind": "step",
-          "name": "node/install-packages",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 179,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 235,
-              "column": 34,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_48fcb4d883c4434bd77a",
-          "kind": "step",
-          "name": "checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 161,
-              "column": 9,
-              "line": 15
-            },
-            "stop": {
-              "byte": 169,
-              "column": 17,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_495dd491eeccddaca52d",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 245,
-              "column": 9,
-              "line": 20
-            },
-            "stop": {
-              "byte": 299,
-              "column": 29,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4acbc81dc16cc1f614f1",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 309,
-              "column": 9,
-              "line": 24
-            },
-            "stop": {
-              "byte": 363,
-              "column": 29,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-                    "start": {
-                      "byte": 290,
-                      "column": 20,
-                      "line": 22
-                    },
-                    "stop": {
-                      "byte": 299,
-                      "column": 29,
-                      "line": 22
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn lint"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5c3084c4d5fcda718c37",
-          "kind": "command",
-          "name": "Lint",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 290,
-              "column": 20,
-              "line": 22
-            },
-            "stop": {
-              "byte": 299,
-              "column": 29,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5c4d90e7cbcdc6abbe38",
-          "kind": "call",
-          "name": "circleci/node@5.0.2",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 29,
-              "column": 9,
-              "line": 5
-            },
-            "stop": {
-              "byte": 48,
-              "column": 28,
-              "line": 5
-            }
-          },
-          "unknown": {
-            "detail": "circleci/node@5.0.2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6020c0315824e28d33e2",
-          "kind": "call",
-          "name": "cimg/node:14.19.3",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 92,
-              "column": 16,
-              "line": 10
-            },
-            "stop": {
-              "byte": 109,
-              "column": 33,
-              "line": 10
-            }
-          },
-          "unknown": {
-            "detail": "cimg/node:14.19.3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6d9589cc16c188b4e94a",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 58,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 363,
-              "column": 29,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7107341247f125d3d5dc",
-          "kind": "workflow",
-          "name": "suite",
-          "phase": "plan",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 379,
-              "column": 3,
-              "line": 30
-            },
-            "stop": {
-              "byte": 409,
-              "column": 14,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_889c13fd55f621360094",
-          "kind": "workflow",
-          "name": "CircleCI config",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 1,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 409,
-              "column": 14,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_96c2651ef3c93868ee23",
-          "kind": "call",
-          "name": "builtin:checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 161,
-              "column": 9,
-              "line": 15
-            },
-            "stop": {
-              "byte": 169,
-              "column": 17,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-                    "start": {
-                      "byte": 354,
-                      "column": 20,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 363,
-                      "column": 29,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn test"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a3eb9ba65971d1379272",
-          "kind": "command",
-          "name": "Test",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 354,
-              "column": 20,
-              "line": 26
-            },
-            "stop": {
-              "byte": 363,
-              "column": 29,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "dependency.reference": {
-              "provenance": [
-                {
-                  "operation": "resolve immutable dependency identity",
-                  "origin": "CircleCI orb alias",
-                  "span": {
-                    "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-                    "start": {
-                      "byte": 179,
-                      "column": 9,
-                      "line": 17
-                    },
-                    "stop": {
-                      "byte": 235,
-                      "column": 34,
-                      "line": 18
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "circleci/node@5.0.2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e7d8d70d41db8b4a13d2",
-          "kind": "call",
-          "name": "orb:node/install-packages",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/algolia/json-stream-analyzer/.circleci/config.yml",
-            "start": {
-              "byte": 179,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 235,
-              "column": 34,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "circleci/node@5.0.2",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "circleci",
-      "source": "circleci/algolia/json-stream-analyzer/.circleci/config.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:b421aca6a767fa56e1cfea061b21c046902b968aa4076316b7dcd9e236feea4d",
-      "path": "circleci/algolia/json-stream-analyzer/.circleci/config.yml"
-    }
-  ],
+  "digest": "sha256:0ba2de6a49cce7f98c1e6d1f0d58ff247b0ee1a6d2ef6a7d9a350b9fbfc9825d",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:9a7d157941cc1c55ed8aa1a4313259c2443c5c4c3b16cab8e8e5282adb3af32b",
+    "sources": [
+      {
+        "digest": "sha256:b421aca6a767fa56e1cfea061b21c046902b968aa4076316b7dcd9e236feea4d",
+        "id": 0,
+        "path": ".circleci/config.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "circleci-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 20,
+    "nodes": 13,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

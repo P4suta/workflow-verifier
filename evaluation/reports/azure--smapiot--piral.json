@@ -1,7 +1,19 @@
 {
+  "analysis_digest": "sha256:d2aa3d902983997552d4dfc2e3d3e9e21252166a0027bb963ac1204db9c0cee5",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: DownloadPipelineArtifact@2",
+      "Incomplete.Unresolved_dependency: NodeTool@0",
+      "Incomplete.Unresolved_dependency: Yarn@2",
+      "Incomplete.Unresolved_dependency: YarnInstaller@2",
+      "Incomplete.Unresolved_dependency: sftpupload@1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NodeTool@0"
@@ -9,9 +21,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 460,
             "column": 13,
@@ -24,12 +35,12 @@
           }
         }
       },
-      "id": "diag_21394fe9b37bcdab8f32",
+      "id": "diag_33f76cb2e66868907dee599a2c0baf5cfdce594a07e9f0eb40b3184a91b9b1af",
       "message": "dependency is not pinned to immutable content: NodeTool@0",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 460,
           "column": 13,
@@ -44,9 +55,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a58a06c8ea742e3cb0b5",
+          "node": 10,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 460,
               "column": 13,
@@ -62,7 +73,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = YarnInstaller@2"
@@ -70,9 +80,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 576,
             "column": 13,
@@ -85,12 +94,12 @@
           }
         }
       },
-      "id": "diag_ecb6ddf32a666d7320d3",
+      "id": "diag_30214c75a567d8fc2b3c7a3b1e6f577e7f06ecf0f6abe8dbcc15e260234b91e6",
       "message": "dependency is not pinned to immutable content: YarnInstaller@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 576,
           "column": 13,
@@ -105,9 +114,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_0bfa78aefc665bd36b5c",
+          "node": 12,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 576,
               "column": 13,
@@ -123,7 +132,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Yarn@2"
@@ -131,9 +139,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 676,
             "column": 13,
@@ -146,12 +153,12 @@
           }
         }
       },
-      "id": "diag_6c4cc23ed7935f0ceef4",
+      "id": "diag_1ce21fc7835bf7241ec524fc75787c7f5d1ecc1506e7a69b7134eac4ff34edfe",
       "message": "dependency is not pinned to immutable content: Yarn@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 676,
           "column": 13,
@@ -166,9 +173,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_8330fc9df1638be32a8f",
+          "node": 14,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 676,
               "column": 13,
@@ -184,7 +191,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Yarn@2"
@@ -192,9 +198,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 776,
             "column": 13,
@@ -207,12 +212,12 @@
           }
         }
       },
-      "id": "diag_6d1d0d2279e181e277d7",
+      "id": "diag_9a70912baae013888ce26f5f225051e24fdfa3aa5a0e19d1c6fc7b60d21c1015",
       "message": "dependency is not pinned to immutable content: Yarn@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 776,
           "column": 13,
@@ -227,9 +232,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_b73a3522a781c20adef1",
+          "node": 16,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 776,
               "column": 13,
@@ -245,7 +250,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Yarn@2"
@@ -253,9 +257,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 890,
             "column": 13,
@@ -268,12 +271,12 @@
           }
         }
       },
-      "id": "diag_90912c8b0c10f0f51cf6",
+      "id": "diag_cd66cae9e74845efe7790d4c4d5d028ed128d5b752de83d78da4813d0ff9bdf2",
       "message": "dependency is not pinned to immutable content: Yarn@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 890,
           "column": 13,
@@ -288,9 +291,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_61788ffb25b1b73af7e9",
+          "node": 18,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 890,
               "column": 13,
@@ -306,7 +309,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Yarn@2"
@@ -314,9 +316,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 993,
             "column": 13,
@@ -329,12 +330,12 @@
           }
         }
       },
-      "id": "diag_b1d1001e74bb36cd8df7",
+      "id": "diag_4684aa2ed40ef6f8605663c0872ff9b0c79e2dea409d28d9a652ad847da84991",
       "message": "dependency is not pinned to immutable content: Yarn@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 993,
           "column": 13,
@@ -349,9 +350,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f1788d8b6c95020fa22c",
+          "node": 20,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 993,
               "column": 13,
@@ -367,7 +368,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Yarn@2"
@@ -375,9 +375,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1100,
             "column": 13,
@@ -390,12 +389,12 @@
           }
         }
       },
-      "id": "diag_e0f8bb60608773a676ca",
+      "id": "diag_d62389ad9db639c07e25a42e8271dcba11ec65f433fa3985ca27d964bba0488d",
       "message": "dependency is not pinned to immutable content: Yarn@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1100,
           "column": 13,
@@ -410,9 +409,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_5ad9c62dcced205275dd",
+          "node": 22,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1100,
               "column": 13,
@@ -428,7 +427,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Yarn@2"
@@ -436,9 +434,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1203,
             "column": 13,
@@ -451,12 +448,12 @@
           }
         }
       },
-      "id": "diag_9bfa389bf70242e30d96",
+      "id": "diag_a6e79d125c5f3414a9cb82e38a2640d007b7e06b27aecdf137a33881700e43ca",
       "message": "dependency is not pinned to immutable content: Yarn@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1203,
           "column": 13,
@@ -471,9 +468,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d174d07384e05377534e",
+          "node": 24,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1203,
               "column": 13,
@@ -489,7 +486,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Yarn@2"
@@ -497,9 +493,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/smapiot/piral/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1304,
             "column": 13,
@@ -512,12 +507,12 @@
           }
         }
       },
-      "id": "diag_f6dba43715546a26ea4b",
+      "id": "diag_f8db2b6809bedbbfc32f2d255caef4b0335c55f13da792ecdcd2f1bdff1d39e7",
       "message": "dependency is not pinned to immutable content: Yarn@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/smapiot/piral/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1304,
           "column": 13,
@@ -532,9 +527,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_acfd58d6554f3daaab5b",
+          "node": 26,
           "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1304,
               "column": 13,
@@ -550,2016 +545,40 @@
       ]
     }
   ],
-  "digest": "sha256:e2e1a6ddb60b76724da719d50813f459345deef62a81a663722fbec2396fcd35",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_d0ef81579568ca2d0cfb",
-          "id": "wv_01af715b7cb2c435ab34",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f1788d8b6c95020fa22c"
-        },
-        {
-          "condition": true,
-          "from": "wv_a5a6240a5435305a21ca",
-          "id": "wv_03e6bd117a9ae24e5615",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_22ce5b1231fb205e6e1d"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeeded()"
-          },
-          "from": "wv_841cf61c8e913603bc22",
-          "id": "wv_04531c621714fbc64d82",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_42b1483a83cf3657d14f"
-        },
-        {
-          "condition": true,
-          "from": "wv_303f52bbb9334a88174e",
-          "id": "wv_056d7e58d625bc0547f3",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_a732030ff0083c527897"
-        },
-        {
-          "condition": true,
-          "from": "wv_b182f6139f72b1ec3aaa",
-          "id": "wv_10d4e05d75bb587de647",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3adfabacf5a2f91a7347"
-        },
-        {
-          "condition": true,
-          "from": "wv_b44b11feef66d8e92446",
-          "id": "wv_1c84162433367d2797fe",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_bb5cde36a60230dec6a0"
-        },
-        {
-          "condition": true,
-          "from": "wv_d0663e97e71200068c14",
-          "id": "wv_2188b703f9b81a57d7b0",
-          "kind": "call",
-          "label": null,
-          "to": "wv_0bfa78aefc665bd36b5c"
-        },
-        {
-          "condition": true,
-          "from": "wv_e5cb4081f0e2b2faaed7",
-          "id": "wv_2520649ee347c4606f80",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_405bab11de503f515ded"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e34ea8aa68622d7dd0c",
-          "id": "wv_2602b460075614e52513",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5ad9c62dcced205275dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_d94a632e1440597198ee",
-          "id": "wv_2659cef9279e537e0ff2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e5cb4081f0e2b2faaed7"
-        },
-        {
-          "condition": true,
-          "from": "wv_9ce2305adb5fb6c5a1fb",
-          "id": "wv_2abeb928c7b26787aff7",
-          "kind": "call",
-          "label": null,
-          "to": "wv_61788ffb25b1b73af7e9"
-        },
-        {
-          "condition": true,
-          "from": "wv_e5cb4081f0e2b2faaed7",
-          "id": "wv_2aef132284766e65e08a",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_841cf61c8e913603bc22"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e34ea8aa68622d7dd0c",
-          "id": "wv_2edaf5a54dc47d104025",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_52885b37151c3f76b51e"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_31833ac5a0ff0fcb7643",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0e34ea8aa68622d7dd0c"
-        },
-        {
-          "condition": true,
-          "from": "wv_d0ef81579568ca2d0cfb",
-          "id": "wv_3227d3a27303334f4c8c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f1788d8b6c95020fa22c"
-        },
-        {
-          "condition": true,
-          "from": "wv_1230a492cb53cca22b66",
-          "id": "wv_329a0a1721e6420bb683",
-          "kind": "data",
-          "label": "releaseBranch",
-          "to": "wv_d94a632e1440597198ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_d45f24b3da486ac7c75d",
-          "id": "wv_39195d5cd7f27e68ce69",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d0663e97e71200068c14"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_3df6af4eee6d35464dc0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_52885b37151c3f76b51e"
-        },
-        {
-          "condition": true,
-          "from": "wv_d299aa09141874531f14",
-          "id": "wv_44a77bc0609172097259",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bb5cde36a60230dec6a0"
-        },
-        {
-          "condition": true,
-          "from": "wv_0927a750cf9b184df802",
-          "id": "wv_5244bd6227f6709aef7b",
-          "kind": "data",
-          "label": "nodeVersion",
-          "to": "wv_d94a632e1440597198ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_53ab1d917cea8e81f347",
-          "kind": "control",
-          "label": null,
-          "to": "wv_781c500b1c32063b76a9"
-        },
-        {
-          "condition": true,
-          "from": "wv_f92803d879df63dd23d8",
-          "id": "wv_58e010dbd15a0bc969f9",
-          "kind": "call",
-          "label": null,
-          "to": "wv_acfd58d6554f3daaab5b"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_5a31cc7d5cf04de6dff8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f92803d879df63dd23d8"
-        },
-        {
-          "condition": true,
-          "from": "wv_6f445ffbdba9b8bf2c12",
-          "id": "wv_5b24d0e432dee17603d4",
-          "kind": "data",
-          "label": "agentName",
-          "to": "wv_d94a632e1440597198ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_5bc28ef535f45ca3180f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9ce2305adb5fb6c5a1fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_e5cb4081f0e2b2faaed7",
-          "id": "wv_5cf50020f3a4905a25ad",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ad17ae9c2d4f42f3ae2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6682d3f3130a50ec1c",
-          "id": "wv_5f280ba1c23afbdf75e4",
-          "kind": "call",
-          "label": null,
-          "to": "wv_8330fc9df1638be32a8f"
-        },
-        {
-          "condition": true,
-          "from": "wv_b182f6139f72b1ec3aaa",
-          "id": "wv_65425cbee21adb0f8cef",
-          "kind": "control",
-          "label": null,
-          "to": "wv_22ce5b1231fb205e6e1d"
-        },
-        {
-          "condition": true,
-          "from": "wv_d94a632e1440597198ee",
-          "id": "wv_70a0b250538c710277da",
-          "kind": "control",
-          "label": null,
-          "to": "wv_841cf61c8e913603bc22"
-        },
-        {
-          "condition": true,
-          "from": "wv_d94a632e1440597198ee",
-          "id": "wv_710564a9ae729f9bb118",
-          "kind": "control",
-          "label": null,
-          "to": "wv_405bab11de503f515ded"
-        },
-        {
-          "condition": true,
-          "from": "wv_f92803d879df63dd23d8",
-          "id": "wv_745a9064141e966b1852",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d55c6902e0802cea6bfa"
-        },
-        {
-          "condition": true,
-          "from": "wv_f92803d879df63dd23d8",
-          "id": "wv_746e67ad85baea1132f9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_acfd58d6554f3daaab5b"
-        },
-        {
-          "condition": true,
-          "from": "wv_781c500b1c32063b76a9",
-          "id": "wv_754a09d7dcd2a4030c28",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b73a3522a781c20adef1"
-        },
-        {
-          "condition": true,
-          "from": "wv_781c500b1c32063b76a9",
-          "id": "wv_75924fc10842fae45947",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9ce2305adb5fb6c5a1fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_1cf0bee03a4cc265d666",
-          "id": "wv_815500e096fbf8bb8188",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d94a632e1440597198ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_781c500b1c32063b76a9",
-          "id": "wv_8528b0169d6acfaa2fb6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b73a3522a781c20adef1"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6682d3f3130a50ec1c",
-          "id": "wv_85adb481327b2e2e1b9d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_781c500b1c32063b76a9"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7aa1efb61fc96057a2f",
-          "id": "wv_8bfa1bc1ee8788ad60b6",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_e597323eb8189a79ed02"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6682d3f3130a50ec1c",
-          "id": "wv_8cb922ee888cfe37dbba",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8330fc9df1638be32a8f"
-        },
-        {
-          "condition": true,
-          "from": "wv_d45f24b3da486ac7c75d",
-          "id": "wv_8ff1923f74b33dbc6b06",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a58a06c8ea742e3cb0b5"
-        },
-        {
-          "condition": true,
-          "from": "wv_52885b37151c3f76b51e",
-          "id": "wv_929c4dc3e6f1dfcf10b4",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f92803d879df63dd23d8"
-        },
-        {
-          "condition": true,
-          "from": "wv_42b1483a83cf3657d14f",
-          "id": "wv_939ece6e4fbcde8eec4b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e597323eb8189a79ed02"
-        },
-        {
-          "condition": true,
-          "from": "wv_e5cb4081f0e2b2faaed7",
-          "id": "wv_949e2fec2baa4cf551fe",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_5dd12405a98f2f471faa"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_94e2244d92ce7c0bf013",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d55c6902e0802cea6bfa"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_a83f18ff973a789aca63",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d45f24b3da486ac7c75d"
-        },
-        {
-          "condition": true,
-          "from": "wv_d94a632e1440597198ee",
-          "id": "wv_b34bc4624f4826b7cc17",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5dd12405a98f2f471faa"
-        },
-        {
-          "condition": true,
-          "from": "wv_52885b37151c3f76b51e",
-          "id": "wv_b4bfa87ae5a606a61537",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d174d07384e05377534e"
-        },
-        {
-          "condition": true,
-          "from": "wv_9ce2305adb5fb6c5a1fb",
-          "id": "wv_b60862a714a9151306d6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d0ef81579568ca2d0cfb"
-        },
-        {
-          "condition": true,
-          "from": "wv_d0663e97e71200068c14",
-          "id": "wv_ba67e7aafe746730cfb7",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_8b6682d3f3130a50ec1c"
-        },
-        {
-          "condition": true,
-          "from": "wv_d0663e97e71200068c14",
-          "id": "wv_bb7fea27d105d3f0cc45",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0bfa78aefc665bd36b5c"
-        },
-        {
-          "condition": true,
-          "from": "wv_52885b37151c3f76b51e",
-          "id": "wv_bbf8896e4a8bd65ac112",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d174d07384e05377534e"
-        },
-        {
-          "condition": true,
-          "from": "wv_9ce2305adb5fb6c5a1fb",
-          "id": "wv_bd1c007247f642c80b5f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_61788ffb25b1b73af7e9"
-        },
-        {
-          "condition": true,
-          "from": "wv_f305abedb41ee6aeddad",
-          "id": "wv_beb873275834ee66469a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d94a632e1440597198ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_55a073c612b45c424937",
-          "id": "wv_c095e8c7e6da93c42913",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_3adfabacf5a2f91a7347"
-        },
-        {
-          "condition": true,
-          "from": "wv_d0ef81579568ca2d0cfb",
-          "id": "wv_d41c4d880b93b833a313",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_0e34ea8aa68622d7dd0c"
-        },
-        {
-          "condition": true,
-          "from": "wv_a53728d75602f225e920",
-          "id": "wv_d6f840417d1cb48a022c",
-          "kind": "data",
-          "label": "documentBranch",
-          "to": "wv_d94a632e1440597198ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_d45f24b3da486ac7c75d",
-          "id": "wv_d84b951fae65d9987489",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a58a06c8ea742e3cb0b5"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_da8d973704a6a9acc73d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8b6682d3f3130a50ec1c"
-        },
-        {
-          "condition": true,
-          "from": "wv_0e34ea8aa68622d7dd0c",
-          "id": "wv_efe7670a6684378b0878",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5ad9c62dcced205275dd"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeeded()"
-          },
-          "from": "wv_405bab11de503f515ded",
-          "id": "wv_f87a0e1fd505d583f441",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_b182f6139f72b1ec3aaa"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_f8b30b26581eb457f605",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d0663e97e71200068c14"
-        },
-        {
-          "condition": true,
-          "from": "wv_b182f6139f72b1ec3aaa",
-          "id": "wv_f942a402b4146fd07b2d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a732030ff0083c527897"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad17ae9c2d4f42f3ae2d",
-          "id": "wv_fb4648eb33bbf53d6ae4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d0ef81579568ca2d0cfb"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeeded()"
-          },
-          "from": "wv_5dd12405a98f2f471faa",
-          "id": "wv_fd82f5f5b5846179bd2a",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_d299aa09141874531f14"
-        },
-        {
-          "condition": true,
-          "from": "wv_d55c6902e0802cea6bfa",
-          "id": "wv_fe5ee0b7663259ccff2d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_eba3f40ccab81b2dd88e"
-        }
-      ],
-      "entrypoints": [
-        "wv_d94a632e1440597198ee"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/smapiot/piral/azure-pipelines.yml",
-                    "start": {
-                      "byte": 270,
-                      "column": 10,
-                      "line": 17
-                    },
-                    "stop": {
-                      "byte": 279,
-                      "column": 19,
-                      "line": 17
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "22.12.0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0927a750cf9b184df802",
-          "kind": "resource",
-          "name": "variable:nodeVersion",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 243,
-              "column": 3,
-              "line": 16
-            },
-            "stop": {
-              "byte": 279,
-              "column": 19,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0bfa78aefc665bd36b5c",
-          "kind": "call",
-          "name": "YarnInstaller@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 576,
-              "column": 13,
-              "line": 33
-            },
-            "stop": {
-              "byte": 591,
-              "column": 28,
-              "line": 33
-            }
-          },
-          "unknown": {
-            "detail": "YarnInstaller@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0e34ea8aa68622d7dd0c",
-          "kind": "step",
-          "name": "Build Full Demo",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1094,
-              "column": 7,
-              "line": 53
-            },
-            "stop": {
-              "byte": 1190,
-              "column": 35,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/smapiot/piral/azure-pipelines.yml",
-                    "start": {
-                      "byte": 186,
-                      "column": 10,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 192,
-                      "column": 16,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "main"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1230a492cb53cca22b66",
-          "kind": "resource",
-          "name": "variable:releaseBranch",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 157,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 192,
-              "column": 16,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1cf0bee03a4cc265d666",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 11,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 53,
-              "column": 20,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_22ce5b1231fb205e6e1d",
-          "kind": "job",
-          "name": "DeployFullDemo",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 4808,
-              "column": 5,
-              "line": 186
-            },
-            "stop": {
-              "byte": 5552,
-              "column": 39,
-              "line": 209
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_303f52bbb9334a88174e",
-          "kind": "resource",
-          "name": "environment:demo-cross-piral-io",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 4174,
-              "column": 18,
-              "line": 165
-            },
-            "stop": {
-              "byte": 4195,
-              "column": 39,
-              "line": 165
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_3adfabacf5a2f91a7347",
-          "kind": "job",
-          "name": "DeployCoreDemo",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 3300,
-              "column": 5,
-              "line": 136
-            },
-            "stop": {
-              "byte": 4044,
-              "column": 39,
-              "line": 159
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/smapiot/piral/azure-pipelines.yml",
-                    "start": {
-                      "byte": 3275,
-                      "column": 14,
-                      "line": 133
-                    },
-                    "stop": {
-                      "byte": 3286,
-                      "column": 25,
-                      "line": 133
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeeded()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeeded()"
-          },
-          "effects": [],
-          "id": "wv_405bab11de503f515ded",
-          "kind": "gate",
-          "name": "condition:stage:DeployDemos",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 3275,
-              "column": 14,
-              "line": 133
-            },
-            "stop": {
-              "byte": 3286,
-              "column": 25,
-              "line": 133
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_42b1483a83cf3657d14f",
-          "kind": "stage",
-          "name": "DeployHomepage",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1471,
-              "column": 3,
-              "line": 68
-            },
-            "stop": {
-              "byte": 2312,
-              "column": 39,
-              "line": 97
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_52885b37151c3f76b51e",
-          "kind": "step",
-          "name": "Build Landing Page",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1197,
-              "column": 7,
-              "line": 57
-            },
-            "stop": {
-              "byte": 1291,
-              "column": 30,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_55a073c612b45c424937",
-          "kind": "resource",
-          "name": "environment:demo-core-piral-io",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 3422,
-              "column": 18,
-              "line": 140
-            },
-            "stop": {
-              "byte": 3442,
-              "column": 38,
-              "line": 140
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5ad9c62dcced205275dd",
-          "kind": "call",
-          "name": "Yarn@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1100,
-              "column": 13,
-              "line": 53
-            },
-            "stop": {
-              "byte": 1106,
-              "column": 19,
-              "line": 53
-            }
-          },
-          "unknown": {
-            "detail": "Yarn@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/smapiot/piral/azure-pipelines.yml",
-                    "start": {
-                      "byte": 2411,
-                      "column": 14,
-                      "line": 102
-                    },
-                    "stop": {
-                      "byte": 2422,
-                      "column": 25,
-                      "line": 102
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeeded()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeeded()"
-          },
-          "effects": [],
-          "id": "wv_5dd12405a98f2f471faa",
-          "kind": "gate",
-          "name": "condition:stage:DeployDocumentation",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 2411,
-              "column": 14,
-              "line": 102
-            },
-            "stop": {
-              "byte": 2422,
-              "column": 25,
-              "line": 102
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_61788ffb25b1b73af7e9",
-          "kind": "call",
-          "name": "Yarn@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 890,
-              "column": 13,
-              "line": 45
-            },
-            "stop": {
-              "byte": 896,
-              "column": 19,
-              "line": 45
-            }
-          },
-          "unknown": {
-            "detail": "Yarn@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/smapiot/piral/azure-pipelines.yml",
-                    "start": {
-                      "byte": 139,
-                      "column": 10,
-                      "line": 11
-                    },
-                    "stop": {
-                      "byte": 154,
-                      "column": 25,
-                      "line": 11
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ubuntu-latest"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6f445ffbdba9b8bf2c12",
-          "kind": "resource",
-          "name": "variable:agentName",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 114,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 154,
-              "column": 25,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_781c500b1c32063b76a9",
-          "kind": "step",
-          "name": "Assemble Packages",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 770,
-              "column": 7,
-              "line": 41
-            },
-            "stop": {
-              "byte": 877,
-              "column": 44,
-              "line": 44
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8330fc9df1638be32a8f",
-          "kind": "call",
-          "name": "Yarn@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 676,
-              "column": 13,
-              "line": 37
-            },
-            "stop": {
-              "byte": 682,
-              "column": 19,
-              "line": 37
-            }
-          },
-          "unknown": {
-            "detail": "Yarn@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/smapiot/piral/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1552,
-                      "column": 14,
-                      "line": 71
-                    },
-                    "stop": {
-                      "byte": 1563,
-                      "column": 25,
-                      "line": 71
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "succeeded()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "succeeded()"
-          },
-          "effects": [],
-          "id": "wv_841cf61c8e913603bc22",
-          "kind": "gate",
-          "name": "condition:stage:DeployHomepage",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1552,
-              "column": 14,
-              "line": 71
-            },
-            "stop": {
-              "byte": 1563,
-              "column": 25,
-              "line": 71
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8b6682d3f3130a50ec1c",
-          "kind": "step",
-          "name": "Install Dependencies",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 670,
-              "column": 7,
-              "line": 37
-            },
-            "stop": {
-              "byte": 763,
-              "column": 27,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9ce2305adb5fb6c5a1fb",
-          "kind": "step",
-          "name": "Build Core Demo",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 884,
-              "column": 7,
-              "line": 45
-            },
-            "stop": {
-              "byte": 980,
-              "column": 35,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/smapiot/piral/azure-pipelines.yml",
-                    "start": {
-                      "byte": 225,
-                      "column": 10,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 240,
-                      "column": 25,
-                      "line": 15
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "documentation"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a53728d75602f225e920",
-          "kind": "resource",
-          "name": "variable:documentBranch",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 195,
-              "column": 3,
-              "line": 14
-            },
-            "stop": {
-              "byte": 240,
-              "column": 25,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a58a06c8ea742e3cb0b5",
-          "kind": "call",
-          "name": "NodeTool@0",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 460,
-              "column": 13,
-              "line": 29
-            },
-            "stop": {
-              "byte": 470,
-              "column": 23,
-              "line": 29
-            }
-          },
-          "unknown": {
-            "detail": "NodeTool@0",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a5a6240a5435305a21ca",
-          "kind": "resource",
-          "name": "environment:demo-full-piral-io",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 4930,
-              "column": 18,
-              "line": 190
-            },
-            "stop": {
-              "byte": 4950,
-              "column": 38,
-              "line": 190
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_a732030ff0083c527897",
-          "kind": "job",
-          "name": "DeployCrossDemo",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 4050,
-              "column": 5,
-              "line": 161
-            },
-            "stop": {
-              "byte": 4802,
-              "column": 39,
-              "line": 184
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_acfd58d6554f3daaab5b",
-          "kind": "call",
-          "name": "Yarn@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1304,
-              "column": 13,
-              "line": 61
-            },
-            "stop": {
-              "byte": 1310,
-              "column": 19,
-              "line": 61
-            }
-          },
-          "unknown": {
-            "detail": "Yarn@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ad17ae9c2d4f42f3ae2d",
-          "kind": "job",
-          "name": "BuildCode",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 345,
-              "column": 5,
-              "line": 24
-            },
-            "stop": {
-              "byte": 1467,
-              "column": 23,
-              "line": 66
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b182f6139f72b1ec3aaa",
-          "kind": "stage",
-          "name": "DeployDemos",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 3196,
-              "column": 3,
-              "line": 130
-            },
-            "stop": {
-              "byte": 5552,
-              "column": 39,
-              "line": 209
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b44b11feef66d8e92446",
-          "kind": "resource",
-          "name": "environment:docs-piral-io",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 2576,
-              "column": 18,
-              "line": 109
-            },
-            "stop": {
-              "byte": 2591,
-              "column": 33,
-              "line": 109
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b73a3522a781c20adef1",
-          "kind": "call",
-          "name": "Yarn@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 776,
-              "column": 13,
-              "line": 41
-            },
-            "stop": {
-              "byte": 782,
-              "column": 19,
-              "line": 41
-            }
-          },
-          "unknown": {
-            "detail": "Yarn@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b7aa1efb61fc96057a2f",
-          "kind": "resource",
-          "name": "environment:www-piral-io",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1705,
-              "column": 18,
-              "line": 78
-            },
-            "stop": {
-              "byte": 1719,
-              "column": 32,
-              "line": 78
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_bb5cde36a60230dec6a0",
-          "kind": "job",
-          "name": "DeployDocumentationPage",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 2436,
-              "column": 5,
-              "line": 105
-            },
-            "stop": {
-              "byte": 3192,
-              "column": 39,
-              "line": 128
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d0663e97e71200068c14",
-          "kind": "step",
-          "name": "Install Yarn",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 570,
-              "column": 7,
-              "line": 33
-            },
-            "stop": {
-              "byte": 663,
-              "column": 26,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d0ef81579568ca2d0cfb",
-          "kind": "step",
-          "name": "Build CrossFx Demo",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 987,
-              "column": 7,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1087,
-              "column": 36,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d174d07384e05377534e",
-          "kind": "call",
-          "name": "Yarn@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1203,
-              "column": 13,
-              "line": 57
-            },
-            "stop": {
-              "byte": 1209,
-              "column": 19,
-              "line": 57
-            }
-          },
-          "unknown": {
-            "detail": "Yarn@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d299aa09141874531f14",
-          "kind": "stage",
-          "name": "DeployDocumentation",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 2316,
-              "column": 3,
-              "line": 99
-            },
-            "stop": {
-              "byte": 3192,
-              "column": 39,
-              "line": 128
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d45f24b3da486ac7c75d",
-          "kind": "step",
-          "name": "Use Node $(nodeVersion)",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 454,
-              "column": 7,
-              "line": 29
-            },
-            "stop": {
-              "byte": 563,
-              "column": 36,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d55c6902e0802cea6bfa",
-          "kind": "step",
-          "name": "step 10",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1397,
-              "column": 7,
-              "line": 65
-            },
-            "stop": {
-              "byte": 1467,
-              "column": 23,
-              "line": 66
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d94a632e1440597198ee",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 5552,
-              "column": 39,
-              "line": 209
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_e597323eb8189a79ed02",
-          "kind": "job",
-          "name": "DeployLandingPage",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1577,
-              "column": 5,
-              "line": 74
-            },
-            "stop": {
-              "byte": 2312,
-              "column": 39,
-              "line": 97
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e5cb4081f0e2b2faaed7",
-          "kind": "stage",
-          "name": "Build",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 291,
-              "column": 3,
-              "line": 20
-            },
-            "stop": {
-              "byte": 1467,
-              "column": 23,
-              "line": 66
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_eba3f40ccab81b2dd88e",
-          "kind": "opaque",
-          "name": "unsupported Azure step step 10",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1397,
-              "column": 7,
-              "line": 65
-            },
-            "stop": {
-              "byte": 1467,
-              "column": 23,
-              "line": 66
-            }
-          },
-          "unknown": {
-            "detail": "Azure step kind",
-            "kind": "unsupported_syntax"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f1788d8b6c95020fa22c",
-          "kind": "call",
-          "name": "Yarn@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 993,
-              "column": 13,
-              "line": 49
-            },
-            "stop": {
-              "byte": 999,
-              "column": 19,
-              "line": 49
-            }
-          },
-          "unknown": {
-            "detail": "Yarn@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f305abedb41ee6aeddad",
-          "kind": "trigger",
-          "name": "pr",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 59,
-              "column": 5,
-              "line": 6
-            },
-            "stop": {
-              "byte": 63,
-              "column": 9,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f92803d879df63dd23d8",
-          "kind": "step",
-          "name": "Build Documentation",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/smapiot/piral/azure-pipelines.yml",
-            "start": {
-              "byte": 1298,
-              "column": 7,
-              "line": 61
-            },
-            "stop": {
-              "byte": 1390,
-              "column": 27,
-              "line": 64
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/smapiot/piral/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:3fd8f34fee50129531ce5c87c06448f530d2942d9e5e84fb9992d6ace4d45bb7",
-      "path": "azure/smapiot/piral/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:e1eb826c1f6f063474232e4bdbf1207db4eb725fa5b51c995a3033041f57bad9",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:fcdcaf238b6f09f6d6f0e0dbcf2d32b94f9e2be33a6839eb80dcdf3faf4b18fe",
+    "sources": [
+      {
+        "digest": "sha256:3fd8f34fee50129531ce5c87c06448f530d2942d9e5e84fb9992d6ace4d45bb7",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
@@ -2586,82 +605,72 @@
           "kind": "external_state"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 9,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 65,
+    "nodes": 45,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

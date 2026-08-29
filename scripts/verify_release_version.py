@@ -57,7 +57,7 @@ def validate(
             _match(
                 "Cargo workspace",
                 r'(?ms)^\[workspace\.package\]\s*.*?^version\s*=\s*"([^"]+)"\s*$',
-                _read(root, "helpers/Cargo.toml"),
+                _read(root, "Cargo.toml"),
             ),
         ),
     ]

@@ -104,12 +104,12 @@ def compare(directories: list[Path]) -> dict[str, Any]:
             if (platforms[platform] / name).read_bytes() != expected:
                 failures.append(f"{name} differs between {baseline} and {platform}")
     report_semantics = {
-        platform: report_semantic_bytes((directory / "report-v3.json").read_bytes())
+        platform: report_semantic_bytes((directory / "report.json").read_bytes())
         for platform, directory in platforms.items()
     }
     for platform in ordered[1:]:
         if report_semantics[platform] != report_semantics[baseline]:
-            failures.append(f"report-v3 semantic content differs between {baseline} and {platform}")
+            failures.append(f"report semantic content differs between {baseline} and {platform}")
     common = [
         artifact
         for artifact in manifests[baseline]["artifacts"]
@@ -120,7 +120,7 @@ def compare(directories: list[Path]) -> dict[str, Any]:
         raw = next(
             artifact
             for artifact in manifests[platform]["artifacts"]
-            if artifact["name"] == "report-v3.json"
+            if artifact["name"] == "report.json"
         )
         reports.append(
             {

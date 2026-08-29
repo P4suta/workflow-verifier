@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:3cb68ff473534897e43827998c93000fb8cc990ee2cd8b4a298a10902947f7f8",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/cache@v6",
+      "Incomplete.Unresolved_dependency: actions/checkout@v7",
+      "Incomplete.Unresolved_dependency: actions/setup-python@v6"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v7"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 199,
             "column": 15,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_23d425591f9a0cfbc478",
+      "id": "diag_5654ba0e4f374930454f3a0718abe6e95f36619bf7a5871c3d65a8c6d1f5a003",
       "message": "dependency is not pinned to immutable content: actions/checkout@v7",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 199,
           "column": 15,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_7a7fa35511f043a845b5",
+          "node": 4,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 199,
               "column": 15,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v6"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 262,
             "column": 15,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_50db433d888370e8512e",
+      "id": "diag_f5e0eaa8800cf110990eff044bac9dc227d60551d51ceeea3c21fd505c90bf0b",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v6",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 262,
           "column": 15,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_50a17b394ebf77f26923",
+          "node": 6,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 262,
               "column": 15,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/cache@v6"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 378,
             "column": 15,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_a82e2f53657e31db3eb0",
+      "id": "diag_da5f036a5e5aeb246cff933757008438bb170a60bf8c41321e4582a341c8c57f",
       "message": "dependency is not pinned to immutable content: actions/cache@v6",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 378,
           "column": 15,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_87cca98f0b1fd2aadfc4",
+          "node": 8,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 378,
               "column": 15,
@@ -195,9 +200,8 @@
       "fix": {
         "description": "pass the value through an environment variable and quote it in the target shell",
         "kind": "environment-boundary",
-        "replacement": null,
         "span": {
-          "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 1031,
             "column": 14,
@@ -210,12 +214,12 @@
           }
         }
       },
-      "id": "diag_eaf2a3689a650f4fae52",
+      "id": "diag_2d3bca0912666a4d5aa1ed90a964187531964b43b5c188eb3a175e796782b044",
       "message": "untrusted workflow data reaches a shell command boundary",
       "rule_id": "WV-SEC-001",
       "severity": "error",
       "span": {
-        "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 1031,
           "column": 14,
@@ -230,26 +234,26 @@
       "trace": [
         {
           "label": "untrusted source",
-          "node_id": "wv_2d84628896c42f9dc570",
+          "node": 19,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
-              "byte": 1558,
-              "column": 541,
+              "byte": 1215,
+              "column": 198,
               "line": 43
             },
             "stop": {
-              "byte": 1573,
-              "column": 556,
+              "byte": 1230,
+              "column": 213,
               "line": 43
             }
           }
         },
         {
           "label": "command sink",
-          "node_id": "wv_0525a5763f12e3ffd699",
+          "node": 16,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 1031,
               "column": 14,
@@ -274,13 +278,12 @@
       "evidence": [
         "dominator set contains no Gate node"
       ],
-      "fix": null,
-      "id": "diag_72d630a65394990ba501",
+      "id": "diag_2b3ff423fd0c7304cc9ab4e2e10935f6998a79d0fb82972cd6f63e02c87d1f04",
       "message": "a privileged effect is reachable without a dominating authorization gate",
       "rule_id": "WV-AUTH-001",
       "severity": "error",
       "span": {
-        "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 2518,
           "column": 14,
@@ -295,9 +298,9 @@
       "trace": [
         {
           "label": "authorization bypass",
-          "node_id": "wv_6f121c1c43a60f7e01a7",
+          "node": 0,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 0,
               "column": 1,
@@ -312,9 +315,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_3b83563d9563af7f21c1",
+          "node": 2,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 63,
               "column": 3,
@@ -329,9 +332,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_906b49a67053be20b950",
+          "node": 23,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 1719,
               "column": 9,
@@ -346,9 +349,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_a725b4cdb9eb7dab6e54",
+          "node": 27,
           "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 2518,
               "column": 14,
@@ -364,1742 +367,70 @@
       ]
     }
   ],
-  "digest": "sha256:5c6c0f1ce500e8f9131398225a68a048a7e06beaa7a0af153fa47084e7a0f251",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_c75e79633b24ec5b7106",
-          "id": "wv_00d23276916f93713bca",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_df1e4ac90f1264ecefcc"
-        },
-        {
-          "condition": true,
-          "from": "wv_c75e79633b24ec5b7106",
-          "id": "wv_014937f91fb40e2a8d5c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_50a17b394ebf77f26923"
-        },
-        {
-          "condition": true,
-          "from": "wv_3a032e3d20549d002a31",
-          "id": "wv_0d0b4adb556747e717f3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8170ed60235707f74556"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_110ab8081e7c669b69f6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_79ef1007056085e77903"
-        },
-        {
-          "condition": true,
-          "from": "wv_85198c95bea86b26da6d",
-          "id": "wv_1883014e9e57dcee9044",
-          "kind": "data",
-          "label": "HOME",
-          "to": "wv_0525a5763f12e3ffd699"
-        },
-        {
-          "condition": true,
-          "from": "wv_b5ed3baced48f9b8d86c",
-          "id": "wv_244aeb4e9f8cb2bcfaba",
-          "kind": "data",
-          "label": "github.ref_name",
-          "to": "wv_0525a5763f12e3ffd699"
-        },
-        {
-          "condition": true,
-          "from": "wv_66ee1448ac0c30230452",
-          "id": "wv_252f78369186c44ccd10",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7a7fa35511f043a845b5"
-        },
-        {
-          "condition": true,
-          "from": "wv_af3e2a02509bab533e91",
-          "id": "wv_2c8ab4e1064b929ff542",
-          "kind": "data",
-          "label": "GH_TOKEN",
-          "to": "wv_a725b4cdb9eb7dab6e54"
-        },
-        {
-          "condition": true,
-          "from": "wv_a543061ebfab40b036c2",
-          "id": "wv_2fe326e7f24d092d88e1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_906b49a67053be20b950"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_310bf11c9f7c89bdf6e2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3a032e3d20549d002a31"
-        },
-        {
-          "condition": true,
-          "from": "wv_6f121c1c43a60f7e01a7",
-          "id": "wv_32bcc0f69c5f545acd0f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3b83563d9563af7f21c1"
-        },
-        {
-          "condition": true,
-          "from": "wv_0226ad6cea389480a8df",
-          "id": "wv_34c2e12d0a490a293965",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bc55b5bb60d30ed8dbc0"
-        },
-        {
-          "condition": true,
-          "from": "wv_df1e4ac90f1264ecefcc",
-          "id": "wv_3ba712dbc1d56ce87daf",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_0226ad6cea389480a8df"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_3ee18575e07c0c17e734",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a543061ebfab40b036c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_9db00bad7bc8c98ab82f",
-          "id": "wv_4e630a4c1fe5f7d7371c",
-          "kind": "data",
-          "label": "RELEASE_NOTES",
-          "to": "wv_a725b4cdb9eb7dab6e54"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_50e24121ae828d7babc4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c75e79633b24ec5b7106"
-        },
-        {
-          "condition": true,
-          "from": "wv_cf0dcf41d3fa9819831d",
-          "id": "wv_58d24396e0d447a99a35",
-          "kind": "data",
-          "label": "github.token",
-          "to": "wv_af3e2a02509bab533e91"
-        },
-        {
-          "condition": true,
-          "from": "wv_a543061ebfab40b036c2",
-          "id": "wv_59cf7c38211e422b8145",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0525a5763f12e3ffd699"
-        },
-        {
-          "condition": true,
-          "from": "wv_0226ad6cea389480a8df",
-          "id": "wv_65a69a7789073411e833",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3a032e3d20549d002a31"
-        },
-        {
-          "condition": true,
-          "from": "wv_df1e4ac90f1264ecefcc",
-          "id": "wv_6e9950f2f747a7cc23b9",
-          "kind": "call",
-          "label": null,
-          "to": "wv_87cca98f0b1fd2aadfc4"
-        },
-        {
-          "condition": true,
-          "from": "wv_007694e9b2e640ca2ada",
-          "id": "wv_9d46798173882174028f",
-          "kind": "data",
-          "label": "BOOT_APP0",
-          "to": "wv_0525a5763f12e3ffd699"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_9ea0fff0313df24a8c7c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_66ee1448ac0c30230452"
-        },
-        {
-          "condition": true,
-          "from": "wv_906b49a67053be20b950",
-          "id": "wv_a219f2f828c1e39cc70b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a725b4cdb9eb7dab6e54"
-        },
-        {
-          "condition": true,
-          "from": "wv_df1e4ac90f1264ecefcc",
-          "id": "wv_a3bdb0f567305eb4909a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_87cca98f0b1fd2aadfc4"
-        },
-        {
-          "condition": true,
-          "from": "wv_42eb8e8a3a7e916b941b",
-          "id": "wv_b1439f3c0d4be047c510",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6f121c1c43a60f7e01a7"
-        },
-        {
-          "condition": true,
-          "from": "wv_2d84628896c42f9dc570",
-          "id": "wv_bd0585e4192ca2877563",
-          "kind": "data",
-          "label": "github.ref_name",
-          "to": "wv_0525a5763f12e3ffd699"
-        },
-        {
-          "condition": true,
-          "from": "wv_c75e79633b24ec5b7106",
-          "id": "wv_c1bcc1e235529052b0f2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_50a17b394ebf77f26923"
-        },
-        {
-          "condition": true,
-          "from": "wv_66ee1448ac0c30230452",
-          "id": "wv_c49ea87d681412fcb744",
-          "kind": "call",
-          "label": null,
-          "to": "wv_7a7fa35511f043a845b5"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_c6e6ca5d1214250228cc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_906b49a67053be20b950"
-        },
-        {
-          "condition": true,
-          "from": "wv_3a032e3d20549d002a31",
-          "id": "wv_cc6eac42a000988b80f6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_79ef1007056085e77903"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_d00441523b03bfe44a7e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0226ad6cea389480a8df"
-        },
-        {
-          "condition": true,
-          "from": "wv_66ee1448ac0c30230452",
-          "id": "wv_d07d2f156e3a98a0a743",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c75e79633b24ec5b7106"
-        },
-        {
-          "condition": true,
-          "from": "wv_79ef1007056085e77903",
-          "id": "wv_d1c0cd05a6751459e750",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7e27e86b93c7e20c0833"
-        },
-        {
-          "condition": true,
-          "from": "wv_0425cb53956f614645d3",
-          "id": "wv_d454ca9c5496e1703771",
-          "kind": "data",
-          "label": "platformio.ini",
-          "to": "wv_87cca98f0b1fd2aadfc4"
-        },
-        {
-          "condition": true,
-          "from": "wv_210d37629f47950d7bcc",
-          "id": "wv_e4ca9e53c2a408b5fca6",
-          "kind": "data",
-          "label": "BOOT_APP0",
-          "to": "wv_0525a5763f12e3ffd699"
-        },
-        {
-          "condition": true,
-          "from": "wv_528407c19cfdcc49af72",
-          "id": "wv_ef947826d07f1797a7eb",
-          "kind": "data",
-          "label": "github.ref_name",
-          "to": "wv_0525a5763f12e3ffd699"
-        },
-        {
-          "condition": true,
-          "from": "wv_79ef1007056085e77903",
-          "id": "wv_f9260ce100cd2574110f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a543061ebfab40b036c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b83563d9563af7f21c1",
-          "id": "wv_f954c31b6554f03d3bf0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_df1e4ac90f1264ecefcc"
-        }
-      ],
-      "entrypoints": [
-        "wv_6f121c1c43a60f7e01a7"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "BOOT_APP0",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1421,
-                      "column": 404,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1430,
-                      "column": 413,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "BOOT_APP0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_007694e9b2e640ca2ada",
-          "kind": "resource",
-          "name": "BOOT_APP0",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1421,
-              "column": 404,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1430,
-              "column": 413,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0226ad6cea389480a8df",
-          "kind": "step",
-          "name": "Install PlatformIO and esptool",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 502,
-              "column": 9,
-              "line": 29
-            },
-            "stop": {
-              "byte": 656,
-              "column": 1,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "platformio.ini",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 473,
-                      "column": 35,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 487,
-                      "column": 49,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "platformio.ini"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0425cb53956f614645d3",
-          "kind": "resource",
-          "name": "platformio.ini",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 473,
-              "column": 35,
-              "line": 27
-            },
-            "stop": {
-              "byte": 487,
-              "column": 49,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "BOOT_APP0",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1140,
-                      "column": 123,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1149,
-                      "column": 132,
-                      "line": 43
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "BOOT_APP0",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1421,
-                      "column": 404,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1430,
-                      "column": 413,
-                      "line": 43
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "HOME",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1043,
-                      "column": 26,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1047,
-                      "column": 30,
-                      "line": 43
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1215,
-                      "column": 198,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1230,
-                      "column": 213,
-                      "line": 43
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1513,
-                      "column": 496,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1528,
-                      "column": 511,
-                      "line": 43
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1558,
-                      "column": 541,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1573,
-                      "column": 556,
-                      "line": 43
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1031,
-                      "column": 14,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1710,
-                      "column": 1,
-                      "line": 56
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "BOOT_APP0",
-                  "BOOT_APP0=\"$HOME/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin\"\ntest -f \"$BOOT_APP0\"\nesptool --chip esp32 merge-bin \\\n  --output firmware-ld2450-${{ github.ref_name }}.bin \\\n  --flash-mode dio \\\n  --flash-freq 40m \\\n  --flash-size 4MB \\\n  0x1000  .pio/build/ld2450_release/bootloader.bin \\\n  0x8000  .pio/build/ld2450_release/partitions.bin \\\n  0xe000  \"$BOOT_APP0\" \\\n  0x10000 .pio/build/ld2450_release/firmware.bin\nsha256sum firmware-ld2450-${{ github.ref_name }}.bin > firmware-ld2450-${{ github.ref_name }}.bin.sha256\n",
-                  "HOME",
-                  "github.ref_name"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0525a5763f12e3ffd699",
-          "kind": "command",
-          "name": "BOOT_APP0=\"$HOME/.platformio/packages/framework-arduinoespressif32/tools/partitions/boot_app0.bin\"\ntest -f \"$BOOT_APP0\"\nesptool --chip esp32 merge-bin \\\n  --output firmware-ld2450-${{ github.ref_name }}.bin \\\n  --flash-mode dio \\\n  --flash-freq 40m \\\n  --flash-size 4MB \\\n  0x1000  .pio/build/ld2450_release/bootloader.bin \\\n  0x8000  .pio/build/ld2450_release/partitions.bin \\\n  0xe000  \"$BOOT_APP0\" \\\n  0x10000 .pio/build/ld2450_release/firmware.bin\nsha256sum firmware-ld2450-${{ github.ref_name }}.bin > firmware-ld2450-${{ github.ref_name }}.bin.sha256\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1031,
-              "column": 14,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1710,
-              "column": 1,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "BOOT_APP0",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1140,
-                      "column": 123,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1149,
-                      "column": 132,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "BOOT_APP0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_210d37629f47950d7bcc",
-          "kind": "resource",
-          "name": "BOOT_APP0",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1140,
-              "column": 123,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1149,
-              "column": 132,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1558,
-                      "column": 541,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1573,
-                      "column": 556,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2d84628896c42f9dc570",
-          "kind": "resource",
-          "name": "github.ref_name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1558,
-              "column": 541,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1573,
-              "column": 556,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3a032e3d20549d002a31",
-          "kind": "step",
-          "name": "Prepare example configuration",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 665,
-              "column": 9,
-              "line": 34
-            },
-            "stop": {
-              "byte": 856,
-              "column": 1,
-              "line": 38
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3b83563d9563af7f21c1",
-          "kind": "job",
-          "name": "release",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 63,
-              "column": 3,
-              "line": 9
-            },
-            "stop": {
-              "byte": 2769,
-              "column": 39,
-              "line": 82
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_42eb8e8a3a7e916b941b",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 21,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 53,
-              "column": 17,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_50a17b394ebf77f26923",
-          "kind": "call",
-          "name": "actions/setup-python@v6",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 262,
-              "column": 15,
-              "line": 19
-            },
-            "stop": {
-              "byte": 285,
-              "column": 38,
-              "line": 19
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1513,
-                      "column": 496,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1528,
-                      "column": 511,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_528407c19cfdcc49af72",
-          "kind": "resource",
-          "name": "github.ref_name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1513,
-              "column": 496,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1528,
-              "column": 511,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_66ee1448ac0c30230452",
-          "kind": "step",
-          "name": "Check out repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 158,
-              "column": 9,
-              "line": 15
-            },
-            "stop": {
-              "byte": 218,
-              "column": 34,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6f121c1c43a60f7e01a7",
-          "kind": "workflow",
-          "name": "Release",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 2769,
-              "column": 39,
-              "line": 82
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_79ef1007056085e77903",
-          "kind": "step",
-          "name": "Build release firmware (USB flash, captive portal, MQTTS)",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 865,
-              "column": 9,
-              "line": 39
-            },
-            "stop": {
-              "byte": 967,
-              "column": 39,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_7a7fa35511f043a845b5",
-          "kind": "call",
-          "name": "actions/checkout@v7",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 199,
-              "column": 15,
-              "line": 16
-            },
-            "stop": {
-              "byte": 218,
-              "column": 34,
-              "line": 16
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v7",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 942,
-                      "column": 14,
-                      "line": 40
-                    },
-                    "stop": {
-                      "byte": 967,
-                      "column": 39,
-                      "line": 40
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "pio run -e ld2450_release"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7e27e86b93c7e20c0833",
-          "kind": "command",
-          "name": "pio run -e ld2450_release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 942,
-              "column": 14,
-              "line": 40
-            },
-            "stop": {
-              "byte": 967,
-              "column": 39,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 714,
-                      "column": 14,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 856,
-                      "column": 1,
-                      "line": 38
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cp include/secrets.h.example include/secrets.h\ncp include/ld2450/known_devices.h.example include/ld2450/known_devices.h\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8170ed60235707f74556",
-          "kind": "command",
-          "name": "cp include/secrets.h.example include/secrets.h\ncp include/ld2450/known_devices.h.example include/ld2450/known_devices.h\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 714,
-              "column": 14,
-              "line": 35
-            },
-            "stop": {
-              "byte": 856,
-              "column": 1,
-              "line": 38
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "HOME",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1043,
-                      "column": 26,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1047,
-                      "column": 30,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "HOME"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_85198c95bea86b26da6d",
-          "kind": "resource",
-          "name": "HOME",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1043,
-              "column": 26,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1047,
-              "column": 30,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "cache_read",
-            "cache_write"
-          ],
-          "condition": true,
-          "effects": [
-            "cache_publish"
-          ],
-          "id": "wv_87cca98f0b1fd2aadfc4",
-          "kind": "call",
-          "name": "actions/cache@v6",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 378,
-              "column": 15,
-              "line": 24
-            },
-            "stop": {
-              "byte": 394,
-              "column": 31,
-              "line": 24
-            }
-          },
-          "unknown": {
-            "detail": "actions/cache@v6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_906b49a67053be20b950",
-          "kind": "step",
-          "name": "Create GitHub Release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1719,
-              "column": 9,
-              "line": 57
-            },
-            "stop": {
-              "byte": 2769,
-              "column": 39,
-              "line": 82
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "RELEASE_NOTES"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9db00bad7bc8c98ab82f",
-          "kind": "resource",
-          "name": "env:RELEASE_NOTES",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1810,
-              "column": 11,
-              "line": 60
-            },
-            "stop": {
-              "byte": 2504,
-              "column": 61,
-              "line": 76
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a543061ebfab40b036c2",
-          "kind": "step",
-          "name": "Merge into single flashable binary",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 977,
-              "column": 9,
-              "line": 42
-            },
-            "stop": {
-              "byte": 1710,
-              "column": 1,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2518,
-                      "column": 14,
-                      "line": 77
-                    },
-                    "stop": {
-                      "byte": 2769,
-                      "column": 39,
-                      "line": 82
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "gh release create \"${GITHUB_REF_NAME}\" \\\n  \"firmware-ld2450-${GITHUB_REF_NAME}.bin\" \\\n  \"firmware-ld2450-${GITHUB_REF_NAME}.bin.sha256\" \\\n  --title \"${GITHUB_REF_NAME}\" \\\n  --notes \"${RELEASE_NOTES}\"\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a725b4cdb9eb7dab6e54",
-          "kind": "command",
-          "name": "gh release create \"${GITHUB_REF_NAME}\" \\\n  \"firmware-ld2450-${GITHUB_REF_NAME}.bin\" \\\n  \"firmware-ld2450-${GITHUB_REF_NAME}.bin.sha256\" \\\n  --title \"${GITHUB_REF_NAME}\" \\\n  --notes \"${RELEASE_NOTES}\"\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 2518,
-              "column": 14,
-              "line": 77
-            },
-            "stop": {
-              "byte": 2769,
-              "column": 39,
-              "line": 82
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GH_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_af3e2a02509bab533e91",
-          "kind": "resource",
-          "name": "env:GH_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1770,
-              "column": 11,
-              "line": 59
-            },
-            "stop": {
-              "byte": 1799,
-              "column": 40,
-              "line": 59
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1215,
-                      "column": 198,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1230,
-                      "column": 213,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b5ed3baced48f9b8d86c",
-          "kind": "resource",
-          "name": "github.ref_name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1215,
-              "column": 198,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1230,
-              "column": 213,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 552,
-                      "column": 14,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 656,
-                      "column": 1,
-                      "line": 33
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "python -m pip install --upgrade pip\npip install platformio==6.1.19 esptool==5.3.1\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_bc55b5bb60d30ed8dbc0",
-          "kind": "command",
-          "name": "python -m pip install --upgrade pip\npip install platformio==6.1.19 esptool==5.3.1\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 552,
-              "column": 14,
-              "line": 30
-            },
-            "stop": {
-              "byte": 656,
-              "column": 1,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c75e79633b24ec5b7106",
-          "kind": "step",
-          "name": "Set up Python",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 228,
-              "column": 9,
-              "line": 18
-            },
-            "stop": {
-              "byte": 331,
-              "column": 32,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.token",
-                  "span": {
-                    "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1784,
-                      "column": 25,
-                      "line": 59
-                    },
-                    "stop": {
-                      "byte": 1796,
-                      "column": 37,
-                      "line": 59
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.token"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cf0dcf41d3fa9819831d",
-          "kind": "resource",
-          "name": "github.token",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 1784,
-              "column": 25,
-              "line": 59
-            },
-            "stop": {
-              "byte": 1796,
-              "column": 37,
-              "line": 59
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_df1e4ac90f1264ecefcc",
-          "kind": "step",
-          "name": "Cache PlatformIO",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml",
-            "start": {
-              "byte": 341,
-              "column": 9,
-              "line": 23
-            },
-            "stop": {
-              "byte": 492,
-              "column": 54,
-              "line": 27
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:e4f03b6a77ebeffe4eb0e5589f643766c33acc303871ebe3e0a9bc8090ee2fd3",
-      "path": "github/peterkocz91/hlk-ld2450-security/.github/workflows/release.yml"
-    }
-  ],
+  "digest": "sha256:dabbf76c7f50596572f909f6e146677fd3a04b933a57942bd195a2ba1cbbacc8",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:70dade545c343e6346902aa86bfb44603c67ce5b9774d7a72685f429d3e82940",
+    "sources": [
+      {
+        "digest": "sha256:e4f03b6a77ebeffe4eb0e5589f643766c33acc303871ebe3e0a9bc8090ee2fd3",
+        "id": 0,
+        "path": ".github/workflows/release.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -2114,40 +445,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 5,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 37,
+    "nodes": 28,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 3
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

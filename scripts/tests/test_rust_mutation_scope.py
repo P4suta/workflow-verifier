@@ -7,29 +7,33 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-HIGH_VALUE_SOURCES = [
-    "crates/domain/src/**/*.rs",
-    "crates/engine/src/**/*.rs",
-    "crates/foundation/src/**/*.rs",
-    "crates/frontend/src/**/*.rs",
-    "crates/product/src/**/*.rs",
-    "crates/sandbox/src/**/*.rs",
-    "crates/syntax/src/**/*.rs",
-    "crates/verifier/src/**/*.rs",
-    "helpers/protocol/src/**/*.rs",
+EXCLUDED_SOURCES = [
+    "build.rs",
+    "crates/**",
+    "helpers/**",
+    "src/application/**",
+    "src/conformance/**",
+    "src/helper_runtime/**",
+    "src/internal.rs",
+    "src/lib.rs",
+    "src/main.rs",
 ]
 
 SEMANTIC_TEST_PACKAGES = [
+    "workflow-verifier",
     "workflow-verifier-conformance",
-    "workflow-verifier-domain",
-    "workflow-verifier-engine",
-    "workflow-verifier-foundation",
-    "workflow-verifier-frontend",
-    "workflow-verifier-product",
-    "workflow-verifier-sandbox",
-    "workflow-verifier-syntax",
-    "workflow-verifier-verifier",
-    "workflow-verifier-runner-protocol",
+]
+
+HIGH_VALUE_LAYERS = [
+    "domain",
+    "engine",
+    "foundation",
+    "frontend",
+    "product",
+    "sandbox",
+    "syntax",
+    "verifier",
+    "runner_protocol",
 ]
 
 
@@ -38,7 +42,7 @@ class RustMutationScopeTests(unittest.TestCase):
         with (ROOT / ".cargo" / "mutants.toml").open("rb") as source:
             config = tomllib.load(source)
 
-        self.assertEqual(config["examine_globs"], HIGH_VALUE_SOURCES)
+        self.assertEqual(config["exclude_globs"], EXCLUDED_SOURCES)
         self.assertEqual(config["test_package"], SEMANTIC_TEST_PACKAGES)
         self.assertEqual(config["profile"], "mutants")
         self.assertEqual(config["test_tool"], "cargo")
@@ -50,9 +54,10 @@ class RustMutationScopeTests(unittest.TestCase):
             "minimum_test_timeout",
         ):
             self.assertNotIn(runner_owned_default, config)
-        self.assertNotIn("crates/cli", "\n".join(config["examine_globs"]))
-        self.assertIn("helpers/protocol", "\n".join(config["examine_globs"]))
-        self.assertNotIn("helpers/runtime", "\n".join(config["examine_globs"]))
+        excluded = "\n".join(config["exclude_globs"])
+        self.assertIn("src/application", excluded)
+        self.assertNotIn("src/runner_protocol", excluded)
+        self.assertIn("src/helper_runtime", excluded)
 
         workspace = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
         self.assertEqual(
@@ -81,9 +86,11 @@ class RustMutationScopeTests(unittest.TestCase):
             self.assertNotIn("--jobs", run)
         self.assertIn("cargo-mutants --version 27.1.0 --locked", workflow)
         self.assertIn("rust-high-value", workflow)
-        for package in SEMANTIC_TEST_PACKAGES[1:]:
-            self.assertIn(package, workflow)
-        self.assertNotIn("- workflow-verifier-cli", workflow)
+        self.assertIn("--package workflow-verifier", rust_job)
+        self.assertIn('--file "src/$MUTATION_LAYER/**/*.rs"', rust_job)
+        for layer in HIGH_VALUE_LAYERS:
+            self.assertRegex(rust_job, rf"(?m)^\s+- {re.escape(layer)}$")
+        self.assertNotIn("workflow-verifier-cli", workflow)
 
 
 if __name__ == "__main__":

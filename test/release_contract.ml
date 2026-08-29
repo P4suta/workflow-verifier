@@ -12,6 +12,7 @@ let required =
     "../scripts/generate_release_index.py";
     "../scripts/package_release.py";
     "../scripts/candidate_artifacts.py";
+    "../scripts/package_crate.py";
     "../scripts/build_candidate_platform.sh";
     "../scripts/materialize_release_input.py";
     "../scripts/verify_release_version.py";
@@ -60,19 +61,19 @@ let required =
     "../docs/backends.md";
     "../docs/trust-and-data.md";
     "../docs/troubleshooting.md";
-    "../docs/migration-v0.1.md";
     "../docs/version-policy.md";
     "../docs/rules.md";
     "../examples/dogfood-policy-v2.toml";
     "../corpus/README.md";
     "../performance/README.md";
-    "../performance/suite-v1.json";
+    "../performance/rust-suite-v2.json";
     "../schema/dogfood-v1.schema.json";
     "../schema/determinism-v2.schema.json";
     "../schema/determinism-comparison-v2.schema.json";
     "../schema/mutation-campaign-v1.schema.json";
     "../schema/corpus-review-v1.schema.json";
-    "../schema/conformance-manifest-v1.schema.json";
+    "../schema/crate-package-v1.schema.json";
+    "../schema/conformance-manifest-v2.schema.json";
     "../schema/release-evidence-v3.schema.json";
     "../schema/release-evidence-v4.schema.json";
     "../schema/release-gate-v1.schema.json";
@@ -83,11 +84,9 @@ let required =
     "../schema/network-profile-v1.schema.json";
     "../schema/sbom-components-v1.schema.json";
     "../official/official-projects-v1.json";
-    "../official/official-compat-v1.json";
-    "../official/official-compat-v1.sha256";
     "../release-evidence/README.md";
     "../release-evidence/maintainer-allowed-signers";
-    "../conformance/manifest-v1.json";
+    "../conformance/manifest-v2.json";
     "../release/sbom-components-v1.json";
     "../THIRD_PARTY_NOTICES.md";
     "../workflow-verifier.opam.locked";
@@ -181,16 +180,8 @@ let () =
       "Rust product ${{ matrix.platform }}";
       "platform: linux-arm64";
       "target/debug/workflow-verifier";
-      "workflow-verifier-reference";
-      "verify_architecture.py";
-      "fetch_yaml_test_suite.py --allow-network";
-      "yaml-test-suite-canonical-data-2022-01-17";
-      "yaml_conformance.exe";
-      "cargo fmt --manifest-path helpers/Cargo.toml --all -- --check";
-      "cargo clippy --manifest-path helpers/Cargo.toml --workspace \
-       --all-targets -- -D warnings";
-      "run_afl_fuzz.py";
-      "--profile afl";
+      "just differential";
+      "Fixed YAML fuzz corpus";
       "determinism_probe.py";
       "compare_determinism.py";
       "dogfood_gate.py verify";
@@ -206,12 +197,12 @@ let () =
       "sandbox audit --trust-repository-config";
       "WORKFLOW_VERIFIER_OCI_HELPER";
       "rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4";
-      "Performance ${{ matrix.platform }}";
+      "Rust performance ${{ matrix.platform }}";
       "measure_performance_pair.py";
-      "Period-balance identical workloads";
+      "Period-balance identical Rust workloads";
       "--samples 24";
       "performance_gate.py";
-      "- performance-regression";
+      "- rust-performance-regression";
     ];
   if not (Util.contains ~needle:"run: sh helpers/macos/build-shim.sh" github)
   then fail "macOS shim build must use an explicit POSIX shell";
@@ -455,6 +446,12 @@ let () =
        }}";
       "name: Promote exact verified assets without rebuilding";
       "needs: [release_evidence, mutation, quality]";
+      "environment: crate-publication";
+      "ref: ${{ needs.release_evidence.outputs.subject_commit }}";
+      "needs.release_evidence.outputs.crate_digest";
+      "scripts/package_crate.py";
+      "cargo publish --locked -p workflow-verifier";
+      "workflow-verifier/$VERSION/download";
     ];
   List.iter
     (fun forbidden_surface ->
@@ -511,6 +508,7 @@ let () =
       "build_candidate_platform.sh";
       "candidate_artifacts.py source-assets";
       "candidate_artifacts.py aggregate";
+      "scripts/package_crate.py";
       "environment: candidate-signing";
       "cosign-release: v3.1.3";
       "cosign sign-blob --yes";
@@ -542,6 +540,8 @@ let () =
       "--offline";
       "--certificate-github-workflow-sha";
       "https://token.actions.githubusercontent.com";
+      "crate-package";
+      "inspect_crate";
     ];
   List.iter
     (fun rebuild ->

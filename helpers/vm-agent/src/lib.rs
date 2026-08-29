@@ -2,7 +2,7 @@ use std::fs::OpenOptions;
 use std::io::Write as _;
 use std::path::{Component, Path, PathBuf};
 
-use workflow_verifier_runner_protocol::vm::Observation;
+use workflow_verifier_internal::internal::runner_protocol::vm::Observation;
 
 #[cfg(target_os = "linux")]
 mod platform;

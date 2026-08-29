@@ -1,7 +1,62 @@
 {
+  "analysis_digest": "sha256:10f3272a75f65cd47ac54f7726891e9bd15d1788d7c51482f41bc12f30691bf4",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: JuliaRegistries/TagBot@v1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
+      "capabilities": [
+        "secret_access",
+        "network"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "id": "diag_35488bb28c023366ec30228458249f2cc44c53c9c4cefa68a773b98c985c743b",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "source": 0,
+        "start": {
+          "byte": 310,
+          "column": 15,
+          "line": 17
+        },
+        "stop": {
+          "byte": 335,
+          "column": 40,
+          "line": 17
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node": 8,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 310,
+              "column": 15,
+              "line": 17
+            },
+            "stop": {
+              "byte": 335,
+              "column": 40,
+              "line": 17
+            }
+          }
+        }
+      ]
+    },
+    {
       "confidence": "high",
       "evidence": [
         "reference = JuliaRegistries/TagBot@v1"
@@ -9,9 +64,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
+          "source": 0,
           "start": {
             "byte": 310,
             "column": 15,
@@ -24,12 +78,12 @@
           }
         }
       },
-      "id": "diag_b72d27114caff95859e9",
+      "id": "diag_6b37c7829c4fd6ac8638635d6431c9825d266ac1514c289e190c4f63d80fede2",
       "message": "dependency is not pinned to immutable content: JuliaRegistries/TagBot@v1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
+        "source": 0,
         "start": {
           "byte": 310,
           "column": 15,
@@ -44,9 +98,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_56e68443a2769d843e88",
+          "node": 8,
           "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
+            "source": 0,
             "start": {
               "byte": 310,
               "column": 15,
@@ -62,667 +116,60 @@
       ]
     }
   ],
-  "digest": "sha256:2958a5ae37f0fd2f67c39b53fd2fea35c872a602389a6e5afdf50df4095e7de0",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_a8da4cc0128882802b63",
-          "id": "wv_259da50953e9568d1d6b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_56e68443a2769d843e88"
-        },
-        {
-          "condition": true,
-          "from": "wv_b0cd7a9109b9f376290e",
-          "id": "wv_2c71160cab81ef2b308b",
-          "kind": "data",
-          "label": "github.event_name",
-          "to": "wv_07d76a359328c71ad003"
-        },
-        {
-          "condition": true,
-          "from": "wv_a8da4cc0128882802b63",
-          "id": "wv_393df5226ba1ce6e856d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_56e68443a2769d843e88"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": {
-              "high": true,
-              "low": false,
-              "variable": "(github.event_name==\"workflow_dispatch\")"
-            },
-            "variable": "(github.actor==\"JuliaTagBot\")"
-          },
-          "from": "wv_07d76a359328c71ad003",
-          "id": "wv_66012050bbe8d169573e",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_3039b81e0869ee5abe2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff98310d9766d198f3e0",
-          "id": "wv_802c6eeb7ed45dbe1486",
-          "kind": "control",
-          "label": null,
-          "to": "wv_07d76a359328c71ad003"
-        },
-        {
-          "condition": true,
-          "from": "wv_3039b81e0869ee5abe2d",
-          "id": "wv_8ffe0041e6ea04170342",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a8da4cc0128882802b63"
-        },
-        {
-          "condition": true,
-          "from": "wv_07a66cef6a2841a3f902",
-          "id": "wv_b70bfec1483d3b3dbf56",
-          "kind": "data",
-          "label": "secrets.GITHUB_TOKEN",
-          "to": "wv_56e68443a2769d843e88"
-        },
-        {
-          "condition": true,
-          "from": "wv_0f0ade7e5d9f3ef68978",
-          "id": "wv_d7a761130c012b3da362",
-          "kind": "data",
-          "label": "github.actor",
-          "to": "wv_07d76a359328c71ad003"
-        },
-        {
-          "condition": true,
-          "from": "wv_c26cb09c1c54f05ffdb2",
-          "id": "wv_f54a2da2d4525f11c233",
-          "kind": "data",
-          "label": "secrets.DOCUMENTER_KEY",
-          "to": "wv_56e68443a2769d843e88"
-        },
-        {
-          "condition": true,
-          "from": "wv_3dc0203f8173b7863f65",
-          "id": "wv_f79251c5e0aee59e06e6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ff98310d9766d198f3e0"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a925a4808ae9caca149",
-          "id": "wv_fe475d0de81e9ea10ba3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ff98310d9766d198f3e0"
-        }
-      ],
-      "entrypoints": [
-        "wv_ff98310d9766d198f3e0"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-                    "start": {
-                      "byte": 371,
-                      "column": 22,
-                      "line": 19
-                    },
-                    "stop": {
-                      "byte": 391,
-                      "column": 42,
-                      "line": 19
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_07a66cef6a2841a3f902",
-          "kind": "resource",
-          "name": "secrets.GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 371,
-              "column": 22,
-              "line": 19
-            },
-            "stop": {
-              "byte": 391,
-              "column": 42,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-                    "start": {
-                      "byte": 184,
-                      "column": 9,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 257,
-                      "column": 82,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event_name == 'workflow_dispatch' || github.actor == 'JuliaTagBot'"
-                ]
-              }
-            },
-            "reference:github.actor": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.actor",
-                  "span": {
-                    "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-                    "start": {
-                      "byte": 228,
-                      "column": 53,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 240,
-                      "column": 65,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.actor"
-                ]
-              }
-            },
-            "reference:github.event_name": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event_name",
-                  "span": {
-                    "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-                    "start": {
-                      "byte": 184,
-                      "column": 9,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 201,
-                      "column": 26,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": {
-              "high": true,
-              "low": false,
-              "variable": "(github.event_name==\"workflow_dispatch\")"
-            },
-            "variable": "(github.actor==\"JuliaTagBot\")"
-          },
-          "effects": [],
-          "id": "wv_07d76a359328c71ad003",
-          "kind": "gate",
-          "name": "if:job:TagBot",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 184,
-              "column": 9,
-              "line": 14
-            },
-            "stop": {
-              "byte": 257,
-              "column": 82,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.actor",
-                  "span": {
-                    "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-                    "start": {
-                      "byte": 228,
-                      "column": 53,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 240,
-                      "column": 65,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.actor"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0f0ade7e5d9f3ef68978",
-          "kind": "resource",
-          "name": "github.actor",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 228,
-              "column": 53,
-              "line": 14
-            },
-            "stop": {
-              "byte": 240,
-              "column": 65,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3039b81e0869ee5abe2d",
-          "kind": "job",
-          "name": "TagBot",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 168,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 439,
-              "column": 45,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3dc0203f8173b7863f65",
-          "kind": "trigger",
-          "name": "issue_comment",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 19,
-              "column": 3,
-              "line": 3
-            },
-            "stop": {
-              "byte": 60,
-              "column": 16,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_56e68443a2769d843e88",
-          "kind": "call",
-          "name": "JuliaRegistries/TagBot@v1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 310,
-              "column": 15,
-              "line": 17
-            },
-            "stop": {
-              "byte": 335,
-              "column": 40,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "JuliaRegistries/TagBot@v1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6a925a4808ae9caca149",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 63,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 128,
-              "column": 19,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a8da4cc0128882802b63",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 304,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 439,
-              "column": 45,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event_name",
-                  "span": {
-                    "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-                    "start": {
-                      "byte": 184,
-                      "column": 9,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 201,
-                      "column": 26,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b0cd7a9109b9f376290e",
-          "kind": "resource",
-          "name": "github.event_name",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 184,
-              "column": 9,
-              "line": 14
-            },
-            "stop": {
-              "byte": 201,
-              "column": 26,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.DOCUMENTER_KEY",
-                  "span": {
-                    "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-                    "start": {
-                      "byte": 414,
-                      "column": 20,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 436,
-                      "column": 42,
-                      "line": 20
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.DOCUMENTER_KEY"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c26cb09c1c54f05ffdb2",
-          "kind": "resource",
-          "name": "secrets.DOCUMENTER_KEY",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 414,
-              "column": 20,
-              "line": 20
-            },
-            "stop": {
-              "byte": 436,
-              "column": 42,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ff98310d9766d198f3e0",
-          "kind": "workflow",
-          "name": "TagBot",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 439,
-              "column": 45,
-              "line": 20
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:e584bca353175f71bf4c72c4f284c7e3fe67c934743f3b2cdbd9cc89037dd333",
-      "path": "github/openmendel/wiser.jl/.github/workflows/TagBot.yml"
-    }
-  ],
+  "digest": "sha256:61cfad019028e1dd41138ddf8438ceacfccdadbaf257c293aaf25785622e86c0",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:bca45e9da7e88aca732a826b8a6aff5d8756f42fdca579186ab0552c5d3ebd7f",
+    "sources": [
+      {
+        "digest": "sha256:e584bca353175f71bf4c72c4f284c7e3fe67c934743f3b2cdbd9cc89037dd333",
+        "id": 0,
+        "path": ".github/workflows/TagBot.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -733,59 +180,52 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [
-        {
-          "detail": "JuliaRegistries/TagBot@v1",
-          "kind": "unresolved_dependency"
-        }
-      ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
-    "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "diagnostics": 2,
+    "edges": 11,
+    "nodes": 11,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 2
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

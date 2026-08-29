@@ -14,8 +14,7 @@ name = "workflow-verifier-linux-helper"
 path = "src/main.rs"
 
 [dependencies]
-workflow-verifier-helper-runtime = { path = "../runtime", version = "=0.1.0" }
-workflow-verifier-runner-protocol = { path = "../protocol", version = "=0.1.0" }
+workflow-verifier-internal = { package = "workflow-verifier", path = "../..", version = "=0.1.0", default-features = false, features = ["internal-support"] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 libc = "=0.2.189"

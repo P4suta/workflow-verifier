@@ -1,15 +1,16 @@
-# High-value Rust semantic mutation scope. CLI/LSP presentation, OS adapters,
-# runtime helper glue, and conformance-tool implementation are intentionally excluded.
-examine_globs = [
-  "crates/domain/src/**/*.rs",
-  "crates/engine/src/**/*.rs",
-  "crates/foundation/src/**/*.rs",
-  "crates/frontend/src/**/*.rs",
-  "crates/product/src/**/*.rs",
-  "crates/sandbox/src/**/*.rs",
-  "crates/syntax/src/**/*.rs",
-  "crates/verifier/src/**/*.rs",
-  "helpers/protocol/src/**/*.rs",
+# High-value Rust semantic mutation scope. These exclusions leave exactly the
+# nine semantic layers selected by the hosted `--file src/<layer>/**/*.rs`
+# matrix while allowing the local all-layer task to use the same config.
+exclude_globs = [
+  "build.rs",
+  "crates/**",
+  "helpers/**",
+  "src/application/**",
+  "src/conformance/**",
+  "src/helper_runtime/**",
+  "src/internal.rs",
+  "src/lib.rs",
+  "src/main.rs",
 ]
 
 # `helper_main` is only stdin/stdout/process-exit composition. Its pure argument,
@@ -21,16 +22,8 @@ exclude_re = ["helper_main"]
 # language-independent report comparator. The slow process/TTY/LSP suites stay
 # outside this tier and continue to run in `just check`.
 test_package = [
+  "workflow-verifier",
   "workflow-verifier-conformance",
-  "workflow-verifier-domain",
-  "workflow-verifier-engine",
-  "workflow-verifier-foundation",
-  "workflow-verifier-frontend",
-  "workflow-verifier-product",
-  "workflow-verifier-sandbox",
-  "workflow-verifier-syntax",
-  "workflow-verifier-verifier",
-  "workflow-verifier-runner-protocol",
 ]
 
 profile = "mutants"

@@ -1,7 +1,22 @@
 {
+  "analysis_digest": "sha256:77078b9f1350806490b711fb1a22c304dd11bebe9b5b94dcedc6a0d8d13cef7f",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: 1ESPipelineTemplates/1ESPipelineTemplates@refs/tags/release",
+      "Incomplete.Unresolved_dependency: GithubRelease@1",
+      "Incomplete.Unresolved_dependency: build-containers.yml@self",
+      "Incomplete.Unresolved_dependency: build-gnu-toolchain.yml@self",
+      "Incomplete.Unresolved_dependency: build-musl-toolchain.yml@self",
+      "Incomplete.Unresolved_dependency: build-sanity-test-containers.yml@self",
+      "Incomplete.Unresolved_dependency: import-qemu-image.yml@self",
+      "Incomplete.Unresolved_dependency: v1/1ES.Official.PipelineTemplate.yml@1esPipelines"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = 1ESPipelineTemplates/1ESPipelineTemplates@refs/tags/release"
@@ -9,9 +24,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 441,
             "column": 7,
@@ -24,12 +38,12 @@
           }
         }
       },
-      "id": "diag_7334be238c5df884c41d",
+      "id": "diag_b6b2767bd44398d9b678fc462aa29db143221876d64eeaf820c13555fe22590e",
       "message": "dependency is not pinned to immutable content: 1ESPipelineTemplates/1ESPipelineTemplates@refs/tags/release",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 441,
           "column": 7,
@@ -44,9 +58,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_207cfea51e68466c68a1",
+          "node": 7,
           "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 441,
               "column": 7,
@@ -62,521 +76,70 @@
       ]
     }
   ],
-  "digest": "sha256:626fd95196952f31e7e138c28982e88ea900716b195f3c3b6ee11f8e2eb80997",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_c3a6d5b1a7311186a6a3",
-          "id": "wv_13ab84a7b1c155f8f834",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f1f2ac76deb110b4912b"
-        },
-        {
-          "condition": true,
-          "from": "wv_fc5235744219759dd08d",
-          "id": "wv_18495ae29af2163988ba",
-          "kind": "data",
-          "label": null,
-          "to": "wv_c3a6d5b1a7311186a6a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_c3a6d5b1a7311186a6a3",
-          "id": "wv_996b4956437fecca684d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f259c7113a1df46e364e"
-        },
-        {
-          "condition": true,
-          "from": "wv_6fe0f6dfc3a4ee02e2d3",
-          "id": "wv_9a59ed9b7bd778bb0bc1",
-          "kind": "call",
-          "label": null,
-          "to": "wv_207cfea51e68466c68a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_c3a6d5b1a7311186a6a3",
-          "id": "wv_9ffd4802fb2283efcb22",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cbff5e79a940df4f015f"
-        },
-        {
-          "condition": true,
-          "from": "wv_6fe0f6dfc3a4ee02e2d3",
-          "id": "wv_a9776366e09d7a9fc894",
-          "kind": "control",
-          "label": null,
-          "to": "wv_207cfea51e68466c68a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_c3a6d5b1a7311186a6a3",
-          "id": "wv_d3efbe14d3207526c7b9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ce28a74d96ac14848cc3"
-        },
-        {
-          "condition": true,
-          "from": "wv_6fe0f6dfc3a4ee02e2d3",
-          "id": "wv_daa8c8143fb0bdb3aa07",
-          "kind": "read",
-          "label": null,
-          "to": "wv_c3a6d5b1a7311186a6a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_b8b22071e8314c559273",
-          "id": "wv_efafb2157f8fe33124da",
-          "kind": "data",
-          "label": "pipelinePrefix",
-          "to": "wv_c3a6d5b1a7311186a6a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_67d2fbaf726316854d10",
-          "id": "wv_fdf441509f74c0dc515f",
-          "kind": "data",
-          "label": null,
-          "to": "wv_c3a6d5b1a7311186a6a3"
-        }
-      ],
-      "entrypoints": [
-        "wv_c3a6d5b1a7311186a6a3"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_207cfea51e68466c68a1",
-          "kind": "call",
-          "name": "1ESPipelineTemplates/1ESPipelineTemplates@refs/tags/release",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 441,
-              "column": 7,
-              "line": 22
-            },
-            "stop": {
-              "byte": 564,
-              "column": 29,
-              "line": 25
-            }
-          },
-          "unknown": {
-            "detail": "1ESPipelineTemplates/1ESPipelineTemplates@refs/tags/release",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-                    "start": {
-                      "byte": 107,
-                      "column": 14,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 112,
-                      "column": 19,
-                      "line": 5
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "false"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_67d2fbaf726316854d10",
-          "kind": "parameter",
-          "name": "github_release",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 16,
-              "column": 5,
-              "line": 2
-            },
-            "stop": {
-              "byte": 112,
-              "column": 19,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6fe0f6dfc3a4ee02e2d3",
-          "kind": "resource",
-          "name": "repository:1esPipelines",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 441,
-              "column": 7,
-              "line": 22
-            },
-            "stop": {
-              "byte": 564,
-              "column": 29,
-              "line": 25
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": {
-                "reasons": [
-                  {
-                    "detail": "non-scalar Azure value",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "non-scalar Azure value",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "dynamic",
-              "value": {
-                "unknown": [
-                  {
-                    "detail": "non-scalar Azure value",
-                    "kind": "dynamic_string"
-                  }
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b8b22071e8314c559273",
-          "kind": "resource",
-          "name": "variable:pipelinePrefix",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 234,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 356,
-              "column": 14,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c3a6d5b1a7311186a6a3",
-          "kind": "workflow",
-          "name": "$(pipelinePrefix)$(Date:yyyyMMdd).$(Rev:r)",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 18972,
-              "column": 63,
-              "line": 554
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cbff5e79a940df4f015f",
-          "kind": "opaque",
-          "name": "template-directive:${{ else }}",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 330,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 356,
-              "column": 14,
-              "line": 16
-            }
-          },
-          "unknown": {
-            "detail": "Azure template directive ${{ else }}",
-            "kind": "unsupported_syntax"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ce28a74d96ac14848cc3",
-          "kind": "opaque",
-          "name": "template-directive:${{ if eq(parameters.dockerhub_release, true) }}",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 257,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 327,
-              "column": 21,
-              "line": 14
-            }
-          },
-          "unknown": {
-            "detail": "Azure template directive ${{ if eq(parameters.dockerhub_release, true) }}",
-            "kind": "unsupported_syntax"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f1f2ac76deb110b4912b",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 18972,
-              "column": 63,
-              "line": 554
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f259c7113a1df46e364e",
-          "kind": "opaque",
-          "name": "template-directive:${{ if parameters.github_release }}",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 5543,
-              "column": 9,
-              "line": 159
-            },
-            "stop": {
-              "byte": 7942,
-              "column": 58,
-              "line": 206
-            }
-          },
-          "unknown": {
-            "detail": "Azure template directive ${{ if parameters.github_release }}",
-            "kind": "unsupported_syntax"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-                    "start": {
-                      "byte": 214,
-                      "column": 14,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 219,
-                      "column": 19,
-                      "line": 9
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "false"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fc5235744219759dd08d",
-          "kind": "parameter",
-          "name": "dockerhub_release",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml",
-            "start": {
-              "byte": 117,
-              "column": 5,
-              "line": 6
-            },
-            "stop": {
-              "byte": 219,
-              "column": 19,
-              "line": 9
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:8a087ade4d2c675f0601da564bb2c87279d1b08221475ae4a679df34ead021e9",
-      "path": "azure/microsoft/vscode-linux-build-agent/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:807aeed5e14d692609a58ee47f6d67448fc0e5bffb5bc45714259b3e8d08a9b7",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:97ad80fe2f04184f8dc49cbcb3a7e0018ce7374bb4ec4b63ebafcc12666ac015",
+    "sources": [
+      {
+        "digest": "sha256:8a087ade4d2c675f0601da564bb2c87279d1b08221475ae4a679df34ead021e9",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -587,40 +150,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 10,
+    "nodes": 10,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

@@ -6,7 +6,7 @@
       "additionalProperties": false,
       "properties": {
         "classification": { "enum": ["allowed", "expected"] },
-        "id": { "pattern": "^diag_[0-9a-f]{20}$", "type": "string" },
+        "id": { "pattern": "^diag_[0-9a-f]{64}$", "type": "string" },
         "reason": { "minLength": 20, "type": "string" },
         "rule_id": {
           "pattern": "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$",

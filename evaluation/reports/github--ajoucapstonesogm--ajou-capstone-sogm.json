@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:ca30030bc0761684a5b8c3ccce24a0873a2b6b1750e293de50216cedcb570831",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v2",
+      "Incomplete.Unresolved_dependency: actions/setup-python@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
+          "source": 0,
           "start": {
             "byte": 297,
             "column": 15,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_1ec4fcae57ce0ca74afd",
+      "id": "diag_bc5920e4419c75d14b3b9e2bb2fc9ae1597a2efe399ef1de4ba186a70df2a880",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
+        "source": 0,
         "start": {
           "byte": 297,
           "column": 15,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_30b0c5bf57c4597598fe",
+          "node": 6,
           "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
+            "source": 0,
             "start": {
               "byte": 297,
               "column": 15,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v2"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
+          "source": 0,
           "start": {
             "byte": 388,
             "column": 15,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_1e5581075e9fb38827a1",
+      "id": "diag_56f1defff78841271325538503f182086f0fcb5d38d234cf266cd67628e8becb",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
+        "source": 0,
         "start": {
           "byte": 388,
           "column": 15,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_53692db8981dec16a2f1",
+          "node": 8,
           "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
+            "source": 0,
             "start": {
               "byte": 388,
               "column": 15,
@@ -123,726 +129,70 @@
       ]
     }
   ],
-  "digest": "sha256:1a31e79a480bbd52af16194fa702454873b400fb25e6d2e7d460139061884bd8",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_da335bf4bd4a5c8366aa",
-          "id": "wv_3b44ba93e16cb4260825",
-          "kind": "control",
-          "label": null,
-          "to": "wv_de7e2acb012bf5bc7db7"
-        },
-        {
-          "condition": true,
-          "from": "wv_729c0216d676bf3962d4",
-          "id": "wv_4520bb464d4c136d945d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_366d13f9667ef48fdf8f"
-        },
-        {
-          "condition": true,
-          "from": "wv_1fc11c3b71aeed6de69f",
-          "id": "wv_4bc3b6a9e8777caec6fe",
-          "kind": "control",
-          "label": null,
-          "to": "wv_53692db8981dec16a2f1"
-        },
-        {
-          "condition": true,
-          "from": "wv_366d13f9667ef48fdf8f",
-          "id": "wv_6a049e4ee1dab8166290",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c898c46abe6d1cad9d67"
-        },
-        {
-          "condition": true,
-          "from": "wv_1fc11c3b71aeed6de69f",
-          "id": "wv_75e3b2e4edb7706c7012",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_729c0216d676bf3962d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_74ffb2e845098edf6eec",
-          "id": "wv_7beedc3e051ca7b3e522",
-          "kind": "control",
-          "label": null,
-          "to": "wv_729c0216d676bf3962d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_74ffb2e845098edf6eec",
-          "id": "wv_7fc144f27fb466411cfa",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1fc11c3b71aeed6de69f"
-        },
-        {
-          "condition": true,
-          "from": "wv_8018c859331958d17424",
-          "id": "wv_94dd7553782b3166629a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_30b0c5bf57c4597598fe"
-        },
-        {
-          "condition": true,
-          "from": "wv_da2c32ca3146a4da3871",
-          "id": "wv_9b9f7a1f4fde8afaa2e2",
-          "kind": "data",
-          "label": "matrix.python-version",
-          "to": "wv_53692db8981dec16a2f1"
-        },
-        {
-          "condition": true,
-          "from": "wv_1fc11c3b71aeed6de69f",
-          "id": "wv_a687f75f08cbcb3e8629",
-          "kind": "call",
-          "label": null,
-          "to": "wv_53692db8981dec16a2f1"
-        },
-        {
-          "condition": true,
-          "from": "wv_8018c859331958d17424",
-          "id": "wv_aa0424152dd07bf3cf7c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_30b0c5bf57c4597598fe"
-        },
-        {
-          "condition": true,
-          "from": "wv_74ffb2e845098edf6eec",
-          "id": "wv_b43cfb748c6eeb024163",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8018c859331958d17424"
-        },
-        {
-          "condition": true,
-          "from": "wv_729c0216d676bf3962d4",
-          "id": "wv_c21c39c80dac76db9660",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7d12ca2c7794e7004e80"
-        },
-        {
-          "condition": true,
-          "from": "wv_74ffb2e845098edf6eec",
-          "id": "wv_d99bb481c18336539c80",
-          "kind": "control",
-          "label": null,
-          "to": "wv_366d13f9667ef48fdf8f"
-        },
-        {
-          "condition": true,
-          "from": "wv_de7e2acb012bf5bc7db7",
-          "id": "wv_e522832d9c03a8fb105c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_74ffb2e845098edf6eec"
-        },
-        {
-          "condition": true,
-          "from": "wv_a52f2bbee4a6295e44ac",
-          "id": "wv_eb0cb06743085d97a549",
-          "kind": "control",
-          "label": null,
-          "to": "wv_de7e2acb012bf5bc7db7"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c11f6145521e853339d",
-          "id": "wv_eb5b44bc63b9309fbf7c",
-          "kind": "data",
-          "label": "python-version",
-          "to": "wv_74ffb2e845098edf6eec"
-        },
-        {
-          "condition": true,
-          "from": "wv_8018c859331958d17424",
-          "id": "wv_ec92815bce618a314a54",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1fc11c3b71aeed6de69f"
-        }
-      ],
-      "entrypoints": [
-        "wv_de7e2acb012bf5bc7db7"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3.10"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1c11f6145521e853339d",
-          "kind": "parameter",
-          "name": "matrix.python-version",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 246,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 270,
-              "column": 33,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1fc11c3b71aeed6de69f",
-          "kind": "step",
-          "name": "Set up Python ${{ matrix.python-version }}",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 325,
-              "column": 9,
-              "line": 21
-            },
-            "stop": {
-              "byte": 480,
-              "column": 55,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_30b0c5bf57c4597598fe",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 297,
-              "column": 15,
-              "line": 20
-            },
-            "stop": {
-              "byte": 316,
-              "column": 34,
-              "line": 20
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_366d13f9667ef48fdf8f",
-          "kind": "step",
-          "name": "Run pytest",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 722,
-              "column": 9,
-              "line": 32
-            },
-            "stop": {
-              "byte": 798,
-              "column": 17,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_53692db8981dec16a2f1",
-          "kind": "call",
-          "name": "actions/setup-python@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 388,
-              "column": 15,
-              "line": 22
-            },
-            "stop": {
-              "byte": 411,
-              "column": 38,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_729c0216d676bf3962d4",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 490,
-              "column": 9,
-              "line": 26
-            },
-            "stop": {
-              "byte": 713,
-              "column": 79,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_74ffb2e845098edf6eec",
-          "kind": "job",
-          "name": "test",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 116,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 798,
-              "column": 17,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-                    "start": {
-                      "byte": 530,
-                      "column": 14,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 713,
-                      "column": 79,
-                      "line": 31
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "python -m pip install --upgrade pip\npip install pytest\ncd fastapi_server\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7d12ca2c7794e7004e80",
-          "kind": "command",
-          "name": "python -m pip install --upgrade pip\npip install pytest\ncd fastapi_server\nif [ -f requirements.txt ]; then pip install -r requirements.txt; fi\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 530,
-              "column": 14,
-              "line": 27
-            },
-            "stop": {
-              "byte": 713,
-              "column": 79,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8018c859331958d17424",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 291,
-              "column": 9,
-              "line": 20
-            },
-            "stop": {
-              "byte": 316,
-              "column": 34,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a52f2bbee4a6295e44ac",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 38,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 66,
-              "column": 23,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-                    "start": {
-                      "byte": 752,
-                      "column": 14,
-                      "line": 33
-                    },
-                    "stop": {
-                      "byte": 798,
-                      "column": 17,
-                      "line": 35
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cd fastapi_server\npytest\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c898c46abe6d1cad9d67",
-          "kind": "command",
-          "name": "cd fastapi_server\npytest\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 752,
-              "column": 14,
-              "line": 33
-            },
-            "stop": {
-              "byte": 798,
-              "column": 17,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.python-version",
-                  "span": {
-                    "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-                    "start": {
-                      "byte": 456,
-                      "column": 31,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 477,
-                      "column": 52,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.python-version"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_da2c32ca3146a4da3871",
-          "kind": "resource",
-          "name": "matrix.python-version",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 456,
-              "column": 31,
-              "line": 24
-            },
-            "stop": {
-              "byte": 477,
-              "column": 52,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_da335bf4bd4a5c8366aa",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 69,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 106,
-              "column": 24,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_de7e2acb012bf5bc7db7",
-          "kind": "workflow",
-          "name": "fastapi application test",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 798,
-              "column": 17,
-              "line": 35
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:373412641df5897ab3962f1a40003900e099ce304c9a2641858bd4635cd43ce9",
-      "path": "github/ajoucapstonesogm/ajou-capstone-sogm/.github/workflows/fastapi_test.yml"
-    }
-  ],
+  "digest": "sha256:5a945f41171e1164453613f4ef3d0a3f95160e9d24a0bf64c6c2ef5bf138182b",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:170ebfc55d23161971f4126d61f24420361f99672016f2be9a2daaaf69deff00",
+    "sources": [
+      {
+        "digest": "sha256:373412641df5897ab3962f1a40003900e099ce304c9a2641858bd4635cd43ce9",
+        "id": 0,
+        "path": ".github/workflows/fastapi_test.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -853,40 +203,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 18,
+    "nodes": 14,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

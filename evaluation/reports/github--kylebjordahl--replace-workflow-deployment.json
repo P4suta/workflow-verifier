@@ -1,7 +1,62 @@
 {
+  "analysis_digest": "sha256:abe1f5492172e90693a454e52dab8b2d080562654f4c538e764e7cad55082a2b",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: release-drafter/release-drafter@v5"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
+      "capabilities": [
+        "secret_access",
+        "network"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "id": "diag_6ddf9071ff9f9769bc6198308bab1112f4cfd6820715dedb8c4eda1857d19e68",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "source": 0,
+        "start": {
+          "byte": 561,
+          "column": 15,
+          "line": 23
+        },
+        "stop": {
+          "byte": 595,
+          "column": 49,
+          "line": 23
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node": 4,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 561,
+              "column": 15,
+              "line": 23
+            },
+            "stop": {
+              "byte": 595,
+              "column": 49,
+              "line": 23
+            }
+          }
+        }
+      ]
+    },
+    {
       "confidence": "high",
       "evidence": [
         "reference = release-drafter/release-drafter@v5"
@@ -9,9 +64,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
+          "source": 0,
           "start": {
             "byte": 561,
             "column": 15,
@@ -24,12 +78,12 @@
           }
         }
       },
-      "id": "diag_2e7728b2f63fbabdd843",
+      "id": "diag_96d9c4a2766e1cd29a7e8558e411df308d19c898f0cd482911981b3ce5223fe1",
       "message": "dependency is not pinned to immutable content: release-drafter/release-drafter@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
+        "source": 0,
         "start": {
           "byte": 561,
           "column": 15,
@@ -44,9 +98,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_6b14827a27ca03b77f14",
+          "node": 4,
           "span": {
-            "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
+            "source": 0,
             "start": {
               "byte": 561,
               "column": 15,
@@ -62,308 +116,60 @@
       ]
     }
   ],
-  "digest": "sha256:a35c61c68664fd6e2acb158a333d9d0a96eb4154526f8fdf22bbc389388c71e3",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_91472b4d0db4510d1ae1",
-          "id": "wv_045e8577898208dcd13d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6b14827a27ca03b77f14"
-        },
-        {
-          "condition": true,
-          "from": "wv_120f4c2812b74df34e5f",
-          "id": "wv_5c4053e0cafff37e66b8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dd4ec7eaaef6405304a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_c5dea8b62fdec42173db",
-          "id": "wv_67e6cb99b6b525d7e4bf",
-          "kind": "data",
-          "label": "secrets.GITHUB_TOKEN",
-          "to": "wv_6b14827a27ca03b77f14"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd4ec7eaaef6405304a1",
-          "id": "wv_c0991d8fc4445089d4d2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_05d182cac19168a2181f"
-        },
-        {
-          "condition": true,
-          "from": "wv_91472b4d0db4510d1ae1",
-          "id": "wv_cacf3132128779a5e26e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6b14827a27ca03b77f14"
-        },
-        {
-          "condition": true,
-          "from": "wv_05d182cac19168a2181f",
-          "id": "wv_dec2288e5d4438de6d37",
-          "kind": "control",
-          "label": null,
-          "to": "wv_91472b4d0db4510d1ae1"
-        }
-      ],
-      "entrypoints": [
-        "wv_dd4ec7eaaef6405304a1"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_05d182cac19168a2181f",
-          "kind": "job",
-          "name": "update_release_draft",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
-            "start": {
-              "byte": 169,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 853,
-              "column": 52,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_120f4c2812b74df34e5f",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
-            "start": {
-              "byte": 29,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 128,
-              "column": 13,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6b14827a27ca03b77f14",
-          "kind": "call",
-          "name": "release-drafter/release-drafter@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
-            "start": {
-              "byte": 561,
-              "column": 15,
-              "line": 23
-            },
-            "stop": {
-              "byte": 595,
-              "column": 49,
-              "line": 23
-            }
-          },
-          "unknown": {
-            "detail": "release-drafter/release-drafter@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_91472b4d0db4510d1ae1",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
-            "start": {
-              "byte": 555,
-              "column": 9,
-              "line": 23
-            },
-            "stop": {
-              "byte": 853,
-              "column": 52,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
-                    "start": {
-                      "byte": 830,
-                      "column": 29,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 850,
-                      "column": 49,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c5dea8b62fdec42173db",
-          "kind": "resource",
-          "name": "secrets.GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
-            "start": {
-              "byte": 830,
-              "column": 29,
-              "line": 29
-            },
-            "stop": {
-              "byte": 850,
-              "column": 49,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dd4ec7eaaef6405304a1",
-          "kind": "workflow",
-          "name": "Release Drafter",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 853,
-              "column": 52,
-              "line": 29
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:0380200840bd873221b0670015cd35cda3cd0945401fc14055c02fbcf72593ea",
-      "path": "github/kylebjordahl/replace-workflow-deployment/.github/workflows/release-drafter.yml"
-    }
-  ],
+  "digest": "sha256:924cb85534787322565c55dcf881b51d3022e374ffa4a3aed7d452bd1fec5732",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:18b830f1d6db83ba51599354640374e1ed28e76e47f8d1b39b9b00c9a36d0638",
+    "sources": [
+      {
+        "digest": "sha256:0380200840bd873221b0670015cd35cda3cd0945401fc14055c02fbcf72593ea",
+        "id": 0,
+        "path": ".github/workflows/release-drafter.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -374,59 +180,52 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [
-        {
-          "detail": "release-drafter/release-drafter@v5",
-          "kind": "unresolved_dependency"
-        }
-      ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
-    "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "diagnostics": 2,
+    "edges": 6,
+    "nodes": 6,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 2
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

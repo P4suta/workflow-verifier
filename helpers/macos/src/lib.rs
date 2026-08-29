@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use workflow_verifier_runner_protocol::{
+use workflow_verifier_internal::internal::runner_protocol::{
     Control, Descriptor, LaunchError, RunResult, ValidatedPlan, validate_launch,
 };
 

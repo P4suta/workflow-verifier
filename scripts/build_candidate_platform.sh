@@ -55,7 +55,7 @@ case "$CANDIDATE_PLATFORM" in
     exit 2
     ;;
 esac
-cargo_packages=(-p workflow-verifier-cli "${cargo_packages[@]}")
+cargo_packages=(-p workflow-verifier "${cargo_packages[@]}")
 analyzer_name=workflow-verifier
 if [[ $CANDIDATE_PLATFORM == windows-x86_64 ]]; then
   analyzer_name=workflow-verifier.exe

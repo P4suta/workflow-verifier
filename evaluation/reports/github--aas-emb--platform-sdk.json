@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:0ca93fa3fac09411e7b94dbc6e81c3ff8d553e9e43ed69507049ff425df106de",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
+          "source": 0,
           "start": {
             "byte": 241,
             "column": 15,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_e08a3d8ce352d0945ebb",
+      "id": "diag_fad56f26c077a888fd7216433d435ed0e023b4883e7e2724cfb5184f84ecd867",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
+        "source": 0,
         "start": {
           "byte": 241,
           "column": 15,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_787cb0ac6b083fa34482",
+          "node": 5,
           "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
+            "source": 0,
             "start": {
               "byte": 241,
               "column": 15,
@@ -62,1175 +69,110 @@
       ]
     }
   ],
-  "digest": "sha256:88bb08331fcf739f98e00dc16d00821451fdf8f34ddc530a3097a4e639e0dae5",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_081b82d753ba09dc8790",
-          "id": "wv_02af55390f3e2b9fb3c2",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b9578f5a0e73a1af4f68"
-        },
-        {
-          "condition": true,
-          "from": "wv_d15e7826f645b53e1a83",
-          "id": "wv_043058baada733bbdc9b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_582b42e5e036514aa26d"
-        },
-        {
-          "condition": true,
-          "from": "wv_a117be18b8210a8817c8",
-          "id": "wv_24434513bebd3265504b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4823e012d127aec5f659"
-        },
-        {
-          "condition": true,
-          "from": "wv_725fcf628c54b1c03854",
-          "id": "wv_2b4750f9bf5aeabbb8e1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_80d147c7a733b210576a"
-        },
-        {
-          "condition": true,
-          "from": "wv_a117be18b8210a8817c8",
-          "id": "wv_3c4369149c6fc550ccec",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7b48576e5fc2cab60717"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_4193b33fd0ef8d6b9d10",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ed36b2fea4953cd85ff4"
-        },
-        {
-          "condition": true,
-          "from": "wv_081b82d753ba09dc8790",
-          "id": "wv_449ba4d00ccd4797e3e8",
-          "kind": "call",
-          "label": null,
-          "to": "wv_787cb0ac6b083fa34482"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_454ab821e925a31b4996",
-          "kind": "control",
-          "label": null,
-          "to": "wv_081b82d753ba09dc8790"
-        },
-        {
-          "condition": true,
-          "from": "wv_9791148daf16a20c378b",
-          "id": "wv_4a568590d6b6130f65db",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_378b8d2b67728d91a42c"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_515cf72911929e75cb6b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b9578f5a0e73a1af4f68"
-        },
-        {
-          "condition": true,
-          "from": "wv_081b82d753ba09dc8790",
-          "id": "wv_54551c1dddd16f27ff19",
-          "kind": "control",
-          "label": null,
-          "to": "wv_787cb0ac6b083fa34482"
-        },
-        {
-          "condition": true,
-          "from": "wv_bdeabea0dda0e2030abc",
-          "id": "wv_64a4a565ae45cb02707b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_80d147c7a733b210576a"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_77e1b0a203ab54dd5cb8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a117be18b8210a8817c8"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_802846294ba88c6844d3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_378b8d2b67728d91a42c"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_970d6eb631ca4dc8eb60",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d15e7826f645b53e1a83"
-        },
-        {
-          "condition": true,
-          "from": "wv_b9578f5a0e73a1af4f68",
-          "id": "wv_99b3a779801b90a6e3ae",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a117be18b8210a8817c8"
-        },
-        {
-          "condition": true,
-          "from": "wv_378b8d2b67728d91a42c",
-          "id": "wv_9db77f30de838f1f15a3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d15e7826f645b53e1a83"
-        },
-        {
-          "condition": true,
-          "from": "wv_b9578f5a0e73a1af4f68",
-          "id": "wv_9eb011417c3dca700073",
-          "kind": "control",
-          "label": null,
-          "to": "wv_987de417a4eb3776c7ff"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_9ed816cebb8b7be7ac22",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7b48576e5fc2cab60717"
-        },
-        {
-          "condition": true,
-          "from": "wv_34471c89383f21e61792",
-          "id": "wv_ad8d7f542bdc8ff6f226",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9791148daf16a20c378b"
-        },
-        {
-          "condition": true,
-          "from": "wv_ed36b2fea4953cd85ff4",
-          "id": "wv_b047e27e1de2348b06e2",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9791148daf16a20c378b"
-        },
-        {
-          "condition": true,
-          "from": "wv_ed36b2fea4953cd85ff4",
-          "id": "wv_b19f12b5ba27f2a18d1e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_326ebcc121b766fc120e"
-        },
-        {
-          "condition": true,
-          "from": "wv_9791148daf16a20c378b",
-          "id": "wv_bace8a924742f041e7b2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5affa0c886c394bdfe19"
-        },
-        {
-          "condition": true,
-          "from": "wv_7b48576e5fc2cab60717",
-          "id": "wv_ccf815730200a1ff6cd2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_599fec1d64aefc79fa59"
-        },
-        {
-          "condition": true,
-          "from": "wv_378b8d2b67728d91a42c",
-          "id": "wv_d043d1a1ccdf1889d579",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3fcbd797c1bd09c651c5"
-        },
-        {
-          "condition": true,
-          "from": "wv_7b48576e5fc2cab60717",
-          "id": "wv_d641607e94322c7c24cf",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_ed36b2fea4953cd85ff4"
-        },
-        {
-          "condition": true,
-          "from": "wv_80d147c7a733b210576a",
-          "id": "wv_de3933b16dd0184f7b91",
-          "kind": "control",
-          "label": null,
-          "to": "wv_34471c89383f21e61792"
-        }
-      ],
-      "entrypoints": [
-        "wv_80d147c7a733b210576a"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_081b82d753ba09dc8790",
-          "kind": "step",
-          "name": "Checkout",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 212,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 302,
-              "column": 28,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-                    "start": {
-                      "byte": 745,
-                      "column": 14,
-                      "line": 37
-                    },
-                    "stop": {
-                      "byte": 778,
-                      "column": 47,
-                      "line": 37
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cmake --build --preset host-tests"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_326ebcc121b766fc120e",
-          "kind": "command",
-          "name": "cmake --build --preset host-tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 745,
-              "column": 14,
-              "line": 37
-            },
-            "stop": {
-              "byte": 778,
-              "column": 47,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_34471c89383f21e61792",
-          "kind": "job",
-          "name": "host",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 79,
-              "column": 3,
-              "line": 9
-            },
-            "stop": {
-              "byte": 1088,
-              "column": 49,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_378b8d2b67728d91a42c",
-          "kind": "step",
-          "name": "Configure host (release)",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 932,
-              "column": 9,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1003,
-              "column": 41,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-                    "start": {
-                      "byte": 976,
-                      "column": 14,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1003,
-                      "column": 41,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cmake --preset host-release"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_3fcbd797c1bd09c651c5",
-          "kind": "command",
-          "name": "cmake --preset host-release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 976,
-              "column": 14,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1003,
-              "column": 41,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-                    "start": {
-                      "byte": 486,
-                      "column": 14,
-                      "line": 28
-                    },
-                    "stop": {
-                      "byte": 543,
-                      "column": 71,
-                      "line": 28
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./scripts/init-submodules.sh --platform host --with-tests"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_4823e012d127aec5f659",
-          "kind": "command",
-          "name": "./scripts/init-submodules.sh --platform host --with-tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 486,
-              "column": 14,
-              "line": 28
-            },
-            "stop": {
-              "byte": 543,
-              "column": 71,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-                    "start": {
-                      "byte": 1053,
-                      "column": 14,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1088,
-                      "column": 49,
-                      "line": 49
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cmake --build --preset host-release"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_582b42e5e036514aa26d",
-          "kind": "command",
-          "name": "cmake --build --preset host-release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 1053,
-              "column": 14,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1088,
-              "column": 49,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-                    "start": {
-                      "byte": 672,
-                      "column": 14,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 697,
-                      "column": 39,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cmake --preset host-tests"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_599fec1d64aefc79fa59",
-          "kind": "command",
-          "name": "cmake --preset host-tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 672,
-              "column": 14,
-              "line": 34
-            },
-            "stop": {
-              "byte": 697,
-              "column": 39,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-                    "start": {
-                      "byte": 817,
-                      "column": 14,
-                      "line": 40
-                    },
-                    "stop": {
-                      "byte": 842,
-                      "column": 39,
-                      "line": 40
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ctest --preset host-tests"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5affa0c886c394bdfe19",
-          "kind": "command",
-          "name": "ctest --preset host-tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 817,
-              "column": 14,
-              "line": 40
-            },
-            "stop": {
-              "byte": 842,
-              "column": 39,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_725fcf628c54b1c03854",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 41,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 69,
-              "column": 23,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_787cb0ac6b083fa34482",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 241,
-              "column": 15,
-              "line": 18
-            },
-            "stop": {
-              "byte": 260,
-              "column": 34,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7b48576e5fc2cab60717",
-          "kind": "step",
-          "name": "Configure host (tests)",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 630,
-              "column": 9,
-              "line": 33
-            },
-            "stop": {
-              "byte": 697,
-              "column": 39,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_80d147c7a733b210576a",
-          "kind": "workflow",
-          "name": "Host SDK CI",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1088,
-              "column": 49,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9791148daf16a20c378b",
-          "kind": "step",
-          "name": "Run tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 788,
-              "column": 9,
-              "line": 39
-            },
-            "stop": {
-              "byte": 842,
-              "column": 39,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-                    "start": {
-                      "byte": 352,
-                      "column": 14,
-                      "line": 23
-                    },
-                    "stop": {
-                      "byte": 432,
-                      "column": 1,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "sudo apt update\nsudo apt install -y cmake ninja-build g++\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_987de417a4eb3776c7ff",
-          "kind": "command",
-          "name": "sudo apt update\nsudo apt install -y cmake ninja-build g++\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 352,
-              "column": 14,
-              "line": 23
-            },
-            "stop": {
-              "byte": 432,
-              "column": 1,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a117be18b8210a8817c8",
-          "kind": "step",
-          "name": "Initialize test submodule",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 441,
-              "column": 9,
-              "line": 27
-            },
-            "stop": {
-              "byte": 543,
-              "column": 71,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b9578f5a0e73a1af4f68",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 312,
-              "column": 9,
-              "line": 22
-            },
-            "stop": {
-              "byte": 432,
-              "column": 1,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bdeabea0dda0e2030abc",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 25,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 38,
-              "column": 16,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d15e7826f645b53e1a83",
-          "kind": "step",
-          "name": "Build host (release)",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 1013,
-              "column": 9,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1088,
-              "column": 49,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ed36b2fea4953cd85ff4",
-          "kind": "step",
-          "name": "Build host (tests)",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml",
-            "start": {
-              "byte": 707,
-              "column": 9,
-              "line": 36
-            },
-            "stop": {
-              "byte": 778,
-              "column": 47,
-              "line": 37
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:aa5bdee30fc4feb1f8569d792a6371feff38de935df8e02d1c7fe235f2764a04",
-      "path": "github/aas-emb/platform-sdk/.github/workflows/host-ci.yml"
-    }
-  ],
+  "digest": "sha256:a052f129b620dc8157eb38f7c863fc0cc85153133c4be8fe9fad992970f400f3",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:a23bc93c3c33bad9ddf69392db06d36a7ade08a2de95ec761c14d324afb1484d",
+    "sources": [
+      {
+        "digest": "sha256:aa5bdee30fc4feb1f8569d792a6371feff38de935df8e02d1c7fe235f2764a04",
+        "id": 0,
+        "path": ".github/workflows/host-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 27,
+    "nodes": 20,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

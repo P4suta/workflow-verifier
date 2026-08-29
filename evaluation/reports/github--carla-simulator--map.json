@@ -1,623 +1,79 @@
 {
+  "analysis_digest": "sha256:7a138744666b597cae10a6b3b367b13f2870ee55b86a0befb4d0150f06a450ea",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "Incomplete.Unresolved_dependency: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:9aa03767ce9dc84f6951be34bc5d903e5fcd18709fa675e1d10fb61247b7d971",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_ca665857b385feaba0dd",
-          "id": "wv_17025dbe8e1feb98ce23",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4ad4bf0633f28d3fc7ec"
-        },
-        {
-          "condition": true,
-          "from": "wv_5ab08400f926c5b83528",
-          "id": "wv_2651758db74efd21d4b6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5d54e0d4ce642ba3f50e"
-        },
-        {
-          "condition": true,
-          "from": "wv_5d54e0d4ce642ba3f50e",
-          "id": "wv_2ccdab5098f8ce0feb9f",
-          "kind": "call",
-          "label": null,
-          "to": "wv_524409a4a4fbe20a5509"
-        },
-        {
-          "condition": true,
-          "from": "wv_5ab08400f926c5b83528",
-          "id": "wv_2d548ac3dcae02f3bb73",
-          "kind": "control",
-          "label": null,
-          "to": "wv_67b5957c9abcde9783e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_5d54e0d4ce642ba3f50e",
-          "id": "wv_3476025b3530b6ed579b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_524409a4a4fbe20a5509"
-        },
-        {
-          "condition": true,
-          "from": "wv_67b5957c9abcde9783e1",
-          "id": "wv_42e602c23362682730a9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f661b9fa5d8f623e5d11"
-        },
-        {
-          "condition": true,
-          "from": "wv_5d54e0d4ce642ba3f50e",
-          "id": "wv_5f1264c0ffd23da2cad5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_67b5957c9abcde9783e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_1eb3f87c83e5cd648e8e",
-          "id": "wv_614775c10a7f657a78cd",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_5d54e0d4ce642ba3f50e"
-        },
-        {
-          "condition": true,
-          "from": "wv_06db5a5a39ba006f75d4",
-          "id": "wv_78eb3045f0e666952bba",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bb2ee6923d4ba22b46e4"
-        },
-        {
-          "condition": true,
-          "from": "wv_7b1d0fb168ab9f749adf",
-          "id": "wv_7ea9bf9d86463e3f6603",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bb2ee6923d4ba22b46e4"
-        },
-        {
-          "condition": true,
-          "from": "wv_bb2ee6923d4ba22b46e4",
-          "id": "wv_af7877c8fccd8a42069e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5ab08400f926c5b83528"
-        },
-        {
-          "condition": true,
-          "from": "wv_67b5957c9abcde9783e1",
-          "id": "wv_d6b05c6b7a70ee9c68b7",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_ca665857b385feaba0dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_1eb3f87c83e5cd648e8e",
-          "id": "wv_d8f29745539ad6bf41d1",
-          "kind": "call",
-          "label": null,
-          "to": "wv_699e27e8d5162842ffab"
-        },
-        {
-          "condition": true,
-          "from": "wv_5ab08400f926c5b83528",
-          "id": "wv_da885390b701308f7962",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ca665857b385feaba0dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_5ab08400f926c5b83528",
-          "id": "wv_de5d90f7caabb49b6892",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1eb3f87c83e5cd648e8e"
-        },
-        {
-          "condition": true,
-          "from": "wv_1eb3f87c83e5cd648e8e",
-          "id": "wv_dfe1ba1981251c953a5c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_699e27e8d5162842ffab"
-        }
-      ],
-      "entrypoints": [
-        "wv_bb2ee6923d4ba22b46e4"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_06db5a5a39ba006f75d4",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 86,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 118,
-              "column": 19,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1eb3f87c83e5cd648e8e",
-          "kind": "step",
-          "name": "Harden Runner",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 249,
-              "column": 7,
-              "line": 20
-            },
-            "stop": {
-              "byte": 400,
-              "column": 29,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-                    "start": {
-                      "byte": 666,
-                      "column": 12,
-                      "line": 33
-                    },
-                    "stop": {
-                      "byte": 990,
-                      "column": 336,
-                      "line": 33
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "failed=0; for file in `find . -path ./dependencies -prune -false -o -iname *.cpp -o -iname *.hpp`; do if [ `clang-format-14 $file -output-replacements-xml | grep -c \"<replacement \"` -ne 0 ]; then echo \"$file does not match codeing style. Please run clang-format-14\"; failed=1; fi; if [ $failed -ne 0 ]; then exit 1; fi; done"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_4ad4bf0633f28d3fc7ec",
-          "kind": "command",
-          "name": "failed=0; for file in `find . -path ./dependencies -prune -false -o -iname *.cpp -o -iname *.hpp`; do if [ `clang-format-14 $file -output-replacements-xml | grep -c \"<replacement \"` -ne 0 ]; then echo \"$file does not match codeing style. Please run clang-format-14\"; failed=1; fi; if [ $failed -ne 0 ]; then exit 1; fi; done",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 666,
-              "column": 12,
-              "line": 33
-            },
-            "stop": {
-              "byte": 990,
-              "column": 336,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_524409a4a4fbe20a5509",
-          "kind": "call",
-          "name": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 414,
-              "column": 13,
-              "line": 25
-            },
-            "stop": {
-              "byte": 471,
-              "column": 70,
-              "line": 25
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5ab08400f926c5b83528",
-          "kind": "job",
-          "name": "check_cpp",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 159,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 990,
-              "column": 336,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5d54e0d4ce642ba3f50e",
-          "kind": "step",
-          "name": "step 2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 408,
-              "column": 7,
-              "line": 25
-            },
-            "stop": {
-              "byte": 519,
-              "column": 27,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_67b5957c9abcde9783e1",
-          "kind": "step",
-          "name": "Install Dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 527,
-              "column": 7,
-              "line": 29
-            },
-            "stop": {
-              "byte": 624,
-              "column": 71,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_699e27e8d5162842ffab",
-          "kind": "call",
-          "name": "step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 281,
-              "column": 13,
-              "line": 21
-            },
-            "stop": {
-              "byte": 349,
-              "column": 81,
-              "line": 21
-            }
-          },
-          "unknown": {
-            "detail": "step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7b1d0fb168ab9f749adf",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 59,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 83,
-              "column": 19,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bb2ee6923d4ba22b46e4",
-          "kind": "workflow",
-          "name": "Check Code Formatting for carla-map libraries",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 990,
-              "column": 336,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ca665857b385feaba0dd",
-          "kind": "step",
-          "name": "Check Formatting",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 632,
-              "column": 7,
-              "line": 32
-            },
-            "stop": {
-              "byte": 990,
-              "column": 336,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-                    "start": {
-                      "byte": 565,
-                      "column": 12,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 624,
-                      "column": 71,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "sudo apt-get update && sudo apt-get install clang-format-14"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f661b9fa5d8f623e5d11",
-          "kind": "command",
-          "name": "sudo apt-get update && sudo apt-get install clang-format-14",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/carla-simulator/map/.github/workflows/code_format_check.yml",
-            "start": {
-              "byte": 565,
-              "column": 12,
-              "line": 30
-            },
-            "stop": {
-              "byte": 624,
-              "column": 71,
-              "line": 30
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/carla-simulator/map/.github/workflows/code_format_check.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:e0495ac2199a6870462ecb34dfcf919c96618fdf20e7156ae5602a1961752319",
-      "path": "github/carla-simulator/map/.github/workflows/code_format_check.yml"
-    }
-  ],
+  "digest": "sha256:b25d20962e26a03f76a501850ade9075290254e88c6cac4bd5210f41743161dd",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:1216be7b13dbc9820975ebe5932c5d9aaab399e702bc2d9afafc3321e0b58410",
+    "sources": [
+      {
+        "digest": "sha256:e0495ac2199a6870462ecb34dfcf919c96618fdf20e7156ae5602a1961752319",
+        "id": 0,
+        "path": ".github/workflows/code_format_check.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -628,40 +84,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 16,
+    "nodes": 12,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

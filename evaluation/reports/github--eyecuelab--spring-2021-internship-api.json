@@ -1,7 +1,18 @@
 {
+  "analysis_digest": "sha256:2fd0e909827996b66c64707108d4be168ab718e58b325c6df1b5a71eb6872b49",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v2",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v2",
+      "Incomplete.Unresolved_dependency: bahmutov/npm-install@v1",
+      "Incomplete.Unresolved_dependency: harmon758/postgresql-action@v1.0.0"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -9,9 +20,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 244,
             "column": 15,
@@ -24,12 +34,12 @@
           }
         }
       },
-      "id": "diag_e9c3b94f8f20534449db",
+      "id": "diag_65f6dda500bb465e9004ec22dbd487d79f6f65cbb5d6c515240317a7b071b29a",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 244,
           "column": 15,
@@ -44,9 +54,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_9f4374c1a0669ad119e6",
+          "node": 5,
           "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 244,
               "column": 15,
@@ -62,7 +72,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v2"
@@ -70,9 +79,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 304,
             "column": 15,
@@ -85,12 +93,12 @@
           }
         }
       },
-      "id": "diag_2678897e180311e67c63",
+      "id": "diag_301e09d73c7669b386331434992cbefa629bf475afb0b4ba5e4177a73bbe7856",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 304,
           "column": 15,
@@ -105,9 +113,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_75aa8dfb14121603c90b",
+          "node": 7,
           "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 304,
               "column": 15,
@@ -123,7 +131,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = harmon758/postgresql-action@v1.0.0"
@@ -131,9 +138,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 444,
             "column": 15,
@@ -146,12 +152,12 @@
           }
         }
       },
-      "id": "diag_5c9f9f6a9c5e4a07fb22",
+      "id": "diag_74c0a8f2deaa416859edd03654c9d033b225b77ad3a00ddc1a785f674917f62c",
       "message": "dependency is not pinned to immutable content: harmon758/postgresql-action@v1.0.0",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 444,
           "column": 15,
@@ -166,9 +172,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d7968eb3c4201bf62d89",
+          "node": 9,
           "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 444,
               "column": 15,
@@ -184,7 +190,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = bahmutov/npm-install@v1"
@@ -192,9 +197,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 694,
             "column": 15,
@@ -207,12 +211,12 @@
           }
         }
       },
-      "id": "diag_d7db0c1ec96f765d2dbb",
+      "id": "diag_347c67da5dc09104ae54581ea9312d5216f7b202bfe3daf01de11a3fbb89f4f4",
       "message": "dependency is not pinned to immutable content: bahmutov/npm-install@v1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 694,
           "column": 15,
@@ -227,9 +231,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c3cbfe98e7758cfb6401",
+          "node": 11,
           "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 694,
               "column": 15,
@@ -245,1079 +249,70 @@
       ]
     }
   ],
-  "digest": "sha256:7d8abed30b7f533000dfd6ed39689290fa49d8977c9317d101d053890c8a254a",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_7db4ef2115f4e5ca2736",
-          "id": "wv_0127274f9351ac618361",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_8bcceeeab52c1ff7ff2b"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_11cb5c21f56a88bfa403",
-          "kind": "control",
-          "label": null,
-          "to": "wv_194f3b1dd32cd873bdff"
-        },
-        {
-          "condition": true,
-          "from": "wv_c69e80ef7df9f6841f3c",
-          "id": "wv_12a9cec4c48548405b02",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9f4374c1a0669ad119e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_c69e80ef7df9f6841f3c",
-          "id": "wv_21e023dc76e9d51226c5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e652fa38594d3314cb54"
-        },
-        {
-          "condition": true,
-          "from": "wv_c69e80ef7df9f6841f3c",
-          "id": "wv_229bc039687bc681ffd1",
-          "kind": "call",
-          "label": null,
-          "to": "wv_9f4374c1a0669ad119e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_73009659213ae3a24023",
-          "id": "wv_3261bb7ed0cc61393fb4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a856c1c7630968b93971"
-        },
-        {
-          "condition": true,
-          "from": "wv_194f3b1dd32cd873bdff",
-          "id": "wv_405dd591d83e93abe38c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1de39be390451db51eb4"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_4164f4dce341992af364",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c69e80ef7df9f6841f3c"
-        },
-        {
-          "condition": true,
-          "from": "wv_194f3b1dd32cd873bdff",
-          "id": "wv_46600922d4db1dab9904",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2166161984157f1a0afe"
-        },
-        {
-          "condition": true,
-          "from": "wv_a856c1c7630968b93971",
-          "id": "wv_4cdf842b4c918e866e34",
-          "kind": "control",
-          "label": null,
-          "to": "wv_78150ff0a7cbbc6831c6"
-        },
-        {
-          "condition": true,
-          "from": "wv_56da1cee1af6442f70e8",
-          "id": "wv_5a4911e0eaec82353ef5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a856c1c7630968b93971"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_6823e52277051a90c342",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7db4ef2115f4e5ca2736"
-        },
-        {
-          "condition": true,
-          "from": "wv_e652fa38594d3314cb54",
-          "id": "wv_6e01b8086a55e37b1490",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7db4ef2115f4e5ca2736"
-        },
-        {
-          "condition": true,
-          "from": "wv_7db4ef2115f4e5ca2736",
-          "id": "wv_7029e2c7b943c78e834c",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d7968eb3c4201bf62d89"
-        },
-        {
-          "condition": true,
-          "from": "wv_1de39be390451db51eb4",
-          "id": "wv_710140c4242f10cb8f72",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_239e777dbf13d294252d"
-        },
-        {
-          "condition": true,
-          "from": "wv_3f455e8e48c3ba099aab",
-          "id": "wv_720d0a47e93dfe26570f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_194f3b1dd32cd873bdff"
-        },
-        {
-          "condition": true,
-          "from": "wv_45cf5e952870049feb98",
-          "id": "wv_7b9fb219faa953480db9",
-          "kind": "data",
-          "label": "NODE_ENV",
-          "to": "wv_633e7656325953f746e8"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_8690b4ebcf0d8ad1fab3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8bcceeeab52c1ff7ff2b"
-        },
-        {
-          "condition": true,
-          "from": "wv_8bcceeeab52c1ff7ff2b",
-          "id": "wv_9f9c8c65cacaa200ee1a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c3cbfe98e7758cfb6401"
-        },
-        {
-          "condition": true,
-          "from": "wv_8bcceeeab52c1ff7ff2b",
-          "id": "wv_a57e1d33cab231d7ea03",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3f455e8e48c3ba099aab"
-        },
-        {
-          "condition": true,
-          "from": "wv_8bcceeeab52c1ff7ff2b",
-          "id": "wv_a70f40b6f3515b94cb3d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c3cbfe98e7758cfb6401"
-        },
-        {
-          "condition": true,
-          "from": "wv_e652fa38594d3314cb54",
-          "id": "wv_b0a1d131c2ec633d870a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_75aa8dfb14121603c90b"
-        },
-        {
-          "condition": true,
-          "from": "wv_3f455e8e48c3ba099aab",
-          "id": "wv_b236d4ed3bfe899f72de",
-          "kind": "control",
-          "label": null,
-          "to": "wv_53119d2703e2b443fc97"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_c7ae9607b625add48240",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3f455e8e48c3ba099aab"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_cb8ccde2563d72e244d4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e652fa38594d3314cb54"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_d3f206d50cfb4fb247b4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_239e777dbf13d294252d"
-        },
-        {
-          "condition": true,
-          "from": "wv_239e777dbf13d294252d",
-          "id": "wv_d7793aaf8b26e56f8b78",
-          "kind": "control",
-          "label": null,
-          "to": "wv_633e7656325953f746e8"
-        },
-        {
-          "condition": true,
-          "from": "wv_78150ff0a7cbbc6831c6",
-          "id": "wv_dc34e252dc5d5c6c7ad6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1de39be390451db51eb4"
-        },
-        {
-          "condition": true,
-          "from": "wv_1de39be390451db51eb4",
-          "id": "wv_dca7a3c4e3017adc612e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3e69f348d80bd96ba5d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_7db4ef2115f4e5ca2736",
-          "id": "wv_ea4a4610dd7266049fd4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d7968eb3c4201bf62d89"
-        },
-        {
-          "condition": true,
-          "from": "wv_e652fa38594d3314cb54",
-          "id": "wv_fb737050949ba6938a67",
-          "kind": "call",
-          "label": null,
-          "to": "wv_75aa8dfb14121603c90b"
-        }
-      ],
-      "entrypoints": [
-        "wv_a856c1c7630968b93971"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_194f3b1dd32cd873bdff",
-          "kind": "step",
-          "name": "Type check and transpile",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 769,
-              "column": 9,
-              "line": 38
-            },
-            "stop": {
-              "byte": 821,
-              "column": 22,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1de39be390451db51eb4",
-          "kind": "step",
-          "name": "Run Tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 830,
-              "column": 9,
-              "line": 40
-            },
-            "stop": {
-              "byte": 868,
-              "column": 23,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 813,
-                      "column": 14,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 821,
-                      "column": 22,
-                      "line": 39
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn tsc"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_2166161984157f1a0afe",
-          "kind": "command",
-          "name": "yarn tsc",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 813,
-              "column": 14,
-              "line": 39
-            },
-            "stop": {
-              "byte": 821,
-              "column": 22,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_239e777dbf13d294252d",
-          "kind": "step",
-          "name": "Create production build",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 877,
-              "column": 9,
-              "line": 42
-            },
-            "stop": {
-              "byte": 974,
-              "column": 31,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 859,
-                      "column": 14,
-                      "line": 41
-                    },
-                    "stop": {
-                      "byte": 868,
-                      "column": 23,
-                      "line": 41
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn test"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_3e69f348d80bd96ba5d9",
-          "kind": "command",
-          "name": "yarn test",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 859,
-              "column": 14,
-              "line": 41
-            },
-            "stop": {
-              "byte": 868,
-              "column": 23,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3f455e8e48c3ba099aab",
-          "kind": "step",
-          "name": "Lint",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 727,
-              "column": 9,
-              "line": 36
-            },
-            "stop": {
-              "byte": 760,
-              "column": 23,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "NODE_ENV"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_45cf5e952870049feb98",
-          "kind": "resource",
-          "name": "env:NODE_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 954,
-              "column": 11,
-              "line": 45
-            },
-            "stop": {
-              "byte": 974,
-              "column": 31,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 751,
-                      "column": 14,
-                      "line": 37
-                    },
-                    "stop": {
-                      "byte": 760,
-                      "column": 23,
-                      "line": 37
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn lint"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_53119d2703e2b443fc97",
-          "kind": "command",
-          "name": "yarn lint",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 751,
-              "column": 14,
-              "line": 37
-            },
-            "stop": {
-              "byte": 760,
-              "column": 23,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_56da1cee1af6442f70e8",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 78,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 112,
-              "column": 21,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 920,
-                      "column": 14,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 930,
-                      "column": 24,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn build"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_633e7656325953f746e8",
-          "kind": "command",
-          "name": "yarn build",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 920,
-              "column": 14,
-              "line": 43
-            },
-            "stop": {
-              "byte": 930,
-              "column": 24,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_73009659213ae3a24023",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 28,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 75,
-              "column": 42,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_75aa8dfb14121603c90b",
-          "kind": "call",
-          "name": "actions/setup-node@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 304,
-              "column": 15,
-              "line": 20
-            },
-            "stop": {
-              "byte": 325,
-              "column": 36,
-              "line": 20
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_78150ff0a7cbbc6831c6",
-          "kind": "job",
-          "name": "test-and-build",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 122,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 974,
-              "column": 31,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7db4ef2115f4e5ca2736",
-          "kind": "step",
-          "name": "Setup PostgreSQL",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 407,
-              "column": 9,
-              "line": 25
-            },
-            "stop": {
-              "byte": 641,
-              "column": 40,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8bcceeeab52c1ff7ff2b",
-          "kind": "step",
-          "name": "Cache and install deps",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 651,
-              "column": 9,
-              "line": 33
-            },
-            "stop": {
-              "byte": 717,
-              "column": 38,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_9f4374c1a0669ad119e6",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 244,
-              "column": 15,
-              "line": 17
-            },
-            "stop": {
-              "byte": 263,
-              "column": 34,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a856c1c7630968b93971",
-          "kind": "workflow",
-          "name": "Test and Build",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 974,
-              "column": 31,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c3cbfe98e7758cfb6401",
-          "kind": "call",
-          "name": "bahmutov/npm-install@v1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 694,
-              "column": 15,
-              "line": 34
-            },
-            "stop": {
-              "byte": 717,
-              "column": 38,
-              "line": 34
-            }
-          },
-          "unknown": {
-            "detail": "bahmutov/npm-install@v1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c69e80ef7df9f6841f3c",
-          "kind": "step",
-          "name": "Checkout",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 215,
-              "column": 9,
-              "line": 16
-            },
-            "stop": {
-              "byte": 263,
-              "column": 34,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d7968eb3c4201bf62d89",
-          "kind": "call",
-          "name": "harmon758/postgresql-action@v1.0.0",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 444,
-              "column": 15,
-              "line": 26
-            },
-            "stop": {
-              "byte": 478,
-              "column": 49,
-              "line": 26
-            }
-          },
-          "unknown": {
-            "detail": "harmon758/postgresql-action@v1.0.0",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e652fa38594d3314cb54",
-          "kind": "step",
-          "name": "Setup Node",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml",
-            "start": {
-              "byte": 273,
-              "column": 9,
-              "line": 19
-            },
-            "stop": {
-              "byte": 397,
-              "column": 29,
-              "line": 23
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:592be9d02dac1b2b1222aa1c19edd414deb28edca0dc062c2191e2f881dc8e14",
-      "path": "github/eyecuelab/spring-2021-internship-api/.github/workflows/build.yml"
-    }
-  ],
+  "digest": "sha256:5855a71c53c9b5a3212cf92bbd100c79088c484902d3756c7d1980e8e8c3b293",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:3f800906bd96f65606f115423523b97de5bb49761f10cfa32b71fcd4507a50ab",
+    "sources": [
+      {
+        "digest": "sha256:592be9d02dac1b2b1222aa1c19edd414deb28edca0dc062c2191e2f881dc8e14",
+        "id": 0,
+        "path": ".github/workflows/build.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1336,40 +331,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 4,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 31,
+    "nodes": 21,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

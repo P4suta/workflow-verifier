@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:287a7bf7ebc67c63b880c1f7b47dba93ab4c551a4b127cbd2745c2af16f5f238",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v2",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
+          "source": 0,
           "start": {
             "byte": 175,
             "column": 13,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_e384d61ba29bb3182f68",
+      "id": "diag_73b9aa42ec8fd550e1473bbc6d37ab2041b734239ce86b2b25f94b58c1da3697",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
+        "source": 0,
         "start": {
           "byte": 175,
           "column": 13,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_b71a1bf18198f1689e7f",
+          "node": 6,
           "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
+            "source": 0,
             "start": {
               "byte": 175,
               "column": 13,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v2"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
+          "source": 0,
           "start": {
             "byte": 207,
             "column": 13,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_03b928067ddcc13ba664",
+      "id": "diag_def1abbe81fe83336f1be22c26056411689ffd968a73281e865ae6d189a6364e",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
+        "source": 0,
         "start": {
           "byte": 207,
           "column": 13,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_4b1fce5f514e99d268bf",
+          "node": 8,
           "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
+            "source": 0,
             "start": {
               "byte": 207,
               "column": 13,
@@ -123,723 +129,40 @@
       ]
     }
   ],
-  "digest": "sha256:f847249653b34a96d82489cfd78ccb1e6bf329ecf90c973b3eaf2168ee5d83fb",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_6605920755c2b7001d59",
-          "id": "wv_02c4fc2d1b8d80c40f6d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_543d5788349ee0616e7d"
-        },
-        {
-          "condition": true,
-          "from": "wv_543d5788349ee0616e7d",
-          "id": "wv_0893e685390d8828dfe4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_977ac0c09ff1dcfd7b3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_e49e29991f63b1c68908",
-          "id": "wv_23d29627ffb82671ec94",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_543d5788349ee0616e7d"
-        },
-        {
-          "condition": true,
-          "from": "wv_50c39325cee847bcdd0f",
-          "id": "wv_2a7a6beb1a631cb8ec35",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e49e29991f63b1c68908"
-        },
-        {
-          "condition": true,
-          "from": "wv_573bb059c708aeeef56b",
-          "id": "wv_324731143b0cec1f922e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_50c39325cee847bcdd0f"
-        },
-        {
-          "condition": true,
-          "from": "wv_aa320f0aad4121979b0f",
-          "id": "wv_339df9f86848543d4bec",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_6605920755c2b7001d59"
-        },
-        {
-          "condition": true,
-          "from": "wv_573bb059c708aeeef56b",
-          "id": "wv_35c6849f508071cc47bf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b71a1bf18198f1689e7f"
-        },
-        {
-          "condition": true,
-          "from": "wv_d440d709eb823c9fdc7a",
-          "id": "wv_44a059f55bf1eddec623",
-          "kind": "data",
-          "label": "NODE_AUTH_TOKEN",
-          "to": "wv_977ac0c09ff1dcfd7b3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_50c39325cee847bcdd0f",
-          "id": "wv_4c8553fe39aec18b9153",
-          "kind": "call",
-          "label": null,
-          "to": "wv_4b1fce5f514e99d268bf"
-        },
-        {
-          "condition": true,
-          "from": "wv_6605920755c2b7001d59",
-          "id": "wv_765eebb468ca80e7d49d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_573bb059c708aeeef56b"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2144b6b3ee8ab847ed1",
-          "id": "wv_9be43e4808c9f2f232ae",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6605920755c2b7001d59"
-        },
-        {
-          "condition": true,
-          "from": "wv_38d5341f76f121a51753",
-          "id": "wv_b3810134baac3dc9c273",
-          "kind": "data",
-          "label": "secrets.NPM_TOKEN",
-          "to": "wv_d440d709eb823c9fdc7a"
-        },
-        {
-          "condition": true,
-          "from": "wv_d6d3d870ac0e3eca1399",
-          "id": "wv_b62be8188410c28682a4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b2144b6b3ee8ab847ed1"
-        },
-        {
-          "condition": true,
-          "from": "wv_50c39325cee847bcdd0f",
-          "id": "wv_cbd27c161a6d4d088ddf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4b1fce5f514e99d268bf"
-        },
-        {
-          "condition": true,
-          "from": "wv_6605920755c2b7001d59",
-          "id": "wv_d91603a6790da4f73dd3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_50c39325cee847bcdd0f"
-        },
-        {
-          "condition": true,
-          "from": "wv_288787899643218bd055",
-          "id": "wv_e8250c5832d25e64c2a5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b2144b6b3ee8ab847ed1"
-        },
-        {
-          "condition": true,
-          "from": "wv_6605920755c2b7001d59",
-          "id": "wv_ebba2a2a29ba1ec730f3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e49e29991f63b1c68908"
-        },
-        {
-          "condition": true,
-          "from": "wv_573bb059c708aeeef56b",
-          "id": "wv_f50be22c865bb4edac74",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b71a1bf18198f1689e7f"
-        },
-        {
-          "condition": true,
-          "from": "wv_e49e29991f63b1c68908",
-          "id": "wv_fd8d70c33a71b9bcbbf4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b1ccdd678d6bd2cd1fcd"
-        }
-      ],
-      "entrypoints": [
-        "wv_b2144b6b3ee8ab847ed1"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_288787899643218bd055",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 66,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 84,
-              "column": 21,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.NPM_TOKEN",
-                  "span": {
-                    "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-                    "start": {
-                      "byte": 416,
-                      "column": 30,
-                      "line": 19
-                    },
-                    "stop": {
-                      "byte": 433,
-                      "column": 47,
-                      "line": 19
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.NPM_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_38d5341f76f121a51753",
-          "kind": "resource",
-          "name": "secrets.NPM_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 416,
-              "column": 30,
-              "line": 19
-            },
-            "stop": {
-              "byte": 433,
-              "column": 47,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4b1fce5f514e99d268bf",
-          "kind": "call",
-          "name": "actions/setup-node@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 207,
-              "column": 13,
-              "line": 12
-            },
-            "stop": {
-              "byte": 228,
-              "column": 34,
-              "line": 12
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_50c39325cee847bcdd0f",
-          "kind": "step",
-          "name": "step 2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 201,
-              "column": 7,
-              "line": 12
-            },
-            "stop": {
-              "byte": 318,
-              "column": 51,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_543d5788349ee0616e7d",
-          "kind": "step",
-          "name": "step 4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 343,
-              "column": 7,
-              "line": 17
-            },
-            "stop": {
-              "byte": 436,
-              "column": 50,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_573bb059c708aeeef56b",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 169,
-              "column": 7,
-              "line": 11
-            },
-            "stop": {
-              "byte": 194,
-              "column": 32,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_6605920755c2b7001d59",
-          "kind": "job",
-          "name": "publish",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 93,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 436,
-              "column": 50,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-                    "start": {
-                      "byte": 348,
-                      "column": 12,
-                      "line": 17
-                    },
-                    "stop": {
-                      "byte": 375,
-                      "column": 39,
-                      "line": 17
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm publish --access public"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_977ac0c09ff1dcfd7b3b",
-          "kind": "command",
-          "name": "npm publish --access public",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 348,
-              "column": 12,
-              "line": 17
-            },
-            "stop": {
-              "byte": 375,
-              "column": 39,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_aa320f0aad4121979b0f",
-          "kind": "resource",
-          "name": "environment:CI/CD",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 119,
-              "column": 18,
-              "line": 8
-            },
-            "stop": {
-              "byte": 124,
-              "column": 23,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-                    "start": {
-                      "byte": 330,
-                      "column": 12,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 336,
-                      "column": 18,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm ci"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b1ccdd678d6bd2cd1fcd",
-          "kind": "command",
-          "name": "npm ci",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 330,
-              "column": 12,
-              "line": 16
-            },
-            "stop": {
-              "byte": 336,
-              "column": 18,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b2144b6b3ee8ab847ed1",
-          "kind": "workflow",
-          "name": "Publish NPM Package",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 436,
-              "column": 50,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_b71a1bf18198f1689e7f",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 175,
-              "column": 13,
-              "line": 11
-            },
-            "stop": {
-              "byte": 194,
-              "column": 32,
-              "line": 11
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "NODE_AUTH_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d440d709eb823c9fdc7a",
-          "kind": "resource",
-          "name": "env:NODE_AUTH_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 395,
-              "column": 9,
-              "line": 19
-            },
-            "stop": {
-              "byte": 436,
-              "column": 50,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d6d3d870ac0e3eca1399",
-          "kind": "trigger",
-          "name": "release",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 32,
-              "column": 3,
-              "line": 3
-            },
-            "stop": {
-              "byte": 63,
-              "column": 23,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e49e29991f63b1c68908",
-          "kind": "step",
-          "name": "step 3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nimbella/commander-cli/.github/workflows/publish-release.yml",
-            "start": {
-              "byte": 325,
-              "column": 7,
-              "line": 16
-            },
-            "stop": {
-              "byte": 336,
-              "column": 18,
-              "line": 16
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/nimbella/commander-cli/.github/workflows/publish-release.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:c703f3fdc70dc40186626c984597e0b997b3631c9b47b5e11672c2936ec2c96e",
-      "path": "github/nimbella/commander-cli/.github/workflows/publish-release.yml"
-    }
-  ],
+  "digest": "sha256:444707093153f1350b4def3d8fd9a367031d5582db671439e0df2eeae94fa4d5",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:1fd99c711b6491cc3103a0024a630e7f3f9f760a820b4318a3c36e99840e36c3",
+    "sources": [
+      {
+        "digest": "sha256:c703f3fdc70dc40186626c984597e0b997b3631c9b47b5e11672c2936ec2c96e",
+        "id": 0,
+        "path": ".github/workflows/publish-release.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
@@ -850,43 +173,32 @@
           "kind": "external_state"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -901,40 +213,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "edges": 19,
+    "nodes": 15,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 2,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

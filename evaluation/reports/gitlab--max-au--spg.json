@@ -1,757 +1,88 @@
 {
+  "analysis_digest": "sha256:2ff15fdca71a6b18d6357d03134c298ecd188898b9443488339c35af4f244867",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/erlang:latest"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:b39a7afa444a1c438f8cc4c5cb8c183ed9945c2e8ead185cc4fd69a2e77e2295",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_3369dce6662b8260d408",
-          "id": "wv_120d64f837e67e135ac5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3a11b00d658639540463"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2c660c1aed4e14550f7",
-          "id": "wv_36fc7f446309bb1a1b1a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3369dce6662b8260d408"
-        },
-        {
-          "condition": true,
-          "from": "wv_41e48d2445f8c16a2fb0",
-          "id": "wv_39ad9512e696bdf1688e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b2c660c1aed4e14550f7"
-        },
-        {
-          "condition": true,
-          "from": "wv_b3ba7618ccb8ca6de2a9",
-          "id": "wv_3aaf181ddd20e7c958f4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_71a6656dd0a5021f84de"
-        },
-        {
-          "condition": true,
-          "from": "wv_76d84137e68e0a043ef6",
-          "id": "wv_3b58e5a840e444f6b0ce",
-          "kind": "control",
-          "label": null,
-          "to": "wv_81ba84f8c11fca1ebf7c"
-        },
-        {
-          "condition": true,
-          "from": "wv_300b8637f043c87ed204",
-          "id": "wv_41aa9be3128da2198f87",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_76d84137e68e0a043ef6"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2c660c1aed4e14550f7",
-          "id": "wv_4dcb42f5825c5398801c",
-          "kind": "write",
-          "label": null,
-          "to": "wv_171217941070f365191b"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2c660c1aed4e14550f7",
-          "id": "wv_5c9fea115dcca5237327",
-          "kind": "control",
-          "label": null,
-          "to": "wv_76d84137e68e0a043ef6"
-        },
-        {
-          "condition": true,
-          "from": "wv_38d461f159474e3f79d7",
-          "id": "wv_612ebe18a729c5e4f3a1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_41e48d2445f8c16a2fb0"
-        },
-        {
-          "condition": true,
-          "from": "wv_60d9c24580c91feec79a",
-          "id": "wv_978277fd7ab1541bb460",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_300b8637f043c87ed204"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2c660c1aed4e14550f7",
-          "id": "wv_9b2281683c5c1bc1a17c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_60d9c24580c91feec79a"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2c660c1aed4e14550f7",
-          "id": "wv_c22eca6b6b059dda1f2c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_300b8637f043c87ed204"
-        },
-        {
-          "condition": true,
-          "from": "wv_b3ba7618ccb8ca6de2a9",
-          "id": "wv_cec18b637417d34bc3b4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_38d461f159474e3f79d7"
-        },
-        {
-          "condition": true,
-          "from": "wv_76d84137e68e0a043ef6",
-          "id": "wv_e2bd00d7065978ee34e1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3369dce6662b8260d408"
-        },
-        {
-          "condition": true,
-          "from": "wv_60d9c24580c91feec79a",
-          "id": "wv_ef7ce82802fe04b350c3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_53c8f72c65103fe4b097"
-        },
-        {
-          "condition": true,
-          "from": "wv_300b8637f043c87ed204",
-          "id": "wv_f504b9e2a7420326db1f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7f844c1cac33efb7a96d"
-        },
-        {
-          "condition": true,
-          "from": "wv_b3ba7618ccb8ca6de2a9",
-          "id": "wv_fb6eac0fb515bc5086ca",
-          "kind": "call",
-          "label": null,
-          "to": "wv_71a6656dd0a5021f84de"
-        }
-      ],
-      "entrypoints": [
-        "wv_b3ba7618ccb8ca6de2a9"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_171217941070f365191b",
-          "kind": "resource",
-          "name": "artifact:test-default-docker",
-          "phase": "post",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 253,
-              "column": 5,
-              "line": 16
-            },
-            "stop": {
-              "byte": 403,
-              "column": 49,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_300b8637f043c87ed204",
-          "kind": "step",
-          "name": "script:2",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 186,
-              "column": 7,
-              "line": 12
-            },
-            "stop": {
-              "byte": 197,
-              "column": 18,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3369dce6662b8260d408",
-          "kind": "step",
-          "name": "script:4",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 226,
-              "column": 7,
-              "line": 14
-            },
-            "stop": {
-              "byte": 235,
-              "column": 16,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_38d461f159474e3f79d7",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 27,
-              "column": 11,
-              "line": 3
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 226,
-                      "column": 7,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 235,
-                      "column": 16,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "rebar3 ct"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_3a11b00d658639540463",
-          "kind": "command",
-          "name": "rebar3 ct",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 226,
-              "column": 7,
-              "line": 14
-            },
-            "stop": {
-              "byte": 235,
-              "column": 16,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_41e48d2445f8c16a2fb0",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 27,
-              "column": 11,
-              "line": 3
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 165,
-                      "column": 7,
-                      "line": 11
-                    },
-                    "stop": {
-                      "byte": 179,
-                      "column": 21,
-                      "line": 11
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "rebar3 compile"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_53c8f72c65103fe4b097",
-          "kind": "command",
-          "name": "rebar3 compile",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 165,
-              "column": 7,
-              "line": 11
-            },
-            "stop": {
-              "byte": 179,
-              "column": 21,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_60d9c24580c91feec79a",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 165,
-              "column": 7,
-              "line": 11
-            },
-            "stop": {
-              "byte": 179,
-              "column": 21,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_71a6656dd0a5021f84de",
-          "kind": "call",
-          "name": "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/erlang:latest",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 79,
-              "column": 10,
-              "line": 8
-            },
-            "stop": {
-              "byte": 134,
-              "column": 65,
-              "line": 8
-            }
-          },
-          "unknown": {
-            "detail": "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/erlang:latest",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_76d84137e68e0a043ef6",
-          "kind": "step",
-          "name": "script:3",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 204,
-              "column": 7,
-              "line": 13
-            },
-            "stop": {
-              "byte": 219,
-              "column": 22,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 186,
-                      "column": 7,
-                      "line": 12
-                    },
-                    "stop": {
-                      "byte": 197,
-                      "column": 18,
-                      "line": 12
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "rebar3 edoc"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7f844c1cac33efb7a96d",
-          "kind": "command",
-          "name": "rebar3 edoc",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 186,
-              "column": 7,
-              "line": 12
-            },
-            "stop": {
-              "byte": 197,
-              "column": 18,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 204,
-                      "column": 7,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 219,
-                      "column": 22,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "rebar3 dialyzer"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_81ba84f8c11fca1ebf7c",
-          "kind": "command",
-          "name": "rebar3 dialyzer",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 204,
-              "column": 7,
-              "line": 13
-            },
-            "stop": {
-              "byte": 219,
-              "column": 22,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b2c660c1aed4e14550f7",
-          "kind": "job",
-          "name": "test-default-docker",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 29,
-              "column": 1,
-              "line": 5
-            },
-            "stop": {
-              "byte": 403,
-              "column": 49,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b3ba7618ccb8ca6de2a9",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/max-au/spg/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 645,
-              "column": 50,
-              "line": 35
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/max-au/spg/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:44835c80a740bbe781fd311bcf2bde753177271757ba35e8297f56ca86b36a0e",
-      "path": "gitlab/max-au/spg/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:11eb56afbb5c690013f09887dae60d5a81e7d4e675eef39869029e59e917e7a7",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:98534cf0b67a653929c99bfad6971313e399fde781229bbe91e4cdf347810375",
+    "sources": [
+      {
+        "digest": "sha256:44835c80a740bbe781fd311bcf2bde753177271757ba35e8297f56ca86b36a0e",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -762,26 +93,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 17,
+    "nodes": 14,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

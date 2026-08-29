@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:bfef1f90441515f30ad7fc55090a808244706e78e64d708956686152a4abaaa0",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
+          "source": 0,
           "start": {
             "byte": 247,
             "column": 19,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_e46ccb4ba8767d3f4424",
+      "id": "diag_d43eb0636741cc6e454c4c640a73bc8daf14828b16a79a317a9e355d7f142e88",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
+        "source": 0,
         "start": {
           "byte": 247,
           "column": 19,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_6cf4936b33be88ef795a",
+          "node": 4,
           "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
+            "source": 0,
             "start": {
               "byte": 247,
               "column": 19,
@@ -62,7 +69,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -70,9 +76,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
+          "source": 0,
           "start": {
             "byte": 559,
             "column": 19,
@@ -85,12 +90,12 @@
           }
         }
       },
-      "id": "diag_ba3d6a02d039853150ac",
+      "id": "diag_4d64c346c1282b8828897ccb83cfb9858430cb21e75ee40fc86ab3a1a7082ff0",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
+        "source": 0,
         "start": {
           "byte": 559,
           "column": 19,
@@ -105,9 +110,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c3c3b371dc6ca5c9ad29",
+          "node": 11,
           "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
+            "source": 0,
             "start": {
               "byte": 559,
               "column": 19,
@@ -123,898 +128,110 @@
       ]
     }
   ],
-  "digest": "sha256:3224aeabe3e76a9f335e9d92ae96cff7e64976ffadb5173bcd33f97cca23de0b",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_9c2dde38bdcc3eac56e3",
-          "id": "wv_026f6b2638a7128f89ca",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f955aa4356aaba44f4cc"
-        },
-        {
-          "condition": true,
-          "from": "wv_9c2dde38bdcc3eac56e3",
-          "id": "wv_087ada07db959ea45e50",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e56792021dde6a64d970"
-        },
-        {
-          "condition": true,
-          "from": "wv_f29cbd0d4b2aeb7f9266",
-          "id": "wv_24f5897ecd0b627631b5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d82147d9d9a817815cbc"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc3891f85201b3138eec",
-          "id": "wv_3e8f8882ba4a857646a6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6cf4936b33be88ef795a"
-        },
-        {
-          "condition": true,
-          "from": "wv_f955aa4356aaba44f4cc",
-          "id": "wv_3eff9e4651dd10734a00",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_413f2c7502b5379030d3"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc3891f85201b3138eec",
-          "id": "wv_4802184abd90a9ca241d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6cf4936b33be88ef795a"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc3891f85201b3138eec",
-          "id": "wv_563558b3d7507623d620",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c0da6ce97b3de4a85bef"
-        },
-        {
-          "condition": true,
-          "from": "wv_c0da6ce97b3de4a85bef",
-          "id": "wv_5a571c7448d50ff76b76",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f29cbd0d4b2aeb7f9266"
-        },
-        {
-          "condition": true,
-          "from": "wv_ecdca260a43f77579772",
-          "id": "wv_6192b42f1e57a05f5503",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9c2dde38bdcc3eac56e3"
-        },
-        {
-          "condition": true,
-          "from": "wv_e56792021dde6a64d970",
-          "id": "wv_64846aedf64ed0b28ed5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0aa7ec6f04d534afaf0b"
-        },
-        {
-          "condition": true,
-          "from": "wv_ecdca260a43f77579772",
-          "id": "wv_6c8ca980e6d59293ded6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fbcd7be114b545933794"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbcd7be114b545933794",
-          "id": "wv_775160df6774db85a0ad",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dc3891f85201b3138eec"
-        },
-        {
-          "condition": true,
-          "from": "wv_413f2c7502b5379030d3",
-          "id": "wv_9a183a02d6a533f87c21",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a22abe7c8c6760f98b05"
-        },
-        {
-          "condition": true,
-          "from": "wv_413f2c7502b5379030d3",
-          "id": "wv_9fcf60327c2b8b0a8b9f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e56792021dde6a64d970"
-        },
-        {
-          "condition": true,
-          "from": "wv_9c2dde38bdcc3eac56e3",
-          "id": "wv_b6c9b3c0f21ce8ad8042",
-          "kind": "control",
-          "label": null,
-          "to": "wv_413f2c7502b5379030d3"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbcd7be114b545933794",
-          "id": "wv_c1c9753421306f8f6a64",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f29cbd0d4b2aeb7f9266"
-        },
-        {
-          "condition": true,
-          "from": "wv_f955aa4356aaba44f4cc",
-          "id": "wv_c3e72dc67c543f5f0ed5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c3c3b371dc6ca5c9ad29"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbcd7be114b545933794",
-          "id": "wv_c7ccd83cbc373b2762dd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c0da6ce97b3de4a85bef"
-        },
-        {
-          "condition": true,
-          "from": "wv_318914cfb79e724a845d",
-          "id": "wv_d53d9ba52951c698e21f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ecdca260a43f77579772"
-        },
-        {
-          "condition": true,
-          "from": "wv_f955aa4356aaba44f4cc",
-          "id": "wv_e533b1d9768d00fd121d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c3c3b371dc6ca5c9ad29"
-        },
-        {
-          "condition": true,
-          "from": "wv_c0da6ce97b3de4a85bef",
-          "id": "wv_ee99f7522e582ffe1bcd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7f9ecdbb84a7f3bb6346"
-        }
-      ],
-      "entrypoints": [
-        "wv_ecdca260a43f77579772"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-                    "start": {
-                      "byte": 724,
-                      "column": 18,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 738,
-                      "column": 32,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./full-test.sh"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0aa7ec6f04d534afaf0b",
-          "kind": "command",
-          "name": "./full-test.sh",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 724,
-              "column": 18,
-              "line": 26
-            },
-            "stop": {
-              "byte": 738,
-              "column": 32,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_318914cfb79e724a845d",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 30,
-              "column": 5,
-              "line": 3
-            },
-            "stop": {
-              "byte": 110,
-              "column": 18,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_413f2c7502b5379030d3",
-          "kind": "step",
-          "name": "Checkout submodules",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 591,
-              "column": 13,
-              "line": 23
-            },
-            "stop": {
-              "byte": 674,
-              "column": 58,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_6cf4936b33be88ef795a",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 247,
-              "column": 19,
-              "line": 13
-            },
-            "stop": {
-              "byte": 266,
-              "column": 38,
-              "line": 13
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-                    "start": {
-                      "byte": 323,
-                      "column": 19,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 362,
-                      "column": 58,
-                      "line": 15
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git submodule update --init --recursive"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7f9ecdbb84a7f3bb6346",
-          "kind": "command",
-          "name": "git submodule update --init --recursive",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 323,
-              "column": 19,
-              "line": 15
-            },
-            "stop": {
-              "byte": 362,
-              "column": 58,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "self_hosted_persistence"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9c2dde38bdcc3eac56e3",
-          "kind": "job",
-          "name": "full-test",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 431,
-              "column": 5,
-              "line": 18
-            },
-            "stop": {
-              "byte": 738,
-              "column": 32,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-                    "start": {
-                      "byte": 635,
-                      "column": 19,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 674,
-                      "column": 58,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git submodule update --init --recursive"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a22abe7c8c6760f98b05",
-          "kind": "command",
-          "name": "git submodule update --init --recursive",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 635,
-              "column": 19,
-              "line": 24
-            },
-            "stop": {
-              "byte": 674,
-              "column": 58,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c0da6ce97b3de4a85bef",
-          "kind": "step",
-          "name": "Checkout submodules",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 279,
-              "column": 13,
-              "line": 14
-            },
-            "stop": {
-              "byte": 362,
-              "column": 58,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_c3c3b371dc6ca5c9ad29",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 559,
-              "column": 19,
-              "line": 22
-            },
-            "stop": {
-              "byte": 578,
-              "column": 38,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-                    "start": {
-                      "byte": 412,
-                      "column": 18,
-                      "line": 17
-                    },
-                    "stop": {
-                      "byte": 426,
-                      "column": 32,
-                      "line": 17
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./unit-test.sh"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d82147d9d9a817815cbc",
-          "kind": "command",
-          "name": "./unit-test.sh",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 412,
-              "column": 18,
-              "line": 17
-            },
-            "stop": {
-              "byte": 426,
-              "column": 32,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dc3891f85201b3138eec",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 241,
-              "column": 13,
-              "line": 13
-            },
-            "stop": {
-              "byte": 266,
-              "column": 38,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e56792021dde6a64d970",
-          "kind": "step",
-          "name": "Run full test",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 687,
-              "column": 13,
-              "line": 25
-            },
-            "stop": {
-              "byte": 738,
-              "column": 32,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ecdca260a43f77579772",
-          "kind": "workflow",
-          "name": "assignment-test",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 738,
-              "column": 32,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f29cbd0d4b2aeb7f9266",
-          "kind": "step",
-          "name": "Run unit test",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 375,
-              "column": 13,
-              "line": 16
-            },
-            "stop": {
-              "byte": 426,
-              "column": 32,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f955aa4356aaba44f4cc",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 553,
-              "column": 13,
-              "line": 22
-            },
-            "stop": {
-              "byte": 578,
-              "column": 38,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "self_hosted_persistence"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fbcd7be114b545933794",
-          "kind": "job",
-          "name": "unit-test",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml",
-            "start": {
-              "byte": 121,
-              "column": 5,
-              "line": 9
-            },
-            "stop": {
-              "byte": 426,
-              "column": 32,
-              "line": 17
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:beed95f036b75bcb8f6349b4cd7a9c6deae2fdbb05cf7ad2624c93b9e4b7c6bf",
-      "path": "github/cu-ecen-aeld/assignments-3-and-later-newtonsart/.github/workflows/github-actions.yml"
-    }
-  ],
+  "digest": "sha256:30b09e87ca4c1ed07e3163bf88f124ccde9fa28dbb5e676c82de1d6d5d224500",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:e8685eff1f26e4c4409c546b40b39ad370873f993be86598df3cdb8ac0fa8bba",
+    "sources": [
+      {
+        "digest": "sha256:beed95f036b75bcb8f6349b4cd7a9c6deae2fdbb05cf7ad2624c93b9e4b7c6bf",
+        "id": 0,
+        "path": ".github/workflows/github-actions.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 21,
+    "nodes": 16,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

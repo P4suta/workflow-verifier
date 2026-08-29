@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:49fe99d2081ac64783fcf6d1581632aa548414ae1459f378abdec8a807510aa7",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v4",
+      "Incomplete.Unresolved_dependency: softprops/action-gh-release@v1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 148,
             "column": 15,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_f71abb2028ddefd5b330",
+      "id": "diag_c77c084d78fcd8ee97b286aad84a6fb6a8a464aa1b682a23de0f9d960c13afb5",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 148,
           "column": 15,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c4becf36539ff5086867",
+          "node": 4,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 148,
               "column": 15,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v4"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 211,
             "column": 15,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_ea97f68f05a61e6189af",
+      "id": "diag_ec14d567aeca51aa7ecd03d89b315d13fd7486300a60ee6ef5687673d9cf87a2",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 211,
           "column": 15,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_83bed646554c4c30d441",
+          "node": 6,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 211,
               "column": 15,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 563,
             "column": 15,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_6912c0e80aa1e8b6edff",
+      "id": "diag_a2c238c1eed8a4e0fba96ff317991048103b556673c67fc31b541346dfe8381c",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 563,
           "column": 15,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_bb8d71de528502b8488f",
+          "node": 15,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 563,
               "column": 15,
@@ -193,13 +198,12 @@
       "evidence": [
         "dominator set contains no Gate node"
       ],
-      "fix": null,
-      "id": "diag_47ede94df8caf165b856",
+      "id": "diag_749a59e0a7e08936de52be89b9ccb1eb73b1926b36a5844ccf9414eaddc4df89",
       "message": "a privileged effect is reachable without a dominating authorization gate",
       "rule_id": "WV-AUTH-001",
       "severity": "error",
       "span": {
-        "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 1164,
           "column": 14,
@@ -214,9 +218,9 @@
       "trace": [
         {
           "label": "authorization bypass",
-          "node_id": "wv_072edb37a7df2cfb68b8",
+          "node": 0,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 0,
               "column": 1,
@@ -231,9 +235,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_c638f3ba182b0820e07e",
+          "node": 13,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 457,
               "column": 3,
@@ -248,9 +252,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_492c3f3478dff4059490",
+          "node": 23,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 1136,
               "column": 9,
@@ -265,9 +269,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_e06c9c54f6f7309a5c88",
+          "node": 24,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 1164,
               "column": 14,
@@ -283,7 +287,53 @@
       ]
     },
     {
-      "capabilities": [],
+      "capabilities": [
+        "secret_access",
+        "network"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "id": "diag_310876255303fa01012e6ba5164563bb2f24599acf021a92fb6e0e11c9cd0150",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "source": 0,
+        "start": {
+          "byte": 1284,
+          "column": 15,
+          "line": 54
+        },
+        "stop": {
+          "byte": 1314,
+          "column": 45,
+          "line": 54
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node": 27,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 1284,
+              "column": 15,
+              "line": 54
+            },
+            "stop": {
+              "byte": 1314,
+              "column": 45,
+              "line": 54
+            }
+          }
+        }
+      ]
+    },
+    {
       "confidence": "high",
       "evidence": [
         "reference = softprops/action-gh-release@v1"
@@ -291,9 +341,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 1284,
             "column": 15,
@@ -306,12 +355,12 @@
           }
         }
       },
-      "id": "diag_f315e405a95f0cdf196f",
+      "id": "diag_d67354a0c0d25530f82f30f68516597c84a175420e422cc84ab49aa2a47b71db",
       "message": "dependency is not pinned to immutable content: softprops/action-gh-release@v1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 1284,
           "column": 15,
@@ -326,9 +375,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_37357f8de74be2bfde55",
+          "node": 27,
           "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 1284,
               "column": 15,
@@ -344,1833 +393,65 @@
       ]
     }
   ],
-  "digest": "sha256:8d46bbd794dc0694d89f4bad9a013209a40f2379166a2a00141a7b9b6321817e",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_c332e092b70197a64648",
-          "id": "wv_05e51a15d74d291b8b4c",
-          "kind": "control",
-          "label": "needs",
-          "to": "wv_c638f3ba182b0820e07e"
-        },
-        {
-          "condition": true,
-          "from": "wv_0a8fe4c8cd6163939536",
-          "id": "wv_1365948f2293dc8d4ff3",
-          "kind": "data",
-          "label": "steps.version.outputs.PACKAGE_VERSION",
-          "to": "wv_e06c9c54f6f7309a5c88"
-        },
-        {
-          "condition": true,
-          "from": "wv_36bcdfae3a70d64f46ad",
-          "id": "wv_15d28cacdc62ad1ff18e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c46478b2e3a798c8b69b"
-        },
-        {
-          "condition": true,
-          "from": "wv_a1e4c4e04e22f28966f3",
-          "id": "wv_1faea0b20eb18413a897",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_492c3f3478dff4059490"
-        },
-        {
-          "condition": true,
-          "from": "wv_c332e092b70197a64648",
-          "id": "wv_25a1bc5e00c8c49a6499",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c609aa526d99a8515999"
-        },
-        {
-          "condition": true,
-          "from": "wv_11d582984e74449a6a9a",
-          "id": "wv_274745ee4a5294a3d58f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a98dc622f6950d126114"
-        },
-        {
-          "condition": true,
-          "from": "wv_a98dc622f6950d126114",
-          "id": "wv_28b2e785a134d65f9e9a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c609aa526d99a8515999"
-        },
-        {
-          "condition": true,
-          "from": "wv_c80091a6e260e0d719d4",
-          "id": "wv_2d6bcbf095a9bb6ad5c5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_36bcdfae3a70d64f46ad"
-        },
-        {
-          "condition": true,
-          "from": "wv_072edb37a7df2cfb68b8",
-          "id": "wv_3773994c6771cb057bd1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c638f3ba182b0820e07e"
-        },
-        {
-          "condition": true,
-          "from": "wv_c80091a6e260e0d719d4",
-          "id": "wv_3f35a5fd873a6ac81912",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bb8d71de528502b8488f"
-        },
-        {
-          "condition": true,
-          "from": "wv_ab595aa5bb8d086571c9",
-          "id": "wv_40783b18f44d231d7dba",
-          "kind": "data",
-          "label": "steps.version.outputs.PACKAGE_VERSION",
-          "to": "wv_37357f8de74be2bfde55"
-        },
-        {
-          "condition": true,
-          "from": "wv_c638f3ba182b0820e07e",
-          "id": "wv_41f458984021b522192e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_36bcdfae3a70d64f46ad"
-        },
-        {
-          "condition": true,
-          "from": "wv_92aee0d294afaa368195",
-          "id": "wv_46405641c5d48476bf53",
-          "kind": "control",
-          "label": null,
-          "to": "wv_072edb37a7df2cfb68b8"
-        },
-        {
-          "condition": true,
-          "from": "wv_492c3f3478dff4059490",
-          "id": "wv_48791ebbec138d4df01a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e06c9c54f6f7309a5c88"
-        },
-        {
-          "condition": true,
-          "from": "wv_a1e4c4e04e22f28966f3",
-          "id": "wv_5153af4bccecdc1aca55",
-          "kind": "control",
-          "label": null,
-          "to": "wv_89aca68101ea852a3faf"
-        },
-        {
-          "condition": true,
-          "from": "wv_ebead6e63a472738c767",
-          "id": "wv_5295f29a595fff280515",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c4becf36539ff5086867"
-        },
-        {
-          "condition": true,
-          "from": "wv_c332e092b70197a64648",
-          "id": "wv_55c91d0236d3933abefb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ebead6e63a472738c767"
-        },
-        {
-          "condition": true,
-          "from": "wv_e679c8d3b1e2c096057e",
-          "id": "wv_5e18ae76f705869025ee",
-          "kind": "data",
-          "label": "node -p \"require('./package.json'",
-          "to": "wv_c46478b2e3a798c8b69b"
-        },
-        {
-          "condition": true,
-          "from": "wv_3d67b11e96d7bc2d89e6",
-          "id": "wv_5f79a4d7dc5be5504e00",
-          "kind": "data",
-          "label": "steps.version.outputs.PACKAGE_VERSION",
-          "to": "wv_37357f8de74be2bfde55"
-        },
-        {
-          "condition": true,
-          "from": "wv_26a993e8e71c710baab7",
-          "id": "wv_62279cbfc5a3d3f870c4",
-          "kind": "call",
-          "label": null,
-          "to": "wv_37357f8de74be2bfde55"
-        },
-        {
-          "condition": true,
-          "from": "wv_072edb37a7df2cfb68b8",
-          "id": "wv_6a30689f8cdb13c94890",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c332e092b70197a64648"
-        },
-        {
-          "condition": true,
-          "from": "wv_cd58efcc1d462ddd625a",
-          "id": "wv_700f0aaa309bb79f97a5",
-          "kind": "data",
-          "label": "steps.version.outputs.PACKAGE_VERSION",
-          "to": "wv_89aca68101ea852a3faf"
-        },
-        {
-          "condition": true,
-          "from": "wv_11d582984e74449a6a9a",
-          "id": "wv_70782259cdc00844af3e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5af2657164bdfeee98ab"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad248c4ded2f72715468",
-          "id": "wv_7d4ddd03159dbedd00d5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_11d582984e74449a6a9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_492c3f3478dff4059490",
-          "id": "wv_8293b355dc87f5867620",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_26a993e8e71c710baab7"
-        },
-        {
-          "condition": true,
-          "from": "wv_a98dc622f6950d126114",
-          "id": "wv_87bd6db0c3d8e0ae0214",
-          "kind": "control",
-          "label": null,
-          "to": "wv_44be74ab68418c5c0234"
-        },
-        {
-          "condition": true,
-          "from": "wv_c609aa526d99a8515999",
-          "id": "wv_8c6a3f1d3c10f4568db7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_03e8bbc45aaffe9836aa"
-        },
-        {
-          "condition": true,
-          "from": "wv_c638f3ba182b0820e07e",
-          "id": "wv_8caa87251c6ee78235d4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_492c3f3478dff4059490"
-        },
-        {
-          "condition": true,
-          "from": "wv_ebead6e63a472738c767",
-          "id": "wv_976c08ad2de91e6fd779",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_ad248c4ded2f72715468"
-        },
-        {
-          "condition": true,
-          "from": "wv_104adf4e9edc1f12f5db",
-          "id": "wv_a8d09b98f399ce124423",
-          "kind": "data",
-          "label": "GITHUB_OUTPUT",
-          "to": "wv_c46478b2e3a798c8b69b"
-        },
-        {
-          "condition": true,
-          "from": "wv_36bcdfae3a70d64f46ad",
-          "id": "wv_b5ffadd968d7d4fe6d30",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a1e4c4e04e22f28966f3"
-        },
-        {
-          "condition": true,
-          "from": "wv_c638f3ba182b0820e07e",
-          "id": "wv_b8c64f982d3fe6bf52e3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c80091a6e260e0d719d4"
-        },
-        {
-          "condition": true,
-          "from": "wv_26a993e8e71c710baab7",
-          "id": "wv_beb53951bd93b235a1f0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_37357f8de74be2bfde55"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad248c4ded2f72715468",
-          "id": "wv_cacf43f5272be8f6ddca",
-          "kind": "call",
-          "label": null,
-          "to": "wv_83bed646554c4c30d441"
-        },
-        {
-          "condition": true,
-          "from": "wv_c638f3ba182b0820e07e",
-          "id": "wv_dac69b25a7732a538687",
-          "kind": "control",
-          "label": null,
-          "to": "wv_26a993e8e71c710baab7"
-        },
-        {
-          "condition": true,
-          "from": "wv_c332e092b70197a64648",
-          "id": "wv_df131fde3aac4742e687",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a98dc622f6950d126114"
-        },
-        {
-          "condition": true,
-          "from": "wv_aff305ad7e23f6660206",
-          "id": "wv_eaa8e4cf5b3b5a8f3157",
-          "kind": "data",
-          "label": "secrets.GITHUB_TOKEN",
-          "to": "wv_37357f8de74be2bfde55"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad248c4ded2f72715468",
-          "id": "wv_ec1867c3ef60153300e3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_83bed646554c4c30d441"
-        },
-        {
-          "condition": true,
-          "from": "wv_c80091a6e260e0d719d4",
-          "id": "wv_ef057e2fecf9f5702005",
-          "kind": "call",
-          "label": null,
-          "to": "wv_bb8d71de528502b8488f"
-        },
-        {
-          "condition": true,
-          "from": "wv_c332e092b70197a64648",
-          "id": "wv_f1882c57f34ded33bf14",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ad248c4ded2f72715468"
-        },
-        {
-          "condition": true,
-          "from": "wv_c332e092b70197a64648",
-          "id": "wv_f5980362e549e2f70c08",
-          "kind": "control",
-          "label": null,
-          "to": "wv_11d582984e74449a6a9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_c638f3ba182b0820e07e",
-          "id": "wv_f787a0b9a6a3268dcbc8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a1e4c4e04e22f28966f3"
-        },
-        {
-          "condition": true,
-          "from": "wv_ebead6e63a472738c767",
-          "id": "wv_fc963e2a358723eedbb5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c4becf36539ff5086867"
-        }
-      ],
-      "entrypoints": [
-        "wv_072edb37a7df2cfb68b8"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 448,
-                      "column": 14,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 453,
-                      "column": 19,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "grunt"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_03e8bbc45aaffe9836aa",
-          "kind": "command",
-          "name": "grunt",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 448,
-              "column": 14,
-              "line": 27
-            },
-            "stop": {
-              "byte": 453,
-              "column": 19,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_072edb37a7df2cfb68b8",
-          "kind": "workflow",
-          "name": "Release",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1566,
-              "column": 52,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.version.outputs.PACKAGE_VERSION",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1184,
-                      "column": 34,
-                      "line": 51
-                    },
-                    "stop": {
-                      "byte": 1221,
-                      "column": 71,
-                      "line": 51
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.version.outputs.PACKAGE_VERSION",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.version.outputs.PACKAGE_VERSION"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0a8fe4c8cd6163939536",
-          "kind": "resource",
-          "name": "steps.version.outputs.PACKAGE_VERSION",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1184,
-              "column": 34,
-              "line": 51
-            },
-            "stop": {
-              "byte": 1221,
-              "column": 71,
-              "line": 51
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_OUTPUT",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 774,
-                      "column": 123,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 787,
-                      "column": 136,
-                      "line": 39
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_OUTPUT"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_104adf4e9edc1f12f5db",
-          "kind": "resource",
-          "name": "GITHUB_OUTPUT",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 774,
-              "column": 123,
-              "line": 39
-            },
-            "stop": {
-              "byte": 787,
-              "column": 136,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_11d582984e74449a6a9a",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 285,
-              "column": 9,
-              "line": 20
-            },
-            "stop": {
-              "byte": 336,
-              "column": 25,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_26a993e8e71c710baab7",
-          "kind": "step",
-          "name": "Create GitHub Release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1242,
-              "column": 9,
-              "line": 53
-            },
-            "stop": {
-              "byte": 1566,
-              "column": 52,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_36bcdfae3a70d64f46ad",
-          "kind": "step",
-          "name": "Extract version from package.json",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 592,
-              "column": 9,
-              "line": 37
-            },
-            "stop": {
-              "byte": 863,
-              "column": 1,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_37357f8de74be2bfde55",
-          "kind": "call",
-          "name": "softprops/action-gh-release@v1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1284,
-              "column": 15,
-              "line": 54
-            },
-            "stop": {
-              "byte": 1314,
-              "column": 45,
-              "line": 54
-            }
-          },
-          "unknown": {
-            "detail": "softprops/action-gh-release@v1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.version.outputs.PACKAGE_VERSION",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1422,
-                      "column": 29,
-                      "line": 57
-                    },
-                    "stop": {
-                      "byte": 1459,
-                      "column": 66,
-                      "line": 57
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.version.outputs.PACKAGE_VERSION",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.version.outputs.PACKAGE_VERSION"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3d67b11e96d7bc2d89e6",
-          "kind": "resource",
-          "name": "steps.version.outputs.PACKAGE_VERSION",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1422,
-              "column": 29,
-              "line": 57
-            },
-            "stop": {
-              "byte": 1459,
-              "column": 66,
-              "line": 57
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 383,
-                      "column": 14,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 407,
-                      "column": 38,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm install -g grunt-cli"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_44be74ab68418c5c0234",
-          "kind": "command",
-          "name": "npm install -g grunt-cli",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 383,
-              "column": 14,
-              "line": 24
-            },
-            "stop": {
-              "byte": 407,
-              "column": 38,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_492c3f3478dff4059490",
-          "kind": "step",
-          "name": "Push tag",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1136,
-              "column": 9,
-              "line": 50
-            },
-            "stop": {
-              "byte": 1232,
-              "column": 82,
-              "line": 51
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 325,
-                      "column": 14,
-                      "line": 21
-                    },
-                    "stop": {
-                      "byte": 336,
-                      "column": 25,
-                      "line": 21
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm install"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5af2657164bdfeee98ab",
-          "kind": "command",
-          "name": "npm install",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 325,
-              "column": 14,
-              "line": 21
-            },
-            "stop": {
-              "byte": 336,
-              "column": 25,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_83bed646554c4c30d441",
-          "kind": "call",
-          "name": "actions/setup-node@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 211,
-              "column": 15,
-              "line": 16
-            },
-            "stop": {
-              "byte": 232,
-              "column": 36,
-              "line": 16
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.version.outputs.PACKAGE_VERSION",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1046,
-                      "column": 154,
-                      "line": 45
-                    },
-                    "stop": {
-                      "byte": 1083,
-                      "column": 191,
-                      "line": 45
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 906,
-                      "column": 14,
-                      "line": 45
-                    },
-                    "stop": {
-                      "byte": 1127,
-                      "column": 1,
-                      "line": 49
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.version.outputs.PACKAGE_VERSION",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git config --local user.name \"github-actions[bot]\"\ngit config --local user.email \"github-actions[bot]@users.noreply.github.com\"\ngit tag ${{ steps.version.outputs.PACKAGE_VERSION }} || true\n",
-                  "steps.version.outputs.PACKAGE_VERSION"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_89aca68101ea852a3faf",
-          "kind": "command",
-          "name": "git config --local user.name \"github-actions[bot]\"\ngit config --local user.email \"github-actions[bot]@users.noreply.github.com\"\ngit tag ${{ steps.version.outputs.PACKAGE_VERSION }} || true\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 906,
-              "column": 14,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1127,
-              "column": 1,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_92aee0d294afaa368195",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 21,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 51,
-              "column": 25,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a1e4c4e04e22f28966f3",
-          "kind": "step",
-          "name": "Create Git tag",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 872,
-              "column": 9,
-              "line": 44
-            },
-            "stop": {
-              "byte": 1127,
-              "column": 1,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a98dc622f6950d126114",
-          "kind": "step",
-          "name": "Install grunt-cli",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 346,
-              "column": 9,
-              "line": 23
-            },
-            "stop": {
-              "byte": 407,
-              "column": 38,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.version.outputs.PACKAGE_VERSION",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1353,
-                      "column": 25,
-                      "line": 56
-                    },
-                    "stop": {
-                      "byte": 1390,
-                      "column": 62,
-                      "line": 56
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.version.outputs.PACKAGE_VERSION",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.version.outputs.PACKAGE_VERSION"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ab595aa5bb8d086571c9",
-          "kind": "resource",
-          "name": "steps.version.outputs.PACKAGE_VERSION",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1353,
-              "column": 25,
-              "line": 56
-            },
-            "stop": {
-              "byte": 1390,
-              "column": 62,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ad248c4ded2f72715468",
-          "kind": "step",
-          "name": "Setup Node.js",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 177,
-              "column": 9,
-              "line": 15
-            },
-            "stop": {
-              "byte": 275,
-              "column": 29,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1543,
-                      "column": 29,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1563,
-                      "column": 49,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_aff305ad7e23f6660206",
-          "kind": "resource",
-          "name": "secrets.GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1543,
-              "column": 29,
-              "line": 60
-            },
-            "stop": {
-              "byte": 1563,
-              "column": 49,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_bb8d71de528502b8488f",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 563,
-              "column": 15,
-              "line": 35
-            },
-            "stop": {
-              "byte": 582,
-              "column": 34,
-              "line": 35
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c332e092b70197a64648",
-          "kind": "job",
-          "name": "lint",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 61,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 453,
-              "column": 19,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_OUTPUT",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 774,
-                      "column": 123,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 787,
-                      "column": 136,
-                      "line": 39
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "node -p \"require('./package.json'",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 683,
-                      "column": 32,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 716,
-                      "column": 65,
-                      "line": 39
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 665,
-                      "column": 14,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 863,
-                      "column": 1,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_OUTPUT",
-                  "PACKAGE_VERSION=$(node -p \"require('./package.json').version\")\necho \"PACKAGE_VERSION=${PACKAGE_VERSION}\" >> $GITHUB_OUTPUT\necho \"Package version: ${PACKAGE_VERSION}\"\n",
-                  "node -p \"require('./package.json'"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c46478b2e3a798c8b69b",
-          "kind": "command",
-          "name": "PACKAGE_VERSION=$(node -p \"require('./package.json').version\")\necho \"PACKAGE_VERSION=${PACKAGE_VERSION}\" >> $GITHUB_OUTPUT\necho \"Package version: ${PACKAGE_VERSION}\"\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 665,
-              "column": 14,
-              "line": 39
-            },
-            "stop": {
-              "byte": 863,
-              "column": 1,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_c4becf36539ff5086867",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 148,
-              "column": 15,
-              "line": 13
-            },
-            "stop": {
-              "byte": 167,
-              "column": 34,
-              "line": 13
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c609aa526d99a8515999",
-          "kind": "step",
-          "name": "Run linting",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 417,
-              "column": 9,
-              "line": 26
-            },
-            "stop": {
-              "byte": 453,
-              "column": 19,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c638f3ba182b0820e07e",
-          "kind": "job",
-          "name": "publish",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 457,
-              "column": 3,
-              "line": 29
-            },
-            "stop": {
-              "byte": 1566,
-              "column": 52,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c80091a6e260e0d719d4",
-          "kind": "step",
-          "name": "Checkout code",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 529,
-              "column": 9,
-              "line": 34
-            },
-            "stop": {
-              "byte": 582,
-              "column": 34,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.version.outputs.PACKAGE_VERSION",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1046,
-                      "column": 154,
-                      "line": 45
-                    },
-                    "stop": {
-                      "byte": 1083,
-                      "column": 191,
-                      "line": 45
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.version.outputs.PACKAGE_VERSION",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.version.outputs.PACKAGE_VERSION"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cd58efcc1d462ddd625a",
-          "kind": "resource",
-          "name": "steps.version.outputs.PACKAGE_VERSION",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1046,
-              "column": 154,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1083,
-              "column": 191,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.version.outputs.PACKAGE_VERSION",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1184,
-                      "column": 34,
-                      "line": 51
-                    },
-                    "stop": {
-                      "byte": 1221,
-                      "column": 71,
-                      "line": 51
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1164,
-                      "column": 14,
-                      "line": 51
-                    },
-                    "stop": {
-                      "byte": 1232,
-                      "column": 82,
-                      "line": 51
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.version.outputs.PACKAGE_VERSION",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git push origin ${{ steps.version.outputs.PACKAGE_VERSION }} || true",
-                  "steps.version.outputs.PACKAGE_VERSION"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_e06c9c54f6f7309a5c88",
-          "kind": "command",
-          "name": "git push origin ${{ steps.version.outputs.PACKAGE_VERSION }} || true",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 1164,
-              "column": 14,
-              "line": 51
-            },
-            "stop": {
-              "byte": 1232,
-              "column": 82,
-              "line": 51
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "node -p \"require('./package.json'",
-                  "span": {
-                    "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 683,
-                      "column": 32,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 716,
-                      "column": 65,
-                      "line": 39
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "node -p \"require('./package.json'"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e679c8d3b1e2c096057e",
-          "kind": "resource",
-          "name": "node -p \"require('./package.json'",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 683,
-              "column": 32,
-              "line": 39
-            },
-            "stop": {
-              "byte": 716,
-              "column": 65,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ebead6e63a472738c767",
-          "kind": "step",
-          "name": "Checkout code",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/soajs/soajs.installer.versions/.github/workflows/release.yml",
-            "start": {
-              "byte": 114,
-              "column": 9,
-              "line": 12
-            },
-            "stop": {
-              "byte": 167,
-              "column": 34,
-              "line": 13
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/soajs/soajs.installer.versions/.github/workflows/release.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:3e870750d58031b2ccf29b01f0ea8d27f9c138885b9cb2bde66584dca2c39e6e",
-      "path": "github/soajs/soajs.installer.versions/.github/workflows/release.yml"
-    }
-  ],
+  "digest": "sha256:604ce7ea5a85cacfcade4cc1c8af56724272142fda32c9f31dba8492509b2bde",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:0a25f1d526900c77d1f6b67c5b33515a3955caf221f480ba1ce278eb1e445438",
+    "sources": [
+      {
+        "digest": "sha256:3e870750d58031b2ccf29b01f0ea8d27f9c138885b9cb2bde66584dca2c39e6e",
+        "id": 0,
+        "path": ".github/workflows/release.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
@@ -2181,56 +462,47 @@
           "kind": "dynamic_string"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [
-        {
-          "detail": "actions/setup-node@v4",
-          "kind": "unresolved_dependency"
-        },
-        {
-          "detail": "softprops/action-gh-release@v1",
-          "kind": "unresolved_dependency"
-        }
-      ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
-    "diagnostics": 5,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "diagnostics": 6,
+    "edges": 43,
+    "nodes": 31,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 3
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

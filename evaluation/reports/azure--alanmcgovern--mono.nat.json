@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:3581b5943f4e52324e7efbda1694d5825ba332eb001dee13ae22bd1c13e18617",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: VSBuild@1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = VSBuild@1"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 149,
             "column": 9,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_a70188bbbf71816102ac",
+      "id": "diag_ff195576b50dbf88744df540fecb838a71054eb87057b6acba40c7c35c852bd3",
       "message": "dependency is not pinned to immutable content: VSBuild@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 149,
           "column": 9,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_03b79c3d22a6f9f38af9",
+          "node": 6,
           "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 149,
               "column": 9,
@@ -62,450 +69,110 @@
       ]
     }
   ],
-  "digest": "sha256:75b842b48776bc4077c3531f873201007d25a327fdd269e9f5757d711e44024e",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_9c8c6dfa64de71582422",
-          "id": "wv_32ff72413bd3e29da976",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_893c4672515f5024bb37"
-        },
-        {
-          "condition": true,
-          "from": "wv_27f0da6fc7ff9795c85c",
-          "id": "wv_5820ec0a642e105fcd4b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_03b79c3d22a6f9f38af9"
-        },
-        {
-          "condition": true,
-          "from": "wv_bce4244ae480c8f0a022",
-          "id": "wv_686fa328aefc86bf634a",
-          "kind": "data",
-          "label": "solution",
-          "to": "wv_893c4672515f5024bb37"
-        },
-        {
-          "condition": true,
-          "from": "wv_893c4672515f5024bb37",
-          "id": "wv_6a29e6be002d892bc5cb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d08ccb038efe4675eb8a"
-        },
-        {
-          "condition": true,
-          "from": "wv_79ee91df76eecc81d43a",
-          "id": "wv_7b1b7aac0a98c91b7a7c",
-          "kind": "data",
-          "label": "buildPlatform",
-          "to": "wv_893c4672515f5024bb37"
-        },
-        {
-          "condition": true,
-          "from": "wv_d08ccb038efe4675eb8a",
-          "id": "wv_ba3c8e18f33d3fbf7402",
-          "kind": "control",
-          "label": null,
-          "to": "wv_27f0da6fc7ff9795c85c"
-        },
-        {
-          "condition": true,
-          "from": "wv_27f0da6fc7ff9795c85c",
-          "id": "wv_c038fbf861c2099e4a6a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_03b79c3d22a6f9f38af9"
-        }
-      ],
-      "entrypoints": [
-        "wv_893c4672515f5024bb37"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_03b79c3d22a6f9f38af9",
-          "kind": "call",
-          "name": "VSBuild@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-            "start": {
-              "byte": 149,
-              "column": 9,
-              "line": 11
-            },
-            "stop": {
-              "byte": 158,
-              "column": 18,
-              "line": 11
-            }
-          },
-          "unknown": {
-            "detail": "VSBuild@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_27f0da6fc7ff9795c85c",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-            "start": {
-              "byte": 143,
-              "column": 3,
-              "line": 11
-            },
-            "stop": {
-              "byte": 300,
-              "column": 43,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-                    "start": {
-                      "byte": 90,
-                      "column": 18,
-                      "line": 6
-                    },
-                    "stop": {
-                      "byte": 99,
-                      "column": 27,
-                      "line": 6
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Any CPU"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_79ee91df76eecc81d43a",
-          "kind": "resource",
-          "name": "variable:buildPlatform",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-            "start": {
-              "byte": 75,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 99,
-              "column": 27,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_893c4672515f5024bb37",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 300,
-              "column": 43,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-                    "start": {
-                      "byte": 122,
-                      "column": 23,
-                      "line": 7
-                    },
-                    "stop": {
-                      "byte": 131,
-                      "column": 32,
-                      "line": 7
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Release"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9c8c6dfa64de71582422",
-          "kind": "resource",
-          "name": "variable:buildConfiguration",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-            "start": {
-              "byte": 102,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 131,
-              "column": 32,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-                    "start": {
-                      "byte": 58,
-                      "column": 13,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 72,
-                      "column": 27,
-                      "line": 5
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Mono.Nat.sln"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bce4244ae480c8f0a022",
-          "kind": "resource",
-          "name": "variable:solution",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-            "start": {
-              "byte": 48,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 72,
-              "column": 27,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d08ccb038efe4675eb8a",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanmcgovern/mono.nat/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 300,
-              "column": 43,
-              "line": 16
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/alanmcgovern/mono.nat/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:af9789ca168d3ecb960d6b1fe8c2efd5a9bbc74279d55e94713a1277a62b055e",
-      "path": "azure/alanmcgovern/mono.nat/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:3b623cb72221d202e8e17a55f68a47ca3473dd7ce5e396325c72c035cbe1458e",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:cbb4a2c6450f08502314f9ea16ab2eeeb3a9dc7fcef02cb4949cd459dc09fb16",
+    "sources": [
+      {
+        "digest": "sha256:af9789ca168d3ecb960d6b1fe8c2efd5a9bbc74279d55e94713a1277a62b055e",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 7,
+    "nodes": 7,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

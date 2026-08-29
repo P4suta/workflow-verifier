@@ -7,21 +7,22 @@ workflow-verifier \- offline semantic verification and concrete CI scenario repl
 .RI [ OPTIONS ]
 .SH DESCRIPTION
 workflow-verifier analyzes GitHub Actions, GitLab CI, Azure Pipelines, and
-CircleCI workflows from one immutable source-manifest-v2 snapshot. Network,
+CircleCI workflows from one deterministic analysis manifest. Network,
 source mutation, secrets, and sandbox execution are disabled unless separately
 authorized. Unsupported runtime semantics are reported as typed Incomplete
 results and are never guessed.
 .SH COMMANDS
 .TP
 .B check
-Analyze and gate a workflow tree; JSON output is report-v2.
+Analyze and gate a workflow tree; JSON output is workflow-verifier-report/1.
+.TP
+.B graph
+Emit workflow-verifier-graph/1 JSON or DOT. Graph data is not embedded in a
+check report.
 .TP
 .B resolve
 Create or verify a lock-v2 dependency lock. Network access requires
 --allow-network and a trusted origin policy.
-.TP
-.B migrate
-Validate and migrate config-v1 or lock-v1 input to its current format.
 .TP
 .B sandbox plan
 Lower an explicit scenario-v1, or --job shorthand, to runner-v2.
@@ -43,7 +44,8 @@ native helper. Secrets are granted by name at runtime and are not written to
 plans or evidence.
 .SH FILES
 .workflow-verifier.toml is untrusted repository configuration unless explicitly
-trusted. Trusted policy must live outside the analyzed repository. User cache
-is outside the source tree and CI caching is off by default.
+trusted. Trusted policy must live outside the analyzed repository. Static
+analysis reads only files that can affect its result; sandbox execution takes a
+separate complete repository snapshot.
 .SH SEE ALSO
 https://github.com/P4suta/workflow-verifier/tree/main/docs

@@ -1,7 +1,19 @@
 {
+  "analysis_digest": "sha256:2460696a7faeb8137a12b03da8d5f8c70ebdd47a5fd656f49d697b17caf52579",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v6",
+      "Incomplete.Unresolved_dependency: actions/setup-go@v6",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v6",
+      "Incomplete.Unresolved_dependency: pnpm/action-setup@v6",
+      "Incomplete.Unresolved_dependency: softprops/action-gh-release@v3"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v6"
@@ -9,9 +21,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/silverling/aggr/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 188,
             "column": 15,
@@ -24,12 +35,12 @@
           }
         }
       },
-      "id": "diag_8438bd97e6779a7822c3",
+      "id": "diag_e0bb81d4155b7aaf54e4f7a0429d92eadc027f9ae4cf44c5c476347f31f0bc76",
       "message": "dependency is not pinned to immutable content: actions/checkout@v6",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/silverling/aggr/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 188,
           "column": 15,
@@ -44,9 +55,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_84a87e95d97c6806eae8",
+          "node": 4,
           "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 188,
               "column": 15,
@@ -62,7 +73,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-go@v6"
@@ -70,9 +80,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/silverling/aggr/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 286,
             "column": 15,
@@ -85,12 +94,12 @@
           }
         }
       },
-      "id": "diag_614a0d8b9a97448b96e4",
+      "id": "diag_f8890032ce8a03a3040c31607619eddc1281dbe8b9aafed859b2fd1a14c16c70",
       "message": "dependency is not pinned to immutable content: actions/setup-go@v6",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/silverling/aggr/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 286,
           "column": 15,
@@ -105,9 +114,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a88b95f6734849adca65",
+          "node": 6,
           "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 286,
               "column": 15,
@@ -123,7 +132,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = pnpm/action-setup@v6"
@@ -131,9 +139,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/silverling/aggr/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 395,
             "column": 15,
@@ -146,12 +153,12 @@
           }
         }
       },
-      "id": "diag_e54f2eda58c8690d8a13",
+      "id": "diag_d370222240494304abfab894bdd39f66c9d5515fe9aa24886a32f6ce477344bc",
       "message": "dependency is not pinned to immutable content: pnpm/action-setup@v6",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/silverling/aggr/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 395,
           "column": 15,
@@ -166,9 +173,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d9e1f433cb44d1aed815",
+          "node": 8,
           "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 395,
               "column": 15,
@@ -184,7 +191,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v6"
@@ -192,9 +198,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/silverling/aggr/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 496,
             "column": 15,
@@ -207,12 +212,12 @@
           }
         }
       },
-      "id": "diag_878ab5b5c0d1364c1516",
+      "id": "diag_530129667e80fd910d93fcd6de5109d8be52c8a0cfc41b7e0dfa9ee7279bc464",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v6",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/silverling/aggr/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 496,
           "column": 15,
@@ -227,9 +232,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d091aa018c92cfa89c4c",
+          "node": 10,
           "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 496,
               "column": 15,
@@ -245,7 +250,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = softprops/action-gh-release@v3"
@@ -253,9 +257,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/silverling/aggr/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 2391,
             "column": 15,
@@ -268,12 +271,12 @@
           }
         }
       },
-      "id": "diag_c3b134423aab2b1424cb",
+      "id": "diag_f56e843b8d9c67c5fa984c666b3cec23dded4008cd6d28102ffd086a66693481",
       "message": "dependency is not pinned to immutable content: softprops/action-gh-release@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/silverling/aggr/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 2391,
           "column": 15,
@@ -288,9 +291,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_11b0fc4411e65536b27a",
+          "node": 30,
           "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 2391,
               "column": 15,
@@ -306,1881 +309,60 @@
       ]
     }
   ],
-  "digest": "sha256:17fbdca8d8b38e956997c5bc626d10d9b572aa1b4e037366e1d3af3c2d281244",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_25f0b2e6d4474996e377",
-          "id": "wv_00625518f6c107b57ae9",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d9e1f433cb44d1aed815"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_089675018dacb872672c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_03746ae48846829d9f65"
-        },
-        {
-          "condition": true,
-          "from": "wv_73c11794e163fbb7192b",
-          "id": "wv_0bd4aabaff9465e77a9e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_11b0fc4411e65536b27a"
-        },
-        {
-          "condition": true,
-          "from": "wv_25f0b2e6d4474996e377",
-          "id": "wv_0e098b8c0a3d1835e2f9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d9e1f433cb44d1aed815"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbd56e5035af1589af3e",
-          "id": "wv_0e99637302a7ba58b3e3",
-          "kind": "data",
-          "label": "git log --no-merges --format='%H' \"${RANGE}\"",
-          "to": "wv_7fcf1143c01162d09851"
-        },
-        {
-          "condition": true,
-          "from": "wv_b90f7ae890bb4a37f3a6",
-          "id": "wv_0fbca7856e84da14ed1b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a88b95f6734849adca65"
-        },
-        {
-          "condition": true,
-          "from": "wv_b90f7ae890bb4a37f3a6",
-          "id": "wv_12a5a4e25c0c9a5a20f1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_25f0b2e6d4474996e377"
-        },
-        {
-          "condition": true,
-          "from": "wv_25f0b2e6d4474996e377",
-          "id": "wv_15ecf4b88296ea39269d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f6050cbff1482a1bfe04"
-        },
-        {
-          "condition": true,
-          "from": "wv_9eb466595d7d519bd7eb",
-          "id": "wv_19a0f2860564b06f3427",
-          "kind": "data",
-          "label": "git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true",
-          "to": "wv_7fcf1143c01162d09851"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_222c592401a604453dd7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b90f7ae890bb4a37f3a6"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_239ee50811c91bb6498e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_94161be896dbecc339e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_73c11794e163fbb7192b",
-          "id": "wv_2ff8296c8938ebb18f94",
-          "kind": "call",
-          "label": null,
-          "to": "wv_11b0fc4411e65536b27a"
-        },
-        {
-          "condition": true,
-          "from": "wv_b90f7ae890bb4a37f3a6",
-          "id": "wv_34a0b50639c9ca124b6a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a88b95f6734849adca65"
-        },
-        {
-          "condition": true,
-          "from": "wv_73bc0c675ea39cdfd163",
-          "id": "wv_3a7361085769e9c31194",
-          "kind": "data",
-          "label": "mktemp",
-          "to": "wv_7fcf1143c01162d09851"
-        },
-        {
-          "condition": true,
-          "from": "wv_7e50c0a938cc6493ed02",
-          "id": "wv_3c18beb221a417a44886",
-          "kind": "control",
-          "label": null,
-          "to": "wv_84a87e95d97c6806eae8"
-        },
-        {
-          "condition": true,
-          "from": "wv_90a1c7aed18924540a8c",
-          "id": "wv_4b45b8bc1c296d99aa3c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_03746ae48846829d9f65"
-        },
-        {
-          "condition": true,
-          "from": "wv_03746ae48846829d9f65",
-          "id": "wv_52d6711c1a7b2b1770f5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_46843b015659ffc0d919"
-        },
-        {
-          "condition": true,
-          "from": "wv_f6050cbff1482a1bfe04",
-          "id": "wv_54c24787b623c60f837e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d091aa018c92cfa89c4c"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_598a9c5b07fe990aa1b3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_25f0b2e6d4474996e377"
-        },
-        {
-          "condition": true,
-          "from": "wv_1ab1f9fb743b14c5a0f3",
-          "id": "wv_689eb6a39c7f0467800e",
-          "kind": "data",
-          "label": "steps.contributors.outputs.previous_tag",
-          "to": "wv_46843b015659ffc0d919"
-        },
-        {
-          "condition": true,
-          "from": "wv_f6050cbff1482a1bfe04",
-          "id": "wv_69c9154405282feee5b0",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_94161be896dbecc339e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_7601915d0737a30ddbbc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f6050cbff1482a1bfe04"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_77126c80f2c6446dc998",
-          "kind": "control",
-          "label": null,
-          "to": "wv_73c11794e163fbb7192b"
-        },
-        {
-          "condition": true,
-          "from": "wv_94161be896dbecc339e6",
-          "id": "wv_7cf624f7f643156659c2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d62d1b54b3fe80d8ee3d"
-        },
-        {
-          "condition": true,
-          "from": "wv_a217630b740257f9e0a8",
-          "id": "wv_7e7a5e30ef0d9507aee4",
-          "kind": "data",
-          "label": "steps.changelog.outputs.notes_file",
-          "to": "wv_11b0fc4411e65536b27a"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_84f299bc1529cab2c5f8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_90a1c7aed18924540a8c"
-        },
-        {
-          "condition": true,
-          "from": "wv_8cf7ef26cdf9514a9f0a",
-          "id": "wv_8eb9d3bfe9cc30f29a4b",
-          "kind": "data",
-          "label": "./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\"",
-          "to": "wv_46843b015659ffc0d919"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbf5081297759de52a55",
-          "id": "wv_9ae682f9d6d36de4195b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_90a1c7aed18924540a8c"
-        },
-        {
-          "condition": true,
-          "from": "wv_71273cd833172e658209",
-          "id": "wv_a43184917d357bca3d2a",
-          "kind": "data",
-          "label": "github.ref_name",
-          "to": "wv_3a4cc4ddd876b07e3a58"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_a6e260d38abad5abf0e5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7e50c0a938cc6493ed02"
-        },
-        {
-          "condition": true,
-          "from": "wv_dd41bc6ab74b999b7e76",
-          "id": "wv_ae3acb2b733029ea6ae3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fbf5081297759de52a55"
-        },
-        {
-          "condition": true,
-          "from": "wv_f6050cbff1482a1bfe04",
-          "id": "wv_ae6325c3e4353702114c",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d091aa018c92cfa89c4c"
-        },
-        {
-          "condition": true,
-          "from": "wv_90a1c7aed18924540a8c",
-          "id": "wv_b49a7475b85f132fd0ee",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7fcf1143c01162d09851"
-        },
-        {
-          "condition": true,
-          "from": "wv_26873ecc80e78fb31932",
-          "id": "wv_b49ccaf168cfc6ee107d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dd41bc6ab74b999b7e76"
-        },
-        {
-          "condition": true,
-          "from": "wv_d7129383188cfe77567d",
-          "id": "wv_c6d02975f2fdd0d1a88b",
-          "kind": "data",
-          "label": "steps.contributors.outputs.contributors_file",
-          "to": "wv_46843b015659ffc0d919"
-        },
-        {
-          "condition": true,
-          "from": "wv_ac16071d2f3c1ecf88ea",
-          "id": "wv_c7bdd4bfa2397bd1705e",
-          "kind": "data",
-          "label": "secrets.GITHUB_TOKEN",
-          "to": "wv_059e89dc1c5b4faaacc8"
-        },
-        {
-          "condition": true,
-          "from": "wv_03746ae48846829d9f65",
-          "id": "wv_cfdcb7ce13bd2bc9c9a7",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_73c11794e163fbb7192b"
-        },
-        {
-          "condition": true,
-          "from": "wv_3a4cc4ddd876b07e3a58",
-          "id": "wv_d9be5d59a2abf39a1c85",
-          "kind": "data",
-          "label": "VERSION",
-          "to": "wv_5fbafc54a4b02334e799"
-        },
-        {
-          "condition": true,
-          "from": "wv_94161be896dbecc339e6",
-          "id": "wv_de24912b63e3a00890c6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_fbf5081297759de52a55"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbf5081297759de52a55",
-          "id": "wv_dff8953f7678804234e3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5fbafc54a4b02334e799"
-        },
-        {
-          "condition": true,
-          "from": "wv_7e50c0a938cc6493ed02",
-          "id": "wv_e17cf8ca832e1b668f2b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_84a87e95d97c6806eae8"
-        },
-        {
-          "condition": true,
-          "from": "wv_52739dddf67e4da41ec2",
-          "id": "wv_eae720f135f4199afc89",
-          "kind": "control",
-          "label": null,
-          "to": "wv_26873ecc80e78fb31932"
-        },
-        {
-          "condition": true,
-          "from": "wv_059e89dc1c5b4faaacc8",
-          "id": "wv_ef76a2cb435d41da9ee9",
-          "kind": "data",
-          "label": "GITHUB_TOKEN",
-          "to": "wv_7fcf1143c01162d09851"
-        },
-        {
-          "condition": true,
-          "from": "wv_7e50c0a938cc6493ed02",
-          "id": "wv_f96851db5d740766f614",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b90f7ae890bb4a37f3a6"
-        }
-      ],
-      "entrypoints": [
-        "wv_26873ecc80e78fb31932"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_03746ae48846829d9f65",
-          "kind": "step",
-          "name": "Generate release notes",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 1987,
-              "column": 9,
-              "line": 76
-            },
-            "stop": {
-              "byte": 2340,
-              "column": 1,
-              "line": 83
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_059e89dc1c5b4faaacc8",
-          "kind": "resource",
-          "name": "env:GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 1053,
-              "column": 11,
-              "line": 51
-            },
-            "stop": {
-              "byte": 1094,
-              "column": 52,
-              "line": 51
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_11b0fc4411e65536b27a",
-          "kind": "call",
-          "name": "softprops/action-gh-release@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 2391,
-              "column": 15,
-              "line": 85
-            },
-            "stop": {
-              "byte": 2421,
-              "column": 45,
-              "line": 85
-            }
-          },
-          "unknown": {
-            "detail": "softprops/action-gh-release@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.contributors.outputs.previous_tag",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2123,
-                      "column": 86,
-                      "line": 78
-                    },
-                    "stop": {
-                      "byte": 2162,
-                      "column": 125,
-                      "line": 78
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.contributors.outputs.previous_tag",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.contributors.outputs.previous_tag"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1ab1f9fb743b14c5a0f3",
-          "kind": "resource",
-          "name": "steps.contributors.outputs.previous_tag",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 2123,
-              "column": 86,
-              "line": 78
-            },
-            "stop": {
-              "byte": 2162,
-              "column": 125,
-              "line": 78
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_25f0b2e6d4474996e377",
-          "kind": "step",
-          "name": "Set up pnpm",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 363,
-              "column": 9,
-              "line": 26
-            },
-            "stop": {
-              "byte": 451,
-              "column": 22,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_26873ecc80e78fb31932",
-          "kind": "workflow",
-          "name": "Release",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 2599,
-              "column": 41,
-              "line": 90
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3a4cc4ddd876b07e3a58",
-          "kind": "resource",
-          "name": "env:VERSION",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 793,
-              "column": 11,
-              "line": 43
-            },
-            "stop": {
-              "byte": 824,
-              "column": 42,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\"",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2065,
-                      "column": 28,
-                      "line": 78
-                    },
-                    "stop": {
-                      "byte": 2236,
-                      "column": 199,
-                      "line": 78
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.contributors.outputs.contributors_file",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2188,
-                      "column": 151,
-                      "line": 78
-                    },
-                    "stop": {
-                      "byte": 2232,
-                      "column": 195,
-                      "line": 78
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.contributors.outputs.previous_tag",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2123,
-                      "column": 86,
-                      "line": 78
-                    },
-                    "stop": {
-                      "byte": 2162,
-                      "column": 125,
-                      "line": 78
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2051,
-                      "column": 14,
-                      "line": 78
-                    },
-                    "stop": {
-                      "byte": 2340,
-                      "column": 1,
-                      "line": 83
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.contributors.outputs.contributors_file",
-                    "kind": "dynamic_string"
-                  },
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.contributors.outputs.previous_tag",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\"",
-                  "NOTES_FILE=\"$(./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\")\"\n{\n  echo \"notes_file=${NOTES_FILE}\"\n} >>\"${GITHUB_OUTPUT}\"\n",
-                  "steps.contributors.outputs.contributors_file",
-                  "steps.contributors.outputs.previous_tag"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_46843b015659ffc0d919",
-          "kind": "command",
-          "name": "NOTES_FILE=\"$(./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\")\"\n{\n  echo \"notes_file=${NOTES_FILE}\"\n} >>\"${GITHUB_OUTPUT}\"\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 2051,
-              "column": 14,
-              "line": 78
-            },
-            "stop": {
-              "byte": 2340,
-              "column": 1,
-              "line": 83
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_52739dddf67e4da41ec2",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 21,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 49,
-              "column": 13,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 838,
-                      "column": 14,
-                      "line": 44
-                    },
-                    "stop": {
-                      "byte": 942,
-                      "column": 1,
-                      "line": 47
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./scripts/package-release.sh linux amd64\n./scripts/package-release.sh linux arm64\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5fbafc54a4b02334e799",
-          "kind": "command",
-          "name": "./scripts/package-release.sh linux amd64\n./scripts/package-release.sh linux arm64\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 838,
-              "column": 14,
-              "line": 44
-            },
-            "stop": {
-              "byte": 942,
-              "column": 1,
-              "line": 47
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 806,
-                      "column": 24,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 821,
-                      "column": 39,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_71273cd833172e658209",
-          "kind": "resource",
-          "name": "github.ref_name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 806,
-              "column": 24,
-              "line": 43
-            },
-            "stop": {
-              "byte": 821,
-              "column": 39,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "mktemp",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1334,
-                      "column": 240,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1340,
-                      "column": 246,
-                      "line": 52
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "mktemp"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_73bc0c675ea39cdfd163",
-          "kind": "resource",
-          "name": "mktemp",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 1334,
-              "column": 240,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1340,
-              "column": 246,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_73c11794e163fbb7192b",
-          "kind": "step",
-          "name": "Create GitHub release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 2349,
-              "column": 9,
-              "line": 84
-            },
-            "stop": {
-              "byte": 2599,
-              "column": 41,
-              "line": 90
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7e50c0a938cc6493ed02",
-          "kind": "step",
-          "name": "Check out repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 147,
-              "column": 9,
-              "line": 16
-            },
-            "stop": {
-              "byte": 246,
-              "column": 25,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "git log --no-merges --format='%H' \"${RANGE}\"",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1354,
-                      "column": 260,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1398,
-                      "column": 304,
-                      "line": 52
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1124,
-                      "column": 30,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1203,
-                      "column": 109,
-                      "line": 52
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "mktemp",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1334,
-                      "column": 240,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1340,
-                      "column": 246,
-                      "line": 52
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1108,
-                      "column": 14,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1978,
-                      "column": 1,
-                      "line": 75
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "PREVIOUS_TAG=\"$(git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true)\"\nif [ -n \"${PREVIOUS_TAG}\" ]; then\n  RANGE=\"${PREVIOUS_TAG}..${GITHUB_SHA}\"\nelse\n  RANGE=\"${GITHUB_SHA}\"\nfi\n\nCONTRIBUTOR_FILE=\"$(mktemp)\"\nCOMMITS=\"$(git log --no-merges --format='%H' \"${RANGE}\")\"\n\nfor commit_sha in ${COMMITS}; do\n  gh api \\\n    -H \"Accept: application/vnd.github+json\" \\\n    \"/repos/${GITHUB_REPOSITORY}/commits/${commit_sha}/pulls\" \\\n    --jq '.[].user.login' >>\"${CONTRIBUTOR_FILE}\" || true\ndone\n\nsort -u -o \"${CONTRIBUTOR_FILE}\" \"${CONTRIBUTOR_FILE}\"\n{\n  echo \"previous_tag=${PREVIOUS_TAG}\"\n  echo \"contributors_file=${CONTRIBUTOR_FILE}\"\n} >>\"${GITHUB_OUTPUT}\"\n",
-                  "git log --no-merges --format='%H' \"${RANGE}\"",
-                  "git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true",
-                  "mktemp"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7fcf1143c01162d09851",
-          "kind": "command",
-          "name": "PREVIOUS_TAG=\"$(git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true)\"\nif [ -n \"${PREVIOUS_TAG}\" ]; then\n  RANGE=\"${PREVIOUS_TAG}..${GITHUB_SHA}\"\nelse\n  RANGE=\"${GITHUB_SHA}\"\nfi\n\nCONTRIBUTOR_FILE=\"$(mktemp)\"\nCOMMITS=\"$(git log --no-merges --format='%H' \"${RANGE}\")\"\n\nfor commit_sha in ${COMMITS}; do\n  gh api \\\n    -H \"Accept: application/vnd.github+json\" \\\n    \"/repos/${GITHUB_REPOSITORY}/commits/${commit_sha}/pulls\" \\\n    --jq '.[].user.login' >>\"${CONTRIBUTOR_FILE}\" || true\ndone\n\nsort -u -o \"${CONTRIBUTOR_FILE}\" \"${CONTRIBUTOR_FILE}\"\n{\n  echo \"previous_tag=${PREVIOUS_TAG}\"\n  echo \"contributors_file=${CONTRIBUTOR_FILE}\"\n} >>\"${GITHUB_OUTPUT}\"\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 1108,
-              "column": 14,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1978,
-              "column": 1,
-              "line": 75
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_84a87e95d97c6806eae8",
-          "kind": "call",
-          "name": "actions/checkout@v6",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 188,
-              "column": 15,
-              "line": 17
-            },
-            "stop": {
-              "byte": 207,
-              "column": 34,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\"",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2065,
-                      "column": 28,
-                      "line": 78
-                    },
-                    "stop": {
-                      "byte": 2236,
-                      "column": 199,
-                      "line": 78
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\""
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8cf7ef26cdf9514a9f0a",
-          "kind": "resource",
-          "name": "./scripts/generate-changelog.sh \"${GITHUB_REF_NAME}\" \"${{ steps.contributors.outputs.previous_tag }}\" \"${GITHUB_SHA}\" \"${{ steps.contributors.outputs.contributors_file }}\"",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 2065,
-              "column": 28,
-              "line": 78
-            },
-            "stop": {
-              "byte": 2236,
-              "column": 199,
-              "line": 78
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_90a1c7aed18924540a8c",
-          "kind": "step",
-          "name": "Collect release contributors from pull requests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 951,
-              "column": 9,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1978,
-              "column": 1,
-              "line": 75
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_94161be896dbecc339e6",
-          "kind": "step",
-          "name": "Install frontend dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 642,
-              "column": 9,
-              "line": 38
-            },
-            "stop": {
-              "byte": 731,
-              "column": 54,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1124,
-                      "column": 30,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1203,
-                      "column": 109,
-                      "line": 52
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9eb466595d7d519bd7eb",
-          "kind": "resource",
-          "name": "git tag --sort=-creatordate | grep -vx \"${GITHUB_REF_NAME}\" | head -n 1 || true",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 1124,
-              "column": 30,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1203,
-              "column": 109,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.changelog.outputs.notes_file",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2461,
-                      "column": 26,
-                      "line": 87
-                    },
-                    "stop": {
-                      "byte": 2495,
-                      "column": 60,
-                      "line": 87
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.changelog.outputs.notes_file",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.changelog.outputs.notes_file"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a217630b740257f9e0a8",
-          "kind": "resource",
-          "name": "steps.changelog.outputs.notes_file",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 2461,
-              "column": 26,
-              "line": 87
-            },
-            "stop": {
-              "byte": 2495,
-              "column": 60,
-              "line": 87
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a88b95f6734849adca65",
-          "kind": "call",
-          "name": "actions/setup-go@v6",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 286,
-              "column": 15,
-              "line": 22
-            },
-            "stop": {
-              "byte": 305,
-              "column": 34,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-go@v6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1071,
-                      "column": 29,
-                      "line": 51
-                    },
-                    "stop": {
-                      "byte": 1091,
-                      "column": 49,
-                      "line": 51
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ac16071d2f3c1ecf88ea",
-          "kind": "resource",
-          "name": "secrets.GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 1071,
-              "column": 29,
-              "line": 51
-            },
-            "stop": {
-              "byte": 1091,
-              "column": 49,
-              "line": 51
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b90f7ae890bb4a37f3a6",
-          "kind": "step",
-          "name": "Set up Go",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 256,
-              "column": 9,
-              "line": 21
-            },
-            "stop": {
-              "byte": 353,
-              "column": 34,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d091aa018c92cfa89c4c",
-          "kind": "call",
-          "name": "actions/setup-node@v6",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 496,
-              "column": 15,
-              "line": 32
-            },
-            "stop": {
-              "byte": 517,
-              "column": 36,
-              "line": 32
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 691,
-                      "column": 14,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 731,
-                      "column": 54,
-                      "line": 39
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "pnpm --dir web install --frozen-lockfile"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d62d1b54b3fe80d8ee3d",
-          "kind": "command",
-          "name": "pnpm --dir web install --frozen-lockfile",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 691,
-              "column": 14,
-              "line": 39
-            },
-            "stop": {
-              "byte": 731,
-              "column": 54,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.contributors.outputs.contributors_file",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 2188,
-                      "column": 151,
-                      "line": 78
-                    },
-                    "stop": {
-                      "byte": 2232,
-                      "column": 195,
-                      "line": 78
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.contributors.outputs.contributors_file",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.contributors.outputs.contributors_file"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d7129383188cfe77567d",
-          "kind": "resource",
-          "name": "steps.contributors.outputs.contributors_file",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 2188,
-              "column": 151,
-              "line": 78
-            },
-            "stop": {
-              "byte": 2232,
-              "column": 195,
-              "line": 78
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d9e1f433cb44d1aed815",
-          "kind": "call",
-          "name": "pnpm/action-setup@v6",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 395,
-              "column": 15,
-              "line": 27
-            },
-            "stop": {
-              "byte": 415,
-              "column": 35,
-              "line": 27
-            }
-          },
-          "unknown": {
-            "detail": "pnpm/action-setup@v6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dd41bc6ab74b999b7e76",
-          "kind": "job",
-          "name": "release",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 91,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 2599,
-              "column": 41,
-              "line": 90
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f6050cbff1482a1bfe04",
-          "kind": "step",
-          "name": "Set up Node.js",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 461,
-              "column": 9,
-              "line": 31
-            },
-            "stop": {
-              "byte": 632,
-              "column": 52,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "git log --no-merges --format='%H' \"${RANGE}\"",
-                  "span": {
-                    "file": "github/silverling/aggr/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1354,
-                      "column": 260,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1398,
-                      "column": 304,
-                      "line": 52
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git log --no-merges --format='%H' \"${RANGE}\""
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fbd56e5035af1589af3e",
-          "kind": "resource",
-          "name": "git log --no-merges --format='%H' \"${RANGE}\"",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 1354,
-              "column": 260,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1398,
-              "column": 304,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fbf5081297759de52a55",
-          "kind": "step",
-          "name": "Build release archives",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/silverling/aggr/.github/workflows/release.yml",
-            "start": {
-              "byte": 741,
-              "column": 9,
-              "line": 41
-            },
-            "stop": {
-              "byte": 942,
-              "column": 1,
-              "line": 47
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/silverling/aggr/.github/workflows/release.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:cd40e15ae61a281821e6d5898a22c7c93ccc6e3fe40b418adbdbb30e478e3ab7",
-      "path": "github/silverling/aggr/.github/workflows/release.yml"
-    }
-  ],
+  "digest": "sha256:f05f64ae388ddcf1d109690d9309c3423aa394fb1bf17b343536bc266a41e0ba",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:3663b9a8fb86a5feba8d8d0d4c9997742467da9095f76fc4eb2d910559b11707",
+    "sources": [
+      {
+        "digest": "sha256:cd40e15ae61a281821e6d5898a22c7c93ccc6e3fe40b418adbdbb30e478e3ab7",
+        "id": 0,
+        "path": ".github/workflows/release.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -2205,18 +387,9 @@
         {
           "detail": "softprops/action-gh-release@v3",
           "kind": "unresolved_dependency"
-        },
-        {
-          "detail": "unresolved GitHub dataflow value steps.contributors.outputs.contributors_file",
-          "kind": "dynamic_string"
-        },
-        {
-          "detail": "unresolved GitHub dataflow value steps.contributors.outputs.previous_tag",
-          "kind": "dynamic_string"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
@@ -2231,8 +404,7 @@
           "kind": "dynamic_string"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -2259,40 +431,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 5,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 3
+    "edges": 44,
+    "nodes": 32,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 3,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

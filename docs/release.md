@@ -18,7 +18,9 @@ an exact lowercase commit and version only when that commit is the current
 `main`. It creates source and schema archives twice from Git objects, builds
 each product/helper bundle twice in separate extracted roots, and aggregates
 all five platform fragments plus the source fragment into one `reproducible-build`
-`release-gate-v1`. Linux x86_64 is
+`release-gate-v1`. It also runs `cargo package` twice, requires byte-identical
+`.crate` files, audits the strict package inventory and packaged Cargo VCS
+commit, and records the SHA-256 digest in `crate-package-v1`. Linux x86_64 is
 built in a digest-pinned Rocky Linux 8 root and every ELF is checked against the
 glibc 2.28 and `DT_NEEDED` policy; Linux arm64 must pass the same floor with its
 native loader. The fixed GitHub runner labels are `ubuntu-24.04-arm`,
@@ -29,7 +31,8 @@ the two archive bytes are compared.
 The candidate workflow Sigstore-signs the Linux, macOS, source, corresponding
 source, schema, and helper archives in the protected `candidate-signing`
 environment. Publication of the Action and all release assets remains disabled
-in source until a separate approval adds an audited publication job. The
+in source. crates.io publication is a separate protected job described below.
+The
 candidate deliberately leaves the Windows product unsigned. Run the
 protected [Windows signing workflow](../.github/workflows/sign-windows.yml) at
 the same exact `C`, supplying the successful candidate run id, SHA-256 of
@@ -76,7 +79,8 @@ Create a single-parent child commit `E` that changes only
 `release-evidence/**`. Its canonical `release-evidence-v4.json` binds the
 candidate, exactly one product and helper bundle for every release platform,
 both architecture-specific macOS boot bundles, source archive, every remaining
-artifact and signature, all gates, both disclosures, and the detached
+artifact and signature, the exact `workflow-verifier-<version>.crate` digest,
+all gates, both disclosures, and the detached
 SSH-signed `maintainer-self-audit-v2`.
 Verify offline:
 
@@ -88,10 +92,19 @@ After verification, create a separate final release index and checksum file
 covering product assets, evidence, SBOMs, notices, and source archive. The index
 does not list its own digest, which avoids a digest cycle. Sign it with Sigstore.
 
-The protected release environment promotes those exact bytes; it does not
-rebuild them. Only after final manual approval is the signed `v0.1.0` tag
-attached to `E` and the GitHub Release published. Submit the same immutable,
-checksum-pinned static source archive to opam. After publication, repeat
-download, signature, checksum, installation, Quick Start, and offline evidence
-verification from clean hosts. Never replace a published asset; issue a fixed
+The release workflow stages those exact GitHub assets without publishing them.
+Its manually approved `crate-publication` job checks out `C` (never evidence
+commit `E`), regenerates the `.crate` twice, compares its digest with v4
+evidence, and runs `cargo publish --locked -p workflow-verifier`. If the exact
+version already exists, the job downloads the registry bytes and succeeds only
+when their digest matches; a different digest or an already-acquired name with
+no matching version is a hard failure. It then installs the registry version,
+checks the embedded commit and CLI version, and performs a basic analysis.
+The protected registry token is a first-publication bootstrap credential:
+crates.io cannot configure trusted publishing before the crate exists, and this
+workflow refuses a different later version once the name is registered. After
+the initial publication, revoke that token and configure an OIDC trusted
+publisher before adding any future-version publication workflow.
+GitHub Release, Action, tag, and opam publication remain separate approval
+boundaries. Never replace a published asset or crates.io version; issue a fixed
 release.

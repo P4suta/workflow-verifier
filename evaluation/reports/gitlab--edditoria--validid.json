@@ -1,618 +1,88 @@
 {
+  "analysis_digest": "sha256:26623ef0199865af679fd9d1794c5140c68e8d4522e74260c97b74a00de301c6",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: node:20"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:a81e64d03b0f6032adf9c46cda271b45f2c6d0b78daf23dd37bf3fc5476f8226",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_f6be267c1f2fd8f5ecdf",
-          "id": "wv_1dfa52b8b826429c9b8f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ac55f016c47aee4d580c"
-        },
-        {
-          "condition": true,
-          "from": "wv_ac55f016c47aee4d580c",
-          "id": "wv_20c720807cc78383da54",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ce21d94f15a844b775b3"
-        },
-        {
-          "condition": true,
-          "from": "wv_e948a29873cf22e21a9e",
-          "id": "wv_55b2a4c56d88e0b5a8e1",
-          "kind": "data",
-          "label": "CI_COMMIT_BRANCH",
-          "to": "wv_f0ad40d0eb3ecda23e3c"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2bd6fef78cc32fd4842",
-          "id": "wv_6f99cc358055abc396d2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a224f3ac850685830190"
-        },
-        {
-          "condition": true,
-          "from": "wv_fb3c249b6447bc891ac2",
-          "id": "wv_964462bf23b8627caa7c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ee9132029b1f352a7c35"
-        },
-        {
-          "condition": true,
-          "from": "wv_f6be267c1f2fd8f5ecdf",
-          "id": "wv_c00a94148fc6e11db326",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fb3c249b6447bc891ac2"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2bd6fef78cc32fd4842",
-          "id": "wv_e08706f9578a80fd6eb2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6c295eeca9541d539af7"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(CI_COMMIT_BRANCH=~/^(main|dev|ci|ci\\d|ci-.+)$/)"
-          },
-          "from": "wv_f0ad40d0eb3ecda23e3c",
-          "id": "wv_e29a4a716f227649aa29",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_f6be267c1f2fd8f5ecdf"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2bd6fef78cc32fd4842",
-          "id": "wv_e356b117d0eef8c270fb",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6c295eeca9541d539af7"
-        },
-        {
-          "condition": true,
-          "from": "wv_ac55f016c47aee4d580c",
-          "id": "wv_f218b4d834eac88c30c8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_fb3c249b6447bc891ac2"
-        },
-        {
-          "condition": true,
-          "from": "wv_a224f3ac850685830190",
-          "id": "wv_fad88b94728c310b05c7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f0ad40d0eb3ecda23e3c"
-        }
-      ],
-      "entrypoints": [
-        "wv_b2bd6fef78cc32fd4842"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6c295eeca9541d539af7",
-          "kind": "call",
-          "name": "node:20",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 413,
-              "column": 8,
-              "line": 8
-            },
-            "stop": {
-              "byte": 420,
-              "column": 15,
-              "line": 8
-            }
-          },
-          "unknown": {
-            "detail": "node:20",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a224f3ac850685830190",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 764,
-              "column": 3,
-              "line": 22
-            },
-            "stop": {
-              "byte": 770,
-              "column": 9,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ac55f016c47aee4d580c",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 918,
-              "column": 7,
-              "line": 32
-            },
-            "stop": {
-              "byte": 929,
-              "column": 18,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b2bd6fef78cc32fd4842",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 406,
-              "column": 1,
-              "line": 8
-            },
-            "stop": {
-              "byte": 948,
-              "column": 19,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 918,
-                      "column": 7,
-                      "line": 32
-                    },
-                    "stop": {
-                      "byte": 929,
-                      "column": 18,
-                      "line": 32
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm install"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_ce21d94f15a844b775b3",
-          "kind": "command",
-          "name": "npm install",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 918,
-              "column": 7,
-              "line": 32
-            },
-            "stop": {
-              "byte": 929,
-              "column": 18,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_BRANCH",
-                  "span": {
-                    "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 852,
-                      "column": 11,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 869,
-                      "column": 28,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_BRANCH"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e948a29873cf22e21a9e",
-          "kind": "resource",
-          "name": "CI_COMMIT_BRANCH",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 852,
-              "column": 11,
-              "line": 30
-            },
-            "stop": {
-              "byte": 869,
-              "column": 28,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 936,
-                      "column": 7,
-                      "line": 33
-                    },
-                    "stop": {
-                      "byte": 948,
-                      "column": 19,
-                      "line": 33
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm run test"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_ee9132029b1f352a7c35",
-          "kind": "command",
-          "name": "npm run test",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 936,
-              "column": 7,
-              "line": 33
-            },
-            "stop": {
-              "byte": 948,
-              "column": 19,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 852,
-                      "column": 11,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 901,
-                      "column": 60,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "$CI_COMMIT_BRANCH =~ /^(main|dev|ci|ci\\d|ci-.+)$/"
-                ]
-              }
-            },
-            "reference:CI_COMMIT_BRANCH": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_BRANCH",
-                  "span": {
-                    "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 852,
-                      "column": 11,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 869,
-                      "column": 28,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_BRANCH"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(CI_COMMIT_BRANCH=~/^(main|dev|ci|ci\\d|ci-.+)$/)"
-          },
-          "effects": [],
-          "id": "wv_f0ad40d0eb3ecda23e3c",
-          "kind": "gate",
-          "name": "rule:test_async_job",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 852,
-              "column": 11,
-              "line": 30
-            },
-            "stop": {
-              "byte": 901,
-              "column": 60,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f6be267c1f2fd8f5ecdf",
-          "kind": "job",
-          "name": "test_async_job",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 803,
-              "column": 1,
-              "line": 27
-            },
-            "stop": {
-              "byte": 948,
-              "column": 19,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fb3c249b6447bc891ac2",
-          "kind": "step",
-          "name": "script:2",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/edditoria/validid/.gitlab-ci.yml",
-            "start": {
-              "byte": 936,
-              "column": 7,
-              "line": 33
-            },
-            "stop": {
-              "byte": 948,
-              "column": 19,
-              "line": 33
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/edditoria/validid/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:b25cb99da541a2815d223b45131cbe885e5bf895a0f304d08bbba7224ce22cb4",
-      "path": "gitlab/edditoria/validid/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:719007b7f39d0cd7fc5ef55d11007402fc52186310b60110ec55a1994cfdc1b8",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:b9375f2f8cc9860db5e967b7d184a9a9bbce640c981ff0e1065a4c6a57939a4b",
+    "sources": [
+      {
+        "digest": "sha256:b25cb99da541a2815d223b45131cbe885e5bf895a0f304d08bbba7224ce22cb4",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -623,26 +93,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 11,
+    "nodes": 10,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

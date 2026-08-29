@@ -89,10 +89,10 @@ def _canonical_without_newline(value: object) -> bytes:
 
 def _report_frontends(report: dict[str, Any]) -> set[str]:
     inputs = report.get("inputs")
-    if not isinstance(inputs, list):
+    if not isinstance(inputs, dict) or not isinstance(inputs.get("sources"), list):
         raise ValueError("report.json lacks source inputs")
     frontends: set[str] = set()
-    for item in inputs:
+    for item in inputs["sources"]:
         if not isinstance(item, dict) or not isinstance(item.get("path"), str):
             raise ValueError("report.json contains an invalid source input")
         path = item["path"].replace("\\", "/").lower()
@@ -165,7 +165,7 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
     raw = {name: _bytes(root / name) for name in ARTIFACTS}
 
     report = _json(root / "report.json")
-    _schema(report, "report-v3", "report.json")
+    _schema(report, "workflow-verifier-report/1", "report.json")
     if not isinstance(report.get("properties"), list) or not report["properties"]:
         raise ValueError("report.json contains no proved properties")
     if report.get("diagnostics") != []:
@@ -182,6 +182,7 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
         raise ValueError("explain.txt lacks a complete trace or capabilities")
 
     graph = _json(root / "graph.json")
+    _schema(graph, "workflow-verifier-graph/1", "graph.json")
     if not isinstance(graph.get("nodes"), list) or not graph["nodes"]:
         raise ValueError("graph.json contains no semantic nodes")
     if not isinstance(graph.get("edges"), list):
@@ -207,8 +208,8 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
         raise ValueError("policy.json contains a failing fixture")
 
     lock = _json(root / "lock.json")
-    if lock.get("schema") not in ("lock-v1", "lock-v2"):
-        raise ValueError("lock.json is not a supported canonical lock")
+    if lock.get("schema") != "lock-v2":
+        raise ValueError("lock.json is not a canonical lock-v2 document")
 
     doctor = _json(root / "doctor.json")
     _schema(doctor, "doctor-v2", "doctor.json")

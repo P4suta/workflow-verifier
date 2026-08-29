@@ -4,15 +4,15 @@ use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
-use workflow_verifier_helper_runtime::ProcessObservation;
+use workflow_verifier_internal::internal::helper_runtime::ProcessObservation;
+use workflow_verifier_internal::internal::runner_protocol::vm::{Observation, parse_request};
+use workflow_verifier_internal::internal::runner_protocol::{Limits, sha256_hex};
 use workflow_verifier_macos_helper::{VmBundle, VmExecution, VmTransport, execute_vm_step};
-use workflow_verifier_runner_protocol::vm::{Observation, parse_request};
-use workflow_verifier_runner_protocol::{Limits, sha256_hex};
 
 mod fixture {
     use std::sync::atomic::{AtomicU64, Ordering};
 
-    use workflow_verifier_runner_protocol::vm::ImageManifest;
+    use workflow_verifier_internal::internal::runner_protocol::vm::ImageManifest;
 
     use super::*;
 

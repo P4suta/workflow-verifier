@@ -23,10 +23,13 @@ foundation
                          bin
 ```
 
-All OCaml libraries are private. `foundation` has no library dependency;
+All OCaml libraries are private. The shipped Rust implementation mirrors the
+same direction inside the single public `workflow-verifier` package as
+crate-private modules under `src/`. `foundation` has no internal dependency;
 `verifier` cannot see YAML or provider frontends; `sandbox` cannot see product
 configuration; and only `application` composes product and sandbox ports. The
-exact Dune graph, module ownership, and absence of cycles are enforced by
+exact Dune and Rust module graphs, external dependency ownership, public
+visibility, and absence of cycles are enforced by
 `scripts/verify_architecture.py` in CI.
 
 Side effects are capability-injected ports. Core modules receive source text,
@@ -76,13 +79,15 @@ dependency summarizer recompiles composite actions, reusable units, templates,
 components, and orbs through the ordinary frontends and stores capabilities,
 effects, completeness, and missing-evidence reasons in `lock-v2`. JavaScript,
 Docker, and Azure task metadata contributes only what it declares; unavailable
-implementation source remains `Unknown`. A digest-only `lock-v1` entry is still
-readable but can never discharge semantic uncertainty.
+implementation source remains `Unknown`. Only `lock-v2` is accepted.
 
 `Unknown` is part of the domain, not a logging convention. A frontend cannot
 discard unsupported provider meaning, and runtime evidence cannot turn an
 unobserved effect into a proof of absence. Deterministic serialization uses
-domain-owned total orders, never filesystem enumeration order.
+domain-owned total orders, never filesystem enumeration order. `SourceId(u32)`
+and `NodeId(u32)` index dense vectors in the final linked program. Source paths
+are interned per analysis, fragments are linked in source order, and nodes and
+edges are sorted once before dense IDs are assigned.
 
 Graph provenance is carried with graph values at construction boundaries. A
 linker iterates `(owner, call)` pairs rather than reconstructing ownership from
@@ -90,14 +95,23 @@ globally shaped identifiers, and canonical node/edge comparisons are exported
 by the IR that defines identity. Traversals keep visited membership in dedicated
 sets, while paths remain ordered evidence values. These choices make ownership,
 identity, membership, and witness order separate concepts instead of accidental
-properties of one list representation.
+properties of one list representation. Stateless commands use `Analyzer` to
+produce one `AnalysisOutcome`; only LSP owns an `AnalysisSession` with mutable
+parse/lower dependency caches. Check, graph, SARIF, explain, and LSP serialize
+borrowed projections of that outcome, so check and LSP never construct graph
+JSON.
 
 ## Architectural enforcement
 
-`scripts/verify_architecture.py` checks exact Dune dependency tuples,
-private/unwrapped libraries, unique module ownership, acyclicity, and a total
-library core with no assertion, partial collection lookup, unchecked Result,
-or exception-raising smart-constructor escape hatch. Closed state machines use
+`scripts/verify_architecture.py` checks exact Dune dependency tuples and Rust
+module edges, private/unwrapped OCaml libraries, unique module ownership,
+acyclicity, package publication boundaries, and a total library core with no
+assertion, partial collection lookup, unchecked Result, or exception-raising
+smart-constructor escape hatch. The root Cargo package is the only publishable
+package. Conformance and platform helpers stay `publish = false` and depend on
+the root package with default features disabled, exposing only the doc-hidden
+runner protocol, helper runtime, and semantic-conformance support they require.
+Closed state machines use
 variants, structured encoders construct field lists directly instead of
 downcasting a generic JSON value, and boundary validation stays in `Result`.
 Parser declaration and lexical state is explicit even when a section or token
@@ -109,6 +123,13 @@ so the analyzer cannot acquire a foreign stub or hidden linter subprocess. The
 install-layout gate independently restricts the public package to one analyzer
 executable and the config/report schemas. Property, mutation, fuzz, and
 cross-platform byte-comparison gates cover invariants beyond example fixtures.
+
+The Rust library target is an implementation-sharing boundary for those
+private helpers, not a public SDK. Only the CLI, exit codes, versioned JSON
+schemas, and helper wire protocol are stable contracts; doc-hidden Rust items
+may change without a SemVer compatibility promise. A crates.io installation
+contains only the analyzer binary. Signed release bundles remain the source of
+platform helpers, and missing helpers remain a fail-closed availability error.
 
 Mutation scheduling is an evidence boundary rather than a test shortcut. One
 pinned runner creates the authoritative catalog. Hosted jobs receive disjoint

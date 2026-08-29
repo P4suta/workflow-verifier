@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:4ce09b205620e7bce6dfea89272465fed53423c73e11876b2e55769707e30faf",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/setup-go@v5",
+      "Incomplete.Unresolved_dependency: softprops/action-gh-release@v1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 171,
             "column": 15,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_4f6479ee92d652f08e24",
+      "id": "diag_c7f42f9a83114606cc1510753c2726c8cdf88a1439e82e08c8b9336d803c3ee7",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 171,
           "column": 15,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a195e32460d2625d0639",
+          "node": 4,
           "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 171,
               "column": 15,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-go@v5"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 269,
             "column": 15,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_a2643a4d890c88bec7b1",
+      "id": "diag_8b0ae0d3b9ab5ecd5ecb585023a9c43e37b3cd507dd9f73fb3fc0f3590160219",
       "message": "dependency is not pinned to immutable content: actions/setup-go@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 269,
           "column": 15,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_b6fe822fef3e58ccc219",
+          "node": 6,
           "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 269,
               "column": 15,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = softprops/action-gh-release@v1"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+          "source": 0,
           "start": {
             "byte": 1250,
             "column": 15,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_4cf80de90b4b56ef8e09",
+      "id": "diag_c23faf69e57070cc9ab0d7580f2245094c3b0b15a47b16798abf1737e3cac08a",
       "message": "dependency is not pinned to immutable content: softprops/action-gh-release@v1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+        "source": 0,
         "start": {
           "byte": 1250,
           "column": 15,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f3f61601c9e877732c70",
+          "node": 19,
           "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
+            "source": 0,
             "start": {
               "byte": 1250,
               "column": 15,
@@ -184,1173 +189,60 @@
       ]
     }
   ],
-  "digest": "sha256:78adbb456b6cf9a273fa5414ee1a7db98bf9ce26662c60550be1b2546532369e",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_944100975ab9c9251634",
-          "id": "wv_08f01a10871b23829fa8",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b6fe822fef3e58ccc219"
-        },
-        {
-          "condition": true,
-          "from": "wv_7801d5544832d65ee57a",
-          "id": "wv_0e100e6ce7ee34248f64",
-          "kind": "data",
-          "label": "github.ref_name",
-          "to": "wv_8883d1fad2f01b7b4605"
-        },
-        {
-          "condition": true,
-          "from": "wv_63f9419984025982d9f0",
-          "id": "wv_259a7b270af4cbe4836f",
-          "kind": "data",
-          "label": "VERSION_TAG",
-          "to": "wv_8bf8936c0e9fb9c992b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_a083da03063db74832d3",
-          "id": "wv_397d19505e319fc3e4fb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f3f61601c9e877732c70"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e8798b8d3f4797f15d9",
-          "id": "wv_3d432c338792ed5c817e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_af03197bebcd37b86f33"
-        },
-        {
-          "condition": true,
-          "from": "wv_e0563920702be24770f7",
-          "id": "wv_40c2d06fd8efd73e9760",
-          "kind": "data",
-          "label": "VERSION_TAG",
-          "to": "wv_8bf8936c0e9fb9c992b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_9226500166a5438da1b9",
-          "id": "wv_4f18aa7be9cf1b791d55",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1e8798b8d3f4797f15d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_af03197bebcd37b86f33",
-          "id": "wv_54fc54592d364499cdc9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8788110b5d964927ec1f"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e8798b8d3f4797f15d9",
-          "id": "wv_5513ac4d73ab61e763f6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4006e70896493c187ae0"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e8798b8d3f4797f15d9",
-          "id": "wv_5afde924169d00a25dbc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a083da03063db74832d3"
-        },
-        {
-          "condition": true,
-          "from": "wv_af03197bebcd37b86f33",
-          "id": "wv_6997e58247dc2025d314",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a083da03063db74832d3"
-        },
-        {
-          "condition": true,
-          "from": "wv_0f9d79c1c817b0c244d9",
-          "id": "wv_7cbb1b9c2dddd5603a77",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_af03197bebcd37b86f33"
-        },
-        {
-          "condition": true,
-          "from": "wv_944100975ab9c9251634",
-          "id": "wv_842ac16eec6630d7f097",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b6fe822fef3e58ccc219"
-        },
-        {
-          "condition": true,
-          "from": "wv_0f9d79c1c817b0c244d9",
-          "id": "wv_86ef55434466a5e83903",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8bf8936c0e9fb9c992b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_a083da03063db74832d3",
-          "id": "wv_90f0635028065f308644",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f3f61601c9e877732c70"
-        },
-        {
-          "condition": true,
-          "from": "wv_c45d50143a909b41f793",
-          "id": "wv_9415b987db204dfa2828",
-          "kind": "data",
-          "label": "VERSION_TAG",
-          "to": "wv_8bf8936c0e9fb9c992b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_22f971bf92344b68d305",
-          "id": "wv_b17705839a2353ad431d",
-          "kind": "data",
-          "label": "VERSION_TAG",
-          "to": "wv_8bf8936c0e9fb9c992b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_4006e70896493c187ae0",
-          "id": "wv_b2e546b0f1d30c9a01d8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a195e32460d2625d0639"
-        },
-        {
-          "condition": true,
-          "from": "wv_8883d1fad2f01b7b4605",
-          "id": "wv_bd10ebe95843c2ee4416",
-          "kind": "data",
-          "label": "VERSION_TAG",
-          "to": "wv_8bf8936c0e9fb9c992b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e8798b8d3f4797f15d9",
-          "id": "wv_bd83adfa1d3f4599d055",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0f9d79c1c817b0c244d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_201ded2aea766eb25714",
-          "id": "wv_beafda7cae4e4ecd9873",
-          "kind": "data",
-          "label": "VERSION_TAG",
-          "to": "wv_8bf8936c0e9fb9c992b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_a2818c5421be77de046b",
-          "id": "wv_d1815cd89964b58a2050",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9226500166a5438da1b9"
-        },
-        {
-          "condition": true,
-          "from": "wv_4006e70896493c187ae0",
-          "id": "wv_db1d8491cbe791e496ef",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_944100975ab9c9251634"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e8798b8d3f4797f15d9",
-          "id": "wv_dbeaf6043b8c9a029d79",
-          "kind": "control",
-          "label": null,
-          "to": "wv_944100975ab9c9251634"
-        },
-        {
-          "condition": true,
-          "from": "wv_4006e70896493c187ae0",
-          "id": "wv_e1bc6fce92ba36c8f825",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a195e32460d2625d0639"
-        },
-        {
-          "condition": true,
-          "from": "wv_944100975ab9c9251634",
-          "id": "wv_ebb75d1885b714e2a376",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_0f9d79c1c817b0c244d9"
-        }
-      ],
-      "entrypoints": [
-        "wv_9226500166a5438da1b9"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0f9d79c1c817b0c244d9",
-          "kind": "step",
-          "name": "Build all platforms",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 341,
-              "column": 9,
-              "line": 26
-            },
-            "stop": {
-              "byte": 1103,
-              "column": 1,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1e8798b8d3f4797f15d9",
-          "kind": "job",
-          "name": "release",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 91,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 1576,
-              "column": 39,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 515,
-                      "column": 90,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 526,
-                      "column": 101,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION_TAG"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_201ded2aea766eb25714",
-          "kind": "resource",
-          "name": "VERSION_TAG",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 515,
-              "column": 90,
-              "line": 29
-            },
-            "stop": {
-              "byte": 526,
-              "column": 101,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 748,
-                      "column": 323,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 759,
-                      "column": 334,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION_TAG"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_22f971bf92344b68d305",
-          "kind": "resource",
-          "name": "VERSION_TAG",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 748,
-              "column": 323,
-              "line": 29
-            },
-            "stop": {
-              "byte": 759,
-              "column": 334,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4006e70896493c187ae0",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 165,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 229,
-              "column": 25,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 980,
-                      "column": 555,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 991,
-                      "column": 566,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION_TAG"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_63f9419984025982d9f0",
-          "kind": "resource",
-          "name": "VERSION_TAG",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 980,
-              "column": 555,
-              "line": 29
-            },
-            "stop": {
-              "byte": 991,
-              "column": 566,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_name",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 407,
-                      "column": 28,
-                      "line": 28
-                    },
-                    "stop": {
-                      "byte": 422,
-                      "column": 43,
-                      "line": 28
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7801d5544832d65ee57a",
-          "kind": "resource",
-          "name": "github.ref_name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 407,
-              "column": 28,
-              "line": 28
-            },
-            "stop": {
-              "byte": 422,
-              "column": 43,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 1148,
-                      "column": 14,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 1206,
-                      "column": 1,
-                      "line": 42
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cd dist\nsha256sum * > checksums.txt\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8788110b5d964927ec1f",
-          "kind": "command",
-          "name": "cd dist\nsha256sum * > checksums.txt\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 1148,
-              "column": 14,
-              "line": 39
-            },
-            "stop": {
-              "byte": 1206,
-              "column": 1,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION_TAG"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8883d1fad2f01b7b4605",
-          "kind": "resource",
-          "name": "env:VERSION_TAG",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 390,
-              "column": 11,
-              "line": 28
-            },
-            "stop": {
-              "byte": 425,
-              "column": 46,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 515,
-                      "column": 90,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 526,
-                      "column": 101,
-                      "line": 29
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 632,
-                      "column": 207,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 643,
-                      "column": 218,
-                      "line": 29
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 748,
-                      "column": 323,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 759,
-                      "column": 334,
-                      "line": 29
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 863,
-                      "column": 438,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 874,
-                      "column": 449,
-                      "line": 29
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 980,
-                      "column": 555,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 991,
-                      "column": 566,
-                      "line": 29
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 439,
-                      "column": 14,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 1103,
-                      "column": 1,
-                      "line": 37
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION_TAG",
-                  "mkdir -p dist\n\nGOOS=darwin GOARCH=amd64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-darwin-amd64 ./cmd/builder\nGOOS=darwin GOARCH=arm64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-darwin-arm64 ./cmd/builder\nGOOS=linux GOARCH=amd64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-linux-amd64 ./cmd/builder\nGOOS=linux GOARCH=arm64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-linux-arm64 ./cmd/builder\nGOOS=windows GOARCH=amd64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-windows-amd64.exe ./cmd/builder\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8bf8936c0e9fb9c992b1",
-          "kind": "command",
-          "name": "mkdir -p dist\n\nGOOS=darwin GOARCH=amd64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-darwin-amd64 ./cmd/builder\nGOOS=darwin GOARCH=arm64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-darwin-arm64 ./cmd/builder\nGOOS=linux GOARCH=amd64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-linux-amd64 ./cmd/builder\nGOOS=linux GOARCH=arm64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-linux-arm64 ./cmd/builder\nGOOS=windows GOARCH=amd64 go build -ldflags \"-X main.version=$VERSION_TAG\" -o dist/builder-windows-amd64.exe ./cmd/builder\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 439,
-              "column": 14,
-              "line": 29
-            },
-            "stop": {
-              "byte": 1103,
-              "column": 1,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9226500166a5438da1b9",
-          "kind": "workflow",
-          "name": "Release",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1576,
-              "column": 39,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_944100975ab9c9251634",
-          "kind": "step",
-          "name": "Set up Go",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 239,
-              "column": 9,
-              "line": 21
-            },
-            "stop": {
-              "byte": 331,
-              "column": 29,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a083da03063db74832d3",
-          "kind": "step",
-          "name": "Create Release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 1215,
-              "column": 9,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1576,
-              "column": 39,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_a195e32460d2625d0639",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 171,
-              "column": 15,
-              "line": 17
-            },
-            "stop": {
-              "byte": 190,
-              "column": 34,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a2818c5421be77de046b",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 21,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 49,
-              "column": 13,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_af03197bebcd37b86f33",
-          "kind": "step",
-          "name": "Create checksums",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 1112,
-              "column": 9,
-              "line": 38
-            },
-            "stop": {
-              "byte": 1206,
-              "column": 1,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b6fe822fef3e58ccc219",
-          "kind": "call",
-          "name": "actions/setup-go@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 269,
-              "column": 15,
-              "line": 22
-            },
-            "stop": {
-              "byte": 288,
-              "column": 34,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-go@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 632,
-                      "column": 207,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 643,
-                      "column": 218,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION_TAG"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c45d50143a909b41f793",
-          "kind": "resource",
-          "name": "VERSION_TAG",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 632,
-              "column": 207,
-              "line": 29
-            },
-            "stop": {
-              "byte": 643,
-              "column": 218,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "VERSION_TAG",
-                  "span": {
-                    "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-                    "start": {
-                      "byte": 863,
-                      "column": 438,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 874,
-                      "column": 449,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "VERSION_TAG"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e0563920702be24770f7",
-          "kind": "resource",
-          "name": "VERSION_TAG",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 863,
-              "column": 438,
-              "line": 29
-            },
-            "stop": {
-              "byte": 874,
-              "column": 449,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f3f61601c9e877732c70",
-          "kind": "call",
-          "name": "softprops/action-gh-release@v1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/mobai-app/ios-builder/.github/workflows/release.yml",
-            "start": {
-              "byte": 1250,
-              "column": 15,
-              "line": 44
-            },
-            "stop": {
-              "byte": 1280,
-              "column": 45,
-              "line": 44
-            }
-          },
-          "unknown": {
-            "detail": "softprops/action-gh-release@v1",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "github",
-      "source": "github/mobai-app/ios-builder/.github/workflows/release.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:da76fb86eea83544c3bcbd9624a4c78fdc4d82a1a9e183c1b79a6849b07fc3f0",
-      "path": "github/mobai-app/ios-builder/.github/workflows/release.yml"
-    }
-  ],
+  "digest": "sha256:d7e64ef3bca4b665989f92fb2cd7c6b8863708bc3ba345d8d479d784b8350104",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:e34048a5b518804e542c7c0601d9a6db953b110a6ded46dcab58e75764bb17cd",
+    "sources": [
+      {
+        "digest": "sha256:da76fb86eea83544c3bcbd9624a4c78fdc4d82a1a9e183c1b79a6849b07fc3f0",
+        "id": 0,
+        "path": ".github/workflows/release.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -1369,15 +261,12 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1392,40 +281,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "edges": 26,
+    "nodes": 20,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 2,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

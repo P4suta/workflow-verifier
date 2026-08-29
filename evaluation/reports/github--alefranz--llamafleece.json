@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:0a02e33b67512235aa8c28618ed639f520cf53aab020dc723744fc1058cb1552",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/setup-dotnet@v4"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 354,
             "column": 15,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_22ff41d14676ed50bd21",
+      "id": "diag_cafba9fa7aa85c0677a3bf20c80344517979cd5202948c5919241a903633597b",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 354,
           "column": 15,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_87062a239b4ae8ec8c63",
+          "node": 6,
           "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 354,
               "column": 15,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-dotnet@v4"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 425,
             "column": 15,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_27f8e630890d48164975",
+      "id": "diag_835e677727894705e66f48dd40d17e5f76d16b1002f99a50b445e736ef758871",
       "message": "dependency is not pinned to immutable content: actions/setup-dotnet@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 425,
           "column": 15,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_fc8f98295581ec2f0bf4",
+          "node": 8,
           "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 425,
               "column": 15,
@@ -123,775 +129,70 @@
       ]
     }
   ],
-  "digest": "sha256:852ad9b64eacf78a254b4e92c487db5cea3677af00b3df12c1f5a2a4e65c9064",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_cfef029e8b7a5ef4ab7d",
-          "id": "wv_186deaf20582715f075e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f027d8da74de9d9cfb05"
-        },
-        {
-          "condition": true,
-          "from": "wv_cfef029e8b7a5ef4ab7d",
-          "id": "wv_189dbd2f3374be5de949",
-          "kind": "call",
-          "label": null,
-          "to": "wv_fc8f98295581ec2f0bf4"
-        },
-        {
-          "condition": true,
-          "from": "wv_ba96c887dd8e2059a19a",
-          "id": "wv_1e78355f2d07e3b2a606",
-          "kind": "control",
-          "label": null,
-          "to": "wv_93036cf71478f604c984"
-        },
-        {
-          "condition": true,
-          "from": "wv_9c6eef0bbe89e21d92cc",
-          "id": "wv_1f9507bef167202ea651",
-          "kind": "control",
-          "label": null,
-          "to": "wv_87062a239b4ae8ec8c63"
-        },
-        {
-          "condition": true,
-          "from": "wv_a5b7ff7dac4a273b6909",
-          "id": "wv_249a816288ad56cd10e3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f027d8da74de9d9cfb05"
-        },
-        {
-          "condition": true,
-          "from": "wv_a5b7ff7dac4a273b6909",
-          "id": "wv_282d23875a475cb660f7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9c6eef0bbe89e21d92cc"
-        },
-        {
-          "condition": true,
-          "from": "wv_a5b7ff7dac4a273b6909",
-          "id": "wv_373ea4952fd124e6289d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cfef029e8b7a5ef4ab7d"
-        },
-        {
-          "condition": true,
-          "from": "wv_f027d8da74de9d9cfb05",
-          "id": "wv_4966d05d4ca24235c368",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1b0e88e4866016a63099"
-        },
-        {
-          "condition": true,
-          "from": "wv_9849e589a01cc0e89649",
-          "id": "wv_59c3cc69014864f4d0f5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a9dc93c1add78b8095a2"
-        },
-        {
-          "condition": true,
-          "from": "wv_9c6eef0bbe89e21d92cc",
-          "id": "wv_5e0b6573ecbdd0c903f3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_cfef029e8b7a5ef4ab7d"
-        },
-        {
-          "condition": true,
-          "from": "wv_9c6eef0bbe89e21d92cc",
-          "id": "wv_74a1a304499c5cf49628",
-          "kind": "call",
-          "label": null,
-          "to": "wv_87062a239b4ae8ec8c63"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b0e88e4866016a63099",
-          "id": "wv_89dbc4893bd7b8be1108",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9849e589a01cc0e89649"
-        },
-        {
-          "condition": true,
-          "from": "wv_cfef029e8b7a5ef4ab7d",
-          "id": "wv_a82cba3cf92d7ad6884f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fc8f98295581ec2f0bf4"
-        },
-        {
-          "condition": true,
-          "from": "wv_93036cf71478f604c984",
-          "id": "wv_a85e4265d4055bc09623",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a5b7ff7dac4a273b6909"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b0e88e4866016a63099",
-          "id": "wv_ae77f9b561d9d91531e5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55f0362f418cf59b2566"
-        },
-        {
-          "condition": true,
-          "from": "wv_f027d8da74de9d9cfb05",
-          "id": "wv_afb943b199b972e5689c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8f7a55592b2cc145a22c"
-        },
-        {
-          "condition": true,
-          "from": "wv_236732c0e01f0cc91e89",
-          "id": "wv_b4f134909071ecc45136",
-          "kind": "control",
-          "label": null,
-          "to": "wv_93036cf71478f604c984"
-        },
-        {
-          "condition": true,
-          "from": "wv_a5b7ff7dac4a273b6909",
-          "id": "wv_ca765f5aa790a9a72e1d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1b0e88e4866016a63099"
-        },
-        {
-          "condition": true,
-          "from": "wv_a5b7ff7dac4a273b6909",
-          "id": "wv_da90736a583391da3b65",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9849e589a01cc0e89649"
-        },
-        {
-          "condition": true,
-          "from": "wv_7a558d4423eff30d9de1",
-          "id": "wv_ed3324633bf52e841cb3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_93036cf71478f604c984"
-        }
-      ],
-      "entrypoints": [
-        "wv_93036cf71478f604c984"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1b0e88e4866016a63099",
-          "kind": "step",
-          "name": "Build app in Release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 634,
-              "column": 9,
-              "line": 32
-            },
-            "stop": {
-              "byte": 757,
-              "column": 96,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_236732c0e01f0cc91e89",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 19,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 55,
-              "column": 15,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 675,
-                      "column": 14,
-                      "line": 33
-                    },
-                    "stop": {
-                      "byte": 757,
-                      "column": 96,
-                      "line": 33
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "dotnet build ./LlamaFleece/LlamaFleece.csproj --configuration Release --no-restore"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_55f0362f418cf59b2566",
-          "kind": "command",
-          "name": "dotnet build ./LlamaFleece/LlamaFleece.csproj --configuration Release --no-restore",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 675,
-              "column": 14,
-              "line": 33
-            },
-            "stop": {
-              "byte": 757,
-              "column": 96,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7a558d4423eff30d9de1",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 76,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 94,
-              "column": 21,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_87062a239b4ae8ec8c63",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 354,
-              "column": 15,
-              "line": 22
-            },
-            "stop": {
-              "byte": 373,
-              "column": 34,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 563,
-                      "column": 14,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 622,
-                      "column": 73,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "dotnet restore ./LlamaFleece.Tests/LlamaFleece.Tests.csproj"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8f7a55592b2cc145a22c",
-          "kind": "command",
-          "name": "dotnet restore ./LlamaFleece.Tests/LlamaFleece.Tests.csproj",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 563,
-              "column": 14,
-              "line": 30
-            },
-            "stop": {
-              "byte": 622,
-              "column": 73,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_93036cf71478f604c984",
-          "kind": "workflow",
-          "name": "ci",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 913,
-              "column": 107,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9849e589a01cc0e89649",
-          "kind": "step",
-          "name": "Run full test suite in Release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 769,
-              "column": 9,
-              "line": 35
-            },
-            "stop": {
-              "byte": 913,
-              "column": 107,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9c6eef0bbe89e21d92cc",
-          "kind": "step",
-          "name": "Check out repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 312,
-              "column": 9,
-              "line": 21
-            },
-            "stop": {
-              "byte": 373,
-              "column": 34,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a5b7ff7dac4a273b6909",
-          "kind": "job",
-          "name": "build-and-test",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 205,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 913,
-              "column": 107,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 820,
-                      "column": 14,
-                      "line": 36
-                    },
-                    "stop": {
-                      "byte": 913,
-                      "column": 107,
-                      "line": 36
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "dotnet test ./LlamaFleece.Tests/LlamaFleece.Tests.csproj --configuration Release --no-restore"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a9dc93c1add78b8095a2",
-          "kind": "command",
-          "name": "dotnet test ./LlamaFleece.Tests/LlamaFleece.Tests.csproj --configuration Release --no-restore",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 820,
-              "column": 14,
-              "line": 36
-            },
-            "stop": {
-              "byte": 913,
-              "column": 107,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ba96c887dd8e2059a19a",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 59,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 72,
-              "column": 16,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cfef029e8b7a5ef4ab7d",
-          "kind": "step",
-          "name": "Set up .NET 10 SDK",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 385,
-              "column": 9,
-              "line": 24
-            },
-            "stop": {
-              "byte": 497,
-              "column": 33,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f027d8da74de9d9cfb05",
-          "kind": "step",
-          "name": "Restore test project dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 509,
-              "column": 9,
-              "line": 29
-            },
-            "stop": {
-              "byte": 622,
-              "column": 73,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fc8f98295581ec2f0bf4",
-          "kind": "call",
-          "name": "actions/setup-dotnet@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/alefranz/llamafleece/.github/workflows/ci.yml",
-            "start": {
-              "byte": 425,
-              "column": 15,
-              "line": 25
-            },
-            "stop": {
-              "byte": 448,
-              "column": 38,
-              "line": 25
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-dotnet@v4",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "github",
-      "source": "github/alefranz/llamafleece/.github/workflows/ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:cde8da8d11b692cba00e4f8c5235a3321216dbd0f12ea2e20cd97ea26d534d6c",
-      "path": "github/alefranz/llamafleece/.github/workflows/ci.yml"
-    }
-  ],
+  "digest": "sha256:e236c925a9bc968cce858f20e5bf88e602f552a782afadb4e27167e2ab1e1587",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:c97d771298080de0696df8fc5a8f9f5937079571a970f9e81b5d493dbf7ebf67",
+    "sources": [
+      {
+        "digest": "sha256:cde8da8d11b692cba00e4f8c5235a3321216dbd0f12ea2e20cd97ea26d534d6c",
+        "id": 0,
+        "path": ".github/workflows/ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -902,40 +203,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 20,
+    "nodes": 15,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

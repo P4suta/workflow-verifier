@@ -105,7 +105,7 @@ class GitHubActionTests(unittest.TestCase):
             self.assertNotIn("top-secret-value", json.dumps(records))
             self.assertTrue(report.is_file())
 
-    def test_release_publication_and_action_publication_are_source_disabled(self) -> None:
+    def test_github_release_and_action_publication_remain_disabled(self) -> None:
         release = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
         trigger = release.split("permissions:", 1)[0]
         self.assertNotIn("push:\n    tags:", trigger)
@@ -113,6 +113,8 @@ class GitHubActionTests(unittest.TestCase):
         self.assertNotIn("gh release create", release)
         self.assertNotIn("actions/attest@", release)
         self.assertNotIn("contents: write", release)
+        self.assertIn("  publish_crate:\n", release)
+        self.assertIn("environment: crate-publication", release)
         self.assertFalse((ROOT / ".github" / "workflows" / "publish-action.yml").exists())
 
 

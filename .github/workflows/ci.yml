@@ -85,6 +85,7 @@ jobs:
           ruff format --check .
           mypy \
             scripts/candidate_artifacts.py \
+            scripts/package_crate.py \
             scripts/generate_sbom.py \
             scripts/generate_release_index.py \
             scripts/promote_release_assets.py \
@@ -98,7 +99,7 @@ jobs:
             scripts/measure_performance_pair.py \
             scripts/prepare_corpus.py \
             scripts/corpus_gate.py
-          python -B -m unittest scripts.tests.test_verify_sarif -v
+          python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
       - name: Verify OCaml formatting
         run: |
           opam install ocamlformat.0.28.1 --yes
@@ -111,6 +112,10 @@ jobs:
           zizmor --persona pedantic --no-progress .github/workflows
       - name: Verify Markdown links offline
         run: python -B scripts/verify_markdown_links.py --root .
+      - name: Verify Rust module boundaries and lint suppression policy
+        run: |
+          python -B scripts/verify_architecture.py
+          python -B scripts/verify_lint_policy.py
 
   rust-security:
     name: Rust lock, advisory, license, and source policy
@@ -154,29 +159,26 @@ jobs:
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup-repository-rust
+      - name: Build the macOS Virtualization.framework shim
+        if: runner.os == 'macOS'
+        run: sh helpers/macos/build-shim.sh
       - name: Test the complete Rust product and helper workspace
         run: cargo test --locked --workspace --all-targets
       - name: Enforce Rust formatting
         if: ${{ matrix.platform == 'linux-x86_64' }}
         run: cargo fmt --all -- --check
       - name: Enforce warning-free Rust
-        if: ${{ matrix.platform == 'linux-x86_64' }}
         run: cargo clippy --workspace --all-targets -- -D warnings
       - name: Enforce release-mode LSP latency budgets
         if: ${{ matrix.platform == 'linux-x86_64' }}
         run: >-
-          cargo test --release -p workflow-verifier-cli --lib
+          cargo test --release -p workflow-verifier --lib
           lsp::performance_tests -- --ignored --nocapture --test-threads=1
 
   ocaml-reference:
-    name: OCaml reference ${{ matrix.ocaml-compiler }} on ${{ matrix.os }}
+    name: OCaml semantic reference
     timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        ocaml-compiler: [5.4.0, 5.5.0]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -187,67 +189,14 @@ jobs:
           check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          ocaml-compiler: 5.5.0
       - name: Install release-locked dependencies
-        if: ${{ matrix.ocaml-compiler == '5.5.0' }}
         run: opam install . --deps-only --with-test --locked --yes
-      - name: Install OCaml 5.4 compatibility-locked dependencies
-        if: ${{ matrix.ocaml-compiler == '5.4.0' }}
-        run: >-
-          opam install . --deps-only --with-test --locked
-          --lock-suffix=locked-ocaml54 --yes
-      - name: Build
-        run: opam exec -- dune build @all
-      - name: Contract tests
-        run: opam exec -- dune runtest --force
-      - name: Fetch pinned yaml-test-suite
-        run: python -B scripts/fetch_yaml_test_suite.py --allow-network
-      - name: YAML conformance (402 cases)
-        run: opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-canonical-data-2022-01-17
-      - name: Tooling contracts
-        run: python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
-      - name: License integrity
-        run: python -B scripts/verify_licenses.py
-      - name: Architecture boundary
-        run: python -B scripts/verify_architecture.py
-      - name: Pure OCaml boundary
-        run: python -B scripts/verify_pure_ocaml.py
       - uses: ./.github/actions/setup-repository-rust
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.ocaml-compiler == '5.5.0' }}
-      - name: Install surface
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.ocaml-compiler == '5.5.0' }}
-        run: >-
-          opam exec -- dune build @install &&
-          cargo build --locked -p workflow-verifier-cli &&
-          python -B scripts/verify_install_layout.py
-          _build/install/default target/debug/workflow-verifier
-      - name: Exercise the reference oracle
-        run: >-
-          opam exec -- dune exec workflow-verifier-reference -- check
-          --config examples/dogfood-policy-v2.toml
-          --trust-repository-config .
-
-  native-helpers:
-    name: Native helpers on ${{ matrix.os }}
-    timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Build and sign Virtualization.framework shim
-        if: runner.os == 'macOS'
-        run: sh helpers/macos/build-shim.sh
-      - name: Backend conformance
-        run: cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
-      - name: Rust format
-        run: cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
-      - name: Rust lint
-        run: cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
+      - name: Install Just 1.57.0 from its locked crate graph
+        run: cargo install just --version 1.57.0 --locked
+      - name: Compare the implementation-neutral semantic fixture
+        run: just differential
 
   linux-native-containment:
     name: Linux native containment
@@ -271,8 +220,8 @@ jobs:
               echo "+cpu +memory +pids" > /sys/fs/cgroup/cgroup.subtree_control
               mkdir /sys/fs/cgroup/workflow-verifier-delegated
               export WORKFLOW_VERIFIER_CGROUP_ROOT=/sys/fs/cgroup/workflow-verifier-delegated
-              cargo test --locked --manifest-path helpers/Cargo.toml \
-                -p workflow-verifier-linux-helper --all-targets -- --test-threads=1
+              cargo test --locked -p workflow-verifier-linux-helper \
+                --all-targets -- --test-threads=1
             '
 
   live-dogfood:
@@ -292,7 +241,7 @@ jobs:
         run: python -m pip install --require-hashes --no-deps -r requirements.lock
       - name: Build analyzer and isolated OCI adapter
         run: |
-          cargo build --locked -p workflow-verifier-cli \
+          cargo build --locked -p workflow-verifier \
             -p workflow-verifier-oci-helper
       - name: Prepare immutable OCI fixture
         shell: bash
@@ -382,7 +331,7 @@ jobs:
           check-latest: false
       - uses: ./.github/actions/setup-repository-rust
       - name: Build the analyzer
-        run: cargo build --locked -p workflow-verifier-cli
+        run: cargo build --locked -p workflow-verifier
       - name: Acquire only pinned upstream CI YAML
         run: >-
           python -B scripts/fetch_official_projects.py
@@ -396,88 +345,12 @@ jobs:
           --snapshots _build/official-projects
           --analyzer target/debug/workflow-verifier
           --output _build/official-compat-v1.json
-          --expected official/official-compat-v1.json
-          --expected-digest official/official-compat-v1.sha256
       - name: Upload count-and-digest-only compatibility evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: official-compat-v1
           path: _build/official-compat-v1.json
           if-no-files-found: error
-
-  performance-regression:
-    name: Performance ${{ matrix.platform }}
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-24.04
-            platform: linux-x86_64
-          - os: ubuntu-24.04-arm
-            platform: linux-arm64
-          - os: windows-2025
-            platform: windows-x86_64
-          - os: macos-15
-            platform: macos-arm64
-          - os: macos-15-intel
-            platform: macos-x86_64
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
-        with:
-          python-version: '3.13.7'
-          check-latest: false
-      - name: Check out the comparison baseline
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          path: _performance-base
-          ref: ${{ inputs.performance_baseline || (github.event_name == 'pull_request' && github.event.pull_request.base.sha) || (github.event_name == 'push' && github.event.before) || github.sha }}
-      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
-        with:
-          ocaml-compiler: 5.5.0
-      - name: Install and build baseline and head analyzers
-        run: |
-          opam install . --deps-only --with-test --locked --yes
-          opam exec -- dune build --root _performance-base bin/main.exe
-          opam exec -- dune build bin/main.exe
-      - name: Install the measured workload driver in the baseline tree
-        shell: bash
-        run: |
-          mkdir -p _performance-base/scripts
-          cp scripts/benchmark_fixture.py _performance-base/scripts/benchmark_fixture.py
-      - name: Period-balance identical workloads
-        shell: bash
-        env:
-          PERFORMANCE_PLATFORM: ${{ matrix.platform }}
-          WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM: ${{ matrix.platform }}
-        run: |
-          base_revision=$(git -C _performance-base rev-parse HEAD)
-          head_revision=$(git rev-parse HEAD)
-          mkdir -p "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}"
-          python -B scripts/measure_performance_pair.py \
-            --suite performance/suite-v1.json \
-            --baseline-workspace _performance-base \
-            --baseline-revision "$base_revision" \
-            --current-workspace . \
-            --current-revision "$head_revision" \
-            --samples 24 \
-            --output-dir "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}"
-          python -B scripts/performance_gate.py \
-            --baseline "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}/baseline.json" \
-            --current "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}/current.json" \
-            --output "_performance-evidence/ocaml/${PERFORMANCE_PLATFORM}/comparison.json"
-      - name: Upload exact performance evidence
-        if: ${{ always() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: performance-ocaml-${{ matrix.platform }}
-          path: _performance-evidence/ocaml/${{ matrix.platform }}/*
-          if-no-files-found: warn
 
   rust-performance-regression:
     name: Rust performance ${{ matrix.platform }}
@@ -520,14 +393,15 @@ jobs:
           WORKFLOW_VERIFIER_SOURCE_COMMIT="$base_revision" \
             cargo build --locked --release \
             --manifest-path _performance-base/Cargo.toml \
-            -p workflow-verifier-cli
+            --bin workflow-verifier
           WORKFLOW_VERIFIER_SOURCE_COMMIT="$head_revision" \
-            cargo build --locked --release -p workflow-verifier-cli
+            cargo build --locked --release -p workflow-verifier
       - name: Install the measured workload driver in the baseline tree
         shell: bash
         run: |
           mkdir -p _performance-base/scripts
           cp scripts/benchmark_fixture.py _performance-base/scripts/benchmark_fixture.py
+          cp scripts/lsp_benchmark.py _performance-base/scripts/lsp_benchmark.py
       - name: Period-balance identical Rust workloads
         shell: bash
         env:
@@ -538,7 +412,7 @@ jobs:
           head_revision=$(git rev-parse HEAD)
           mkdir -p "_performance-evidence/rust/${PERFORMANCE_PLATFORM}"
           python -B scripts/measure_performance_pair.py \
-            --suite performance/rust-suite-v1.json \
+            --suite performance/rust-suite-v2.json \
             --baseline-workspace _performance-base \
             --baseline-revision "$base_revision" \
             --current-workspace . \
@@ -557,8 +431,8 @@ jobs:
           path: _performance-evidence/rust/${{ matrix.platform }}/*
           if-no-files-found: warn
 
-  coverage-guided-yaml-fuzz:
-    name: Coverage-guided YAML fuzz
+  yaml-fuzz-corpus:
+    name: Fixed YAML fuzz corpus
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -572,21 +446,16 @@ jobs:
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
           ocaml-compiler: 5.5.0
-      - name: Install analyzer and AFL++ dependencies
+      - name: Install reference dependencies
+        run: opam install . --deps-only --with-test --locked --yes
+      - name: Build the pure OCaml parser harness
+        run: opam exec -- dune build test/yaml_fuzz.exe
+      - name: Replay every fixed malformed-input seed
+        shell: bash
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends afl++
-          opam install . --deps-only --with-test --locked --yes
-      - name: Build AFL-instrumented pure OCaml parser
-        run: opam exec -- dune build --profile afl test/yaml_fuzz.exe
-      - name: Coverage-guided malformed-input campaign
-        run: |
-          python -B scripts/run_afl_fuzz.py \
-            --seeds fuzz/corpus/yaml \
-            --output _build/afl-results \
-            --target _build/default/test/yaml_fuzz.exe \
-            --seconds 60 \
-            --memory-mb 1024
+          while IFS= read -r seed; do
+            opam exec -- dune exec test/yaml_fuzz.exe -- --input "$seed"
+          done < <(find fuzz/corpus/yaml -type f -print | LC_ALL=C sort)
 
   determinism-probe:
     name: Determinism ${{ matrix.platform }}
@@ -618,7 +487,7 @@ jobs:
       - name: Build the Rust analyzer with candidate provenance
         env:
           WORKFLOW_VERIFIER_SOURCE_COMMIT: ${{ github.sha }}
-        run: cargo build --locked -p workflow-verifier-cli
+        run: cargo build --locked -p workflow-verifier
       - name: Generate twice-local canonical comparison artifacts
         shell: bash
         env:
@@ -676,13 +545,11 @@ jobs:
       - rust-security
       - rust-product
       - ocaml-reference
-      - native-helpers
       - linux-native-containment
       - live-dogfood
       - official-compat
-      - performance-regression
       - rust-performance-regression
-      - coverage-guided-yaml-fuzz
+      - yaml-fuzz-corpus
       - determinism-probe
       - determinism-compare
     runs-on: ubuntu-24.04

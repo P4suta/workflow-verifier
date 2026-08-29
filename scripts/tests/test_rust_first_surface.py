@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -11,15 +12,21 @@ def section(source: str, start: str, stop: str) -> str:
 
 
 class RustFirstSurfaceTests(unittest.TestCase):
-    def test_workspace_has_one_lock_and_every_rust_package_is_private(self) -> None:
+    def test_workspace_has_one_public_crate_and_seven_private_packages(self) -> None:
         self.assertTrue((ROOT / "Cargo.lock").is_file())
         self.assertFalse((ROOT / "helpers" / "Cargo.lock").exists())
-        manifests = sorted((ROOT / "crates").glob("*/Cargo.toml"))
-        manifests += [ROOT / "helpers" / "Cargo.toml"]
-        manifests += sorted((ROOT / "helpers").glob("*/Cargo.toml"))
-        self.assertGreaterEqual(len(manifests), 19)
-        for manifest in manifests:
+        root_manifest = tomllib.loads((ROOT / "Cargo.toml").read_text(encoding="utf-8"))
+        members = root_manifest["workspace"]["members"]
+        self.assertEqual(len(members), 8)
+        self.assertEqual(members[0], ".")
+        private_manifests = [ROOT / member / "Cargo.toml" for member in members[1:]]
+        self.assertEqual(len(private_manifests), 7)
+        for manifest in private_manifests:
             self.assertIn("publish = false", manifest.read_text(encoding="utf-8"), manifest)
+        self.assertEqual(root_manifest["package"]["name"], "workflow-verifier")
+        self.assertNotEqual(root_manifest["package"].get("publish"), False)
+        for dependency in root_manifest.get("dependencies", {}).values():
+            self.assertNotIn("path", dependency)
 
     def test_ci_treats_rust_as_the_product_on_all_release_platforms(self) -> None:
         ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
@@ -68,7 +75,7 @@ class RustFirstSurfaceTests(unittest.TestCase):
         self.assertNotIn("uses:", setup)
 
     def test_os_credential_service_constant_is_compiled_only_where_it_is_used(self) -> None:
-        auth = (ROOT / "crates" / "cli" / "src" / "auth.rs").read_text(encoding="utf-8")
+        auth = (ROOT / "src" / "application" / "auth.rs").read_text(encoding="utf-8")
         self.assertIn(
             '#[cfg(any(target_os = "macos", test))]\n'
             'const CREDENTIAL_SERVICE: &str = "workflow-verifier";',
@@ -87,13 +94,26 @@ class RustFirstSurfaceTests(unittest.TestCase):
     def test_live_and_official_product_gates_execute_the_rust_cli(self) -> None:
         ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
         dogfood = section(ci, "  live-dogfood:\n", "  official-compat:\n")
-        official = section(ci, "  official-compat:\n", "  performance-regression:\n")
+        official = section(ci, "  official-compat:\n", "  rust-performance-regression:\n")
         for gate in (dogfood, official):
-            self.assertIn("cargo build --locked -p workflow-verifier-cli", gate)
+            self.assertIn("cargo build --locked -p workflow-verifier", gate)
             self.assertIn("target/debug/workflow-verifier", gate)
             self.assertNotIn("_build/default/bin/main.exe", gate)
-        reference = section(ci, "  ocaml-reference:\n", "  native-helpers:\n")
-        self.assertIn("workflow-verifier-reference", reference)
+        reference = section(ci, "  ocaml-reference:\n", "  linux-native-containment:\n")
+        self.assertIn("just differential", reference)
+        self.assertNotIn("workflow-verifier-reference check", reference)
+
+    def test_rust_performance_baseline_selects_the_stable_binary_name(self) -> None:
+        ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        performance = section(ci, "  rust-performance-regression:\n", "  yaml-fuzz-corpus:\n")
+        self.assertIn("--manifest-path _performance-base/Cargo.toml", performance)
+        self.assertIn("--bin workflow-verifier", performance)
+
+        justfile = (ROOT / "justfile").read_text(encoding="utf-8")
+        mise = (ROOT / "mise.toml").read_text(encoding="utf-8")
+        for source in (justfile, mise):
+            self.assertIn("--manifest-path", source)
+            self.assertIn("--bin workflow-verifier", source)
 
     def test_public_local_tasks_default_to_rust_and_keep_reference_in_differential_only(
         self,
@@ -112,7 +132,8 @@ class RustFirstSurfaceTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         self.assertIn("Rust product", readme)
         self.assertIn("workflow-verifier-reference", readme)
-        self.assertIn("report-v3.json", readme)
+        self.assertIn("report.json", readme)
+        self.assertIn("workflow-verifier-report/1", readme)
         self.assertIn("release-evidence-v4", readme)
         self.assertIn("workflow-verifier lsp", readme)
         self.assertIn("uses: P4suta/workflow-verifier@", readme)

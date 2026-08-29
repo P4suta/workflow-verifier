@@ -1,522 +1,91 @@
 {
+  "analysis_digest": "sha256:68b76c7c86a6cb8785a18d3dba19fadf215feb9efdfa360e9cb6754b45b33e85",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: .gitlab/ci/build_idf_examples.yml",
+      "Incomplete.Unresolved_dependency: .gitlab/ci/common.yml",
+      "Incomplete.Unresolved_dependency: .gitlab/ci/docs.yml",
+      "Incomplete.Unresolved_dependency: .gitlab/ci/generate_build_test_jobs.yml"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:51f17af26e930589c2c3d5af7dc9d4be8f432383ae20178ebad6af19a2970ee1",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_0b3ee37271b9b90610ac",
-          "kind": "control",
-          "label": null,
-          "to": "wv_161fc6a51bcf2f601c29"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_4d2b7efbfd12b34a1be4",
-          "kind": "call",
-          "label": null,
-          "to": "wv_161fc6a51bcf2f601c29"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_52d16bdbfb54afcddd2b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_8c0fd538e45e88d34763"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_63ead4f5a98c0f10cd1c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_29cd7b0f3ea0ce9784bd"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_716a4eeb3ac9ba74a7a8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_39b12f4c4b7290c16f48"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_83c0f493fb5d931174f5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c43eeeb7bfd0dd0534f0"
-        },
-        {
-          "condition": true,
-          "from": "wv_42a9ed081cf92a05ebdf",
-          "id": "wv_8fa9f27807f6c8c14237",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b62dfda27616b00854dc"
-        },
-        {
-          "condition": true,
-          "from": "wv_39b12f4c4b7290c16f48",
-          "id": "wv_9bd6f3bbe2cdcf377ab1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a84ab8806adbea1d9f3d"
-        },
-        {
-          "condition": true,
-          "from": "wv_b62dfda27616b00854dc",
-          "id": "wv_ba9ec102e9bdb584b898",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c70465c34369e4c1f29b"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_ced10ffb65e95660d6e6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8c0fd538e45e88d34763"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_e4b7a5427f3d9c9bc740",
-          "kind": "call",
-          "label": null,
-          "to": "wv_29cd7b0f3ea0ce9784bd"
-        },
-        {
-          "condition": true,
-          "from": "wv_cefc64299943c5ea93ef",
-          "id": "wv_f1ca6071a8da91e52ef2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c43eeeb7bfd0dd0534f0"
-        },
-        {
-          "condition": true,
-          "from": "wv_a84ab8806adbea1d9f3d",
-          "id": "wv_fcdafbcc1e6d24b15b33",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_42a9ed081cf92a05ebdf"
-        }
-      ],
-      "entrypoints": [
-        "wv_cefc64299943c5ea93ef"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_161fc6a51bcf2f601c29",
-          "kind": "call",
-          "name": ".gitlab/ci/generate_build_test_jobs.yml",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 41,
-              "column": 5,
-              "line": 3
-            },
-            "stop": {
-              "byte": 82,
-              "column": 46,
-              "line": 3
-            }
-          },
-          "unknown": {
-            "detail": ".gitlab/ci/generate_build_test_jobs.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_29cd7b0f3ea0ce9784bd",
-          "kind": "call",
-          "name": ".gitlab/ci/common.yml",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 13,
-              "column": 5,
-              "line": 2
-            },
-            "stop": {
-              "byte": 36,
-              "column": 28,
-              "line": 2
-            }
-          },
-          "unknown": {
-            "detail": ".gitlab/ci/common.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_39b12f4c4b7290c16f48",
-          "kind": "stage",
-          "name": ".post",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 148,
-              "column": 40,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_42a9ed081cf92a05ebdf",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 148,
-              "column": 40,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8c0fd538e45e88d34763",
-          "kind": "call",
-          "name": ".gitlab/ci/docs.yml",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 87,
-              "column": 5,
-              "line": 4
-            },
-            "stop": {
-              "byte": 108,
-              "column": 26,
-              "line": 4
-            }
-          },
-          "unknown": {
-            "detail": ".gitlab/ci/docs.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a84ab8806adbea1d9f3d",
-          "kind": "stage",
-          "name": ".pre",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 148,
-              "column": 40,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b62dfda27616b00854dc",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 148,
-              "column": 40,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c43eeeb7bfd0dd0534f0",
-          "kind": "call",
-          "name": ".gitlab/ci/build_idf_examples.yml",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 113,
-              "column": 5,
-              "line": 5
-            },
-            "stop": {
-              "byte": 148,
-              "column": 40,
-              "line": 5
-            }
-          },
-          "unknown": {
-            "detail": ".gitlab/ci/build_idf_examples.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "4"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c70465c34369e4c1f29b",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 148,
-              "column": 40,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cefc64299943c5ea93ef",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 148,
-              "column": 40,
-              "line": 5
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:88f7d3409d7940d3469e30f6b895f4b301a7ddd56c631afdaee1560cb5432e1f",
-      "path": "gitlab/truwcj-coder/zigbee2mqtt/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:ef85cb10b1e83bb87860d7b187f6269455ba1443bf421578fcb3fba6c37bcc16",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:978dbf6daf4a91d799e2bfbb3792619755a2ba122f03c958b77388b1a9e66932",
+    "sources": [
+      {
+        "digest": "sha256:88f7d3409d7940d3469e30f6b895f4b301a7ddd56c631afdaee1560cb5432e1f",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -539,26 +108,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 13,
+    "nodes": 10,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

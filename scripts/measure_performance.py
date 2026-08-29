@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Measure cold, warm, and incremental commands from a shell-free suite."""
+"""Measure independent product scenarios from a shell-free v2 suite."""
 
 from __future__ import annotations
 
@@ -16,10 +16,8 @@ import time
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-MODES = ("cold", "incremental", "warm")
 ROOT_FIELDS = {"schema", "environment", "scenarios"}
-SCENARIO_FIELDS = {"id", "cwd", "modes"}
-MODE_FIELDS = {"setup", "before_each", "command", "timeout_seconds"}
+SCENARIO_FIELDS = {"id", "cwd", "setup", "before_each", "command", "timeout_seconds"}
 REVISION = re.compile(r"^[0-9a-f]{40}$")
 IDENTIFIER = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 
@@ -110,46 +108,6 @@ def _native_argv(argv: list[str], cwd: Path) -> list[str]:
     return argv
 
 
-def uses_config_v2(workspace: Path) -> bool:
-    marker = workspace / "schema" / "config-v2.schema.json"
-    try:
-        metadata = marker.lstat()
-    except FileNotFoundError:
-        return False
-    except OSError as error:
-        raise ValueError(f"cannot inspect analyzer contract marker {marker}: {error}") from error
-    if marker.is_symlink() or not stat.S_ISREG(metadata.st_mode):
-        raise ValueError("analyzer config-v2 contract marker must be a regular file")
-    return True
-
-
-def _contract_argv(argv: list[str], workspace: Path) -> list[str]:
-    """Lower current cache semantics to the pre-release baseline CLI when needed."""
-    if uses_config_v2(workspace) or "--cache-mode" not in argv:
-        return argv
-    if argv.count("--cache-mode") != 1:
-        raise ValueError("performance command repeats --cache-mode")
-    index = argv.index("--cache-mode")
-    if index + 1 >= len(argv):
-        raise ValueError("performance command omits the --cache-mode value")
-    mode = argv[index + 1]
-    if mode == "off":
-        replacement = ["--no-cache"]
-    elif mode == "user":
-        # The v0.1 cache is intentionally write-only for gate decisions. Force
-        # the historical baseline to freshly analyze as well, while retaining
-        # equivalent serialization cost in a workspace-external target path.
-        replacement = [
-            "--no-cache",
-            "--write-cache",
-            "--cache",
-            str((workspace / "_build" / "performance-user-cache-v1.json").resolve()),
-        ]
-    else:
-        raise ValueError(f"performance command has unsupported cache mode {mode}")
-    return [*argv[:index], *replacement, *argv[index + 2 :]]
-
-
 def _run(argv: list[str], cwd: Path, timeout: int, environment: dict[str, str], label: str) -> None:
     try:
         completed = subprocess.run(
@@ -190,14 +148,10 @@ def measure(
     if workspace.is_symlink() or not stat.S_ISDIR(workspace_metadata.st_mode):
         raise ValueError("benchmark workspace must be a directory, not a symlink")
     workspace_resolved = workspace.resolve()
-    cache_root = workspace_resolved / "_build" / "performance-user-cache"
-    if cache_root.is_symlink() or (cache_root.exists() and not cache_root.is_dir()):
-        raise ValueError("performance user cache root must be a directory, not a symlink")
-
     document, suite_digest = _load(suite_path)
     _exact_fields(document, ROOT_FIELDS, "performance suite")
-    if document["schema"] != "performance-suite-v1":
-        raise ValueError("performance suite schema must be performance-suite-v1")
+    if document["schema"] != "performance-suite-v2":
+        raise ValueError("performance suite schema must be performance-suite-v2")
     raw_environment = document["environment"]
     if (
         not isinstance(raw_environment, dict)
@@ -210,7 +164,7 @@ def measure(
     if not isinstance(scenarios, list) or not scenarios:
         raise ValueError("performance suite scenarios must be a nonempty array")
 
-    parsed: list[tuple[str, Path, dict[str, dict[str, Any]]]] = []
+    parsed: list[tuple[str, Path, dict[str, Any]]] = []
     seen: set[str] = set()
     for index, scenario in enumerate(scenarios):
         label = f"performance suite scenarios[{index}]"
@@ -232,84 +186,63 @@ def measure(
             raise ValueError(f"{label}.cwd escapes or does not exist in workspace") from error
         if cwd.is_symlink() or not cwd.is_dir():
             raise ValueError(f"{label}.cwd must be a directory, not a symlink")
-        modes = scenario["modes"]
-        if not isinstance(modes, dict) or set(modes) != set(MODES):
-            raise ValueError(f"{label}.modes must contain exactly cold, incremental, and warm")
-        parsed_modes: dict[str, dict[str, Any]] = {}
-        for mode in MODES:
-            mode_value = modes[mode]
-            mode_label = f"{label}.modes.{mode}"
-            if not isinstance(mode_value, dict):
-                raise ValueError(f"{mode_label} must be an object")
-            _exact_fields(mode_value, MODE_FIELDS, mode_label)
-            timeout = mode_value["timeout_seconds"]
-            if type(timeout) is not int or not 1 <= timeout <= 3600:
-                raise ValueError(f"{mode_label}.timeout_seconds must be between 1 and 3600")
-            parsed_modes[mode] = {
-                "before_each": [
-                    _contract_argv(command, workspace_resolved)
-                    for command in _commands(mode_value["before_each"], f"{mode_label}.before_each")
-                ],
-                "command": _contract_argv(
-                    _argv(mode_value["command"], f"{mode_label}.command"),
-                    workspace_resolved,
-                ),
-                "setup": [
-                    _contract_argv(command, workspace_resolved)
-                    for command in _commands(mode_value["setup"], f"{mode_label}.setup")
-                ],
-                "timeout_seconds": timeout,
-            }
-        parsed.append((identifier, cwd, parsed_modes))
+        timeout = scenario["timeout_seconds"]
+        if type(timeout) is not int or not 1 <= timeout <= 3600:
+            raise ValueError(f"{label}.timeout_seconds must be between 1 and 3600")
+        parsed.append(
+            (
+                identifier,
+                cwd,
+                {
+                    "before_each": _commands(scenario["before_each"], f"{label}.before_each"),
+                    "command": _argv(scenario["command"], f"{label}.command"),
+                    "setup": _commands(scenario["setup"], f"{label}.setup"),
+                    "timeout_seconds": timeout,
+                },
+            )
+        )
 
     result_scenarios: list[dict[str, Any]] = []
-    for identifier, cwd, modes in sorted(parsed, key=lambda item: item[0].encode("utf-8")):
-        result_modes: dict[str, Any] = {}
-        for mode in MODES:
-            specification = modes[mode]
-            environment = dict(os.environ)
-            environment.update(
-                {
-                    "LANG": "C",
-                    "LC_ALL": "C",
-                    "LOCALAPPDATA": str(cache_root),
-                    "TZ": "UTC",
-                    "WORKFLOW_VERIFIER_BENCHMARK_MODE": mode,
-                    "XDG_CACHE_HOME": str(cache_root),
-                }
+    for identifier, cwd, specification in sorted(parsed, key=lambda item: item[0].encode("utf-8")):
+        environment = dict(os.environ)
+        environment.update(
+            {
+                "LANG": "C",
+                "LC_ALL": "C",
+                "TZ": "UTC",
+                "WORKFLOW_VERIFIER_BENCHMARK_SCENARIO": identifier,
+            }
+        )
+        for index, command in enumerate(specification["setup"]):
+            _run(
+                command,
+                cwd,
+                specification["timeout_seconds"],
+                environment,
+                f"{identifier} setup {index}",
             )
-            for index, command in enumerate(specification["setup"]):
+        durations: list[int] = []
+        for sample in range(samples):
+            for index, command in enumerate(specification["before_each"]):
                 _run(
                     command,
                     cwd,
                     specification["timeout_seconds"],
                     environment,
-                    f"{identifier}/{mode} setup {index}",
+                    f"{identifier} before_each {sample}/{index}",
                 )
-            durations: list[int] = []
-            for sample in range(samples):
-                for index, command in enumerate(specification["before_each"]):
-                    _run(
-                        command,
-                        cwd,
-                        specification["timeout_seconds"],
-                        environment,
-                        f"{identifier}/{mode} before_each {sample}/{index}",
-                    )
-                started = time.perf_counter_ns()
-                _run(
-                    specification["command"],
-                    cwd,
-                    specification["timeout_seconds"],
-                    environment,
-                    f"{identifier}/{mode} sample {sample}",
-                )
-                duration = time.perf_counter_ns() - started
-                durations.append(max(duration, 1))
-            result_modes[mode] = {"samples_ns": durations}
-        result_scenarios.append({"id": identifier, "modes": result_modes})
+            started = time.perf_counter_ns()
+            _run(
+                specification["command"],
+                cwd,
+                specification["timeout_seconds"],
+                environment,
+                f"{identifier} sample {sample}",
+            )
+            duration = time.perf_counter_ns() - started
+            durations.append(max(duration, 1))
+        result_scenarios.append({"id": identifier, "samples_ns": durations})
     environment = dict(raw_environment)
-    environment.setdefault("cache_semantics", "fresh-analysis-with-isolated-write")
     environment["suite_digest"] = suite_digest
     platform = os.environ.get("WORKFLOW_VERIFIER_PERFORMANCE_PLATFORM")
     if platform is not None:
@@ -321,7 +254,7 @@ def measure(
         "regression_explanations": [],
         "revision": revision,
         "scenarios": result_scenarios,
-        "schema": "performance-v1",
+        "schema": "performance-v2",
     }
 
 
@@ -365,7 +298,7 @@ def main() -> int:
         return 2
     print(
         f"performance measurement: {len(result['scenarios'])} scenarios x "
-        f"{len(MODES)} modes x {arguments.samples} samples"
+        f"{arguments.samples} samples"
     )
     return 0
 

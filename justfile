@@ -23,11 +23,10 @@ fetch-yaml-suite:
     python -B scripts/fetch_yaml_test_suite.py --allow-network
 
 helpers:
-    cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
+    cargo test --workspace --all-targets --exclude workflow-verifier --exclude workflow-verifier-conformance
 
 helpers-lint:
-    cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
-    cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
+    cargo clippy --workspace --all-targets --exclude workflow-verifier --exclude workflow-verifier-conformance -- -D warnings
 
 rust:
     cargo fmt --all -- --check
@@ -35,21 +34,21 @@ rust:
     cargo clippy --workspace --all-targets -- -D warnings
 
 lsp-performance:
-    cargo test --release -p workflow-verifier-cli --lib lsp::performance_tests -- --ignored --nocapture --test-threads=1
+    cargo test --release -p workflow-verifier --lib lsp::performance_tests -- --ignored --nocapture --test-threads=1
 
 differential:
     opam exec -- dune build bin/main.exe
-    cargo build -p workflow-verifier-cli -p workflow-verifier-conformance
+    cargo build -p workflow-verifier -p workflow-verifier-conformance
     mkdir -p _build/rust-conformance
-    _build/default/bin/main.exe check --format json --trust-repository-config --output _build/rust-conformance/reference-report-v2.json test/fixtures/determinism
-    target/debug/workflow-verifier check --format json --trust-repository-config --output _build/rust-conformance/candidate-report-v3.json test/fixtures/determinism
-    target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-report-v2.json _build/rust-conformance/candidate-report-v3.json > _build/rust-conformance/report-conformance-v1.json
-    _build/default/bin/main.exe check --format json --trust-repository-config --output _build/rust-conformance/reference-exclusions-report-v2.json test/fixtures/determinism-exclusions
-    target/debug/workflow-verifier check --format json --trust-repository-config --output _build/rust-conformance/candidate-exclusions-report-v3.json test/fixtures/determinism-exclusions
-    target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-exclusions-report-v2.json _build/rust-conformance/candidate-exclusions-report-v3.json > _build/rust-conformance/report-exclusions-conformance-v1.json
-    _build/default/bin/main.exe check --format json --output _build/rust-conformance/reference-file-target-report-v2.json test/fixtures/file-target/selected.yml
-    target/debug/workflow-verifier check --format json --output _build/rust-conformance/candidate-file-target-report-v3.json test/fixtures/file-target/selected.yml
-    target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-file-target-report-v2.json _build/rust-conformance/candidate-file-target-report-v3.json > _build/rust-conformance/report-file-target-conformance-v1.json
+    _build/default/bin/main.exe __semantic-conformance --trust-repository-config test/fixtures/determinism > _build/rust-conformance/reference-determinism.json
+    target/debug/workflow-verifier __semantic-conformance --trust-repository-config test/fixtures/determinism > _build/rust-conformance/candidate-determinism.json
+    target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-determinism.json _build/rust-conformance/candidate-determinism.json > _build/rust-conformance/determinism-comparison.json
+    _build/default/bin/main.exe __semantic-conformance --trust-repository-config test/fixtures/determinism-exclusions > _build/rust-conformance/reference-exclusions.json
+    target/debug/workflow-verifier __semantic-conformance --trust-repository-config test/fixtures/determinism-exclusions > _build/rust-conformance/candidate-exclusions.json
+    target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-exclusions.json _build/rust-conformance/candidate-exclusions.json > _build/rust-conformance/exclusions-comparison.json
+    _build/default/bin/main.exe __semantic-conformance test/fixtures/semantic-local > _build/rust-conformance/reference-local-link.json
+    target/debug/workflow-verifier __semantic-conformance test/fixtures/semantic-local > _build/rust-conformance/candidate-local-link.json
+    target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-local-link.json _build/rust-conformance/candidate-local-link.json > _build/rust-conformance/local-link-comparison.json
 
 tooling:
     python -B -m unittest discover -s scripts/tests -p "test_*.py" -v
@@ -66,58 +65,55 @@ mutation-campaign catalog="_build/mutation-evidence/mutation-catalog.json" evide
 
 mutation-rust-list output="_build/rust-mutants-catalog.json":
     mkdir -p _build
-    cargo mutants --config .cargo/mutants.toml --workspace --list --json > {{output}}
+    cargo mutants --config .cargo/mutants.toml --package workflow-verifier --list --json > {{output}}
 
-mutation-rust package output="_build/rust-mutants":
-    cargo mutants --config .cargo/mutants.toml --package {{package}} --output {{output}}
+mutation-rust layer output="_build/rust-mutants":
+    cargo mutants --config .cargo/mutants.toml --package workflow-verifier --file "src/{{layer}}/**/*.rs" --output {{output}}
 
 mutation-rust-high-value output="_build/rust-mutants-high-value":
-    cargo mutants --config .cargo/mutants.toml --package workflow-verifier-domain --package workflow-verifier-engine --package workflow-verifier-foundation --package workflow-verifier-frontend --package workflow-verifier-product --package workflow-verifier-sandbox --package workflow-verifier-syntax --package workflow-verifier-verifier --package workflow-verifier-runner-protocol --output {{output}}
+    cargo mutants --config .cargo/mutants.toml --package workflow-verifier --output {{output}}
 
 corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" reports_root="evaluation/reports" output="_build/corpus-report-v1.json":
     python -B scripts/corpus_gate.py --manifest {{manifest}} --corpus-root {{corpus_root}} --reports-root {{reports_root}} --output {{output}} --release
 
 corpus-acquire analyzer="target/debug/workflow-verifier" output="evaluation" pages="10" workers="8":
-    cargo build --locked -p workflow-verifier-cli
+    cargo build --locked -p workflow-verifier
     python -B scripts/prepare_corpus.py acquire --analyzer {{analyzer}} --output {{output}} --per-provider 100 --pages {{pages}} --workers {{workers}}
 
 corpus-refresh evaluation="evaluation" analyzer="target/debug/workflow-verifier" output="_build/evaluation-refreshed" workers="8":
-    cargo build --locked -p workflow-verifier-cli
+    cargo build --locked -p workflow-verifier
     python -B scripts/prepare_corpus.py refresh --evaluation {{evaluation}} --analyzer {{analyzer}} --output {{output}} --workers {{workers}}
 
 corpus-review review="evaluation/review-v1.json" manifest="evaluation/corpus-v1.json" reports_root="evaluation/reports":
     python -B scripts/prepare_corpus.py apply-review --manifest {{manifest}} --reports-root {{reports_root}} --review {{review}}
 
-corpus-rebase-review old="evaluation" fresh="_build/evaluation-refreshed":
-    python -B scripts/prepare_corpus.py rebase-review --old-manifest {{old}}/corpus-v1.json --old-reports-root {{old}}/reports --old-review {{old}}/review-v1.json --new-manifest {{fresh}}/corpus-v1.json --new-reports-root {{fresh}}/reports --output {{fresh}}/review-v1.json
-
 official-fetch manifest="official/official-projects-v1.json" destination="_build/official-projects" mode="pinned":
     python -B scripts/fetch_official_projects.py --manifest {{manifest}} --destination {{destination}} --mode {{mode}}
 
-official-compat analyzer="target/debug/workflow-verifier" snapshots="_build/official-projects" output="_build/official-compat-v1.json" expected="official/official-compat-v1.json" expected_digest="official/official-compat-v1.sha256":
-    cargo build --locked -p workflow-verifier-cli
-    python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots {{snapshots}} --analyzer {{analyzer}} --output {{output}} --expected {{expected}} --expected-digest {{expected_digest}}
+official-compat analyzer="target/debug/workflow-verifier" snapshots="_build/official-projects" output="_build/official-compat-v1.json":
+    cargo build --locked -p workflow-verifier
+    python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots {{snapshots}} --analyzer {{analyzer}} --output {{output}}
 
-performance-measure revision suite="performance/suite-v1.json" output="_build/performance-current.json" samples="7":
+performance-measure revision suite="performance/rust-suite-v2.json" output="_build/performance-current.json" samples="7":
     python -B scripts/measure_performance.py --suite {{suite}} --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
 
-performance-pair baseline_workspace baseline_revision current_revision suite="performance/suite-v1.json" output_dir="_build/performance-pair" samples="24":
+performance-pair baseline_workspace baseline_revision current_revision suite="performance/rust-suite-v2.json" output_dir="_build/performance-pair" samples="24":
     python -B scripts/measure_performance_pair.py --suite {{suite}} --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
 
 performance-measure-rust revision output="_build/performance-rust-current.json" samples="7":
-    WORKFLOW_VERIFIER_SOURCE_COMMIT={{revision}} cargo build --locked --release -p workflow-verifier-cli
-    python -B scripts/measure_performance.py --suite performance/rust-suite-v1.json --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
+    WORKFLOW_VERIFIER_SOURCE_COMMIT={{revision}} cargo build --locked --release -p workflow-verifier
+    python -B scripts/measure_performance.py --suite performance/rust-suite-v2.json --workspace . --revision {{revision}} --samples {{samples}} --output {{output}}
 
 performance-pair-rust baseline_workspace baseline_revision current_revision output_dir="_build/performance-rust-pair" samples="24":
-    WORKFLOW_VERIFIER_SOURCE_COMMIT={{baseline_revision}} cargo build --locked --release --manifest-path {{baseline_workspace}}/Cargo.toml -p workflow-verifier-cli
-    WORKFLOW_VERIFIER_SOURCE_COMMIT={{current_revision}} cargo build --locked --release -p workflow-verifier-cli
-    python -B scripts/measure_performance_pair.py --suite performance/rust-suite-v1.json --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
+    WORKFLOW_VERIFIER_SOURCE_COMMIT={{baseline_revision}} cargo build --locked --release --manifest-path {{baseline_workspace}}/Cargo.toml --bin workflow-verifier
+    WORKFLOW_VERIFIER_SOURCE_COMMIT={{current_revision}} cargo build --locked --release -p workflow-verifier
+    python -B scripts/measure_performance_pair.py --suite performance/rust-suite-v2.json --baseline-workspace {{baseline_workspace}} --baseline-revision {{baseline_revision}} --current-workspace . --current-revision {{current_revision}} --samples {{samples}} --output-dir {{output_dir}}
 
-performance-gate baseline current="_build/performance-current.json" output="_build/performance-comparison-v1.json":
+performance-gate baseline current="_build/performance-current.json" output="_build/performance-comparison-v2.json":
     python -B scripts/performance_gate.py --baseline {{baseline}} --current {{current}} --output {{output}}
 
 determinism-probe output="_build/determinism/local":
-    WORKFLOW_VERIFIER_SOURCE_COMMIT=$(git rev-parse HEAD) cargo build --locked -p workflow-verifier-cli
+    WORKFLOW_VERIFIER_SOURCE_COMMIT=$(git rev-parse HEAD) cargo build --locked -p workflow-verifier
     python -B scripts/determinism_probe.py --analyzer target/debug/workflow-verifier --fixture test/fixtures/determinism --output {{output}}
 
 determinism-compare linux_x86_64 linux_arm64 windows macos_arm64 macos_x86_64 output="_build/determinism/comparison.json":
@@ -138,6 +134,9 @@ candidate-reproducibility revision output *fragments:
 architecture:
     python -B scripts/verify_architecture.py
 
+lint-policy:
+    python -B scripts/verify_lint_policy.py
+
 purity:
     python -B scripts/verify_pure_ocaml.py
 
@@ -146,7 +145,7 @@ licenses:
 
 install-check:
     opam exec -- dune build @install
-    cargo build -p workflow-verifier-cli
+    cargo build -p workflow-verifier
     python -B scripts/verify_install_layout.py _build/install/default target/debug/workflow-verifier
 
 task-surface:
@@ -164,10 +163,10 @@ sbom version *artifacts:
 linux-compat binary:
     python -B scripts/verify_linux_compat.py {{binary}}
 
-check: task-surface conformance-manifest links build test yaml-conformance tooling architecture helpers helpers-lint rust lsp-performance differential purity licenses install-check
+check: task-surface conformance-manifest links build test yaml-conformance tooling architecture lint-policy rust lsp-performance differential purity licenses install-check
 
 dogfood:
-    cargo build --locked -p workflow-verifier-cli
+    cargo build --locked -p workflow-verifier
     target/debug/workflow-verifier check --config examples/dogfood-policy-v2.toml --trust-repository-config .
 
 dogfood-gate root="_dogfood" output="_build/dogfood-v1.json":

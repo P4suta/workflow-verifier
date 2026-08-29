@@ -1,9 +1,9 @@
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
 
+use workflow_verifier_internal::internal::runner_protocol::sha256_hex;
+use workflow_verifier_internal::internal::runner_protocol::vm::ImageManifest;
 use workflow_verifier_macos_helper::VmBundle;
-use workflow_verifier_runner_protocol::sha256_hex;
-use workflow_verifier_runner_protocol::vm::ImageManifest;
 
 static NEXT_DIRECTORY: AtomicU64 = AtomicU64::new(0);
 

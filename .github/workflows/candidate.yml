@@ -57,7 +57,7 @@ jobs:
     name: Static source and schema assets
     needs: identity
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 45
     outputs:
       source_date_epoch: ${{ steps.source.outputs.source_date_epoch }}
     steps:
@@ -70,6 +70,7 @@ jobs:
         with:
           python-version: '3.13.7'
           check-latest: false
+      - uses: ./.github/actions/setup-repository-rust
       - name: Bind every version surface and build source assets twice
         id: source
         shell: bash
@@ -88,6 +89,18 @@ jobs:
             --fragment _candidate/source/reproducibility-source.json
           cp THIRD_PARTY_NOTICES.md _candidate/source/THIRD_PARTY_NOTICES.md
           echo "source_date_epoch=$epoch" >> "$GITHUB_OUTPUT"
+      - name: Build the public crate twice and bind it to candidate C
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.identity.outputs.candidate }}
+          VERSION: ${{ needs.identity.outputs.version }}
+        run: |
+          python -B scripts/package_crate.py \
+            --repository . \
+            --subject-commit "$CANDIDATE" \
+            --version "$VERSION" \
+            --output "_candidate/source/workflow-verifier-$VERSION.crate" \
+            --evidence _candidate/source/crate-package-v1.json
       - name: Upload immutable source candidate
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

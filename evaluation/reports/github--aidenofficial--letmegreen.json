@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:6eda6137ae86ccaecedee367c5ca0a0ff7e1e10a5eecf275de36fa6eb237e860",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 190,
             "column": 15,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_fbeb6ac6c5a1f23cfffe",
+      "id": "diag_9a3345041245c76cb3a7cfaf3eceb80705b04e18c7d7ea3c58e0a916d3e70905",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 190,
           "column": 15,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_59133031a6f3a09b4604",
+          "node": 5,
           "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 190,
               "column": 15,
@@ -71,13 +78,12 @@
       "evidence": [
         "dominator set contains no Gate node"
       ],
-      "fix": null,
-      "id": "diag_0e8f592e4d32b513fdc8",
+      "id": "diag_1724d22d35be5acfebb05c7aa237f9af2cf5323977a42ba6729c22dbeffc9396",
       "message": "a privileged effect is reachable without a dominating authorization gate",
       "rule_id": "WV-AUTH-001",
       "severity": "error",
       "span": {
-        "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 249,
           "column": 14,
@@ -92,9 +98,9 @@
       "trace": [
         {
           "label": "authorization bypass",
-          "node_id": "wv_80396ecb7d388ceaf006",
+          "node": 0,
           "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 0,
               "column": 1,
@@ -109,9 +115,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_7c4886c9d88c809918d5",
+          "node": 3,
           "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 96,
               "column": 3,
@@ -126,9 +132,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_f4a14a34ffdf66808dff",
+          "node": 6,
           "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 219,
               "column": 9,
@@ -143,9 +149,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_f6d8141df9ac4777f869",
+          "node": 7,
           "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 249,
               "column": 14,
@@ -172,9 +178,8 @@
       "fix": {
         "description": "pass the value through an environment variable and quote it in the target shell",
         "kind": "environment-boundary",
-        "replacement": null,
         "span": {
-          "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 249,
             "column": 14,
@@ -187,12 +192,12 @@
           }
         }
       },
-      "id": "diag_43c68679773be7ed0c3a",
+      "id": "diag_c0289dd1eca05691dc1f962efeb3a671e2ea280fd3d98eac4df63b84dbfef80a",
       "message": "untrusted workflow data reaches a shell command boundary",
       "rule_id": "WV-SEC-001",
       "severity": "error",
       "span": {
-        "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 249,
           "column": 14,
@@ -207,9 +212,9 @@
       "trace": [
         {
           "label": "untrusted source",
-          "node_id": "wv_4f741e2f9be93790b212",
+          "node": 8,
           "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 387,
               "column": 152,
@@ -224,9 +229,9 @@
         },
         {
           "label": "command sink",
-          "node_id": "wv_f6d8141df9ac4777f869",
+          "node": 7,
           "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 249,
               "column": 14,
@@ -242,653 +247,70 @@
       ]
     }
   ],
-  "digest": "sha256:052ed4d19ea18efa3ce26e2a270870dc65b07de3a60c53957ae6c994a5bcd4ec",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_d5eb7aaef921392e9b0f",
-          "id": "wv_31659481817d6c903b7b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_80396ecb7d388ceaf006"
-        },
-        {
-          "condition": true,
-          "from": "wv_7c4886c9d88c809918d5",
-          "id": "wv_408e9dbd39bd5d2bfb56",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f4a14a34ffdf66808dff"
-        },
-        {
-          "condition": true,
-          "from": "wv_9990f76251f75505d95b",
-          "id": "wv_4cdeda1f52aef5363971",
-          "kind": "data",
-          "label": "github.repository",
-          "to": "wv_f6d8141df9ac4777f869"
-        },
-        {
-          "condition": true,
-          "from": "wv_f4a14a34ffdf66808dff",
-          "id": "wv_5d6c105037384abdff05",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f6d8141df9ac4777f869"
-        },
-        {
-          "condition": true,
-          "from": "wv_80396ecb7d388ceaf006",
-          "id": "wv_841c8cb5c3e23363adcc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7c4886c9d88c809918d5"
-        },
-        {
-          "condition": true,
-          "from": "wv_ec90c2c8558f3db8449b",
-          "id": "wv_8b5456b136f211e7e707",
-          "kind": "call",
-          "label": null,
-          "to": "wv_59133031a6f3a09b4604"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f741e2f9be93790b212",
-          "id": "wv_96d60ef26b5afc33ac21",
-          "kind": "data",
-          "label": "github.actor",
-          "to": "wv_f6d8141df9ac4777f869"
-        },
-        {
-          "condition": true,
-          "from": "wv_ec90c2c8558f3db8449b",
-          "id": "wv_a1a5693c71ff371020cb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_59133031a6f3a09b4604"
-        },
-        {
-          "condition": true,
-          "from": "wv_7bfa52dbf89fad58c80c",
-          "id": "wv_ae10651b77e3a64d28bd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_80396ecb7d388ceaf006"
-        },
-        {
-          "condition": true,
-          "from": "wv_ec90c2c8558f3db8449b",
-          "id": "wv_b07b0e058259481f423c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f4a14a34ffdf66808dff"
-        },
-        {
-          "condition": true,
-          "from": "wv_fb69a22661f739351756",
-          "id": "wv_b42fa3d0006d2a70cca2",
-          "kind": "data",
-          "label": "secrets.GITHUB_TOKEN",
-          "to": "wv_f6d8141df9ac4777f869"
-        },
-        {
-          "condition": true,
-          "from": "wv_7c4886c9d88c809918d5",
-          "id": "wv_f27d17f824e8b5c36c9f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ec90c2c8558f3db8449b"
-        }
-      ],
-      "entrypoints": [
-        "wv_80396ecb7d388ceaf006"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.actor",
-                  "span": {
-                    "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 387,
-                      "column": 152,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 399,
-                      "column": 164,
-                      "line": 18
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.actor"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4f741e2f9be93790b212",
-          "kind": "resource",
-          "name": "github.actor",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 387,
-              "column": 152,
-              "line": 18
-            },
-            "stop": {
-              "byte": 399,
-              "column": 164,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_59133031a6f3a09b4604",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 190,
-              "column": 15,
-              "line": 15
-            },
-            "stop": {
-              "byte": 209,
-              "column": 34,
-              "line": 15
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7bfa52dbf89fad58c80c",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 16,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 50,
-              "column": 15,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7c4886c9d88c809918d5",
-          "kind": "job",
-          "name": "autogreen",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 96,
-              "column": 3,
-              "line": 11
-            },
-            "stop": {
-              "byte": 627,
-              "column": 19,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_80396ecb7d388ceaf006",
-          "kind": "workflow",
-          "name": "ci",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 627,
-              "column": 19,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.repository",
-                  "span": {
-                    "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 446,
-                      "column": 211,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 463,
-                      "column": 228,
-                      "line": 18
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.repository"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9990f76251f75505d95b",
-          "kind": "resource",
-          "name": "github.repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 446,
-              "column": 211,
-              "line": 18
-            },
-            "stop": {
-              "byte": 463,
-              "column": 228,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d5eb7aaef921392e9b0f",
-          "kind": "trigger",
-          "name": "schedule",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 53,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 86,
-              "column": 24,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ec90c2c8558f3db8449b",
-          "kind": "step",
-          "name": "Clone repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 153,
-              "column": 9,
-              "line": 14
-            },
-            "stop": {
-              "byte": 209,
-              "column": 34,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f4a14a34ffdf66808dff",
-          "kind": "step",
-          "name": "Auto green",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 219,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 627,
-              "column": 19,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.actor",
-                  "span": {
-                    "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 387,
-                      "column": 152,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 399,
-                      "column": 164,
-                      "line": 18
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "github.repository",
-                  "span": {
-                    "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 446,
-                      "column": 211,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 463,
-                      "column": 228,
-                      "line": 18
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 407,
-                      "column": 172,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 427,
-                      "column": 192,
-                      "line": 18
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 249,
-                      "column": 14,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 627,
-                      "column": 19,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git config --local user.email \"zhengyanw0ng@gmail.com\"\ngit config --local user.name \"AidenOfficial\"\ngit remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}\ngit pull --rebase\ngit commit --allow-empty -m \"a commit a day keeps your girlfriend away\"\ngit push\n",
-                  "github.actor",
-                  "github.repository",
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f6d8141df9ac4777f869",
-          "kind": "command",
-          "name": "git config --local user.email \"zhengyanw0ng@gmail.com\"\ngit config --local user.name \"AidenOfficial\"\ngit remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}\ngit pull --rebase\ngit commit --allow-empty -m \"a commit a day keeps your girlfriend away\"\ngit push\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 249,
-              "column": 14,
-              "line": 18
-            },
-            "stop": {
-              "byte": 627,
-              "column": 19,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 407,
-                      "column": 172,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 427,
-                      "column": 192,
-                      "line": 18
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fb69a22661f739351756",
-          "kind": "resource",
-          "name": "secrets.GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aidenofficial/letmegreen/.github/workflows/ci.yml",
-            "start": {
-              "byte": 407,
-              "column": 172,
-              "line": 18
-            },
-            "stop": {
-              "byte": 427,
-              "column": 192,
-              "line": 18
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/aidenofficial/letmegreen/.github/workflows/ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:d9e9be76dc15d21066ce56b1df3258b9e3b0de988e0ef766c528d5a29c822551",
-      "path": "github/aidenofficial/letmegreen/.github/workflows/ci.yml"
-    }
-  ],
+  "digest": "sha256:7976ec7f94136e59c8c17abdb729cbabe1c13b4acbde825a8850d996caf8c8eb",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:2f2063c089d5b43e644c3afa89e997ad740feeac84d62c26fad1ad96d0d4acdf",
+    "sources": [
+      {
+        "digest": "sha256:d9e9be76dc15d21066ce56b1df3258b9e3b0de988e0ef766c528d5a29c822551",
+        "id": 0,
+        "path": ".github/workflows/ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -899,40 +321,42 @@
           "kind": "unsupported_syntax"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 12,
+    "nodes": 11,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 3
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }
