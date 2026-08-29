@@ -122,6 +122,9 @@ determinism-compare linux_x86_64 linux_arm64 windows macos_arm64 macos_x86_64 ou
 version:
     python -B scripts/verify_release_version.py --allow-development
 
+sync-release-version:
+    python -B scripts/sync_release_version.py
+
 release-evidence revision tag manifest="release-evidence/release-evidence-v4.json":
     python -B scripts/verify_release_evidence.py --manifest {{manifest}} --revision {{revision}} --tag {{tag}} --repository .
 

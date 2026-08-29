@@ -15,6 +15,8 @@ let required =
     "../scripts/package_crate.py";
     "../scripts/build_candidate_platform.sh";
     "../scripts/materialize_release_input.py";
+    "../scripts/sync_release_version.py";
+    "../scripts/verify_pr_title.py";
     "../scripts/verify_release_version.py";
     "../scripts/verify_release_evidence.py";
     "../scripts/stage_release_evidence.py";
@@ -45,6 +47,7 @@ let required =
     "../.github/workflows/ci.yml";
     "../.github/workflows/mutation.yml";
     "../.github/workflows/release.yml";
+    "../.github/workflows/release-pr.yml";
     "../.github/workflows/candidate.yml";
     "../.github/workflows/sign-windows.yml";
     "../.github/workflows/official-compat.yml";
@@ -90,6 +93,8 @@ let required =
     "../release/sbom-components-v1.json";
     "../THIRD_PARTY_NOTICES.md";
     "../workflow-verifier.opam.locked";
+    "../release-plz.toml";
+    "../lib/foundation/product_version.ml";
     "../rust-toolchain.toml";
     "../requirements.lock";
     "../spec/canonical-contracts.md";
@@ -165,6 +170,8 @@ let () =
         fail "GitHub CI omits required gate: %s" command)
     [
       "unittest discover";
+      "verify_pr_title.py";
+      "sync_release_version.py --check";
       "python-version: '3.13.7'";
       "ruff check .";
       "ruff format --check .";
@@ -269,6 +276,8 @@ let () =
   if not (Util.contains ~needle:"workflow_call:" ci) then
     fail "CI workflow must be reusable by the release workflow";
   let release = read_required ".github/workflows/release.yml" in
+  let release_pr = read_required ".github/workflows/release-pr.yml" in
+  let release_plz = read_required "release-plz.toml" in
   let action = read_required "action.yml" in
   let action_runner = read_required "action/run.py" in
   let candidate = read_required ".github/workflows/candidate.yml" in
@@ -277,6 +286,60 @@ let () =
   let mutation_config = read_required ".ocaml-mutants.toml" in
   let mutation_guard = read_required "scripts/mutation_resource_guard.py" in
   let test_build = read_required "test/dune" in
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface release_pr) then
+        fail "Release PR workflow omits required surface: %s" required_surface)
+    [
+      "push:";
+      "branches: [main]";
+      "workflow_dispatch:";
+      "cancel-in-progress: true";
+      "environment: release-pr";
+      "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1";
+      "release-plz/action@2eb1d8bcb770b4c48ccfaad919734b38b51958c9";
+      "RELEASE_PLZ_APP_CLIENT_ID";
+      "RELEASE_PLZ_APP_PRIVATE_KEY";
+      "permission-contents: write";
+      "permission-pull-requests: write";
+      "fetch-depth: 0";
+      "persist-credentials: false";
+      "command: release-pr";
+      "GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}";
+    ];
+  List.iter
+    (fun forbidden_surface ->
+      if Util.contains ~needle:forbidden_surface release_pr then
+        fail "Release PR workflow crosses the publication boundary: %s"
+          forbidden_surface)
+    [
+      "command: release\n";
+      "cargo publish";
+      "git tag";
+      "gh release";
+      "github release";
+      ".github/workflows/release.yml";
+      "actions/checkout@v";
+      "release-plz/action@v";
+      "actions/create-github-app-token@v";
+    ];
+  List.iter
+    (fun required_surface ->
+      if not (Util.contains ~needle:required_surface release_plz) then
+        fail "release-plz configuration omits required policy: %s"
+          required_surface)
+    [
+      "publish = false";
+      "git_tag_enable = false";
+      "git_release_enable = false";
+      "release_always = false";
+      "pr_draft = true";
+      "pr_name = \"chore: release v{{ version }}\"";
+      "git_tag_name = \"v{{ version }}\"";
+      "features_always_increment_minor = false";
+      "semver_check = true";
+      "feat|fix|perf|refactor|revert";
+    ];
   List.iter
     (fun mutable_reference ->
       if Util.contains ~needle:mutable_reference mutation then
@@ -583,11 +646,44 @@ let () =
       "determinism_probe.py";
       "compare_determinism.py";
       "dogfood_gate.py";
+      "sync_release_version.py";
       "verify_release_version.py --allow-development";
       "verify_release_evidence.py";
       "fetch_official_projects.py";
       "official_compat.py";
     ];
+  let product_version = read_required "lib/foundation/product_version.ml" in
+  if not (Util.contains ~needle:"let version = \"" product_version) then
+    fail "OCaml Product_version omits the synchronized version constant";
+  List.iter
+    (fun (relative, required_surface) ->
+      let source = read_required relative in
+      if not (Util.contains ~needle:required_surface source) then
+        fail "%s does not derive its product version from the authority"
+          relative)
+    [
+      ("lib/application/cli.ml", "Product_version.cli_banner");
+      ("lib/application/cli_parser.ml", "Product_version.version");
+      ("lib/application/curl_transport.ml", "Product_version.user_agent");
+      ("lib/product/report.ml", "Product_version.version");
+      ("src/application/mod.rs", "env!(\"CARGO_PKG_VERSION\")");
+      ("src/application/network.rs", "env!(\"CARGO_PKG_VERSION\")");
+      ("src/application/lsp.rs", "env!(\"CARGO_PKG_VERSION\")");
+      ("src/product/report.rs", "env!(\"CARGO_PKG_VERSION\")");
+    ];
+  let changelog = read_required "CHANGELOG.md" in
+  List.iter
+    (fun header ->
+      if not (Util.contains ~needle:header changelog) then
+        fail "bootstrap changelog omits release-plz header: %s" header)
+    [
+      "All notable changes to this project will be documented in this file.";
+      "Keep a Changelog";
+      "Semantic Versioning";
+      "## [Unreleased]";
+    ];
+  if Util.contains ~needle:"## [0.1.0]" changelog then
+    fail "bootstrap changelog must let release-plz generate the initial section";
   let readme =
     match Util.read_file (Filename.concat source_root "README.md") with
     | Ok source -> String.lowercase_ascii source

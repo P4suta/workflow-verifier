@@ -1108,7 +1108,7 @@ fn write_message(output: &mut impl Write, message: &Value) -> Result<(), String>
 
 fn initialize_result() -> Value {
     json!({
-        "serverInfo": {"name": "workflow-verifier", "version": "0.1.0"},
+        "serverInfo": {"name": "workflow-verifier", "version": env!("CARGO_PKG_VERSION")},
         "capabilities": {
             "positionEncoding": "utf-16",
             "textDocumentSync": {"openClose": true, "change": 2, "save": {"includeText": false}},

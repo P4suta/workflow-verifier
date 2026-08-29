@@ -162,7 +162,7 @@ let build ~persona ~inputs ~graphs ~verifications ~policy_diagnostics provenance
   let provisional =
     {
       schema = "workflow-verifier-report/1";
-      tool_version = "0.1.0";
+      tool_version = Product_version.version;
       persona;
       inputs = normalize_inputs inputs;
       graphs = normalize_graphs graphs;

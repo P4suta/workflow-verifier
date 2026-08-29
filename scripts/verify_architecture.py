@@ -342,6 +342,12 @@ def rust_package_errors(root: pathlib.Path) -> list[str]:
 
     workspace = document.get("workspace", {})
     members = workspace.get("members", ()) if isinstance(workspace, dict) else ()
+    workspace_package = workspace.get("package", {}) if isinstance(workspace, dict) else {}
+    workspace_version = (
+        workspace_package.get("version") if isinstance(workspace_package, dict) else None
+    )
+    if not isinstance(workspace_version, str):
+        errors.append("Cargo workspace package version must be a string")
     manifests = [root_manifest]
     manifests.extend(root / member / "Cargo.toml" for member in members if member != ".")
     packages: dict[str, tuple[pathlib.Path, dict[str, object]]] = {}
@@ -387,7 +393,7 @@ def rust_package_errors(root: pathlib.Path) -> list[str]:
         expected = {
             "package": "workflow-verifier",
             "path": "../..",
-            "version": "=0.1.0",
+            "version": f"={workspace_version}",
             "default-features": False,
             "features": [expected_feature],
         }

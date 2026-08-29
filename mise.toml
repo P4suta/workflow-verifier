@@ -146,6 +146,10 @@ run = "python -B scripts/compare_determinism.py --output _build/determinism/comp
 description = "Verify every development version surface"
 run = "python -B scripts/verify_release_version.py --allow-development"
 
+[tasks.sync-release-version]
+description = "Synchronize every derived release version from Cargo"
+run = "python -B scripts/sync_release_version.py"
+
 [tasks.release-evidence]
 description = "Verify two-commit evidence and the signed maintainer attestation"
 run = "python -B scripts/verify_release_evidence.py --manifest release-evidence/release-evidence-v4.json --revision ${WV_RELEASE_REVISION} --tag ${WV_RELEASE_TAG} --repository ."

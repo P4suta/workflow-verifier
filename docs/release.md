@@ -7,6 +7,54 @@
 > The security review is a signed sole-maintainer self-audit. It is not an
 > independent audit.
 
+## Draft Release PR preparation
+
+Release-plz prepares metadata only. The
+[Release PR workflow](../.github/workflows/release-pr.yml) runs after each
+`main` push or a manual dispatch and opens or updates one Draft PR named
+`chore: release vX.Y.Z`. Its configuration disables registry publication, Git
+tags, and GitHub Releases. Those actions remain behind the protected candidate
+and publication process below.
+
+Before enabling the workflow, create a GitHub App installed only on this
+repository with Contents read/write and Pull requests read/write. Store its
+client ID in the `release-pr` Environment variable
+`RELEASE_PLZ_APP_CLIENT_ID` and its private key in the `release-pr`
+Environment secret `RELEASE_PLZ_APP_PRIVATE_KEY`. Restrict that Environment to
+the `main` deployment branch. Keep the repository squash-only, use the PR title
+as the squash subject, require signed commits, and require the normal CI
+checks. The App token is deliberate: a Release PR created with it starts
+ordinary pull-request CI. If the repository becomes private, revalidate
+release-plz authentication when it fetches an existing PR branch because
+checkout credentials are intentionally not persisted.
+
+The first run treats the unpublished Cargo `0.1.0` as the initial release. It
+keeps that version and populates the standard empty `Unreleased` changelog with
+a linked, dated `0.1.0` section from Git history. Later qualifying commits use
+Cargo's 0.x SemVer rules described in [the version policy](version-policy.md).
+The enabling PR is also the bootstrap commit: squash it with the truthful
+qualifying title `fix: derive product versions from Cargo metadata`. A `ci:` or
+`chore:` title is intentionally ignored by `release_commits` and therefore
+cannot create the initial Draft. The push from that qualifying squash merge
+starts the first run.
+
+When a release train is ready, freeze `main` so release-plz cannot add another
+commit to the Draft PR. On the PR branch run:
+
+```text
+just sync-release-version
+python -B scripts/sync_release_version.py --check
+```
+
+Review the derived Dune/opam/Python/manual/OCaml/Cargo dependency changes and
+the generated changelog, then add them as a signed maintainer commit. Do not
+advance `main` after synchronization; if it moves, let release-plz refresh the
+Draft and repeat synchronization. After CI passes, mark the PR ready and
+squash-merge it. That exact new `main` commit is candidate `C`; release-plz
+does not run its `release` command at any point.
+
+## Protected candidate and publication
+
 A product candidate commit `C` contains implementation, schemas, documentation,
 and no passing candidate evidence. Build the unsigned Linux x86_64, Linux
 arm64, Windows x86_64, macOS arm64, and macOS x86_64 payloads from `C` twice in clean roots with

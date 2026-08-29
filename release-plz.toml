@@ -1,0 +1,11 @@
+[workspace]
+publish = false
+git_tag_enable = false
+git_release_enable = false
+release_always = false
+pr_draft = true
+pr_name = "chore: release v{{ version }}"
+git_tag_name = "v{{ version }}"
+features_always_increment_minor = false
+release_commits = '^(?:(?:feat|fix|perf|refactor|revert)(?:\([^)]+\))?!?:|[A-Za-z][A-Za-z0-9-]*(?:\([^)]+\))?!:)'
+semver_check = true

@@ -97,7 +97,7 @@ let make ~invoke ~executable request =
           "--request";
           "GET";
           "--user-agent";
-          "workflow-verifier/0.1.0";
+          Product_version.user_agent;
           "--write-out";
           "\n%{stderr}" ^ metadata_prefix
           ^ "%{http_code}\t%{url_effective}\t%{remote_ip}\n";

@@ -1,33 +1,74 @@
 #!/usr/bin/env python3
-"""Verify that every public version surface matches an exact release tag."""
+"""Verify Cargo-authoritative metadata and an exact release-plz release identity."""
 
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import re
+import sys
+import tomllib
 from pathlib import Path
 
+try:
+    from scripts.sync_release_version import cargo_version, synchronize
+except ModuleNotFoundError:  # Direct execution sets scripts/ as sys.path[0].
+    from sync_release_version import cargo_version, synchronize  # type: ignore[no-redef]
+
 ROOT = Path(__file__).resolve().parents[1]
-SEMVER = re.compile(
-    r"^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
-    r"(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?"
-    r"(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$"
-)
 
 
 def _read(root: Path, relative: str) -> str:
     path = root / relative
     try:
         return path.read_text(encoding="utf-8")
-    except OSError as error:
+    except (OSError, UnicodeError) as error:
         raise ValueError(f"cannot read {relative}: {error}") from error
 
 
-def _match(label: str, pattern: str, source: str) -> str:
-    match = re.search(pattern, source, re.MULTILINE)
-    if match is None:
-        raise ValueError(f"{label} version is missing")
-    return match.group(1)
+def _repository(root: Path) -> str:
+    try:
+        document = tomllib.loads(_read(root, "Cargo.toml"))
+        repository = document["package"]["repository"]
+    except (KeyError, TypeError, tomllib.TOMLDecodeError) as error:
+        raise ValueError(f"Cargo package repository is missing: {error}") from error
+    if not isinstance(repository, str) or not repository.startswith("https://"):
+        raise ValueError("Cargo package repository must be an HTTPS URL")
+    return repository.rstrip("/")
+
+
+def _validate_changelog(
+    root: Path,
+    version: str,
+    *,
+    require_release_heading: bool,
+) -> None:
+    changelog = _read(root, "CHANGELOG.md")
+    candidate = re.compile(
+        rf"^## (?:\[{re.escape(version)}\](?:\([^)]*\))?|{re.escape(version)})(?:\s.*)?$"
+    )
+    version_headings = [line for line in changelog.splitlines() if candidate.fullmatch(line)]
+    if not version_headings:
+        if require_release_heading:
+            raise ValueError("CHANGELOG has no exact release-plz release heading")
+        return
+    if len(version_headings) != 1:
+        raise ValueError("CHANGELOG release heading is duplicated")
+
+    heading = re.fullmatch(
+        rf"## \[{re.escape(version)}\]\((https://[^\s()]+)\) - "
+        r"([0-9]{4}-[0-9]{2}-[0-9]{2})",
+        version_headings[0],
+    )
+    if heading is None:
+        raise ValueError("CHANGELOG release heading is not in release-plz linked format")
+    expected_link = f"{_repository(root)}/releases/tag/v{version}"
+    if heading.group(1) != expected_link:
+        raise ValueError(f"CHANGELOG release link must be {expected_link}")
+    try:
+        dt.date.fromisoformat(heading.group(2))
+    except ValueError as error:
+        raise ValueError("CHANGELOG release date is invalid") from error
 
 
 def validate(
@@ -36,55 +77,21 @@ def validate(
     *,
     allow_development: bool = False,
 ) -> str:
-    version = _match(
-        "dune-project",
-        r"(?m)^\(version\s+([^\s)]+)\)\s*$",
-        _read(root, "dune-project"),
-    )
-    if not SEMVER.fullmatch(version):
-        raise ValueError(f"dune-project version is not SemVer: {version}")
-    surfaces = [
-        (
-            "opam",
-            _match(
-                "opam",
-                r'^version:\s*"([^"]+)"\s*$',
-                _read(root, "workflow-verifier.opam"),
-            ),
-        ),
-        (
-            "Cargo workspace",
-            _match(
-                "Cargo workspace",
-                r'(?ms)^\[workspace\.package\]\s*.*?^version\s*=\s*"([^"]+)"\s*$',
-                _read(root, "Cargo.toml"),
-            ),
-        ),
-    ]
-    for label, actual in surfaces:
-        if actual != version:
-            raise ValueError(f"{label} version {actual} does not match {version}")
-    cli = _read(root, "lib/application/cli.ml")
-    if f"workflow-verifier {version}\\n" not in cli:
-        raise ValueError("CLI version does not match dune-project")
-    changelog = _read(root, "CHANGELOG.md")
-    if (
-        re.search(
-            rf"(?m)^##\s+{re.escape(version)}(?:\s+-\s+[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}})?\s*$",
-            changelog,
-        )
-        is None
-    ):
-        raise ValueError("CHANGELOG has no exact release heading")
-    curl_path = root / "lib" / "application" / "curl_transport.ml"
-    if curl_path.is_file():
-        curl = curl_path.read_text(encoding="utf-8")
-        if f"workflow-verifier/{version}" not in curl:
-            raise ValueError("resolver User-Agent version does not match dune-project")
+    root = root.resolve()
+    version = cargo_version(root)
+    try:
+        synchronize(root, check=True)
+    except ValueError as error:
+        raise ValueError(f"derived release version mismatch: {error}") from error
     if not allow_development and version.endswith("-dev"):
         raise ValueError("development versions are not publishable")
     if tag is not None and tag != f"v{version}":
         raise ValueError(f"release tag {tag} does not match v{version}")
+    _validate_changelog(
+        root,
+        version,
+        require_release_heading=tag is not None or not allow_development,
+    )
     return version
 
 
@@ -94,11 +101,15 @@ def main() -> int:
     parser.add_argument("--tag")
     parser.add_argument("--allow-development", action="store_true")
     arguments = parser.parse_args()
-    version = validate(
-        arguments.root,
-        arguments.tag,
-        allow_development=arguments.allow_development,
-    )
+    try:
+        version = validate(
+            arguments.root,
+            arguments.tag,
+            allow_development=arguments.allow_development,
+        )
+    except ValueError as error:
+        print(f"release version gate: {error}", file=sys.stderr)
+        return 1
     print(version)
     return 0
 
