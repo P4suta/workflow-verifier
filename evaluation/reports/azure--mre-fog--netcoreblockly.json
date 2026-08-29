@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:b06f94d2dbf52bc121ecf65ebeee97901d6fc8123b09dac76b04a79024fa8d15",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: NuGetCommand@2",
+      "Incomplete.Unresolved_dependency: NuGetToolInstaller@1",
+      "Incomplete.Unresolved_dependency: PublishBuildArtifacts@1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NuGetToolInstaller@1"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 277,
             "column": 9,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_3ea6b7298650ce4d2130",
+      "id": "diag_61f0466f5af2ba689ce54ee99a2142a4d1466579f64a492a96fa58c4b1459707",
       "message": "dependency is not pinned to immutable content: NuGetToolInstaller@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 277,
           "column": 9,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f1f27c491218677203c3",
+          "node": 8,
           "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 277,
               "column": 9,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PublishBuildArtifacts@1"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1154,
             "column": 9,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_57f5b8db6c4aae9a7cd2",
+      "id": "diag_b7836d5148def81ea4d94d84877a7331c258832a110100a2bf354fe91924e511",
       "message": "dependency is not pinned to immutable content: PublishBuildArtifacts@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1154,
           "column": 9,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_2fa5d4c71bf5bba8e4db",
+          "node": 20,
           "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1154,
               "column": 9,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NuGetCommand@2"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1277,
             "column": 9,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_77d70316dff7752f0429",
+      "id": "diag_f1814f7bbb8a26bd704189a2bde87a5def1f5a163a0cea6a96f595fffd050350",
       "message": "dependency is not pinned to immutable content: NuGetCommand@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1277,
           "column": 9,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_15c43d9691ea0f7067eb",
+          "node": 22,
           "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1277,
               "column": 9,
@@ -184,1575 +189,70 @@
       ]
     }
   ],
-  "digest": "sha256:02978b7ad1dbc02493cf3a4639ad49599bab72d503207c1b2599b25b73e654a7",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_b25d6b9ec2509a0ab81a",
-          "id": "wv_14415236ec81209fb5c7",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_371ab067459dbee59044"
-        },
-        {
-          "condition": true,
-          "from": "wv_de01ff3b1c40f1df49a0",
-          "id": "wv_17e94b2eb18f2f8b652e",
-          "kind": "data",
-          "label": "solution",
-          "to": "wv_371ab067459dbee59044"
-        },
-        {
-          "condition": true,
-          "from": "wv_4d3c03129c9e13862146",
-          "id": "wv_1f8f706261bd992feefa",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1b98bc9843f3d7bf6a2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_32c75799e0cd19eb97bc",
-          "id": "wv_3cef7d825c1f7dcd2fac",
-          "kind": "data",
-          "label": "Build.ArtifactStagingDirectory",
-          "to": "wv_1fd09fcfe299c12bfb5a"
-        },
-        {
-          "condition": true,
-          "from": "wv_2a1ccb8b771070e21ad1",
-          "id": "wv_3e4f14d925cabf7cf335",
-          "kind": "data",
-          "label": "buildPlatform",
-          "to": "wv_371ab067459dbee59044"
-        },
-        {
-          "condition": true,
-          "from": "wv_c2116fe70397913f1500",
-          "id": "wv_4eedee39bafad2eaba2f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7295da044ca4f9833f86"
-        },
-        {
-          "condition": true,
-          "from": "wv_0f742d146bccd5112553",
-          "id": "wv_5c77b6b3bfaeffca19af",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9906d20cb0fce74266e8"
-        },
-        {
-          "condition": true,
-          "from": "wv_4d3c03129c9e13862146",
-          "id": "wv_5d941f981d494f7636e3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f1f27c491218677203c3"
-        },
-        {
-          "condition": true,
-          "from": "wv_b8884745fd514d68676c",
-          "id": "wv_6304ccd98328cdcb5609",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9906d20cb0fce74266e8"
-        },
-        {
-          "condition": true,
-          "from": "wv_7715e9eb51fd0d0567a3",
-          "id": "wv_75486f7a7dba6f36a335",
-          "kind": "control",
-          "label": null,
-          "to": "wv_15c43d9691ea0f7067eb"
-        },
-        {
-          "condition": true,
-          "from": "wv_9c28fdda2f101d8af31a",
-          "id": "wv_76bd624ce1fd46cf2793",
-          "kind": "data",
-          "label": "variables.deployNuget",
-          "to": "wv_9906d20cb0fce74266e8"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),eq(variables.deployNuget,\"1\"))"
-          },
-          "from": "wv_9906d20cb0fce74266e8",
-          "id": "wv_8e925f4ad24dcea7c4f6",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_7715e9eb51fd0d0567a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_24e00e23429c9ba5ce31",
-          "id": "wv_93a931be58774739317b",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_7295da044ca4f9833f86"
-        },
-        {
-          "condition": true,
-          "from": "wv_4d3c03129c9e13862146",
-          "id": "wv_962a1acfc52f12ed10e4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f1f27c491218677203c3"
-        },
-        {
-          "condition": true,
-          "from": "wv_371ab067459dbee59044",
-          "id": "wv_96f2529fdefc1e1f77c8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b8884745fd514d68676c"
-        },
-        {
-          "condition": true,
-          "from": "wv_3fd32ef016a3ec57ddb7",
-          "id": "wv_b330ccd57ba3dedbb199",
-          "kind": "data",
-          "label": "Build.ArtifactStagingDirectory",
-          "to": "wv_7295da044ca4f9833f86"
-        },
-        {
-          "condition": true,
-          "from": "wv_7715e9eb51fd0d0567a3",
-          "id": "wv_b456874660e95c0568d8",
-          "kind": "call",
-          "label": null,
-          "to": "wv_15c43d9691ea0f7067eb"
-        },
-        {
-          "condition": true,
-          "from": "wv_0f742d146bccd5112553",
-          "id": "wv_b4a30278ada06c6f66d1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2fa5d4c71bf5bba8e4db"
-        },
-        {
-          "condition": true,
-          "from": "wv_0c6d65f2be49a3ea997d",
-          "id": "wv_ba979340088fce0c2ce1",
-          "kind": "data",
-          "label": "Build.ArtifactStagingDirectory",
-          "to": "wv_7295da044ca4f9833f86"
-        },
-        {
-          "condition": true,
-          "from": "wv_705b69fefdc93c9ebc64",
-          "id": "wv_c2342eda6bb067babf93",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_1fd09fcfe299c12bfb5a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b98bc9843f3d7bf6a2d",
-          "id": "wv_ca4c5cebf799eb7440d6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c2116fe70397913f1500"
-        },
-        {
-          "condition": true,
-          "from": "wv_27f50590a250d0c0acef",
-          "id": "wv_cbce2cca1801386641e8",
-          "kind": "data",
-          "label": "deployNuget",
-          "to": "wv_371ab067459dbee59044"
-        },
-        {
-          "condition": true,
-          "from": "wv_c3b53e4dca5f5877fc8b",
-          "id": "wv_d3200f6798620b483cae",
-          "kind": "data",
-          "label": "buildConfiguration",
-          "to": "wv_7295da044ca4f9833f86"
-        },
-        {
-          "condition": true,
-          "from": "wv_0f742d146bccd5112553",
-          "id": "wv_d99bb6490690db738195",
-          "kind": "call",
-          "label": null,
-          "to": "wv_2fa5d4c71bf5bba8e4db"
-        },
-        {
-          "condition": true,
-          "from": "wv_b8884745fd514d68676c",
-          "id": "wv_da0fb0bc39388bff6aed",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c2116fe70397913f1500"
-        },
-        {
-          "condition": true,
-          "from": "wv_b8884745fd514d68676c",
-          "id": "wv_e3cade2373064c8a628d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1b98bc9843f3d7bf6a2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_c2116fe70397913f1500",
-          "id": "wv_e5d02f179426c4032145",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_0f742d146bccd5112553"
-        },
-        {
-          "condition": true,
-          "from": "wv_b00a6073ff39eadced15",
-          "id": "wv_efe6b9dfea0fddb06023",
-          "kind": "control",
-          "label": null,
-          "to": "wv_371ab067459dbee59044"
-        },
-        {
-          "condition": true,
-          "from": "wv_b8884745fd514d68676c",
-          "id": "wv_f8cae8c07b5cd4427240",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4d3c03129c9e13862146"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b98bc9843f3d7bf6a2d",
-          "id": "wv_fcfefe63d709d0b8ee59",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1fd09fcfe299c12bfb5a"
-        },
-        {
-          "condition": true,
-          "from": "wv_b8884745fd514d68676c",
-          "id": "wv_ff2ef2881f18c0369dfc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0f742d146bccd5112553"
-        }
-      ],
-      "entrypoints": [
-        "wv_371ab067459dbee59044"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.ArtifactStagingDirectory",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 824,
-                      "column": 129,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 854,
-                      "column": 159,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Build.ArtifactStagingDirectory"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0c6d65f2be49a3ea997d",
-          "kind": "resource",
-          "name": "Build.ArtifactStagingDirectory",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 824,
-              "column": 129,
-              "line": 30
-            },
-            "stop": {
-              "byte": 854,
-              "column": 159,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0f742d146bccd5112553",
-          "kind": "step",
-          "name": "step 4",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1148,
-              "column": 3,
-              "line": 36
-            },
-            "stop": {
-              "byte": 1266,
-              "column": 24,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_15c43d9691ea0f7067eb",
-          "kind": "call",
-          "name": "NuGetCommand@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1277,
-              "column": 9,
-              "line": 42
-            },
-            "stop": {
-              "byte": 1291,
-              "column": 23,
-              "line": 42
-            }
-          },
-          "unknown": {
-            "detail": "NuGetCommand@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1b98bc9843f3d7bf6a2d",
-          "kind": "step",
-          "name": "build sln",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 302,
-              "column": 3,
-              "line": 20
-            },
-            "stop": {
-              "byte": 694,
-              "column": 25,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.ArtifactStagingDirectory",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 516,
-                      "column": 217,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 546,
-                      "column": 247,
-                      "line": 20
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 591,
-                      "column": 292,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 609,
-                      "column": 310,
-                      "line": 20
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 310,
-                      "column": 11,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 669,
-                      "column": 84,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Build.ArtifactStagingDirectory",
-                  "buildConfiguration",
-                  "cd src\ncd NetCore2Blockly\ndotnet tool restore --add-source https://myget.org/F/natemcmaster/api/v3/index.json \npwsh ./setVersion.ps1 \npwsh ./createHTML.ps1\ncopy TestBlocklyHtml\\wwwroot\\blocklyNetCore.zip $(Build.ArtifactStagingDirectory)\\blockly.zip\ndotnet build --configuration $(buildConfiguration) NetCore2Blockly.sln /m:1    \n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_1fd09fcfe299c12bfb5a",
-          "kind": "command",
-          "name": "cd src\ncd NetCore2Blockly\ndotnet tool restore --add-source https://myget.org/F/natemcmaster/api/v3/index.json \npwsh ./setVersion.ps1 \npwsh ./createHTML.ps1\ncopy TestBlocklyHtml\\wwwroot\\blocklyNetCore.zip $(Build.ArtifactStagingDirectory)\\blockly.zip\ndotnet build --configuration $(buildConfiguration) NetCore2Blockly.sln /m:1    \n",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 310,
-              "column": 11,
-              "line": 20
-            },
-            "stop": {
-              "byte": 669,
-              "column": 84,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1080,
-                      "column": 385,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1098,
-                      "column": 403,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "buildConfiguration"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_24e00e23429c9ba5ce31",
-          "kind": "resource",
-          "name": "buildConfiguration",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1080,
-              "column": 385,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1098,
-              "column": 403,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 257,
-                      "column": 16,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 260,
-                      "column": 19,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_27f50590a250d0c0acef",
-          "kind": "resource",
-          "name": "variable:deployNuget",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 244,
-              "column": 3,
-              "line": 14
-            },
-            "stop": {
-              "byte": 260,
-              "column": 19,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 200,
-                      "column": 18,
-                      "line": 12
-                    },
-                    "stop": {
-                      "byte": 209,
-                      "column": 27,
-                      "line": 12
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Any CPU"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2a1ccb8b771070e21ad1",
-          "kind": "resource",
-          "name": "variable:buildPlatform",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 185,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 209,
-              "column": 27,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_2fa5d4c71bf5bba8e4db",
-          "kind": "call",
-          "name": "PublishBuildArtifacts@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1154,
-              "column": 9,
-              "line": 36
-            },
-            "stop": {
-              "byte": 1177,
-              "column": 32,
-              "line": 36
-            }
-          },
-          "unknown": {
-            "detail": "PublishBuildArtifacts@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.ArtifactStagingDirectory",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 516,
-                      "column": 217,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 546,
-                      "column": 247,
-                      "line": 20
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Build.ArtifactStagingDirectory"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_32c75799e0cd19eb97bc",
-          "kind": "resource",
-          "name": "Build.ArtifactStagingDirectory",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 516,
-              "column": 217,
-              "line": 20
-            },
-            "stop": {
-              "byte": 546,
-              "column": 247,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_371ab067459dbee59044",
-          "kind": "workflow",
-          "name": "Nuget publish",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 74,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 1565,
-              "column": 35,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.ArtifactStagingDirectory",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1029,
-                      "column": 334,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1059,
-                      "column": 364,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Build.ArtifactStagingDirectory"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3fd32ef016a3ec57ddb7",
-          "kind": "resource",
-          "name": "Build.ArtifactStagingDirectory",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1029,
-              "column": 334,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1059,
-              "column": 364,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4d3c03129c9e13862146",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 271,
-              "column": 3,
-              "line": 17
-            },
-            "stop": {
-              "byte": 297,
-              "column": 29,
-              "line": 17
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 591,
-                      "column": 292,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 609,
-                      "column": 310,
-                      "line": 20
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "buildConfiguration"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_705b69fefdc93c9ebc64",
-          "kind": "resource",
-          "name": "buildConfiguration",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 591,
-              "column": 292,
-              "line": 20
-            },
-            "stop": {
-              "byte": 609,
-              "column": 310,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.ArtifactStagingDirectory",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 824,
-                      "column": 129,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 854,
-                      "column": 159,
-                      "line": 30
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.ArtifactStagingDirectory",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1029,
-                      "column": 334,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1059,
-                      "column": 364,
-                      "line": 30
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 875,
-                      "column": 180,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 893,
-                      "column": 198,
-                      "line": 30
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1080,
-                      "column": 385,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1098,
-                      "column": 403,
-                      "line": 30
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 706,
-                      "column": 11,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1114,
-                      "column": 209,
-                      "line": 33
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Build.ArtifactStagingDirectory",
-                  "buildConfiguration",
-                  "echo \"pack \"\ndotnet pack src/NetCore2Blockly/NetCore2Blockly/NetCore2Blockly.csproj --include-source  --no-build -o $(Build.ArtifactStagingDirectory) /p:Configuration=$(buildConfiguration) \ndotnet pack src/NetCore2Blockly/NetCore2BlocklyStorage.Sqlite/NetCore2BlocklyStorage.Sqlite.csproj --include-source  --no-build -o $(Build.ArtifactStagingDirectory) /p:Configuration=$(buildConfiguration) \n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7295da044ca4f9833f86",
-          "kind": "command",
-          "name": "echo \"pack \"\ndotnet pack src/NetCore2Blockly/NetCore2Blockly/NetCore2Blockly.csproj --include-source  --no-build -o $(Build.ArtifactStagingDirectory) /p:Configuration=$(buildConfiguration) \ndotnet pack src/NetCore2Blockly/NetCore2BlocklyStorage.Sqlite/NetCore2BlocklyStorage.Sqlite.csproj --include-source  --no-build -o $(Build.ArtifactStagingDirectory) /p:Configuration=$(buildConfiguration) \n",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 706,
-              "column": 11,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1114,
-              "column": 209,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7715e9eb51fd0d0567a3",
-          "kind": "step",
-          "name": "dotnet nuget push",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1271,
-              "column": 3,
-              "line": 42
-            },
-            "stop": {
-              "byte": 1565,
-              "column": 35,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1305,
-                      "column": 14,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1356,
-                      "column": 65,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "and(succeeded(), eq(variables['deployNuget'], '1'))"
-                ]
-              }
-            },
-            "reference:variables.deployNuget": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.deployNuget",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1325,
-                      "column": 34,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1349,
-                      "column": 58,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.deployNuget"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),eq(variables.deployNuget,\"1\"))"
-          },
-          "effects": [],
-          "id": "wv_9906d20cb0fce74266e8",
-          "kind": "gate",
-          "name": "condition:pipeline:dotnet nuget push",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1305,
-              "column": 14,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1356,
-              "column": 65,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.deployNuget",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1325,
-                      "column": 34,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1349,
-                      "column": 58,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.deployNuget"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9c28fdda2f101d8af31a",
-          "kind": "resource",
-          "name": "variables.deployNuget",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 1325,
-              "column": 34,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1349,
-              "column": 58,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b00a6073ff39eadced15",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 104,
-              "column": 1,
-              "line": 5
-            },
-            "stop": {
-              "byte": 112,
-              "column": 9,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 232,
-                      "column": 23,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 241,
-                      "column": 32,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Release"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b25d6b9ec2509a0ab81a",
-          "kind": "resource",
-          "name": "variable:buildConfiguration",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 212,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 241,
-              "column": 32,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b8884745fd514d68676c",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 74,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 1565,
-              "column": 35,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c2116fe70397913f1500",
-          "kind": "step",
-          "name": "dotnet pack ",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 698,
-              "column": 3,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1144,
-              "column": 30,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "buildConfiguration",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 875,
-                      "column": 180,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 893,
-                      "column": 198,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "buildConfiguration"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c3b53e4dca5f5877fc8b",
-          "kind": "resource",
-          "name": "buildConfiguration",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 875,
-              "column": 180,
-              "line": 30
-            },
-            "stop": {
-              "byte": 893,
-              "column": 198,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-                    "start": {
-                      "byte": 172,
-                      "column": 13,
-                      "line": 11
-                    },
-                    "stop": {
-                      "byte": 182,
-                      "column": 23,
-                      "line": 11
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "**/*.sln"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_de01ff3b1c40f1df49a0",
-          "kind": "resource",
-          "name": "variable:solution",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 162,
-              "column": 3,
-              "line": 11
-            },
-            "stop": {
-              "byte": 182,
-              "column": 23,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f1f27c491218677203c3",
-          "kind": "call",
-          "name": "NuGetToolInstaller@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/mre-fog/netcoreblockly/azure-pipelines.yml",
-            "start": {
-              "byte": 277,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 297,
-              "column": 29,
-              "line": 17
-            }
-          },
-          "unknown": {
-            "detail": "NuGetToolInstaller@1",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/mre-fog/netcoreblockly/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:90167670f63c92005ba957616036bd6ce70c04297610a6511cc505591dfb6a46",
-      "path": "azure/mre-fog/netcoreblockly/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:0bb2a97ff974b20497e57ad8c30f52b1b0e33494976ed2f1261916938ea3f1fe",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:87cd7685538d4b7a99688b087f101d9ebb0ec5ac475e8a78bc59a7d6a5811bf1",
+    "sources": [
+      {
+        "digest": "sha256:90167670f63c92005ba957616036bd6ce70c04297610a6511cc505591dfb6a46",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1763,40 +263,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 30,
+    "nodes": 24,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

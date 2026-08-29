@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:5fd5fd9b3d8d81cd8f58732340aebed64ffafc6852a293526407497fc8b66019",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: PowerShell@2",
+      "Incomplete.Unresolved_dependency: PublishPipelineArtifact@1",
+      "Incomplete.Unresolved_dependency: UseDotNet@2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = UseDotNet@2"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 246,
             "column": 11,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_b086150fe2c97d50fffb",
+      "id": "diag_83c6d4ad61d79c03848066f3aa8ae38d0a8243da22e5ef416b0e5434e625d81b",
       "message": "dependency is not pinned to immutable content: UseDotNet@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 246,
           "column": 11,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_02fa699a3527ae1c3d03",
+          "node": 6,
           "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 246,
               "column": 11,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PowerShell@2"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 396,
             "column": 11,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_571cb704def40657b802",
+      "id": "diag_f723063f4ce890ece0bb2ea3261c67b3201c62075f04b5937db8b48dbd5ee318",
       "message": "dependency is not pinned to immutable content: PowerShell@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 396,
           "column": 11,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a8c64fd1e9603138b023",
+          "node": 8,
           "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 396,
               "column": 11,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PublishPipelineArtifact@1"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 556,
             "column": 11,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_8c95619a5324ee4ac210",
+      "id": "diag_5fcf468e4172dc341be0bda5a24ef74ab1f24917b22b14f7c35db80e3c2d45ad",
       "message": "dependency is not pinned to immutable content: PublishPipelineArtifact@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 556,
           "column": 11,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_6ba29e4047474f5f48d8",
+          "node": 10,
           "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 556,
               "column": 11,
@@ -184,521 +189,70 @@
       ]
     }
   ],
-  "digest": "sha256:1a3f2cde24a83c586853e869feebcc54dd07d30215e0a459b3b190cf344cac67",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_b44b143a2fb1f52c51c6",
-          "id": "wv_0d0b2e351c007e6a7a04",
-          "kind": "call",
-          "label": null,
-          "to": "wv_02fa699a3527ae1c3d03"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e05eb72b0dc72c6cce6",
-          "id": "wv_456dbe60987ed4f60f84",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a7d2bc45609afb70d1d6"
-        },
-        {
-          "condition": true,
-          "from": "wv_ee04d614dab4a98ae77c",
-          "id": "wv_45828a20824e5095a4ec",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b44b143a2fb1f52c51c6"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e05eb72b0dc72c6cce6",
-          "id": "wv_49262859813179ff65a4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b44b143a2fb1f52c51c6"
-        },
-        {
-          "condition": true,
-          "from": "wv_877184112926e417d905",
-          "id": "wv_4d286755de6250160e28",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a8c64fd1e9603138b023"
-        },
-        {
-          "condition": true,
-          "from": "wv_b44b143a2fb1f52c51c6",
-          "id": "wv_4f247d4fe01e2ae607c1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_02fa699a3527ae1c3d03"
-        },
-        {
-          "condition": true,
-          "from": "wv_a7d2bc45609afb70d1d6",
-          "id": "wv_5bc9344a66de7083671b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6ba29e4047474f5f48d8"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a3518d0e40ad2eea02f",
-          "id": "wv_6bc7ce87ced4a7f83f25",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2e05eb72b0dc72c6cce6"
-        },
-        {
-          "condition": true,
-          "from": "wv_877184112926e417d905",
-          "id": "wv_6ce0cca67cbdf76a1c16",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a8c64fd1e9603138b023"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e05eb72b0dc72c6cce6",
-          "id": "wv_6fdc9d30515e343a1199",
-          "kind": "control",
-          "label": null,
-          "to": "wv_877184112926e417d905"
-        },
-        {
-          "condition": true,
-          "from": "wv_877184112926e417d905",
-          "id": "wv_7ce7e156cfa9d723d012",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a7d2bc45609afb70d1d6"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e05eb72b0dc72c6cce6",
-          "id": "wv_a4127a9963b47f1c6d2b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ee04d614dab4a98ae77c"
-        },
-        {
-          "condition": true,
-          "from": "wv_b44b143a2fb1f52c51c6",
-          "id": "wv_b544474a4211fc45b0d9",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_877184112926e417d905"
-        },
-        {
-          "condition": true,
-          "from": "wv_ee04d614dab4a98ae77c",
-          "id": "wv_b82d2a0de3c6713cc47e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1bc7d29bce0f53ad9d33"
-        },
-        {
-          "condition": true,
-          "from": "wv_a7d2bc45609afb70d1d6",
-          "id": "wv_c14a7a6a8ab2dd4d789c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6ba29e4047474f5f48d8"
-        },
-        {
-          "condition": true,
-          "from": "wv_ee04d614dab4a98ae77c",
-          "id": "wv_d7c52f4c0d0ad1119e78",
-          "kind": "call",
-          "label": null,
-          "to": "wv_1bc7d29bce0f53ad9d33"
-        },
-        {
-          "condition": true,
-          "from": "wv_1855f6946a79e022bb2a",
-          "id": "wv_f3cc5a6cdfebf6b81aa2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6a3518d0e40ad2eea02f"
-        }
-      ],
-      "entrypoints": [
-        "wv_6a3518d0e40ad2eea02f"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_02fa699a3527ae1c3d03",
-          "kind": "call",
-          "name": "UseDotNet@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 246,
-              "column": 11,
-              "line": 18
-            },
-            "stop": {
-              "byte": 257,
-              "column": 22,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "UseDotNet@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1855f6946a79e022bb2a",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 11,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 81,
-              "column": 16,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_1bc7d29bce0f53ad9d33",
-          "kind": "call",
-          "name": "checkout:self",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 205,
-              "column": 15,
-              "line": 16
-            },
-            "stop": {
-              "byte": 209,
-              "column": 19,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2e05eb72b0dc72c6cce6",
-          "kind": "job",
-          "name": "CI",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 91,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 697,
-              "column": 39,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6a3518d0e40ad2eea02f",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 697,
-              "column": 39,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_6ba29e4047474f5f48d8",
-          "kind": "call",
-          "name": "PublishPipelineArtifact@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 556,
-              "column": 11,
-              "line": 30
-            },
-            "stop": {
-              "byte": 581,
-              "column": 36,
-              "line": 30
-            }
-          },
-          "unknown": {
-            "detail": "PublishPipelineArtifact@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_877184112926e417d905",
-          "kind": "step",
-          "name": "Build",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 390,
-              "column": 5,
-              "line": 24
-            },
-            "stop": {
-              "byte": 545,
-              "column": 37,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a7d2bc45609afb70d1d6",
-          "kind": "step",
-          "name": "Publish",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 550,
-              "column": 5,
-              "line": 30
-            },
-            "stop": {
-              "byte": 697,
-              "column": 39,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a8c64fd1e9603138b023",
-          "kind": "call",
-          "name": "PowerShell@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 396,
-              "column": 11,
-              "line": 24
-            },
-            "stop": {
-              "byte": 408,
-              "column": 23,
-              "line": 24
-            }
-          },
-          "unknown": {
-            "detail": "PowerShell@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b44b143a2fb1f52c51c6",
-          "kind": "step",
-          "name": "Setup .NET",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 240,
-              "column": 5,
-              "line": 18
-            },
-            "stop": {
-              "byte": 385,
-              "column": 37,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ee04d614dab4a98ae77c",
-          "kind": "step",
-          "name": "Checkout",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml",
-            "start": {
-              "byte": 195,
-              "column": 5,
-              "line": 16
-            },
-            "stop": {
-              "byte": 235,
-              "column": 26,
-              "line": 17
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:43034700ef3ead6cfa0fb618619d7e8da816672b30224cdaf5772ba50b9a440e",
-      "path": "azure/ccrcmcpe/auto-arknights/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:0bae31bcc05aba8d5d2654efb4d534a357a5ca91cfd1f5d4d2256b603930f979",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:2ae09db7c3b966246eb424d38cc4ee92389e59a364ddc2bcea385c50e7738b3a",
+    "sources": [
+      {
+        "digest": "sha256:43034700ef3ead6cfa0fb618619d7e8da816672b30224cdaf5772ba50b9a440e",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -709,40 +263,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 17,
+    "nodes": 11,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

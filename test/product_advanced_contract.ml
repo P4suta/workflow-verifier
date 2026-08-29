@@ -307,37 +307,6 @@ let composite_fix_test () =
         && not (Util.contains ~needle:"old" edited))
   | _ -> fail "fixture scalars missing"
 
-let incremental_cache_test () =
-  let inputs = [ ("b.yml", "sha256:b"); ("a.yml", "sha256:a") ] in
-  let first =
-    Incremental_cache.key ~tool_version:"1" ~config_digest:"c" ~lock_digest:"l"
-      inputs
-  and reordered =
-    Incremental_cache.key ~tool_version:"1" ~config_digest:"c" ~lock_digest:"l"
-      (List.rev inputs)
-  and changed =
-    Incremental_cache.key ~tool_version:"1" ~config_digest:"changed"
-      ~lock_digest:"l" inputs
-  in
-  expect "cache key is order independent" (first = reordered);
-  expect "cache key includes configuration" (first <> changed);
-  let entry =
-    match
-      Incremental_cache.create ~key:first ~exit_code:1
-        ~report:"{\"schema\":\"report-v2\"}\n"
-    with
-    | Ok entry -> entry
-    | Error message -> fail "%s" message
-  in
-  let bytes = Incremental_cache.to_canonical_json entry in
-  expect "cache entries round trip with integrity"
-    (match Incremental_cache.parse bytes with
-    | Ok parsed -> parsed.key = first && parsed.report = entry.report
-    | Error _ -> false);
-  expect "cache exit codes are checked without raising"
-    (Result.is_error
-       (Incremental_cache.create ~key:first ~exit_code:6 ~report:"{}\n"))
-
 let locked_program_test () =
   let source =
     "name: ci\n\
@@ -668,7 +637,6 @@ let tests : test list =
       resolver_rejects_invalid_lock_entry_test );
     ("semantic diff composes the full program", semantic_program_diff_test);
     ("safe fixes compose atomically", composite_fix_test);
-    ("incremental cache is content addressed", incremental_cache_test);
     ("offline lock evidence overlays the semantic program", locked_program_test);
     ( "local dependencies compile and link content-addressed units",
       local_dependency_linker_test );

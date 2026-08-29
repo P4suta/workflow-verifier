@@ -6,8 +6,8 @@ protocol, controls, required features, and failure reasons.
 
 Exit 2 means malformed CLI input, config, scenario, or protocol. Correct the
 location and suggestion printed with the error; unknown, duplicate, missing,
-or extra arguments are rejected before side effects. Use `migrate` only for
-config-v1 or lock-v1.
+or extra arguments are rejected before side effects. Only config-v2 and
+lock-v2 are accepted; there is no in-product migration path.
 
 Exit 3 means analysis or planning is explicitly incomplete. Inspect
 `completeness.reasons` or `status.reasons`; common causes are a resource

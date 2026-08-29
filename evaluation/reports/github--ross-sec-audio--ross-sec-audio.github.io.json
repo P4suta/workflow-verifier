@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:a937121df92d6f1279e3bc84881e93edf38d03423ad754fe9ee9f3b7f0963dc1",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: github/codeql-action/analyze@v3",
+      "Incomplete.Unresolved_dependency: github/codeql-action/init@v3"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+          "source": 0,
           "start": {
             "byte": 2628,
             "column": 13,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_8b58c3acb048ee64130d",
+      "id": "diag_b82ab106b2e0ce016f3c76ab957b28fd7ae0a327aa359ae21bbf5a550fd5031b",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+        "source": 0,
         "start": {
           "byte": 2628,
           "column": 13,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d54c968f1606489282cb",
+          "node": 7,
           "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+            "source": 0,
             "start": {
               "byte": 2628,
               "column": 13,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = github/codeql-action/init@v3"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+          "source": 0,
           "start": {
             "byte": 2740,
             "column": 13,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_45a434bf97c25d8346aa",
+      "id": "diag_255bbfcc52c8708bbfe0b2ab5d69557e08782b0d75484bfc181f174ccb20942f",
       "message": "dependency is not pinned to immutable content: github/codeql-action/init@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+        "source": 0,
         "start": {
           "byte": 2740,
           "column": 13,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d21f2c1821a9630350a3",
+          "node": 9,
           "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+            "source": 0,
             "start": {
               "byte": 2740,
               "column": 13,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = github/codeql-action/analyze@v3"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+          "source": 0,
           "start": {
             "byte": 4274,
             "column": 13,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_f1d31e3cda66f1dd47dc",
+      "id": "diag_3a7683df0722a7c0921045083e0ce444406db9f636b2386fa2dc4c07d00b013d",
       "message": "dependency is not pinned to immutable content: github/codeql-action/analyze@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+        "source": 0,
         "start": {
           "byte": 4274,
           "column": 13,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_b2bbb835b9efaef7e468",
+          "node": 17,
           "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
+            "source": 0,
             "start": {
               "byte": 4274,
               "column": 13,
@@ -184,1024 +189,60 @@
       ]
     }
   ],
-  "digest": "sha256:61e479b9d7deca19344266d0beaed5c727bec08a4ef5d7c1d450fb8df00d9128",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_38b99363fcd1a72379c2",
-          "id": "wv_0bf04be362566a536579",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ad730494a1021b9d983a"
-        },
-        {
-          "condition": true,
-          "from": "wv_89bc952a31ee67d6c7d6",
-          "id": "wv_0fcef12d752bfc02b3ba",
-          "kind": "control",
-          "label": null,
-          "to": "wv_31b732f92622aa11d3c3"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(matrix.build-mode==\"manual\")"
-          },
-          "from": "wv_31b732f92622aa11d3c3",
-          "id": "wv_1263c7a527a2824150b5",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_79779aba203172e9935e"
-        },
-        {
-          "condition": true,
-          "from": "wv_6348eaea079349d7eeb2",
-          "id": "wv_150975f2f34f5357485a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d21f2c1821a9630350a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_f8eabeb33e8ea0b5b050",
-          "id": "wv_1d1d58ec51a5ed59865d",
-          "kind": "data",
-          "label": "matrix.language",
-          "to": "wv_d21f2c1821a9630350a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad730494a1021b9d983a",
-          "id": "wv_2aaed7de312fe24482f1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_89bc952a31ee67d6c7d6"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7171ba82d706410e3e4",
-          "id": "wv_2b248eda23e868286bff",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d54c968f1606489282cb"
-        },
-        {
-          "condition": true,
-          "from": "wv_79779aba203172e9935e",
-          "id": "wv_368c4aacf708dae68b98",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5598bf41c7be7febf4a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_1609ad74c6137ea7ea9b",
-          "id": "wv_39a3794ad26cf79e19e5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ad730494a1021b9d983a"
-        },
-        {
-          "condition": true,
-          "from": "wv_b1a6b73fd77964439dce",
-          "id": "wv_4d9baf9dd3f30be00955",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ad730494a1021b9d983a"
-        },
-        {
-          "condition": true,
-          "from": "wv_89bc952a31ee67d6c7d6",
-          "id": "wv_4fd3bd4245fe45831fec",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6348eaea079349d7eeb2"
-        },
-        {
-          "condition": true,
-          "from": "wv_5ebbde8e13c74a9928f4",
-          "id": "wv_5427f2e53a9b032ad80f",
-          "kind": "data",
-          "label": "matrix.language",
-          "to": "wv_b2bbb835b9efaef7e468"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7171ba82d706410e3e4",
-          "id": "wv_5c80cd5ebb3b8542dbcb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d54c968f1606489282cb"
-        },
-        {
-          "condition": true,
-          "from": "wv_6348eaea079349d7eeb2",
-          "id": "wv_720503ac86917beda9d2",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_31b732f92622aa11d3c3"
-        },
-        {
-          "condition": true,
-          "from": "wv_60b9e199d4ecebc30d01",
-          "id": "wv_7dd62a43346546ecde5d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b2bbb835b9efaef7e468"
-        },
-        {
-          "condition": true,
-          "from": "wv_60b9e199d4ecebc30d01",
-          "id": "wv_915fdf41a38ac9e9afdd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b2bbb835b9efaef7e468"
-        },
-        {
-          "condition": true,
-          "from": "wv_f12b8aa1d06114a9cdf9",
-          "id": "wv_96eadb24242e32d702d9",
-          "kind": "data",
-          "label": "include",
-          "to": "wv_89bc952a31ee67d6c7d6"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f07f4eabb30e631a3b6",
-          "id": "wv_a1974781d44bc2bd4914",
-          "kind": "data",
-          "label": "matrix.build-mode",
-          "to": "wv_31b732f92622aa11d3c3"
-        },
-        {
-          "condition": true,
-          "from": "wv_6348eaea079349d7eeb2",
-          "id": "wv_a8c3a2208a85e8675dcf",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d21f2c1821a9630350a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7171ba82d706410e3e4",
-          "id": "wv_bb69e0542cac084cf51e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6348eaea079349d7eeb2"
-        },
-        {
-          "condition": true,
-          "from": "wv_79779aba203172e9935e",
-          "id": "wv_d0163955a595fdde3938",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_60b9e199d4ecebc30d01"
-        },
-        {
-          "condition": true,
-          "from": "wv_89bc952a31ee67d6c7d6",
-          "id": "wv_d1f9e149f1cfccf0adff",
-          "kind": "control",
-          "label": null,
-          "to": "wv_60b9e199d4ecebc30d01"
-        },
-        {
-          "condition": true,
-          "from": "wv_28c6f3e68579324250cc",
-          "id": "wv_db991c65c92e9b430244",
-          "kind": "data",
-          "label": "matrix.build-mode",
-          "to": "wv_d21f2c1821a9630350a3"
-        },
-        {
-          "condition": true,
-          "from": "wv_89bc952a31ee67d6c7d6",
-          "id": "wv_edeee9a62ff0469e326d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b7171ba82d706410e3e4"
-        }
-      ],
-      "entrypoints": [
-        "wv_ad730494a1021b9d983a"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1609ad74c6137ea7ea9b",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 518,
-              "column": 3,
-              "line": 17
-            },
-            "stop": {
-              "byte": 556,
-              "column": 25,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.build-mode",
-                  "span": {
-                    "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-                    "start": {
-                      "byte": 2847,
-                      "column": 25,
-                      "line": 67
-                    },
-                    "stop": {
-                      "byte": 2864,
-                      "column": 42,
-                      "line": 67
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.build-mode"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_28c6f3e68579324250cc",
-          "kind": "resource",
-          "name": "matrix.build-mode",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 2847,
-              "column": 25,
-              "line": 67
-            },
-            "stop": {
-              "byte": 2864,
-              "column": 42,
-              "line": 67
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.build-mode",
-                  "span": {
-                    "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-                    "start": {
-                      "byte": 3889,
-                      "column": 11,
-                      "line": 81
-                    },
-                    "stop": {
-                      "byte": 3906,
-                      "column": 28,
-                      "line": 81
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.build-mode"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2f07f4eabb30e631a3b6",
-          "kind": "resource",
-          "name": "matrix.build-mode",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 3889,
-              "column": 11,
-              "line": 81
-            },
-            "stop": {
-              "byte": 3906,
-              "column": 28,
-              "line": 81
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-                    "start": {
-                      "byte": 3889,
-                      "column": 11,
-                      "line": 81
-                    },
-                    "stop": {
-                      "byte": 3918,
-                      "column": 40,
-                      "line": 81
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.build-mode == 'manual'"
-                ]
-              }
-            },
-            "reference:matrix.build-mode": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.build-mode",
-                  "span": {
-                    "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-                    "start": {
-                      "byte": 3889,
-                      "column": 11,
-                      "line": 81
-                    },
-                    "stop": {
-                      "byte": 3906,
-                      "column": 28,
-                      "line": 81
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.build-mode"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(matrix.build-mode==\"manual\")"
-          },
-          "effects": [],
-          "id": "wv_31b732f92622aa11d3c3",
-          "kind": "gate",
-          "name": "if:analyze:step 3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 3889,
-              "column": 11,
-              "line": 81
-            },
-            "stop": {
-              "byte": 3918,
-              "column": 40,
-              "line": 81
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_38b99363fcd1a72379c2",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 485,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 515,
-              "column": 25,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-                    "start": {
-                      "byte": 3948,
-                      "column": 12,
-                      "line": 83
-                    },
-                    "stop": {
-                      "byte": 4225,
-                      "column": 1,
-                      "line": 90
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "echo 'If you are using a \"manual\" build mode for one or more of the' \\\n  'languages you are analyzing, replace this with the commands to build' \\\n  'your code, for example:'\necho '  make bootstrap'\necho '  make release'\nexit 1\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "bash"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5598bf41c7be7febf4a3",
-          "kind": "command",
-          "name": "echo 'If you are using a \"manual\" build mode for one or more of the' \\\n  'languages you are analyzing, replace this with the commands to build' \\\n  'your code, for example:'\necho '  make bootstrap'\necho '  make release'\nexit 1\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 3948,
-              "column": 12,
-              "line": 83
-            },
-            "stop": {
-              "byte": 4225,
-              "column": 1,
-              "line": 90
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.language",
-                  "span": {
-                    "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-                    "start": {
-                      "byte": 4349,
-                      "column": 32,
-                      "line": 94
-                    },
-                    "stop": {
-                      "byte": 4364,
-                      "column": 47,
-                      "line": 94
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.language"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5ebbde8e13c74a9928f4",
-          "kind": "resource",
-          "name": "matrix.language",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 4349,
-              "column": 32,
-              "line": 94
-            },
-            "stop": {
-              "byte": 4364,
-              "column": 47,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_60b9e199d4ecebc30d01",
-          "kind": "step",
-          "name": "Perform CodeQL Analysis",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 4232,
-              "column": 7,
-              "line": 91
-            },
-            "stop": {
-              "byte": 4368,
-              "column": 51,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6348eaea079349d7eeb2",
-          "kind": "step",
-          "name": "Initialize CodeQL",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 2704,
-              "column": 7,
-              "line": 63
-            },
-            "stop": {
-              "byte": 2867,
-              "column": 45,
-              "line": 67
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_79779aba203172e9935e",
-          "kind": "step",
-          "name": "step 3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 3885,
-              "column": 7,
-              "line": 81
-            },
-            "stop": {
-              "byte": 4225,
-              "column": 1,
-              "line": 90
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "repository_write",
-            "token_read",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_89bc952a31ee67d6c7d6",
-          "kind": "job",
-          "name": "analyze",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 604,
-              "column": 3,
-              "line": 23
-            },
-            "stop": {
-              "byte": 4368,
-              "column": 51,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ad730494a1021b9d983a",
-          "kind": "workflow",
-          "name": "CodeQL Advanced",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 454,
-              "column": 1,
-              "line": 12
-            },
-            "stop": {
-              "byte": 4368,
-              "column": 51,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b1a6b73fd77964439dce",
-          "kind": "trigger",
-          "name": "schedule",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 559,
-              "column": 3,
-              "line": 19
-            },
-            "stop": {
-              "byte": 594,
-              "column": 26,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b2bbb835b9efaef7e468",
-          "kind": "call",
-          "name": "github/codeql-action/analyze@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 4274,
-              "column": 13,
-              "line": 92
-            },
-            "stop": {
-              "byte": 4305,
-              "column": 44,
-              "line": 92
-            }
-          },
-          "unknown": {
-            "detail": "github/codeql-action/analyze@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b7171ba82d706410e3e4",
-          "kind": "step",
-          "name": "Checkout repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 2590,
-              "column": 7,
-              "line": 59
-            },
-            "stop": {
-              "byte": 2647,
-              "column": 32,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d21f2c1821a9630350a3",
-          "kind": "call",
-          "name": "github/codeql-action/init@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 2740,
-              "column": 13,
-              "line": 64
-            },
-            "stop": {
-              "byte": 2768,
-              "column": 41,
-              "line": 64
-            }
-          },
-          "unknown": {
-            "detail": "github/codeql-action/init@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_d54c968f1606489282cb",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 2628,
-              "column": 13,
-              "line": 60
-            },
-            "stop": {
-              "byte": 2647,
-              "column": 32,
-              "line": 60
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": {
-                "reasons": [
-                  {
-                    "detail": "include",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "include",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "dynamic",
-              "value": {
-                "unknown": [
-                  {
-                    "detail": "include",
-                    "kind": "dynamic_string"
-                  }
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f12b8aa1d06114a9cdf9",
-          "kind": "parameter",
-          "name": "matrix.include",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 1455,
-              "column": 9,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1584,
-              "column": 27,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.language",
-                  "span": {
-                    "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-                    "start": {
-                      "byte": 2804,
-                      "column": 24,
-                      "line": 66
-                    },
-                    "stop": {
-                      "byte": 2819,
-                      "column": 39,
-                      "line": 66
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.language"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f8eabeb33e8ea0b5b050",
-          "kind": "resource",
-          "name": "matrix.language",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml",
-            "start": {
-              "byte": 2804,
-              "column": 24,
-              "line": 66
-            },
-            "stop": {
-              "byte": 2819,
-              "column": 39,
-              "line": 66
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:5a9365a48eb6eb3b66f3807c5617bc49d5889a2ce07d3083603a02c6cf3b5c6e",
-      "path": "github/ross-sec-audio/ross-sec-audio.github.io/.github/workflows/codeql.yml"
-    }
-  ],
+  "digest": "sha256:8a8e582df6a9fbfaeb507debc2d33ffff88426a8d2bed3ccc954b94005c57b07",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:855af6002a444fd6b20ab7caf92c05058fa335af2337b208243e33464a720f6c",
+    "sources": [
+      {
+        "digest": "sha256:5a9365a48eb6eb3b66f3807c5617bc49d5889a2ce07d3083603a02c6cf3b5c6e",
+        "id": 0,
+        "path": ".github/workflows/codeql.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -1220,15 +261,12 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1243,40 +281,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "edges": 24,
+    "nodes": 19,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 2,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

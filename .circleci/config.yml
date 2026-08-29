@@ -20,13 +20,13 @@ jobs:
           command: opam exec -- dune exec test/yaml_conformance.exe -- --suite _build/upstream/yaml-test-suite-canonical-data-2022-01-17
       - run:
           name: Tooling contracts
-          command: python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v && python -B scripts/verify_architecture.py
+          command: python -B -m unittest discover -s scripts/tests -p 'test_*.py' -v && python -B scripts/verify_architecture.py && python -B scripts/verify_lint_policy.py
       - run:
-          name: Native backend conformance
-          command: cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
+          name: Rust product and helper contracts
+          command: cargo test --locked --workspace --all-targets
       - run:
-          name: Native backend lint
-          command: cargo fmt --manifest-path helpers/Cargo.toml --all -- --check && cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
+          name: Rust format and lint
+          command: cargo fmt --all -- --check && cargo clippy --workspace --all-targets -- -D warnings
 
 workflows:
   verify:

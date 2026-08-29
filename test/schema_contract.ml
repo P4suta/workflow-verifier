@@ -7,15 +7,16 @@ let fail format =
 
 let schemas =
   [
-    ( "report-v2.schema.json",
-      "https://workflow-verifier.dev/schema/report-v2.json" );
+    ( "workflow-verifier-report-1.schema.json",
+      "https://workflow-verifier.dev/schema/workflow-verifier-report-1.json" );
+    ( "workflow-verifier-graph-1.schema.json",
+      "https://workflow-verifier.dev/schema/workflow-verifier-graph-1.json" );
+    ( "semantic-conformance-1.schema.json",
+      "https://workflow-verifier.dev/schema/semantic-conformance-1.json" );
     ( "source-manifest-v2.schema.json",
       "https://workflow-verifier.dev/schema/source-manifest-v2.json" );
     ( "scenario-v1.schema.json",
       "https://workflow-verifier.dev/schema/scenario-v1.json" );
-    ( "config-v1.schema.json",
-      "https://workflow-verifier.dev/schema/config-v1.json" );
-    ("lock-v1.schema.json", "https://workflow-verifier.dev/schema/lock-v1.json");
     ("lock-v2.schema.json", "https://workflow-verifier.dev/schema/lock-v2.json");
     ( "config-v2.schema.json",
       "https://workflow-verifier.dev/schema/config-v2.json" );
@@ -41,34 +42,30 @@ let schemas =
       "https://workflow-verifier.dev/schema/corpus-report-v1.json" );
     ( "corpus-review-v1.schema.json",
       "https://workflow-verifier.dev/schema/corpus-review-v1.json" );
-    ( "performance-v1.schema.json",
-      "https://workflow-verifier.dev/schema/performance-v1.json" );
-    ( "performance-comparison-v1.schema.json",
-      "https://workflow-verifier.dev/schema/performance-comparison-v1.json" );
-    ( "performance-suite-v1.schema.json",
-      "https://workflow-verifier.dev/schema/performance-suite-v1.json" );
+    ( "performance-v2.schema.json",
+      "https://workflow-verifier.dev/schema/performance-v2.json" );
+    ( "performance-comparison-v2.schema.json",
+      "https://workflow-verifier.dev/schema/performance-comparison-v2.json" );
+    ( "performance-suite-v2.schema.json",
+      "https://workflow-verifier.dev/schema/performance-suite-v2.json" );
     ( "mutation-gate-v1.schema.json",
       "https://workflow-verifier.dev/schema/mutation-gate-v1.json" );
     ( "mutation-campaign-v1.schema.json",
       "https://workflow-verifier.dev/schema/mutation-campaign-v1.json" );
-    ( "determinism-v1.schema.json",
-      "https://workflow-verifier.dev/schema/determinism-v1.json" );
     ( "determinism-v2.schema.json",
       "https://workflow-verifier.dev/schema/determinism-v2.json" );
-    ( "determinism-comparison-v1.schema.json",
-      "https://workflow-verifier.dev/schema/determinism-comparison-v1.json" );
     ( "determinism-comparison-v2.schema.json",
       "https://workflow-verifier.dev/schema/determinism-comparison-v2.json" );
     ( "dogfood-v1.schema.json",
       "https://workflow-verifier.dev/schema/dogfood-v1.json" );
-    ( "conformance-manifest-v1.schema.json",
-      "https://workflow-verifier.dev/schema/conformance-manifest-v1.json" );
     ( "doctor-v2.schema.json",
       "https://workflow-verifier.dev/schema/doctor-v2.json" );
     ( "release-evidence-v3.schema.json",
       "https://workflow-verifier.dev/schema/release-evidence-v3.json" );
     ( "release-evidence-v4.schema.json",
       "https://workflow-verifier.dev/schema/release-evidence-v4.json" );
+    ( "crate-package-v1.schema.json",
+      "https://workflow-verifier.dev/schema/crate-package-v1.json" );
     ( "release-index-v1.schema.json",
       "https://workflow-verifier.dev/schema/release-index-v1.json" );
     ( "release-gate-v1.schema.json",

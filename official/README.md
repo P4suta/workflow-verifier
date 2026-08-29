@@ -1,4 +1,4 @@
-# Official-project compatibility suite
+# Official-project analysis suite
 
 `official-projects-v1.json` pins two public projects for each supported CI
 provider by commit and Git tree. The acquisition command creates sparse,
@@ -11,8 +11,8 @@ Acquisition and analysis are separate commands. After acquisition,
 network-disabled proxy settings, gives each repository a shared 60-second
 budget for two analyses, and requires byte-identical reports. The fixed gate
 checks provider detection, complete command execution, absence of internal
-errors and `YAML-SYNTAX` diagnostics, commit/tree/snapshot identities, and the
-checked-in `official-compat-v1` report digest.
+errors and `YAML-SYNTAX` diagnostics, and commit/tree/snapshot identities. It
+does not compare against a report from an older product contract.
 
 The public report deliberately retains only project identities, counts, and
 content digests. Security findings are not required to be zero and their

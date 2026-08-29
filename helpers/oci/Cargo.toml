@@ -14,8 +14,7 @@ name = "workflow-verifier-oci-helper"
 path = "src/main.rs"
 
 [dependencies]
-workflow-verifier-helper-runtime = { path = "../runtime", version = "=0.1.0" }
-workflow-verifier-runner-protocol = { path = "../protocol", version = "=0.1.0" }
+workflow-verifier-internal = { package = "workflow-verifier", path = "../..", version = "=0.1.0", default-features = false, features = ["internal-support"] }
 
 [lints]
 workspace = true

@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:f015e5ea7fd4b67e36f6d706f60d6c1bc67ef3259a4f884ed26986e6443f4866",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: cimg/node:<< parameters.node-version >>",
+      "Incomplete.Unresolved_dependency: circleci/node@5.0.3",
+      "Incomplete.Unresolved_dependency: coveralls/coveralls@1.0.6"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = circleci/node@5.0.3"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
+          "source": 0,
           "start": {
             "byte": 407,
             "column": 9,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_d050346e353e40b4fc85",
+      "id": "diag_bf6711f895a163b09e66ec0ec1faf4dbe7735718d9f998a40f0b2b6c6939bd85",
       "message": "dependency is not pinned to immutable content: circleci/node@5.0.3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
+        "source": 0,
         "start": {
           "byte": 407,
           "column": 9,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_cbaace1ed43aa6350917",
+          "node": 1,
           "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
+            "source": 0,
             "start": {
               "byte": 407,
               "column": 9,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = coveralls/coveralls@1.0.6"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
+          "source": 0,
           "start": {
             "byte": 440,
             "column": 14,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_f72ea5c0dc4a9f783dea",
+      "id": "diag_f876790389c70f7d998a15c84a6736079e1d92c5af6e13e78b3d895db47e66bb",
       "message": "dependency is not pinned to immutable content: coveralls/coveralls@1.0.6",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
+        "source": 0,
         "start": {
           "byte": 440,
           "column": 14,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_6ab944174de521311cd4",
+          "node": 2,
           "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
+            "source": 0,
             "start": {
               "byte": 440,
               "column": 14,
@@ -123,1258 +130,110 @@
       ]
     }
   ],
-  "digest": "sha256:44bddb0963413a93acf201e878609ac4babb2b8acfe0b9c018eeb1a67030fa04",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_4ff5f6be6987b793b571",
-          "id": "wv_007d20e0f8e421ca303a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b02ea27b8350b5e0bc88"
-        },
-        {
-          "condition": true,
-          "from": "wv_09859891dd845ae3583a",
-          "id": "wv_03dee061f9eff6058ebd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6ab944174de521311cd4"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_075a1dee9bde2ca2815f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e351a03406e3a7901364"
-        },
-        {
-          "condition": true,
-          "from": "wv_4ff5f6be6987b793b571",
-          "id": "wv_1e6e38bb6b6f10ffc095",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c9d50c96f69ec22049e9"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_3e25231756a97bc761f6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_598a67a347c6496f466c"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_48249d47823f00137d44",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5fc27bfc998029676357"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_484816d9d0380f3c39b5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c9d50c96f69ec22049e9"
-        },
-        {
-          "condition": true,
-          "from": "wv_09859891dd845ae3583a",
-          "id": "wv_4ae90646747292b0d45a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_8fbc2eb163ec33f4b09c"
-        },
-        {
-          "condition": true,
-          "from": "wv_598a67a347c6496f466c",
-          "id": "wv_514314b4abfd3769921e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e351a03406e3a7901364"
-        },
-        {
-          "condition": true,
-          "from": "wv_09859891dd845ae3583a",
-          "id": "wv_563a09ae978f453180bd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_23312261d9d338770d13"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_59d6840b355e208df7b3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7b0f6de03526ceaa7ff5"
-        },
-        {
-          "condition": true,
-          "from": "wv_7b0f6de03526ceaa7ff5",
-          "id": "wv_5a053d091808c17158b3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_0e4a6bbbc2c60a333e4b"
-        },
-        {
-          "condition": true,
-          "from": "wv_a92265ebef195c66c08c",
-          "id": "wv_5a872818b996d9183778",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f7581edd0734b4fbef3f"
-        },
-        {
-          "condition": true,
-          "from": "wv_c9d50c96f69ec22049e9",
-          "id": "wv_674a7104e5d396633797",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a5f37e3989ae3507d7ca"
-        },
-        {
-          "condition": true,
-          "from": "wv_23312261d9d338770d13",
-          "id": "wv_6ee48abc31dcc26c01a5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2f362163cea9a068af33"
-        },
-        {
-          "condition": true,
-          "from": "wv_d374d8d7b557b9bc8557",
-          "id": "wv_779de7d36d5011eaac4f",
-          "kind": "data",
-          "label": "node-version",
-          "to": "wv_2f362163cea9a068af33"
-        },
-        {
-          "condition": true,
-          "from": "wv_328141606596185e0b35",
-          "id": "wv_7d00a9222eeaf7b54d65",
-          "kind": "data",
-          "label": "node-version",
-          "to": "wv_2f362163cea9a068af33"
-        },
-        {
-          "condition": true,
-          "from": "wv_6a1f19d865a64d3c8f26",
-          "id": "wv_8ab3622e5d82b6e1f37d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6ab944174de521311cd4"
-        },
-        {
-          "condition": true,
-          "from": "wv_09859891dd845ae3583a",
-          "id": "wv_94205177cf1e13628bcd",
-          "kind": "call",
-          "label": null,
-          "to": "wv_cbaace1ed43aa6350917"
-        },
-        {
-          "condition": true,
-          "from": "wv_598a67a347c6496f466c",
-          "id": "wv_98699c755bd16198f3c4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3c727f085cf31423b407"
-        },
-        {
-          "condition": true,
-          "from": "wv_09859891dd845ae3583a",
-          "id": "wv_9dc32ac29b33dcb2169e",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6ab944174de521311cd4"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_a463ba4a8e978384a9a8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4ff5f6be6987b793b571"
-        },
-        {
-          "condition": true,
-          "from": "wv_a2bfdd259d0dcfd5af20",
-          "id": "wv_a9e398716031f10275af",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0891c8c603597c5f0792"
-        },
-        {
-          "condition": true,
-          "from": "wv_c9d50c96f69ec22049e9",
-          "id": "wv_abe207a4a284718f03ed",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a92265ebef195c66c08c"
-        },
-        {
-          "condition": true,
-          "from": "wv_e351a03406e3a7901364",
-          "id": "wv_b07105a455675a625cfb",
-          "kind": "call",
-          "label": null,
-          "to": "wv_ae727539a745684b4977"
-        },
-        {
-          "condition": true,
-          "from": "wv_09859891dd845ae3583a",
-          "id": "wv_b72d3328f56e662b2e25",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cbaace1ed43aa6350917"
-        },
-        {
-          "condition": true,
-          "from": "wv_5fc27bfc998029676357",
-          "id": "wv_bdf59aa7cba393cf2219",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6a1f19d865a64d3c8f26"
-        },
-        {
-          "condition": true,
-          "from": "wv_e351a03406e3a7901364",
-          "id": "wv_c6ae1d521437f271f33b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a2bfdd259d0dcfd5af20"
-        },
-        {
-          "condition": true,
-          "from": "wv_09859891dd845ae3583a",
-          "id": "wv_cd8d12b7d8da164722b4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8fbc2eb163ec33f4b09c"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_de6f00f06ba6c7cfb3ae",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a2bfdd259d0dcfd5af20"
-        },
-        {
-          "condition": true,
-          "from": "wv_a2bfdd259d0dcfd5af20",
-          "id": "wv_e13889e142d0b0d9ebcf",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7b0f6de03526ceaa7ff5"
-        },
-        {
-          "condition": true,
-          "from": "wv_e351a03406e3a7901364",
-          "id": "wv_e3509b5fe6f45c557d47",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ae727539a745684b4977"
-        },
-        {
-          "condition": true,
-          "from": "wv_7b0f6de03526ceaa7ff5",
-          "id": "wv_e6866e275356cd2bcd98",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0e4a6bbbc2c60a333e4b"
-        },
-        {
-          "condition": true,
-          "from": "wv_a92265ebef195c66c08c",
-          "id": "wv_e9904dc8529f03ea9e04",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_5fc27bfc998029676357"
-        },
-        {
-          "condition": true,
-          "from": "wv_7b0f6de03526ceaa7ff5",
-          "id": "wv_ea223a92c51ba2ec4ce9",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_4ff5f6be6987b793b571"
-        },
-        {
-          "condition": true,
-          "from": "wv_5fc27bfc998029676357",
-          "id": "wv_ea759c06347a5be5e2d5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6a1f19d865a64d3c8f26"
-        },
-        {
-          "condition": true,
-          "from": "wv_2f362163cea9a068af33",
-          "id": "wv_eaf82b96013e8d6f46ca",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a92265ebef195c66c08c"
-        },
-        {
-          "condition": true,
-          "from": "wv_598a67a347c6496f466c",
-          "id": "wv_f37f7a3fb6c0fd7a02bd",
-          "kind": "read",
-          "label": null,
-          "to": "wv_3c727f085cf31423b407"
-        }
-      ],
-      "entrypoints": [
-        "wv_09859891dd845ae3583a"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-                    "start": {
-                      "byte": 1052,
-                      "column": 20,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 1058,
-                      "column": 26,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm ci"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0891c8c603597c5f0792",
-          "kind": "command",
-          "name": "install packages",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1052,
-              "column": 20,
-              "line": 29
-            },
-            "stop": {
-              "byte": 1058,
-              "column": 26,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_09859891dd845ae3583a",
-          "kind": "workflow",
-          "name": "CircleCI config",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 128,
-              "column": 1,
-              "line": 3
-            },
-            "stop": {
-              "byte": 1658,
-              "column": 56,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "filesystem_read",
-            "cache_write"
-          ],
-          "condition": true,
-          "effects": [
-            "cache_publish"
-          ],
-          "id": "wv_0e4a6bbbc2c60a333e4b",
-          "kind": "call",
-          "name": "builtin:save_cache",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1067,
-              "column": 9,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1191,
-              "column": 21,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_23312261d9d338770d13",
-          "kind": "workflow",
-          "name": "test-workflow",
-          "phase": "plan",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1522,
-              "column": 3,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1658,
-              "column": 56,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2f362163cea9a068af33",
-          "kind": "job",
-          "name": "test",
-          "phase": "plan",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 475,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 1507,
-              "column": 24,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_328141606596185e0b35",
-          "kind": "parameter",
-          "name": "matrix.node-version",
-          "phase": "plan",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1617,
-              "column": 15,
-              "line": 53
-            },
-            "stop": {
-              "byte": 1658,
-              "column": 56,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_3c727f085cf31423b407",
-          "kind": "call",
-          "name": "builtin:checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 650,
-              "column": 9,
-              "line": 21
-            },
-            "stop": {
-              "byte": 658,
-              "column": 17,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4ff5f6be6987b793b571",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1200,
-              "column": 9,
-              "line": 34
-            },
-            "stop": {
-              "byte": 1264,
-              "column": 35,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_598a67a347c6496f466c",
-          "kind": "step",
-          "name": "checkout",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 650,
-              "column": 9,
-              "line": 21
-            },
-            "stop": {
-              "byte": 658,
-              "column": 17,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5fc27bfc998029676357",
-          "kind": "step",
-          "name": "coveralls/upload",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1420,
-              "column": 9,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1507,
-              "column": 24,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "dependency.reference": {
-              "provenance": [
-                {
-                  "operation": "resolve immutable dependency identity",
-                  "origin": "CircleCI orb alias",
-                  "span": {
-                    "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-                    "start": {
-                      "byte": 1420,
-                      "column": 9,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1507,
-                      "column": 24,
-                      "line": 45
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "coveralls/coveralls@1.0.6"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6a1f19d865a64d3c8f26",
-          "kind": "call",
-          "name": "orb:coveralls/upload",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1420,
-              "column": 9,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1507,
-              "column": 24,
-              "line": 45
-            }
-          },
-          "unknown": {
-            "detail": "coveralls/coveralls@1.0.6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6ab944174de521311cd4",
-          "kind": "call",
-          "name": "coveralls/coveralls@1.0.6",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 440,
-              "column": 14,
-              "line": 10
-            },
-            "stop": {
-              "byte": 465,
-              "column": 39,
-              "line": 10
-            }
-          },
-          "unknown": {
-            "detail": "coveralls/coveralls@1.0.6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7b0f6de03526ceaa7ff5",
-          "kind": "step",
-          "name": "save_cache",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1067,
-              "column": 9,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1191,
-              "column": 21,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8fbc2eb163ec33f4b09c",
-          "kind": "call",
-          "name": "cimg/node:<< parameters.node-version >>",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 565,
-              "column": 16,
-              "line": 18
-            },
-            "stop": {
-              "byte": 604,
-              "column": 55,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "cimg/node:<< parameters.node-version >>",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a2bfdd259d0dcfd5af20",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 995,
-              "column": 9,
-              "line": 27
-            },
-            "stop": {
-              "byte": 1058,
-              "column": 26,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-                    "start": {
-                      "byte": 1323,
-                      "column": 20,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 1339,
-                      "column": 36,
-                      "line": 39
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm run test:cov"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a5f37e3989ae3507d7ca",
-          "kind": "command",
-          "name": "Run Tests",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1323,
-              "column": 20,
-              "line": 39
-            },
-            "stop": {
-              "byte": 1339,
-              "column": 36,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a92265ebef195c66c08c",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1348,
-              "column": 9,
-              "line": 40
-            },
-            "stop": {
-              "byte": 1411,
-              "column": 33,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "filesystem_write",
-            "cache_read"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_ae727539a745684b4977",
-          "kind": "call",
-          "name": "builtin:restore_cache",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 667,
-              "column": 9,
-              "line": 22
-            },
-            "stop": {
-              "byte": 986,
-              "column": 74,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-                    "start": {
-                      "byte": 1249,
-                      "column": 20,
-                      "line": 36
-                    },
-                    "stop": {
-                      "byte": 1264,
-                      "column": 35,
-                      "line": 36
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm run lint:ci"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b02ea27b8350b5e0bc88",
-          "kind": "command",
-          "name": "Run Lint",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1249,
-              "column": 20,
-              "line": 36
-            },
-            "stop": {
-              "byte": 1264,
-              "column": 35,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c9d50c96f69ec22049e9",
-          "kind": "step",
-          "name": "run",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1273,
-              "column": 9,
-              "line": 37
-            },
-            "stop": {
-              "byte": 1339,
-              "column": 36,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cbaace1ed43aa6350917",
-          "kind": "call",
-          "name": "circleci/node@5.0.3",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 407,
-              "column": 9,
-              "line": 9
-            },
-            "stop": {
-              "byte": 426,
-              "column": 28,
-              "line": 9
-            }
-          },
-          "unknown": {
-            "detail": "circleci/node@5.0.3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": {
-                "reasons": [
-                  {
-                    "detail": "test parameter node-version",
-                    "kind": "external_state"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "test parameter node-version",
-                    "kind": "external_state"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "dynamic",
-              "value": {
-                "unknown": [
-                  {
-                    "detail": "test parameter node-version",
-                    "kind": "external_state"
-                  }
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d374d8d7b557b9bc8557",
-          "kind": "parameter",
-          "name": "test.node-version",
-          "phase": "compile",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 503,
-              "column": 7,
-              "line": 15
-            },
-            "stop": {
-              "byte": 537,
-              "column": 21,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e351a03406e3a7901364",
-          "kind": "step",
-          "name": "restore_cache",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 667,
-              "column": 9,
-              "line": 22
-            },
-            "stop": {
-              "byte": 986,
-              "column": 74,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-                    "start": {
-                      "byte": 1398,
-                      "column": 20,
-                      "line": 42
-                    },
-                    "stop": {
-                      "byte": 1411,
-                      "column": 33,
-                      "line": 42
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm run build"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f7581edd0734b4fbef3f",
-          "kind": "command",
-          "name": "Run Build",
-          "phase": "run",
-          "provider": "circleci",
-          "span": {
-            "file": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml",
-            "start": {
-              "byte": 1398,
-              "column": 20,
-              "line": 42
-            },
-            "stop": {
-              "byte": 1411,
-              "column": 33,
-              "line": 42
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "circleci",
-      "source": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:d860698702d5ec1765bfdc87282c9206f732ef2aecd02e110f0335401bc2c32b",
-      "path": "circleci/blockcoders/nestjs-ethers/.circleci/config.yml"
-    }
-  ],
+  "digest": "sha256:025628959cba70e3a0bba4391977eecddb494be7c46d75047a38226f2135a9e5",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:3d0dfce9967bbecef568458b85ea5230f32cce957883e990f754931351b37ac3",
+    "sources": [
+      {
+        "digest": "sha256:d860698702d5ec1765bfdc87282c9206f732ef2aecd02e110f0335401bc2c32b",
+        "id": 0,
+        "path": ".circleci/config.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "circleci-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 38,
+    "nodes": 24,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

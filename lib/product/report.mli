@@ -27,15 +27,7 @@ type t = {
   digest : string;
 }
 
-val make :
-  persona:Verifier.persona ->
-  inputs:(string * string) list ->
-  graphs:Ir.t list ->
-  verifications:Verifier.result list ->
-  policy_diagnostics:Diagnostic.t list ->
-  t
-
-val make_v2 :
+val create :
   persona:Verifier.persona ->
   inputs:(string * string) list ->
   graphs:Ir.t list ->

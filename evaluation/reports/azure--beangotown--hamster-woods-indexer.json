@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:5f1f2c66031b18c0e69977def5da4388cb3f63fee6fa14e23620def0d09a2e94",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: PublishTestResults@2",
+      "Incomplete.Unresolved_dependency: UseDotNet@2",
+      "Incomplete.Unresolved_dependency: reportgenerator@5"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = UseDotNet@2"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 281,
             "column": 14,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_16714ca40a65669ebd38",
+      "id": "diag_213ab2f515d4f1677b17c73151f0dbdf02adcec80160267cd25ed2269ca52e1a",
       "message": "dependency is not pinned to immutable content: UseDotNet@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 281,
           "column": 14,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_0fd8579f4e8a41645342",
+          "node": 6,
           "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 281,
               "column": 14,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PublishTestResults@2"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 584,
             "column": 14,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_4bdaea1ae0225b733e63",
+      "id": "diag_786209926bc81cab3700b2b30b97f7f79b27883ab385fe54bff18056339ab806",
       "message": "dependency is not pinned to immutable content: PublishTestResults@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 584,
           "column": 14,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_3508e9610b75429fa100",
+          "node": 12,
           "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 584,
               "column": 14,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = reportgenerator@5"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 726,
             "column": 14,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_8d646fb84b76409fddec",
+      "id": "diag_d12e3aab35e445fb15970bad4a561dad7c5f386f6d656bbb9f952d35db6f9b3d",
       "message": "dependency is not pinned to immutable content: reportgenerator@5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 726,
           "column": 14,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a7f393c80578656faad4",
+          "node": 15,
           "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 726,
               "column": 14,
@@ -184,964 +189,70 @@
       ]
     }
   ],
-  "digest": "sha256:571f055be704882802db0abdb0c438b19766f9ba8e2e1d77d26b6f288d926e2d",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_45b9800216cc8d254858",
-          "id": "wv_02956fdfc37e7676586d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7182a243c3bac0208684"
-        },
-        {
-          "condition": true,
-          "from": "wv_e05de7a5d2635e524feb",
-          "id": "wv_1e156706fa860b16032a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_edeb804c8a294788dc94"
-        },
-        {
-          "condition": true,
-          "from": "wv_06d25b05524f109923cf",
-          "id": "wv_1fbcae99083c7fbed037",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_45b9800216cc8d254858"
-        },
-        {
-          "condition": true,
-          "from": "wv_97686cec18d9f2e9e121",
-          "id": "wv_3737cb97e55954296056",
-          "kind": "control",
-          "label": null,
-          "to": "wv_48cea2fd782ab2f00d6f"
-        },
-        {
-          "condition": true,
-          "from": "wv_48cea2fd782ab2f00d6f",
-          "id": "wv_3adcb394685ec4112409",
-          "kind": "control",
-          "label": null,
-          "to": "wv_32937c0b1a17ccf76e1a"
-        },
-        {
-          "condition": true,
-          "from": "wv_32937c0b1a17ccf76e1a",
-          "id": "wv_42e9714eeeb647960ad7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_377eab577d9740057592"
-        },
-        {
-          "condition": true,
-          "from": "wv_32937c0b1a17ccf76e1a",
-          "id": "wv_4f66e991af73283cef95",
-          "kind": "control",
-          "label": null,
-          "to": "wv_06d25b05524f109923cf"
-        },
-        {
-          "condition": true,
-          "from": "wv_28b34e4c850d8f9de10e",
-          "id": "wv_4f99747962b68bc634f6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3508e9610b75429fa100"
-        },
-        {
-          "condition": true,
-          "from": "wv_32937c0b1a17ccf76e1a",
-          "id": "wv_508830ce2e0f6f1eaae5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_45b9800216cc8d254858"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "always()"
-          },
-          "from": "wv_edeb804c8a294788dc94",
-          "id": "wv_5840ed59ce20eb87af52",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_28b34e4c850d8f9de10e"
-        },
-        {
-          "condition": true,
-          "from": "wv_32937c0b1a17ccf76e1a",
-          "id": "wv_5e1901b20bb269143a4c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_edeb804c8a294788dc94"
-        },
-        {
-          "condition": true,
-          "from": "wv_6e3dfb0860b70b80d550",
-          "id": "wv_6385eab83eb0d1ad76cc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_48cea2fd782ab2f00d6f"
-        },
-        {
-          "condition": true,
-          "from": "wv_d60e9e785e836057edef",
-          "id": "wv_6cb7427bdcbc5e22eeae",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0fd8579f4e8a41645342"
-        },
-        {
-          "condition": true,
-          "from": "wv_d60e9e785e836057edef",
-          "id": "wv_853a62965535acca8510",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_377eab577d9740057592"
-        },
-        {
-          "condition": true,
-          "from": "wv_377eab577d9740057592",
-          "id": "wv_985a8f0874d79ed8b5a4",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e05de7a5d2635e524feb"
-        },
-        {
-          "condition": true,
-          "from": "wv_d60e9e785e836057edef",
-          "id": "wv_9fe40428c9148151f3c0",
-          "kind": "call",
-          "label": null,
-          "to": "wv_0fd8579f4e8a41645342"
-        },
-        {
-          "condition": true,
-          "from": "wv_28b34e4c850d8f9de10e",
-          "id": "wv_a0c823e01a65010998b3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_3508e9610b75429fa100"
-        },
-        {
-          "condition": true,
-          "from": "wv_e05de7a5d2635e524feb",
-          "id": "wv_a81cc03308c9b86f0619",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9cb47b74f153b835c776"
-        },
-        {
-          "condition": true,
-          "from": "wv_377eab577d9740057592",
-          "id": "wv_b9239af1c5428cb4bc5d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9607d9e35be81fb227a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_32937c0b1a17ccf76e1a",
-          "id": "wv_be23d539d5141e3920a2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d60e9e785e836057edef"
-        },
-        {
-          "condition": true,
-          "from": "wv_06d25b05524f109923cf",
-          "id": "wv_be80c6576aaff85a467c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a7f393c80578656faad4"
-        },
-        {
-          "condition": true,
-          "from": "wv_28b34e4c850d8f9de10e",
-          "id": "wv_c731fc592aa5c346d67c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_06d25b05524f109923cf"
-        },
-        {
-          "condition": true,
-          "from": "wv_06d25b05524f109923cf",
-          "id": "wv_d0f836a0613ebe9946eb",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a7f393c80578656faad4"
-        },
-        {
-          "condition": true,
-          "from": "wv_d464fb8c0d15c6a938a1",
-          "id": "wv_f28d8c08665d0fce84e7",
-          "kind": "data",
-          "label": "CI_TEST",
-          "to": "wv_32937c0b1a17ccf76e1a"
-        },
-        {
-          "condition": true,
-          "from": "wv_32937c0b1a17ccf76e1a",
-          "id": "wv_ff480d19f7cfbec6822c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e05de7a5d2635e524feb"
-        }
-      ],
-      "entrypoints": [
-        "wv_48cea2fd782ab2f00d6f"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_06d25b05524f109923cf",
-          "kind": "step",
-          "name": "ReportGenerator",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 720,
-              "column": 8,
-              "line": 31
-            },
-            "stop": {
-              "byte": 1015,
-              "column": 36,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0fd8579f4e8a41645342",
-          "kind": "call",
-          "name": "UseDotNet@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 281,
-              "column": 14,
-              "line": 18
-            },
-            "stop": {
-              "byte": 292,
-              "column": 25,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "UseDotNet@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_28b34e4c850d8f9de10e",
-          "kind": "step",
-          "name": "step 4",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 578,
-              "column": 8,
-              "line": 26
-            },
-            "stop": {
-              "byte": 712,
-              "column": 38,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_32937c0b1a17ccf76e1a",
-          "kind": "job",
-          "name": "build_all_darwin",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 102,
-              "column": 4,
-              "line": 10
-            },
-            "stop": {
-              "byte": 1120,
-              "column": 45,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_3508e9610b75429fa100",
-          "kind": "call",
-          "name": "PublishTestResults@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 584,
-              "column": 14,
-              "line": 26
-            },
-            "stop": {
-              "byte": 604,
-              "column": 34,
-              "line": 26
-            }
-          },
-          "unknown": {
-            "detail": "PublishTestResults@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_377eab577d9740057592",
-          "kind": "step",
-          "name": "Start an elasticsearch",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 383,
-              "column": 8,
-              "line": 22
-            },
-            "stop": {
-              "byte": 477,
-              "column": 45,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_45b9800216cc8d254858",
-          "kind": "step",
-          "name": "Upload data to Codecov",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 1023,
-              "column": 8,
-              "line": 38
-            },
-            "stop": {
-              "byte": 1120,
-              "column": 45,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_48cea2fd782ab2f00d6f",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1120,
-              "column": 45,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6e3dfb0860b70b80d550",
-          "kind": "trigger",
-          "name": "pr",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 55,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 92,
-              "column": 15,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1031,
-                      "column": 16,
-                      "line": 38
-                    },
-                    "stop": {
-                      "byte": 1075,
-                      "column": 60,
-                      "line": 38
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "bash build.sh --target=Upload-Coverage-Azure"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7182a243c3bac0208684",
-          "kind": "command",
-          "name": "bash build.sh --target=Upload-Coverage-Azure",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 1031,
-              "column": 16,
-              "line": 38
-            },
-            "stop": {
-              "byte": 1075,
-              "column": 60,
-              "line": 38
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-                    "start": {
-                      "byte": 391,
-                      "column": 16,
-                      "line": 22
-                    },
-                    "stop": {
-                      "byte": 432,
-                      "column": 57,
-                      "line": 22
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cd scripts && bash elasticsearch-macOS.sh"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_9607d9e35be81fb227a1",
-          "kind": "command",
-          "name": "cd scripts && bash elasticsearch-macOS.sh",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 391,
-              "column": 16,
-              "line": 22
-            },
-            "stop": {
-              "byte": 432,
-              "column": 57,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_97686cec18d9f2e9e121",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 11,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 48,
-              "column": 15,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-                    "start": {
-                      "byte": 493,
-                      "column": 16,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 533,
-                      "column": 56,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "bash build.sh --target=Test-with-Codecov"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_9cb47b74f153b835c776",
-          "kind": "command",
-          "name": "bash build.sh --target=Test-with-Codecov",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 493,
-              "column": 16,
-              "line": 24
-            },
-            "stop": {
-              "byte": 533,
-              "column": 56,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a7f393c80578656faad4",
-          "kind": "call",
-          "name": "reportgenerator@5",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 726,
-              "column": 14,
-              "line": 31
-            },
-            "stop": {
-              "byte": 743,
-              "column": 31,
-              "line": 31
-            }
-          },
-          "unknown": {
-            "detail": "reportgenerator@5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-                    "start": {
-                      "byte": 253,
-                      "column": 15,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 257,
-                      "column": 19,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "true"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d464fb8c0d15c6a938a1",
-          "kind": "resource",
-          "name": "variable:CI_TEST",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 244,
-              "column": 6,
-              "line": 16
-            },
-            "stop": {
-              "byte": 257,
-              "column": 19,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d60e9e785e836057edef",
-          "kind": "step",
-          "name": "Install .NET Core SDK",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 275,
-              "column": 8,
-              "line": 18
-            },
-            "stop": {
-              "byte": 375,
-              "column": 24,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e05de7a5d2635e524feb",
-          "kind": "step",
-          "name": "Build and Test",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 485,
-              "column": 8,
-              "line": 24
-            },
-            "stop": {
-              "byte": 570,
-              "column": 37,
-              "line": 25
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-                    "start": {
-                      "byte": 623,
-                      "column": 19,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 631,
-                      "column": 27,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "always()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "always()"
-          },
-          "effects": [],
-          "id": "wv_edeb804c8a294788dc94",
-          "kind": "gate",
-          "name": "condition:build_all_darwin:step 4",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml",
-            "start": {
-              "byte": 623,
-              "column": 19,
-              "line": 27
-            },
-            "stop": {
-              "byte": 631,
-              "column": 27,
-              "line": 27
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:3ae08fd2d3da36af2425a9eb03e4db5550a182239e8d0d1841bd1d1ff2f6c964",
-      "path": "azure/beangotown/hamster-woods-indexer/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:dd2525c6b03b9e59a854629c200f8163ae3f033ff725da26169e2d28cd1dac0d",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:dbeb8eb9a19596c1b26889527aa2784cda3dfd24159e8f59a26741286000584d",
+    "sources": [
+      {
+        "digest": "sha256:3ae08fd2d3da36af2425a9eb03e4db5550a182239e8d0d1841bd1d1ff2f6c964",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1152,40 +263,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 25,
+    "nodes": 18,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

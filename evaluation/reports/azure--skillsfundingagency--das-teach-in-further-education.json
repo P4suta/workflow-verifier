@@ -1,7 +1,19 @@
 {
+  "analysis_digest": "sha256:bc6b3a67e6185238021e2f3db78ef98d22b012196fdc652bc4aa32898d644d59",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: SkillsFundingAgency/das-platform-automation@refs/tags/5.1.8",
+      "Incomplete.Unresolved_dependency: SkillsFundingAgency/das-platform-building-blocks@refs/tags/3.0.14",
+      "Incomplete.Unresolved_dependency: azure-pipelines-templates/build/job/dacpac-template.yml@das-platform-building-blocks",
+      "Incomplete.Unresolved_dependency: pipeline-templates/job/code-build.yml",
+      "Incomplete.Unresolved_dependency: pipeline-templates/job/deploy.yml"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = SkillsFundingAgency/das-platform-building-blocks@refs/tags/3.0.14"
@@ -9,9 +21,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 879,
             "column": 5,
@@ -24,12 +35,12 @@
           }
         }
       },
-      "id": "diag_e4ee07959ceb24b7998e",
+      "id": "diag_5fd4254b8d596520479cc4ca37abfa49a2a9cd33a6ad970f5a79994e66e98ee9",
       "message": "dependency is not pinned to immutable content: SkillsFundingAgency/das-platform-building-blocks@refs/tags/3.0.14",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 879,
           "column": 5,
@@ -44,9 +55,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_21ae3944a2ea4dd73ca8",
+          "node": 7,
           "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 879,
               "column": 5,
@@ -62,7 +73,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = SkillsFundingAgency/das-platform-automation@refs/tags/5.1.8"
@@ -70,9 +80,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1060,
             "column": 5,
@@ -85,12 +94,12 @@
           }
         }
       },
-      "id": "diag_41a2235e2fcb7e07c098",
+      "id": "diag_ef95ed64c2fe3ab5d5f0bde306461aadd9d6aebd25e023a66a20e43785ae0cbf",
       "message": "dependency is not pinned to immutable content: SkillsFundingAgency/das-platform-automation@refs/tags/5.1.8",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1060,
           "column": 5,
@@ -105,9 +114,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_2ef52fc5ecdce6f36006",
+          "node": 9,
           "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1060,
               "column": 5,
@@ -123,1182 +132,70 @@
       ]
     }
   ],
-  "digest": "sha256:571ff673ec9a25af7812d75b452f578ee0c1887f15becb9c0b77a91112199381",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_0770b32bf1840417f8f1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_04f58fa51a54a0284401"
-        },
-        {
-          "condition": true,
-          "from": "wv_ea0b0062bef05bf9658d",
-          "id": "wv_09fa3a5fdf1d8c8d425b",
-          "kind": "read",
-          "label": null,
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_486e097e880e1fe2f5d9",
-          "id": "wv_0e4aa0cb17bb3feecb2a",
-          "kind": "data",
-          "label": "SolutionBaseName",
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_79479920cabc2e791126",
-          "id": "wv_27ab11a1a114b33f4835",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_2ac2b026cea3c31876ba"
-        },
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_27fde27bf23392833958",
-          "kind": "control",
-          "label": null,
-          "to": "wv_897e22e6ae21fdccb9a8"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e34b2dc9615fb92360b",
-          "id": "wv_2bfba94cf183d9c9a9cf",
-          "kind": "data",
-          "label": "BuildConfiguration",
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_ea0b0062bef05bf9658d",
-          "id": "wv_3197b50915c55194f09c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2ef52fc5ecdce6f36006"
-        },
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_4a122b445895cd5ca7b4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7476410a3ecc7bb48f3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_065ca9bebe18ba9ad690",
-          "id": "wv_4bba2e38de0e076f1f2d",
-          "kind": "data",
-          "label": null,
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_79479920cabc2e791126",
-          "id": "wv_4cec3e24ac5bf80f8a92",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_897e22e6ae21fdccb9a8"
-        },
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_53939591ddc0dd5f5b7b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2ac2b026cea3c31876ba"
-        },
-        {
-          "condition": true,
-          "from": "wv_79479920cabc2e791126",
-          "id": "wv_56effc65a7b7fa345d0e",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_7476410a3ecc7bb48f3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_79479920cabc2e791126",
-          "id": "wv_59a10f64e202a7690ef1",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_1985d4883aa33832c40e"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f15e390e941bbffe773",
-          "id": "wv_5f57da7153025e7dacf3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_35ccb3b560d58bcacb0e"
-        },
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_6975a169e163e330c0f6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1985d4883aa33832c40e"
-        },
-        {
-          "condition": true,
-          "from": "wv_92538f8a41336b8410e3",
-          "id": "wv_6d2c99eb3bada2b4fcc9",
-          "kind": "call",
-          "label": null,
-          "to": "wv_21ae3944a2ea4dd73ca8"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),eq(variables.Deploy,\"true\"))"
-          },
-          "from": "wv_897e22e6ae21fdccb9a8",
-          "id": "wv_74f44eceeeae58e37865",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_f7bece18553c31078c6c"
-        },
-        {
-          "condition": true,
-          "from": "wv_79479920cabc2e791126",
-          "id": "wv_786f6b004b29140d2142",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_14c66b44929bc1453fb0"
-        },
-        {
-          "condition": true,
-          "from": "wv_67cc81d6ede6f5b65da2",
-          "id": "wv_79ca5e8726903d311aae",
-          "kind": "data",
-          "label": "Deploy",
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f15e390e941bbffe773",
-          "id": "wv_7d8fddba33cbaccb14bf",
-          "kind": "read",
-          "label": null,
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_9ee11b04c598ca0a39e6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_79479920cabc2e791126"
-        },
-        {
-          "condition": true,
-          "from": "wv_79479920cabc2e791126",
-          "id": "wv_a379207123af23abbee4",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_04f58fa51a54a0284401"
-        },
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_a6a37ff9b6a7a0b6865b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_14c66b44929bc1453fb0"
-        },
-        {
-          "condition": true,
-          "from": "wv_92538f8a41336b8410e3",
-          "id": "wv_a7eaf287d66ed5fdb577",
-          "kind": "read",
-          "label": null,
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_33dd26a87295ee30d7d7",
-          "id": "wv_af9ae1fbc59fcec86d03",
-          "kind": "data",
-          "label": "BuildPlatform",
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_79479920cabc2e791126",
-          "id": "wv_b8c5c37a0a30521b9935",
-          "kind": "control",
-          "label": "dependsOn",
-          "to": "wv_93bc37a05c5a7183d302"
-        },
-        {
-          "condition": true,
-          "from": "wv_92538f8a41336b8410e3",
-          "id": "wv_c192e5fd8c333caea398",
-          "kind": "control",
-          "label": null,
-          "to": "wv_21ae3944a2ea4dd73ca8"
-        },
-        {
-          "condition": true,
-          "from": "wv_ea0b0062bef05bf9658d",
-          "id": "wv_d4f315343517885afde3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_2ef52fc5ecdce6f36006"
-        },
-        {
-          "condition": true,
-          "from": "wv_abf679b7f5ddad94aa82",
-          "id": "wv_e109299598be42c1f409",
-          "kind": "data",
-          "label": "variables.Deploy",
-          "to": "wv_897e22e6ae21fdccb9a8"
-        },
-        {
-          "condition": true,
-          "from": "wv_77f68b138ae560f6b874",
-          "id": "wv_f27dfa3398e1b563b48c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_93bc37a05c5a7183d302"
-        },
-        {
-          "condition": true,
-          "from": "wv_d526af4d7d43d0ea87ab",
-          "id": "wv_f44caa372a8371bb3a0e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_77f68b138ae560f6b874"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f15e390e941bbffe773",
-          "id": "wv_fe4c65bca1c7e9997896",
-          "kind": "control",
-          "label": null,
-          "to": "wv_35ccb3b560d58bcacb0e"
-        }
-      ],
-      "entrypoints": [
-        "wv_77f68b138ae560f6b874"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_04f58fa51a54a0284401",
-          "kind": "stage",
-          "name": "Deploy_TEST2",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 2842,
-              "column": 3,
-              "line": 88
-            },
-            "stop": {
-              "byte": 3330,
-              "column": 90,
-              "line": 101
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 336,
-                      "column": 12,
-                      "line": 6
-                    },
-                    "stop": {
-                      "byte": 341,
-                      "column": 17,
-                      "line": 6
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "false"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_065ca9bebe18ba9ad690",
-          "kind": "parameter",
-          "name": "OverrideBlockOnPossibleDataLoss",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 189,
-              "column": 3,
-              "line": 3
-            },
-            "stop": {
-              "byte": 341,
-              "column": 17,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_14c66b44929bc1453fb0",
-          "kind": "stage",
-          "name": "Deploy_MO",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 4286,
-              "column": 3,
-              "line": 133
-            },
-            "stop": {
-              "byte": 4750,
-              "column": 90,
-              "line": 146
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1985d4883aa33832c40e",
-          "kind": "stage",
-          "name": "Deploy_DEMO",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 4754,
-              "column": 3,
-              "line": 148
-            },
-            "stop": {
-              "byte": 5241,
-              "column": 90,
-              "line": 161
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 520,
-                      "column": 10,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 527,
-                      "column": 17,
-                      "line": 18
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "release"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1e34b2dc9615fb92360b",
-          "kind": "resource",
-          "name": "variable:BuildConfiguration",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 486,
-              "column": 3,
-              "line": 17
-            },
-            "stop": {
-              "byte": 527,
-              "column": 17,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_21ae3944a2ea4dd73ca8",
-          "kind": "call",
-          "name": "SkillsFundingAgency/das-platform-building-blocks@refs/tags/3.0.14",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 879,
-              "column": 5,
-              "line": 29
-            },
-            "stop": {
-              "byte": 1055,
-              "column": 34,
-              "line": 33
-            }
-          },
-          "unknown": {
-            "detail": "SkillsFundingAgency/das-platform-building-blocks@refs/tags/3.0.14",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2ac2b026cea3c31876ba",
-          "kind": "stage",
-          "name": "Deploy_TEST",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 2355,
-              "column": 3,
-              "line": 73
-            },
-            "stop": {
-              "byte": 2838,
-              "column": 90,
-              "line": 86
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2ef52fc5ecdce6f36006",
-          "kind": "call",
-          "name": "SkillsFundingAgency/das-platform-automation@refs/tags/5.1.8",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 1060,
-              "column": 5,
-              "line": 34
-            },
-            "stop": {
-              "byte": 1225,
-              "column": 34,
-              "line": 38
-            }
-          },
-          "unknown": {
-            "detail": "SkillsFundingAgency/das-platform-automation@refs/tags/5.1.8",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 559,
-                      "column": 10,
-                      "line": 20
-                    },
-                    "stop": {
-                      "byte": 566,
-                      "column": 17,
-                      "line": 20
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "any cpu"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_33dd26a87295ee30d7d7",
-          "kind": "resource",
-          "name": "variable:BuildPlatform",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 530,
-              "column": 3,
-              "line": 19
-            },
-            "stop": {
-              "byte": 566,
-              "column": 17,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_35ccb3b560d58bcacb0e",
-          "kind": "call",
-          "name": "self",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 858,
-              "column": 5,
-              "line": 28
-            },
-            "stop": {
-              "byte": 874,
-              "column": 21,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 452,
-                      "column": 10,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 483,
-                      "column": 41,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "SFA.DAS.TeachInFurtherEducation"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_486e097e880e1fe2f5d9",
-          "kind": "resource",
-          "name": "variable:SolutionBaseName",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 420,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 483,
-              "column": 41,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4f15e390e941bbffe773",
-          "kind": "resource",
-          "name": "repository:self",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 858,
-              "column": 5,
-              "line": 28
-            },
-            "stop": {
-              "byte": 874,
-              "column": 21,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 677,
-                      "column": 10,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 825,
-                      "column": 158,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "$[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_67cc81d6ede6f5b65da2",
-          "kind": "resource",
-          "name": "variable:Deploy",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 655,
-              "column": 3,
-              "line": 23
-            },
-            "stop": {
-              "byte": 825,
-              "column": 158,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7476410a3ecc7bb48f3b",
-          "kind": "stage",
-          "name": "Deploy_PP",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 3334,
-              "column": 3,
-              "line": 103
-            },
-            "stop": {
-              "byte": 3809,
-              "column": 90,
-              "line": 116
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_77f68b138ae560f6b874",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 175,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 5241,
-              "column": 90,
-              "line": 161
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_79479920cabc2e791126",
-          "kind": "stage",
-          "name": "Build",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 1379,
-              "column": 3,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1814,
-              "column": 92,
-              "line": 55
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1895,
-                      "column": 14,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1941,
-                      "column": 60,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "and(succeeded(), eq(variables.Deploy, 'true'))"
-                ]
-              }
-            },
-            "reference:variables.Deploy": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Deploy",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1915,
-                      "column": 34,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1931,
-                      "column": 50,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Deploy"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "and(succeeded(),eq(variables.Deploy,\"true\"))"
-          },
-          "effects": [],
-          "id": "wv_897e22e6ae21fdccb9a8",
-          "kind": "gate",
-          "name": "condition:stage:Deploy_AT",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 1895,
-              "column": 14,
-              "line": 60
-            },
-            "stop": {
-              "byte": 1941,
-              "column": 60,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_92538f8a41336b8410e3",
-          "kind": "resource",
-          "name": "repository:das-platform-building-blocks",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 879,
-              "column": 5,
-              "line": 29
-            },
-            "stop": {
-              "byte": 1055,
-              "column": 34,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_93bc37a05c5a7183d302",
-          "kind": "stage",
-          "name": "Deploy_PROD",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 3813,
-              "column": 3,
-              "line": 118
-            },
-            "stop": {
-              "byte": 4282,
-              "column": 90,
-              "line": 131
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "variables.Deploy",
-                  "span": {
-                    "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-                    "start": {
-                      "byte": 1915,
-                      "column": 34,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1931,
-                      "column": 50,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "variables.Deploy"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_abf679b7f5ddad94aa82",
-          "kind": "resource",
-          "name": "variables.Deploy",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 1915,
-              "column": 34,
-              "line": 60
-            },
-            "stop": {
-              "byte": 1931,
-              "column": 50,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d526af4d7d43d0ea87ab",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 354,
-              "column": 3,
-              "line": 9
-            },
-            "stop": {
-              "byte": 405,
-              "column": 15,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ea0b0062bef05bf9658d",
-          "kind": "resource",
-          "name": "repository:das-platform-automation",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 1060,
-              "column": 5,
-              "line": 34
-            },
-            "stop": {
-              "byte": 1225,
-              "column": 34,
-              "line": 38
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f7bece18553c31078c6c",
-          "kind": "stage",
-          "name": "Deploy_AT",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml",
-            "start": {
-              "byte": 1818,
-              "column": 3,
-              "line": 57
-            },
-            "stop": {
-              "byte": 2351,
-              "column": 90,
-              "line": 71
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:7f06a6f52ca65a557ec24067a2bbf82f25beddb47c9b368d3c92b425b4815ed9",
-      "path": "azure/skillsfundingagency/das-teach-in-further-education/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:b14ea18f1efe55b7ef94100d8cec11f914a31a102afc21dd82c082f9904258c4",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:38fa279152944aa3f2368a5309dd1aed0ac117df025aafc1404c93ae01cbafa7",
+    "sources": [
+      {
+        "digest": "sha256:7f06a6f52ca65a557ec24067a2bbf82f25beddb47c9b368d3c92b425b4815ed9",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1313,40 +210,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 29,
+    "nodes": 21,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

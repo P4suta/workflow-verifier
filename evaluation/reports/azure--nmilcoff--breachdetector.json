@@ -1,7 +1,19 @@
 {
+  "analysis_digest": "sha256:f5af82a95acdabcaac69bd949a4932271cfe9738b5c5f62eefe85be117605c2c",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: CopyFiles@2",
+      "Incomplete.Unresolved_dependency: MSBuild@1",
+      "Incomplete.Unresolved_dependency: NuGetCommand@2",
+      "Incomplete.Unresolved_dependency: NuGetToolInstaller@1",
+      "Incomplete.Unresolved_dependency: PublishBuildArtifacts@1"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NuGetToolInstaller@1"
@@ -9,9 +21,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 503,
             "column": 9,
@@ -24,12 +35,12 @@
           }
         }
       },
-      "id": "diag_a54af9f7c506c4eff1a4",
+      "id": "diag_0cfc966c8a76e4311915a48fdfb5b438994bfac54ce4ed319f1b76124962c302",
       "message": "dependency is not pinned to immutable content: NuGetToolInstaller@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 503,
           "column": 9,
@@ -44,9 +55,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_1f09122d7ede34a75a07",
+          "node": 5,
           "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 503,
               "column": 9,
@@ -62,7 +73,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NuGetCommand@2"
@@ -70,9 +80,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 561,
             "column": 9,
@@ -85,12 +94,12 @@
           }
         }
       },
-      "id": "diag_81f9930bacb66cf432e4",
+      "id": "diag_93f98aa314e987bd89d6f76a0db8fa4d06b26fe4be8b89e596def7bb1f7bbee3",
       "message": "dependency is not pinned to immutable content: NuGetCommand@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 561,
           "column": 9,
@@ -105,9 +114,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_41b544bc2c8379611725",
+          "node": 7,
           "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 561,
               "column": 9,
@@ -123,7 +132,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = MSBuild@1"
@@ -131,9 +139,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 684,
             "column": 9,
@@ -146,12 +153,12 @@
           }
         }
       },
-      "id": "diag_8af5128463dae8d95082",
+      "id": "diag_aedbd3b86ca0db7977e5f7b88ec02dd0491f1455a5ae724273fed81a8df734b6",
       "message": "dependency is not pinned to immutable content: MSBuild@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 684,
           "column": 9,
@@ -166,9 +173,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_90c5fe576c998a62b262",
+          "node": 9,
           "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 684,
               "column": 9,
@@ -184,7 +191,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = CopyFiles@2"
@@ -192,9 +198,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1052,
             "column": 9,
@@ -207,12 +212,12 @@
           }
         }
       },
-      "id": "diag_e4280d4291f7c43f76d7",
+      "id": "diag_80e4d933447011b2d41042cbd986ba3b0d224a654b29a4080e5bb87ad93b9577",
       "message": "dependency is not pinned to immutable content: CopyFiles@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1052,
           "column": 9,
@@ -227,9 +232,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_e9e9fe2a0692d6030421",
+          "node": 11,
           "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1052,
               "column": 9,
@@ -245,7 +250,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = PublishBuildArtifacts@1"
@@ -253,9 +257,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1291,
             "column": 9,
@@ -268,12 +271,12 @@
           }
         }
       },
-      "id": "diag_44eeec7281af5cdd4ff6",
+      "id": "diag_0af25da6ac2e99d9d60611dc503161563e6e6905826ba9cb94010427e4860d07",
       "message": "dependency is not pinned to immutable content: PublishBuildArtifacts@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1291,
           "column": 9,
@@ -288,9 +291,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_ea4c2dc5b96278fb9f44",
+          "node": 13,
           "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1291,
               "column": 9,
@@ -306,645 +309,70 @@
       ]
     }
   ],
-  "digest": "sha256:a999ac3c3192ae97819416bbcac0b24cd4ed718c8f685b2cc9a205937de46290",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_ad70f5b72215a7cec402",
-          "id": "wv_077965a1f9b47a0050f8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_19d5bf069aa26ba16c0e"
-        },
-        {
-          "condition": true,
-          "from": "wv_110ac06591476b4ed003",
-          "id": "wv_0bd4c54a2444c5f7e7fa",
-          "kind": "call",
-          "label": null,
-          "to": "wv_ea4c2dc5b96278fb9f44"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad70f5b72215a7cec402",
-          "id": "wv_113ed15ac4369bcd60b9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7de8bc3558f79254e706"
-        },
-        {
-          "condition": true,
-          "from": "wv_7de8bc3558f79254e706",
-          "id": "wv_156a89cdc46322ac2bff",
-          "kind": "control",
-          "label": null,
-          "to": "wv_41b544bc2c8379611725"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad70f5b72215a7cec402",
-          "id": "wv_1eb5be7886ca47573ef2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_110ac06591476b4ed003"
-        },
-        {
-          "condition": true,
-          "from": "wv_f8729b0d28a884737ba9",
-          "id": "wv_23265d2c4308ab238895",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e9e9fe2a0692d6030421"
-        },
-        {
-          "condition": true,
-          "from": "wv_19d5bf069aa26ba16c0e",
-          "id": "wv_3f19c7cfa659e75411f2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_90c5fe576c998a62b262"
-        },
-        {
-          "condition": true,
-          "from": "wv_19d5bf069aa26ba16c0e",
-          "id": "wv_49efe186e972b70b1f7b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f8729b0d28a884737ba9"
-        },
-        {
-          "condition": true,
-          "from": "wv_a0482436f17dfaa9d228",
-          "id": "wv_63fa821c6f1ea0666299",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c906f31e8dc915d1ad47"
-        },
-        {
-          "condition": true,
-          "from": "wv_7de8bc3558f79254e706",
-          "id": "wv_680c82cae1a1b79306b3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_19d5bf069aa26ba16c0e"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad70f5b72215a7cec402",
-          "id": "wv_70f086b2557e3ccd8940",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f8729b0d28a884737ba9"
-        },
-        {
-          "condition": true,
-          "from": "wv_07408e019d8ba1c32853",
-          "id": "wv_7922801c1f98371515a7",
-          "kind": "call",
-          "label": null,
-          "to": "wv_1f09122d7ede34a75a07"
-        },
-        {
-          "condition": true,
-          "from": "wv_07408e019d8ba1c32853",
-          "id": "wv_85dab5e9dbbaf6d0f9d5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1f09122d7ede34a75a07"
-        },
-        {
-          "condition": true,
-          "from": "wv_f8729b0d28a884737ba9",
-          "id": "wv_88bdb663fc04655a5832",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_110ac06591476b4ed003"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad70f5b72215a7cec402",
-          "id": "wv_903bb0d76805db90dfdd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_07408e019d8ba1c32853"
-        },
-        {
-          "condition": true,
-          "from": "wv_110ac06591476b4ed003",
-          "id": "wv_a4f7d044fa512e09b8ff",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ea4c2dc5b96278fb9f44"
-        },
-        {
-          "condition": true,
-          "from": "wv_c1324b727d71867c9158",
-          "id": "wv_ac66967b9eded24c2dec",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c906f31e8dc915d1ad47"
-        },
-        {
-          "condition": true,
-          "from": "wv_07408e019d8ba1c32853",
-          "id": "wv_b05a461dd11dd37c9b2a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7de8bc3558f79254e706"
-        },
-        {
-          "condition": true,
-          "from": "wv_19d5bf069aa26ba16c0e",
-          "id": "wv_b38ba3224033243230fe",
-          "kind": "control",
-          "label": null,
-          "to": "wv_90c5fe576c998a62b262"
-        },
-        {
-          "condition": true,
-          "from": "wv_7de8bc3558f79254e706",
-          "id": "wv_c1a2f2d8dfc0bd33698e",
-          "kind": "call",
-          "label": null,
-          "to": "wv_41b544bc2c8379611725"
-        },
-        {
-          "condition": true,
-          "from": "wv_c906f31e8dc915d1ad47",
-          "id": "wv_db0f581980a971a28b4d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ad70f5b72215a7cec402"
-        },
-        {
-          "condition": true,
-          "from": "wv_f8729b0d28a884737ba9",
-          "id": "wv_dcef13828ff3f8d319bc",
-          "kind": "call",
-          "label": null,
-          "to": "wv_e9e9fe2a0692d6030421"
-        }
-      ],
-      "entrypoints": [
-        "wv_c906f31e8dc915d1ad47"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_07408e019d8ba1c32853",
-          "kind": "step",
-          "name": "Use NuGet ",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 497,
-              "column": 3,
-              "line": 33
-            },
-            "stop": {
-              "byte": 551,
-              "column": 28,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_110ac06591476b4ed003",
-          "kind": "step",
-          "name": "Publish Artifact: drop",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 1285,
-              "column": 3,
-              "line": 55
-            },
-            "stop": {
-              "byte": 1419,
-              "column": 55,
-              "line": 58
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_19d5bf069aa26ba16c0e",
-          "kind": "step",
-          "name": "Build project BreachDetector/BreachDetector.csproj",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 678,
-              "column": 3,
-              "line": 41
-            },
-            "stop": {
-              "byte": 1042,
-              "column": 193,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_1f09122d7ede34a75a07",
-          "kind": "call",
-          "name": "NuGetToolInstaller@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 503,
-              "column": 9,
-              "line": 33
-            },
-            "stop": {
-              "byte": 523,
-              "column": 29,
-              "line": 33
-            }
-          },
-          "unknown": {
-            "detail": "NuGetToolInstaller@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_41b544bc2c8379611725",
-          "kind": "call",
-          "name": "NuGetCommand@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 561,
-              "column": 9,
-              "line": 36
-            },
-            "stop": {
-              "byte": 575,
-              "column": 23,
-              "line": 36
-            }
-          },
-          "unknown": {
-            "detail": "NuGetCommand@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7de8bc3558f79254e706",
-          "kind": "step",
-          "name": "NuGet restore",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 555,
-              "column": 3,
-              "line": 36
-            },
-            "stop": {
-              "byte": 674,
-              "column": 58,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_90c5fe576c998a62b262",
-          "kind": "call",
-          "name": "MSBuild@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 684,
-              "column": 9,
-              "line": 41
-            },
-            "stop": {
-              "byte": 693,
-              "column": 18,
-              "line": 41
-            }
-          },
-          "unknown": {
-            "detail": "MSBuild@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a0482436f17dfaa9d228",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 192,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 283,
-              "column": 16,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ad70f5b72215a7cec402",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 181,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 1419,
-              "column": 55,
-              "line": 58
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c1324b727d71867c9158",
-          "kind": "trigger",
-          "name": "pr",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 291,
-              "column": 3,
-              "line": 16
-            },
-            "stop": {
-              "byte": 396,
-              "column": 16,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c906f31e8dc915d1ad47",
-          "kind": "workflow",
-          "name": "1.1.3",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 181,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 1419,
-              "column": 55,
-              "line": 58
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_e9e9fe2a0692d6030421",
-          "kind": "call",
-          "name": "CopyFiles@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 1052,
-              "column": 9,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1063,
-              "column": 20,
-              "line": 48
-            }
-          },
-          "unknown": {
-            "detail": "CopyFiles@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_ea4c2dc5b96278fb9f44",
-          "kind": "call",
-          "name": "PublishBuildArtifacts@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 1291,
-              "column": 9,
-              "line": 55
-            },
-            "stop": {
-              "byte": 1314,
-              "column": 32,
-              "line": 55
-            }
-          },
-          "unknown": {
-            "detail": "PublishBuildArtifacts@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f8729b0d28a884737ba9",
-          "kind": "step",
-          "name": "Copy Files to: $(build.artifactstagingdirectory)",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/nmilcoff/breachdetector/azure-pipelines.yml",
-            "start": {
-              "byte": 1046,
-              "column": 3,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1281,
-              "column": 54,
-              "line": 53
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/nmilcoff/breachdetector/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:1ed0645c43b7bfcecdf36b7bf755833661365cf34c9552b1085b3a1120539186",
-      "path": "azure/nmilcoff/breachdetector/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:ffab33c335f6caffa93faff6ff8cf2cdacb6dfa0cd88ea64210fc956fd7043ee",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:6bc8508d59b140b2e3a6e7138277cb05b36701ec4ada578e13026938137b5b4a",
+    "sources": [
+      {
+        "digest": "sha256:1ed0645c43b7bfcecdf36b7bf755833661365cf34c9552b1085b3a1120539186",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -955,40 +383,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 5,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 22,
+    "nodes": 14,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

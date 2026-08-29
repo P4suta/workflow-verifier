@@ -1,33 +1,32 @@
-# Compatibility policy
+# Contract policy
 
-Version 0.1 publishes strict, language-independent contracts for canonical
-UTF-8 JSON, paths, snapshots, provider lowering, unknown values, diagnostics,
-fixes, scenarios, runners, and evidence.
+Version 0.1 is unreleased and exposes one contract for each product document.
+The Rust binary is the only shipped implementation. The OCaml executable is a
+development-only semantic oracle and is neither installed nor distributed.
 
-The current product protocols are `config-v2`, `source-manifest-v2`,
-`report-v2`, `scenario-v1`, `runner-v2`, `sandbox-run-v2`, and
-`evidence-v2`. Unknown or duplicate fields, duplicate JSON keys, invalid
-UTF-8, wrong types, unsupported enum values, and unknown protocol versions are
-rejected. Existing version names never acquire new meaning; field-set or
-semantic changes require a new protocol version.
+The current analysis contracts are `config-v2`, `lock-v2`,
+`workflow-verifier-report/1`, and `workflow-verifier-graph/1`. Check reports do
+not contain graph bodies. Graph documents use a source table, dense numeric node
+IDs, numeric edge endpoints, and omit default-valued fields. SHA-256 values are
+typed internally and rendered as lowercase `sha256:` strings only at document
+boundaries.
 
-`config-v1` and `lock-v1` are accepted only by the validated `migrate`
-command. A legacy report, runner, sandbox result, or evidence object is never
-interpreted as a current object. New locks use `lock-v2`.
+Unknown or duplicate fields, duplicate JSON keys, invalid UTF-8, wrong types,
+unsupported enum values, and unknown protocol names are rejected. The product
+does not accept or migrate superseded config, lock, report, graph, cache, or CLI
+contracts. A future incompatible change replaces the contract and all owned
+fixtures together; it does not add a compatibility adapter.
 
-OCaml 5.5 with Dune 3.24.2 is the release toolchain. OCaml 5.4 is a compatibility
-gate. Rust helpers use Rust 1.98 with MSRV 1.85. JSON, SARIF, lockfiles, evidence,
-and fix patches are LF-canonical. Raw report bytes must repeat for the same
-snapshot, semantic profile, and binary provenance. The five-platform gate
-retains each raw report digest but compares canonical report semantics after
-removing only the authenticated root digest, binary digest, and bound source
-commit; lockfiles and fix patches remain byte-identical across platforms.
+Static commands are deterministic, stateless, offline by default, and read only
+files that can affect their result. LSP alone owns an incremental analysis
+session. Sandbox planning and execution retain a separate complete repository
+snapshot because runtime jobs may access arbitrary repository files.
 
-The helper boundary requires an exact helper digest, backend-attestation-v1
-identity, runner-v2 plan, requested controls, and backend type. A mismatch is
-exit 5 and cannot select a weaker fallback.
+The helper boundary requires an exact helper digest,
+`backend-attestation-v1` identity, `runner-v2` plan, requested controls, and
+backend type. A mismatch is exit 5 and cannot select a weaker fallback.
 
-Before 1.0, a minor release may add CLI or schema versions. Published schema
-names and meanings remain immutable. Future Rust analyzers must pass every valid
-and invalid conformance vector, canonical byte expectation, and digest generated
-from the language-independent contracts.
+Rust 1.98 is the product toolchain with MSRV 1.85. The single OCaml reference
+job uses OCaml 5.5 and Dune 3.24.2. JSON, SARIF, lockfiles, evidence, and fix
+patches are LF-canonical. Five-platform determinism compares tool-independent
+analysis semantics while retaining each complete report digest as provenance.

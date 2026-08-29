@@ -1,145 +1,118 @@
 {
+  "analysis_digest": "sha256:1017db2f857b6c405b3439fb00d330abe2104e256db37610f625e2c82518871a",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: buildscripts/azure/azure-linux-macos.yml",
+      "Incomplete.Unresolved_dependency: buildscripts/azure/azure-windows.yml"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:0265058f6aeb68b7239bc583fdcad8aac2f6a5ae1aee9efd797933bce6d40315",
-  "graphs": [
-    {
-      "edges": [],
-      "entrypoints": [
-        "wv_43287fe88850e1ae0b06"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_43287fe88850e1ae0b06",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/numba/numba-scipy/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 796,
-              "column": 29,
-              "line": 34
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/numba/numba-scipy/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:1bc60b528b23c32d4cca0964896befdd8dc1eba872df100503a11fd671735019",
-      "path": "azure/numba/numba-scipy/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:7f1d6c967f6ccfccb3d936630e3d032410cbce8a3ea9566e34163404abbb9751",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:fd3a180699acef17d0a9b7d78885ddb928777c9a56b663381dfab96bcf6cec9d",
+    "sources": [
+      {
+        "digest": "sha256:1bc60b528b23c32d4cca0964896befdd8dc1eba872df100503a11fd671735019",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 0,
+    "nodes": 1,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

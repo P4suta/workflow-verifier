@@ -63,37 +63,29 @@ let same_payload left right =
   && left.digest = right.digest && left.source = right.source
   && left.summary = right.summary
 
-let create_with_schema schema entries =
-  if schema <> "lock-v1" && schema <> "lock-v2" then
-    Error ("unsupported lock schema " ^ schema)
-  else if
-    schema = "lock-v1"
-    && List.exists (fun entry -> Option.is_some entry.summary) entries
-  then Error "lock-v1 entries cannot contain semantic summaries"
-  else
-    let entries = List.sort compare_entry entries in
-    let rec validate previous accumulator = function
-      | [] -> Ok (List.rev accumulator)
-      | entry :: rest -> (
-          match validate_entry entry with
-          | Error _ as error -> error
-          | Ok () -> (
-              match previous with
-              | Some prior when compare_entry prior entry = 0 ->
-                  if same_payload prior entry then
-                    validate previous accumulator rest
-                  else
-                    Error
-                      (Printf.sprintf "conflicting lock entries for %s:%s"
-                         (Ir.provider_name entry.provider)
-                         entry.reference)
-              | _ -> validate (Some entry) (entry :: accumulator) rest))
-    in
-    match validate None [] entries with
-    | Error _ as error -> error
-    | Ok entries -> Ok (assemble schema entries)
+let create entries =
+  let entries = List.sort compare_entry entries in
+  let rec validate previous accumulator = function
+    | [] -> Ok (List.rev accumulator)
+    | entry :: rest -> (
+        match validate_entry entry with
+        | Error _ as error -> error
+        | Ok () -> (
+            match previous with
+            | Some prior when compare_entry prior entry = 0 ->
+                if same_payload prior entry then
+                  validate previous accumulator rest
+                else
+                  Error
+                    (Printf.sprintf "conflicting lock entries for %s:%s"
+                       (Ir.provider_name entry.provider)
+                       entry.reference)
+            | _ -> validate (Some entry) (entry :: accumulator) rest))
+  in
+  match validate None [] entries with
+  | Error _ as error -> error
+  | Ok entries -> Ok (assemble "lock-v2" entries)
 
-let create entries = create_with_schema "lock-v2" entries
 let empty = assemble "lock-v2" []
 
 let find lock provider reference =
@@ -136,17 +128,12 @@ let validate_fields ~context ~allowed json =
         | Some name -> Error (context ^ " contains unknown field " ^ name)
         | None -> Ok ())
 
-let parse_entry schema json =
+let parse_entry json =
   let open Util in
   let* () =
     validate_fields ~context:"lock entry"
       ~allowed:
-        (if schema = "lock-v1" then
-           [ "provider"; "reference"; "revision"; "digest"; "source" ]
-         else
-           [
-             "provider"; "reference"; "revision"; "digest"; "source"; "summary";
-           ])
+        [ "provider"; "reference"; "revision"; "digest"; "source"; "summary" ]
       json
   in
   let* provider_name = required_string "provider" json in
@@ -182,8 +169,7 @@ let parse source =
       json
   in
   let* schema = required_string "schema" json in
-  if schema <> "lock-v1" && schema <> "lock-v2" then
-    Error ("unsupported lock schema " ^ schema)
+  if schema <> "lock-v2" then Error ("unsupported lock schema " ^ schema)
   else
     let* integrity = required_string "integrity" json in
     let* entries_json =
@@ -194,11 +180,11 @@ let parse source =
     let rec parse_entries accumulator = function
       | [] -> Ok (List.rev accumulator)
       | item :: rest ->
-          let* entry = parse_entry schema item in
+          let* entry = parse_entry item in
           parse_entries (entry :: accumulator) rest
     in
     let* entries = parse_entries [] entries_json in
-    let* rebuilt = create_with_schema schema entries in
+    let* rebuilt = create entries in
     if rebuilt.integrity <> integrity then
       Error "lockfile integrity digest mismatch"
     else Ok rebuilt

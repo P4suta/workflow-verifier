@@ -1,7 +1,18 @@
 {
+  "analysis_digest": "sha256:d6735c6d7f2a712ffb254709e3e7795148127dcac6ea36f7bedd8aaa983ee16b",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: DotNetCoreCLI@2",
+      "Incomplete.Unresolved_dependency: NuGetCommand@2",
+      "Incomplete.Unresolved_dependency: NuGetToolInstaller@1",
+      "Incomplete.Unresolved_dependency: UseDotNet@2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = UseDotNet@2"
@@ -9,9 +20,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 245,
             "column": 9,
@@ -24,12 +34,12 @@
           }
         }
       },
-      "id": "diag_988c4128a1941393e3b2",
+      "id": "diag_bf5eca1859892fc3fe5734b832d01bd206fc129da30c13702c199368a540c89e",
       "message": "dependency is not pinned to immutable content: UseDotNet@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 245,
           "column": 9,
@@ -44,9 +54,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_0db9dd63b62f7938aad9",
+          "node": 9,
           "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 245,
               "column": 9,
@@ -62,7 +72,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NuGetToolInstaller@1"
@@ -70,9 +79,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 359,
             "column": 9,
@@ -85,12 +93,12 @@
           }
         }
       },
-      "id": "diag_b0b52b3c126f95dd0661",
+      "id": "diag_5a2b815f467e70febd88fb858e6a9157b1ac647b8f6fcf65364fa5be108fbfaa",
       "message": "dependency is not pinned to immutable content: NuGetToolInstaller@1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 359,
           "column": 9,
@@ -105,9 +113,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_099a5bd2c4bd023500ea",
+          "node": 11,
           "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 359,
               "column": 9,
@@ -123,7 +131,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = DotNetCoreCLI@2"
@@ -131,9 +138,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 474,
             "column": 9,
@@ -146,12 +152,12 @@
           }
         }
       },
-      "id": "diag_ae44f4430bc0376d16c5",
+      "id": "diag_368a7cc4978bcd508184ab10642a2b33926faf0d5af746c231547f5449c86593",
       "message": "dependency is not pinned to immutable content: DotNetCoreCLI@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 474,
           "column": 9,
@@ -166,9 +172,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c48fba3f15d73e7e6218",
+          "node": 13,
           "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 474,
               "column": 9,
@@ -184,7 +190,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = DotNetCoreCLI@2"
@@ -192,9 +197,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 691,
             "column": 9,
@@ -207,12 +211,12 @@
           }
         }
       },
-      "id": "diag_93a8c1893012598123c1",
+      "id": "diag_c2f38468db445a032a3ca0471ed15f4c105931b24e65f9aef350e63caa098774",
       "message": "dependency is not pinned to immutable content: DotNetCoreCLI@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 691,
           "column": 9,
@@ -227,9 +231,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c1a6d73020c6eb86d1b3",
+          "node": 15,
           "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 691,
               "column": 9,
@@ -245,7 +249,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = DotNetCoreCLI@2"
@@ -253,9 +256,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 912,
             "column": 9,
@@ -268,12 +270,12 @@
           }
         }
       },
-      "id": "diag_0a122feb70160c8a975d",
+      "id": "diag_2dc40e92f9bcdfa68b438fb36bc536b350c1c13f3552433e41b3cdec06c6dc9e",
       "message": "dependency is not pinned to immutable content: DotNetCoreCLI@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 912,
           "column": 9,
@@ -288,9 +290,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_1ba6facf00bd3937a18e",
+          "node": 17,
           "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 912,
               "column": 9,
@@ -306,7 +308,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = DotNetCoreCLI@2"
@@ -314,9 +315,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1194,
             "column": 9,
@@ -329,12 +329,12 @@
           }
         }
       },
-      "id": "diag_bed901a619474a98d3ee",
+      "id": "diag_dcd8e9bc73e26b3aac2f4c2ee1c26f79446c6bcda2629e55d780a9a51ffd1cf4",
       "message": "dependency is not pinned to immutable content: DotNetCoreCLI@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1194,
           "column": 9,
@@ -349,9 +349,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_651f1f42d835f24ed3c6",
+          "node": 19,
           "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1194,
               "column": 9,
@@ -367,7 +367,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NuGetCommand@2"
@@ -375,9 +374,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 1475,
             "column": 9,
@@ -390,12 +388,12 @@
           }
         }
       },
-      "id": "diag_0b3ce465e5a90191e377",
+      "id": "diag_deb8e087f633e30b09e06d7b0a1513d4bc02959d76bc65fa9415364b0caa0f69",
       "message": "dependency is not pinned to immutable content: NuGetCommand@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 1475,
           "column": 9,
@@ -410,9 +408,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c847088840df14fc6d0f",
+          "node": 21,
           "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 1475,
               "column": 9,
@@ -428,1122 +426,110 @@
       ]
     }
   ],
-  "digest": "sha256:52926da7e209ba5c1f63de449228b99fc8872a83811247aa4f27d11a1eb4ecca",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_21e82d1a708e504744e6",
-          "id": "wv_09469383ef7372dead62",
-          "kind": "data",
-          "label": "BuildConfiguration",
-          "to": "wv_e3a7d140ad50925a1758"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_0b32313835db63008131",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bad7ddab7a0e73c37bc7"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbbff90c371cde0540da",
-          "id": "wv_0efc0e9c8678b49944c0",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_0dab6c88940a0eb9b617"
-        },
-        {
-          "condition": true,
-          "from": "wv_cec30733297848b79182",
-          "id": "wv_0f4d828826faec5fceb8",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c1a6d73020c6eb86d1b3"
-        },
-        {
-          "condition": true,
-          "from": "wv_ccac554e80b3940e08bc",
-          "id": "wv_22982a7734d09e1f4fe7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_23c0aad6f76f5e92a20d"
-        },
-        {
-          "condition": true,
-          "from": "wv_0dab6c88940a0eb9b617",
-          "id": "wv_25cf6937fede7e37183a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_294890c98ddcbed33fcb"
-        },
-        {
-          "condition": true,
-          "from": "wv_cec30733297848b79182",
-          "id": "wv_2e65e939fe66aa2158b4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c1a6d73020c6eb86d1b3"
-        },
-        {
-          "condition": true,
-          "from": "wv_183fc5557c644238f01c",
-          "id": "wv_311f93c503daa19d4360",
-          "kind": "control",
-          "label": null,
-          "to": "wv_099a5bd2c4bd023500ea"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbbff90c371cde0540da",
-          "id": "wv_44a8c46a46a37ea51e80",
-          "kind": "call",
-          "label": null,
-          "to": "wv_1ba6facf00bd3937a18e"
-        },
-        {
-          "condition": true,
-          "from": "wv_183fc5557c644238f01c",
-          "id": "wv_46dd958b006a8dba95f3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_aa6fef43d463bceaef9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_0dab6c88940a0eb9b617",
-          "id": "wv_552dd479e0ab1e932900",
-          "kind": "call",
-          "label": null,
-          "to": "wv_651f1f42d835f24ed3c6"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_557ed945bffb8535b2fc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_294890c98ddcbed33fcb"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_63b86e068942c67f23a8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fbbff90c371cde0540da"
-        },
-        {
-          "condition": true,
-          "from": "wv_fbbff90c371cde0540da",
-          "id": "wv_6488d2d439a0e170c2e9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1ba6facf00bd3937a18e"
-        },
-        {
-          "condition": true,
-          "from": "wv_ccac554e80b3940e08bc",
-          "id": "wv_6c354da9b08562b2b21d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_bad7ddab7a0e73c37bc7"
-        },
-        {
-          "condition": true,
-          "from": "wv_e3a7d140ad50925a1758",
-          "id": "wv_6cae34dfea3c4bb786b2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3b0fcae7154cd89fa329"
-        },
-        {
-          "condition": true,
-          "from": "wv_aa6fef43d463bceaef9a",
-          "id": "wv_7078b806357d627634c7",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c48fba3f15d73e7e6218"
-        },
-        {
-          "condition": true,
-          "from": "wv_0dab6c88940a0eb9b617",
-          "id": "wv_72c043bb8679ea68c445",
-          "kind": "control",
-          "label": null,
-          "to": "wv_651f1f42d835f24ed3c6"
-        },
-        {
-          "condition": true,
-          "from": "wv_bad7ddab7a0e73c37bc7",
-          "id": "wv_7be004238044717a7ea2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_0db9dd63b62f7938aad9"
-        },
-        {
-          "condition": true,
-          "from": "wv_183fc5557c644238f01c",
-          "id": "wv_93b6c5accb1a409a6f04",
-          "kind": "call",
-          "label": null,
-          "to": "wv_099a5bd2c4bd023500ea"
-        },
-        {
-          "condition": true,
-          "from": "wv_fa0d9725603e744a57fe",
-          "id": "wv_a0aa48003c8a56cd51dd",
-          "kind": "data",
-          "label": "SolutionPath",
-          "to": "wv_e3a7d140ad50925a1758"
-        },
-        {
-          "condition": true,
-          "from": "wv_cec30733297848b79182",
-          "id": "wv_a8112907b7fced2b17cb",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_fbbff90c371cde0540da"
-        },
-        {
-          "condition": true,
-          "from": "wv_aa6fef43d463bceaef9a",
-          "id": "wv_ac80e14e7b74c698ccb8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_cec30733297848b79182"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_c2f987f1efa0635b4891",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ccac554e80b3940e08bc"
-        },
-        {
-          "condition": true,
-          "from": "wv_294890c98ddcbed33fcb",
-          "id": "wv_c5ca6c5d2351a29c36c7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c847088840df14fc6d0f"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_cc3952e9f9e323959b9a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_183fc5557c644238f01c"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_d7036d7000cafe92b728",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0dab6c88940a0eb9b617"
-        },
-        {
-          "condition": true,
-          "from": "wv_bad7ddab7a0e73c37bc7",
-          "id": "wv_dd40ede5c68dd2350c07",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0db9dd63b62f7938aad9"
-        },
-        {
-          "condition": true,
-          "from": "wv_294890c98ddcbed33fcb",
-          "id": "wv_ddcf41123b3925f206bd",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c847088840df14fc6d0f"
-        },
-        {
-          "condition": true,
-          "from": "wv_ccac554e80b3940e08bc",
-          "id": "wv_de97fab1942a75d05a32",
-          "kind": "call",
-          "label": null,
-          "to": "wv_23c0aad6f76f5e92a20d"
-        },
-        {
-          "condition": true,
-          "from": "wv_bad7ddab7a0e73c37bc7",
-          "id": "wv_e15858da11b8c444333f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_183fc5557c644238f01c"
-        },
-        {
-          "condition": true,
-          "from": "wv_79408c2b569a70e0c075",
-          "id": "wv_e704214affb3570b6c6c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e3a7d140ad50925a1758"
-        },
-        {
-          "condition": true,
-          "from": "wv_cf6158abd9c5186b4df1",
-          "id": "wv_e746c153b533d8a36646",
-          "kind": "data",
-          "label": "SolutionName",
-          "to": "wv_e3a7d140ad50925a1758"
-        },
-        {
-          "condition": true,
-          "from": "wv_aa6fef43d463bceaef9a",
-          "id": "wv_e90513231d9a3bc3f248",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c48fba3f15d73e7e6218"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_fda2543e98c888945fa4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_aa6fef43d463bceaef9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_3b0fcae7154cd89fa329",
-          "id": "wv_fe9006eb7848bdb011a2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cec30733297848b79182"
-        }
-      ],
-      "entrypoints": [
-        "wv_e3a7d140ad50925a1758"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_099a5bd2c4bd023500ea",
-          "kind": "call",
-          "name": "NuGetToolInstaller@1",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 359,
-              "column": 9,
-              "line": 24
-            },
-            "stop": {
-              "byte": 379,
-              "column": 29,
-              "line": 24
-            }
-          },
-          "unknown": {
-            "detail": "NuGetToolInstaller@1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0dab6c88940a0eb9b617",
-          "kind": "step",
-          "name": "dotnet pack",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 1188,
-              "column": 3,
-              "line": 55
-            },
-            "stop": {
-              "byte": 1465,
-              "column": 28,
-              "line": 64
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0db9dd63b62f7938aad9",
-          "kind": "call",
-          "name": "UseDotNet@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 245,
-              "column": 9,
-              "line": 18
-            },
-            "stop": {
-              "byte": 256,
-              "column": 20,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "UseDotNet@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_183fc5557c644238f01c",
-          "kind": "step",
-          "name": "nuget install",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 353,
-              "column": 3,
-              "line": 24
-            },
-            "stop": {
-              "byte": 460,
-              "column": 22,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_1ba6facf00bd3937a18e",
-          "kind": "call",
-          "name": "DotNetCoreCLI@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 912,
-              "column": 9,
-              "line": 46
-            },
-            "stop": {
-              "byte": 927,
-              "column": 24,
-              "line": 46
-            }
-          },
-          "unknown": {
-            "detail": "DotNetCoreCLI@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-                    "start": {
-                      "byte": 83,
-                      "column": 23,
-                      "line": 8
-                    },
-                    "stop": {
-                      "byte": 90,
-                      "column": 30,
-                      "line": 8
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Debug"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_21e82d1a708e504744e6",
-          "kind": "resource",
-          "name": "variable:BuildConfiguration",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 63,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 90,
-              "column": 30,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_23c0aad6f76f5e92a20d",
-          "kind": "call",
-          "name": "checkout:self",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 182,
-              "column": 13,
-              "line": 14
-            },
-            "stop": {
-              "byte": 186,
-              "column": 17,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_294890c98ddcbed33fcb",
-          "kind": "step",
-          "name": "nuget external push",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 1469,
-              "column": 3,
-              "line": 66
-            },
-            "stop": {
-              "byte": 1838,
-              "column": 30,
-              "line": 75
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3b0fcae7154cd89fa329",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1838,
-              "column": 30,
-              "line": 75
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_651f1f42d835f24ed3c6",
-          "kind": "call",
-          "name": "DotNetCoreCLI@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 1194,
-              "column": 9,
-              "line": 55
-            },
-            "stop": {
-              "byte": 1209,
-              "column": 24,
-              "line": 55
-            }
-          },
-          "unknown": {
-            "detail": "DotNetCoreCLI@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_79408c2b569a70e0c075",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 9,
-              "column": 1,
-              "line": 2
-            },
-            "stop": {
-              "byte": 15,
-              "column": 7,
-              "line": 2
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_aa6fef43d463bceaef9a",
-          "kind": "step",
-          "name": "dotnet restore",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 468,
-              "column": 3,
-              "line": 30
-            },
-            "stop": {
-              "byte": 681,
-              "column": 37,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bad7ddab7a0e73c37bc7",
-          "kind": "step",
-          "name": "dotnet install",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 239,
-              "column": 3,
-              "line": 18
-            },
-            "stop": {
-              "byte": 345,
-              "column": 24,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c1a6d73020c6eb86d1b3",
-          "kind": "call",
-          "name": "DotNetCoreCLI@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 691,
-              "column": 9,
-              "line": 39
-            },
-            "stop": {
-              "byte": 706,
-              "column": 24,
-              "line": 39
-            }
-          },
-          "unknown": {
-            "detail": "DotNetCoreCLI@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c48fba3f15d73e7e6218",
-          "kind": "call",
-          "name": "DotNetCoreCLI@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 474,
-              "column": 9,
-              "line": 30
-            },
-            "stop": {
-              "byte": 489,
-              "column": 24,
-              "line": 30
-            }
-          },
-          "unknown": {
-            "detail": "DotNetCoreCLI@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c847088840df14fc6d0f",
-          "kind": "call",
-          "name": "NuGetCommand@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 1475,
-              "column": 9,
-              "line": 66
-            },
-            "stop": {
-              "byte": 1489,
-              "column": 23,
-              "line": 66
-            }
-          },
-          "unknown": {
-            "detail": "NuGetCommand@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ccac554e80b3940e08bc",
-          "kind": "step",
-          "name": "github checkout",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 172,
-              "column": 3,
-              "line": 14
-            },
-            "stop": {
-              "byte": 235,
-              "column": 16,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cec30733297848b79182",
-          "kind": "step",
-          "name": "dotnet build",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 685,
-              "column": 3,
-              "line": 39
-            },
-            "stop": {
-              "byte": 902,
-              "column": 37,
-              "line": 44
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-                    "start": {
-                      "byte": 107,
-                      "column": 17,
-                      "line": 9
-                    },
-                    "stop": {
-                      "byte": 120,
-                      "column": 30,
-                      "line": 9
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CodeGator.Wpf"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cf6158abd9c5186b4df1",
-          "kind": "resource",
-          "name": "variable:SolutionName",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 93,
-              "column": 3,
-              "line": 9
-            },
-            "stop": {
-              "byte": 120,
-              "column": 30,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e3a7d140ad50925a1758",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1838,
-              "column": 30,
-              "line": 75
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-                    "start": {
-                      "byte": 137,
-                      "column": 17,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 158,
-                      "column": 38,
-                      "line": 10
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "SolutionName",
-                  "span": {
-                    "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-                    "start": {
-                      "byte": 143,
-                      "column": 23,
-                      "line": 10
-                    },
-                    "stop": {
-                      "byte": 155,
-                      "column": 35,
-                      "line": 10
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "SolutionName",
-                  "src/$(SolutionName)"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fa0d9725603e744a57fe",
-          "kind": "resource",
-          "name": "variable:SolutionPath",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 123,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 158,
-              "column": 38,
-              "line": 10
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fbbff90c371cde0540da",
-          "kind": "step",
-          "name": "dotnet test",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/codegator/codegator.wpf/azure-pipelines.yml",
-            "start": {
-              "byte": 906,
-              "column": 3,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1184,
-              "column": 18,
-              "line": 53
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/codegator/codegator.wpf/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:eed1535426d5b8cfe8afeafe33b7dd6d4cd2259b1b6b9ed77e01e032bf0c2469",
-      "path": "azure/codegator/codegator.wpf/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:e948c2800f896285ff546c884fe99a4a9da93a7e0c51cc357186b062e9c750ab",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:a45b6b121d64d59adb62f1e8b41049e3539f45670b01bdbe380de6f0b75f4244",
+    "sources": [
+      {
+        "digest": "sha256:eed1535426d5b8cfe8afeafe33b7dd6d4cd2259b1b6b9ed77e01e032bf0c2469",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 7,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 36,
+    "nodes": 22,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

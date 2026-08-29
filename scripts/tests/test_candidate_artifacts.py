@@ -33,11 +33,12 @@ def artifact_pair(root: Path, name: str, contents: bytes) -> tuple[Path, Path]:
 
 
 class CandidateArtifactsTests(unittest.TestCase):
-    def test_ocaml_oracle_has_a_reference_only_executable_name(self) -> None:
+    def test_ocaml_oracle_is_private_and_not_installable(self) -> None:
         repository = Path(__file__).resolve().parents[2]
         dune = (repository / "bin" / "dune").read_text(encoding="utf-8")
-        self.assertIn("(public_name workflow-verifier-reference)", dune)
-        self.assertNotIn("(public_name workflow-verifier)\n", dune)
+        self.assertIn("(name main)", dune)
+        self.assertNotIn("public_name", dune)
+        self.assertNotIn("package workflow-verifier", dune)
 
     def test_linux_arm64_candidate_builder_and_workflow_are_wired(self) -> None:
         repository = Path(__file__).resolve().parents[2]
@@ -70,10 +71,6 @@ class CandidateArtifactsTests(unittest.TestCase):
             root = Path(temporary)
             install = root / "_build" / "install" / "default"
             analyzer = write(root / "target" / "workflow-verifier.exe", b"analyzer")
-            write(
-                install / "bin" / "workflow-verifier-reference.exe",
-                b"reference oracle",
-            )
             write(install / "doc" / "workflow-verifier" / "README.md", b"docs")
             write(install / "share" / "workflow-verifier" / "schema.json", b"{}\n")
             write(install / "man" / "man1" / "workflow-verifier.1", b"manual")

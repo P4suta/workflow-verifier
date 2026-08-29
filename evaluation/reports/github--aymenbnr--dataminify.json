@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:a99abc9c36466833eb25f1d1155eb3e8e91f634ef94c9ebcfcb1530a7ae27473",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/github-script@v3",
+      "Incomplete.Unresolved_dependency: vsoch/pull-request-action@1.0.12"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/github-script@v3"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+          "source": 0,
           "start": {
             "byte": 231,
             "column": 15,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_334afd824b9591b457b0",
+      "id": "diag_b4b01774b981c5dea58414b4b74bbb77d50388dd9c9154c05144e70c76d5bc2f",
       "message": "dependency is not pinned to immutable content: actions/github-script@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+        "source": 0,
         "start": {
           "byte": 231,
           "column": 15,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c88b2ee6a82898082e4e",
+          "node": 4,
           "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+            "source": 0,
             "start": {
               "byte": 231,
               "column": 15,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/github-script@v3"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+          "source": 0,
           "start": {
             "byte": 1204,
             "column": 15,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_62ce04512d70ef918cd8",
+      "id": "diag_dadad51b92496859f707983f227da485d5297108ac3c27f9e4b2221b18a4c95e",
       "message": "dependency is not pinned to immutable content: actions/github-script@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+        "source": 0,
         "start": {
           "byte": 1204,
           "column": 15,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_180a88f519c048cbd31d",
+          "node": 10,
           "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+            "source": 0,
             "start": {
               "byte": 1204,
               "column": 15,
@@ -123,7 +129,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/github-script@v3"
@@ -131,9 +136,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+          "source": 0,
           "start": {
             "byte": 1764,
             "column": 15,
@@ -146,12 +150,12 @@
           }
         }
       },
-      "id": "diag_086f5c1ff8c9663f06f5",
+      "id": "diag_fd42d9091be4b512791021c23b7ba1f9f235bb32e648fefd27047c324b758f25",
       "message": "dependency is not pinned to immutable content: actions/github-script@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+        "source": 0,
         "start": {
           "byte": 1764,
           "column": 15,
@@ -166,9 +170,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_0f648ff5affc20a8ccf4",
+          "node": 16,
           "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+            "source": 0,
             "start": {
               "byte": 1764,
               "column": 15,
@@ -184,7 +188,53 @@
       ]
     },
     {
-      "capabilities": [],
+      "capabilities": [
+        "secret_access",
+        "network"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "id": "diag_5e3fcf413ad67f0d0d39d146d72736cfc1f76a955bfe51670c4eec0f5d87f9a3",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "source": 0,
+        "start": {
+          "byte": 2096,
+          "column": 15,
+          "line": 58
+        },
+        "stop": {
+          "byte": 2120,
+          "column": 39,
+          "line": 58
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node": 22,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 2096,
+              "column": 15,
+              "line": 58
+            },
+            "stop": {
+              "byte": 2120,
+              "column": 39,
+              "line": 58
+            }
+          }
+        }
+      ]
+    },
+    {
       "confidence": "high",
       "evidence": [
         "reference = actions/github-script@v3"
@@ -192,9 +242,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+          "source": 0,
           "start": {
             "byte": 2096,
             "column": 15,
@@ -207,12 +256,12 @@
           }
         }
       },
-      "id": "diag_623ac4984ce0bd222b9a",
+      "id": "diag_e903db627e411a5ed6b1fd656ca637d60851f2e93f4486bc50e2305a84d3ba0a",
       "message": "dependency is not pinned to immutable content: actions/github-script@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+        "source": 0,
         "start": {
           "byte": 2096,
           "column": 15,
@@ -227,9 +276,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_2d393c8fe0e39a82e19f",
+          "node": 22,
           "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+            "source": 0,
             "start": {
               "byte": 2096,
               "column": 15,
@@ -245,7 +294,53 @@
       ]
     },
     {
-      "capabilities": [],
+      "capabilities": [
+        "secret_access",
+        "network"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "id": "diag_f0eee9f3ada283da3415479057dccd709ca0c0bb72a84153348979115f79294a",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "source": 0,
+        "start": {
+          "byte": 2493,
+          "column": 15,
+          "line": 68
+        },
+        "stop": {
+          "byte": 2525,
+          "column": 47,
+          "line": 68
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node": 25,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 2493,
+              "column": 15,
+              "line": 68
+            },
+            "stop": {
+              "byte": 2525,
+              "column": 47,
+              "line": 68
+            }
+          }
+        }
+      ]
+    },
+    {
       "confidence": "high",
       "evidence": [
         "reference = vsoch/pull-request-action@1.0.12"
@@ -253,9 +348,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+          "source": 0,
           "start": {
             "byte": 2493,
             "column": 15,
@@ -268,12 +362,12 @@
           }
         }
       },
-      "id": "diag_e2957480fe483f85c3b3",
+      "id": "diag_4178cf736d766af285807d7b2870fb6e489154d8590d46aba17298e2319b8788",
       "message": "dependency is not pinned to immutable content: vsoch/pull-request-action@1.0.12",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+        "source": 0,
         "start": {
           "byte": 2493,
           "column": 15,
@@ -288,9 +382,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c9f2be03e62e18b063e8",
+          "node": 25,
           "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
+            "source": 0,
             "start": {
               "byte": 2493,
               "column": 15,
@@ -306,1804 +400,65 @@
       ]
     }
   ],
-  "digest": "sha256:045f080cdcab5b0e49be76b27e1580a63b487db9d98a562c286a110b3c132069",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_fb6743be866d54f2fed0",
-          "id": "wv_0938cfe93e31fec4c45f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_180a88f519c048cbd31d"
-        },
-        {
-          "condition": true,
-          "from": "wv_01bce01de7df0b2ff64d",
-          "id": "wv_0cd6a39584a56f42b4c0",
-          "kind": "data",
-          "label": "GITHUB_ENV",
-          "to": "wv_c276421771b5df9e2488"
-        },
-        {
-          "condition": true,
-          "from": "wv_895c5f11b9dd245e89fa",
-          "id": "wv_0f1a82be9b13eb51a0b8",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c9f2be03e62e18b063e8"
-        },
-        {
-          "condition": true,
-          "from": "wv_fb6743be866d54f2fed0",
-          "id": "wv_11c57d8521a1046bec28",
-          "kind": "call",
-          "label": null,
-          "to": "wv_180a88f519c048cbd31d"
-        },
-        {
-          "condition": true,
-          "from": "wv_941f518cc25a24980588",
-          "id": "wv_1671196a64012ffd738b",
-          "kind": "data",
-          "label": "GITHUB_ENV",
-          "to": "wv_f4d36cacab053d588a90"
-        },
-        {
-          "condition": true,
-          "from": "wv_c142cb41ea0ad1b84593",
-          "id": "wv_1c85ddd38f2c6787bd14",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_026a18236a2d344cc391"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc60982de4cccd49d32f",
-          "id": "wv_1d9df086faa9e331dd87",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0f648ff5affc20a8ccf4"
-        },
-        {
-          "condition": true,
-          "from": "wv_e8098e990d41a4f1280d",
-          "id": "wv_2776ec79920d1a634574",
-          "kind": "data",
-          "label": "steps.set-pr-draft.outputs.result",
-          "to": "wv_473e5dac52f59ea034f6"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_27acff51e9112d33735b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1d1b5c3474b16987832b"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_2a52c29e85d2f0f0265c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5e3a603683ada2c9663b"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_3075037315ea8ed224cb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c142cb41ea0ad1b84593"
-        },
-        {
-          "condition": true,
-          "from": "wv_bfbd808262bb69f36086",
-          "id": "wv_358398c92fa209b13ce5",
-          "kind": "data",
-          "label": "steps.set-pr-body.outputs.result",
-          "to": "wv_f4d36cacab053d588a90"
-        },
-        {
-          "condition": true,
-          "from": "wv_5e3a603683ada2c9663b",
-          "id": "wv_3d0ed5830c5b3dbc4367",
-          "kind": "call",
-          "label": null,
-          "to": "wv_2d393c8fe0e39a82e19f"
-        },
-        {
-          "condition": true,
-          "from": "wv_026a18236a2d344cc391",
-          "id": "wv_40738986b64797f19ea9",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_fb6743be866d54f2fed0"
-        },
-        {
-          "condition": true,
-          "from": "wv_f74d340fcae8739ea870",
-          "id": "wv_5e26bb4fc6f7527b9f7c",
-          "kind": "data",
-          "label": "secrets.GH_PAT",
-          "to": "wv_2d393c8fe0e39a82e19f"
-        },
-        {
-          "condition": true,
-          "from": "wv_64e8406600e894393b2a",
-          "id": "wv_67349ca0d8b94e5353a5",
-          "kind": "data",
-          "label": "steps.set-branch-name.outputs.result",
-          "to": "wv_c276421771b5df9e2488"
-        },
-        {
-          "condition": {
-            "high": {
-              "high": true,
-              "low": false,
-              "variable": "steps.should-pr.outputs.result"
-            },
-            "low": false,
-            "variable": "always()"
-          },
-          "from": "wv_387bba74b4fcd2b945e5",
-          "id": "wv_699370fe4d15384ae8a7",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_895c5f11b9dd245e89fa"
-        },
-        {
-          "condition": true,
-          "from": "wv_c142cb41ea0ad1b84593",
-          "id": "wv_6fcaeaf912a161da6a6d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c88b2ee6a82898082e4e"
-        },
-        {
-          "condition": true,
-          "from": "wv_321a96ef58be0ae7076e",
-          "id": "wv_77914e6a6fc2e58cdc62",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d7bd1fc7c65f4dd9c54c"
-        },
-        {
-          "condition": true,
-          "from": "wv_5e3a603683ada2c9663b",
-          "id": "wv_7d028b84e150d9a91134",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2d393c8fe0e39a82e19f"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_7f16edb0415e331ccc57",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dc60982de4cccd49d32f"
-        },
-        {
-          "condition": true,
-          "from": "wv_5e3a603683ada2c9663b",
-          "id": "wv_80fe462b708ae1df1eb9",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_387bba74b4fcd2b945e5"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_84d1ff9a9375e2b0e3ba",
-          "kind": "control",
-          "label": null,
-          "to": "wv_95fd335d53a8f512114b"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc60982de4cccd49d32f",
-          "id": "wv_88fcaa3785d65e85ac97",
-          "kind": "call",
-          "label": null,
-          "to": "wv_0f648ff5affc20a8ccf4"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_8c1b5dbe33b02a58e0c8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_026a18236a2d344cc391"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc60982de4cccd49d32f",
-          "id": "wv_9b0e9e811791cf3ef1f9",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_95fd335d53a8f512114b"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_a9c94afb0bef376a18ef",
-          "kind": "control",
-          "label": null,
-          "to": "wv_387bba74b4fcd2b945e5"
-        },
-        {
-          "condition": true,
-          "from": "wv_c142cb41ea0ad1b84593",
-          "id": "wv_b1f51900e634d858a166",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c88b2ee6a82898082e4e"
-        },
-        {
-          "condition": true,
-          "from": "wv_282e341531c4a1d282b1",
-          "id": "wv_b316ae339b0a9049b3c1",
-          "kind": "data",
-          "label": "GITHUB_ENV",
-          "to": "wv_473e5dac52f59ea034f6"
-        },
-        {
-          "condition": true,
-          "from": "wv_806393a0d26c1b931dc0",
-          "id": "wv_bc1777a8919fb049501e",
-          "kind": "data",
-          "label": "secrets.GH_PAT",
-          "to": "wv_c9f2be03e62e18b063e8"
-        },
-        {
-          "condition": true,
-          "from": "wv_fb6743be866d54f2fed0",
-          "id": "wv_c3499aeeff3d7346e873",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1d1b5c3474b16987832b"
-        },
-        {
-          "condition": true,
-          "from": "wv_c6150436b88b3cb62c97",
-          "id": "wv_c379fa7d2a788c0424cc",
-          "kind": "data",
-          "label": "steps.should-pr.outputs.result",
-          "to": "wv_387bba74b4fcd2b945e5"
-        },
-        {
-          "condition": true,
-          "from": "wv_95fd335d53a8f512114b",
-          "id": "wv_c962035080335a49f22d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_5e3a603683ada2c9663b"
-        },
-        {
-          "condition": true,
-          "from": "wv_1d1b5c3474b16987832b",
-          "id": "wv_ccdd8b4c59382aac443f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_dc60982de4cccd49d32f"
-        },
-        {
-          "condition": true,
-          "from": "wv_95fd335d53a8f512114b",
-          "id": "wv_d6446fb92033509ca831",
-          "kind": "control",
-          "label": null,
-          "to": "wv_473e5dac52f59ea034f6"
-        },
-        {
-          "condition": true,
-          "from": "wv_46ee949d886af6053bfc",
-          "id": "wv_dde217cd57e5e8660e0e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fb6743be866d54f2fed0"
-        },
-        {
-          "condition": true,
-          "from": "wv_d7bd1fc7c65f4dd9c54c",
-          "id": "wv_dee4818b94d2f6f839b0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_46ee949d886af6053bfc"
-        },
-        {
-          "condition": true,
-          "from": "wv_1d1b5c3474b16987832b",
-          "id": "wv_df91b61f21215ac8ef94",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f4d36cacab053d588a90"
-        },
-        {
-          "condition": true,
-          "from": "wv_895c5f11b9dd245e89fa",
-          "id": "wv_e2176577eaa317fc20ec",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c9f2be03e62e18b063e8"
-        },
-        {
-          "condition": true,
-          "from": "wv_026a18236a2d344cc391",
-          "id": "wv_ed884fdfab59e0e34a89",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c276421771b5df9e2488"
-        }
-      ],
-      "entrypoints": [
-        "wv_d7bd1fc7c65f4dd9c54c"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1148,
-                      "column": 86,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 1158,
-                      "column": 96,
-                      "line": 35
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_01bce01de7df0b2ff64d",
-          "kind": "resource",
-          "name": "GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1148,
-              "column": 86,
-              "line": 35
-            },
-            "stop": {
-              "byte": 1158,
-              "column": 96,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_026a18236a2d344cc391",
-          "kind": "step",
-          "name": "Set branch name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1041,
-              "column": 9,
-              "line": 34
-            },
-            "stop": {
-              "byte": 1158,
-              "column": 96,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0f648ff5affc20a8ccf4",
-          "kind": "call",
-          "name": "actions/github-script@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1764,
-              "column": 15,
-              "line": 50
-            },
-            "stop": {
-              "byte": 1788,
-              "column": 39,
-              "line": 50
-            }
-          },
-          "unknown": {
-            "detail": "actions/github-script@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_180a88f519c048cbd31d",
-          "kind": "call",
-          "name": "actions/github-script@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1204,
-              "column": 15,
-              "line": 37
-            },
-            "stop": {
-              "byte": 1228,
-              "column": 39,
-              "line": 37
-            }
-          },
-          "unknown": {
-            "detail": "actions/github-script@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1d1b5c3474b16987832b",
-          "kind": "step",
-          "name": "Set PR body",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1609,
-              "column": 9,
-              "line": 47
-            },
-            "stop": {
-              "byte": 1717,
-              "column": 91,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 2030,
-                      "column": 83,
-                      "line": 56
-                    },
-                    "stop": {
-                      "byte": 2040,
-                      "column": 93,
-                      "line": 56
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_282e341531c4a1d282b1",
-          "kind": "resource",
-          "name": "GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2030,
-              "column": 83,
-              "line": 56
-            },
-            "stop": {
-              "byte": 2040,
-              "column": 93,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2d393c8fe0e39a82e19f",
-          "kind": "call",
-          "name": "actions/github-script@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2096,
-              "column": 15,
-              "line": 58
-            },
-            "stop": {
-              "byte": 2120,
-              "column": 39,
-              "line": 58
-            }
-          },
-          "unknown": {
-            "detail": "actions/github-script@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_321a96ef58be0ae7076e",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 28,
-              "column": 3,
-              "line": 3
-            },
-            "stop": {
-              "byte": 88,
-              "column": 19,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 2538,
-                      "column": 13,
-                      "line": 69
-                    },
-                    "stop": {
-                      "byte": 2580,
-                      "column": 55,
-                      "line": 69
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "always() && steps.should-pr.outputs.result"
-                ]
-              }
-            },
-            "reference:steps.should-pr.outputs.result": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.should-pr.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 2550,
-                      "column": 25,
-                      "line": 69
-                    },
-                    "stop": {
-                      "byte": 2580,
-                      "column": 55,
-                      "line": 69
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.should-pr.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.should-pr.outputs.result"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": {
-              "high": true,
-              "low": false,
-              "variable": "steps.should-pr.outputs.result"
-            },
-            "low": false,
-            "variable": "always()"
-          },
-          "effects": [],
-          "id": "wv_387bba74b4fcd2b945e5",
-          "kind": "gate",
-          "name": "if:auto-pull-request:pull-request-action",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2538,
-              "column": 13,
-              "line": 69
-            },
-            "stop": {
-              "byte": 2580,
-              "column": 55,
-              "line": 69
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_46ee949d886af6053bfc",
-          "kind": "job",
-          "name": "auto-pull-request",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 97,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 2730,
-              "column": 51,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 2030,
-                      "column": 83,
-                      "line": 56
-                    },
-                    "stop": {
-                      "byte": 2040,
-                      "column": 93,
-                      "line": 56
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.set-pr-draft.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1989,
-                      "column": 42,
-                      "line": 56
-                    },
-                    "stop": {
-                      "byte": 2022,
-                      "column": 75,
-                      "line": 56
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1961,
-                      "column": 14,
-                      "line": 56
-                    },
-                    "stop": {
-                      "byte": 2040,
-                      "column": 93,
-                      "line": 56
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.set-pr-draft.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV",
-                  "echo \"PULL_REQUEST_DRAFT=${{steps.set-pr-draft.outputs.result}}\" >> $GITHUB_ENV",
-                  "steps.set-pr-draft.outputs.result"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_473e5dac52f59ea034f6",
-          "kind": "command",
-          "name": "echo \"PULL_REQUEST_DRAFT=${{steps.set-pr-draft.outputs.result}}\" >> $GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1961,
-              "column": 14,
-              "line": 56
-            },
-            "stop": {
-              "byte": 2040,
-              "column": 93,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5e3a603683ada2c9663b",
-          "kind": "step",
-          "name": "Determine whether to merge",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2049,
-              "column": 9,
-              "line": 57
-            },
-            "stop": {
-              "byte": 2444,
-              "column": 64,
-              "line": 66
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.set-branch-name.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1104,
-                      "column": 42,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 1140,
-                      "column": 78,
-                      "line": 35
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.set-branch-name.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.set-branch-name.outputs.result"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_64e8406600e894393b2a",
-          "kind": "resource",
-          "name": "steps.set-branch-name.outputs.result",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1104,
-              "column": 42,
-              "line": 35
-            },
-            "stop": {
-              "byte": 1140,
-              "column": 78,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GH_PAT",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 2622,
-                      "column": 29,
-                      "line": 71
-                    },
-                    "stop": {
-                      "byte": 2636,
-                      "column": 43,
-                      "line": 71
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GH_PAT"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_806393a0d26c1b931dc0",
-          "kind": "resource",
-          "name": "secrets.GH_PAT",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2622,
-              "column": 29,
-              "line": 71
-            },
-            "stop": {
-              "byte": 2636,
-              "column": 43,
-              "line": 71
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_895c5f11b9dd245e89fa",
-          "kind": "step",
-          "name": "pull-request-action",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2453,
-              "column": 9,
-              "line": 67
-            },
-            "stop": {
-              "byte": 2730,
-              "column": 51,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1707,
-                      "column": 81,
-                      "line": 48
-                    },
-                    "stop": {
-                      "byte": 1717,
-                      "column": 91,
-                      "line": 48
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_941f518cc25a24980588",
-          "kind": "resource",
-          "name": "GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1707,
-              "column": 81,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1717,
-              "column": 91,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_95fd335d53a8f512114b",
-          "kind": "step",
-          "name": "Set PR draft",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1929,
-              "column": 9,
-              "line": 55
-            },
-            "stop": {
-              "byte": 2040,
-              "column": 93,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.set-pr-body.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1667,
-                      "column": 41,
-                      "line": 48
-                    },
-                    "stop": {
-                      "byte": 1699,
-                      "column": 73,
-                      "line": 48
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.set-pr-body.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.set-pr-body.outputs.result"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bfbd808262bb69f36086",
-          "kind": "resource",
-          "name": "steps.set-pr-body.outputs.result",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1667,
-              "column": 41,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1699,
-              "column": 73,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c142cb41ea0ad1b84593",
-          "kind": "step",
-          "name": "Generate branch name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 190,
-              "column": 9,
-              "line": 12
-            },
-            "stop": {
-              "byte": 1032,
-              "column": 34,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1148,
-                      "column": 86,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 1158,
-                      "column": 96,
-                      "line": 35
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.set-branch-name.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1104,
-                      "column": 42,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 1140,
-                      "column": 78,
-                      "line": 35
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1076,
-                      "column": 14,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 1158,
-                      "column": 96,
-                      "line": 35
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.set-branch-name.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV",
-                  "echo \"PULL_REQUEST_TITLE=${{steps.set-branch-name.outputs.result}}\" >> $GITHUB_ENV",
-                  "steps.set-branch-name.outputs.result"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c276421771b5df9e2488",
-          "kind": "command",
-          "name": "echo \"PULL_REQUEST_TITLE=${{steps.set-branch-name.outputs.result}}\" >> $GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1076,
-              "column": 14,
-              "line": 35
-            },
-            "stop": {
-              "byte": 1158,
-              "column": 96,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.should-pr.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 2550,
-                      "column": 25,
-                      "line": 69
-                    },
-                    "stop": {
-                      "byte": 2580,
-                      "column": 55,
-                      "line": 69
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.should-pr.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.should-pr.outputs.result"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c6150436b88b3cb62c97",
-          "kind": "resource",
-          "name": "steps.should-pr.outputs.result",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2550,
-              "column": 25,
-              "line": 69
-            },
-            "stop": {
-              "byte": 2580,
-              "column": 55,
-              "line": 69
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c88b2ee6a82898082e4e",
-          "kind": "call",
-          "name": "actions/github-script@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 231,
-              "column": 15,
-              "line": 13
-            },
-            "stop": {
-              "byte": 255,
-              "column": 39,
-              "line": 13
-            }
-          },
-          "unknown": {
-            "detail": "actions/github-script@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c9f2be03e62e18b063e8",
-          "kind": "call",
-          "name": "vsoch/pull-request-action@1.0.12",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2493,
-              "column": 15,
-              "line": 68
-            },
-            "stop": {
-              "byte": 2525,
-              "column": 47,
-              "line": 68
-            }
-          },
-          "unknown": {
-            "detail": "vsoch/pull-request-action@1.0.12",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d7bd1fc7c65f4dd9c54c",
-          "kind": "workflow",
-          "name": "PR Generator CI",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 2730,
-              "column": 51,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dc60982de4cccd49d32f",
-          "kind": "step",
-          "name": "Generate PR draft",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1726,
-              "column": 9,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1920,
-              "column": 73,
-              "line": 54
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.set-pr-draft.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1989,
-                      "column": 42,
-                      "line": 56
-                    },
-                    "stop": {
-                      "byte": 2022,
-                      "column": 75,
-                      "line": 56
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.set-pr-draft.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.set-pr-draft.outputs.result"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e8098e990d41a4f1280d",
-          "kind": "resource",
-          "name": "steps.set-pr-draft.outputs.result",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1989,
-              "column": 42,
-              "line": 56
-            },
-            "stop": {
-              "byte": 2022,
-              "column": 75,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1707,
-                      "column": 81,
-                      "line": 48
-                    },
-                    "stop": {
-                      "byte": 1717,
-                      "column": 91,
-                      "line": 48
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.set-pr-body.outputs.result",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1667,
-                      "column": 41,
-                      "line": 48
-                    },
-                    "stop": {
-                      "byte": 1699,
-                      "column": 73,
-                      "line": 48
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 1640,
-                      "column": 14,
-                      "line": 48
-                    },
-                    "stop": {
-                      "byte": 1717,
-                      "column": 91,
-                      "line": 48
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value steps.set-pr-body.outputs.result",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV",
-                  "echo \"PULL_REQUEST_BODY=${{steps.set-pr-body.outputs.result}}\" >> $GITHUB_ENV",
-                  "steps.set-pr-body.outputs.result"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f4d36cacab053d588a90",
-          "kind": "command",
-          "name": "echo \"PULL_REQUEST_BODY=${{steps.set-pr-body.outputs.result}}\" >> $GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1640,
-              "column": 14,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1717,
-              "column": 91,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GH_PAT",
-                  "span": {
-                    "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-                    "start": {
-                      "byte": 2185,
-                      "column": 29,
-                      "line": 61
-                    },
-                    "stop": {
-                      "byte": 2199,
-                      "column": 43,
-                      "line": 61
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GH_PAT"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f74d340fcae8739ea870",
-          "kind": "resource",
-          "name": "secrets.GH_PAT",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 2185,
-              "column": 29,
-              "line": 61
-            },
-            "stop": {
-              "byte": 2199,
-              "column": 43,
-              "line": 61
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fb6743be866d54f2fed0",
-          "kind": "step",
-          "name": "Generate PR body",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml",
-            "start": {
-              "byte": 1167,
-              "column": 9,
-              "line": 36
-            },
-            "stop": {
-              "byte": 1600,
-              "column": 34,
-              "line": 46
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:72fc00c8ec4144c80dc11e08b9e840f7defb4bc97251fc4e0239b860f7ecea00",
-      "path": "github/aymenbnr/dataminify/.github/workflows/pull-request.yml"
-    }
-  ],
+  "digest": "sha256:a974d4c31606fabbdf054c16d25212cc1a1b7d0255daf3c69f0e8a4ca2f5ed18",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:950e75aadc714558f0c62326d7f542424b6d664b524542d22c09b2b62903e74f",
+    "sources": [
+      {
+        "digest": "sha256:72fc00c8ec4144c80dc11e08b9e840f7defb4bc97251fc4e0239b860f7ecea00",
+        "id": 0,
+        "path": ".github/workflows/pull-request.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
@@ -2122,56 +477,47 @@
           "kind": "dynamic_string"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [
-        {
-          "detail": "actions/github-script@v3",
-          "kind": "unresolved_dependency"
-        },
-        {
-          "detail": "vsoch/pull-request-action@1.0.12",
-          "kind": "unresolved_dependency"
-        }
-      ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
-    "diagnostics": 5,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "diagnostics": 7,
+    "edges": 40,
+    "nodes": 29,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 2
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

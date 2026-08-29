@@ -1,390 +1,88 @@
 {
+  "analysis_digest": "sha256:ebb4e6fa14ab287e2555f4b93ef4f10d079b03f8253ebc288ee261ddb959eb1a",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: python.gitlab-ci.yml"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:7a2f488c39def4c4c2a2198129d3adeeb6c9153ca4b7cef24cdb0e3ed53c132b",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_c4eeb6bcc26faa8e0601",
-          "id": "wv_08a7859a494035438d07",
-          "kind": "control",
-          "label": null,
-          "to": "wv_884dda6e2041b4de45d7"
-        },
-        {
-          "condition": true,
-          "from": "wv_c4eeb6bcc26faa8e0601",
-          "id": "wv_1fcb409ad7d5bf44e356",
-          "kind": "call",
-          "label": null,
-          "to": "wv_e8829fe518ea20a0068e"
-        },
-        {
-          "condition": true,
-          "from": "wv_6256a0af9d78df140ccd",
-          "id": "wv_3c391865c16b25573f61",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_422a1f1267f9bc21b890"
-        },
-        {
-          "condition": true,
-          "from": "wv_884dda6e2041b4de45d7",
-          "id": "wv_6a887a1c6d5e97662fad",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6256a0af9d78df140ccd"
-        },
-        {
-          "condition": true,
-          "from": "wv_b4e3963851de3e63700f",
-          "id": "wv_816fe2a450d68136800c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_dad72e5899b5449ac1f2"
-        },
-        {
-          "condition": true,
-          "from": "wv_c4eeb6bcc26faa8e0601",
-          "id": "wv_96739ca1b16ed1c313d5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e8829fe518ea20a0068e"
-        },
-        {
-          "condition": true,
-          "from": "wv_422a1f1267f9bc21b890",
-          "id": "wv_b2912bc11ffbc36f2685",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b4e3963851de3e63700f"
-        }
-      ],
-      "entrypoints": [
-        "wv_c4eeb6bcc26faa8e0601"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_422a1f1267f9bc21b890",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/hashmapinc/hdc/.gitlab-ci.yml",
-            "start": {
-              "byte": 580,
-              "column": 1,
-              "line": 15
-            },
-            "stop": {
-              "byte": 620,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6256a0af9d78df140ccd",
-          "kind": "stage",
-          "name": ".pre",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/hashmapinc/hdc/.gitlab-ci.yml",
-            "start": {
-              "byte": 580,
-              "column": 1,
-              "line": 15
-            },
-            "stop": {
-              "byte": 620,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_884dda6e2041b4de45d7",
-          "kind": "stage",
-          "name": ".post",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/hashmapinc/hdc/.gitlab-ci.yml",
-            "start": {
-              "byte": 580,
-              "column": 1,
-              "line": 15
-            },
-            "stop": {
-              "byte": 620,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b4e3963851de3e63700f",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/hashmapinc/hdc/.gitlab-ci.yml",
-            "start": {
-              "byte": 580,
-              "column": 1,
-              "line": 15
-            },
-            "stop": {
-              "byte": 620,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c4eeb6bcc26faa8e0601",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/hashmapinc/hdc/.gitlab-ci.yml",
-            "start": {
-              "byte": 580,
-              "column": 1,
-              "line": 15
-            },
-            "stop": {
-              "byte": 620,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "4"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dad72e5899b5449ac1f2",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/hashmapinc/hdc/.gitlab-ci.yml",
-            "start": {
-              "byte": 580,
-              "column": 1,
-              "line": 15
-            },
-            "stop": {
-              "byte": 620,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e8829fe518ea20a0068e",
-          "kind": "call",
-          "name": "python.gitlab-ci.yml",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/hashmapinc/hdc/.gitlab-ci.yml",
-            "start": {
-              "byte": 593,
-              "column": 5,
-              "line": 16
-            },
-            "stop": {
-              "byte": 620,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": {
-            "detail": "python.gitlab-ci.yml",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/hashmapinc/hdc/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:6698b44bd83eae8a572133cc9e46c22708ca5f02d12c0a341db9f5c14360f910",
-      "path": "gitlab/hashmapinc/hdc/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:81743d582ff535af52a108c4c922479b4d5bf3486316319878d9cfdd5d656a9d",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:a6b98c496f2a452e10d95684f513bc9156d3f535d8c6a34858597174d9255116",
+    "sources": [
+      {
+        "digest": "sha256:6698b44bd83eae8a572133cc9e46c22708ca5f02d12c0a341db9f5c14360f910",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -395,26 +93,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 7,
+    "nodes": 7,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

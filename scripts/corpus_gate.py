@@ -20,7 +20,7 @@ PROVIDERS = ("github", "gitlab", "azure", "circleci")
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 REVISION = re.compile(r"^[0-9a-f]{40}$")
 IDENTIFIER = re.compile(r"^[a-z0-9](?:[a-z0-9._/-]*[a-z0-9])?$")
-DIAGNOSTIC_ID = re.compile(r"^diag_[0-9a-f]{20}$")
+DIAGNOSTIC_ID = re.compile(r"^diag_[0-9a-f]{64}$")
 RULE_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$")
 SPDX_EXPRESSION = re.compile(r"^[A-Za-z0-9.+() -]+$")
 
@@ -41,31 +41,20 @@ REPOSITORY_FIELDS = {
 }
 EXPECTATION_FIELDS = {"id", "rule_id"}
 REPORT_FIELDS = {
+    "analysis_digest",
     "completeness",
-    "configuration",
     "diagnostics",
     "digest",
     "gate",
-    "graphs",
     "inputs",
-    "lock",
     "persona",
-    "provider_profiles",
     "properties",
+    "providers",
     "schema",
-    "semantic_digest",
-    "snapshot",
     "summary",
     "tool",
 }
-TOOL_FIELDS = {"build", "name", "version"}
-BUILD_FIELDS = {
-    "binary_digest",
-    "compiler",
-    "implementation",
-    "source_commit",
-    "target",
-}
+TOOL_FIELDS = {"commit", "compiler", "name", "target", "version"}
 DIAGNOSTIC_FIELDS = {
     "capabilities",
     "confidence",
@@ -156,6 +145,14 @@ def _canonical(value: Any) -> bytes:
     )
 
 
+def _domain_digest(domain: bytes, value: Any) -> str:
+    digest = hashlib.sha256()
+    for field in (domain, _canonical(value)):
+        digest.update(len(field).to_bytes(8, byteorder="big"))
+        digest.update(field)
+    return "sha256:" + digest.hexdigest()
+
+
 def tree_digest(root: Path) -> str:
     """Hash a source snapshot by canonical path, size, and file digest."""
     try:
@@ -228,46 +225,43 @@ def _expectations(value: Any, label: str) -> dict[str, str]:
 
 def _report_diagnostics(path: Path) -> dict[str, str]:
     document = _load_json(path)
-    if not isinstance(document, dict) or document.get("schema") != "report-v3":
-        raise ValueError(f"{path} is not a report-v3 document")
+    if not isinstance(document, dict) or document.get("schema") != "workflow-verifier-report/1":
+        raise ValueError(f"{path} is not a workflow-verifier-report/1 document")
     _exact_fields(document, REPORT_FIELDS, f"{path} report")
     tool = document.get("tool")
     if not isinstance(tool, dict):
         raise ValueError(f"{path} has an invalid tool identity")
     _exact_fields(tool, TOOL_FIELDS, f"{path} tool")
-    build = tool.get("build")
-    if not isinstance(build, dict):
-        raise ValueError(f"{path} has invalid build provenance")
-    _exact_fields(build, BUILD_FIELDS, f"{path} build")
     if (
         tool.get("name") != "workflow-verifier"
         or not isinstance(tool.get("version"), str)
         or not tool["version"]
-        or not isinstance(build.get("binary_digest"), str)
-        or not DIGEST.fullmatch(build["binary_digest"])
         or any(
-            not isinstance(build.get(field), str)
-            for field in ("compiler", "implementation", "target")
+            not isinstance(tool.get(field), str)
+            for field in ("compiler", "name", "target", "version")
         )
-        or not (build.get("source_commit") is None or isinstance(build.get("source_commit"), str))
+        or not (tool.get("commit") is None or isinstance(tool.get("commit"), str))
     ):
         raise ValueError(f"{path} was not produced by workflow-verifier")
     if document.get("persona") != "audit":
         raise ValueError(f"{path} is not an audit report")
-    semantic_digest = document.get("semantic_digest")
+    semantic_digest = document.get("analysis_digest")
     if not isinstance(semantic_digest, str) or not DIGEST.fullmatch(semantic_digest):
         raise ValueError(f"{path} has an invalid semantic report digest")
     semantic_projection = {
-        key: value for key, value in document.items() if key not in {"digest", "semantic_digest"}
+        key: value
+        for key, value in document.items()
+        if key not in {"analysis_digest", "digest", "tool"}
     }
-    semantic_projection["tool"] = {key: value for key, value in tool.items() if key != "build"}
-    if semantic_digest != _sha256_bytes(_canonical(semantic_projection)):
+    if semantic_digest != _domain_digest(
+        b"workflow-verifier-report/1/analysis", semantic_projection
+    ):
         raise ValueError(f"{path} semantic report digest does not authenticate canonical content")
     claimed_digest = document.get("digest")
     if not isinstance(claimed_digest, str) or not DIGEST.fullmatch(claimed_digest):
         raise ValueError(f"{path} has an invalid report digest")
     provisional = {key: value for key, value in document.items() if key != "digest"}
-    if claimed_digest != _sha256_bytes(_canonical(provisional)):
+    if claimed_digest != _domain_digest(b"workflow-verifier-report/1/document", provisional):
         raise ValueError(f"{path} report digest does not authenticate canonical content")
     diagnostics = document.get("diagnostics")
     if not isinstance(diagnostics, list):
@@ -276,7 +270,10 @@ def _report_diagnostics(path: Path) -> dict[str, str]:
     for index, item in enumerate(diagnostics):
         if not isinstance(item, dict):
             raise ValueError(f"{path} diagnostic {index} must be an object")
-        _exact_fields(item, DIAGNOSTIC_FIELDS, f"{path} diagnostic {index}")
+        unknown = set(item) - DIAGNOSTIC_FIELDS
+        required = {"confidence", "id", "message", "rule_id", "severity", "span"}
+        if unknown or not required.issubset(item):
+            raise ValueError(f"{path} diagnostic {index} fields are invalid")
         identifier = item.get("id")
         rule_id = item.get("rule_id")
         if not isinstance(identifier, str) or not DIAGNOSTIC_ID.fullmatch(identifier):

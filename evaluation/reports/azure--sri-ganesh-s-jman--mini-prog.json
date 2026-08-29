@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:ae5e7fe6e24d813feef61eaa6bc661b653ffd5d6b54757c5e493acc473ea775f",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: Docker@2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Docker@2"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 610,
             "column": 13,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_cc9a0fb6361474a787e2",
+      "id": "diag_605b451f3bd95cb0d3867d3401f9d5d9740661a1de16b181e9653aa55da93150",
       "message": "dependency is not pinned to immutable content: Docker@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 610,
           "column": 13,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c969369c6f79471ad48f",
+          "node": 10,
           "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 610,
               "column": 13,
@@ -62,7 +69,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Docker@2"
@@ -70,9 +76,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 955,
             "column": 13,
@@ -85,12 +90,12 @@
           }
         }
       },
-      "id": "diag_44ce83a2a4f6f8871bca",
+      "id": "diag_41c8c9f577cafd0cabc58aa41411fa03a20daffb80e3a1298f80739d5c3d75b7",
       "message": "dependency is not pinned to immutable content: Docker@2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 955,
           "column": 13,
@@ -105,9 +110,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d315dd5a2f553bebd87a",
+          "node": 12,
           "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 955,
               "column": 13,
@@ -123,749 +128,110 @@
       ]
     }
   ],
-  "digest": "sha256:375562b31f932969f4849e9b56a31f0fbdf0d3024b195d7af8bf0e8edb4dd11d",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_67628582523c5ef26a93",
-          "id": "wv_033ced2991d8db19086a",
-          "kind": "data",
-          "label": "imageRepository",
-          "to": "wv_cdaf80ada7584e79ec11"
-        },
-        {
-          "condition": true,
-          "from": "wv_3c7e247b3e425ba608cd",
-          "id": "wv_0b89318dc18a2661e5fd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dc914f2ffedb34a65c14"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc914f2ffedb34a65c14",
-          "id": "wv_2a3f5a86c7d3b385dacf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6164be8e349424bbbbb0"
-        },
-        {
-          "condition": true,
-          "from": "wv_963e4066b1145fddb66f",
-          "id": "wv_2d7542d84eaedf2cf1b5",
-          "kind": "data",
-          "label": "dockerRegistryServiceConnection",
-          "to": "wv_cdaf80ada7584e79ec11"
-        },
-        {
-          "condition": true,
-          "from": "wv_cdaf80ada7584e79ec11",
-          "id": "wv_31c787909ff471d233f6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3c7e247b3e425ba608cd"
-        },
-        {
-          "condition": true,
-          "from": "wv_663d7a38da75f2841e0d",
-          "id": "wv_379d29f350a6c01c6884",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6164be8e349424bbbbb0"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e470c35a666da08c201",
-          "id": "wv_4b90f33e9ffb4aa556f0",
-          "kind": "data",
-          "label": "dockerfilePath",
-          "to": "wv_cdaf80ada7584e79ec11"
-        },
-        {
-          "condition": true,
-          "from": "wv_abb67b9dbd05d1c7abe3",
-          "id": "wv_51121313c890e78833a7",
-          "kind": "data",
-          "label": "tag",
-          "to": "wv_cdaf80ada7584e79ec11"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc914f2ffedb34a65c14",
-          "id": "wv_53488273f7198d1cc985",
-          "kind": "control",
-          "label": null,
-          "to": "wv_663d7a38da75f2841e0d"
-        },
-        {
-          "condition": true,
-          "from": "wv_6164be8e349424bbbbb0",
-          "id": "wv_7e5e196b858dae835982",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d315dd5a2f553bebd87a"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b94a7fb9095d8eb13be",
-          "id": "wv_9e7cf517a66dbfabbec0",
-          "kind": "data",
-          "label": "containerRegistry",
-          "to": "wv_cdaf80ada7584e79ec11"
-        },
-        {
-          "condition": true,
-          "from": "wv_6164be8e349424bbbbb0",
-          "id": "wv_b38f556d143b3de40657",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d315dd5a2f553bebd87a"
-        },
-        {
-          "condition": true,
-          "from": "wv_663d7a38da75f2841e0d",
-          "id": "wv_c878f47b4d64a6b143fc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c969369c6f79471ad48f"
-        },
-        {
-          "condition": true,
-          "from": "wv_afd442c75e1298c0ce33",
-          "id": "wv_d2e6fd48f110e87e8b0e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cdaf80ada7584e79ec11"
-        },
-        {
-          "condition": true,
-          "from": "wv_663d7a38da75f2841e0d",
-          "id": "wv_e586b292d028e6aa2058",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c969369c6f79471ad48f"
-        }
-      ],
-      "entrypoints": [
-        "wv_cdaf80ada7584e79ec11"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-                    "start": {
-                      "byte": 365,
-                      "column": 19,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 377,
-                      "column": 31,
-                      "line": 15
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "Dockerfile"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2e470c35a666da08c201",
-          "kind": "resource",
-          "name": "variable:dockerfilePath",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 349,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 377,
-              "column": 31,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3c7e247b3e425ba608cd",
-          "kind": "stage",
-          "name": "Build",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 415,
-              "column": 3,
-              "line": 19
-            },
-            "stop": {
-              "byte": 1202,
-              "column": 17,
-              "line": 47
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6164be8e349424bbbbb0",
-          "kind": "step",
-          "name": "Push image to container registry",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 949,
-              "column": 7,
-              "line": 39
-            },
-            "stop": {
-              "byte": 1202,
-              "column": 17,
-              "line": 47
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_663d7a38da75f2841e0d",
-          "kind": "step",
-          "name": "Build image",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 604,
-              "column": 7,
-              "line": 27
-            },
-            "stop": {
-              "byte": 937,
-              "column": 62,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-                    "start": {
-                      "byte": 279,
-                      "column": 20,
-                      "line": 13
-                    },
-                    "stop": {
-                      "byte": 303,
-                      "column": 44,
-                      "line": 13
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "sriganeshsjmanminiprog"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_67628582523c5ef26a93",
-          "kind": "resource",
-          "name": "variable:imageRepository",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 262,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 303,
-              "column": 44,
-              "line": 13
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-                    "start": {
-                      "byte": 325,
-                      "column": 22,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 346,
-                      "column": 43,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "miniproj.azurecr.io"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8b94a7fb9095d8eb13be",
-          "kind": "resource",
-          "name": "variable:containerRegistry",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 306,
-              "column": 3,
-              "line": 14
-            },
-            "stop": {
-              "byte": 346,
-              "column": 43,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-                    "start": {
-                      "byte": 221,
-                      "column": 36,
-                      "line": 12
-                    },
-                    "stop": {
-                      "byte": 259,
-                      "column": 74,
-                      "line": 12
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2c219892-1d7f-4e67-9159-3a73b03df33b"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_963e4066b1145fddb66f",
-          "kind": "resource",
-          "name": "variable:dockerRegistryServiceConnection",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 188,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 259,
-              "column": 74,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "value",
-                  "origin": "Azure YAML",
-                  "span": {
-                    "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-                    "start": {
-                      "byte": 385,
-                      "column": 8,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 403,
-                      "column": 26,
-                      "line": 16
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "Build.BuildId",
-                  "span": {
-                    "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-                    "start": {
-                      "byte": 387,
-                      "column": 10,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 400,
-                      "column": 23,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "$(Build.BuildId)",
-                  "Build.BuildId"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_abb67b9dbd05d1c7abe3",
-          "kind": "resource",
-          "name": "variable:tag",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 380,
-              "column": 3,
-              "line": 16
-            },
-            "stop": {
-              "byte": 403,
-              "column": 26,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_afd442c75e1298c0ce33",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 142,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 148,
-              "column": 7,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c969369c6f79471ad48f",
-          "kind": "call",
-          "name": "Docker@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 610,
-              "column": 13,
-              "line": 27
-            },
-            "stop": {
-              "byte": 618,
-              "column": 21,
-              "line": 27
-            }
-          },
-          "unknown": {
-            "detail": "Docker@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cdaf80ada7584e79ec11",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 133,
-              "column": 1,
-              "line": 5
-            },
-            "stop": {
-              "byte": 1202,
-              "column": 17,
-              "line": 47
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d315dd5a2f553bebd87a",
-          "kind": "call",
-          "name": "Docker@2",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 955,
-              "column": 13,
-              "line": 39
-            },
-            "stop": {
-              "byte": 963,
-              "column": 21,
-              "line": 39
-            }
-          },
-          "unknown": {
-            "detail": "Docker@2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dc914f2ffedb34a65c14",
-          "kind": "job",
-          "name": "Build",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml",
-            "start": {
-              "byte": 476,
-              "column": 5,
-              "line": 22
-            },
-            "stop": {
-              "byte": 1202,
-              "column": 17,
-              "line": 47
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:f37e73a532b9448e223cb785149862d35270da447b8545ee0886dba88c4f00f0",
-      "path": "azure/sri-ganesh-s-jman/mini-prog/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:45b239fc41abdec126507c5cdfc42f93be84d4ddeb8318d0c6e6b5307a6bd406",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:0346b807b2d5b14f7198e18ec2edf38f535b94c5db91ceb3e1c3cbdb9fde58d5",
+    "sources": [
+      {
+        "digest": "sha256:f37e73a532b9448e223cb785149862d35270da447b8545ee0886dba88c4f00f0",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 15,
+    "nodes": 13,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

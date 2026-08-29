@@ -17,7 +17,6 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-MODES = ("cold", "incremental", "warm")
 ROOT_FIELDS = {
     "schema",
     "revision",
@@ -25,9 +24,8 @@ ROOT_FIELDS = {
     "scenarios",
     "regression_explanations",
 }
-SCENARIO_FIELDS = {"id", "modes"}
-MEASUREMENT_FIELDS = {"samples_ns"}
-EXPLANATION_FIELDS = {"scenario", "mode", "reason", "review"}
+SCENARIO_FIELDS = {"id", "samples_ns"}
+EXPLANATION_FIELDS = {"scenario", "reason", "review"}
 REVISION = re.compile(r"^[0-9a-f]{40}$")
 IDENTIFIER = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 
@@ -105,10 +103,10 @@ def _review_url(value: Any, label: str) -> str:
 
 def _validate(
     document: dict[str, Any], label: str
-) -> tuple[dict[str, dict[str, list[int]]], dict[tuple[str, str], dict[str, str]]]:
+) -> tuple[dict[str, list[int]], dict[str, dict[str, str]]]:
     _exact_fields(document, ROOT_FIELDS, label)
-    if document["schema"] != "performance-v1":
-        raise ValueError(f"{label}.schema must be performance-v1")
+    if document["schema"] != "performance-v2":
+        raise ValueError(f"{label}.schema must be performance-v2")
     revision = document["revision"]
     if not isinstance(revision, str) or not REVISION.fullmatch(revision):
         raise ValueError(f"{label}.revision must be a lowercase 40-character commit")
@@ -123,7 +121,7 @@ def _validate(
     scenarios = document["scenarios"]
     if not isinstance(scenarios, list) or not scenarios:
         raise ValueError(f"{label}.scenarios must be a nonempty array")
-    parsed_scenarios: dict[str, dict[str, list[int]]] = {}
+    parsed_scenarios: dict[str, list[int]] = {}
     for index, scenario in enumerate(scenarios):
         scenario_label = f"{label}.scenarios[{index}]"
         if not isinstance(scenario, dict):
@@ -134,48 +132,34 @@ def _validate(
             raise ValueError(f"{scenario_label}.id is invalid")
         if identifier in parsed_scenarios:
             raise ValueError(f"{label} contains duplicate scenario {identifier}")
-        modes = scenario["modes"]
-        if not isinstance(modes, dict) or set(modes) != set(MODES):
-            raise ValueError(
-                f"{scenario_label}.modes must contain exactly cold, incremental, and warm"
-            )
-        parsed_modes: dict[str, list[int]] = {}
-        for mode in MODES:
-            measurement = modes[mode]
-            if not isinstance(measurement, dict):
-                raise ValueError(f"{scenario_label}.{mode} must be an object")
-            _exact_fields(measurement, MEASUREMENT_FIELDS, f"{scenario_label}.{mode}")
-            samples = measurement["samples_ns"]
-            if (
-                not isinstance(samples, list)
-                or not samples
-                or any(type(sample) is not int or sample <= 0 for sample in samples)
-            ):
-                raise ValueError(f"{scenario_label}.{mode}.samples_ns must be positive integers")
-            parsed_modes[mode] = samples
-        parsed_scenarios[identifier] = parsed_modes
+        samples = scenario["samples_ns"]
+        if (
+            not isinstance(samples, list)
+            or not samples
+            or any(type(sample) is not int or sample <= 0 for sample in samples)
+        ):
+            raise ValueError(f"{scenario_label}.samples_ns must be positive integers")
+        parsed_scenarios[identifier] = samples
 
     raw_explanations = document["regression_explanations"]
     if not isinstance(raw_explanations, list):
         raise ValueError(f"{label}.regression_explanations must be an array")
-    explanations: dict[tuple[str, str], dict[str, str]] = {}
+    explanations: dict[str, dict[str, str]] = {}
     for index, explanation in enumerate(raw_explanations):
         explanation_label = f"{label}.regression_explanations[{index}]"
         if not isinstance(explanation, dict):
             raise ValueError(f"{explanation_label} must be an object")
         _exact_fields(explanation, EXPLANATION_FIELDS, explanation_label)
         scenario = explanation["scenario"]
-        mode = explanation["mode"]
         reason = explanation["reason"]
-        if scenario not in parsed_scenarios or mode not in MODES:
+        if scenario not in parsed_scenarios:
             raise ValueError(f"{explanation_label} names an unknown measurement")
         if not isinstance(reason, str) or len(reason.strip()) < 20:
             raise ValueError(f"{explanation_label}.reason must contain a substantive explanation")
         review = _review_url(explanation["review"], f"{explanation_label}.review")
-        key = (scenario, mode)
-        if key in explanations:
-            raise ValueError(f"{label} contains duplicate explanation for {scenario}/{mode}")
-        explanations[key] = {
+        if scenario in explanations:
+            raise ValueError(f"{label} contains duplicate explanation for {scenario}")
+        explanations[scenario] = {
             "reason": reason.strip(),
             "review": review,
         }
@@ -195,42 +179,39 @@ def compare(baseline_path: Path, current_path: Path) -> dict[str, Any]:
         raise ValueError("baseline and current scenario sets must match exactly")
 
     comparisons: list[dict[str, Any]] = []
-    regressions: set[tuple[str, str]] = set()
+    regressions: set[str] = set()
     for scenario in sorted(baseline_scenarios, key=lambda value: value.encode("utf-8")):
-        for mode in MODES:
-            baseline_median = _median(baseline_scenarios[scenario][mode])
-            current_median = _median(current_scenarios[scenario][mode])
-            change = (current_median - baseline_median) * 100 / baseline_median
-            regressed = current_median * 100 > baseline_median * 110
-            explanation = explanations.get((scenario, mode))
-            if regressed:
-                regressions.add((scenario, mode))
-            status = (
-                "explained-regression"
-                if regressed and explanation is not None
-                else "regression"
-                if regressed
-                else "within-limit"
-            )
-            comparisons.append(
-                {
-                    "baseline_median_ns": _fraction_string(baseline_median),
-                    "change_percent": _percentage(change),
-                    "current_median_ns": _fraction_string(current_median),
-                    "explanation": explanation,
-                    "mode": mode,
-                    "scenario": scenario,
-                    "status": status,
-                }
-            )
+        baseline_median = _median(baseline_scenarios[scenario])
+        current_median = _median(current_scenarios[scenario])
+        change = (current_median - baseline_median) * 100 / baseline_median
+        regressed = current_median * 100 > baseline_median * 110
+        explanation = explanations.get(scenario)
+        if regressed:
+            regressions.add(scenario)
+        status = (
+            "explained-regression"
+            if regressed and explanation is not None
+            else "regression"
+            if regressed
+            else "within-limit"
+        )
+        comparisons.append(
+            {
+                "baseline_median_ns": _fraction_string(baseline_median),
+                "change_percent": _percentage(change),
+                "current_median_ns": _fraction_string(current_median),
+                "explanation": explanation,
+                "scenario": scenario,
+                "status": status,
+            }
+        )
     stale = sorted(set(explanations) - regressions)
     if stale:
-        scenario, mode = stale[0]
         raise ValueError(
-            f"current explanation for {scenario}/{mode} is stale because no regression exists"
+            f"current explanation for {stale[0]} is stale because no regression exists"
         )
     failures = [
-        f"{row['scenario']}/{row['mode']} regressed by {row['change_percent']}% without review"
+        f"{row['scenario']} regressed by {row['change_percent']}% without review"
         for row in comparisons
         if row["status"] == "regression"
     ]
@@ -241,7 +222,7 @@ def compare(baseline_path: Path, current_path: Path) -> dict[str, Any]:
         "environment": dict(sorted(current["environment"].items())),
         "failures": failures,
         "passed": not failures,
-        "schema": "performance-comparison-v1",
+        "schema": "performance-comparison-v2",
         "threshold_percent": "10.000",
     }
 

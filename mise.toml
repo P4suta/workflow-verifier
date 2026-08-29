@@ -44,11 +44,11 @@ run = "python -B scripts/fetch_yaml_test_suite.py --allow-network"
 
 [tasks.helpers]
 description = "Run native backend conformance"
-run = "cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets"
+run = "cargo test --workspace --all-targets --exclude workflow-verifier --exclude workflow-verifier-conformance"
 
 [tasks.helpers-lint]
 description = "Enforce native helper formatting and warning-free Clippy"
-run = "cargo fmt --manifest-path helpers/Cargo.toml --all -- --check && cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings"
+run = "cargo clippy --workspace --all-targets --exclude workflow-verifier --exclude workflow-verifier-conformance -- -D warnings"
 
 [tasks.rust]
 description = "Run the Rust workspace formatting, test, and lint gates"
@@ -56,11 +56,11 @@ run = "cargo fmt --all -- --check && cargo test --workspace --all-targets && car
 
 [tasks.lsp-performance]
 description = "Enforce pinned release-mode LSP latency budgets"
-run = "cargo test --release -p workflow-verifier-cli --lib lsp::performance_tests -- --ignored --nocapture --test-threads=1"
+run = "cargo test --release -p workflow-verifier --lib lsp::performance_tests -- --ignored --nocapture --test-threads=1"
 
 [tasks.differential]
-description = "Compare authenticated OCaml report-v2 and Rust report-v3 semantics"
-run = "opam exec -- dune build bin/main.exe && cargo build -p workflow-verifier-cli -p workflow-verifier-conformance && mkdir -p _build/rust-conformance && _build/default/bin/main.exe check --format json --trust-repository-config --output _build/rust-conformance/reference-report-v2.json test/fixtures/determinism && target/debug/workflow-verifier check --format json --trust-repository-config --output _build/rust-conformance/candidate-report-v3.json test/fixtures/determinism && target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-report-v2.json _build/rust-conformance/candidate-report-v3.json > _build/rust-conformance/report-conformance-v1.json && _build/default/bin/main.exe check --format json --trust-repository-config --output _build/rust-conformance/reference-exclusions-report-v2.json test/fixtures/determinism-exclusions && target/debug/workflow-verifier check --format json --trust-repository-config --output _build/rust-conformance/candidate-exclusions-report-v3.json test/fixtures/determinism-exclusions && target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-exclusions-report-v2.json _build/rust-conformance/candidate-exclusions-report-v3.json > _build/rust-conformance/report-exclusions-conformance-v1.json && _build/default/bin/main.exe check --format json --output _build/rust-conformance/reference-file-target-report-v2.json test/fixtures/file-target/selected.yml && target/debug/workflow-verifier check --format json --output _build/rust-conformance/candidate-file-target-report-v3.json test/fixtures/file-target/selected.yml && target/debug/workflow-verifier-conformance compare _build/rust-conformance/reference-file-target-report-v2.json _build/rust-conformance/candidate-file-target-report-v3.json > _build/rust-conformance/report-file-target-conformance-v1.json"
+description = "Compare test-only OCaml and Rust semantic-conformance/1 outcomes"
+run = "just differential"
 
 [tasks.tooling]
 description = "Run release-tool regression tests"
@@ -80,15 +80,15 @@ run = "python -B scripts/verify_mutation_campaign.py aggregate --manifest script
 
 [tasks.mutation-rust-list]
 description = "List the explicit high-value Rust mutation catalog without executing it"
-run = "mkdir -p _build && cargo mutants --config .cargo/mutants.toml --workspace --list --json > _build/rust-mutants-catalog.json"
+run = "mkdir -p _build && cargo mutants --config .cargo/mutants.toml --package workflow-verifier --list --json > _build/rust-mutants-catalog.json"
 
 [tasks.mutation-rust]
-description = "Run high-value Rust mutants for WV_MUTATION_PACKAGE"
-run = "cargo mutants --config .cargo/mutants.toml --package ${WV_MUTATION_PACKAGE} --output ${WV_MUTATION_OUTPUT:-_build/rust-mutants}"
+description = "Run high-value Rust mutants for WV_MUTATION_LAYER"
+run = 'cargo mutants --config .cargo/mutants.toml --package workflow-verifier --file "src/${WV_MUTATION_LAYER}/**/*.rs" --output ${WV_MUTATION_OUTPUT:-_build/rust-mutants}'
 
 [tasks.mutation-rust-high-value]
 description = "Run every configured high-value Rust product mutant"
-run = "cargo mutants --config .cargo/mutants.toml --package workflow-verifier-domain --package workflow-verifier-engine --package workflow-verifier-foundation --package workflow-verifier-frontend --package workflow-verifier-product --package workflow-verifier-sandbox --package workflow-verifier-syntax --package workflow-verifier-verifier --package workflow-verifier-runner-protocol --output ${WV_MUTATION_OUTPUT:-_build/rust-mutants-high-value}"
+run = "cargo mutants --config .cargo/mutants.toml --package workflow-verifier --output ${WV_MUTATION_OUTPUT:-_build/rust-mutants-high-value}"
 
 [tasks.corpus]
 description = "Enforce the 400-repository release precision and recall gate"
@@ -96,19 +96,15 @@ run = "python -B scripts/corpus_gate.py --manifest evaluation/corpus-v1.json --c
 
 [tasks.corpus-acquire]
 description = "Explicitly acquire immutable permissively licensed corpus snapshots"
-run = "cargo build --locked -p workflow-verifier-cli && python -B scripts/prepare_corpus.py acquire --analyzer target/debug/workflow-verifier --output evaluation --per-provider 100 --pages 10 --workers 8"
+run = "cargo build --locked -p workflow-verifier && python -B scripts/prepare_corpus.py acquire --analyzer target/debug/workflow-verifier --output evaluation --per-provider 100 --pages 10 --workers 8"
 
 [tasks.corpus-refresh]
 description = "Reanalyze verified immutable corpus snapshots without network access"
-run = "cargo build --locked -p workflow-verifier-cli && python -B scripts/prepare_corpus.py refresh --evaluation evaluation --analyzer target/debug/workflow-verifier --output _build/evaluation-refreshed --workers 8"
+run = "cargo build --locked -p workflow-verifier && python -B scripts/prepare_corpus.py refresh --evaluation evaluation --analyzer target/debug/workflow-verifier --output _build/evaluation-refreshed --workers 8"
 
 [tasks.corpus-review]
 description = "Apply exhaustive reviewed diagnostic classifications to the corpus"
 run = "python -B scripts/prepare_corpus.py apply-review --manifest evaluation/corpus-v1.json --reports-root evaluation/reports --review evaluation/review-v1.json"
-
-[tasks.corpus-rebase-review]
-description = "Explicitly rebase authenticated legacy classifications onto equivalent fresh diagnostics"
-run = "python -B scripts/prepare_corpus.py rebase-review --old-manifest evaluation/corpus-v1.json --old-reports-root evaluation/reports --old-review evaluation/review-v1.json --new-manifest _build/evaluation-refreshed/corpus-v1.json --new-reports-root _build/evaluation-refreshed/reports --output _build/evaluation-refreshed/review-v1.json"
 
 [tasks.official-fetch]
 description = "Acquire the eight pinned official CI snapshots without executing them"
@@ -116,31 +112,31 @@ run = "python -B scripts/fetch_official_projects.py --manifest official/official
 
 [tasks.official-compat]
 description = "Verify deterministic compatibility with the pinned official projects"
-run = "cargo build --locked -p workflow-verifier-cli && python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots _build/official-projects --analyzer target/debug/workflow-verifier --output _build/official-compat-v1.json --expected official/official-compat-v1.json --expected-digest official/official-compat-v1.sha256"
+run = "cargo build --locked -p workflow-verifier && python -B scripts/official_compat.py --manifest official/official-projects-v1.json --snapshots _build/official-projects --analyzer target/debug/workflow-verifier --output _build/official-compat-v1.json"
 
 [tasks.performance-measure]
-description = "Measure cold, warm, and incremental scenarios for WV_REVISION"
-run = "python -B scripts/measure_performance.py --suite performance/suite-v1.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-current.json"
+description = "Measure the Rust product scenarios for WV_REVISION"
+run = "python -B scripts/measure_performance.py --suite performance/rust-suite-v2.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-current.json"
 
 [tasks.performance-pair]
 description = "Period-balance WV_BASE_REVISION and WV_REVISION on one runner"
-run = "python -B scripts/measure_performance_pair.py --suite performance/suite-v1.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 24 --output-dir _build/performance-pair"
+run = "python -B scripts/measure_performance_pair.py --suite performance/rust-suite-v2.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 24 --output-dir _build/performance-pair"
 
 [tasks.performance-measure-rust]
 description = "Build and measure the release Rust CLI for WV_REVISION"
-run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_REVISION} cargo build --locked --release -p workflow-verifier-cli && python -B scripts/measure_performance.py --suite performance/rust-suite-v1.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-rust-current.json"
+run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_REVISION} cargo build --locked --release -p workflow-verifier && python -B scripts/measure_performance.py --suite performance/rust-suite-v2.json --workspace . --revision ${WV_REVISION} --samples 7 --output _build/performance-rust-current.json"
 
 [tasks.performance-pair-rust]
 description = "Build and period-balance release Rust CLIs for both revisions"
-run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_BASE_REVISION} cargo build --locked --release --manifest-path ${WV_BASE_WORKSPACE}/Cargo.toml -p workflow-verifier-cli && WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_REVISION} cargo build --locked --release -p workflow-verifier-cli && python -B scripts/measure_performance_pair.py --suite performance/rust-suite-v1.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 24 --output-dir _build/performance-rust-pair"
+run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_BASE_REVISION} cargo build --locked --release --manifest-path ${WV_BASE_WORKSPACE}/Cargo.toml --bin workflow-verifier && WORKFLOW_VERIFIER_SOURCE_COMMIT=${WV_REVISION} cargo build --locked --release -p workflow-verifier && python -B scripts/measure_performance_pair.py --suite performance/rust-suite-v2.json --baseline-workspace ${WV_BASE_WORKSPACE} --baseline-revision ${WV_BASE_REVISION} --current-workspace . --current-revision ${WV_REVISION} --samples 24 --output-dir _build/performance-rust-pair"
 
 [tasks.performance-gate]
 description = "Reject unexplained performance regressions above ten percent"
-run = "python -B scripts/performance_gate.py --baseline performance/baseline.json --current _build/performance-current.json --output _build/performance-comparison-v1.json"
+run = "python -B scripts/performance_gate.py --baseline performance/baseline.json --current _build/performance-current.json --output _build/performance-comparison-v2.json"
 
 [tasks.determinism-probe]
 description = "Generate twice-local report, lockfile, and fix artifacts for this platform"
-run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=$(git rev-parse HEAD) cargo build --locked -p workflow-verifier-cli && python -B scripts/determinism_probe.py --analyzer target/debug/workflow-verifier --fixture test/fixtures/determinism --output _build/determinism/local"
+run = "WORKFLOW_VERIFIER_SOURCE_COMMIT=$(git rev-parse HEAD) cargo build --locked -p workflow-verifier && python -B scripts/determinism_probe.py --analyzer target/debug/workflow-verifier --fixture test/fixtures/determinism --output _build/determinism/local"
 
 [tasks.determinism-compare]
 description = "Compare portable bytes and report semantics from all five release platforms"
@@ -163,8 +159,12 @@ description = "Aggregate all candidate reproducibility fragments into one releas
 run = "python -B scripts/candidate_artifacts.py aggregate --subject-commit ${WV_CANDIDATE_COMMIT} --output _candidate/reproducible-build.json ${WV_REPRODUCIBILITY_FRAGMENTS}"
 
 [tasks.architecture]
-description = "Enforce the one-way OCaml layer graph"
+description = "Enforce the one-way OCaml and Rust module graphs"
 run = "python -B scripts/verify_architecture.py"
+
+[tasks.lint-policy]
+description = "Reject first-party Rust lint suppression escapes"
+run = "python -B scripts/verify_lint_policy.py"
 
 [tasks.purity]
 description = "Prove the analyzer dependency and source boundary"
@@ -176,7 +176,7 @@ run = "python -B scripts/verify_licenses.py"
 
 [tasks.install-check]
 description = "Verify the intentionally narrow install surface"
-run = "opam exec -- dune build @install && cargo build -p workflow-verifier-cli && python -B scripts/verify_install_layout.py _build/install/default target/debug/workflow-verifier"
+run = "opam exec -- dune build @install && cargo build -p workflow-verifier && python -B scripts/verify_install_layout.py _build/install/default target/debug/workflow-verifier"
 
 [tasks.task-surface]
 description = "Verify the pinned Just parser and aligned Just/mise task names"
@@ -200,11 +200,11 @@ run = "python -B scripts/verify_linux_compat.py ${WV_LINUX_BINARY}"
 
 [tasks.check]
 description = "Run the local release-readiness sequence"
-depends = ["task-surface", "conformance-manifest", "build", "test", "yaml-conformance", "tooling", "architecture", "helpers", "helpers-lint", "rust", "lsp-performance", "differential", "purity", "licenses", "install-check"]
+depends = ["task-surface", "conformance-manifest", "build", "test", "yaml-conformance", "tooling", "architecture", "lint-policy", "rust", "lsp-performance", "differential", "purity", "licenses", "install-check"]
 
 [tasks.dogfood]
 description = "Analyze workflow-verifier with its own audit persona"
-run = "cargo build --locked -p workflow-verifier-cli && target/debug/workflow-verifier check --config examples/dogfood-policy-v2.toml --trust-repository-config ."
+run = "cargo build --locked -p workflow-verifier && target/debug/workflow-verifier check --config examples/dogfood-policy-v2.toml --trust-repository-config ."
 
 [tasks.dogfood-gate]
 description = "Verify complete static CLI and live OCI dogfood evidence"

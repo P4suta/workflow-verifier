@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:efc2b3f668a4f0837517c13cd7a32db8c52d3e2387842411b4e2690a56803550",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/download-artifact@v4",
+      "Incomplete.Unresolved_dependency: actions/upload-artifact@v4"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 455,
             "column": 13,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_2b9ff00443bbfb275f7c",
+      "id": "diag_1159f681caf33a2a7dbd826ba9ec3d14e8a290a60b45bfe1edd6db464f48f2e9",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 455,
           "column": 13,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c77bf5828308facf6b6d",
+          "node": 7,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 455,
               "column": 13,
@@ -73,9 +82,8 @@
       "fix": {
         "description": "pass the value through an environment variable and quote it in the target shell",
         "kind": "environment-boundary",
-        "replacement": null,
         "span": {
-          "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 818,
             "column": 12,
@@ -88,12 +96,12 @@
           }
         }
       },
-      "id": "diag_f5956456d34f32fcdac0",
+      "id": "diag_c8f30ab56b0b76d9251d156ac7b21ef8875065d8e590606bee8093960880ab48",
       "message": "untrusted workflow data reaches a shell command boundary",
       "rule_id": "WV-SEC-001",
       "severity": "error",
       "span": {
-        "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 818,
           "column": 12,
@@ -108,9 +116,9 @@
       "trace": [
         {
           "label": "untrusted source",
-          "node_id": "wv_311a9019c2db579a39e4",
+          "node": 16,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 1103,
               "column": 297,
@@ -125,9 +133,9 @@
         },
         {
           "label": "command sink",
-          "node_id": "wv_b442300ecad9cccd5a6a",
+          "node": 11,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 818,
               "column": 12,
@@ -143,7 +151,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v4"
@@ -151,9 +158,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 2048,
             "column": 13,
@@ -166,12 +172,12 @@
           }
         }
       },
-      "id": "diag_54540bdf3713cd4e1a2e",
+      "id": "diag_f3fd875d8367c5824b4b5e6e4acad0727d16249c80ed7f1ba38dbaa721a314ad",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 2048,
           "column": 13,
@@ -186,9 +192,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_5cc8f84b2d1034b47274",
+          "node": 32,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2048,
               "column": 13,
@@ -204,7 +210,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v4"
@@ -212,9 +217,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 2222,
             "column": 13,
@@ -227,12 +231,12 @@
           }
         }
       },
-      "id": "diag_2c546cc16c5d029a7306",
+      "id": "diag_38a4d148b35562f35db44318ee0b7e1792ddc218d0d02fdae081831eaa55eacb",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 2222,
           "column": 13,
@@ -247,9 +251,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_81cbd8360c57d574fe87",
+          "node": 36,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2222,
               "column": 13,
@@ -265,7 +269,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -273,9 +276,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 2494,
             "column": 13,
@@ -288,12 +290,12 @@
           }
         }
       },
-      "id": "diag_424bcb5d8ece3df0d099",
+      "id": "diag_0aefb2a81b46eacd636174ad4bc2be6e24929b95b4c4fe1c6d6eed6b50c7b9f0",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 2494,
           "column": 13,
@@ -308,9 +310,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_bb4ce1b36cf1ae955588",
+          "node": 43,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2494,
               "column": 13,
@@ -326,7 +328,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/download-artifact@v4"
@@ -334,9 +335,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 2558,
             "column": 13,
@@ -349,12 +349,12 @@
           }
         }
       },
-      "id": "diag_ea7b016e866368ac85f4",
+      "id": "diag_a521a0b9095e59550eb49d2d5f42aada0b50a870a7ecbc23bb6f0afa97dc86a0",
       "message": "dependency is not pinned to immutable content: actions/download-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 2558,
           "column": 13,
@@ -369,9 +369,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_fc1d5064393d905a3308",
+          "node": 45,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2558,
               "column": 13,
@@ -396,13 +396,12 @@
       "evidence": [
         "dominator set contains no Gate node"
       ],
-      "fix": null,
-      "id": "diag_8637f584a9ece0e2a1aa",
+      "id": "diag_3a15e336ce879f347f00df5404ec6d9b867c51f8beb474f65ace0580ffca4921",
       "message": "a privileged effect is reachable without a dominating authorization gate",
       "rule_id": "WV-AUTH-001",
       "severity": "error",
       "span": {
-        "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 2719,
           "column": 12,
@@ -417,9 +416,9 @@
       "trace": [
         {
           "label": "authorization bypass",
-          "node_id": "wv_64941aa7e181e26246c2",
+          "node": 0,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 0,
               "column": 1,
@@ -434,9 +433,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_2614000a9040c75cfbe8",
+          "node": 40,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2383,
               "column": 9,
@@ -451,9 +450,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_5185e45b6ea04a315830",
+          "node": 39,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2359,
               "column": 3,
@@ -468,9 +467,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_06af03998438cc552f21",
+          "node": 46,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2630,
               "column": 7,
@@ -485,9 +484,9 @@
         },
         {
           "label": "authorization bypass",
-          "node_id": "wv_6141bd6cf3a9035b3a05",
+          "node": 49,
           "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 2719,
               "column": 12,
@@ -503,3161 +502,70 @@
       ]
     }
   ],
-  "digest": "sha256:0cfb133967d1eb7ac2cff9f00eb6e4383580dffb2559e6ac3483bb611b98e206",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_4f753fddc67a9e0d56e0",
-          "id": "wv_0997fff5e500efa38d7e",
-          "kind": "data",
-          "label": "GITHUB_ENV",
-          "to": "wv_55e9fbe3bd8303cd7134"
-        },
-        {
-          "condition": true,
-          "from": "wv_cff09b78a47bedeca88b",
-          "id": "wv_0f7d2b48dad4747ea15c",
-          "kind": "data",
-          "label": "GITHUB_ENV",
-          "to": "wv_55e9fbe3bd8303cd7134"
-        },
-        {
-          "condition": true,
-          "from": "wv_42d4f05cb4066a27b646",
-          "id": "wv_1a09ac91624373d8c68a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bb4ce1b36cf1ae955588"
-        },
-        {
-          "condition": true,
-          "from": "wv_5c618fec346c3ccaac8c",
-          "id": "wv_1e020aa2d6a855a5f516",
-          "kind": "data",
-          "label": "DSYM_NAME",
-          "to": "wv_55e9fbe3bd8303cd7134"
-        },
-        {
-          "condition": true,
-          "from": "wv_580e3039c4fa7aabb9fb",
-          "id": "wv_205e58e5179e8dbbbc70",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_bc8e27635fe36f424b72"
-        },
-        {
-          "condition": true,
-          "from": "wv_06af03998438cc552f21",
-          "id": "wv_28b20f7ed5e1fdf081f4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6141bd6cf3a9035b3a05"
-        },
-        {
-          "condition": true,
-          "from": "wv_aa0f10a135795ad7b032",
-          "id": "wv_2cbee7ebb61b4f71a6f4",
-          "kind": "data",
-          "label": "secrets.GITHUB_TOKEN",
-          "to": "wv_acfe1b5f5adec2864e9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_6fd50fdce5245a692a9a",
-          "id": "wv_2db3954ad93bf2adbb4a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_fc1d5064393d905a3308"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_3659e95546212599fe85",
-          "kind": "control",
-          "label": null,
-          "to": "wv_aa0203b21f222a3cec48"
-        },
-        {
-          "condition": true,
-          "from": "wv_0c10e46fe1fcc582e8de",
-          "id": "wv_369bd4b11ca2dc17f2cb",
-          "kind": "data",
-          "label": "brew --prefix llvm",
-          "to": "wv_b442300ecad9cccd5a6a"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_384c3b8c5daa90e68527",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d10cfc55748bae43cfa0"
-        },
-        {
-          "condition": true,
-          "from": "wv_53d59e0682fcca0e5e82",
-          "id": "wv_3c6a1454fae976e9dd7d",
-          "kind": "data",
-          "label": "DMG_NAME",
-          "to": "wv_55e9fbe3bd8303cd7134"
-        },
-        {
-          "condition": true,
-          "from": "wv_98eb70af4e7774b884f4",
-          "id": "wv_3c732849ffd92a9492a6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b41e4871ea6e82ce67c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_07c057230057b3cafed2",
-          "id": "wv_4176a786286b4beea2c0",
-          "kind": "data",
-          "label": "github.sha",
-          "to": "wv_6141bd6cf3a9035b3a05"
-        },
-        {
-          "condition": true,
-          "from": "wv_580e3039c4fa7aabb9fb",
-          "id": "wv_44e20dcc4ebdedff5725",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d2538ae91b24fb1d5449"
-        },
-        {
-          "condition": true,
-          "from": "wv_aa0203b21f222a3cec48",
-          "id": "wv_44e9e9a530a2c9cc3868",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7a71ca240127e77a4b0c"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_465b8396fd2c6aa2055a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_98eb70af4e7774b884f4"
-        },
-        {
-          "condition": true,
-          "from": "wv_d10cfc55748bae43cfa0",
-          "id": "wv_4abe121911e4cee0590a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_52eb444bbafa910a5925"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_4f9228d9eed04f338afd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_72fd1eff204c29659a00"
-        },
-        {
-          "condition": true,
-          "from": "wv_bc8e27635fe36f424b72",
-          "id": "wv_5410c6a8950aa0ddf39b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_456e01024111ca3b704b"
-        },
-        {
-          "condition": true,
-          "from": "wv_b41e4871ea6e82ce67c2",
-          "id": "wv_54841c09a88d0c202776",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5cc8f84b2d1034b47274"
-        },
-        {
-          "condition": true,
-          "from": "wv_ad30658df89341dd18e4",
-          "id": "wv_55c95c4d85f43e8eb45e",
-          "kind": "data",
-          "label": "xcrun --show-sdk-path",
-          "to": "wv_b442300ecad9cccd5a6a"
-        },
-        {
-          "condition": true,
-          "from": "wv_3c0a022f105e255295cd",
-          "id": "wv_58c177d4c6a77f520a26",
-          "kind": "data",
-          "label": "os",
-          "to": "wv_2edfdf040838bcbee174"
-        },
-        {
-          "condition": true,
-          "from": "wv_824a3eff40d45479eee3",
-          "id": "wv_5956ee795a6701d8fcd4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_64941aa7e181e26246c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_3fc9532448d29591bdd5",
-          "id": "wv_61a3db07d373f0c5f99b",
-          "kind": "data",
-          "label": "matrix.arch",
-          "to": "wv_5cc8f84b2d1034b47274"
-        },
-        {
-          "condition": true,
-          "from": "wv_64941aa7e181e26246c2",
-          "id": "wv_6436a7ed0307dbbf208a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2614000a9040c75cfbe8"
-        },
-        {
-          "condition": true,
-          "from": "wv_acfe1b5f5adec2864e9a",
-          "id": "wv_653463ccd0b2e57a4e07",
-          "kind": "data",
-          "label": "GH_TOKEN",
-          "to": "wv_6141bd6cf3a9035b3a05"
-        },
-        {
-          "condition": true,
-          "from": "wv_ba10c0ff94d3a83ad119",
-          "id": "wv_68c7d42277f901a70dc2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_64941aa7e181e26246c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_9b58389b98afcd76205f",
-          "id": "wv_6ba99c9b1bb532662102",
-          "kind": "data",
-          "label": "ls Neogurt*.dmg",
-          "to": "wv_55e9fbe3bd8303cd7134"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_6eda80c5d2ca3d155f50",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bc8e27635fe36f424b72"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_6fb2cd82bfd9724fba5d",
-          "kind": "control",
-          "label": "needs",
-          "to": "wv_2614000a9040c75cfbe8"
-        },
-        {
-          "condition": true,
-          "from": "wv_171da87b2e3a73abaf36",
-          "id": "wv_76eb8ce90251b715af6b",
-          "kind": "data",
-          "label": "include",
-          "to": "wv_2edfdf040838bcbee174"
-        },
-        {
-          "condition": true,
-          "from": "wv_bc8e27635fe36f424b72",
-          "id": "wv_8217d3e06b5aca6ddbcb",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_98eb70af4e7774b884f4"
-        },
-        {
-          "condition": true,
-          "from": "wv_b41e4871ea6e82ce67c2",
-          "id": "wv_845e7808db7888092857",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5cc8f84b2d1034b47274"
-        },
-        {
-          "condition": true,
-          "from": "wv_5185e45b6ea04a315830",
-          "id": "wv_8645d934ff3dae382b20",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6fd50fdce5245a692a9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_72fd1eff204c29659a00",
-          "id": "wv_89a2973b2049bc9157e4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_81cbd8360c57d574fe87"
-        },
-        {
-          "condition": true,
-          "from": "wv_42d4f05cb4066a27b646",
-          "id": "wv_8b6f79953a1c83c149c6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6fd50fdce5245a692a9a"
-        },
-        {
-          "condition": true,
-          "from": "wv_72fd1eff204c29659a00",
-          "id": "wv_8d5a07236dcff6f15f85",
-          "kind": "call",
-          "label": null,
-          "to": "wv_81cbd8360c57d574fe87"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.event.inputs.nightly==\"true\")"
-          },
-          "from": "wv_2614000a9040c75cfbe8",
-          "id": "wv_8f696ae4942c98b19f73",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_5185e45b6ea04a315830"
-        },
-        {
-          "condition": true,
-          "from": "wv_64941aa7e181e26246c2",
-          "id": "wv_947cd7998a3ac4f3c717",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2edfdf040838bcbee174"
-        },
-        {
-          "condition": true,
-          "from": "wv_72307027bc589f4ac3f5",
-          "id": "wv_9a88c5d353f387b561a7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b442300ecad9cccd5a6a"
-        },
-        {
-          "condition": true,
-          "from": "wv_37ad62f2d72e4c995ec2",
-          "id": "wv_aa17582753e9a529757c",
-          "kind": "data",
-          "label": "env.DSYM_NAME",
-          "to": "wv_81cbd8360c57d574fe87"
-        },
-        {
-          "condition": true,
-          "from": "wv_1a56fa071a58feb05c69",
-          "id": "wv_ac30694b970178f4746b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c77bf5828308facf6b6d"
-        },
-        {
-          "condition": true,
-          "from": "wv_c6776ce29b27c3bc60be",
-          "id": "wv_ae5ff77486a634e3f5c1",
-          "kind": "data",
-          "label": "[[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\"",
-          "to": "wv_b442300ecad9cccd5a6a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1a56fa071a58feb05c69",
-          "id": "wv_b4b63c4a768bcf1c9dee",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c77bf5828308facf6b6d"
-        },
-        {
-          "condition": true,
-          "from": "wv_7bba7d2c84ea40adf858",
-          "id": "wv_b5844bcb961557a0030c",
-          "kind": "data",
-          "label": "matrix.arch",
-          "to": "wv_81cbd8360c57d574fe87"
-        },
-        {
-          "condition": true,
-          "from": "wv_d10cfc55748bae43cfa0",
-          "id": "wv_b5ece4994813a411374e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_580e3039c4fa7aabb9fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_8d0e0cb6b1414d52ca64",
-          "id": "wv_c17c62926b48fec544d9",
-          "kind": "data",
-          "label": "env.DMG_NAME",
-          "to": "wv_5cc8f84b2d1034b47274"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_c37d91d35a09a2989a13",
-          "kind": "control",
-          "label": null,
-          "to": "wv_72307027bc589f4ac3f5"
-        },
-        {
-          "condition": true,
-          "from": "wv_42d4f05cb4066a27b646",
-          "id": "wv_c38be79e24b173857a02",
-          "kind": "call",
-          "label": null,
-          "to": "wv_bb4ce1b36cf1ae955588"
-        },
-        {
-          "condition": true,
-          "from": "wv_b41e4871ea6e82ce67c2",
-          "id": "wv_c4f07d3162f0aee13443",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_72fd1eff204c29659a00"
-        },
-        {
-          "condition": true,
-          "from": "wv_5185e45b6ea04a315830",
-          "id": "wv_c6d9306af4799bc11662",
-          "kind": "control",
-          "label": null,
-          "to": "wv_42d4f05cb4066a27b646"
-        },
-        {
-          "condition": true,
-          "from": "wv_9983c7994330d11b87ff",
-          "id": "wv_c9898b5e2bca9005b97f",
-          "kind": "data",
-          "label": "brew --prefix llvm",
-          "to": "wv_b442300ecad9cccd5a6a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1a56fa071a58feb05c69",
-          "id": "wv_cf9708413ed28b7b3556",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_aa0203b21f222a3cec48"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_d98429f8e58886aa07b5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1a56fa071a58feb05c69"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b4e0db0a679456207b7",
-          "id": "wv_dcd9dba776a947b66054",
-          "kind": "data",
-          "label": "github.event.inputs.nightly",
-          "to": "wv_2614000a9040c75cfbe8"
-        },
-        {
-          "condition": true,
-          "from": "wv_5185e45b6ea04a315830",
-          "id": "wv_e3378980e8a62f671f71",
-          "kind": "control",
-          "label": null,
-          "to": "wv_06af03998438cc552f21"
-        },
-        {
-          "condition": true,
-          "from": "wv_6fd50fdce5245a692a9a",
-          "id": "wv_e814020757a7b24a9862",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fc1d5064393d905a3308"
-        },
-        {
-          "condition": true,
-          "from": "wv_311a9019c2db579a39e4",
-          "id": "wv_e987944b21b465e99311",
-          "kind": "data",
-          "label": "github.event.inputs.nightly",
-          "to": "wv_b442300ecad9cccd5a6a"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_ea7a9a35e4e0c2d9b4d8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b41e4871ea6e82ce67c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_72307027bc589f4ac3f5",
-          "id": "wv_ecfd65e1a73068f191f6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d10cfc55748bae43cfa0"
-        },
-        {
-          "condition": true,
-          "from": "wv_aa0203b21f222a3cec48",
-          "id": "wv_ef5e6c2483e070ded1c7",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_72307027bc589f4ac3f5"
-        },
-        {
-          "condition": true,
-          "from": "wv_6fd50fdce5245a692a9a",
-          "id": "wv_f7a5c916f3511464e466",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_06af03998438cc552f21"
-        },
-        {
-          "condition": true,
-          "from": "wv_98eb70af4e7774b884f4",
-          "id": "wv_f7ed5dafd763f94ab4dd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55e9fbe3bd8303cd7134"
-        },
-        {
-          "condition": true,
-          "from": "wv_2edfdf040838bcbee174",
-          "id": "wv_fbd24528bcd9e4e20363",
-          "kind": "control",
-          "label": null,
-          "to": "wv_580e3039c4fa7aabb9fb"
-        },
-        {
-          "condition": true,
-          "from": "wv_2c775310799fa8ff9df3",
-          "id": "wv_ffdad508edbc574ede89",
-          "kind": "data",
-          "label": "DSYM_NAME",
-          "to": "wv_55e9fbe3bd8303cd7134"
-        }
-      ],
-      "entrypoints": [
-        "wv_64941aa7e181e26246c2"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_06af03998438cc552f21",
-          "kind": "step",
-          "name": "Create release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2630,
-              "column": 7,
-              "line": 108
-            },
-            "stop": {
-              "byte": 3011,
-              "column": 23,
-              "line": 120
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.sha",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2922,
-                      "column": 215,
-                      "line": 111
-                    },
-                    "stop": {
-                      "byte": 2932,
-                      "column": 225,
-                      "line": 111
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.sha"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_07c057230057b3cafed2",
-          "kind": "resource",
-          "name": "github.sha",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2922,
-              "column": 215,
-              "line": 111
-            },
-            "stop": {
-              "byte": 2932,
-              "column": 225,
-              "line": 111
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "brew --prefix llvm",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 960,
-                      "column": 154,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 978,
-                      "column": 172,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "brew --prefix llvm"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0c10e46fe1fcc582e8de",
-          "kind": "resource",
-          "name": "brew --prefix llvm",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 960,
-              "column": 154,
-              "line": 46
-            },
-            "stop": {
-              "byte": 978,
-              "column": 172,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": {
-                "reasons": [
-                  {
-                    "detail": "include",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "include",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "dynamic",
-              "value": {
-                "unknown": [
-                  {
-                    "detail": "include",
-                    "kind": "dynamic_string"
-                  }
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_171da87b2e3a73abaf36",
-          "kind": "parameter",
-          "name": "matrix.include",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 315,
-              "column": 9,
-              "line": 22
-            },
-            "stop": {
-              "byte": 399,
-              "column": 24,
-              "line": 25
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1a56fa071a58feb05c69",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 449,
-              "column": 7,
-              "line": 30
-            },
-            "stop": {
-              "byte": 516,
-              "column": 30,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event.inputs.nightly",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2387,
-                      "column": 13,
-                      "line": 97
-                    },
-                    "stop": {
-                      "byte": 2414,
-                      "column": 40,
-                      "line": 97
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event.inputs.nightly"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1b4e0db0a679456207b7",
-          "kind": "resource",
-          "name": "github.event.inputs.nightly",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2387,
-              "column": 13,
-              "line": 97
-            },
-            "stop": {
-              "byte": 2414,
-              "column": 40,
-              "line": 97
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2383,
-                      "column": 9,
-                      "line": 97
-                    },
-                    "stop": {
-                      "byte": 2427,
-                      "column": 53,
-                      "line": 97
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "${{ github.event.inputs.nightly == 'true' }}"
-                ]
-              }
-            },
-            "reference:github.event.inputs.nightly": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event.inputs.nightly",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2387,
-                      "column": 13,
-                      "line": 97
-                    },
-                    "stop": {
-                      "byte": 2414,
-                      "column": 40,
-                      "line": 97
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event.inputs.nightly"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.event.inputs.nightly==\"true\")"
-          },
-          "effects": [],
-          "id": "wv_2614000a9040c75cfbe8",
-          "kind": "gate",
-          "name": "if:job:create-release",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2383,
-              "column": 9,
-              "line": 97
-            },
-            "stop": {
-              "byte": 2427,
-              "column": 53,
-              "line": 97
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "DSYM_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1902,
-                      "column": 309,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1911,
-                      "column": 318,
-                      "line": 70
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "DSYM_NAME"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2c775310799fa8ff9df3",
-          "kind": "resource",
-          "name": "DSYM_NAME",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1902,
-              "column": 309,
-              "line": 70
-            },
-            "stop": {
-              "byte": 1911,
-              "column": 318,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2edfdf040838bcbee174",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 249,
-              "column": 3,
-              "line": 18
-            },
-            "stop": {
-              "byte": 2355,
-              "column": 49,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event.inputs.nightly",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1103,
-                      "column": 297,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1130,
-                      "column": 324,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event.inputs.nightly"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_311a9019c2db579a39e4",
-          "kind": "resource",
-          "name": "github.event.inputs.nightly",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1103,
-              "column": 297,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1130,
-              "column": 324,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "env.DSYM_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2339,
-                      "column": 33,
-                      "line": 94
-                    },
-                    "stop": {
-                      "byte": 2352,
-                      "column": 46,
-                      "line": 94
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value env.DSYM_NAME",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "env.DSYM_NAME"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_37ad62f2d72e4c995ec2",
-          "kind": "resource",
-          "name": "env.DSYM_NAME",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2339,
-              "column": 33,
-              "line": 94
-            },
-            "stop": {
-              "byte": 2352,
-              "column": 46,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "macos-15"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3c0a022f105e255295cd",
-          "kind": "parameter",
-          "name": "matrix.os",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 292,
-              "column": 9,
-              "line": 21
-            },
-            "stop": {
-              "byte": 306,
-              "column": 23,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.arch",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2113,
-                      "column": 27,
-                      "line": 87
-                    },
-                    "stop": {
-                      "byte": 2124,
-                      "column": 38,
-                      "line": 87
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.arch"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3fc9532448d29591bdd5",
-          "kind": "resource",
-          "name": "matrix.arch",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2113,
-              "column": 27,
-              "line": 87
-            },
-            "stop": {
-              "byte": 2124,
-              "column": 38,
-              "line": 87
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_42d4f05cb4066a27b646",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2488,
-              "column": 7,
-              "line": 101
-            },
-            "stop": {
-              "byte": 2513,
-              "column": 32,
-              "line": 101
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1550,
-                      "column": 12,
-                      "line": 67
-                    },
-                    "stop": {
-                      "byte": 1562,
-                      "column": 24,
-                      "line": 67
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "make package"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_456e01024111ca3b704b",
-          "kind": "command",
-          "name": "make package",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1550,
-              "column": 12,
-              "line": 67
-            },
-            "stop": {
-              "byte": 1562,
-              "column": 24,
-              "line": 67
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1789,
-                      "column": 196,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1799,
-                      "column": 206,
-                      "line": 70
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4f753fddc67a9e0d56e0",
-          "kind": "resource",
-          "name": "GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1789,
-              "column": 196,
-              "line": 70
-            },
-            "stop": {
-              "byte": 1799,
-              "column": 206,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5185e45b6ea04a315830",
-          "kind": "job",
-          "name": "create-release",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2359,
-              "column": 3,
-              "line": 96
-            },
-            "stop": {
-              "byte": 3011,
-              "column": 23,
-              "line": 120
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1305,
-                      "column": 12,
-                      "line": 59
-                    },
-                    "stop": {
-                      "byte": 1349,
-                      "column": 56,
-                      "line": 59
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cmake --build build/release --target neogurt"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_52eb444bbafa910a5925",
-          "kind": "command",
-          "name": "cmake --build build/release --target neogurt",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1305,
-              "column": 12,
-              "line": 59
-            },
-            "stop": {
-              "byte": 1349,
-              "column": 56,
-              "line": 59
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "DMG_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1732,
-                      "column": 139,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1740,
-                      "column": 147,
-                      "line": 70
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "DMG_NAME"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_53d59e0682fcca0e5e82",
-          "kind": "resource",
-          "name": "DMG_NAME",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1732,
-              "column": 139,
-              "line": 70
-            },
-            "stop": {
-              "byte": 1740,
-              "column": 147,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "DMG_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1732,
-                      "column": 139,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1740,
-                      "column": 147,
-                      "line": 70
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "DSYM_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1774,
-                      "column": 181,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1783,
-                      "column": 190,
-                      "line": 70
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "DSYM_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1902,
-                      "column": 309,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1911,
-                      "column": 318,
-                      "line": 70
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1746,
-                      "column": 153,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1756,
-                      "column": 163,
-                      "line": 70
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1789,
-                      "column": 196,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1799,
-                      "column": 206,
-                      "line": 70
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "ls Neogurt*.dmg",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1634,
-                      "column": 41,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1649,
-                      "column": 56,
-                      "line": 70
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1605,
-                      "column": 12,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 2000,
-                      "column": 1,
-                      "line": 83
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "DMG_NAME",
-                  "DSYM_NAME",
-                  "GITHUB_ENV",
-                  "cd build/release\n\nDMG_NAME=$(ls Neogurt*.dmg)\nBASENAME=\"${DMG_NAME%.dmg}\"\nDSYM_NAME=\"${BASENAME}.dSYM.tar.gz\"\n\necho \"DMG_NAME=$DMG_NAME\" >> $GITHUB_ENV\necho \"DSYM_NAME=$DSYM_NAME\" >> $GITHUB_ENV\n\ndsymutil neogurt.app/Contents/MacOS/neogurt\nmv neogurt.app/Contents/MacOS/neogurt.dSYM ./\ntar -czf \"$DSYM_NAME\" neogurt.dSYM\n",
-                  "ls Neogurt*.dmg"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_55e9fbe3bd8303cd7134",
-          "kind": "command",
-          "name": "cd build/release\n\nDMG_NAME=$(ls Neogurt*.dmg)\nBASENAME=\"${DMG_NAME%.dmg}\"\nDSYM_NAME=\"${BASENAME}.dSYM.tar.gz\"\n\necho \"DMG_NAME=$DMG_NAME\" >> $GITHUB_ENV\necho \"DSYM_NAME=$DSYM_NAME\" >> $GITHUB_ENV\n\ndsymutil neogurt.app/Contents/MacOS/neogurt\nmv neogurt.app/Contents/MacOS/neogurt.dSYM ./\ntar -czf \"$DSYM_NAME\" neogurt.dSYM\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1605,
-              "column": 12,
-              "line": 70
-            },
-            "stop": {
-              "byte": 2000,
-              "column": 1,
-              "line": 83
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_580e3039c4fa7aabb9fb",
-          "kind": "step",
-          "name": "Build and run tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1357,
-              "column": 7,
-              "line": 61
-            },
-            "stop": {
-              "byte": 1509,
-              "column": 1,
-              "line": 65
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "DSYM_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1774,
-                      "column": 181,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1783,
-                      "column": 190,
-                      "line": 70
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "DSYM_NAME"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5c618fec346c3ccaac8c",
-          "kind": "resource",
-          "name": "DSYM_NAME",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1774,
-              "column": 181,
-              "line": 70
-            },
-            "stop": {
-              "byte": 1783,
-              "column": 190,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_5cc8f84b2d1034b47274",
-          "kind": "call",
-          "name": "actions/upload-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2048,
-              "column": 13,
-              "line": 85
-            },
-            "stop": {
-              "byte": 2074,
-              "column": 39,
-              "line": 85
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.sha",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2922,
-                      "column": 215,
-                      "line": 111
-                    },
-                    "stop": {
-                      "byte": 2932,
-                      "column": 225,
-                      "line": 111
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2719,
-                      "column": 12,
-                      "line": 111
-                    },
-                    "stop": {
-                      "byte": 3011,
-                      "column": 23,
-                      "line": 120
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "gh release delete nightly --yes || true\ngit push origin :nightly || true\n\nls -al artifacts/\n\ngh release create nightly artifacts/*/* \\\n  --title \"Neogurt dev build\" \\\n  --notes \"Dev build for commit ${{ github.sha }}\" \\\n  --prerelease\n",
-                  "github.sha"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_6141bd6cf3a9035b3a05",
-          "kind": "command",
-          "name": "gh release delete nightly --yes || true\ngit push origin :nightly || true\n\nls -al artifacts/\n\ngh release create nightly artifacts/*/* \\\n  --title \"Neogurt dev build\" \\\n  --notes \"Dev build for commit ${{ github.sha }}\" \\\n  --prerelease\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2719,
-              "column": 12,
-              "line": 111
-            },
-            "stop": {
-              "byte": 3011,
-              "column": 23,
-              "line": 120
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_write",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_64941aa7e181e26246c2",
-          "kind": "workflow",
-          "name": "Build",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 3011,
-              "column": 23,
-              "line": 120
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6fd50fdce5245a692a9a",
-          "kind": "step",
-          "name": "Download artifacts",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2521,
-              "column": 7,
-              "line": 103
-            },
-            "stop": {
-              "byte": 2622,
-              "column": 24,
-              "line": 106
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_72307027bc589f4ac3f5",
-          "kind": "step",
-          "name": "Configure CMake",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 785,
-              "column": 7,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1267,
-              "column": 1,
-              "line": 57
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_72fd1eff204c29659a00",
-          "kind": "step",
-          "name": "Upload dSYM artifact",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2183,
-              "column": 7,
-              "line": 90
-            },
-            "stop": {
-              "byte": 2355,
-              "column": 49,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 696,
-                      "column": 12,
-                      "line": 40
-                    },
-                    "stop": {
-                      "byte": 778,
-                      "column": 1,
-                      "line": 44
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "brew install llvm\nbrew install boost\nbrew install ninja\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_7a71ca240127e77a4b0c",
-          "kind": "command",
-          "name": "brew install llvm\nbrew install boost\nbrew install ninja\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 696,
-              "column": 12,
-              "line": 40
-            },
-            "stop": {
-              "byte": 778,
-              "column": 1,
-              "line": 44
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.arch",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2292,
-                      "column": 32,
-                      "line": 93
-                    },
-                    "stop": {
-                      "byte": 2303,
-                      "column": 43,
-                      "line": 93
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.arch"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7bba7d2c84ea40adf858",
-          "kind": "resource",
-          "name": "matrix.arch",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2292,
-              "column": 32,
-              "line": 93
-            },
-            "stop": {
-              "byte": 2303,
-              "column": 43,
-              "line": 93
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_81cbd8360c57d574fe87",
-          "kind": "call",
-          "name": "actions/upload-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2222,
-              "column": 13,
-              "line": 91
-            },
-            "stop": {
-              "byte": 2248,
-              "column": 39,
-              "line": 91
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_824a3eff40d45479eee3",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 19,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 157,
-              "column": 24,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "env.DMG_NAME",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2160,
-                      "column": 33,
-                      "line": 88
-                    },
-                    "stop": {
-                      "byte": 2172,
-                      "column": 45,
-                      "line": 88
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value env.DMG_NAME",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "env.DMG_NAME"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8d0e0cb6b1414d52ca64",
-          "kind": "resource",
-          "name": "env.DMG_NAME",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2160,
-              "column": 33,
-              "line": 88
-            },
-            "stop": {
-              "byte": 2172,
-              "column": 45,
-              "line": 88
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_98eb70af4e7774b884f4",
-          "kind": "step",
-          "name": "Prepare artifacts",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1570,
-              "column": 7,
-              "line": 69
-            },
-            "stop": {
-              "byte": 2000,
-              "column": 1,
-              "line": 83
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "brew --prefix llvm",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 905,
-                      "column": 99,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 923,
-                      "column": 117,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "brew --prefix llvm"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9983c7994330d11b87ff",
-          "kind": "resource",
-          "name": "brew --prefix llvm",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 905,
-              "column": 99,
-              "line": 46
-            },
-            "stop": {
-              "byte": 923,
-              "column": 117,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "ls Neogurt*.dmg",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1634,
-                      "column": 41,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1649,
-                      "column": 56,
-                      "line": 70
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ls Neogurt*.dmg"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9b58389b98afcd76205f",
-          "kind": "resource",
-          "name": "ls Neogurt*.dmg",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1634,
-              "column": 41,
-              "line": 70
-            },
-            "stop": {
-              "byte": 1649,
-              "column": 56,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_aa0203b21f222a3cec48",
-          "kind": "step",
-          "name": "Install dependencies on macOS",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 649,
-              "column": 7,
-              "line": 39
-            },
-            "stop": {
-              "byte": 778,
-              "column": 1,
-              "line": 44
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 2684,
-                      "column": 23,
-                      "line": 110
-                    },
-                    "stop": {
-                      "byte": 2704,
-                      "column": 43,
-                      "line": 110
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_aa0f10a135795ad7b032",
-          "kind": "resource",
-          "name": "secrets.GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2684,
-              "column": 23,
-              "line": 110
-            },
-            "stop": {
-              "byte": 2704,
-              "column": 43,
-              "line": 110
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GH_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_acfe1b5f5adec2864e9a",
-          "kind": "resource",
-          "name": "env:GH_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2670,
-              "column": 9,
-              "line": 110
-            },
-            "stop": {
-              "byte": 2707,
-              "column": 46,
-              "line": 110
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "xcrun --show-sdk-path",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1016,
-                      "column": 210,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1037,
-                      "column": 231,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "xcrun --show-sdk-path"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ad30658df89341dd18e4",
-          "kind": "resource",
-          "name": "xcrun --show-sdk-path",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1016,
-              "column": 210,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1037,
-              "column": 231,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b41e4871ea6e82ce67c2",
-          "kind": "step",
-          "name": "Upload build artifacts",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2007,
-              "column": 7,
-              "line": 84
-            },
-            "stop": {
-              "byte": 2175,
-              "column": 48,
-              "line": 88
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "[[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\"",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1095,
-                      "column": 289,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1183,
-                      "column": 377,
-                      "line": 46
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "brew --prefix llvm",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 905,
-                      "column": 99,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 923,
-                      "column": 117,
-                      "line": 46
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "brew --prefix llvm",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 960,
-                      "column": 154,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 978,
-                      "column": 172,
-                      "line": 46
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event.inputs.nightly",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1103,
-                      "column": 297,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1130,
-                      "column": 324,
-                      "line": 46
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 818,
-                      "column": 12,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1267,
-                      "column": 1,
-                      "line": 57
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "xcrun --show-sdk-path",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1016,
-                      "column": 210,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1037,
-                      "column": 231,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "[[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\"",
-                  "brew --prefix llvm",
-                  "cmake -B build/release -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja -DCMAKE_C_COMPILER=\"$(brew --prefix llvm)/bin/clang\" -DCMAKE_CXX_COMPILER=\"$(brew --prefix llvm)/bin/clang++\" -DCMAKE_OSX_SYSROOT=\"$(xcrun --show-sdk-path)\" -DSDL_SHARED=OFF -DSDL_STATIC=ON -DBLEND2D_STATIC=ON $([[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\")\n",
-                  "github.event.inputs.nightly",
-                  "xcrun --show-sdk-path"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b442300ecad9cccd5a6a",
-          "kind": "command",
-          "name": "cmake -B build/release -DCMAKE_BUILD_TYPE=RelWithDebInfo -GNinja -DCMAKE_C_COMPILER=\"$(brew --prefix llvm)/bin/clang\" -DCMAKE_CXX_COMPILER=\"$(brew --prefix llvm)/bin/clang++\" -DCMAKE_OSX_SYSROOT=\"$(xcrun --show-sdk-path)\" -DSDL_SHARED=OFF -DSDL_STATIC=ON -DBLEND2D_STATIC=ON $([[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\")\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 818,
-              "column": 12,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1267,
-              "column": 1,
-              "line": 57
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ba10c0ff94d3a83ad119",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 160,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 207,
-              "column": 32,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_bb4ce1b36cf1ae955588",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2494,
-              "column": 13,
-              "line": 101
-            },
-            "stop": {
-              "byte": 2513,
-              "column": 32,
-              "line": 101
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bc8e27635fe36f424b72",
-          "kind": "step",
-          "name": "Generate package",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1516,
-              "column": 7,
-              "line": 66
-            },
-            "stop": {
-              "byte": 1562,
-              "column": 24,
-              "line": 67
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "[[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\"",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1095,
-                      "column": 289,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1183,
-                      "column": 377,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "[[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\""
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c6776ce29b27c3bc60be",
-          "kind": "resource",
-          "name": "[[ \"${{ github.event.inputs.nightly }}\" == \"true\" ]] && echo \"-DDEV_BUILD=ON\" || echo \"\"",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1095,
-              "column": 289,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1183,
-              "column": 377,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_c77bf5828308facf6b6d",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 455,
-              "column": 13,
-              "line": 30
-            },
-            "stop": {
-              "byte": 474,
-              "column": 32,
-              "line": 30
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "GITHUB_ENV",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1746,
-                      "column": 153,
-                      "line": 70
-                    },
-                    "stop": {
-                      "byte": 1756,
-                      "column": 163,
-                      "line": 70
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "GITHUB_ENV"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cff09b78a47bedeca88b",
-          "kind": "resource",
-          "name": "GITHUB_ENV",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1746,
-              "column": 153,
-              "line": 70
-            },
-            "stop": {
-              "byte": 1756,
-              "column": 163,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d10cfc55748bae43cfa0",
-          "kind": "step",
-          "name": "Build neogurt",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1274,
-              "column": 7,
-              "line": 58
-            },
-            "stop": {
-              "byte": 1349,
-              "column": 56,
-              "line": 59
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 1394,
-                      "column": 12,
-                      "line": 62
-                    },
-                    "stop": {
-                      "byte": 1509,
-                      "column": 1,
-                      "line": 65
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cmake --build build/release --target tests\nctest --test-dir build/release --output-on-failure -V\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d2538ae91b24fb1d5449",
-          "kind": "command",
-          "name": "cmake --build build/release --target tests\nctest --test-dir build/release --output-on-failure -V\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 1394,
-              "column": 12,
-              "line": 62
-            },
-            "stop": {
-              "byte": 1509,
-              "column": 1,
-              "line": 65
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_write",
-            "artifact_read"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "file_write"
-          ],
-          "id": "wv_fc1d5064393d905a3308",
-          "kind": "call",
-          "name": "actions/download-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/williamhcode/neogurt/.github/workflows/build.yml",
-            "start": {
-              "byte": 2558,
-              "column": 13,
-              "line": 104
-            },
-            "stop": {
-              "byte": 2586,
-              "column": 41,
-              "line": 104
-            }
-          },
-          "unknown": {
-            "detail": "actions/download-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "github",
-      "source": "github/williamhcode/neogurt/.github/workflows/build.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:8046a2801eff7db605877c03e3a8c67050509464b3a37ad0ab40435d1acc84f5",
-      "path": "github/williamhcode/neogurt/.github/workflows/build.yml"
-    }
-  ],
+  "digest": "sha256:9079193aba2dd40f814152c55af4613b18db55b85ade30e404c7193cabe052f4",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:acd4629c7f9efc8cfc0dfd13cb3a5da36c3bdb6ae03847cc0c3b797c3acfc9b9",
+    "sources": [
+      {
+        "digest": "sha256:8046a2801eff7db605877c03e3a8c67050509464b3a37ad0ab40435d1acc84f5",
+        "id": 0,
+        "path": ".github/workflows/build.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -3676,40 +584,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 7,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 66,
+    "nodes": 51,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 3
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

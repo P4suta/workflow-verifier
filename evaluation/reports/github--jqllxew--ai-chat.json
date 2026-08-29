@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:99491028f2cfe9836f50b3098cac433eb2655c047ef567afa35eb5067737705f",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v3",
+      "Incomplete.Unresolved_dependency: actions/setup-python@v4",
+      "Incomplete.Unresolved_dependency: actions/upload-artifact@v4"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v3"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+          "source": 0,
           "start": {
             "byte": 155,
             "column": 13,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_92b5fcb0687e43770fe5",
+      "id": "diag_5edd89850470db118d3083934f079c67714dc2120a162abb18cded81a8b98b71",
       "message": "dependency is not pinned to immutable content: actions/checkout@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+        "source": 0,
         "start": {
           "byte": 155,
           "column": 13,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_b0292c21a1564dacf602",
+          "node": 5,
           "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+            "source": 0,
             "start": {
               "byte": 155,
               "column": 13,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v4"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+          "source": 0,
           "start": {
             "byte": 213,
             "column": 13,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_f69ff62070d67712550b",
+      "id": "diag_fe99808c60028923e0e3ed1a7195435772e3296e407e062ba16fb9f8550adb60",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+        "source": 0,
         "start": {
           "byte": 213,
           "column": 13,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f2cad95e80593fb29556",
+          "node": 7,
           "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+            "source": 0,
             "start": {
               "byte": 213,
               "column": 13,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v4"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+          "source": 0,
           "start": {
             "byte": 696,
             "column": 13,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_9f00f72789a0e144f41b",
+      "id": "diag_c9a6c21272311f7df8055c569222082035aaf745fce8d0de3b16ba56f58a2113",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+        "source": 0,
         "start": {
           "byte": 696,
           "column": 13,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f38f53190f2ee589d26c",
+          "node": 15,
           "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
+            "source": 0,
             "start": {
               "byte": 696,
               "column": 13,
@@ -184,831 +189,70 @@
       ]
     }
   ],
-  "digest": "sha256:a13c3b0a34dff368700364993d9b2d05eda6d75ca4fe8e4adfcf242d0b6e98a1",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_e9463085c5dd3e546127",
-          "id": "wv_07f8bd613633e2ba2feb",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f38f53190f2ee589d26c"
-        },
-        {
-          "condition": true,
-          "from": "wv_713289daf8390151168a",
-          "id": "wv_152b0a46525bbb0e8552",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9e09ad09df5852470013"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c494de5bb6c1b682921",
-          "id": "wv_2ff425de6f1614547859",
-          "kind": "control",
-          "label": null,
-          "to": "wv_713289daf8390151168a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c494de5bb6c1b682921",
-          "id": "wv_363a6f6dd9c907d96197",
-          "kind": "control",
-          "label": null,
-          "to": "wv_59c840e4a77e10828ba4"
-        },
-        {
-          "condition": true,
-          "from": "wv_59c840e4a77e10828ba4",
-          "id": "wv_3aebd7c524985eefbaa7",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f2cad95e80593fb29556"
-        },
-        {
-          "condition": true,
-          "from": "wv_e9463085c5dd3e546127",
-          "id": "wv_40f136b6bda7f45d2d35",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f38f53190f2ee589d26c"
-        },
-        {
-          "condition": true,
-          "from": "wv_59e2f90fadab69270ca5",
-          "id": "wv_4634b28ed95973d50bb9",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b0292c21a1564dacf602"
-        },
-        {
-          "condition": true,
-          "from": "wv_59c840e4a77e10828ba4",
-          "id": "wv_4ccb439c583c1109ce6c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f2cad95e80593fb29556"
-        },
-        {
-          "condition": true,
-          "from": "wv_59e2f90fadab69270ca5",
-          "id": "wv_5713d5211fee6d929351",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b0292c21a1564dacf602"
-        },
-        {
-          "condition": true,
-          "from": "wv_5fb953ac9cff6773fe45",
-          "id": "wv_57e4a1b99e5020293dad",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_713289daf8390151168a"
-        },
-        {
-          "condition": true,
-          "from": "wv_5fb953ac9cff6773fe45",
-          "id": "wv_59e6d924ba3b8114323c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8e6b6f9ab7d90e14d9dc"
-        },
-        {
-          "condition": true,
-          "from": "wv_48da39f4523b20bcd7ab",
-          "id": "wv_6398d261390cf023de21",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0f900c7b2985390c2000"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c494de5bb6c1b682921",
-          "id": "wv_67490d45cecaa43eeab4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_48da39f4523b20bcd7ab"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c494de5bb6c1b682921",
-          "id": "wv_7a6629d4288da0870323",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e9463085c5dd3e546127"
-        },
-        {
-          "condition": true,
-          "from": "wv_48da39f4523b20bcd7ab",
-          "id": "wv_80018891e068e8df5462",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e9463085c5dd3e546127"
-        },
-        {
-          "condition": true,
-          "from": "wv_176fe1d99dd06b79c443",
-          "id": "wv_80466c09d79bcc27db76",
-          "kind": "control",
-          "label": null,
-          "to": "wv_53567a9320f32daf7435"
-        },
-        {
-          "condition": true,
-          "from": "wv_713289daf8390151168a",
-          "id": "wv_80ea07d686ef86ee0f8e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_48da39f4523b20bcd7ab"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c494de5bb6c1b682921",
-          "id": "wv_9f0c7eec91632568a761",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5fb953ac9cff6773fe45"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c494de5bb6c1b682921",
-          "id": "wv_aebd6e5aa59fa22f2ce5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_59e2f90fadab69270ca5"
-        },
-        {
-          "condition": true,
-          "from": "wv_59e2f90fadab69270ca5",
-          "id": "wv_bdea1141e81646e6f586",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_59c840e4a77e10828ba4"
-        },
-        {
-          "condition": true,
-          "from": "wv_69e43f0e52048ec651ef",
-          "id": "wv_c142a6057201012d59b7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_53567a9320f32daf7435"
-        },
-        {
-          "condition": true,
-          "from": "wv_59c840e4a77e10828ba4",
-          "id": "wv_c459611527a92d2a41a5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_5fb953ac9cff6773fe45"
-        },
-        {
-          "condition": true,
-          "from": "wv_53567a9320f32daf7435",
-          "id": "wv_f1e1ad6ffc0c92024548",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1c494de5bb6c1b682921"
-        }
-      ],
-      "entrypoints": [
-        "wv_53567a9320f32daf7435"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-                    "start": {
-                      "byte": 612,
-                      "column": 12,
-                      "line": 31
-                    },
-                    "stop": {
-                      "byte": 642,
-                      "column": 42,
-                      "line": 31
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "cp config_example.yaml ./dist/"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0f900c7b2985390c2000",
-          "kind": "command",
-          "name": "cp config_example.yaml ./dist/",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 612,
-              "column": 12,
-              "line": 31
-            },
-            "stop": {
-              "byte": 642,
-              "column": 42,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_176fe1d99dd06b79c443",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 66,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 84,
-              "column": 21,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1c494de5bb6c1b682921",
-          "kind": "job",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 95,
-              "column": 3,
-              "line": 11
-            },
-            "stop": {
-              "byte": 781,
-              "column": 21,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_48da39f4523b20bcd7ab",
-          "kind": "step",
-          "name": "Add config_example.yaml to dist",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 563,
-              "column": 7,
-              "line": 30
-            },
-            "stop": {
-              "byte": 642,
-              "column": 42,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_53567a9320f32daf7435",
-          "kind": "workflow",
-          "name": "build_for_linux",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 781,
-              "column": 21,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_59c840e4a77e10828ba4",
-          "kind": "step",
-          "name": "Set up Python",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 181,
-              "column": 7,
-              "line": 17
-            },
-            "stop": {
-              "byte": 279,
-              "column": 31,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_59e2f90fadab69270ca5",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 149,
-              "column": 7,
-              "line": 16
-            },
-            "stop": {
-              "byte": 174,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5fb953ac9cff6773fe45",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 286,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 413,
-              "column": 44,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_69e43f0e52048ec651ef",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 29,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 63,
-              "column": 15,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_713289daf8390151168a",
-          "kind": "step",
-          "name": "build",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 420,
-              "column": 7,
-              "line": 25
-            },
-            "stop": {
-              "byte": 556,
-              "column": 49,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-                    "start": {
-                      "byte": 324,
-                      "column": 12,
-                      "line": 22
-                    },
-                    "stop": {
-                      "byte": 413,
-                      "column": 44,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "python -m pip install --upgrade pip\npip install -r requirements_api.txt\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8e6b6f9ab7d90e14d9dc",
-          "kind": "command",
-          "name": "python -m pip install --upgrade pip\npip install -r requirements_api.txt\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 324,
-              "column": 12,
-              "line": 22
-            },
-            "stop": {
-              "byte": 413,
-              "column": 44,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-                    "start": {
-                      "byte": 443,
-                      "column": 12,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 556,
-                      "column": 49,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "pip install pyinstaller\npyinstaller -F main.py\nmv ./dist/main ./dist/aichat_linux_amd64\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_9e09ad09df5852470013",
-          "kind": "command",
-          "name": "pip install pyinstaller\npyinstaller -F main.py\nmv ./dist/main ./dist/aichat_linux_amd64\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 443,
-              "column": 12,
-              "line": 26
-            },
-            "stop": {
-              "byte": 556,
-              "column": 49,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_b0292c21a1564dacf602",
-          "kind": "call",
-          "name": "actions/checkout@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 155,
-              "column": 13,
-              "line": 16
-            },
-            "stop": {
-              "byte": 174,
-              "column": 32,
-              "line": 16
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e9463085c5dd3e546127",
-          "kind": "step",
-          "name": "Upload artifacts linux_amd64",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 649,
-              "column": 7,
-              "line": 32
-            },
-            "stop": {
-              "byte": 781,
-              "column": 21,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f2cad95e80593fb29556",
-          "kind": "call",
-          "name": "actions/setup-python@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 213,
-              "column": 13,
-              "line": 18
-            },
-            "stop": {
-              "byte": 236,
-              "column": 36,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_f38f53190f2ee589d26c",
-          "kind": "call",
-          "name": "actions/upload-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml",
-            "start": {
-              "byte": 696,
-              "column": 13,
-              "line": 33
-            },
-            "stop": {
-              "byte": 722,
-              "column": 39,
-              "line": 33
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "github",
-      "source": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:26cf2ece6e8e658cb29f22b6f5a00337ac6b54a94b1c2bc80d2295ace70432fb",
-      "path": "github/jqllxew/ai-chat/.github/workflows/build_for_linux.yml"
-    }
-  ],
+  "digest": "sha256:8bb4dbe158df9fb5694cc049a8cb0d1d63b4b1133a41a651afe1400990b9ff0d",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:16a8fbcc2c8045265dd865bd361c0092e3b16b691060f83fcc73e0002a93a8ae",
+    "sources": [
+      {
+        "digest": "sha256:26cf2ece6e8e658cb29f22b6f5a00337ac6b54a94b1c2bc80d2295ace70432fb",
+        "id": 0,
+        "path": ".github/workflows/build_for_linux.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1023,40 +267,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 23,
+    "nodes": 16,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

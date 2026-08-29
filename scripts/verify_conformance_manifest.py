@@ -13,18 +13,13 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
-V1_PROTOCOLS = {
+PROTOCOLS = {
     "canonical-json",
     "source-manifest-v2",
     "scenario-v1",
-    "report-v2",
     "runner-v2",
     "sandbox-run-v2",
     "evidence-v2",
-}
-PROTOCOLS_BY_SCHEMA = {
-    "conformance-manifest-v1": V1_PROTOCOLS,
-    "conformance-manifest-v2": V1_PROTOCOLS | {"report-v3"},
 }
 
 
@@ -75,10 +70,8 @@ def verify(manifest_path: Path, root: Path) -> int:
         raise ValueError("conformance manifest must be canonical JSON")
     if not isinstance(manifest, dict) or set(manifest) != {"schema", "vectors"}:
         raise ValueError("conformance manifest fields are not exact")
-    schema = manifest["schema"]
-    if schema not in PROTOCOLS_BY_SCHEMA:
+    if manifest["schema"] != "conformance-manifest-v2":
         raise ValueError("unsupported conformance manifest schema")
-    protocols = PROTOCOLS_BY_SCHEMA[schema]
     vectors = manifest["vectors"]
     if not isinstance(vectors, list) or not vectors:
         raise ValueError("conformance manifest needs vectors")
@@ -110,7 +103,7 @@ def verify(manifest_path: Path, root: Path) -> int:
             raise ValueError(f"vector {relative} size mismatch")
         if vector["expected"] not in {"accept", "reject"}:
             raise ValueError(f"vector {relative} expected result is invalid")
-        if vector["protocol"] not in protocols:
+        if vector["protocol"] not in PROTOCOLS:
             raise ValueError(f"vector {relative} protocol is unknown")
         if vector["expected"] == "accept":
             value, vector_raw = _load(path, f"accepted vector {relative}")

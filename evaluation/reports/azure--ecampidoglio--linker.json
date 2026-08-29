@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:45a07f751517c7e4f4dbd448b47783f250714dd8c89120664b8c3ed6cad1db65",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: Bash@3",
+      "Incomplete.Unresolved_dependency: NodeTool@0"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NodeTool@0"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 67,
             "column": 11,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_c855c5f7e514c9ede25e",
+      "id": "diag_b7f3e5349c090c3f44cce8d2c27b9e85c35fe00238e9c903463c2a5d2eb0aeb4",
       "message": "dependency is not pinned to immutable content: NodeTool@0",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 67,
           "column": 11,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f15b30665b200c8237d3",
+          "node": 4,
           "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 67,
               "column": 11,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Bash@3"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 158,
             "column": 11,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_695b1dc601c0f4015749",
+      "id": "diag_4ef9a99618f84690cca87602fc91cf2afe96ff8828cc10ea2afd906d638f9d6f",
       "message": "dependency is not pinned to immutable content: Bash@3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 158,
           "column": 11,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_06c5ac7d539f1091c071",
+          "node": 6,
           "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 158,
               "column": 11,
@@ -123,383 +129,110 @@
       ]
     }
   ],
-  "digest": "sha256:5db8ef72f7b0976a26f829f2273c257b79370c5088ac835c9ffde24a20e234f5",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_1e9b40dd87006731ae7b",
-          "id": "wv_251fbf2f251e1d61849b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f15b30665b200c8237d3"
-        },
-        {
-          "condition": true,
-          "from": "wv_a46cc33fcecd81f379c1",
-          "id": "wv_2e04ec7efef7915f218e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_91eef44d54e888ded468"
-        },
-        {
-          "condition": true,
-          "from": "wv_0db0c6a75fdd392654bf",
-          "id": "wv_36b47c2b881cc450a97e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_06c5ac7d539f1091c071"
-        },
-        {
-          "condition": true,
-          "from": "wv_abafeb5ca3ae7c9e07f4",
-          "id": "wv_3a20fdd5608c8b1f8ded",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0db0c6a75fdd392654bf"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e9b40dd87006731ae7b",
-          "id": "wv_4831e73fe743516eebfa",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f15b30665b200c8237d3"
-        },
-        {
-          "condition": true,
-          "from": "wv_abafeb5ca3ae7c9e07f4",
-          "id": "wv_58ff7dd552060b67512b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1e9b40dd87006731ae7b"
-        },
-        {
-          "condition": true,
-          "from": "wv_91eef44d54e888ded468",
-          "id": "wv_7103d892cf1d39215bda",
-          "kind": "control",
-          "label": null,
-          "to": "wv_abafeb5ca3ae7c9e07f4"
-        },
-        {
-          "condition": true,
-          "from": "wv_0db0c6a75fdd392654bf",
-          "id": "wv_823d145ff252f44e6f0d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_06c5ac7d539f1091c071"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e9b40dd87006731ae7b",
-          "id": "wv_de4f27226da6acaee621",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_0db0c6a75fdd392654bf"
-        }
-      ],
-      "entrypoints": [
-        "wv_91eef44d54e888ded468"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_06c5ac7d539f1091c071",
-          "kind": "call",
-          "name": "Bash@3",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
-            "start": {
-              "byte": 158,
-              "column": 11,
-              "line": 10
-            },
-            "stop": {
-              "byte": 164,
-              "column": 17,
-              "line": 10
-            }
-          },
-          "unknown": {
-            "detail": "Bash@3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0db0c6a75fdd392654bf",
-          "kind": "step",
-          "name": "Build",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
-            "start": {
-              "byte": 152,
-              "column": 5,
-              "line": 10
-            },
-            "stop": {
-              "byte": 291,
-              "column": 38,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1e9b40dd87006731ae7b",
-          "kind": "step",
-          "name": "Install Node",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
-            "start": {
-              "byte": 61,
-              "column": 5,
-              "line": 6
-            },
-            "stop": {
-              "byte": 147,
-              "column": 26,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_91eef44d54e888ded468",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 291,
-              "column": 38,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a46cc33fcecd81f379c1",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
-            "start": {
-              "byte": 41,
-              "column": 1,
-              "line": 4
-            },
-            "stop": {
-              "byte": 49,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_abafeb5ca3ae7c9e07f4",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 291,
-              "column": 38,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f15b30665b200c8237d3",
-          "kind": "call",
-          "name": "NodeTool@0",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/ecampidoglio/linker/azure-pipelines.yml",
-            "start": {
-              "byte": 67,
-              "column": 11,
-              "line": 6
-            },
-            "stop": {
-              "byte": 77,
-              "column": 21,
-              "line": 6
-            }
-          },
-          "unknown": {
-            "detail": "NodeTool@0",
-            "kind": "unresolved_dependency"
-          }
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/ecampidoglio/linker/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:f7cf482abd559737ad4fb14be3cd9d18a31b3f913b4977d312e55b4ecd32e071",
-      "path": "azure/ecampidoglio/linker/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:068bc4aedcb3c50cd7d552779df50253e3be7a761bd214ba38dfb040105b50b1",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:fe6764d8614fddca5a2801fa08b253a786bad0e8975f0d1b778351f262e1bd1c",
+    "sources": [
+      {
+        "digest": "sha256:f7cf482abd559737ad4fb14be3cd9d18a31b3f913b4977d312e55b4ecd32e071",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 9,
+    "nodes": 7,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

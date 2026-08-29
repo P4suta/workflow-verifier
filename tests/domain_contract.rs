@@ -1,0 +1,750 @@
+use std::collections::{BTreeMap, BTreeSet};
+use workflow_verifier::internal::conformance::domain::abstract_value::{
+    AbstractTruth, StringValue,
+};
+use workflow_verifier::internal::conformance::domain::{
+    AbstractValue, Condition, Edge, EdgeKind, Graph, Node, NodeId, NodeKind, Phase, Provenance,
+    Provider, Secrecy, Source, Trust, Truth, UnknownReason, Value, ValueType,
+};
+use workflow_verifier::internal::conformance::foundation::{Position, SourceId, Span};
+
+fn span(start: usize, stop: usize) -> Span {
+    Span::new(
+        SourceId(0),
+        Position {
+            byte: start,
+            line: 1,
+            column: u32::try_from(start + 1).unwrap_or(u32::MAX),
+        },
+        Position {
+            byte: stop,
+            line: 1,
+            column: u32::try_from(stop + 1).unwrap_or(u32::MAX),
+        },
+    )
+}
+
+fn abstract_value(value_type: ValueType, value: Value) -> AbstractValue {
+    AbstractValue {
+        value_type,
+        value,
+        trust: Trust::Trusted,
+        secrecy: Secrecy::Public,
+        provenance: Vec::new(),
+    }
+}
+
+fn string_value(value: StringValue) -> AbstractValue {
+    abstract_value(ValueType::String, Value::String(value))
+}
+
+#[test]
+fn condition_is_a_canonical_robdd() {
+    let a = Condition::atom("a");
+    let b = Condition::atom("b");
+    let c = Condition::atom("c");
+    assert_eq!(a.and(&b).and(&c), c.and(&a).and(&b));
+    assert_eq!(a.or(&a.not()), Condition::True);
+    assert_eq!(a.and(&a.not()), Condition::False);
+}
+
+#[test]
+fn condition_evaluation_and_display_preserve_branch_semantics() {
+    let approval = Condition::atom("approval");
+    assert_eq!(approval.evaluate(&|_| Some(false)), Truth::False);
+    assert_eq!(approval.evaluate(&|_| Some(true)), Truth::True);
+    assert_eq!(approval.evaluate(&|_| None), Truth::Unknown);
+    assert_eq!(approval.to_string(), "approval");
+
+    let platform = Condition::atom("platform");
+    assert_eq!(
+        approval.and(&platform).to_string(),
+        "((not approval and false) or (approval and platform))"
+    );
+
+    let redundant_branch = Condition::Branch {
+        variable: "redundant".to_owned(),
+        low: Box::new(Condition::True),
+        high: Box::new(Condition::True),
+    };
+    assert_eq!(redundant_branch.evaluate(&|_| None), Truth::True);
+}
+
+#[test]
+fn value_type_names_and_security_predicates_are_stable() {
+    let names = [
+        (ValueType::Never, "never"),
+        (ValueType::Null, "null"),
+        (ValueType::Bool, "bool"),
+        (ValueType::Number, "number"),
+        (ValueType::String, "string"),
+        (ValueType::List, "list"),
+        (ValueType::Object, "object"),
+        (ValueType::Dynamic, "dynamic"),
+    ];
+    for (value_type, expected) in names {
+        assert_eq!(value_type.name(), expected);
+    }
+
+    let mut classified = string_value(StringValue::Top);
+    assert!(!classified.is_untrusted());
+    assert!(!classified.is_secret());
+    classified.trust = Trust::Untrusted;
+    classified.secrecy = Secrecy::Secret;
+    assert!(classified.is_untrusted());
+    assert!(classified.is_secret());
+}
+
+#[test]
+fn abstract_value_join_uses_the_type_lattice() {
+    let never_with_value = abstract_value(ValueType::Never, Value::Null);
+    let string = string_value(StringValue::Constants(vec!["value".to_owned()]));
+    let another_string = string_value(StringValue::Pattern("value-.*".to_owned()));
+    let number = abstract_value(
+        ValueType::Number,
+        Value::Number {
+            minimum: None,
+            maximum: None,
+        },
+    );
+
+    assert_eq!(never_with_value.join(&string).value_type, ValueType::String);
+    assert_eq!(string.join(&never_with_value).value_type, ValueType::String);
+    assert_eq!(string.join(&another_string).value_type, ValueType::String);
+    assert_eq!(string.join(&number).value_type, ValueType::Dynamic);
+}
+
+#[test]
+fn string_join_preserves_constants_affixes_patterns_and_unicode_boundaries() {
+    let bottom = string_value(StringValue::Bottom);
+    let pattern = string_value(StringValue::Pattern("release-.*".to_owned()));
+    assert_eq!(bottom.join(&pattern).value, pattern.value);
+
+    let first = string_value(StringValue::Constants(vec!["beta".to_owned()]));
+    let second = string_value(StringValue::Constants(vec!["alpha".to_owned()]));
+    assert_eq!(
+        first.join(&second).value,
+        Value::String(StringValue::Constants(vec![
+            "alpha".to_owned(),
+            "beta".to_owned(),
+        ]))
+    );
+
+    let concrete = string_value(StringValue::Constants(vec!["release-α.tar".to_owned()]));
+    let affix = string_value(StringValue::Affix {
+        prefix: Some("release-β".to_owned()),
+        suffix: Some("preview.tar".to_owned()),
+    });
+    assert_eq!(
+        concrete.join(&affix).value,
+        Value::String(StringValue::Affix {
+            prefix: Some("release-".to_owned()),
+            suffix: Some(".tar".to_owned()),
+        })
+    );
+
+    let shared_prefix = string_value(StringValue::Constants(vec!["shared-value-a".to_owned()]));
+    let prefix_only_affix = string_value(StringValue::Affix {
+        prefix: Some("shared-".to_owned()),
+        suffix: Some("different-b".to_owned()),
+    });
+    assert_eq!(
+        shared_prefix.join(&prefix_only_affix).value,
+        Value::String(StringValue::Affix {
+            prefix: Some("shared-".to_owned()),
+            suffix: None,
+        })
+    );
+
+    let multiple = string_value(StringValue::Constants(vec![
+        "release-main".to_owned(),
+        "release-next".to_owned(),
+    ]));
+    let release_prefix = string_value(StringValue::Affix {
+        prefix: Some("release-".to_owned()),
+        suffix: None,
+    });
+    assert_eq!(
+        multiple.join(&release_prefix).value,
+        Value::String(StringValue::Top)
+    );
+
+    let left_affix = string_value(StringValue::Affix {
+        prefix: Some("shared-left".to_owned()),
+        suffix: Some("left-a".to_owned()),
+    });
+    let right_affix = string_value(StringValue::Affix {
+        prefix: Some("shared-right".to_owned()),
+        suffix: Some("right-b".to_owned()),
+    });
+    assert_eq!(
+        left_affix.join(&right_affix).value,
+        Value::String(StringValue::Affix {
+            prefix: Some("shared-".to_owned()),
+            suffix: None,
+        })
+    );
+
+    let same_pattern = string_value(StringValue::Pattern("release-.*".to_owned()));
+    let different_pattern = string_value(StringValue::Pattern("preview-.*".to_owned()));
+    assert_eq!(same_pattern.join(&same_pattern).value, same_pattern.value);
+    assert_eq!(
+        same_pattern.join(&different_pattern).value,
+        Value::String(StringValue::Top)
+    );
+}
+
+#[test]
+fn scalar_value_join_preserves_null_boolean_and_number_domains() {
+    let null = abstract_value(ValueType::Null, Value::Null);
+    assert_eq!(null.join(&null).value, Value::Null);
+
+    let boolean_true = abstract_value(ValueType::Bool, Value::Boolean(AbstractTruth::True));
+    let boolean_false = abstract_value(ValueType::Bool, Value::Boolean(AbstractTruth::False));
+    assert_eq!(boolean_true.join(&boolean_true).value, boolean_true.value);
+    assert_eq!(
+        boolean_true.join(&boolean_false).value,
+        Value::Boolean(AbstractTruth::Maybe)
+    );
+
+    let lower_half = abstract_value(
+        ValueType::Number,
+        Value::Number {
+            minimum: Some(i64::MIN),
+            maximum: Some(0),
+        },
+    );
+    let upper_half = abstract_value(
+        ValueType::Number,
+        Value::Number {
+            minimum: Some(0),
+            maximum: Some(i64::MAX),
+        },
+    );
+    assert_eq!(
+        lower_half.join(&upper_half).value,
+        Value::Number {
+            minimum: Some(i64::MIN),
+            maximum: Some(i64::MAX),
+        }
+    );
+}
+
+#[test]
+fn list_value_join_preserves_shape_and_joins_elements() {
+    let alpha = string_value(StringValue::Constants(vec!["alpha".to_owned()]));
+    let beta = string_value(StringValue::Constants(vec!["beta".to_owned()]));
+    let one_element = abstract_value(ValueType::List, Value::List(Some(vec![alpha.clone()])));
+    let another_element = abstract_value(ValueType::List, Value::List(Some(vec![beta.clone()])));
+    assert_eq!(
+        one_element.join(&another_element).value,
+        Value::List(Some(vec![string_value(StringValue::Constants(vec![
+            "alpha".to_owned(),
+            "beta".to_owned(),
+        ]))]))
+    );
+    let empty_list = abstract_value(ValueType::List, Value::List(Some(Vec::new())));
+    assert_eq!(one_element.join(&empty_list).value, Value::List(None));
+}
+
+#[test]
+fn object_value_join_preserves_union_and_unknown_shape() {
+    let alpha = string_value(StringValue::Constants(vec!["alpha".to_owned()]));
+    let beta = string_value(StringValue::Constants(vec!["beta".to_owned()]));
+    let left_object = abstract_value(
+        ValueType::Object,
+        Value::Object(Some(BTreeMap::from([
+            ("left".to_owned(), alpha.clone()),
+            ("shared".to_owned(), alpha.clone()),
+        ]))),
+    );
+    let right_object = abstract_value(
+        ValueType::Object,
+        Value::Object(Some(BTreeMap::from([
+            ("right".to_owned(), beta.clone()),
+            ("shared".to_owned(), beta.clone()),
+        ]))),
+    );
+    assert_eq!(
+        left_object.join(&right_object).value,
+        Value::Object(Some(BTreeMap::from([
+            ("left".to_owned(), alpha.clone()),
+            ("right".to_owned(), beta.clone()),
+            (
+                "shared".to_owned(),
+                string_value(StringValue::Constants(vec![
+                    "alpha".to_owned(),
+                    "beta".to_owned(),
+                ])),
+            ),
+        ])))
+    );
+    let unknown_object = abstract_value(ValueType::Object, Value::Object(None));
+    assert_eq!(left_object.join(&unknown_object).value, Value::Object(None));
+}
+
+#[test]
+fn unknown_value_join_deduplicates_reasons_and_records_incompatibility() {
+    let external = UnknownReason::ExternalState("remote state".to_owned());
+    let evidence = UnknownReason::MissingEvidence("attestation".to_owned());
+    let first_unknown = abstract_value(
+        ValueType::Dynamic,
+        Value::Unknown(vec![external.clone(), external.clone()]),
+    );
+    let second_unknown = abstract_value(ValueType::Dynamic, Value::Unknown(vec![evidence.clone()]));
+    assert_eq!(
+        first_unknown.join(&second_unknown).value,
+        Value::Unknown(
+            BTreeSet::from([external.clone(), evidence])
+                .into_iter()
+                .collect()
+        )
+    );
+    let null = abstract_value(ValueType::Null, Value::Null);
+    assert_eq!(
+        first_unknown.join(&null).value,
+        Value::Unknown(
+            BTreeSet::from([
+                external,
+                UnknownReason::UnsupportedSyntax("incompatible value join".to_owned()),
+            ])
+            .into_iter()
+            .collect()
+        )
+    );
+}
+
+#[test]
+fn unknown_survives_joins() {
+    let reason = UnknownReason::ExternalState("remote include".to_owned());
+    let unknown = AbstractValue::unknown(reason.clone());
+    let concrete =
+        AbstractValue::string_constant("main", Trust::Trusted, Secrecy::Public, Vec::new());
+    let joined = unknown.join(&concrete);
+    assert!(joined.to_json().canonical().contains("external_state"));
+    assert!(
+        joined
+            .to_json()
+            .canonical()
+            .contains("incompatible value join")
+    );
+}
+
+#[test]
+fn join_assign_reports_changes_and_canonicalizes_only_non_bottom_joins() {
+    let provenance = |origin: &str, offset: usize| Provenance {
+        origin: origin.to_owned(),
+        span: span(offset, offset + 1),
+        operation: format!("operation-{origin}"),
+    };
+    let alpha = provenance("alpha", 1);
+    let beta = provenance("beta", 2);
+    let gamma = provenance("gamma", 3);
+    let unsorted = AbstractValue::string_constant(
+        "value",
+        Trust::Trusted,
+        Secrecy::Public,
+        vec![gamma.clone(), alpha.clone(), alpha.clone()],
+    );
+
+    let mut from_bottom = AbstractValue::default();
+    assert!(from_bottom.join_assign(&unsorted));
+    assert_eq!(from_bottom, unsorted);
+    assert!(!from_bottom.join_assign(&AbstractValue::default()));
+
+    let duplicate = from_bottom.clone();
+    assert!(from_bottom.join_assign(&duplicate));
+    assert_eq!(from_bottom.provenance, vec![alpha.clone(), gamma.clone()]);
+
+    let additional = AbstractValue::string_constant(
+        "value",
+        Trust::Trusted,
+        Secrecy::Public,
+        vec![beta.clone(), alpha.clone(), beta.clone()],
+    );
+    assert!(from_bottom.join_assign(&additional));
+    assert_eq!(from_bottom.provenance, vec![alpha, beta, gamma]);
+    let stable = from_bottom.clone();
+    assert!(!from_bottom.join_assign(&stable));
+    assert_eq!(from_bottom, stable);
+}
+
+#[test]
+fn join_assign_updates_nested_values_in_place_with_the_same_lattice_result() {
+    let alpha = string_value(StringValue::Constants(vec!["alpha".to_owned()]));
+    let beta = string_value(StringValue::Constants(vec!["beta".to_owned()]));
+    let mut left = abstract_value(
+        ValueType::List,
+        Value::List(Some(vec![abstract_value(
+            ValueType::Object,
+            Value::Object(Some(BTreeMap::from([("item".to_owned(), alpha)]))),
+        )])),
+    );
+    let right = abstract_value(
+        ValueType::List,
+        Value::List(Some(vec![abstract_value(
+            ValueType::Object,
+            Value::Object(Some(BTreeMap::from([("item".to_owned(), beta)]))),
+        )])),
+    );
+    let expected = abstract_value(
+        ValueType::List,
+        Value::List(Some(vec![abstract_value(
+            ValueType::Object,
+            Value::Object(Some(BTreeMap::from([(
+                "item".to_owned(),
+                string_value(StringValue::Constants(vec![
+                    "alpha".to_owned(),
+                    "beta".to_owned(),
+                ])),
+            )]))),
+        )])),
+    );
+
+    assert!(left.join_assign(&right));
+    assert_eq!(left, expected);
+    assert!(!left.join_assign(&right));
+
+    let external = UnknownReason::ExternalState("remote".to_owned());
+    let evidence = UnknownReason::MissingEvidence("attestation".to_owned());
+    let mut unknown = abstract_value(
+        ValueType::Dynamic,
+        Value::Unknown(vec![external.clone(), external.clone()]),
+    );
+    let other = abstract_value(ValueType::Dynamic, Value::Unknown(vec![evidence.clone()]));
+    assert!(unknown.join_assign(&other));
+    assert_eq!(unknown.value, Value::Unknown(vec![external, evidence]));
+    assert!(!unknown.join_assign(&other));
+}
+
+#[test]
+fn join_assign_reuses_canonical_string_and_classification_state() {
+    let external = UnknownReason::ExternalState("remote".to_owned());
+    let evidence = UnknownReason::MissingEvidence("attestation".to_owned());
+    let mut classified = AbstractValue::string_constant(
+        "value",
+        Trust::Unknown(vec![evidence.clone(), external.clone(), external.clone()]),
+        Secrecy::Unknown(vec![evidence.clone(), external.clone(), external.clone()]),
+        Vec::new(),
+    );
+    let other = AbstractValue::string_constant(
+        "value",
+        Trust::Unknown(vec![external.clone(), evidence.clone()]),
+        Secrecy::Unknown(vec![external.clone(), evidence.clone()]),
+        Vec::new(),
+    );
+
+    assert!(classified.join_assign(&other));
+    let canonical_reasons = vec![external, evidence];
+    assert_eq!(classified.trust, Trust::Unknown(canonical_reasons.clone()));
+    assert_eq!(classified.secrecy, Secrecy::Unknown(canonical_reasons));
+    assert!(!classified.join_assign(&other));
+
+    let dominant =
+        AbstractValue::string_constant("value", Trust::Untrusted, Secrecy::Secret, Vec::new());
+    assert!(classified.join_assign(&dominant));
+    assert_eq!(classified.trust, Trust::Untrusted);
+    assert_eq!(classified.secrecy, Secrecy::Secret);
+    assert!(!classified.join_assign(&dominant));
+}
+
+#[test]
+fn join_assign_canonicalizes_string_constants_and_caps_the_domain() {
+    let mut constants = string_value(StringValue::Constants(vec![
+        "beta".to_owned(),
+        "alpha".to_owned(),
+        "beta".to_owned(),
+    ]));
+    let other = string_value(StringValue::Constants(vec![
+        "gamma".to_owned(),
+        "alpha".to_owned(),
+        "gamma".to_owned(),
+    ]));
+    assert!(constants.join_assign(&other));
+    assert_eq!(
+        constants.constants(),
+        Some(["alpha".to_owned(), "beta".to_owned(), "gamma".to_owned()].as_slice())
+    );
+    assert!(!constants.join_assign(&other));
+
+    let mut bounded = string_value(StringValue::Constants(
+        (0..8).map(|index| format!("value-{index}")).collect(),
+    ));
+    let ninth = string_value(StringValue::Constants(vec!["value-8".to_owned()]));
+    assert!(bounded.join_assign(&ninth));
+    assert_eq!(bounded.value, Value::String(StringValue::Top));
+    assert!(!bounded.join_assign(&ninth));
+}
+
+#[test]
+fn graph_identity_and_serialization_are_insertion_order_independent() {
+    let workflow = Node::simple(
+        Provider::Github,
+        NodeKind::Workflow,
+        "ci",
+        Phase::Compile,
+        span(0, 2),
+    );
+    let job = Node::new(
+        Provider::Github,
+        NodeKind::Job,
+        "build",
+        Phase::Plan,
+        span(3, 8),
+        Node::semantics(Condition::True, BTreeMap::new(), [], [], None),
+    );
+    let edge = Edge::simple(EdgeKind::Control, workflow.id, job.id);
+
+    let mut first = Graph::empty(Provider::Github, "workflow.yml");
+    first.add_node(workflow.clone());
+    first.add_node(job.clone());
+    first.add_edge(edge.clone());
+    first.add_entrypoint(workflow.id);
+
+    let mut second = Graph::empty(Provider::Github, "workflow.yml");
+    second.add_edge(edge);
+    second.add_node(job);
+    second.add_node(workflow.clone());
+    second.add_entrypoint(workflow.id);
+
+    first.finalize();
+    second.finalize();
+    assert_eq!(first, second);
+    assert!(first.validate().is_empty());
+}
+
+#[test]
+fn identical_node_drafts_are_collision_free_and_finalize_to_dense_ids() {
+    let first = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "same",
+        Phase::Run,
+        span(0, 0),
+    );
+    let second = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "same",
+        Phase::Run,
+        span(0, 0),
+    );
+    assert_ne!(first.id, second.id);
+
+    let mut graph = Graph::empty(Provider::Github, "workflow.yml");
+    graph.add_node(first);
+    graph.add_node(second);
+    graph.finalize();
+
+    assert_eq!(
+        graph.nodes.iter().map(|node| node.id).collect::<Vec<_>>(),
+        vec![NodeId(0), NodeId(1)]
+    );
+}
+
+#[test]
+fn source_finalization_rebinds_nested_attribute_provenance() {
+    let provenance = Provenance {
+        origin: "nested".to_owned(),
+        span: span(3, 7),
+        operation: "read".to_owned(),
+    };
+    let nested = AbstractValue {
+        value_type: ValueType::Object,
+        value: Value::Object(Some(BTreeMap::from([(
+            "value".to_owned(),
+            AbstractValue::string_constant(
+                "content",
+                Trust::Trusted,
+                Secrecy::Public,
+                vec![provenance],
+            ),
+        )]))),
+        trust: Trust::Trusted,
+        secrecy: Secrecy::Public,
+        provenance: Vec::new(),
+    };
+    let mut graph = Graph::empty(Provider::Github, "z.yml");
+    graph.sources.push(Source {
+        id: SourceId(1),
+        path: "a.yml".to_owned(),
+        provider: Provider::Github,
+    });
+    graph.add_node(Node::new(
+        Provider::Github,
+        NodeKind::Step,
+        "nested",
+        Phase::Run,
+        span(0, 8),
+        Node::semantics(
+            Condition::True,
+            BTreeMap::from([("nested".to_owned(), nested)]),
+            [],
+            [],
+            None,
+        ),
+    ));
+    graph.finalize();
+
+    let node = &graph.nodes[0];
+    assert_eq!(node.span.source, SourceId(1));
+    let nested = match &node.attributes["nested"].value {
+        Value::Object(Some(values)) => &values["value"],
+        value => panic!("expected nested object, got {value:?}"),
+    };
+    assert_eq!(nested.provenance[0].span.source, SourceId(1));
+}
+
+#[test]
+fn graph_navigation_filters_both_endpoint_and_edge_kind() {
+    let source = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "source",
+        Phase::Run,
+        span(0, 0),
+    );
+    let control_target = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "control-target",
+        Phase::Run,
+        span(0, 0),
+    );
+    let data_target = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "data-target",
+        Phase::Run,
+        span(0, 0),
+    );
+    let unrelated = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "unrelated",
+        Phase::Run,
+        span(0, 0),
+    );
+    let mut graph = Graph::empty(Provider::Github, "workflow.yml");
+    for node in [
+        source.clone(),
+        control_target.clone(),
+        data_target.clone(),
+        unrelated.clone(),
+    ] {
+        graph.add_node(node);
+    }
+    graph.add_edge(Edge::simple(
+        EdgeKind::Control,
+        source.id,
+        control_target.id,
+    ));
+    graph.add_edge(Edge::simple(EdgeKind::Data, source.id, data_target.id));
+    graph.add_edge(Edge::simple(EdgeKind::Control, unrelated.id, source.id));
+
+    let ids = |nodes: Vec<&Node>| {
+        nodes
+            .into_iter()
+            .map(|node| node.id)
+            .collect::<BTreeSet<_>>()
+    };
+    assert_eq!(
+        ids(graph.successors(source.id, Some(EdgeKind::Control))),
+        BTreeSet::from([control_target.id])
+    );
+    assert_eq!(
+        ids(graph.successors(source.id, None)),
+        BTreeSet::from([control_target.id, data_target.id])
+    );
+    assert_eq!(
+        ids(graph.predecessors(source.id, Some(EdgeKind::Control))),
+        BTreeSet::from([unrelated.id])
+    );
+    assert_eq!(
+        ids(graph.predecessors(data_target.id, Some(EdgeKind::Data))),
+        BTreeSet::from([source.id])
+    );
+}
+
+#[test]
+fn graph_validation_reports_identity_endpoint_and_phase_failures() {
+    let late_source = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "late-source",
+        Phase::Run,
+        span(0, 0),
+    );
+    let early_target = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "early-target",
+        Phase::Plan,
+        span(0, 0),
+    );
+    let valid_source = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "valid-source",
+        Phase::Source,
+        span(0, 0),
+    );
+    let valid_target = Node::simple(
+        Provider::Github,
+        NodeKind::Step,
+        "valid-target",
+        Phase::Compile,
+        span(0, 0),
+    );
+    let mut graph = Graph::empty(Provider::Github, "workflow.yml");
+    for node in [
+        late_source.clone(),
+        early_target.clone(),
+        valid_source.clone(),
+        valid_target.clone(),
+        early_target.clone(),
+    ] {
+        graph.add_node(node);
+    }
+    graph.add_edge(Edge::simple(
+        EdgeKind::Data,
+        late_source.id,
+        early_target.id,
+    ));
+    graph.add_edge(Edge::simple(
+        EdgeKind::Data,
+        valid_source.id,
+        valid_target.id,
+    ));
+    graph.add_edge(Edge::simple(
+        EdgeKind::Control,
+        valid_source.id,
+        NodeId(u32::MAX),
+    ));
+
+    let issues = graph.validate();
+    assert_eq!(
+        issues
+            .iter()
+            .map(|issue| issue.code.as_str())
+            .collect::<Vec<_>>(),
+        vec!["IR-DANGLING-EDGE", "IR-DUPLICATE-NODE", "IR-PHASE-ORDER"]
+    );
+    let phase_issue = issues
+        .iter()
+        .find(|issue| issue.code == "IR-PHASE-ORDER")
+        .expect("phase-order issue must be present");
+    assert_eq!(phase_issue.node_ids, vec![late_source.id, early_target.id]);
+}
+
+#[test]
+fn unknown_reason_display_is_stable_with_and_without_detail() {
+    assert_eq!(
+        UnknownReason::ExternalState("remote state".to_owned()).to_string(),
+        "external_state: remote state"
+    );
+    assert_eq!(
+        UnknownReason::MissingEvidence(String::new()).to_string(),
+        "missing_evidence"
+    );
+}

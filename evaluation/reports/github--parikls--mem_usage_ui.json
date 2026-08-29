@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:127ff97088cab2f6db7ff61d67fe443caa79c7aaa277584538ff718092682035",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v3",
+      "Incomplete.Unresolved_dependency: actions/setup-python@v4"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v3"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
+          "source": 0,
           "start": {
             "byte": 279,
             "column": 15,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_b466859d60963de570f3",
+      "id": "diag_792fa98a23787c82d0ecfeb46ae54a485a42cf57e61b6e42f765d7c5edad6b40",
       "message": "dependency is not pinned to immutable content: actions/checkout@v3",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
+        "source": 0,
         "start": {
           "byte": 279,
           "column": 15,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_ecf54f24b199a12c4810",
+          "node": 5,
           "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
+            "source": 0,
             "start": {
               "byte": 279,
               "column": 15,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v4"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
+          "source": 0,
           "start": {
             "byte": 346,
             "column": 15,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_cbed78be065ee636b7fe",
+      "id": "diag_705996f360601ee2fa36a15b6b24aa7eeb50357c08f02c8497a39a98e33fd1bf",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
+        "source": 0,
         "start": {
           "byte": 346,
           "column": 15,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_fe03da4eff5daef8f30f",
+          "node": 7,
           "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
+            "source": 0,
             "start": {
               "byte": 346,
               "column": 15,
@@ -123,1619 +129,40 @@
       ]
     }
   ],
-  "digest": "sha256:d20b98f3da0024cf1cc5da4b2ffa487b07820b08618f0587ec4d0ace417bf7bc",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_17dd3cea5992a5660991",
-          "id": "wv_0af0fc6398a54b03ac90",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7ada9162030b28f05f61"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_0e3263c3555af8a539bd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d2ca67dd0999218db277"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_12e518c9cf11ed6359fc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b75f84a0d82818685bc9"
-        },
-        {
-          "condition": true,
-          "from": "wv_7ada9162030b28f05f61",
-          "id": "wv_135da81c24744bda395e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_171f8cf217e20b7fcfe8"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_145858ea0db3b8d22aa4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5b1077e4b0d97090b232"
-        },
-        {
-          "condition": true,
-          "from": "wv_94291bd23c188076acd7",
-          "id": "wv_2e5e50d0754657e4e807",
-          "kind": "data",
-          "label": "env.PYPI_USER",
-          "to": "wv_ef69137fef0bc893ddb2"
-        },
-        {
-          "condition": true,
-          "from": "wv_1942bbf6ac8eb4855942",
-          "id": "wv_3f258497130939d94eb3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_17dd3cea5992a5660991"
-        },
-        {
-          "condition": true,
-          "from": "wv_7c51adcbcb948e6fef02",
-          "id": "wv_41ca04b9eed3c85b892c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fd311b825acf0e11a5c4"
-        },
-        {
-          "condition": true,
-          "from": "wv_74d06702cdeb8f63934c",
-          "id": "wv_4a6d6348b37cccb82d69",
-          "kind": "control",
-          "label": null,
-          "to": "wv_46e05788d1cc34ad60e0"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_4f8ededb305f81279762",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b78a43e9874599025344"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c579c98dc60d5afddf7",
-          "id": "wv_5195f8a382e2d31445ec",
-          "kind": "data",
-          "label": "env.PYPI_PASSWORD",
-          "to": "wv_ef69137fef0bc893ddb2"
-        },
-        {
-          "condition": true,
-          "from": "wv_74d06702cdeb8f63934c",
-          "id": "wv_59d37cfdf5028b22e439",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6c124c85dccc5ec8ace4"
-        },
-        {
-          "condition": true,
-          "from": "wv_5b1077e4b0d97090b232",
-          "id": "wv_5aaa7e9487a39bb09118",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_fe49b7b9c77c5394a71a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1942bbf6ac8eb4855942",
-          "id": "wv_6793638cb359d5844496",
-          "kind": "control",
-          "label": null,
-          "to": "wv_985cd2e073540ca8e25e"
-        },
-        {
-          "condition": true,
-          "from": "wv_57acd923d13e3105962b",
-          "id": "wv_7241b45d1908082a17da",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7c51adcbcb948e6fef02"
-        },
-        {
-          "condition": true,
-          "from": "wv_fe49b7b9c77c5394a71a",
-          "id": "wv_807c9dddec5d0f80b671",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fe03da4eff5daef8f30f"
-        },
-        {
-          "condition": true,
-          "from": "wv_b75f84a0d82818685bc9",
-          "id": "wv_8493f56f95fc7cf651fb",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1942bbf6ac8eb4855942"
-        },
-        {
-          "condition": true,
-          "from": "wv_8861de25f9db4b8851d9",
-          "id": "wv_8797d114aa671fd13cf8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b0ac2b1375bee2f7ed67"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_8f5113fb7d9d729cbc4a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_17dd3cea5992a5660991"
-        },
-        {
-          "condition": true,
-          "from": "wv_7ada9162030b28f05f61",
-          "id": "wv_953c72e119801910d434",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_74d06702cdeb8f63934c"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_966f10b6c255aa2fa4d3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_74d06702cdeb8f63934c"
-        },
-        {
-          "condition": true,
-          "from": "wv_fe49b7b9c77c5394a71a",
-          "id": "wv_a014cb5210d710e830a2",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_8861de25f9db4b8851d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_b4e1a2d986b8e4c2c925",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6c124c85dccc5ec8ace4"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_b5a14a0438e8034b55e5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1942bbf6ac8eb4855942"
-        },
-        {
-          "condition": true,
-          "from": "wv_d2ca67dd0999218db277",
-          "id": "wv_c1c966b4c0a0523986b5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b78a43e9874599025344"
-        },
-        {
-          "condition": true,
-          "from": "wv_5b1077e4b0d97090b232",
-          "id": "wv_c9c1ee58b624dfd5b8a9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ecf54f24b199a12c4810"
-        },
-        {
-          "condition": true,
-          "from": "wv_c2ac2bb6cb9309a580a6",
-          "id": "wv_cea9d9dce062f2a6a817",
-          "kind": "grant",
-          "label": null,
-          "to": "wv_fd311b825acf0e11a5c4"
-        },
-        {
-          "condition": true,
-          "from": "wv_fe49b7b9c77c5394a71a",
-          "id": "wv_cec0c839797d1e8258c2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_fe03da4eff5daef8f30f"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_d564e98bbe5b9e8c0770",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fe49b7b9c77c5394a71a"
-        },
-        {
-          "condition": true,
-          "from": "wv_17dd3cea5992a5660991",
-          "id": "wv_daf4bda5cce72e0a4cca",
-          "kind": "control",
-          "label": null,
-          "to": "wv_28fa23649a52297db1b9"
-        },
-        {
-          "condition": true,
-          "from": "wv_8861de25f9db4b8851d9",
-          "id": "wv_de4a3929d33605bf0f29",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d2ca67dd0999218db277"
-        },
-        {
-          "condition": true,
-          "from": "wv_5b1077e4b0d97090b232",
-          "id": "wv_f2be42a275f8219b0a3b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_ecf54f24b199a12c4810"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_f2c9eaa70dda3e257fa5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8861de25f9db4b8851d9"
-        },
-        {
-          "condition": true,
-          "from": "wv_6c124c85dccc5ec8ace4",
-          "id": "wv_f761991346f1a1aec872",
-          "kind": "control",
-          "label": null,
-          "to": "wv_304ea25f0833b8804654"
-        },
-        {
-          "condition": true,
-          "from": "wv_b78a43e9874599025344",
-          "id": "wv_f80b5ffae26f8aa58c3b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b75f84a0d82818685bc9"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd311b825acf0e11a5c4",
-          "id": "wv_f95094cdf8e3b87295e7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7ada9162030b28f05f61"
-        },
-        {
-          "condition": true,
-          "from": "wv_b75f84a0d82818685bc9",
-          "id": "wv_f9848a1816eb1663baf2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6f14d7bb11d06b38a924"
-        },
-        {
-          "condition": true,
-          "from": "wv_d2ca67dd0999218db277",
-          "id": "wv_f9ff6b40a13e19092bc1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5038b51d58f2ab0ac7e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_b78a43e9874599025344",
-          "id": "wv_fd2992e833696b2d9ec7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ef69137fef0bc893ddb2"
-        }
-      ],
-      "entrypoints": [
-        "wv_7c51adcbcb948e6fef02"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 982,
-                      "column": 14,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1028,
-                      "column": 60,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git commit -m \"[skip ci] auto-bump-version\" -a"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_171f8cf217e20b7fcfe8",
-          "kind": "command",
-          "name": "git commit -m \"[skip ci] auto-bump-version\" -a",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 982,
-              "column": 14,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1028,
-              "column": 60,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_17dd3cea5992a5660991",
-          "kind": "step",
-          "name": "Git set name",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 872,
-              "column": 9,
-              "line": 42
-            },
-            "stop": {
-              "byte": 946,
-              "column": 56,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1942bbf6ac8eb4855942",
-          "kind": "step",
-          "name": "Git set email",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 777,
-              "column": 9,
-              "line": 39
-            },
-            "stop": {
-              "byte": 862,
-              "column": 66,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "env.PYPI_PASSWORD",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 685,
-                      "column": 69,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 702,
-                      "column": 86,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value env.PYPI_PASSWORD",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "env.PYPI_PASSWORD"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1c579c98dc60d5afddf7",
-          "kind": "resource",
-          "name": "env.PYPI_PASSWORD",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 685,
-              "column": 69,
-              "line": 34
-            },
-            "stop": {
-              "byte": 702,
-              "column": 86,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 904,
-                      "column": 14,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 946,
-                      "column": 56,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git config --global user.name \"GitHub Bot\""
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_28fa23649a52297db1b9",
-          "kind": "command",
-          "name": "git config --global user.name \"GitHub Bot\"",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 904,
-              "column": 14,
-              "line": 43
-            },
-            "stop": {
-              "byte": 946,
-              "column": 56,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 1114,
-                      "column": 14,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1136,
-                      "column": 36,
-                      "line": 52
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "poetry --build publish"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_304ea25f0833b8804654",
-          "kind": "command",
-          "name": "poetry --build publish",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 1114,
-              "column": 14,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1136,
-              "column": 36,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 1062,
-                      "column": 14,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1070,
-                      "column": 22,
-                      "line": 49
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git push"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_46e05788d1cc34ad60e0",
-          "kind": "command",
-          "name": "git push",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 1062,
-              "column": 14,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1070,
-              "column": 22,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 536,
-                      "column": 14,
-                      "line": 31
-                    },
-                    "stop": {
-                      "byte": 574,
-                      "column": 52,
-                      "line": 31
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "poetry config virtualenvs.create false"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5038b51d58f2ab0ac7e1",
-          "kind": "command",
-          "name": "poetry config virtualenvs.create false",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 536,
-              "column": 14,
-              "line": 31
-            },
-            "stop": {
-              "byte": 574,
-              "column": 52,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_57acd923d13e3105962b",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 25,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 59,
-              "column": 15,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5b1077e4b0d97090b232",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 273,
-              "column": 9,
-              "line": 20
-            },
-            "stop": {
-              "byte": 298,
-              "column": 34,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6c124c85dccc5ec8ace4",
-          "kind": "step",
-          "name": "Deploy to PyPi",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 1080,
-              "column": 9,
-              "line": 51
-            },
-            "stop": {
-              "byte": 1136,
-              "column": 36,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 747,
-                      "column": 14,
-                      "line": 37
-                    },
-                    "stop": {
-                      "byte": 767,
-                      "column": 34,
-                      "line": 37
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "poetry version patch"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_6f14d7bb11d06b38a924",
-          "kind": "command",
-          "name": "poetry version patch",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 747,
-              "column": 14,
-              "line": 37
-            },
-            "stop": {
-              "byte": 767,
-              "column": 34,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_74d06702cdeb8f63934c",
-          "kind": "step",
-          "name": "Push",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 1038,
-              "column": 9,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1070,
-              "column": 22,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7ada9162030b28f05f61",
-          "kind": "step",
-          "name": "Commit",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 956,
-              "column": 9,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1028,
-              "column": 60,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7c51adcbcb948e6fef02",
-          "kind": "workflow",
-          "name": "PyPi Deploy",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1136,
-              "column": 36,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8861de25f9db4b8851d9",
-          "kind": "step",
-          "name": "Install poetry",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 423,
-              "column": 9,
-              "line": 27
-            },
-            "stop": {
-              "byte": 482,
-              "column": 39,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "env.PYPI_USER",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 664,
-                      "column": 48,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 677,
-                      "column": 61,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value env.PYPI_USER",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "env.PYPI_USER"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_94291bd23c188076acd7",
-          "kind": "resource",
-          "name": "env.PYPI_USER",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 664,
-              "column": 48,
-              "line": 34
-            },
-            "stop": {
-              "byte": 677,
-              "column": 61,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 810,
-                      "column": 14,
-                      "line": 40
-                    },
-                    "stop": {
-                      "byte": 862,
-                      "column": 66,
-                      "line": 40
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git config --global user.email \"github.bot@pypi.org\""
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_985cd2e073540ca8e25e",
-          "kind": "command",
-          "name": "git config --global user.email \"github.bot@pypi.org\"",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 810,
-              "column": 14,
-              "line": 40
-            },
-            "stop": {
-              "byte": 862,
-              "column": 66,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 457,
-                      "column": 14,
-                      "line": 28
-                    },
-                    "stop": {
-                      "byte": 482,
-                      "column": 39,
-                      "line": 28
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "pip install \"poetry<=1.6\""
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b0ac2b1375bee2f7ed67",
-          "kind": "command",
-          "name": "pip install \"poetry<=1.6\"",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 457,
-              "column": 14,
-              "line": 28
-            },
-            "stop": {
-              "byte": 482,
-              "column": 39,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b75f84a0d82818685bc9",
-          "kind": "step",
-          "name": "Bump Version",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 715,
-              "column": 9,
-              "line": 36
-            },
-            "stop": {
-              "byte": 767,
-              "column": 34,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b78a43e9874599025344",
-          "kind": "step",
-          "name": "Configure PyPi credentials",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 584,
-              "column": 9,
-              "line": 33
-            },
-            "stop": {
-              "byte": 705,
-              "column": 89,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c2ac2bb6cb9309a580a6",
-          "kind": "resource",
-          "name": "environment:master",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 145,
-              "column": 18,
-              "line": 14
-            },
-            "stop": {
-              "byte": 151,
-              "column": 24,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d2ca67dd0999218db277",
-          "kind": "step",
-          "name": "Skip virtualenv creation",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 492,
-              "column": 9,
-              "line": 30
-            },
-            "stop": {
-              "byte": 574,
-              "column": 52,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_ecf54f24b199a12c4810",
-          "kind": "call",
-          "name": "actions/checkout@v3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 279,
-              "column": 15,
-              "line": 20
-            },
-            "stop": {
-              "byte": 298,
-              "column": 34,
-              "line": 20
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v3",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "env.PYPI_PASSWORD",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 685,
-                      "column": 69,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 702,
-                      "column": 86,
-                      "line": 34
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "env.PYPI_USER",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 664,
-                      "column": 48,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 677,
-                      "column": 61,
-                      "line": 34
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-                    "start": {
-                      "byte": 630,
-                      "column": 14,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 705,
-                      "column": 89,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value env.PYPI_PASSWORD",
-                    "kind": "dynamic_string"
-                  },
-                  {
-                    "detail": "unresolved GitHub dataflow value env.PYPI_USER",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "env.PYPI_PASSWORD",
-                  "env.PYPI_USER",
-                  "poetry config http-basic.pypi ${{ env.PYPI_USER }} ${{ env.PYPI_PASSWORD }}"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_ef69137fef0bc893ddb2",
-          "kind": "command",
-          "name": "poetry config http-basic.pypi ${{ env.PYPI_USER }} ${{ env.PYPI_PASSWORD }}",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 630,
-              "column": 14,
-              "line": 34
-            },
-            "stop": {
-              "byte": 705,
-              "column": 89,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "deployment"
-          ],
-          "condition": true,
-          "effects": [
-            "deployment_change"
-          ],
-          "id": "wv_fd311b825acf0e11a5c4",
-          "kind": "job",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 70,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 1136,
-              "column": 36,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fe03da4eff5daef8f30f",
-          "kind": "call",
-          "name": "actions/setup-python@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 346,
-              "column": 15,
-              "line": 23
-            },
-            "stop": {
-              "byte": 369,
-              "column": 38,
-              "line": 23
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fe49b7b9c77c5394a71a",
-          "kind": "step",
-          "name": "Set up Python 3.9",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml",
-            "start": {
-              "byte": 308,
-              "column": 9,
-              "line": 22
-            },
-            "stop": {
-              "byte": 413,
-              "column": 30,
-              "line": 25
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:0cf954b3a261b44799a29c029871486673c36a014e4de70f50e724790ee2c95a",
-      "path": "github/parikls/mem_usage_ui/.github/workflows/pypi-deploy.yml"
-    }
-  ],
+  "digest": "sha256:a84dcbadf45f0dfed56f8bc4e0f57e4e18947a9acfc5a3546eef2ccb543a8674",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:6471c9d158b54ff9a47e857c607979291991ff97c4c3975755d384f6a381e36f",
+    "sources": [
+      {
+        "digest": "sha256:0cf954b3a261b44799a29c029871486673c36a014e4de70f50e724790ee2c95a",
+        "id": 0,
+        "path": ".github/workflows/pypi-deploy.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
@@ -1746,36 +173,27 @@
           "kind": "external_state"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
@@ -1790,8 +208,7 @@
           "kind": "dynamic_string"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1806,40 +223,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 3
+    "edges": 39,
+    "nodes": 28,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 3,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

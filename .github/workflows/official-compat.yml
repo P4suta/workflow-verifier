@@ -27,7 +27,7 @@ jobs:
           check-latest: false
       - uses: ./.github/actions/setup-repository-rust
       - name: Build current analyzer
-        run: cargo build --locked -p workflow-verifier-cli
+        run: cargo build --locked -p workflow-verifier
       - name: Observe current upstream default branches
         run: >-
           python -B scripts/fetch_official_projects.py

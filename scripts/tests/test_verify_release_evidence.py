@@ -143,6 +143,17 @@ def fixture(root: Path) -> Path:
         )
         artifacts.append(artifact)
         spdx.append(sbom)
+    crate = root / "artifacts" / "workflow-verifier-0.1.0.crate"
+    crate.write_bytes(b"reproducible crate fixture\n")
+    artifacts.append(
+        {
+            "digest": digest(crate),
+            "kind": "crate-package",
+            "name": crate.name,
+            "path": crate.relative_to(root).as_posix(),
+            "platform": "any",
+        }
+    )
     artifacts.extend(spdx)
     cyclonedx = root / "sbom" / "workflow-verifier.cdx.json"
     write_json(
@@ -254,6 +265,7 @@ class ReleaseEvidenceV4Tests(unittest.TestCase):
         with (
             patch("scripts.verify_release_evidence._verify_signature") as signature,
             patch("scripts.verify_release_evidence._verify_sigstore_bundle"),
+            patch("scripts.verify_release_evidence.inspect_crate"),
         ):
             values = verify(
                 manifest,
@@ -309,10 +321,22 @@ class ReleaseEvidenceV4Tests(unittest.TestCase):
             manifest = fixture(Path(temporary))
             values = self.verify_fixture(manifest)
             self.assertEqual(values["subject_commit"], SUBJECT)
+            self.assertRegex(values["crate_digest"], r"^sha256:[0-9a-f]{64}$")
             self.assertEqual(len(PLATFORMS), 5)
             self.assertIn("linux-arm64", PLATFORMS)
             self.assertIn("performance-5-platform", REQUIRED_GATES)
             self.assertNotIn("performance-4-platform", REQUIRED_GATES)
+
+    def test_crates_io_package_is_required(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            manifest = fixture(Path(temporary))
+            value = document(manifest)
+            value["artifacts"] = [
+                artifact for artifact in value["artifacts"] if artifact["kind"] != "crate-package"
+            ]
+            write_json(manifest, value)
+            with self.assertRaisesRegex(ValueError, "exactly one crates.io package"):
+                self.verify_fixture(manifest)
 
     def test_missing_gate_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

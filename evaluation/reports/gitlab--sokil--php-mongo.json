@@ -1,704 +1,89 @@
 {
+  "analysis_digest": "sha256:c33c6163f50c0888aff0cf01a88c9d4db1cb7aeee8001fedf352e737c49ca524",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: php:5.6",
+      "Incomplete.Unresolved_dependency: php:7.0"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:d2b7f61f177419aa28e38588cc635ad31320df03431a8690eae04bf111aa7ab1",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_777f549a94a4b50b8f8d",
-          "id": "wv_0261ad3a1dc0fe6a4298",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_4b4b802b4eb253f4f744"
-        },
-        {
-          "condition": true,
-          "from": "wv_24421b0e9db0f0434d15",
-          "id": "wv_1dac8c333d6cc66490e8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_2abf4333b6a92b248fd2"
-        },
-        {
-          "condition": true,
-          "from": "wv_738aec27e72231dc2aa2",
-          "id": "wv_24561aec3ed32efd3a0d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b8a50c973fd1ec64781b"
-        },
-        {
-          "condition": true,
-          "from": "wv_2abf4333b6a92b248fd2",
-          "id": "wv_43d57f93bce80985518b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_5c2a50978e00fd3843ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_738aec27e72231dc2aa2",
-          "id": "wv_54bd007e1f6c29aa40d1",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b8a50c973fd1ec64781b"
-        },
-        {
-          "condition": true,
-          "from": "wv_738aec27e72231dc2aa2",
-          "id": "wv_820563b7482220947d4d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_9df40c25bb9cbecda6d0"
-        },
-        {
-          "condition": true,
-          "from": "wv_4b4b802b4eb253f4f744",
-          "id": "wv_a8ed7674c21af09c8452",
-          "kind": "control",
-          "label": null,
-          "to": "wv_344013110ffba31711c0"
-        },
-        {
-          "condition": true,
-          "from": "wv_738aec27e72231dc2aa2",
-          "id": "wv_b388875aa57c9deb86f0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_24421b0e9db0f0434d15"
-        },
-        {
-          "condition": true,
-          "from": "wv_738aec27e72231dc2aa2",
-          "id": "wv_c670410b0036d7e5cf95",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9df40c25bb9cbecda6d0"
-        },
-        {
-          "condition": true,
-          "from": "wv_d2da4e1df97b9b6f7ca4",
-          "id": "wv_c81a1dce3e68c86770da",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4d6fab834d04edd1806a"
-        },
-        {
-          "condition": true,
-          "from": "wv_4d6fab834d04edd1806a",
-          "id": "wv_e0c22e1f4d48e93a233e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_61184963fb4a9bfdaf8c"
-        },
-        {
-          "condition": true,
-          "from": "wv_5c2a50978e00fd3843ee",
-          "id": "wv_eb3241a2a0c410e9aeb8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_777f549a94a4b50b8f8d"
-        },
-        {
-          "condition": true,
-          "from": "wv_344013110ffba31711c0",
-          "id": "wv_eb7c4bcf5a0644aa28ea",
-          "kind": "control",
-          "label": null,
-          "to": "wv_955bad4a37fe35cee538"
-        },
-        {
-          "condition": true,
-          "from": "wv_955bad4a37fe35cee538",
-          "id": "wv_f66ebb0445db7f8f25c7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5603ddd22b08265f9519"
-        },
-        {
-          "condition": true,
-          "from": "wv_4b4b802b4eb253f4f744",
-          "id": "wv_ffa3dc463486a4c6ba8a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d2da4e1df97b9b6f7ca4"
-        }
-      ],
-      "entrypoints": [
-        "wv_738aec27e72231dc2aa2"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_24421b0e9db0f0434d15",
-          "kind": "stage",
-          "name": ".post",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2abf4333b6a92b248fd2",
-          "kind": "stage",
-          "name": ".pre",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_344013110ffba31711c0",
-          "kind": "job",
-          "name": "test:5.6",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 972,
-              "column": 1,
-              "line": 18
-            },
-            "stop": {
-              "byte": 1028,
-              "column": 20,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "4"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4b4b802b4eb253f4f744",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4d6fab834d04edd1806a",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 1073,
-              "column": 7,
-              "line": 26
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 1015,
-                      "column": 7,
-                      "line": 21
-                    },
-                    "stop": {
-                      "byte": 1028,
-                      "column": 20,
-                      "line": 21
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "composer test"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5603ddd22b08265f9519",
-          "kind": "command",
-          "name": "composer test",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 1015,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 1028,
-              "column": 20,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5c2a50978e00fd3843ee",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 1073,
-                      "column": 7,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 1086,
-                      "column": 20,
-                      "line": 26
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "composer test"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_61184963fb4a9bfdaf8c",
-          "kind": "command",
-          "name": "composer test",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 1073,
-              "column": 7,
-              "line": 26
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_738aec27e72231dc2aa2",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_777f549a94a4b50b8f8d",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_955bad4a37fe35cee538",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 1015,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 1028,
-              "column": 20,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9df40c25bb9cbecda6d0",
-          "kind": "call",
-          "name": "php:7.0",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 1049,
-              "column": 10,
-              "line": 24
-            },
-            "stop": {
-              "byte": 1056,
-              "column": 17,
-              "line": 24
-            }
-          },
-          "unknown": {
-            "detail": "php:7.0",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b8a50c973fd1ec64781b",
-          "kind": "call",
-          "name": "php:5.6",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 991,
-              "column": 10,
-              "line": 19
-            },
-            "stop": {
-              "byte": 998,
-              "column": 17,
-              "line": 19
-            }
-          },
-          "unknown": {
-            "detail": "php:5.6",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d2da4e1df97b9b6f7ca4",
-          "kind": "job",
-          "name": "test:7.0",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/sokil/php-mongo/.gitlab-ci.yml",
-            "start": {
-              "byte": 1030,
-              "column": 1,
-              "line": 23
-            },
-            "stop": {
-              "byte": 1086,
-              "column": 20,
-              "line": 26
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/sokil/php-mongo/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:dfbcc70cf4e7b4ef0c344bfd05190db88d0fa268dbccbe9dff2691a48737d4b5",
-      "path": "gitlab/sokil/php-mongo/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:9b14246cbc9327f11809564fb41995ab0f24ba7d0d22c58f9c3278377d53d2ee",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:c74083205764efce8b139d43721ce98c87d8d1a13b63a9f59d2423575c7d1dca",
+    "sources": [
+      {
+        "digest": "sha256:dfbcc70cf4e7b4ef0c344bfd05190db88d0fa268dbccbe9dff2691a48737d4b5",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -713,26 +98,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 15,
+    "nodes": 14,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

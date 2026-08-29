@@ -1,311 +1,118 @@
 {
+  "analysis_digest": "sha256:0ef5be0d727275eca0826b8436fad0d15f98201c309e8dedf1481eeb20c231d1",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: coverage.yml",
+      "Incomplete.Unresolved_dependency: default.yml"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:70262784facb24f4246893ae520fb40bdbc5cc2c915d53b74f373b494acabda5",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_452ed0ad4fc38a1124b0",
-          "id": "wv_0829a751e307a2fcbeca",
-          "kind": "control",
-          "label": null,
-          "to": "wv_148bf41a38ccf93fcece"
-        },
-        {
-          "condition": true,
-          "from": "wv_452ed0ad4fc38a1124b0",
-          "id": "wv_58ba3e00143c21ebf611",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fd6d8043c111bced5c91"
-        },
-        {
-          "condition": true,
-          "from": "wv_452ed0ad4fc38a1124b0",
-          "id": "wv_64de2595775f7fda8b0c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e87e3e5e5a8bc1b4f4fe"
-        },
-        {
-          "condition": true,
-          "from": "wv_452ed0ad4fc38a1124b0",
-          "id": "wv_7b7db963f9069d70f912",
-          "kind": "control",
-          "label": null,
-          "to": "wv_41775332b7018f21fc84"
-        },
-        {
-          "condition": true,
-          "from": "wv_452ed0ad4fc38a1124b0",
-          "id": "wv_a565f5f8f593c26d1511",
-          "kind": "control",
-          "label": null,
-          "to": "wv_61bcec1e254325527cdd"
-        }
-      ],
-      "entrypoints": [
-        "wv_452ed0ad4fc38a1124b0"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_148bf41a38ccf93fcece",
-          "kind": "stage",
-          "name": "no_cross",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/crate-ci/azure-pipelines/azure-pipelines.yml",
-            "start": {
-              "byte": 1106,
-              "column": 5,
-              "line": 39
-            },
-            "stop": {
-              "byte": 1396,
-              "column": 46,
-              "line": 50
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_41775332b7018f21fc84",
-          "kind": "stage",
-          "name": "subdir",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/crate-ci/azure-pipelines/azure-pipelines.yml",
-            "start": {
-              "byte": 332,
-              "column": 5,
-              "line": 13
-            },
-            "stop": {
-              "byte": 676,
-              "column": 50,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_452ed0ad4fc38a1124b0",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/crate-ci/azure-pipelines/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1869,
-              "column": 46,
-              "line": 64
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_61bcec1e254325527cdd",
-          "kind": "stage",
-          "name": "primary",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/crate-ci/azure-pipelines/azure-pipelines.yml",
-            "start": {
-              "byte": 12,
-              "column": 5,
-              "line": 2
-            },
-            "stop": {
-              "byte": 327,
-              "column": 46,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e87e3e5e5a8bc1b4f4fe",
-          "kind": "stage",
-          "name": "ci_image",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/crate-ci/azure-pipelines/azure-pipelines.yml",
-            "start": {
-              "byte": 1471,
-              "column": 5,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1869,
-              "column": 46,
-              "line": 64
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fd6d8043c111bced5c91",
-          "kind": "stage",
-          "name": "bad_coverage_token",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/crate-ci/azure-pipelines/azure-pipelines.yml",
-            "start": {
-              "byte": 725,
-              "column": 5,
-              "line": 26
-            },
-            "stop": {
-              "byte": 1045,
-              "column": 46,
-              "line": 37
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/crate-ci/azure-pipelines/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:71d76213b02153980061864c9297753db5361979c125967b7202800ec5ae3d75",
-      "path": "azure/crate-ci/azure-pipelines/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:6e7699320eb596d91fcd3eae71a5da4db3dd96aec1c35168fcf0c2f08970968f",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:8c2ef5e3e0d8fb5f6aa3822f943d20ddef2a13c7739b6c96a2919021f30aaf14",
+    "sources": [
+      {
+        "digest": "sha256:71d76213b02153980061864c9297753db5361979c125967b7202800ec5ae3d75",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 5,
+    "nodes": 6,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

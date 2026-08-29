@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-use workflow_verifier_runner_protocol::Limits;
+use workflow_verifier_internal::internal::runner_protocol::Limits;
 
 const CGROUP_MOUNT: &str = "/sys/fs/cgroup";
 const DIRECTORY_PREFIX: &str = "workflow-verifier-";

@@ -847,24 +847,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "23b97319f7b8343df12cc98938e5c3eb436064524c8d2b4e30a1d3a36eecdf81"
 
 [[package]]
-name = "workflow-verifier-cli"
+name = "workflow-verifier"
 version = "0.1.0"
 dependencies = [
+ "caseless",
  "rustls",
  "rustls-native-certs",
+ "same-file",
  "serde",
  "serde_json",
+ "sha2",
  "toml",
+ "unicode-normalization",
  "url",
- "workflow-verifier-domain",
- "workflow-verifier-engine",
- "workflow-verifier-foundation",
- "workflow-verifier-frontend",
- "workflow-verifier-helper-runtime",
- "workflow-verifier-product",
- "workflow-verifier-sandbox",
- "workflow-verifier-syntax",
- "workflow-verifier-verifier",
  "zeroize",
 ]
 
@@ -872,136 +867,39 @@ dependencies = [
 name = "workflow-verifier-conformance"
 version = "0.1.0"
 dependencies = [
- "workflow-verifier-foundation",
- "workflow-verifier-product",
-]
-
-[[package]]
-name = "workflow-verifier-domain"
-version = "0.1.0"
-dependencies = [
- "workflow-verifier-foundation",
-]
-
-[[package]]
-name = "workflow-verifier-engine"
-version = "0.1.0"
-dependencies = [
- "workflow-verifier-domain",
- "workflow-verifier-foundation",
- "workflow-verifier-frontend",
- "workflow-verifier-product",
- "workflow-verifier-sandbox",
- "workflow-verifier-syntax",
- "workflow-verifier-verifier",
-]
-
-[[package]]
-name = "workflow-verifier-foundation"
-version = "0.1.0"
-dependencies = [
- "caseless",
- "sha2",
- "unicode-normalization",
-]
-
-[[package]]
-name = "workflow-verifier-frontend"
-version = "0.1.0"
-dependencies = [
- "workflow-verifier-domain",
- "workflow-verifier-foundation",
- "workflow-verifier-syntax",
+ "workflow-verifier",
 ]
 
 [[package]]
 name = "workflow-verifier-helper-conformance"
 version = "0.1.0"
 dependencies = [
+ "workflow-verifier",
  "workflow-verifier-linux-helper",
  "workflow-verifier-macos-helper",
- "workflow-verifier-runner-protocol",
  "workflow-verifier-windows-helper",
 ]
-
-[[package]]
-name = "workflow-verifier-helper-runtime"
-version = "0.1.0"
-dependencies = [
- "same-file",
- "workflow-verifier-runner-protocol",
-]
-
-[[package]]
-name = "workflow-verifier-helpers"
-version = "0.1.0"
 
 [[package]]
 name = "workflow-verifier-linux-helper"
 version = "0.1.0"
 dependencies = [
  "libc",
- "workflow-verifier-helper-runtime",
- "workflow-verifier-runner-protocol",
+ "workflow-verifier",
 ]
 
 [[package]]
 name = "workflow-verifier-macos-helper"
 version = "0.1.0"
 dependencies = [
- "workflow-verifier-helper-runtime",
- "workflow-verifier-runner-protocol",
+ "workflow-verifier",
 ]
 
 [[package]]
 name = "workflow-verifier-oci-helper"
 version = "0.1.0"
 dependencies = [
- "workflow-verifier-helper-runtime",
- "workflow-verifier-runner-protocol",
-]
-
-[[package]]
-name = "workflow-verifier-product"
-version = "0.1.0"
-dependencies = [
- "serde",
- "toml",
- "workflow-verifier-domain",
- "workflow-verifier-foundation",
- "workflow-verifier-frontend",
- "workflow-verifier-syntax",
- "workflow-verifier-verifier",
-]
-
-[[package]]
-name = "workflow-verifier-runner-protocol"
-version = "0.1.0"
-
-[[package]]
-name = "workflow-verifier-sandbox"
-version = "0.1.0"
-dependencies = [
- "workflow-verifier-domain",
- "workflow-verifier-foundation",
- "workflow-verifier-frontend",
- "workflow-verifier-runner-protocol",
- "workflow-verifier-verifier",
-]
-
-[[package]]
-name = "workflow-verifier-syntax"
-version = "0.1.0"
-dependencies = [
- "workflow-verifier-foundation",
-]
-
-[[package]]
-name = "workflow-verifier-verifier"
-version = "0.1.0"
-dependencies = [
- "workflow-verifier-domain",
- "workflow-verifier-foundation",
+ "workflow-verifier",
 ]
 
 [[package]]
@@ -1009,8 +907,7 @@ name = "workflow-verifier-vm-agent"
 version = "0.1.0"
 dependencies = [
  "libc",
- "workflow-verifier-helper-runtime",
- "workflow-verifier-runner-protocol",
+ "workflow-verifier",
 ]
 
 [[package]]
@@ -1018,8 +915,7 @@ name = "workflow-verifier-windows-helper"
 version = "0.1.0"
 dependencies = [
  "windows-sys 0.61.2",
- "workflow-verifier-helper-runtime",
- "workflow-verifier-runner-protocol",
+ "workflow-verifier",
 ]
 
 [[package]]

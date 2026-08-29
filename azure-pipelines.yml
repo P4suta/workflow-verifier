@@ -27,9 +27,11 @@ stages:
             displayName: Tooling contracts
           - script: python -B scripts/verify_architecture.py
             displayName: Architecture boundary
-          - script: cargo test --manifest-path helpers/Cargo.toml --workspace --all-targets
-            displayName: Native backend conformance
-          - script: cargo fmt --manifest-path helpers/Cargo.toml --all -- --check
+          - script: python -B scripts/verify_lint_policy.py
+            displayName: Lint suppression policy
+          - script: cargo test --locked --workspace --all-targets
+            displayName: Rust product and helper contracts
+          - script: cargo fmt --all -- --check
             displayName: Rust format
-          - script: cargo clippy --manifest-path helpers/Cargo.toml --workspace --all-targets -- -D warnings
+          - script: cargo clippy --workspace --all-targets -- -D warnings
             displayName: Rust lint

@@ -7,11 +7,11 @@ use std::process::{Command, Stdio};
 use std::sync::OnceLock;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-use workflow_verifier_helper_runtime::{
+use workflow_verifier_internal::internal::helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest, ProcessObservation,
     execute_native_with_exclusions, run_command_with_termination,
 };
-use workflow_verifier_runner_protocol::{
+use workflow_verifier_internal::internal::runner_protocol::{
     Descriptor, LaunchError, Limits, RunResult, ValidatedPlan,
 };
 

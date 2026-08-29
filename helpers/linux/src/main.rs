@@ -3,8 +3,10 @@ fn main() {
     if let Some(code) = workflow_verifier_linux_helper::broker_main(&arguments) {
         std::process::exit(code);
     }
-    std::process::exit(workflow_verifier_runner_protocol::helper_main(
-        &workflow_verifier_linux_helper::descriptor(),
-        workflow_verifier_linux_helper::launch_with_exclusions,
-    ));
+    std::process::exit(
+        workflow_verifier_internal::internal::runner_protocol::helper_main(
+            &workflow_verifier_linux_helper::descriptor(),
+            workflow_verifier_linux_helper::launch_with_exclusions,
+        ),
+    );
 }

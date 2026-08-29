@@ -1,6 +1,6 @@
 use std::sync::atomic::{AtomicU64, Ordering};
 
-use workflow_verifier_runner_protocol::vm::{Observation, parse_observation};
+use workflow_verifier_internal::internal::runner_protocol::vm::{Observation, parse_observation};
 use workflow_verifier_vm_agent::{guest_working_directory, write_observation};
 
 static NEXT: AtomicU64 = AtomicU64::new(0);

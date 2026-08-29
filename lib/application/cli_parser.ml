@@ -105,12 +105,8 @@ let check_cmd =
     enum_optional "persona"
       [ "gate"; "audit"; "paranoid" ]
       "Override the configured analysis persona."
-  and strict = bool_flag "strict" "Return 3 when analysis is incomplete."
-  and cache_mode =
-    enum_opt "cache-mode" [ "off"; "user" ] "off"
-      "Cache mode; CI should use off."
-  in
-  let make common format output persona strict cache_mode target =
+  and strict = bool_flag "strict" "Return 3 when analysis is incomplete." in
+  let make common format output persona strict target =
     invocation "check"
       [
         common;
@@ -118,15 +114,13 @@ let check_cmd =
         option "output" output;
         option "persona" persona;
         flag "strict" strict;
-        option "cache-mode" (Some cache_mode);
         positional target;
       ]
   in
   Cmd.v
     (command_info "check" "Run static analysis and the policy gate.")
     Term.(
-      const make $ common_term $ format $ output $ persona $ strict $ cache_mode
-      $ target)
+      const make $ common_term $ format $ output $ persona $ strict $ target)
 
 let resolve_cmd =
   let allow_network =
@@ -374,36 +368,6 @@ let completion_cmd =
     (command_info "completion" "Emit a shell completion script.")
     Term.(const (fun shell -> invocation "completion" [ [ shell ] ]) $ shell)
 
-let migrate_cmd =
-  let input =
-    Arg.(
-      required & pos 0 (some string) None & info [] ~docv:"OLD_CONFIG_OR_LOCK")
-  and output =
-    string_opt "output" "FILE"
-      "Atomically write migrated config-v2 or lock-v2 to $(docv)."
-  and suppression_owner =
-    string_opt "suppression-owner" "OWNER"
-      "Owner to attach to every legacy suppression. Required when suppressions \
-       exist."
-  and suppression_expiry =
-    string_opt "suppression-expiry" "YYYY-MM-DD"
-      "Expiry to attach to every legacy suppression. Required when \
-       suppressions exist."
-  in
-  let make input output suppression_owner suppression_expiry =
-    invocation "migrate"
-      [
-        option "output" output;
-        option "suppression-owner" suppression_owner;
-        option "suppression-expiry" suppression_expiry;
-        positionals [ input ];
-      ]
-  in
-  Cmd.v
-    (command_info "migrate"
-       "Validate and migrate unpublished config-v1 or lock-v1 input.")
-    Term.(const make $ input $ output $ suppression_owner $ suppression_expiry)
-
 let version_cmd =
   Cmd.v
     (command_info "version" "Print the product version.")
@@ -444,7 +408,6 @@ let root =
       sandbox_cmd;
       doctor_cmd;
       completion_cmd;
-      migrate_cmd;
       version_cmd;
     ]
 

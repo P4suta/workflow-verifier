@@ -1,413 +1,116 @@
 {
+  "analysis_digest": "sha256:fbdfbbf7c1ba0b3b1aa18cdfd29a1a3c29d4a5f785c38ac0a679c9d1e57fb3d5",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Unbound_build_source_commit"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:5f70a781d6f785be1213ed61433c1e891c32736fa17b82ea19e8ad6a23bfcf3d",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_e9c7e918a9006f71c22a",
-          "id": "wv_2aa90c2f22adaa2e7f9c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_15a53ead4a6c11e2aa08"
-        },
-        {
-          "condition": true,
-          "from": "wv_15a53ead4a6c11e2aa08",
-          "id": "wv_57370b774e1add5c0a16",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1c69c6f161557a342b58"
-        },
-        {
-          "condition": true,
-          "from": "wv_d60d4e8b0b8fdc513144",
-          "id": "wv_6e3eddec6aae90846087",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e9c7e918a9006f71c22a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c69c6f161557a342b58",
-          "id": "wv_70cbaa914ab198bd3ca3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_20d2f41651e449254923"
-        },
-        {
-          "condition": true,
-          "from": "wv_e9c7e918a9006f71c22a",
-          "id": "wv_d815998cac68a9f41330",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1c69c6f161557a342b58"
-        },
-        {
-          "condition": true,
-          "from": "wv_15a53ead4a6c11e2aa08",
-          "id": "wv_e95382cb48f763ea2b7b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_29fdad9c8706a8b1bc9f"
-        }
-      ],
-      "entrypoints": [
-        "wv_d60d4e8b0b8fdc513144"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_15a53ead4a6c11e2aa08",
-          "kind": "step",
-          "name": "Install",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-            "start": {
-              "byte": 42,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 127,
-              "column": 25,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1c69c6f161557a342b58",
-          "kind": "step",
-          "name": "Run test",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-            "start": {
-              "byte": 131,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 176,
-              "column": 26,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-                    "start": {
-                      "byte": 137,
-                      "column": 9,
-                      "line": 8
-                    },
-                    "stop": {
-                      "byte": 150,
-                      "column": 22,
-                      "line": 8
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "docker images"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "bash"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_20d2f41651e449254923",
-          "kind": "command",
-          "name": "docker images",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-            "start": {
-              "byte": 137,
-              "column": 9,
-              "line": 8
-            },
-            "stop": {
-              "byte": 150,
-              "column": 22,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-                    "start": {
-                      "byte": 48,
-                      "column": 9,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 102,
-                      "column": 63,
-                      "line": 5
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "docker build -t jhipster/consul-config-loader:travis ."
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "bash"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_29fdad9c8706a8b1bc9f",
-          "kind": "command",
-          "name": "docker build -t jhipster/consul-config-loader:travis .",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-            "start": {
-              "byte": 48,
-              "column": 9,
-              "line": 5
-            },
-            "stop": {
-              "byte": 102,
-              "column": 63,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d60d4e8b0b8fdc513144",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 176,
-              "column": 26,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e9c7e918a9006f71c22a",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/jhipster/consul-config-loader/azure-pipelines.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 176,
-              "column": 26,
-              "line": 9
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/jhipster/consul-config-loader/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:9e912a8cb6ea7189d29617402a78d598f3a9e3d4b14f1e09f2109f99e0bbc31f",
-      "path": "azure/jhipster/consul-config-loader/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:47811096766188c18741ef691dc19146fe9073ae5fc120a1a812f263706621ff",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:17528a6daba0a49a5091d6896e3129198f914e402ac720524d86967994311079",
+    "sources": [
+      {
+        "digest": "sha256:9e912a8cb6ea7189d29617402a78d598f3a9e3d4b14f1e09f2109f99e0bbc31f",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 6,
+    "nodes": 6,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

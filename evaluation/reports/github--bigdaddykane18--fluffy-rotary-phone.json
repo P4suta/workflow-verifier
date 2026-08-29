@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:70492927ad5f2e294f6d7eee36503b6f04bcf3b41d628e0340936acbcb24c375",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v5",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v4",
+      "Incomplete.Unresolved_dependency: actions/upload-artifact@v5"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v5"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+          "source": 0,
           "start": {
             "byte": 806,
             "column": 15,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_f3c39200e98169c2543e",
+      "id": "diag_4355da912852611aefd7ae282c06abd4505478e3a8dda5ab0a4ac947ed22d731",
       "message": "dependency is not pinned to immutable content: actions/checkout@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+        "source": 0,
         "start": {
           "byte": 806,
           "column": 15,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_411b2122a87774d60026",
+          "node": 5,
           "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+            "source": 0,
             "start": {
               "byte": 806,
               "column": 15,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v4"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+          "source": 0,
           "start": {
             "byte": 892,
             "column": 15,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_382121aa28dbbe406e4b",
+      "id": "diag_c34643626ed08fade4c448ebc089a89a6dc563a31710c0c7e7f6ffea01065e84",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+        "source": 0,
         "start": {
           "byte": 892,
           "column": 15,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_2b19a9e4fbd18e1880fd",
+          "node": 7,
           "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+            "source": 0,
             "start": {
               "byte": 892,
               "column": 15,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v5"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+          "source": 0,
           "start": {
             "byte": 1973,
             "column": 15,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_246657effc5cfe3b8804",
+      "id": "diag_69b7f64b12461690f46c6b30aa56dce7d36bfb9b59fa1cc4cfabc81bc64d7af1",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+        "source": 0,
         "start": {
           "byte": 1973,
           "column": 15,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_6afa66035a5b1d26000d",
+          "node": 18,
           "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
+            "source": 0,
             "start": {
               "byte": 1973,
               "column": 15,
@@ -184,1089 +189,70 @@
       ]
     }
   ],
-  "digest": "sha256:4debb45268b84fb4d669af6b32abc9ed54cbba32f551d14e6d17f12024018ea4",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_56b837e06fc8d1b2ef91",
-          "id": "wv_0393d87a6159be506df9",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_dca51c99a9a43130c36b"
-        },
-        {
-          "condition": true,
-          "from": "wv_5b45d31c654f7b7c691c",
-          "id": "wv_078d9d4ba890cc52c8f2",
-          "kind": "data",
-          "label": "git diff --ignore-space-at-eol --text dist/ | wc -l",
-          "to": "wv_5fc921accff50188cc4c"
-        },
-        {
-          "condition": true,
-          "from": "wv_dca51c99a9a43130c36b",
-          "id": "wv_07aa6696f2e677195c5f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3354cc81a24b593d1704"
-        },
-        {
-          "condition": true,
-          "from": "wv_e606e1a946d64c9b4113",
-          "id": "wv_135e9922b06902211dad",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4e4f66c00d0b173073e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_32f79c9df219ff87b502",
-          "id": "wv_1571e24f92043b810609",
-          "kind": "call",
-          "label": null,
-          "to": "wv_411b2122a87774d60026"
-        },
-        {
-          "condition": true,
-          "from": "wv_dca51c99a9a43130c36b",
-          "id": "wv_2816d93b8c326ab9090a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1e8de444c4d988d64357"
-        },
-        {
-          "condition": true,
-          "from": "wv_3e6e73ade974cc16ae32",
-          "id": "wv_294b7b0b45c9be7ccdbe",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6afa66035a5b1d26000d"
-        },
-        {
-          "condition": {
-            "high": {
-              "high": true,
-              "low": false,
-              "variable": "failure()"
-            },
-            "low": false,
-            "variable": "(steps.diff.outcome==\"failure\")"
-          },
-          "from": "wv_f362e276e6f5457dd619",
-          "id": "wv_2a1f5d65a84ea2f1ddf4",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_3e6e73ade974cc16ae32"
-        },
-        {
-          "condition": true,
-          "from": "wv_e606e1a946d64c9b4113",
-          "id": "wv_2aceb573bccf8c9207d9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_56b837e06fc8d1b2ef91"
-        },
-        {
-          "condition": true,
-          "from": "wv_0cef26c8005fc817e0c5",
-          "id": "wv_2fb51ea5ba91d81351d7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e606e1a946d64c9b4113"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e8de444c4d988d64357",
-          "id": "wv_307f219bfa7a3d0c4571",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5fc921accff50188cc4c"
-        },
-        {
-          "condition": true,
-          "from": "wv_1e8de444c4d988d64357",
-          "id": "wv_3407caa6520b1c4f764f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f362e276e6f5457dd619"
-        },
-        {
-          "condition": true,
-          "from": "wv_e606e1a946d64c9b4113",
-          "id": "wv_3ab0dc46493a156f7dad",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f362e276e6f5457dd619"
-        },
-        {
-          "condition": true,
-          "from": "wv_4e4f66c00d0b173073e1",
-          "id": "wv_3ac0d9b6dfce7e08d628",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_56b837e06fc8d1b2ef91"
-        },
-        {
-          "condition": true,
-          "from": "wv_3e6e73ade974cc16ae32",
-          "id": "wv_4d03a920be3d9e343ff2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6afa66035a5b1d26000d"
-        },
-        {
-          "condition": true,
-          "from": "wv_9beb014e0f76cc70c314",
-          "id": "wv_6aa1f7e65a0f8d8f51cb",
-          "kind": "data",
-          "label": "steps.diff.outcome",
-          "to": "wv_f362e276e6f5457dd619"
-        },
-        {
-          "condition": true,
-          "from": "wv_32f79c9df219ff87b502",
-          "id": "wv_70099f1ac3d9d24e4598",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_4e4f66c00d0b173073e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_4e4f66c00d0b173073e1",
-          "id": "wv_70cbb434287d31b44c75",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2b19a9e4fbd18e1880fd"
-        },
-        {
-          "condition": true,
-          "from": "wv_32f79c9df219ff87b502",
-          "id": "wv_7b5828d652c86f1d5393",
-          "kind": "control",
-          "label": null,
-          "to": "wv_411b2122a87774d60026"
-        },
-        {
-          "condition": true,
-          "from": "wv_e606e1a946d64c9b4113",
-          "id": "wv_7e2a6fb9012a60e13d68",
-          "kind": "control",
-          "label": null,
-          "to": "wv_32f79c9df219ff87b502"
-        },
-        {
-          "condition": true,
-          "from": "wv_e606e1a946d64c9b4113",
-          "id": "wv_82dc6f0c6472cbe35d38",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dca51c99a9a43130c36b"
-        },
-        {
-          "condition": true,
-          "from": "wv_73505d782bc5018c99a0",
-          "id": "wv_83cff068d410d7989324",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0cef26c8005fc817e0c5"
-        },
-        {
-          "condition": true,
-          "from": "wv_4e4f66c00d0b173073e1",
-          "id": "wv_a654de53c9e278212de3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_2b19a9e4fbd18e1880fd"
-        },
-        {
-          "condition": true,
-          "from": "wv_e606e1a946d64c9b4113",
-          "id": "wv_a803a968e3c6bb48196c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1e8de444c4d988d64357"
-        },
-        {
-          "condition": true,
-          "from": "wv_56b837e06fc8d1b2ef91",
-          "id": "wv_c051c67d634f26791674",
-          "kind": "control",
-          "label": null,
-          "to": "wv_be2a18d6e13cfe925d52"
-        },
-        {
-          "condition": true,
-          "from": "wv_03cd347480ed423e24a9",
-          "id": "wv_f3bcfa6a84ced801be78",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0cef26c8005fc817e0c5"
-        }
-      ],
-      "entrypoints": [
-        "wv_0cef26c8005fc817e0c5"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_03cd347480ed423e24a9",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 602,
-              "column": 3,
-              "line": 16
-            },
-            "stop": {
-              "byte": 634,
-              "column": 13,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0cef26c8005fc817e0c5",
-          "kind": "workflow",
-          "name": "Check Transpiled JavaScript",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 518,
-              "column": 1,
-              "line": 10
-            },
-            "stop": {
-              "byte": 2056,
-              "column": 22,
-              "line": 72
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1e8de444c4d988d64357",
-          "kind": "step",
-          "name": "Compare Directories",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1257,
-              "column": 9,
-              "line": 50
-            },
-            "stop": {
-              "byte": 1737,
-              "column": 1,
-              "line": 63
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2b19a9e4fbd18e1880fd",
-          "kind": "call",
-          "name": "actions/setup-node@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 892,
-              "column": 15,
-              "line": 35
-            },
-            "stop": {
-              "byte": 913,
-              "column": 36,
-              "line": 35
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_32f79c9df219ff87b502",
-          "kind": "step",
-          "name": "Checkout",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 756,
-              "column": 9,
-              "line": 29
-            },
-            "stop": {
-              "byte": 825,
-              "column": 34,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1136,
-                      "column": 14,
-                      "line": 46
-                    },
-                    "stop": {
-                      "byte": 1150,
-                      "column": 28,
-                      "line": 46
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm run bundle"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_3354cc81a24b593d1704",
-          "kind": "command",
-          "name": "npm run bundle",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1136,
-              "column": 14,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1150,
-              "column": 28,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3e6e73ade974cc16ae32",
-          "kind": "step",
-          "name": "Upload Artifact",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1854,
-              "column": 9,
-              "line": 66
-            },
-            "stop": {
-              "byte": 2056,
-              "column": 22,
-              "line": 72
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_411b2122a87774d60026",
-          "kind": "call",
-          "name": "actions/checkout@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 806,
-              "column": 15,
-              "line": 31
-            },
-            "stop": {
-              "byte": 825,
-              "column": 34,
-              "line": 31
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4e4f66c00d0b173073e1",
-          "kind": "step",
-          "name": "Setup Node.js",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 835,
-              "column": 9,
-              "line": 33
-            },
-            "stop": {
-              "byte": 991,
-              "column": 21,
-              "line": 38
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_56b837e06fc8d1b2ef91",
-          "kind": "step",
-          "name": "Install Dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1001,
-              "column": 9,
-              "line": 40
-            },
-            "stop": {
-              "byte": 1067,
-              "column": 20,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "git diff --ignore-space-at-eol --text dist/ | wc -l",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1438,
-                      "column": 139,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1489,
-                      "column": 190,
-                      "line": 52
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git diff --ignore-space-at-eol --text dist/ | wc -l"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5b45d31c654f7b7c691c",
-          "kind": "resource",
-          "name": "git diff --ignore-space-at-eol --text dist/ | wc -l",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1438,
-              "column": 139,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1489,
-              "column": 190,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "git diff --ignore-space-at-eol --text dist/ | wc -l",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1438,
-                      "column": 139,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1489,
-                      "column": 190,
-                      "line": 52
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1313,
-                      "column": 14,
-                      "line": 52
-                    },
-                    "stop": {
-                      "byte": 1737,
-                      "column": 1,
-                      "line": 63
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git diff --ignore-space-at-eol --text dist/ | wc -l",
-                  "if [ ! -d dist/ ]; then\n  echo \"Expected dist/ directory does not exist.  See status below:\"\n  ls -la ./\n  exit 1\nfi\nif [ \"$(git diff --ignore-space-at-eol --text dist/ | wc -l)\" -gt \"0\" ]; then\n  echo \"Detected uncommitted changes after build. See status below:\"\n  git diff --ignore-space-at-eol --text dist/\n  exit 1\nfi\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_5fc921accff50188cc4c",
-          "kind": "command",
-          "name": "if [ ! -d dist/ ]; then\n  echo \"Expected dist/ directory does not exist.  See status below:\"\n  ls -la ./\n  exit 1\nfi\nif [ \"$(git diff --ignore-space-at-eol --text dist/ | wc -l)\" -gt \"0\" ]; then\n  echo \"Detected uncommitted changes after build. See status below:\"\n  git diff --ignore-space-at-eol --text dist/\n  exit 1\nfi\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1313,
-              "column": 14,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1737,
-              "column": 1,
-              "line": 63
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_6afa66035a5b1d26000d",
-          "kind": "call",
-          "name": "actions/upload-artifact@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1973,
-              "column": 15,
-              "line": 69
-            },
-            "stop": {
-              "byte": 1999,
-              "column": 41,
-              "line": 69
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_73505d782bc5018c99a0",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 559,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 599,
-              "column": 13,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.diff.outcome",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1875,
-                      "column": 30,
-                      "line": 66
-                    },
-                    "stop": {
-                      "byte": 1893,
-                      "column": 48,
-                      "line": 66
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.diff.outcome"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9beb014e0f76cc70c314",
-          "kind": "resource",
-          "name": "steps.diff.outcome",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1875,
-              "column": 30,
-              "line": 66
-            },
-            "stop": {
-              "byte": 1893,
-              "column": 48,
-              "line": 66
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1061,
-                      "column": 14,
-                      "line": 42
-                    },
-                    "stop": {
-                      "byte": 1067,
-                      "column": 20,
-                      "line": 42
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm ci"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_be2a18d6e13cfe925d52",
-          "kind": "command",
-          "name": "npm ci",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1061,
-              "column": 14,
-              "line": 42
-            },
-            "stop": {
-              "byte": 1067,
-              "column": 20,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dca51c99a9a43130c36b",
-          "kind": "step",
-          "name": "Build dist/ Directory",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1077,
-              "column": 9,
-              "line": 44
-            },
-            "stop": {
-              "byte": 1150,
-              "column": 28,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e606e1a946d64c9b4113",
-          "kind": "job",
-          "name": "check-dist",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 675,
-              "column": 3,
-              "line": 24
-            },
-            "stop": {
-              "byte": 2056,
-              "column": 22,
-              "line": 72
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1858,
-                      "column": 13,
-                      "line": 66
-                    },
-                    "stop": {
-                      "byte": 1909,
-                      "column": 64,
-                      "line": 66
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "${{ failure() && steps.diff.outcome == 'failure' }}"
-                ]
-              }
-            },
-            "reference:steps.diff.outcome": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "steps.diff.outcome",
-                  "span": {
-                    "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-                    "start": {
-                      "byte": 1875,
-                      "column": 30,
-                      "line": 66
-                    },
-                    "stop": {
-                      "byte": 1893,
-                      "column": 48,
-                      "line": 66
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "steps.diff.outcome"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": {
-              "high": true,
-              "low": false,
-              "variable": "failure()"
-            },
-            "low": false,
-            "variable": "(steps.diff.outcome==\"failure\")"
-          },
-          "effects": [],
-          "id": "wv_f362e276e6f5457dd619",
-          "kind": "gate",
-          "name": "if:check-dist:Upload Artifact",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml",
-            "start": {
-              "byte": 1858,
-              "column": 13,
-              "line": 66
-            },
-            "stop": {
-              "byte": 1909,
-              "column": 64,
-              "line": 66
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:b2fff9f20afc9745de4d86d52adc59fe707a80b420e5ffb7fac2af83779d1668",
-      "path": "github/bigdaddykane18/fluffy-rotary-phone/.github/workflows/check-dist.yml"
-    }
-  ],
+  "digest": "sha256:d87e4135956c458f0bd3e6b6f4471141a317a823520731c55979db4e3b9d0732",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:080f0a9b5d86a3d7f7fbe2915b4e3eb6fbbc681a42fb292f6634621d1613b4c0",
+    "sources": [
+      {
+        "digest": "sha256:b2fff9f20afc9745de4d86d52adc59fe707a80b420e5ffb7fac2af83779d1668",
+        "id": 0,
+        "path": ".github/workflows/check-dist.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1281,40 +267,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 26,
+    "nodes": 19,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

@@ -1,91 +1,36 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import tempfile
 import unittest
-from copy import deepcopy
 from pathlib import Path
 from unittest import mock
 
 from scripts.fetch_official_projects import _snapshot_digest, load_manifest
-from scripts.official_compat import _canonical, _run_analyzer, _verify_expected, analyze
+from scripts.official_compat import _run_analyzer, analyze
+from scripts.tests.report_fixture import diagnostic, report_bytes
 
 
 def report(provider: str, *, rule_id: str = "WV-SUPPLY-001") -> bytes:
-    value = {
-        "completeness": {},
-        "configuration": {},
-        "diagnostics": [
-            {
-                "capabilities": [],
-                "confidence": "high",
-                "evidence": [],
-                "fix": None,
-                "id": "diagnostic",
-                "message": "summary is intentionally excluded from public evidence",
-                "rule_id": rule_id,
-                "severity": "warning" if rule_id != "YAML-SYNTAX" else "error",
-                "span": {},
-                "trace": [],
-            }
-        ],
-        "digest": None,
-        "gate": {},
-        "graphs": [{"provider": provider}],
-        "inputs": [{"digest": "sha256:" + "b" * 64, "path": "ci.yml"}],
-        "lock": None,
-        "persona": "audit",
-        "properties": [],
-        "provider_profiles": [],
-        "schema": "report-v3",
-        "semantic_digest": None,
-        "snapshot": {},
-        "summary": {},
-        "tool": {
-            "build": {
-                "binary_digest": "sha256:" + "c" * 64,
-                "compiler": "rustc fixture",
-                "implementation": "rust",
-                "source_commit": None,
-                "target": "fixture-target",
-            },
-            "name": "workflow-verifier",
-            "version": "0.1.0",
-        },
-    }
-    semantic = deepcopy(value)
-    semantic.pop("digest")
-    semantic.pop("semantic_digest")
-    semantic["tool"].pop("build")
-    value["semantic_digest"] = (
-        "sha256:"
-        + hashlib.sha256(
-            json.dumps(semantic, separators=(",", ":"), sort_keys=True).encode()
-        ).hexdigest()
+    finding = diagnostic(
+        rule_id=rule_id,
+        severity="warning" if rule_id != "YAML-SYNTAX" else "error",
+        message="summary is intentionally excluded from public evidence",
     )
-    authenticated = deepcopy(value)
-    authenticated.pop("digest")
-    value["digest"] = (
-        "sha256:"
-        + hashlib.sha256(
-            json.dumps(authenticated, separators=(",", ":"), sort_keys=True).encode()
-        ).hexdigest()
-    )
-    return json.dumps(value, separators=(",", ":"), sort_keys=True).encode("utf-8") + b"\n"
+    return report_bytes(provider=provider, diagnostics=[finding])
 
 
 class OfficialCompatibilityTests(unittest.TestCase):
     @mock.patch("scripts.official_compat.subprocess.run")
-    def test_analyzer_uses_the_strict_explicit_cache_contract(self, run: mock.Mock) -> None:
+    def test_analyzer_uses_the_stateless_check_contract(self, run: mock.Mock) -> None:
         run.return_value = mock.Mock(returncode=0, stdout=report("github"), stderr=b"")
 
         result = _run_analyzer(Path("workflow-verifier"), Path("."), "fixture", 1e18)
 
         self.assertEqual(result, report("github"))
         arguments = run.call_args.args[0]
-        self.assertEqual(arguments[1:4], ["check", "--cache-mode", "off"])
-        self.assertNotIn("--no-cache", arguments)
+        self.assertEqual(arguments[1:6], ["check", "--persona", "audit", "--format", "json"])
+        self.assertNotIn("--cache-mode", arguments)
 
     def fixture(self, root: Path) -> tuple[Path, Path, Path]:
         manifest = Path("official/official-projects-v1.json").resolve()
@@ -153,56 +98,26 @@ class OfficialCompatibilityTests(unittest.TestCase):
             self.assertTrue(
                 all(
                     item["semantic_digest"]
-                    == json.loads(report(item["provider"]))["semantic_digest"]
+                    == json.loads(report(item["provider"]))["analysis_digest"]
                     for item in result["projects"]
                 )
             )
             self.assertNotIn("message", json.dumps(result))
 
-    def test_legacy_or_tampered_reports_are_rejected_as_product_evidence(self) -> None:
+    def test_unknown_or_tampered_reports_are_rejected_as_product_evidence(self) -> None:
         document = json.loads(report("github"))
-        document["schema"] = "report-v2"
-        legacy = json.dumps(document, separators=(",", ":"), sort_keys=True).encode() + b"\n"
+        document["schema"] = "unknown-report"
+        unknown = json.dumps(document, separators=(",", ":"), sort_keys=True).encode() + b"\n"
         from scripts.official_compat import _report_summary
 
-        with self.assertRaisesRegex(ValueError, "report-v3"):
-            _report_summary(legacy, {"id": "fixture", "provider": "github", "files": 1})
+        with self.assertRaisesRegex(ValueError, "workflow-verifier-report/1"):
+            _report_summary(unknown, {"id": "fixture", "provider": "github", "files": 1})
 
         document = json.loads(report("github"))
         document["summary"] = {"tampered": True}
         tampered = json.dumps(document, separators=(",", ":"), sort_keys=True).encode() + b"\n"
         with self.assertRaisesRegex(ValueError, "digest"):
             _report_summary(tampered, {"id": "fixture", "provider": "github", "files": 1})
-
-    def test_expected_baseline_ignores_only_platform_bound_report_digests(self) -> None:
-        base = {
-            "projects": [
-                {
-                    "id": "fixture",
-                    "report_digest": "sha256:" + "1" * 64,
-                    "report_sha256": "sha256:" + "2" * 64,
-                    "semantic_digest": "sha256:" + "3" * 64,
-                }
-            ],
-            "schema": "official-compat-v1",
-        }
-        actual = json.loads(json.dumps(base))
-        actual["projects"][0]["report_digest"] = "sha256:" + "4" * 64
-        actual["projects"][0]["report_sha256"] = "sha256:" + "5" * 64
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            expected = root / "expected.json"
-            expected_raw = _canonical(base)
-            expected.write_bytes(expected_raw)
-            checksum = root / "expected.sha256"
-            checksum.write_text(
-                "sha256:" + hashlib.sha256(expected_raw).hexdigest() + "\n",
-                encoding="ascii",
-            )
-            _verify_expected(_canonical(actual), expected, checksum)
-            actual["projects"][0]["semantic_digest"] = "sha256:" + "6" * 64
-            with self.assertRaisesRegex(ValueError, "differs"):
-                _verify_expected(_canonical(actual), expected, checksum)
 
     def test_yaml_false_positive_nondeterminism_and_snapshot_tamper_fail(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

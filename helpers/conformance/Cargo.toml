@@ -7,7 +7,7 @@ publish = false
 rust-version.workspace = true
 
 [dependencies]
-workflow-verifier-runner-protocol = { path = "../protocol", version = "=0.1.0" }
+workflow-verifier-internal = { package = "workflow-verifier", path = "../..", version = "=0.1.0", default-features = false, features = ["internal-support"] }
 workflow-verifier-linux-helper = { path = "../linux", version = "=0.1.0" }
 workflow-verifier-windows-helper = { path = "../windows", version = "=0.1.0" }
 workflow-verifier-macos-helper = { path = "../macos", version = "=0.1.0" }

@@ -6,16 +6,16 @@ use std::path::Path;
 use std::process::{Command, Stdio};
 use std::time::Duration;
 
-pub use workflow_verifier_helper_runtime::SourceManifest;
-use workflow_verifier_helper_runtime::{
+pub use workflow_verifier_internal::internal::helper_runtime::SourceManifest;
+use workflow_verifier_internal::internal::helper_runtime::{
     ChangeKind, ProcessObservation, ScratchTree, run_command, source_snapshot,
     source_snapshot_with_exclusions,
 };
-use workflow_verifier_runner_protocol::{
+use workflow_verifier_internal::internal::runner_protocol::{
     BACKEND_ATTESTATION_SCHEMA, Control, Evidence, EvidenceBody, PlanStatus, Step, ValidatedPlan,
     controls_digest, quote_json, sha256_hex, validate_plan,
 };
-pub use workflow_verifier_runner_protocol::{Outcome, RunResult};
+pub use workflow_verifier_internal::internal::runner_protocol::{Outcome, RunResult};
 
 const REQUIRED_CONTROLS: &[Control] = &[
     Control::SourceReadOnly,
@@ -55,9 +55,8 @@ fn scratch_execution_user(path: &Path) -> Result<Option<String>, String> {
 
 #[cfg(not(target_os = "linux"))]
 // Docker Desktop mediates bind ownership outside Linux; no host identity is portable there.
-#[allow(clippy::unnecessary_wraps)]
-fn scratch_execution_user(_path: &Path) -> Result<Option<String>, String> {
-    Ok(None)
+fn scratch_execution_user(_path: &Path) -> Option<String> {
+    None
 }
 
 /// Builds an OCI engine argument vector without invoking a command shell.
@@ -194,6 +193,117 @@ fn classify_observation(
     }
 }
 
+struct OciObservations {
+    outcome: Outcome,
+    redacted_log: Vec<u8>,
+    wall_time_ms: u64,
+    output_bytes: u64,
+    processes: u64,
+}
+
+fn run_steps(
+    plan: &ValidatedPlan,
+    engine: &str,
+    source_root: &str,
+    scratch_root: &str,
+    execution_user: Option<&str>,
+    secret_values: &[(String, String)],
+    evidence: &mut Evidence,
+) -> Result<OciObservations, String> {
+    let mut observations = OciObservations {
+        outcome: Outcome::Completed,
+        redacted_log: Vec::new(),
+        wall_time_ms: 0,
+        output_bytes: 0,
+        processes: 0,
+    };
+    for step in &plan.steps {
+        let arguments = build_arguments(plan, step, source_root, scratch_root, execution_user);
+        let (executable, argv) = step
+            .argv
+            .split_first()
+            .ok_or_else(|| format!("step {} has empty argv", step.id))?;
+        evidence.append(EvidenceBody::ProcessStarted {
+            executable: executable.clone(),
+            argv: argv.to_vec(),
+        });
+        let observation = run_command(
+            Command::new(engine).args(&arguments),
+            Duration::from_secs(plan.limits.cpu_seconds),
+            plan.limits.output_bytes,
+        )?;
+        observations
+            .redacted_log
+            .extend_from_slice(&redacted_bytes(&observation.output, secret_values));
+        observations.wall_time_ms = observations
+            .wall_time_ms
+            .saturating_add(observation.wall_time_ms);
+        observations.output_bytes = observations
+            .output_bytes
+            .saturating_add(observation.output_bytes);
+        observations.processes = observations.processes.saturating_add(1);
+        for (name, value) in secret_values {
+            if contains(&observation.output, value.as_bytes()) {
+                evidence.append(EvidenceBody::SecretRedacted { name: name.clone() });
+            }
+        }
+        evidence.append(EvidenceBody::ProcessExited {
+            code: observation.code.unwrap_or(-1),
+        });
+        observations.outcome = classify_observation(&step.id, &observation, secret_values)?;
+        if observations.outcome != Outcome::Completed {
+            break;
+        }
+    }
+    Ok(observations)
+}
+
+fn finalize_run(
+    scratch: &ScratchTree,
+    mut evidence: Evidence,
+    observations: OciObservations,
+) -> Result<RunResult, String> {
+    let final_state = scratch.final_state()?;
+    for change in final_state.changes {
+        evidence.append(EvidenceBody::FilesystemAccess {
+            path: change.path.clone(),
+            operation: match change.kind {
+                ChangeKind::Added | ChangeKind::Modified => "write".to_owned(),
+                ChangeKind::Deleted => "delete".to_owned(),
+            },
+            allowed: true,
+        });
+        if change.kind != ChangeKind::Deleted {
+            let digest = change
+                .digest
+                .ok_or_else(|| "non-deleted scratch change has no digest".to_owned())?;
+            evidence.append(EvidenceBody::ArtifactRecorded {
+                path: change.path,
+                digest,
+            });
+        }
+    }
+    evidence.append(EvidenceBody::ResourceObserved {
+        wall_time_ms: observations.wall_time_ms,
+        cpu_time_ms: 0,
+        peak_memory_bytes: 0,
+        processes: observations.processes,
+        output_bytes: observations.output_bytes,
+        scratch_bytes: final_state.bytes,
+        scratch_entries: final_state.entries,
+    });
+    evidence.append(EvidenceBody::LogRecorded {
+        digest: format!("sha256:{}", sha256_hex(&observations.redacted_log)),
+    });
+    evidence.append(EvidenceBody::FilesystemFinal {
+        digest: final_state.digest,
+    });
+    Ok(RunResult {
+        evidence,
+        outcome: observations.outcome,
+    })
+}
+
 fn contains(haystack: &[u8], needle: &[u8]) -> bool {
     !needle.is_empty()
         && haystack
@@ -238,7 +348,6 @@ fn validate_execution(plan: &ValidatedPlan, engine: &str) -> Result<(), String> 
 /// engine failures, or evidence collection failures.
 // Keep source verification, materialization, launch, and evidence finalization in
 // one auditable transaction boundary.
-#[allow(clippy::too_many_lines)]
 pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunResult, String> {
     execute_with_exclusions(plan, engine, source, &[])
 }
@@ -249,7 +358,6 @@ pub fn execute(plan: &ValidatedPlan, engine: &str, source: &Path) -> Result<RunR
 ///
 /// Returns the same fail-closed errors as [`execute`] and rejects malformed
 /// trusted source prefixes.
-#[allow(clippy::too_many_lines)]
 pub fn execute_with_exclusions(
     plan: &ValidatedPlan,
     engine: &str,
@@ -273,7 +381,10 @@ pub fn execute_with_exclusions(
         .path()
         .to_str()
         .ok_or_else(|| "scratch root is not UTF-8".to_owned())?;
+    #[cfg(target_os = "linux")]
     let execution_user = scratch_execution_user(scratch.path())?;
+    #[cfg(not(target_os = "linux"))]
+    let execution_user = scratch_execution_user(scratch.path());
     let mut evidence = Evidence::for_plan(plan);
     evidence.append(EvidenceBody::BackendAttested {
         id: plan.backend.clone(),
@@ -284,90 +395,21 @@ pub fn execute_with_exclusions(
     for control in &plan.controls {
         evidence.append(EvidenceBody::ControlAttested(control.name().to_owned()));
     }
-    let mut outcome = Outcome::Completed;
-    let mut redacted_log = Vec::new();
-    let mut wall_time_ms = 0_u64;
-    let mut output_bytes = 0_u64;
-    let mut observed_processes = 0_u64;
     let secret_values = plan
         .secret_names
         .iter()
         .filter_map(|name| std::env::var(name).ok().map(|value| (name.clone(), value)))
         .collect::<Vec<_>>();
-    for step in &plan.steps {
-        let arguments = build_arguments(
-            plan,
-            step,
-            source_text,
-            scratch_text,
-            execution_user.as_deref(),
-        );
-        let (executable, argv) = step
-            .argv
-            .split_first()
-            .ok_or_else(|| format!("step {} has empty argv", step.id))?;
-        evidence.append(EvidenceBody::ProcessStarted {
-            executable: executable.clone(),
-            argv: argv.to_vec(),
-        });
-        let observation = run_command(
-            Command::new(engine).args(&arguments),
-            Duration::from_secs(plan.limits.cpu_seconds),
-            plan.limits.output_bytes,
-        )?;
-        redacted_log.extend_from_slice(&redacted_bytes(&observation.output, &secret_values));
-        wall_time_ms = wall_time_ms.saturating_add(observation.wall_time_ms);
-        output_bytes = output_bytes.saturating_add(observation.output_bytes);
-        observed_processes = observed_processes.saturating_add(1);
-        for (name, value) in &secret_values {
-            if contains(&observation.output, value.as_bytes()) {
-                evidence.append(EvidenceBody::SecretRedacted { name: name.clone() });
-            }
-        }
-        evidence.append(EvidenceBody::ProcessExited {
-            code: observation.code.unwrap_or(-1),
-        });
-        outcome = classify_observation(&step.id, &observation, &secret_values)?;
-        if outcome != Outcome::Completed {
-            break;
-        }
-    }
-    let final_state = scratch.final_state()?;
-    for change in final_state.changes {
-        evidence.append(EvidenceBody::FilesystemAccess {
-            path: change.path.clone(),
-            operation: match change.kind {
-                ChangeKind::Added | ChangeKind::Modified => "write".to_owned(),
-                ChangeKind::Deleted => "delete".to_owned(),
-            },
-            allowed: true,
-        });
-        if change.kind != ChangeKind::Deleted {
-            let digest = change
-                .digest
-                .ok_or_else(|| "non-deleted scratch change has no digest".to_owned())?;
-            evidence.append(EvidenceBody::ArtifactRecorded {
-                path: change.path,
-                digest,
-            });
-        }
-    }
-    evidence.append(EvidenceBody::ResourceObserved {
-        wall_time_ms,
-        cpu_time_ms: 0,
-        peak_memory_bytes: 0,
-        processes: observed_processes,
-        output_bytes,
-        scratch_bytes: final_state.bytes,
-        scratch_entries: final_state.entries,
-    });
-    evidence.append(EvidenceBody::LogRecorded {
-        digest: format!("sha256:{}", sha256_hex(&redacted_log)),
-    });
-    evidence.append(EvidenceBody::FilesystemFinal {
-        digest: final_state.digest,
-    });
-    Ok(RunResult { evidence, outcome })
+    let observations = run_steps(
+        plan,
+        engine,
+        source_text,
+        scratch_text,
+        execution_user.as_deref(),
+        &secret_values,
+        &mut evidence,
+    )?;
+    finalize_run(&scratch, evidence, observations)
 }
 
 fn argument_value(arguments: &[String], name: &str) -> Option<String> {
@@ -449,20 +491,22 @@ pub fn main_entry() -> i32 {
         eprintln!("incomplete plan: {}", reasons.join("; "));
         return 3;
     }
-    match execute_with_exclusions(&plan, &engine, Path::new(&source), &trusted_exclusions) {
-        Ok(result) => {
-            print!("{}", result.canonical_json());
-            if let Err(error) = std::io::stdout().flush() {
-                eprintln!("failed to flush evidence: {error}");
-                5
-            } else {
-                0
-            }
-        }
-        Err(error) => {
-            eprintln!("sandbox infrastructure failure: {error}");
+    if let Ok(result) =
+        execute_with_exclusions(&plan, &engine, Path::new(&source), &trusted_exclusions)
+    {
+        print!("{}", result.canonical_json());
+        if let Err(error) = std::io::stdout().flush() {
+            eprintln!("failed to flush evidence: {error}");
             5
+        } else {
+            0
         }
+    } else {
+        // The library result remains detailed for authenticated callers, but
+        // the process boundary must not echo repository paths, policy input,
+        // or engine output to an unauthenticated log sink.
+        eprintln!("sandbox infrastructure failure");
+        5
     }
 }
 

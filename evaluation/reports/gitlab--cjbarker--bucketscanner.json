@@ -1,754 +1,89 @@
 {
+  "analysis_digest": "sha256:c13d1fedc3c14e944d56002b9a05dbfcbdce0bd5d2bc4f7075c9ae40f0102149",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: alpine:latest",
+      "Incomplete.Unresolved_dependency: registry.${APP_REPO}:latest"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:ed44d68babb63b054d009e436b66dde86be2b3910bdffb1c138b9e31bb6a3e62",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_58a9000d255c89d3baa8",
-          "id": "wv_0a2c7ab0e0b89b69a681",
-          "kind": "call",
-          "label": null,
-          "to": "wv_55941d9de202a04aa419"
-        },
-        {
-          "condition": true,
-          "from": "wv_c6f8a2463c0d0c9c341b",
-          "id": "wv_2ee4d0e9c0e6063e1a73",
-          "kind": "control",
-          "label": null,
-          "to": "wv_26fdfde614e3562f9358"
-        },
-        {
-          "condition": true,
-          "from": "wv_58a9000d255c89d3baa8",
-          "id": "wv_3d49af2072af006e4724",
-          "kind": "control",
-          "label": null,
-          "to": "wv_23641a7ad80369886714"
-        },
-        {
-          "condition": true,
-          "from": "wv_3378704589420b9b9b7d",
-          "id": "wv_466b1779330fe1173e4d",
-          "kind": "data",
-          "label": "GOPATH",
-          "to": "wv_58a9000d255c89d3baa8"
-        },
-        {
-          "condition": true,
-          "from": "wv_23641a7ad80369886714",
-          "id": "wv_50021770922a3cf58c3f",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_821d4198c4e272793801"
-        },
-        {
-          "condition": true,
-          "from": "wv_5d8c5454bccdc83fa48c",
-          "id": "wv_6302996ef7d334b73153",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c6f8a2463c0d0c9c341b"
-        },
-        {
-          "condition": true,
-          "from": "wv_776a1bacd2cd7f0d2f01",
-          "id": "wv_6e0dda11a1dad97d0934",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1bab2a05a20cf3c76668"
-        },
-        {
-          "condition": true,
-          "from": "wv_5d8c5454bccdc83fa48c",
-          "id": "wv_8f7efe11b0b64c51de6a",
-          "kind": "write",
-          "label": null,
-          "to": "wv_f494b18f5178832294d8"
-        },
-        {
-          "condition": true,
-          "from": "wv_6000fefc88235a932b16",
-          "id": "wv_a059f27996330658a12d",
-          "kind": "data",
-          "label": "APP_REPO",
-          "to": "wv_58a9000d255c89d3baa8"
-        },
-        {
-          "condition": true,
-          "from": "wv_821d4198c4e272793801",
-          "id": "wv_ab23ca684184484fe083",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_383ca16d1c19c3ef922e"
-        },
-        {
-          "condition": true,
-          "from": "wv_58a9000d255c89d3baa8",
-          "id": "wv_ab4e9b0d23fc4a0ce3fd",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6cbf5fb5a222d8a12ae8"
-        },
-        {
-          "condition": true,
-          "from": "wv_383ca16d1c19c3ef922e",
-          "id": "wv_be7ec8b82a7bc92c4ea7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_776a1bacd2cd7f0d2f01"
-        },
-        {
-          "condition": true,
-          "from": "wv_58a9000d255c89d3baa8",
-          "id": "wv_cc8409b4c40006282c41",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55941d9de202a04aa419"
-        },
-        {
-          "condition": true,
-          "from": "wv_1bab2a05a20cf3c76668",
-          "id": "wv_dda4648a8cd14659b747",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a6d0d39646c42fff9b94"
-        },
-        {
-          "condition": true,
-          "from": "wv_776a1bacd2cd7f0d2f01",
-          "id": "wv_df43593fe030fc46c142",
-          "kind": "write",
-          "label": null,
-          "to": "wv_4b053eb8aee6634e00e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_58a9000d255c89d3baa8",
-          "id": "wv_f7dbea1fc1066afc3a22",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6cbf5fb5a222d8a12ae8"
-        },
-        {
-          "condition": true,
-          "from": "wv_23641a7ad80369886714",
-          "id": "wv_fc72d5efe28fd9a95bb5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5d8c5454bccdc83fa48c"
-        }
-      ],
-      "entrypoints": [
-        "wv_58a9000d255c89d3baa8"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1bab2a05a20cf3c76668",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 881,
-              "column": 7,
-              "line": 42
-            },
-            "stop": {
-              "byte": 890,
-              "column": 16,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_23641a7ad80369886714",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 37,
-              "column": 11,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 736,
-                      "column": 7,
-                      "line": 32
-                    },
-                    "stop": {
-                      "byte": 746,
-                      "column": 17,
-                      "line": 32
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "make build"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_26fdfde614e3562f9358",
-          "kind": "command",
-          "name": "make build",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 736,
-              "column": 7,
-              "line": 32
-            },
-            "stop": {
-              "byte": 746,
-              "column": 17,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3378704589420b9b9b7d",
-          "kind": "resource",
-          "name": "variable:GOPATH",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 100,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 113,
-              "column": 16,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_383ca16d1c19c3ef922e",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 37,
-              "column": 11,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_4b053eb8aee6634e00e1",
-          "kind": "resource",
-          "name": "artifact:test",
-          "phase": "post",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 909,
-              "column": 5,
-              "line": 44
-            },
-            "stop": {
-              "byte": 956,
-              "column": 23,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_55941d9de202a04aa419",
-          "kind": "call",
-          "name": "registry.${APP_REPO}:latest",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 823,
-              "column": 10,
-              "line": 39
-            },
-            "stop": {
-              "byte": 850,
-              "column": 37,
-              "line": 39
-            }
-          },
-          "unknown": {
-            "detail": "registry.${APP_REPO}:latest",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_58a9000d255c89d3baa8",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1262,
-              "column": 13,
-              "line": 62
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5d8c5454bccdc83fa48c",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 661,
-              "column": 1,
-              "line": 28
-            },
-            "stop": {
-              "byte": 806,
-              "column": 23,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6000fefc88235a932b16",
-          "kind": "resource",
-          "name": "variable:APP_REPO",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 52,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 97,
-              "column": 48,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6cbf5fb5a222d8a12ae8",
-          "kind": "call",
-          "name": "alpine:latest",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 974,
-              "column": 10,
-              "line": 49
-            },
-            "stop": {
-              "byte": 987,
-              "column": 23,
-              "line": 49
-            }
-          },
-          "unknown": {
-            "detail": "alpine:latest",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_776a1bacd2cd7f0d2f01",
-          "kind": "job",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 808,
-              "column": 1,
-              "line": 38
-            },
-            "stop": {
-              "byte": 956,
-              "column": 23,
-              "line": 46
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_821d4198c4e272793801",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 37,
-              "column": 11,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 881,
-                      "column": 7,
-                      "line": 42
-                    },
-                    "stop": {
-                      "byte": 890,
-                      "column": 16,
-                      "line": 42
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "make test"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a6d0d39646c42fff9b94",
-          "kind": "command",
-          "name": "make test",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 881,
-              "column": 7,
-              "line": 42
-            },
-            "stop": {
-              "byte": 890,
-              "column": 16,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c6f8a2463c0d0c9c341b",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 736,
-              "column": 7,
-              "line": 32
-            },
-            "stop": {
-              "byte": 746,
-              "column": 17,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "artifact_publish"
-          ],
-          "id": "wv_f494b18f5178832294d8",
-          "kind": "resource",
-          "name": "artifact:build",
-          "phase": "post",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml",
-            "start": {
-              "byte": 764,
-              "column": 5,
-              "line": 34
-            },
-            "stop": {
-              "byte": 806,
-              "column": 23,
-              "line": 36
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:5f637321bbc8941b3805659d0fe37d9e723183079ff2c4c197f4b95d926f4d09",
-      "path": "gitlab/cjbarker/bucketscanner/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:5313d50faf1c4b2298c299bbfa2f2e5b140412d10ce1e165bb6241ca64bf9ce8",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:05f1250d99eeb7ef8e9a629066b3c5bea57c5e44f922e23c4881bfce0995e310",
+    "sources": [
+      {
+        "digest": "sha256:5f637321bbc8941b3805659d0fe37d9e723183079ff2c4c197f4b95d926f4d09",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -763,26 +98,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 17,
+    "nodes": 16,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

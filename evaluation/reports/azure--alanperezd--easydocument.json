@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:da0e08baffdcbe61cab65d66e8cb7d11111cf03b0529b4a6c8ee4eed89765323",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: NodeTool@0"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = NodeTool@0"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
+          "source": 0,
           "start": {
             "byte": 247,
             "column": 9,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_cba3cdb40a98e55837c1",
+      "id": "diag_a96e5f09d20a2c65a9be96f298093d0c6025b5acc151a386357bbe47c9188a2b",
       "message": "dependency is not pinned to immutable content: NodeTool@0",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
+        "source": 0,
         "start": {
           "byte": 247,
           "column": 9,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_9ac401c1e991a264627f",
+          "node": 4,
           "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
+            "source": 0,
             "start": {
               "byte": 247,
               "column": 9,
@@ -62,415 +69,110 @@
       ]
     }
   ],
-  "digest": "sha256:ac8798b84336a850146bae521e39e7134b0ef5823e9a532e8fdfb56a3bc6efdb",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_0926364de7238c8f7ec2",
-          "id": "wv_00745882dd6d8c7b6f8e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c9bd8b0fbd9bfe8eeefe"
-        },
-        {
-          "condition": true,
-          "from": "wv_84c351977d2021e4a54f",
-          "id": "wv_1169eb913dc089d5c28e",
-          "kind": "call",
-          "label": null,
-          "to": "wv_9ac401c1e991a264627f"
-        },
-        {
-          "condition": true,
-          "from": "wv_ee9f16d05683f7979ced",
-          "id": "wv_28bee0c6dae08b2f4ab2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_84c351977d2021e4a54f"
-        },
-        {
-          "condition": true,
-          "from": "wv_84c351977d2021e4a54f",
-          "id": "wv_2e9725ce13549f81035e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_0d6313dffd2ae01606a0"
-        },
-        {
-          "condition": true,
-          "from": "wv_c9bd8b0fbd9bfe8eeefe",
-          "id": "wv_48236887425dd4619122",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ee9f16d05683f7979ced"
-        },
-        {
-          "condition": true,
-          "from": "wv_0d6313dffd2ae01606a0",
-          "id": "wv_ba7c926cb29c528b46a3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8b4fcbf5961aafc7963b"
-        },
-        {
-          "condition": true,
-          "from": "wv_ee9f16d05683f7979ced",
-          "id": "wv_c6234b24223579e131cc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0d6313dffd2ae01606a0"
-        },
-        {
-          "condition": true,
-          "from": "wv_84c351977d2021e4a54f",
-          "id": "wv_f5dd33a638503b18861e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9ac401c1e991a264627f"
-        }
-      ],
-      "entrypoints": [
-        "wv_c9bd8b0fbd9bfe8eeefe"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0926364de7238c8f7ec2",
-          "kind": "trigger",
-          "name": "trigger",
-          "phase": "source",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-            "start": {
-              "byte": 190,
-              "column": 1,
-              "line": 7
-            },
-            "stop": {
-              "byte": 198,
-              "column": 9,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0d6313dffd2ae01606a0",
-          "kind": "step",
-          "name": "npm install and build",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-            "start": {
-              "byte": 328,
-              "column": 3,
-              "line": 18
-            },
-            "stop": {
-              "byte": 408,
-              "column": 39,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_84c351977d2021e4a54f",
-          "kind": "step",
-          "name": "Install Node.js",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-            "start": {
-              "byte": 241,
-              "column": 3,
-              "line": 13
-            },
-            "stop": {
-              "byte": 324,
-              "column": 33,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-                    "start": {
-                      "byte": 336,
-                      "column": 11,
-                      "line": 18
-                    },
-                    "stop": {
-                      "byte": 369,
-                      "column": 16,
-                      "line": 20
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm install\nnpm run dev\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "script"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_8b4fcbf5961aafc7963b",
-          "kind": "command",
-          "name": "npm install\nnpm run dev\n",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-            "start": {
-              "byte": 336,
-              "column": 11,
-              "line": 18
-            },
-            "stop": {
-              "byte": 369,
-              "column": 16,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_9ac401c1e991a264627f",
-          "kind": "call",
-          "name": "NodeTool@0",
-          "phase": "run",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-            "start": {
-              "byte": 247,
-              "column": 9,
-              "line": 13
-            },
-            "stop": {
-              "byte": 257,
-              "column": 19,
-              "line": 13
-            }
-          },
-          "unknown": {
-            "detail": "NodeTool@0",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c9bd8b0fbd9bfe8eeefe",
-          "kind": "workflow",
-          "name": "Azure pipeline",
-          "phase": "compile",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-            "start": {
-              "byte": 181,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 408,
-              "column": 39,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ee9f16d05683f7979ced",
-          "kind": "job",
-          "name": "pipeline",
-          "phase": "plan",
-          "provider": "azure",
-          "span": {
-            "file": "azure/alanperezd/easydocument/azure-pipelines.yml",
-            "start": {
-              "byte": 181,
-              "column": 1,
-              "line": 6
-            },
-            "stop": {
-              "byte": 408,
-              "column": 39,
-              "line": 21
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "azure",
-      "source": "azure/alanperezd/easydocument/azure-pipelines.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:6eb59997ccc714e08d6ca70a29f4e6f2cf98042d400e5cccf0248ef43a58baa1",
-      "path": "azure/alanperezd/easydocument/azure-pipelines.yml"
-    }
-  ],
+  "digest": "sha256:7fe0c1fac6ef0aab184da741c4762acb08ca4436af5d35bd185ac338e066b4ab",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:83c49adfbd39193ab3d980c02cd8d10b066b29ed4f2b36e99751a40cf6ab5285",
+    "sources": [
+      {
+        "digest": "sha256:6eb59997ccc714e08d6ca70a29f4e6f2cf98042d400e5cccf0248ef43a58baa1",
+        "id": 0,
+        "path": "azure-pipelines.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "azure-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 0
+    "edges": 8,
+    "nodes": 7,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

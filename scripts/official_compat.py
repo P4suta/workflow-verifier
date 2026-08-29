@@ -44,32 +44,21 @@ ACQUIRED_PROJECT_FIELDS = {
     "tree",
 }
 SEVERITIES = ("critical", "error", "warning", "note")
-REPORT_V3_FIELDS = {
+REPORT_FIELDS = {
+    "analysis_digest",
     "completeness",
-    "configuration",
     "diagnostics",
     "digest",
     "gate",
-    "graphs",
     "inputs",
-    "lock",
     "persona",
     "properties",
-    "provider_profiles",
+    "providers",
     "schema",
-    "semantic_digest",
-    "snapshot",
     "summary",
     "tool",
 }
-TOOL_V3_FIELDS = {"build", "name", "version"}
-BUILD_V3_FIELDS = {
-    "binary_digest",
-    "compiler",
-    "implementation",
-    "source_commit",
-    "target",
-}
+TOOL_FIELDS = {"commit", "compiler", "name", "target", "version"}
 
 
 def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -108,6 +97,14 @@ def _canonical_compact(value: Any) -> bytes:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode(
         "utf-8"
     )
+
+
+def _domain_digest(domain: bytes, value: Any) -> str:
+    digest = hashlib.sha256()
+    for field in (domain, _canonical_compact(value)):
+        digest.update(len(field).to_bytes(8, byteorder="big"))
+        digest.update(field)
+    return "sha256:" + digest.hexdigest()
 
 
 def _validate_acquisition(
@@ -197,8 +194,6 @@ def _run_analyzer(analyzer: Path, cwd: Path, target: str, deadline: float) -> by
             [
                 str(analyzer),
                 "check",
-                "--cache-mode",
-                "off",
                 "--persona",
                 "audit",
                 "--format",
@@ -234,39 +229,44 @@ def _report_summary(raw: bytes, project: dict[str, Any]) -> tuple[dict[str, Any]
         report = json.loads(raw.decode("utf-8"), object_pairs_hook=_strict_object)
     except (UnicodeError, json.JSONDecodeError) as error:
         raise ValueError(f"{project['id']} emitted invalid JSON: {error}") from error
-    if not isinstance(report, dict) or report.get("schema") != "report-v3":
-        raise ValueError(f"{project['id']} did not emit report-v3")
-    if set(report) != REPORT_V3_FIELDS:
-        raise ValueError(f"{project['id']} report-v3 fields are incomplete or extended")
+    if not isinstance(report, dict) or report.get("schema") != "workflow-verifier-report/1":
+        raise ValueError(f"{project['id']} did not emit workflow-verifier-report/1")
+    if set(report) != REPORT_FIELDS:
+        raise ValueError(f"{project['id']} report fields are incomplete or extended")
     report_digest = report.get("digest")
     if not isinstance(report_digest, str) or not DIGEST.fullmatch(report_digest):
         raise ValueError(f"{project['id']} report digest is invalid")
-    semantic_digest = report.get("semantic_digest")
+    semantic_digest = report.get("analysis_digest")
     if not isinstance(semantic_digest, str) or not DIGEST.fullmatch(semantic_digest):
         raise ValueError(f"{project['id']} report semantic digest is invalid")
     semantic_report = json.loads(json.dumps(report))
     semantic_report.pop("digest")
-    semantic_report.pop("semantic_digest")
-    semantic_tool = semantic_report.get("tool")
-    if not isinstance(semantic_tool, dict):
-        raise ValueError(f"{project['id']} report tool identity is invalid")
-    semantic_tool.pop("build", None)
-    if semantic_digest != _digest(_canonical_compact(semantic_report)):
-        raise ValueError(f"{project['id']} report semantic digest does not authenticate semantics")
+    semantic_report.pop("analysis_digest")
+    semantic_report.pop("tool")
+    if semantic_digest != _domain_digest(b"workflow-verifier-report/1/analysis", semantic_report):
+        raise ValueError(f"{project['id']} report analysis digest does not authenticate semantics")
     full_report = json.loads(json.dumps(report))
     full_report.pop("digest")
-    if report_digest != _digest(_canonical_compact(full_report)):
-        raise ValueError(f"{project['id']} report digest does not authenticate report-v3")
-    graphs = report.get("graphs")
+    if report_digest != _domain_digest(b"workflow-verifier-report/1/document", full_report):
+        raise ValueError(f"{project['id']} report digest does not authenticate the report")
+    providers = report.get("providers")
     inputs = report.get("inputs")
     diagnostics = report.get("diagnostics")
-    if not isinstance(graphs, list) or not graphs:
-        raise ValueError(f"{project['id']} did not detect a workflow graph")
-    if not isinstance(inputs, list) or not inputs:
+    if not isinstance(providers, list) or not providers:
+        raise ValueError(f"{project['id']} did not detect a workflow provider")
+    if (
+        not isinstance(inputs, dict)
+        or not isinstance(inputs.get("sources"), list)
+        or not inputs["sources"]
+    ):
         raise ValueError(f"{project['id']} did not analyze any CI inputs")
     if not isinstance(diagnostics, list):
         raise ValueError(f"{project['id']} diagnostics are malformed")
-    detected = {graph.get("provider") for graph in graphs if isinstance(graph, dict)}
+    detected = {
+        profile.split("-semantic-", maxsplit=1)[0]
+        for profile in providers
+        if isinstance(profile, str) and "-semantic-" in profile
+    }
     if detected != {project["provider"]}:
         raise ValueError(
             f"{project['id']} provider detection was {sorted(str(item) for item in detected)}"
@@ -285,32 +285,23 @@ def _report_summary(raw: bytes, project: dict[str, Any]) -> tuple[dict[str, Any]
     tool = report.get("tool")
     if (
         not isinstance(tool, dict)
-        or set(tool) != TOOL_V3_FIELDS
+        or set(tool) != TOOL_FIELDS
         or tool.get("name") != "workflow-verifier"
         or not isinstance(tool.get("version"), str)
         or not tool["version"]
     ):
         raise ValueError(f"{project['id']} report tool identity is invalid")
-    build = tool.get("build")
-    if (
-        not isinstance(build, dict)
-        or set(build) != BUILD_V3_FIELDS
-        or not isinstance(build.get("binary_digest"), str)
-        or DIGEST.fullmatch(build["binary_digest"]) is None
-        or any(
-            not isinstance(build.get(field), str)
-            for field in ("compiler", "implementation", "target")
-        )
-        or not (build.get("source_commit") is None or isinstance(build.get("source_commit"), str))
-    ):
-        raise ValueError(f"{project['id']} report build provenance is invalid")
+    if any(
+        not isinstance(tool.get(field), str) for field in ("compiler", "name", "target", "version")
+    ) or not (tool.get("commit") is None or isinstance(tool.get("commit"), str)):
+        raise ValueError(f"{project['id']} report tool provenance is invalid")
     return (
         {
             "diagnostics": counts,
             "files": project["files"],
-            "graphs": len(graphs),
+            "graphs": len(providers),
             "id": project["id"],
-            "inputs": len(inputs),
+            "inputs": len(inputs["sources"]),
             "provider": project["provider"],
             "report_digest": report_digest,
             "report_sha256": _digest(raw),
@@ -387,54 +378,14 @@ def _atomic_write(path: Path, raw: bytes) -> None:
         raise
 
 
-def _comparison_projection(document: Any, label: str) -> Any:
-    if not isinstance(document, dict) or document.get("schema") != "official-compat-v1":
-        raise ValueError(f"{label} is not official-compat-v1")
-    projects = document.get("projects")
-    if not isinstance(projects, list):
-        raise ValueError(f"{label} projects are malformed")
-    projected = json.loads(json.dumps(document))
-    for index, project in enumerate(projected["projects"]):
-        if not isinstance(project, dict):
-            raise ValueError(f"{label} project {index} is malformed")
-        for field in ("report_digest", "report_sha256", "semantic_digest"):
-            if not isinstance(project.get(field), str) or not DIGEST.fullmatch(project[field]):
-                raise ValueError(f"{label} project {index} {field} is invalid")
-        project.pop("report_digest")
-        project.pop("report_sha256")
-    return projected
-
-
-def _verify_expected(raw: bytes, expected: Path, expected_digest: Path | None) -> None:
-    expected_document, expected_raw = _load_json(
-        expected, "expected official compatibility report", limit=4 * 1024 * 1024
-    )
-    actual_document = json.loads(raw.decode("utf-8"))
-    if _comparison_projection(actual_document, "actual official compatibility report") != (
-        _comparison_projection(expected_document, "expected official compatibility report")
-    ):
-        raise ValueError("official compatibility report differs from the fixed report")
-    if expected_digest is not None:
-        try:
-            recorded = expected_digest.read_text(encoding="ascii").strip()
-        except (OSError, UnicodeError) as error:
-            raise ValueError(f"cannot read official report digest: {error}") from error
-        if not DIGEST.fullmatch(recorded) or recorded != _digest(expected_raw):
-            raise ValueError("official compatibility report digest does not match")
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=Path("official/official-projects-v1.json"))
     parser.add_argument("--snapshots", required=True, type=Path)
     parser.add_argument("--analyzer", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--expected", type=Path)
-    parser.add_argument("--expected-digest", type=Path)
     parser.add_argument("--allow-latest", action="store_true")
     arguments = parser.parse_args()
-    if arguments.expected_digest is not None and arguments.expected is None:
-        parser.error("--expected-digest requires --expected")
     try:
         result = analyze(
             arguments.manifest,
@@ -443,8 +394,6 @@ def main() -> int:
             allow_latest=arguments.allow_latest,
         )
         raw = _canonical(result)
-        if arguments.expected is not None:
-            _verify_expected(raw, arguments.expected, arguments.expected_digest)
         _atomic_write(arguments.output, raw)
     except (OSError, UnicodeError, ValueError) as error:
         print(f"official compatibility gate: {error}", file=sys.stderr)

@@ -1,0 +1,16 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/performance-suite-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "argv": { "items": { "maxLength": 16384, "minLength": 1, "type": "string" }, "maxItems": 128, "minItems": 1, "type": "array" }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "environment": { "additionalProperties": { "minLength": 1, "type": "string" }, "minProperties": 1, "type": "object" },
+    "scenarios": { "items": { "additionalProperties": false, "properties": { "before_each": { "items": { "$ref": "#/$defs/argv" }, "maxItems": 64, "type": "array" }, "command": { "$ref": "#/$defs/argv" }, "cwd": { "minLength": 1, "type": "string" }, "id": { "pattern": "^[a-z0-9][a-z0-9._-]*$", "type": "string" }, "setup": { "items": { "$ref": "#/$defs/argv" }, "maxItems": 64, "type": "array" }, "timeout_seconds": { "maximum": 3600, "minimum": 1, "type": "integer" } }, "required": ["before_each", "command", "cwd", "id", "setup", "timeout_seconds"], "type": "object" }, "minItems": 1, "type": "array" },
+    "schema": { "const": "performance-suite-v2" }
+  },
+  "required": ["environment", "scenarios", "schema"],
+  "title": "workflow-verifier shell-free performance suite v2",
+  "type": "object"
+}

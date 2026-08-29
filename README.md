@@ -71,9 +71,18 @@ only after offline verification and protected promotion pass.
 
 ## Quick start
 
-```text
+Once protected publication is complete, install the analyzer from crates.io
+with the release lockfile:
+
+```sh
+cargo install --locked workflow-verifier
+```
+
+Then run it from a workflow repository:
+
+```sh
 workflow-verifier check .
-workflow-verifier check --format json --output report-v3.json .
+workflow-verifier check --format json --output report.json .
 workflow-verifier resolve --allow-network .
 workflow-verifier explain WV-SEC-001 .
 workflow-verifier graph --kind dataflow --format dot .
@@ -87,6 +96,11 @@ workflow-verifier auth status
 workflow-verifier lsp
 ```
 
+The crates.io package installs only the `workflow-verifier` executable. Native,
+OCI, macOS, Windows, and VM helpers remain private packages delivered in signed
+release bundles. If a requested helper is not installed and authenticated, the
+CLI reports that backend as unavailable and fails closed.
+
 Resolution, dependency refresh, source mutation, secret use, workflow network,
 and execution each require a separate opt-in. If the selected host cannot
 establish every required containment control, execution fails with exit 5; it
@@ -97,6 +111,16 @@ configuration error, `3` strict incomplete result, `4` internal failure, and
 `5` sandbox infrastructure failure. The default `gate` persona fails only on
 proved correctness errors and high-confidence security findings. `Unknown`
 facts remain visible in every machine-readable report.
+
+JSON checks use the single `workflow-verifier-report/1` contract. The check
+report contains gate, diagnostic, property, completeness, provenance, and input
+summary data but no graph body. Use `graph --format json` for the separate
+`workflow-verifier-graph/1` document with dense numeric node IDs.
+
+The stable compatibility surface is the CLI, exit codes, JSON schemas, and
+helper wire protocol. The Rust library target exists only to share protocol and
+runtime code with the private helper packages; its doc-hidden `internal` module
+is not a supported API and is not covered by semantic-versioning guarantees.
 
 ## GitHub Action
 

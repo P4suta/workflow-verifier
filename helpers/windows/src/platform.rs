@@ -52,12 +52,14 @@ use windows_sys::Win32::System::Threading::{
 };
 use windows_sys::Win32::System::WindowsProgramming::PROCESS_CREATION_CHILD_PROCESS_OVERRIDE;
 
-use workflow_verifier_helper_runtime::{
+use workflow_verifier_internal::internal::helper_runtime::{
     EnvironmentSecrets, NativeSandbox, NativeSandboxRequest, NativeStepRequest,
     NativeStorageParents, ProcessObservation, execute_native_with_exclusions,
     reserve_temp_directory, reserve_temp_file,
 };
-use workflow_verifier_runner_protocol::{Descriptor, LaunchError, RunResult, ValidatedPlan};
+use workflow_verifier_internal::internal::runner_protocol::{
+    Descriptor, LaunchError, RunResult, ValidatedPlan,
+};
 
 const PROFILE_NAME: &str = "OpenAI.workflow-verifier.sandbox.v1";
 const PROFILE_LABEL: &str = "workflow-verifier sandbox";
@@ -1167,10 +1169,10 @@ pub(super) fn probe() -> Vec<String> {
         provider_profile: "probe".to_owned(),
         selected_jobs: vec!["probe".to_owned()],
         controls: Vec::new(),
-        status: workflow_verifier_runner_protocol::PlanStatus::Complete,
+        status: workflow_verifier_internal::internal::runner_protocol::PlanStatus::Complete,
         source_digest: String::new(),
         lock_digest: String::new(),
-        runtime: workflow_verifier_runner_protocol::RuntimeProfile {
+        runtime: workflow_verifier_internal::internal::runner_protocol::RuntimeProfile {
             kind: "windows-runtime-profile".to_owned(),
             runner_platform: "windows-x86_64".to_owned(),
             workload_digest: format!("sha256:{}", "0".repeat(64)),
@@ -1179,7 +1181,7 @@ pub(super) fn probe() -> Vec<String> {
             boot_digest: None,
             capability_fingerprint: None,
         },
-        limits: workflow_verifier_runner_protocol::Limits {
+        limits: workflow_verifier_internal::internal::runner_protocol::Limits {
             cpu_seconds: 1,
             memory_mb: 64,
             processes: 2,

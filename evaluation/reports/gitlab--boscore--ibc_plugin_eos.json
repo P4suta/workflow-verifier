@@ -1,4 +1,13 @@
 {
+  "analysis_digest": "sha256:6ca5c5ea9f25b35dce25fec5761f618863e20f6ce96fbf778324e8a9f017c7ad",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: docker:latest"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
       "capabilities": [
@@ -11,13 +20,12 @@
         "abstract secrecy = secret",
         "script effect = network_request"
       ],
-      "fix": null,
-      "id": "diag_df3bd22c1dd191588080",
+      "id": "diag_ac768d7b0fd2f8b15d732b954f628781008a5f1e72496c05c9aa0e47c171934d",
       "message": "a secret reaches a network-capable command",
       "rule_id": "WV-SEC-002",
       "severity": "critical",
       "span": {
-        "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
+        "source": 0,
         "start": {
           "byte": 47,
           "column": 9,
@@ -32,9 +40,9 @@
       "trace": [
         {
           "label": "command sink contains untrusted data",
-          "node_id": "wv_e9e79954f912b2cecad5",
+          "node": 9,
           "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
+            "source": 0,
             "start": {
               "byte": 47,
               "column": 9,
@@ -50,1232 +58,80 @@
       ]
     }
   ],
-  "digest": "sha256:f5b9149d808ca0fe26603b12351aab48dea5fad3a65e427f21f4d184d4402346",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_8ab8c66aa0427cdb3ab0",
-          "id": "wv_0b3a99169f48569c5a83",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a16ab2c901734ef310de"
-        },
-        {
-          "condition": true,
-          "from": "wv_c2da5ec0b01122c270c8",
-          "id": "wv_12d35206a3dac9d9e64e",
-          "kind": "data",
-          "label": "CI_REGISTRY",
-          "to": "wv_e9e79954f912b2cecad5"
-        },
-        {
-          "condition": true,
-          "from": "wv_35814026a76cba85e6de",
-          "id": "wv_1c8142cd5fdf042beacf",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_8ab8c66aa0427cdb3ab0"
-        },
-        {
-          "condition": true,
-          "from": "wv_987cdd0078e54aed9a51",
-          "id": "wv_1fda12e120e2ccee36a1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_01eaef415c529697d52b"
-        },
-        {
-          "condition": true,
-          "from": "wv_2746a94579c0f70895ae",
-          "id": "wv_21ec0a86e7e26f754aa6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_48656dbb4b3f05f6b07a"
-        },
-        {
-          "condition": true,
-          "from": "wv_5bec9f7a83022a460c44",
-          "id": "wv_3fc74fa4817cf07f5430",
-          "kind": "data",
-          "label": "CI_COMMIT_SHA",
-          "to": "wv_65e1e93068704f4d8158"
-        },
-        {
-          "condition": true,
-          "from": "wv_966670ede21f8e669f1c",
-          "id": "wv_5b09374fbc6de9b2fa32",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_2746a94579c0f70895ae"
-        },
-        {
-          "condition": true,
-          "from": "wv_d1d185fec36a0d62b83f",
-          "id": "wv_681edd154687ac0e6d76",
-          "kind": "data",
-          "label": "CI_JOB_TOKEN",
-          "to": "wv_e9e79954f912b2cecad5"
-        },
-        {
-          "condition": true,
-          "from": "wv_2746a94579c0f70895ae",
-          "id": "wv_6f0c24bff6e65dbbd0a8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bfc482f7dbc5c9474b14"
-        },
-        {
-          "condition": true,
-          "from": "wv_01eaef415c529697d52b",
-          "id": "wv_742862edbaa57a28bc41",
-          "kind": "control",
-          "label": null,
-          "to": "wv_48656dbb4b3f05f6b07a"
-        },
-        {
-          "condition": true,
-          "from": "wv_a16ab2c901734ef310de",
-          "id": "wv_806a8286f8287a019532",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_987cdd0078e54aed9a51"
-        },
-        {
-          "condition": true,
-          "from": "wv_48656dbb4b3f05f6b07a",
-          "id": "wv_82cdf3648d271b3c06fe",
-          "kind": "control",
-          "label": null,
-          "to": "wv_65e1e93068704f4d8158"
-        },
-        {
-          "condition": true,
-          "from": "wv_3cb25a9c6fe168536b28",
-          "id": "wv_8ab271c03389a1e1c55d",
-          "kind": "data",
-          "label": "CI_REGISTRY_IMAGE",
-          "to": "wv_bfc482f7dbc5c9474b14"
-        },
-        {
-          "condition": true,
-          "from": "wv_09b09a6c93acb77bd894",
-          "id": "wv_9bc466b2a059ae802119",
-          "kind": "control",
-          "label": null,
-          "to": "wv_15137fdc883f1c59e66b"
-        },
-        {
-          "condition": true,
-          "from": "wv_966670ede21f8e669f1c",
-          "id": "wv_b658d6d75f283d30da14",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e9e79954f912b2cecad5"
-        },
-        {
-          "condition": true,
-          "from": "wv_01eaef415c529697d52b",
-          "id": "wv_ce23b9ac4f8c58a3556b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_966670ede21f8e669f1c"
-        },
-        {
-          "condition": true,
-          "from": "wv_09b09a6c93acb77bd894",
-          "id": "wv_d11e7785c80aba297588",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b0c1864ddc4949957e03"
-        },
-        {
-          "condition": true,
-          "from": "wv_09b09a6c93acb77bd894",
-          "id": "wv_dbddb4445edeb0f58f1b",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b0c1864ddc4949957e03"
-        },
-        {
-          "condition": true,
-          "from": "wv_569ff8a4876475e034d2",
-          "id": "wv_e103af4070d00b4b93fb",
-          "kind": "data",
-          "label": "CI_COMMIT_SHA",
-          "to": "wv_bfc482f7dbc5c9474b14"
-        },
-        {
-          "condition": true,
-          "from": "wv_15137fdc883f1c59e66b",
-          "id": "wv_eb2b163ac99e1274a5e2",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_35814026a76cba85e6de"
-        },
-        {
-          "condition": true,
-          "from": "wv_c04514e6892e7b568ce0",
-          "id": "wv_eee26d9340432125b39b",
-          "kind": "data",
-          "label": "CI_REGISTRY_IMAGE",
-          "to": "wv_65e1e93068704f4d8158"
-        },
-        {
-          "condition": true,
-          "from": "wv_01eaef415c529697d52b",
-          "id": "wv_fcb432fd3aae5d5d5ab3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2746a94579c0f70895ae"
-        }
-      ],
-      "entrypoints": [
-        "wv_09b09a6c93acb77bd894"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_01eaef415c529697d52b",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 22,
-              "column": 1,
-              "line": 3
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_09b09a6c93acb77bd894",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_15137fdc883f1c59e66b",
-          "kind": "stage",
-          "name": ".post",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2746a94579c0f70895ae",
-          "kind": "step",
-          "name": "script:2",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 117,
-              "column": 9,
-              "line": 6
-            },
-            "stop": {
-              "byte": 189,
-              "column": 81,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_35814026a76cba85e6de",
-          "kind": "stage",
-          "name": ".pre",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_REGISTRY_IMAGE",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 134,
-                      "column": 26,
-                      "line": 6
-                    },
-                    "stop": {
-                      "byte": 151,
-                      "column": 43,
-                      "line": 6
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_REGISTRY_IMAGE"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3cb25a9c6fe168536b28",
-          "kind": "resource",
-          "name": "CI_REGISTRY_IMAGE",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 134,
-              "column": 26,
-              "line": 6
-            },
-            "stop": {
-              "byte": 151,
-              "column": 43,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_48656dbb4b3f05f6b07a",
-          "kind": "step",
-          "name": "script:3",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 198,
-              "column": 9,
-              "line": 7
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_SHA",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 153,
-                      "column": 45,
-                      "line": 6
-                    },
-                    "stop": {
-                      "byte": 166,
-                      "column": 58,
-                      "line": 6
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_569ff8a4876475e034d2",
-          "kind": "resource",
-          "name": "CI_COMMIT_SHA",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 153,
-              "column": 45,
-              "line": 6
-            },
-            "stop": {
-              "byte": 166,
-              "column": 58,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_SHA",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 230,
-                      "column": 41,
-                      "line": 7
-                    },
-                    "stop": {
-                      "byte": 243,
-                      "column": 54,
-                      "line": 7
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5bec9f7a83022a460c44",
-          "kind": "resource",
-          "name": "CI_COMMIT_SHA",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 230,
-              "column": 41,
-              "line": 7
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_SHA",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 230,
-                      "column": 41,
-                      "line": 7
-                    },
-                    "stop": {
-                      "byte": 243,
-                      "column": 54,
-                      "line": 7
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_REGISTRY_IMAGE",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 211,
-                      "column": 22,
-                      "line": 7
-                    },
-                    "stop": {
-                      "byte": 228,
-                      "column": 39,
-                      "line": 7
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 198,
-                      "column": 9,
-                      "line": 7
-                    },
-                    "stop": {
-                      "byte": 243,
-                      "column": 54,
-                      "line": 7
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_SHA",
-                  "CI_REGISTRY_IMAGE",
-                  "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_65e1e93068704f4d8158",
-          "kind": "command",
-          "name": "docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 198,
-              "column": 9,
-              "line": 7
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8ab8c66aa0427cdb3ab0",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_966670ede21f8e669f1c",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 47,
-              "column": 9,
-              "line": 5
-            },
-            "stop": {
-              "byte": 108,
-              "column": 70,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "4"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_987cdd0078e54aed9a51",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a16ab2c901734ef310de",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 243,
-              "column": 54,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b0c1864ddc4949957e03",
-          "kind": "call",
-          "name": "docker:latest",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 7,
-              "column": 8,
-              "line": 1
-            },
-            "stop": {
-              "byte": 20,
-              "column": 21,
-              "line": 1
-            }
-          },
-          "unknown": {
-            "detail": "docker:latest",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_COMMIT_SHA",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 153,
-                      "column": 45,
-                      "line": 6
-                    },
-                    "stop": {
-                      "byte": 166,
-                      "column": 58,
-                      "line": 6
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_REGISTRY_IMAGE",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 134,
-                      "column": 26,
-                      "line": 6
-                    },
-                    "stop": {
-                      "byte": 151,
-                      "column": 43,
-                      "line": 6
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 117,
-                      "column": 9,
-                      "line": 6
-                    },
-                    "stop": {
-                      "byte": 189,
-                      "column": 81,
-                      "line": 6
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_COMMIT_SHA",
-                  "CI_REGISTRY_IMAGE",
-                  "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile ."
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_bfc482f7dbc5c9474b14",
-          "kind": "command",
-          "name": "docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -f Docker/Dockerfile .",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 117,
-              "column": 9,
-              "line": 6
-            },
-            "stop": {
-              "byte": 189,
-              "column": 81,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_REGISTRY_IMAGE",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 211,
-                      "column": 22,
-                      "line": 7
-                    },
-                    "stop": {
-                      "byte": 228,
-                      "column": 39,
-                      "line": 7
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_REGISTRY_IMAGE"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c04514e6892e7b568ce0",
-          "kind": "resource",
-          "name": "CI_REGISTRY_IMAGE",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 211,
-              "column": 22,
-              "line": 7
-            },
-            "stop": {
-              "byte": 228,
-              "column": 39,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_REGISTRY",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 97,
-                      "column": 59,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 108,
-                      "column": 70,
-                      "line": 5
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_REGISTRY"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c2da5ec0b01122c270c8",
-          "kind": "resource",
-          "name": "CI_REGISTRY",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 97,
-              "column": 59,
-              "line": 5
-            },
-            "stop": {
-              "byte": 108,
-              "column": 70,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_JOB_TOKEN",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 83,
-                      "column": 45,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 95,
-                      "column": 57,
-                      "line": 5
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_JOB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d1d185fec36a0d62b83f",
-          "kind": "resource",
-          "name": "CI_JOB_TOKEN",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 83,
-              "column": 45,
-              "line": 5
-            },
-            "stop": {
-              "byte": 95,
-              "column": 57,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_JOB_TOKEN",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 83,
-                      "column": 45,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 95,
-                      "column": 57,
-                      "line": 5
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "CI_REGISTRY",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 97,
-                      "column": 59,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 108,
-                      "column": 70,
-                      "line": 5
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 47,
-                      "column": 9,
-                      "line": 5
-                    },
-                    "stop": {
-                      "byte": 108,
-                      "column": 70,
-                      "line": 5
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CI_JOB_TOKEN",
-                  "CI_REGISTRY",
-                  "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_e9e79954f912b2cecad5",
-          "kind": "command",
-          "name": "docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml",
-            "start": {
-              "byte": 47,
-              "column": 9,
-              "line": 5
-            },
-            "stop": {
-              "byte": 108,
-              "column": 70,
-              "line": 5
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:ff2bed3b69bd3dd4aa5e7a228e098cb42ae298c77495e1ddfdf9769bf528cec3",
-      "path": "gitlab/boscore/ibc_plugin_eos/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:e3a5a5ffdf5458eb957e2f47bb0f2da60e2703e6bc776aab4719173e1900b55a",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:aa789ec5f63d5ec31ce0a83d7bea718a0b2fe815a5aecfd53cb8c363a68686b1",
+    "sources": [
+      {
+        "digest": "sha256:ff2bed3b69bd3dd4aa5e7a228e098cb42ae298c77495e1ddfdf9769bf528cec3",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -1286,26 +142,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 22,
+    "nodes": 20,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

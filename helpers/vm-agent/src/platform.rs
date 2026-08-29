@@ -6,8 +6,10 @@ use std::path::Path;
 use std::process::{Command, Stdio};
 use std::time::Duration;
 
-use workflow_verifier_helper_runtime::run_command_with_termination;
-use workflow_verifier_runner_protocol::vm::{Observation, Request, parse_request};
+use workflow_verifier_internal::internal::helper_runtime::run_command_with_termination;
+use workflow_verifier_internal::internal::runner_protocol::vm::{
+    Observation, Request, parse_request,
+};
 
 use crate::{guest_working_directory, write_observation};
 

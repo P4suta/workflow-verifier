@@ -1,0 +1,18 @@
+{
+  "$id": "https://workflow-verifier.dev/schema/performance-comparison-v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "baseline": { "type": "object" },
+    "comparisons": { "items": { "type": "object" }, "type": "array" },
+    "current": { "type": "object" },
+    "environment": { "type": "object" },
+    "failures": { "items": { "type": "string" }, "type": "array" },
+    "passed": { "type": "boolean" },
+    "schema": { "const": "performance-comparison-v2" },
+    "threshold_percent": { "type": "string" }
+  },
+  "required": ["baseline", "comparisons", "current", "environment", "failures", "passed", "schema", "threshold_percent"],
+  "title": "workflow-verifier performance comparison v2",
+  "type": "object"
+}

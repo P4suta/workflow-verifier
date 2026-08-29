@@ -1,4 +1,4 @@
-use workflow_verifier_runner_protocol::{
+use workflow_verifier_internal::internal::runner_protocol::{
     Control, Descriptor, Evidence, LaunchError, Limits, Outcome, PlanStatus, RunResult,
     RuntimeProfile, ValidatedPlan, validate_launch, validate_plan,
 };
@@ -87,29 +87,35 @@ fn ocaml_and_helpers_share_canonical_sandbox_run_fixtures() {
     let plan = validate_plan(CANONICAL_PLAN).expect("canonical runner-v2");
     let mut evidence = Evidence::for_plan(&plan);
     evidence.append(
-        workflow_verifier_runner_protocol::EvidenceBody::BackendAttested {
+        workflow_verifier_internal::internal::runner_protocol::EvidenceBody::BackendAttested {
             id: "oci:docker".to_owned(),
             version: "0.1.0".to_owned(),
             platform: "portable-fixture".to_owned(),
-            controls_digest: workflow_verifier_runner_protocol::controls_digest(&plan.controls),
+            controls_digest: workflow_verifier_internal::internal::runner_protocol::controls_digest(
+                &plan.controls,
+            ),
         },
     );
     for control in &plan.controls {
         evidence.append(
-            workflow_verifier_runner_protocol::EvidenceBody::ControlAttested(
+            workflow_verifier_internal::internal::runner_protocol::EvidenceBody::ControlAttested(
                 control.name().to_owned(),
             ),
         );
     }
     evidence.append(
-        workflow_verifier_runner_protocol::EvidenceBody::ProcessStarted {
+        workflow_verifier_internal::internal::runner_protocol::EvidenceBody::ProcessStarted {
             executable: "/bin/sh".to_owned(),
             argv: vec!["-eu".to_owned(), "-c".to_owned(), "true".to_owned()],
         },
     );
-    evidence.append(workflow_verifier_runner_protocol::EvidenceBody::ProcessExited { code: 0 });
     evidence.append(
-        workflow_verifier_runner_protocol::EvidenceBody::ResourceObserved {
+        workflow_verifier_internal::internal::runner_protocol::EvidenceBody::ProcessExited {
+            code: 0,
+        },
+    );
+    evidence.append(
+        workflow_verifier_internal::internal::runner_protocol::EvidenceBody::ResourceObserved {
             wall_time_ms: 1,
             cpu_time_ms: 0,
             peak_memory_bytes: 0,
@@ -120,15 +126,15 @@ fn ocaml_and_helpers_share_canonical_sandbox_run_fixtures() {
         },
     );
     evidence.append(
-        workflow_verifier_runner_protocol::EvidenceBody::LogRecorded {
+        workflow_verifier_internal::internal::runner_protocol::EvidenceBody::LogRecorded {
             digest: format!(
                 "sha256:{}",
-                workflow_verifier_runner_protocol::sha256_hex(b"")
+                workflow_verifier_internal::internal::runner_protocol::sha256_hex(b"")
             ),
         },
     );
     evidence.append(
-        workflow_verifier_runner_protocol::EvidenceBody::FilesystemFinal {
+        workflow_verifier_internal::internal::runner_protocol::EvidenceBody::FilesystemFinal {
             digest: plan.source_digest.clone(),
         },
     );

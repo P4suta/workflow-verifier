@@ -1,7 +1,19 @@
 {
+  "analysis_digest": "sha256:02129cad739edba866760a9a912c2b7537f5b04dd03174468b96f8dae37a1831",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/setup-python@v5",
+      "Incomplete.Unresolved_dependency: actions/upload-artifact@v4",
+      "Incomplete.Unresolved_dependency: pypa/gh-action-pypi-publish@release/v1",
+      "Incomplete.Unresolved_dependency: svenstaro/upload-release-action@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +21,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 326,
             "column": 13,
@@ -24,12 +35,12 @@
           }
         }
       },
-      "id": "diag_5642e889e5c79d396d24",
+      "id": "diag_19588d685dc8bee63d7dc36c598cc6b3c4623836ff56b3d406291cff49b4766a",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 326,
           "column": 13,
@@ -44,9 +55,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_36de5bf9906021d40ed7",
+          "node": 7,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 326,
               "column": 13,
@@ -62,7 +73,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v5"
@@ -70,9 +80,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 409,
             "column": 13,
@@ -85,12 +94,12 @@
           }
         }
       },
-      "id": "diag_9c66b7b7acaa29c3347c",
+      "id": "diag_c030bf13ce2b77c237939532ee282103e270e32eb091c28fbeeca5e554f5e9fd",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 409,
           "column": 13,
@@ -105,9 +114,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f20a9e87eb96ab53959b",
+          "node": 9,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 409,
               "column": 13,
@@ -123,7 +132,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -131,9 +139,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 1012,
             "column": 13,
@@ -146,12 +153,12 @@
           }
         }
       },
-      "id": "diag_8146aff9e534154b9a0d",
+      "id": "diag_d5024659d2cd5f4bf3a70883fb4811dc74d0bc3de446bfaa5ee9062929d9dd75",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 1012,
           "column": 13,
@@ -166,9 +173,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_79557aa2bdd3e20a1244",
+          "node": 24,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1012,
               "column": 13,
@@ -184,7 +191,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v5"
@@ -192,9 +198,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 1070,
             "column": 13,
@@ -207,12 +212,12 @@
           }
         }
       },
-      "id": "diag_71c452f41b5cbaeb4129",
+      "id": "diag_489bb3ea1caf7729ac5c0b70825b52e849b5b27ee46805a93462f4ea5e07e2a7",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 1070,
           "column": 13,
@@ -227,9 +232,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_8cd67e5887fb335224fe",
+          "node": 26,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1070,
               "column": 13,
@@ -245,7 +250,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v4"
@@ -253,9 +257,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 1452,
             "column": 13,
@@ -268,12 +271,12 @@
           }
         }
       },
-      "id": "diag_a1c506bb15b47b2bd9d1",
+      "id": "diag_7ee4236e8a3f37c656e5929c39e0a40d508c447a83f21a5db04fe53bcf1dbf39",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 1452,
           "column": 13,
@@ -288,9 +291,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_5b21599c0796a0d18342",
+          "node": 33,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1452,
               "column": 13,
@@ -306,7 +309,70 @@
       ]
     },
     {
-      "capabilities": [],
+      "capabilities": [
+        "secret_access",
+        "network"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "id": "diag_1d63998dbd0cb5577de00b42cc31e73d8322dea3aa9b781f4aafdc149cd14b68",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "source": 0,
+        "start": {
+          "byte": 1597,
+          "column": 13,
+          "line": 62
+        },
+        "stop": {
+          "byte": 1631,
+          "column": 47,
+          "line": 62
+        }
+      },
+      "trace": [
+        {
+          "label": "untrusted source",
+          "node": 40,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 1772,
+              "column": 18,
+              "line": 67
+            },
+            "stop": {
+              "byte": 1782,
+              "column": 28,
+              "line": 67
+            }
+          }
+        },
+        {
+          "label": "command sink",
+          "node": 36,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 1597,
+              "column": 13,
+              "line": 62
+            },
+            "stop": {
+              "byte": 1631,
+              "column": 47,
+              "line": 62
+            }
+          }
+        }
+      ]
+    },
+    {
       "confidence": "high",
       "evidence": [
         "reference = svenstaro/upload-release-action@v2"
@@ -314,9 +380,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 1597,
             "column": 13,
@@ -329,12 +394,12 @@
           }
         }
       },
-      "id": "diag_0a743f77ae9be19795b0",
+      "id": "diag_d0792539ab42f002b1f3d272e06e3c5cc489a9f22227350f991d4596ad4ddc0d",
       "message": "dependency is not pinned to immutable content: svenstaro/upload-release-action@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 1597,
           "column": 13,
@@ -349,9 +414,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_bf4d4482fcbbb434d244",
+          "node": 36,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1597,
               "column": 13,
@@ -367,7 +432,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -375,9 +439,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 2035,
             "column": 13,
@@ -390,12 +453,12 @@
           }
         }
       },
-      "id": "diag_5da0f3792bed68e00e76",
+      "id": "diag_ea1636e0467da3fd1f208b3be667bd814ec369606f9daa621a88d2760e908e55",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 2035,
           "column": 13,
@@ -410,9 +473,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_76a45d0acc04ddec6ffa",
+          "node": 43,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 2035,
               "column": 13,
@@ -428,7 +491,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-python@v5"
@@ -436,9 +498,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 2128,
             "column": 13,
@@ -451,12 +512,12 @@
           }
         }
       },
-      "id": "diag_11e0dd74994c65f4d65c",
+      "id": "diag_5bb8b146ad204a221a475c0e79864a070b01469736e638ba97f7823e7345383d",
       "message": "dependency is not pinned to immutable content: actions/setup-python@v5",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 2128,
           "column": 13,
@@ -471,9 +532,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_1caaa4c8809e3e564529",
+          "node": 45,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 2128,
               "column": 13,
@@ -489,7 +550,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = pypa/gh-action-pypi-publish@release/v1"
@@ -497,9 +557,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 2406,
             "column": 13,
@@ -512,12 +571,12 @@
           }
         }
       },
-      "id": "diag_b64e39827be032c3cece",
+      "id": "diag_5a63aea64b0d5b20b84b828edc90451ab4690ba8647d5589d5d1318666c11af4",
       "message": "dependency is not pinned to immutable content: pypa/gh-action-pypi-publish@release/v1",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 2406,
           "column": 13,
@@ -532,9 +591,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d4093962c693ee1d1829",
+          "node": 53,
           "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 2406,
               "column": 13,
@@ -550,2941 +609,60 @@
       ]
     }
   ],
-  "digest": "sha256:329311002b3c8a6210e0b517492c08b87ca36d0517cef3fb731bf4a8455e8e4c",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_a9190c99a039b004f9c9",
-          "id": "wv_0106c06c8fcca91ee871",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cf3ab384815840df3115"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c77c16ae234ed893beb",
-          "id": "wv_0144be635790cd5e4bdc",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_deec00ac1e1517bf3fa5"
-        },
-        {
-          "condition": true,
-          "from": "wv_deec00ac1e1517bf3fa5",
-          "id": "wv_02b376197738f71a9777",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_8da904b1b818d5030ed3"
-        },
-        {
-          "condition": true,
-          "from": "wv_a387c80b1dced28a6de4",
-          "id": "wv_03342873b5da10461d23",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9373b6005e0dba0f199f"
-        },
-        {
-          "condition": true,
-          "from": "wv_323ab6af68d38ddf23ee",
-          "id": "wv_05cea44d5fb2f9f717b2",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_69816c8e2ae2e5cb201a"
-        },
-        {
-          "condition": true,
-          "from": "wv_a444537971e65460daf9",
-          "id": "wv_08fe69b0353084480009",
-          "kind": "control",
-          "label": null,
-          "to": "wv_36de5bf9906021d40ed7"
-        },
-        {
-          "condition": true,
-          "from": "wv_b35cb14b714ae7ca1746",
-          "id": "wv_09bcb05b2ba127b00d6f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8da904b1b818d5030ed3"
-        },
-        {
-          "condition": true,
-          "from": "wv_3af76f448eaca34c9c03",
-          "id": "wv_0b1c02cdea8cbb237fdd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f7eedeb83927a509f043"
-        },
-        {
-          "condition": true,
-          "from": "wv_a387c80b1dced28a6de4",
-          "id": "wv_0e96b22dd7f494c27ab7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e9f4c2fa0c416082ff16"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_19806376e3b3a67297b1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_69816c8e2ae2e5cb201a"
-        },
-        {
-          "condition": true,
-          "from": "wv_1bf7eaae4a9a5dd54b87",
-          "id": "wv_199c063555d5c0d097c2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b7c83d5e24297cf819f9"
-        },
-        {
-          "condition": true,
-          "from": "wv_284da9829a22d40899df",
-          "id": "wv_1e8f828ae318a994aa38",
-          "kind": "control",
-          "label": null,
-          "to": "wv_79557aa2bdd3e20a1244"
-        },
-        {
-          "condition": true,
-          "from": "wv_9c81b989e03abbb6bdbb",
-          "id": "wv_1ecc0f3179aeed520995",
-          "kind": "data",
-          "label": "matrix.py_version",
-          "to": "wv_f20a9e87eb96ab53959b"
-        },
-        {
-          "condition": true,
-          "from": "wv_356aac5e61a892393f5f",
-          "id": "wv_22b6d3e4551af932ba16",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_323ab6af68d38ddf23ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_7601faa3d639d794b5af",
-          "id": "wv_22e9f8c82ff89c721391",
-          "kind": "data",
-          "label": "github.ref",
-          "to": "wv_bf4d4482fcbbb434d244"
-        },
-        {
-          "condition": true,
-          "from": "wv_e70b3533c4727b978de3",
-          "id": "wv_247f32efe4f64942e228",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f20a9e87eb96ab53959b"
-        },
-        {
-          "condition": true,
-          "from": "wv_49e5cebf0128b0cf9b85",
-          "id": "wv_24bb88e422c0e0e4852b",
-          "kind": "data",
-          "label": "github.ref_type",
-          "to": "wv_a38c95a83d8f2cd95010"
-        },
-        {
-          "condition": true,
-          "from": "wv_72e426f8e8a4222e9458",
-          "id": "wv_2694f65ad4bcd1d98dd7",
-          "kind": "data",
-          "label": "matrix.os",
-          "to": "wv_3d46a3a6960cadf7f143"
-        },
-        {
-          "condition": true,
-          "from": "wv_c152d5b191584e9b50f6",
-          "id": "wv_2c0fd46d23e6b4369a5d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d4093962c693ee1d1829"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_384ba962b9421017026f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_356aac5e61a892393f5f"
-        },
-        {
-          "condition": true,
-          "from": "wv_b35cb14b714ae7ca1746",
-          "id": "wv_393d42469a392d8b9e52",
-          "kind": "control",
-          "label": null,
-          "to": "wv_deec00ac1e1517bf3fa5"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.ref_type==\"tag\")"
-          },
-          "from": "wv_a38c95a83d8f2cd95010",
-          "id": "wv_3ab934d123cb29c2e947",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_c152d5b191584e9b50f6"
-        },
-        {
-          "condition": true,
-          "from": "wv_0b04d8b9b3416ab62c2e",
-          "id": "wv_3cf59f6d002d435f1325",
-          "kind": "data",
-          "label": "secrets.GITHUB_TOKEN",
-          "to": "wv_bf4d4482fcbbb434d244"
-        },
-        {
-          "condition": true,
-          "from": "wv_356aac5e61a892393f5f",
-          "id": "wv_3f9ea280a36c3dfb4aa6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c57d0e4ad7868046c9d7"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7c83d5e24297cf819f9",
-          "id": "wv_3fcaef224dc3bef1be9d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a38c95a83d8f2cd95010"
-        },
-        {
-          "condition": true,
-          "from": "wv_b35cb14b714ae7ca1746",
-          "id": "wv_43ebcb82b2116281637b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_284da9829a22d40899df"
-        },
-        {
-          "condition": true,
-          "from": "wv_7fca613a0fda39f9d2de",
-          "id": "wv_45acfe517759bbc78710",
-          "kind": "call",
-          "label": null,
-          "to": "wv_8cd67e5887fb335224fe"
-        },
-        {
-          "condition": true,
-          "from": "wv_b35cb14b714ae7ca1746",
-          "id": "wv_4674d2d0805c7ecd2680",
-          "kind": "control",
-          "label": "needs",
-          "to": "wv_b7c83d5e24297cf819f9"
-        },
-        {
-          "condition": true,
-          "from": "wv_e70b3533c4727b978de3",
-          "id": "wv_47dc5e373a6f9440cfe6",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f20a9e87eb96ab53959b"
-        },
-        {
-          "condition": true,
-          "from": "wv_a444537971e65460daf9",
-          "id": "wv_4aa68dbe15a60f25a873",
-          "kind": "call",
-          "label": null,
-          "to": "wv_36de5bf9906021d40ed7"
-        },
-        {
-          "condition": true,
-          "from": "wv_e70b3533c4727b978de3",
-          "id": "wv_51c854de7a7634cbad60",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3af76f448eaca34c9c03"
-        },
-        {
-          "condition": true,
-          "from": "wv_c152d5b191584e9b50f6",
-          "id": "wv_52f3e87eff5ebe042eb9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d4093962c693ee1d1829"
-        },
-        {
-          "condition": true,
-          "from": "wv_00712305764915ebc11f",
-          "id": "wv_55abb5fc14da40030721",
-          "kind": "call",
-          "label": null,
-          "to": "wv_bf4d4482fcbbb434d244"
-        },
-        {
-          "condition": true,
-          "from": "wv_56224e65fd17fdbc13ff",
-          "id": "wv_6145cece1e9821647800",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1bf7eaae4a9a5dd54b87"
-        },
-        {
-          "condition": true,
-          "from": "wv_69816c8e2ae2e5cb201a",
-          "id": "wv_6bc7351291f04554fde3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2789ff1c3383e845f56e"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_6e19ef7bca5cac13652c",
-          "kind": "control",
-          "label": "needs",
-          "to": "wv_b7c83d5e24297cf819f9"
-        },
-        {
-          "condition": true,
-          "from": "wv_00712305764915ebc11f",
-          "id": "wv_6fffd7e2bba4a360d2b6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bf4d4482fcbbb434d244"
-        },
-        {
-          "condition": true,
-          "from": "wv_a444537971e65460daf9",
-          "id": "wv_70d98f6eae4cb7e91898",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e70b3533c4727b978de3"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_78255f38c45602d2f9cc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3af76f448eaca34c9c03"
-        },
-        {
-          "condition": true,
-          "from": "wv_1bf7eaae4a9a5dd54b87",
-          "id": "wv_79715c96bed510c50ef6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b35cb14b714ae7ca1746"
-        },
-        {
-          "condition": true,
-          "from": "wv_69816c8e2ae2e5cb201a",
-          "id": "wv_7ab46ae2d0d20c2b63d8",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a9190c99a039b004f9c9"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7c83d5e24297cf819f9",
-          "id": "wv_7b34fce42012bec7fa55",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c284df7674eb62bae2d5"
-        },
-        {
-          "condition": true,
-          "from": "wv_323ab6af68d38ddf23ee",
-          "id": "wv_7c2f724c045710b4e29e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_657ce80bdf51be2fa66e"
-        },
-        {
-          "condition": true,
-          "from": "wv_93adcfe3aef078043c0f",
-          "id": "wv_7e8703945112748eac49",
-          "kind": "data",
-          "label": "os",
-          "to": "wv_b35cb14b714ae7ca1746"
-        },
-        {
-          "condition": true,
-          "from": "wv_c284df7674eb62bae2d5",
-          "id": "wv_87b4ebe53cdb2df70c82",
-          "kind": "control",
-          "label": null,
-          "to": "wv_76a45d0acc04ddec6ffa"
-        },
-        {
-          "condition": true,
-          "from": "wv_deec00ac1e1517bf3fa5",
-          "id": "wv_8906d85b152ea2641f2e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3d46a3a6960cadf7f143"
-        },
-        {
-          "condition": true,
-          "from": "wv_284da9829a22d40899df",
-          "id": "wv_8a09037710084ad77690",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_7fca613a0fda39f9d2de"
-        },
-        {
-          "condition": true,
-          "from": "wv_3af76f448eaca34c9c03",
-          "id": "wv_90cc23915819688de3f9",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_356aac5e61a892393f5f"
-        },
-        {
-          "condition": true,
-          "from": "wv_284da9829a22d40899df",
-          "id": "wv_943139e175accbd33383",
-          "kind": "call",
-          "label": null,
-          "to": "wv_79557aa2bdd3e20a1244"
-        },
-        {
-          "condition": true,
-          "from": "wv_9373b6005e0dba0f199f",
-          "id": "wv_943e154ce55d4a081020",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a38c95a83d8f2cd95010"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd4370536214edea2ef5",
-          "id": "wv_96a178463bf4bd901485",
-          "kind": "data",
-          "label": "py_version",
-          "to": "wv_52d102ec84ef1fcb1e2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_97606f5b22498df98246",
-          "id": "wv_9b9021cf6ffd19f323d3",
-          "kind": "data",
-          "label": "github.ref_type",
-          "to": "wv_f2e057401c5d061ab109"
-        },
-        {
-          "condition": true,
-          "from": "wv_93b601de125f05c0acdb",
-          "id": "wv_9fa5835b6112ebc97efe",
-          "kind": "data",
-          "label": "os",
-          "to": "wv_52d102ec84ef1fcb1e2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c77c16ae234ed893beb",
-          "id": "wv_a307ab11511ca68adcf5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f9371386d8ac53c224d1"
-        },
-        {
-          "condition": true,
-          "from": "wv_b35cb14b714ae7ca1746",
-          "id": "wv_a4ed54933f33ae98a409",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1c77c16ae234ed893beb"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7c83d5e24297cf819f9",
-          "id": "wv_a845aa885cbaea0c4961",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a387c80b1dced28a6de4"
-        },
-        {
-          "condition": true,
-          "from": "wv_bcc0a45748df22e2461e",
-          "id": "wv_adbd02c1febce521c0f8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1bf7eaae4a9a5dd54b87"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7c83d5e24297cf819f9",
-          "id": "wv_af68c9e607b8a49fb8b1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dc50ddf031b0ad22dd1a"
-        },
-        {
-          "condition": true,
-          "from": "wv_b7c83d5e24297cf819f9",
-          "id": "wv_b4ff6480fccac80d69ca",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9373b6005e0dba0f199f"
-        },
-        {
-          "condition": true,
-          "from": "wv_7fca613a0fda39f9d2de",
-          "id": "wv_ba574b9396f49c817e1d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1c77c16ae234ed893beb"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_bddcbef116ac507c5d0c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a9190c99a039b004f9c9"
-        },
-        {
-          "condition": true,
-          "from": "wv_b35cb14b714ae7ca1746",
-          "id": "wv_c244e912d33fc68af86f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7fca613a0fda39f9d2de"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_c6815697311067f31959",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e70b3533c4727b978de3"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc50ddf031b0ad22dd1a",
-          "id": "wv_cc5f1d890f91c9c1b9a7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1caaa4c8809e3e564529"
-        },
-        {
-          "condition": true,
-          "from": "wv_7fca613a0fda39f9d2de",
-          "id": "wv_cd05fda920d4fefa893f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8cd67e5887fb335224fe"
-        },
-        {
-          "condition": true,
-          "from": "wv_8da904b1b818d5030ed3",
-          "id": "wv_cd285a487ff5e86dc504",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f2e057401c5d061ab109"
-        },
-        {
-          "condition": true,
-          "from": "wv_8da904b1b818d5030ed3",
-          "id": "wv_cd6a9ebfebc514ee9bac",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5b21599c0796a0d18342"
-        },
-        {
-          "condition": true,
-          "from": "wv_b35cb14b714ae7ca1746",
-          "id": "wv_d0a01b4f6f112e7c7877",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f2e057401c5d061ab109"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc50ddf031b0ad22dd1a",
-          "id": "wv_d928653bc56e3a82bae1",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a387c80b1dced28a6de4"
-        },
-        {
-          "condition": true,
-          "from": "wv_1bf7eaae4a9a5dd54b87",
-          "id": "wv_dea738723aa8d78ffc53",
-          "kind": "control",
-          "label": null,
-          "to": "wv_52d102ec84ef1fcb1e2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_dec3edd3d08d61dc1cc2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_323ab6af68d38ddf23ee"
-        },
-        {
-          "condition": true,
-          "from": "wv_52d102ec84ef1fcb1e2d",
-          "id": "wv_e002559079741cd1fc89",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a444537971e65460daf9"
-        },
-        {
-          "condition": true,
-          "from": "wv_0ba2f7480c60c53cb642",
-          "id": "wv_e0351eff376c9629ae2a",
-          "kind": "data",
-          "label": "matrix.os",
-          "to": "wv_5b21599c0796a0d18342"
-        },
-        {
-          "condition": true,
-          "from": "wv_c284df7674eb62bae2d5",
-          "id": "wv_e36187708614793339aa",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_dc50ddf031b0ad22dd1a"
-        },
-        {
-          "condition": true,
-          "from": "wv_9373b6005e0dba0f199f",
-          "id": "wv_e900a1150f4e0c43f729",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0ab22879050b9d4d1b69"
-        },
-        {
-          "condition": true,
-          "from": "wv_dc50ddf031b0ad22dd1a",
-          "id": "wv_efa56790f0a91ecbd8a2",
-          "kind": "call",
-          "label": null,
-          "to": "wv_1caaa4c8809e3e564529"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.ref_type==\"tag\")"
-          },
-          "from": "wv_f2e057401c5d061ab109",
-          "id": "wv_f17c0bc6e90f4d9e0009",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_00712305764915ebc11f"
-        },
-        {
-          "condition": true,
-          "from": "wv_c284df7674eb62bae2d5",
-          "id": "wv_f9f1ba37c09f0dd86468",
-          "kind": "call",
-          "label": null,
-          "to": "wv_76a45d0acc04ddec6ffa"
-        },
-        {
-          "condition": true,
-          "from": "wv_8da904b1b818d5030ed3",
-          "id": "wv_fcc7f27d51c45ce0c9ef",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5b21599c0796a0d18342"
-        }
-      ],
-      "entrypoints": [
-        "wv_1bf7eaae4a9a5dd54b87"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_00712305764915ebc11f",
-          "kind": "step",
-          "name": "Upload to release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1561,
-              "column": 7,
-              "line": 61
-            },
-            "stop": {
-              "byte": 1833,
-              "column": 24,
-              "line": 69
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 2313,
-                      "column": 12,
-                      "line": 89
-                    },
-                    "stop": {
-                      "byte": 2323,
-                      "column": 22,
-                      "line": 89
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "flit build"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_0ab22879050b9d4d1b69",
-          "kind": "command",
-          "name": "flit build",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2313,
-              "column": 12,
-              "line": 89
-            },
-            "stop": {
-              "byte": 2323,
-              "column": 22,
-              "line": 89
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.GITHUB_TOKEN",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1710,
-                      "column": 25,
-                      "line": 65
-                    },
-                    "stop": {
-                      "byte": 1730,
-                      "column": 45,
-                      "line": 65
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.GITHUB_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0b04d8b9b3416ab62c2e",
-          "kind": "resource",
-          "name": "secrets.GITHUB_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1710,
-              "column": 25,
-              "line": 65
-            },
-            "stop": {
-              "byte": 1730,
-              "column": 45,
-              "line": 65
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.os",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1522,
-                      "column": 32,
-                      "line": 59
-                    },
-                    "stop": {
-                      "byte": 1531,
-                      "column": 41,
-                      "line": 59
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.os"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0ba2f7480c60c53cb642",
-          "kind": "resource",
-          "name": "matrix.os",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1522,
-              "column": 32,
-              "line": 59
-            },
-            "stop": {
-              "byte": 1531,
-              "column": 41,
-              "line": 59
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1bf7eaae4a9a5dd54b87",
-          "kind": "workflow",
-          "name": "CI",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 2481,
-              "column": 25,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1c77c16ae234ed893beb",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1143,
-              "column": 7,
-              "line": 50
-            },
-            "stop": {
-              "byte": 1278,
-              "column": 39,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1caaa4c8809e3e564529",
-          "kind": "call",
-          "name": "actions/setup-python@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2128,
-              "column": 13,
-              "line": 83
-            },
-            "stop": {
-              "byte": 2151,
-              "column": 36,
-              "line": 83
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 755,
-                      "column": 12,
-                      "line": 34
-                    },
-                    "stop": {
-                      "byte": 784,
-                      "column": 41,
-                      "line": 34
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ruff check heroku_audit stubs"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_2789ff1c3383e845f56e",
-          "kind": "command",
-          "name": "ruff check heroku_audit stubs",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 755,
-              "column": 12,
-              "line": 34
-            },
-            "stop": {
-              "byte": 784,
-              "column": 41,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_284da9829a22d40899df",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1006,
-              "column": 7,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1031,
-              "column": 32,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_323ab6af68d38ddf23ee",
-          "kind": "step",
-          "name": "Format",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 681,
-              "column": 7,
-              "line": 31
-            },
-            "stop": {
-              "byte": 726,
-              "column": 33,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_356aac5e61a892393f5f",
-          "kind": "step",
-          "name": "Type check",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 623,
-              "column": 7,
-              "line": 29
-            },
-            "stop": {
-              "byte": 674,
-              "column": 35,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_36de5bf9906021d40ed7",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 326,
-              "column": 13,
-              "line": 20
-            },
-            "stop": {
-              "byte": 345,
-              "column": 32,
-              "line": 20
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3af76f448eaca34c9c03",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 500,
-              "column": 7,
-              "line": 25
-            },
-            "stop": {
-              "byte": 616,
-              "column": 32,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.os",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1391,
-                      "column": 84,
-                      "line": 55
-                    },
-                    "stop": {
-                      "byte": 1400,
-                      "column": 93,
-                      "line": 55
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1319,
-                      "column": 12,
-                      "line": 55
-                    },
-                    "stop": {
-                      "byte": 1411,
-                      "column": 104,
-                      "line": 55
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.os",
-                  "pyinstaller -F --strip heroku_audit/__main__.py --name heroku-audit-${{ matrix.os }} --clean"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_3d46a3a6960cadf7f143",
-          "kind": "command",
-          "name": "pyinstaller -F --strip heroku_audit/__main__.py --name heroku-audit-${{ matrix.os }} --clean",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1319,
-              "column": 12,
-              "line": 55
-            },
-            "stop": {
-              "byte": 1411,
-              "column": 104,
-              "line": 55
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_type",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 2366,
-                      "column": 15,
-                      "line": 91
-                    },
-                    "stop": {
-                      "byte": 2381,
-                      "column": 30,
-                      "line": 91
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_type"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_49e5cebf0128b0cf9b85",
-          "kind": "resource",
-          "name": "github.ref_type",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2366,
-              "column": 15,
-              "line": 91
-            },
-            "stop": {
-              "byte": 2381,
-              "column": 30,
-              "line": 91
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_52d102ec84ef1fcb1e2d",
-          "kind": "job",
-          "name": "lint",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 98,
-              "column": 3,
-              "line": 12
-            },
-            "stop": {
-              "byte": 841,
-              "column": 31,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_56224e65fd17fdbc13ff",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 16,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 29,
-              "column": 16,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_5b21599c0796a0d18342",
-          "kind": "call",
-          "name": "actions/upload-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1452,
-              "column": 13,
-              "line": 57
-            },
-            "stop": {
-              "byte": 1478,
-              "column": 39,
-              "line": 57
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 705,
-                      "column": 12,
-                      "line": 32
-                    },
-                    "stop": {
-                      "byte": 726,
-                      "column": 33,
-                      "line": 32
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ruff format --check ."
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_657ce80bdf51be2fa66e",
-          "kind": "command",
-          "name": "ruff format --check .",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 705,
-              "column": 12,
-              "line": 32
-            },
-            "stop": {
-              "byte": 726,
-              "column": 33,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_69816c8e2ae2e5cb201a",
-          "kind": "step",
-          "name": "lint",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 733,
-              "column": 7,
-              "line": 33
-            },
-            "stop": {
-              "byte": 784,
-              "column": 41,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.os",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1391,
-                      "column": 84,
-                      "line": 55
-                    },
-                    "stop": {
-                      "byte": 1400,
-                      "column": 93,
-                      "line": 55
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.os"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_72e426f8e8a4222e9458",
-          "kind": "resource",
-          "name": "matrix.os",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1391,
-              "column": 84,
-              "line": 55
-            },
-            "stop": {
-              "byte": 1400,
-              "column": 93,
-              "line": 55
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1772,
-                      "column": 18,
-                      "line": 67
-                    },
-                    "stop": {
-                      "byte": 1782,
-                      "column": 28,
-                      "line": 67
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7601faa3d639d794b5af",
-          "kind": "resource",
-          "name": "github.ref",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1772,
-              "column": 18,
-              "line": 67
-            },
-            "stop": {
-              "byte": 1782,
-              "column": 28,
-              "line": 67
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_76a45d0acc04ddec6ffa",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2035,
-              "column": 13,
-              "line": 79
-            },
-            "stop": {
-              "byte": 2054,
-              "column": 32,
-              "line": 79
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_79557aa2bdd3e20a1244",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1012,
-              "column": 13,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1031,
-              "column": 32,
-              "line": 45
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7fca613a0fda39f9d2de",
-          "kind": "step",
-          "name": "Set up Python",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1038,
-              "column": 7,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1136,
-              "column": 31,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8cd67e5887fb335224fe",
-          "kind": "call",
-          "name": "actions/setup-python@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1070,
-              "column": 13,
-              "line": 47
-            },
-            "stop": {
-              "byte": 1093,
-              "column": 36,
-              "line": 47
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8da904b1b818d5030ed3",
-          "kind": "step",
-          "name": "Save executable",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1418,
-              "column": 7,
-              "line": 56
-            },
-            "stop": {
-              "byte": 1554,
-              "column": 20,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9373b6005e0dba0f199f",
-          "kind": "step",
-          "name": "Build package",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2282,
-              "column": 7,
-              "line": 88
-            },
-            "stop": {
-              "byte": 2323,
-              "column": 22,
-              "line": 89
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "macos-latest",
-                  "ubuntu-latest",
-                  "windows-latest"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_93adcfe3aef078043c0f",
-          "kind": "parameter",
-          "name": "matrix.os",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 909,
-              "column": 9,
-              "line": 42
-            },
-            "stop": {
-              "byte": 958,
-              "column": 58,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "macos-latest",
-                  "ubuntu-latest",
-                  "windows-latest"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_93b601de125f05c0acdb",
-          "kind": "parameter",
-          "name": "matrix.os",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 163,
-              "column": 9,
-              "line": 16
-            },
-            "stop": {
-              "byte": 212,
-              "column": 58,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_type",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1646,
-                      "column": 15,
-                      "line": 63
-                    },
-                    "stop": {
-                      "byte": 1661,
-                      "column": 30,
-                      "line": 63
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_type"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_97606f5b22498df98246",
-          "kind": "resource",
-          "name": "github.ref_type",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1646,
-              "column": 15,
-              "line": 63
-            },
-            "stop": {
-              "byte": 1661,
-              "column": 30,
-              "line": 63
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.py_version",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 473,
-                      "column": 29,
-                      "line": 24
-                    },
-                    "stop": {
-                      "byte": 490,
-                      "column": 46,
-                      "line": 24
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.py_version"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9c81b989e03abbb6bdbb",
-          "kind": "resource",
-          "name": "matrix.py_version",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 473,
-              "column": 29,
-              "line": 24
-            },
-            "stop": {
-              "byte": 490,
-              "column": 46,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a387c80b1dced28a6de4",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2201,
-              "column": 7,
-              "line": 86
-            },
-            "stop": {
-              "byte": 2275,
-              "column": 48,
-              "line": 87
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 2362,
-                      "column": 11,
-                      "line": 91
-                    },
-                    "stop": {
-                      "byte": 2393,
-                      "column": 42,
-                      "line": 91
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "${{ github.ref_type == 'tag' }}"
-                ]
-              }
-            },
-            "reference:github.ref_type": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_type",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 2366,
-                      "column": 15,
-                      "line": 91
-                    },
-                    "stop": {
-                      "byte": 2381,
-                      "column": 30,
-                      "line": 91
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_type"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.ref_type==\"tag\")"
-          },
-          "effects": [],
-          "id": "wv_a38c95a83d8f2cd95010",
-          "kind": "gate",
-          "name": "if:build:Publish to PyPi",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2362,
-              "column": 11,
-              "line": 91
-            },
-            "stop": {
-              "byte": 2393,
-              "column": 42,
-              "line": 91
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a444537971e65460daf9",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 320,
-              "column": 7,
-              "line": 20
-            },
-            "stop": {
-              "byte": 345,
-              "column": 32,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a9190c99a039b004f9c9",
-          "kind": "step",
-          "name": "List commands",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 791,
-              "column": 7,
-              "line": 35
-            },
-            "stop": {
-              "byte": 841,
-              "column": 31,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b35cb14b714ae7ca1746",
-          "kind": "job",
-          "name": "exe",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 845,
-              "column": 3,
-              "line": 38
-            },
-            "stop": {
-              "byte": 1833,
-              "column": 24,
-              "line": 69
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "oidc"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b7c83d5e24297cf819f9",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1837,
-              "column": 3,
-              "line": 71
-            },
-            "stop": {
-              "byte": 2481,
-              "column": 25,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bcc0a45748df22e2461e",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 32,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 88,
-              "column": 12,
-              "line": 9
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bf4d4482fcbbb434d244",
-          "kind": "call",
-          "name": "svenstaro/upload-release-action@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1597,
-              "column": 13,
-              "line": 62
-            },
-            "stop": {
-              "byte": 1631,
-              "column": 47,
-              "line": 62
-            }
-          },
-          "unknown": {
-            "detail": "svenstaro/upload-release-action@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c152d5b191584e9b50f6",
-          "kind": "step",
-          "name": "Publish to PyPi",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2330,
-              "column": 7,
-              "line": 90
-            },
-            "stop": {
-              "byte": 2481,
-              "column": 25,
-              "line": 94
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c284df7674eb62bae2d5",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2029,
-              "column": 7,
-              "line": 79
-            },
-            "stop": {
-              "byte": 2089,
-              "column": 23,
-              "line": 81
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 651,
-                      "column": 12,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 674,
-                      "column": 35,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "mypy heroku_audit stubs"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c57d0e4ad7868046c9d7",
-          "kind": "command",
-          "name": "mypy heroku_audit stubs",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 651,
-              "column": 12,
-              "line": 30
-            },
-            "stop": {
-              "byte": 674,
-              "column": 35,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 822,
-                      "column": 12,
-                      "line": 36
-                    },
-                    "stop": {
-                      "byte": 841,
-                      "column": 31,
-                      "line": 36
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "heroku-audit --list"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_cf3ab384815840df3115",
-          "kind": "command",
-          "name": "heroku-audit --list",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 822,
-              "column": 12,
-              "line": 36
-            },
-            "stop": {
-              "byte": 841,
-              "column": 31,
-              "line": 36
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d4093962c693ee1d1829",
-          "kind": "call",
-          "name": "pypa/gh-action-pypi-publish@release/v1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2406,
-              "column": 13,
-              "line": 92
-            },
-            "stop": {
-              "byte": 2444,
-              "column": 51,
-              "line": 92
-            }
-          },
-          "unknown": {
-            "detail": "pypa/gh-action-pypi-publish@release/v1",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dc50ddf031b0ad22dd1a",
-          "kind": "step",
-          "name": "Set up Python",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2096,
-              "column": 7,
-              "line": 82
-            },
-            "stop": {
-              "byte": 2194,
-              "column": 31,
-              "line": 85
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_deec00ac1e1517bf3fa5",
-          "kind": "step",
-          "name": "Build executable",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1285,
-              "column": 7,
-              "line": 54
-            },
-            "stop": {
-              "byte": 1411,
-              "column": 104,
-              "line": 55
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e70b3533c4727b978de3",
-          "kind": "step",
-          "name": "Set up Python ${{ matrix.py_version }}",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 352,
-              "column": 7,
-              "line": 21
-            },
-            "stop": {
-              "byte": 493,
-              "column": 49,
-              "line": 24
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 2239,
-                      "column": 12,
-                      "line": 87
-                    },
-                    "stop": {
-                      "byte": 2275,
-                      "column": 48,
-                      "line": 87
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "python -m pip install --upgrade flit"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_e9f4c2fa0c416082ff16",
-          "kind": "command",
-          "name": "python -m pip install --upgrade flit",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2239,
-              "column": 12,
-              "line": 87
-            },
-            "stop": {
-              "byte": 2275,
-              "column": 48,
-              "line": 87
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f20a9e87eb96ab53959b",
-          "kind": "call",
-          "name": "actions/setup-python@v5",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 409,
-              "column": 13,
-              "line": 22
-            },
-            "stop": {
-              "byte": 432,
-              "column": 36,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-python@v5",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1642,
-                      "column": 11,
-                      "line": 63
-                    },
-                    "stop": {
-                      "byte": 1673,
-                      "column": 42,
-                      "line": 63
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "${{ github.ref_type == 'tag' }}"
-                ]
-              }
-            },
-            "reference:github.ref_type": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.ref_type",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1646,
-                      "column": 15,
-                      "line": 63
-                    },
-                    "stop": {
-                      "byte": 1661,
-                      "column": 30,
-                      "line": 63
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.ref_type"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.ref_type==\"tag\")"
-          },
-          "effects": [],
-          "id": "wv_f2e057401c5d061ab109",
-          "kind": "gate",
-          "name": "if:exe:Upload to release",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1642,
-              "column": 11,
-              "line": 63
-            },
-            "stop": {
-              "byte": 1673,
-              "column": 42,
-              "line": 63
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 538,
-                      "column": 12,
-                      "line": 26
-                    },
-                    "stop": {
-                      "byte": 616,
-                      "column": 32,
-                      "line": 28
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "python -m pip install --upgrade flit\nflit install --deps=all\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f7eedeb83927a509f043",
-          "kind": "command",
-          "name": "python -m pip install --upgrade flit\nflit install --deps=all\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 538,
-              "column": 12,
-              "line": 26
-            },
-            "stop": {
-              "byte": 616,
-              "column": 32,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1181,
-                      "column": 12,
-                      "line": 51
-                    },
-                    "stop": {
-                      "byte": 1278,
-                      "column": 39,
-                      "line": 53
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "python -m pip install --upgrade flit pyinstaller\nflit install --deps=production\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f9371386d8ac53c224d1",
-          "kind": "command",
-          "name": "python -m pip install --upgrade flit pyinstaller\nflit install --deps=production\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1181,
-              "column": 12,
-              "line": 51
-            },
-            "stop": {
-              "byte": 1278,
-              "column": 39,
-              "line": 53
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3.10",
-                  "3.11",
-                  "3.12",
-                  "3.13",
-                  "3.9"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fd4370536214edea2ef5",
-          "kind": "parameter",
-          "name": "matrix.py_version",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/torchbox/heroku-audit/.github/workflows/ci.yml",
-            "start": {
-              "byte": 221,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 272,
-              "column": 60,
-              "line": 17
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/torchbox/heroku-audit/.github/workflows/ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:09c3d903049d963db067904cca81e0f612ce006f95ba49edcaaaf7811b5fcec2",
-      "path": "github/torchbox/heroku-audit/.github/workflows/ci.yml"
-    }
-  ],
+  "digest": "sha256:68af4389441f158c94e170d752ed60a0d637b50b1fcc91244f1fe0856847ad48",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:bbe11bc2a1acd01f0c6b3500ddc48dcb16c284a2732a6c138efa6a0bf85185f0",
+    "sources": [
+      {
+        "digest": "sha256:09c3d903049d963db067904cca81e0f612ce006f95ba49edcaaaf7811b5fcec2",
+        "id": 0,
+        "path": ".github/workflows/ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -3503,71 +681,52 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [
-        {
-          "detail": "actions/setup-python@v5",
-          "kind": "unresolved_dependency"
-        },
-        {
-          "detail": "actions/upload-artifact@v4",
-          "kind": "unresolved_dependency"
-        },
-        {
-          "detail": "pypa/gh-action-pypi-publish@release/v1",
-          "kind": "unresolved_dependency"
-        },
-        {
-          "detail": "svenstaro/upload-release-action@v2",
-          "kind": "unresolved_dependency"
-        }
-      ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
-    "diagnostics": 9,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "diagnostics": 10,
+    "edges": 79,
+    "nodes": 54,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 2
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

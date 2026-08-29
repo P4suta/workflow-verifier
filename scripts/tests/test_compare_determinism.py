@@ -1,5 +1,3 @@
-import copy
-import hashlib
 import json
 import subprocess
 import sys
@@ -8,43 +6,8 @@ import unittest
 from pathlib import Path
 
 from scripts.compare_determinism import RELEASE_PLATFORMS, compare
-from scripts.determinism_probe import artifact_manifest, canonical_json
-
-
-def report_bytes(
-    *, binary: str = "a", source_commit: str | None = None, persona: str = "audit"
-) -> bytes:
-    document = {
-        "digest": None,
-        "persona": persona,
-        "schema": "report-v3",
-        "semantic_digest": None,
-        "tool": {
-            "build": {
-                "binary_digest": "sha256:" + binary * 64,
-                "compiler": "rustc test",
-                "implementation": "rust",
-                "source_commit": source_commit,
-                "target": "test-target",
-            },
-            "name": "workflow-verifier",
-            "version": "0.1.0",
-        },
-    }
-    semantic = copy.deepcopy(document)
-    semantic.pop("digest")
-    semantic.pop("semantic_digest")
-    semantic["tool"].pop("build")
-    document["semantic_digest"] = (
-        "sha256:" + hashlib.sha256(canonical_json(semantic, trailing_newline=False)).hexdigest()
-    )
-    authenticated = copy.deepcopy(document)
-    authenticated.pop("digest")
-    document["digest"] = (
-        "sha256:"
-        + hashlib.sha256(canonical_json(authenticated, trailing_newline=False)).hexdigest()
-    )
-    return canonical_json(document)
+from scripts.determinism_probe import artifact_manifest
+from scripts.tests.report_fixture import report_bytes
 
 
 class CompareDeterminismTests(unittest.TestCase):
@@ -53,20 +16,20 @@ class CompareDeterminismTests(unittest.TestCase):
         root: Path,
         name: str,
         *,
-        binary: str = "a",
+        target: str = "test-target",
         source_commit: str | None = None,
         persona: str = "audit",
         changed_fix: bool = False,
     ) -> Path:
         directory = root / name
         directory.mkdir()
-        (directory / "report-v3.json").write_bytes(
-            report_bytes(binary=binary, source_commit=source_commit, persona=persona)
+        (directory / "report.json").write_bytes(
+            report_bytes(target=target, commit=source_commit, persona=persona)
         )
         (directory / "workflow-verifier.lock").write_bytes(b"lock\n")
         (directory / "fix.diff").write_bytes(b"changed\n" if changed_fix else b"diff\n")
         manifest = artifact_manifest(
-            directory, ["report-v3.json", "workflow-verifier.lock", "fix.diff"]
+            directory, ["report.json", "workflow-verifier.lock", "fix.diff"]
         )
         (directory / "determinism-v2.json").write_text(
             json.dumps(manifest, sort_keys=True), encoding="utf-8"
@@ -118,7 +81,7 @@ class CompareDeterminismTests(unittest.TestCase):
             root = Path(temporary)
             platforms = self.release_set(
                 root,
-                {"windows-x86_64": {"binary": "b", "source_commit": "c" * 40}},
+                {"windows-x86_64": {"target": "windows-test", "source_commit": "c" * 40}},
             )
             result = compare(list(platforms.values()))
             self.assertTrue(result["passed"])
@@ -134,7 +97,7 @@ class CompareDeterminismTests(unittest.TestCase):
             self.assertFalse(result["passed"])
             self.assertEqual(
                 result["failures"],
-                ["report-v3 semantic content differs between linux-arm64 and windows-x86_64"],
+                ["report semantic content differs between linux-arm64 and windows-x86_64"],
             )
 
     def test_portable_artifact_byte_difference_is_reported(self) -> None:

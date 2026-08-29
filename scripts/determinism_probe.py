@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate locally repeatable report, lockfile, and fix artifacts."""
+"""Generate locally repeatable check-report, lockfile, and fix artifacts."""
 
 from __future__ import annotations
 
@@ -16,12 +16,12 @@ import tempfile
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-ARTIFACTS = ("fix.diff", "report-v3.json", "workflow-verifier.lock")
+ARTIFACTS = ("fix.diff", "report.json", "workflow-verifier.lock")
 DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 REPORT_PROJECTION_EXCLUSIONS = (
+    "analysis_digest",
     "digest",
-    "semantic_digest",
-    "tool.build",
+    "tool",
 )
 
 
@@ -47,8 +47,6 @@ def build_commands(analyzer: Path, fixture: str) -> list[list[str]]:
             executable,
             "check",
             "--trust-repository-config",
-            "--cache-mode",
-            "off",
             "--persona",
             "audit",
             "--format",
@@ -86,6 +84,14 @@ def _sha256_bytes(contents: bytes) -> str:
     return "sha256:" + hashlib.sha256(contents).hexdigest()
 
 
+def _domain_digest(domain: bytes, contents: bytes) -> str:
+    digest = hashlib.sha256()
+    for field in (domain, contents):
+        digest.update(len(field).to_bytes(8, byteorder="big"))
+        digest.update(field)
+    return "sha256:" + digest.hexdigest()
+
+
 def _pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     result: dict[str, Any] = {}
     for key, value in pairs:
@@ -120,9 +126,9 @@ def parse_json(contents: bytes, label: str) -> Any:
 def report_semantic_bytes(contents: bytes) -> bytes:
     """Validate report provenance and return its platform-neutral projection."""
 
-    document = parse_json(contents, "report-v3 JSON")
-    if not isinstance(document, dict) or document.get("schema") != "report-v3":
-        raise ValueError("determinism report must be a report-v3 object")
+    document = parse_json(contents, "workflow-verifier-report/1 JSON")
+    if not isinstance(document, dict) or document.get("schema") != "workflow-verifier-report/1":
+        raise ValueError("determinism report must be a workflow-verifier-report/1 object")
     if contents != canonical_json(document):
         raise ValueError("determinism report must be canonical JSON")
     report_digest = document.get("digest")
@@ -130,39 +136,45 @@ def report_semantic_bytes(contents: bytes) -> bytes:
         raise ValueError("determinism report digest is invalid")
     authenticated = copy.deepcopy(document)
     authenticated.pop("digest")
-    if _sha256_bytes(canonical_json(authenticated, trailing_newline=False)) != report_digest:
-        raise ValueError("determinism report digest does not authenticate its body")
-    semantic_digest = document.get("semantic_digest")
-    if not isinstance(semantic_digest, str) or not DIGEST.fullmatch(semantic_digest):
-        raise ValueError("determinism report semantic digest is invalid")
-    tool = document.get("tool")
-    if not isinstance(tool, dict):
-        raise ValueError("determinism report tool must be an object")
-    build = tool.get("build")
-    if not isinstance(build, dict) or set(build) != {
-        "binary_digest",
-        "compiler",
-        "implementation",
-        "source_commit",
-        "target",
-    }:
-        raise ValueError("determinism report build source commit is invalid")
-    binary_digest = build.get("binary_digest")
-    if not isinstance(binary_digest, str) or not DIGEST.fullmatch(binary_digest):
-        raise ValueError("determinism report binary digest is invalid")
-    if not isinstance(build["source_commit"], (str, type(None))) or not all(
-        isinstance(build[field], str) and build[field]
-        for field in ("compiler", "implementation", "target")
+    if (
+        _domain_digest(
+            b"workflow-verifier-report/1/document",
+            canonical_json(authenticated, trailing_newline=False),
+        )
+        != report_digest
     ):
-        raise ValueError("determinism report build provenance is invalid")
+        raise ValueError("determinism report digest does not authenticate its body")
+    semantic_digest = document.get("analysis_digest")
+    if not isinstance(semantic_digest, str) or not DIGEST.fullmatch(semantic_digest):
+        raise ValueError("determinism report analysis digest is invalid")
+    tool = document.get("tool")
+    if not isinstance(tool, dict) or set(tool) != {
+        "commit",
+        "compiler",
+        "name",
+        "target",
+        "version",
+    }:
+        raise ValueError("determinism report tool fields are invalid")
+    if not isinstance(tool["commit"], (str, type(None))) or not all(
+        isinstance(tool[field], str) and tool[field]
+        for field in ("compiler", "name", "target", "version")
+    ):
+        raise ValueError("determinism report tool provenance is invalid")
 
     projection = copy.deepcopy(document)
     projection.pop("digest")
-    projection.pop("semantic_digest")
-    projection["tool"].pop("build")
+    projection.pop("analysis_digest")
+    projection.pop("tool")
     semantic_bytes = canonical_json(projection)
-    if _sha256_bytes(canonical_json(projection, trailing_newline=False)) != semantic_digest:
-        raise ValueError("determinism report semantic digest does not authenticate projection")
+    if (
+        _domain_digest(
+            b"workflow-verifier-report/1/analysis",
+            canonical_json(projection, trailing_newline=False),
+        )
+        != semantic_digest
+    ):
+        raise ValueError("determinism report analysis digest does not authenticate projection")
     return semantic_bytes
 
 
@@ -183,7 +195,7 @@ def artifact_manifest(root: Path, names: list[str]) -> dict[str, Any]:
         if path.is_symlink() or not stat.S_ISREG(metadata.st_mode) or metadata.st_size == 0:
             raise ValueError(f"determinism artifact must be a nonempty regular file: {path}")
         artifacts.append({"digest": _sha256(path), "name": name, "size": metadata.st_size})
-    report_semantic = report_semantic_bytes((root / "report-v3.json").read_bytes())
+    report_semantic = report_semantic_bytes((root / "report.json").read_bytes())
     return {
         "artifacts": artifacts,
         "local_repetitions": 2,
@@ -262,16 +274,13 @@ def probe(analyzer: Path, fixture: str, output: Path, root: Path) -> dict[str, A
             raise RuntimeError(f"{label} is not byte-repeatable on this platform")
     report, lockfile, fix = first
     try:
-        report_json = parse_json(report, "report-v3 JSON")
+        report_json = parse_json(report, "workflow-verifier-report/1 JSON")
         report_semantic_bytes(report)
         lock_json = parse_json(lockfile, "lock-v2 JSON")
     except ValueError as error:
         raise RuntimeError(f"determinism probe emitted invalid canonical JSON: {error}") from error
-    if report_json.get("schema") != "report-v3":
-        raise RuntimeError("check determinism probe did not emit report-v3")
-    expected_binary_digest = _sha256(executable.resolve())
-    if report_json.get("tool", {}).get("build", {}).get("binary_digest") != expected_binary_digest:
-        raise RuntimeError("report-v3 does not bind the analyzer executable digest")
+    if report_json.get("schema") != "workflow-verifier-report/1":
+        raise RuntimeError("check determinism probe did not emit workflow-verifier-report/1")
     if lock_json.get("schema") != "lock-v2":
         raise RuntimeError("resolve determinism probe did not emit lock-v2")
     expected_lock = (fixture_path / "workflow-verifier.lock").read_bytes()
@@ -281,7 +290,7 @@ def probe(analyzer: Path, fixture: str, output: Path, root: Path) -> dict[str, A
         raise RuntimeError("fix determinism probe did not emit a canonical LF-only unified diff")
     outputs = {
         "fix.diff": fix,
-        "report-v3.json": report,
+        "report.json": report,
         "workflow-verifier.lock": lockfile,
     }
     for name, contents in outputs.items():

@@ -1,852 +1,88 @@
 {
+  "analysis_digest": "sha256:00e77457dc39db1af6bafc4c545296a79eadeb69fa1d5cba864ef247fe72d0ec",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: ${REGISTRY_DOCKER_URL}/library/golang:1.26"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:f4e9e0fb1abace8a9875e3e86359d1867ea777eace94e8de276d0e8a69e9a540",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_4fc538d41cb8485469c7",
-          "id": "wv_332183cbde3012eb3b1b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c8100ef532e894aca3db"
-        },
-        {
-          "condition": true,
-          "from": "wv_4be985ec35f988049760",
-          "id": "wv_435ae683b1470a75b979",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c82af21b45e23ba0b1ff"
-        },
-        {
-          "condition": true,
-          "from": "wv_f749841f2579daaf299b",
-          "id": "wv_5030ca07e773764a7dc4",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f037b62b0b4f5bee53f8"
-        },
-        {
-          "condition": true,
-          "from": "wv_cb1fff27bb7d1b0da10b",
-          "id": "wv_50c1775c3e2b3fffa7fa",
-          "kind": "control",
-          "label": null,
-          "to": "wv_14af589ba3f573b81f9c"
-        },
-        {
-          "condition": true,
-          "from": "wv_cbaddde3fcbb101333b3",
-          "id": "wv_57d60b9cd9e65310f602",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4be985ec35f988049760"
-        },
-        {
-          "condition": true,
-          "from": "wv_4be985ec35f988049760",
-          "id": "wv_5da3430343afc4d64dc3",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c82af21b45e23ba0b1ff"
-        },
-        {
-          "condition": true,
-          "from": "wv_f749841f2579daaf299b",
-          "id": "wv_6230b5bac50fc691d7e9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cbaddde3fcbb101333b3"
-        },
-        {
-          "condition": true,
-          "from": "wv_4be985ec35f988049760",
-          "id": "wv_6369807bd900c280530b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c8e21435a4d634e6e73f"
-        },
-        {
-          "condition": true,
-          "from": "wv_f749841f2579daaf299b",
-          "id": "wv_a1a06b08499c020ba195",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f037b62b0b4f5bee53f8"
-        },
-        {
-          "condition": true,
-          "from": "wv_bf2d2df8de4f77f53158",
-          "id": "wv_b8aa774e38c9fd27373b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8cdd911d8ee3acaadb2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_c8100ef532e894aca3db",
-          "id": "wv_b9fd32ecc97de92ef32a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_83f6c7aeeb9527b93193"
-        },
-        {
-          "condition": true,
-          "from": "wv_4be985ec35f988049760",
-          "id": "wv_bfcb77f639ce46f0e0ce",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c8100ef532e894aca3db"
-        },
-        {
-          "condition": true,
-          "from": "wv_bf2d2df8de4f77f53158",
-          "id": "wv_c5eb134e943549d957d6",
-          "kind": "call",
-          "label": null,
-          "to": "wv_8cdd911d8ee3acaadb2d"
-        },
-        {
-          "condition": true,
-          "from": "wv_4be985ec35f988049760",
-          "id": "wv_cee2f89e0758ca948f3d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4fc538d41cb8485469c7"
-        },
-        {
-          "condition": true,
-          "from": "wv_cbaddde3fcbb101333b3",
-          "id": "wv_cf1ccbe2596ae8737772",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3eac3c096a7f79b8c424"
-        },
-        {
-          "condition": true,
-          "from": "wv_c8e21435a4d634e6e73f",
-          "id": "wv_d6cbb56efb67b6b26f92",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_4fc538d41cb8485469c7"
-        },
-        {
-          "condition": true,
-          "from": "wv_3eac3c096a7f79b8c424",
-          "id": "wv_ee010a2cfd9fa19e312b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bf2d2df8de4f77f53158"
-        },
-        {
-          "condition": true,
-          "from": "wv_bf2d2df8de4f77f53158",
-          "id": "wv_f8ddcbf47a16ca309aba",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cb1fff27bb7d1b0da10b"
-        },
-        {
-          "condition": true,
-          "from": "wv_c8e21435a4d634e6e73f",
-          "id": "wv_f9d8359098a68627b1a7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b50305765e433fdbd888"
-        },
-        {
-          "condition": true,
-          "from": "wv_4fc538d41cb8485469c7",
-          "id": "wv_ff142ab6c95f8a819376",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6f64dd88d9aded103872"
-        }
-      ],
-      "entrypoints": [
-        "wv_f749841f2579daaf299b"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 364,
-                      "column": 7,
-                      "line": 22
-                    },
-                    "stop": {
-                      "byte": 380,
-                      "column": 23,
-                      "line": 22
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "go test -v ./..."
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_14af589ba3f573b81f9c",
-          "kind": "command",
-          "name": "go test -v ./...",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 364,
-              "column": 7,
-              "line": 22
-            },
-            "stop": {
-              "byte": 380,
-              "column": 23,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3eac3c096a7f79b8c424",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 25,
-              "column": 9,
-              "line": 3
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4be985ec35f988049760",
-          "kind": "job",
-          "name": "lint",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 120,
-              "column": 1,
-              "line": 10
-            },
-            "stop": {
-              "byte": 307,
-              "column": 70,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4e209d13bb6fe472d734",
-          "kind": "resource",
-          "name": "template:.common",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 38,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 118,
-              "column": 23,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4fc538d41cb8485469c7",
-          "kind": "step",
-          "name": "script:2",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 194,
-              "column": 7,
-              "line": 15
-            },
-            "stop": {
-              "byte": 237,
-              "column": 50,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 194,
-                      "column": 7,
-                      "line": 15
-                    },
-                    "stop": {
-                      "byte": 237,
-                      "column": 50,
-                      "line": 15
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "go install github.com/mgechev/revive@latest"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_6f64dd88d9aded103872",
-          "kind": "command",
-          "name": "go install github.com/mgechev/revive@latest",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 194,
-              "column": 7,
-              "line": 15
-            },
-            "stop": {
-              "byte": 237,
-              "column": 50,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 244,
-                      "column": 7,
-                      "line": 16
-                    },
-                    "stop": {
-                      "byte": 307,
-                      "column": 70,
-                      "line": 16
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "revive -formatter stylish -config revive-recommended.toml ./..."
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_83f6c7aeeb9527b93193",
-          "kind": "command",
-          "name": "revive -formatter stylish -config revive-recommended.toml ./...",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 244,
-              "column": 7,
-              "line": 16
-            },
-            "stop": {
-              "byte": 307,
-              "column": 70,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8cdd911d8ee3acaadb2d",
-          "kind": "call",
-          "name": "extends:.common",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 309,
-              "column": 1,
-              "line": 18
-            },
-            "stop": {
-              "byte": 380,
-              "column": 23,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-                    "start": {
-                      "byte": 175,
-                      "column": 7,
-                      "line": 14
-                    },
-                    "stop": {
-                      "byte": 187,
-                      "column": 19,
-                      "line": 14
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "go fmt ./..."
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b50305765e433fdbd888",
-          "kind": "command",
-          "name": "go fmt ./...",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 175,
-              "column": 7,
-              "line": 14
-            },
-            "stop": {
-              "byte": 187,
-              "column": 19,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bf2d2df8de4f77f53158",
-          "kind": "job",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 309,
-              "column": 1,
-              "line": 18
-            },
-            "stop": {
-              "byte": 380,
-              "column": 23,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c8100ef532e894aca3db",
-          "kind": "step",
-          "name": "script:3",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 244,
-              "column": 7,
-              "line": 16
-            },
-            "stop": {
-              "byte": 307,
-              "column": 70,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c82af21b45e23ba0b1ff",
-          "kind": "call",
-          "name": "extends:.common",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 120,
-              "column": 1,
-              "line": 10
-            },
-            "stop": {
-              "byte": 307,
-              "column": 70,
-              "line": 16
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c8e21435a4d634e6e73f",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 175,
-              "column": 7,
-              "line": 14
-            },
-            "stop": {
-              "byte": 187,
-              "column": 19,
-              "line": 14
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cb1fff27bb7d1b0da10b",
-          "kind": "step",
-          "name": "script:1",
-          "phase": "run",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 364,
-              "column": 7,
-              "line": 22
-            },
-            "stop": {
-              "byte": 380,
-              "column": 23,
-              "line": 22
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cbaddde3fcbb101333b3",
-          "kind": "stage",
-          "name": "lint",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 10,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 25,
-              "column": 9,
-              "line": 3
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f037b62b0b4f5bee53f8",
-          "kind": "call",
-          "name": "${REGISTRY_DOCKER_URL}/library/golang:1.26",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 45,
-              "column": 10,
-              "line": 6
-            },
-            "stop": {
-              "byte": 87,
-              "column": 52,
-              "line": 6
-            }
-          },
-          "unknown": {
-            "detail": "${REGISTRY_DOCKER_URL}/library/golang:1.26",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f749841f2579daaf299b",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 380,
-              "column": 23,
-              "line": 22
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:4ebe80b6c14ff11688bd62d433693796c7337231d33ea67af5e805bf413b451e",
-      "path": "gitlab/stackvista/stackstate-receiver-go-client/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:844c63efd09104cab6e92244a62ff0fe35cffce803ccf5eeca0980af0134a060",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:7c1290994ed95166e8ed0d00924acce98a5f3414e7fa75098f333e4958cab680",
+    "sources": [
+      {
+        "digest": "sha256:4ebe80b6c14ff11688bd62d433693796c7337231d33ea67af5e805bf413b451e",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -861,26 +97,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 20,
+    "nodes": 17,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

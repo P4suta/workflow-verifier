@@ -1,420 +1,86 @@
 {
+  "analysis_digest": "sha256:c250e49726f7e3b59aa573f10daa4a739a43996bb6d590400d2e6ac28708fee2",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Unbound_build_source_commit"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [],
-  "digest": "sha256:da541f0ffdfafa995aa8355feddbd66476921244454ef2ede60ba6b75c718057",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_05809deedcb7d57bdeca",
-          "id": "wv_27fe5d41d5404289c4e3",
-          "kind": "call",
-          "label": null,
-          "to": "wv_75684a471d15082c7f94"
-        },
-        {
-          "condition": true,
-          "from": "wv_05809deedcb7d57bdeca",
-          "id": "wv_4b85f86343526c3a28ea",
-          "kind": "control",
-          "label": null,
-          "to": "wv_75684a471d15082c7f94"
-        },
-        {
-          "condition": true,
-          "from": "wv_d22662ab24ac9c021a35",
-          "id": "wv_54dc48b8afa1c466f042",
-          "kind": "control",
-          "label": null,
-          "to": "wv_05809deedcb7d57bdeca"
-        },
-        {
-          "condition": true,
-          "from": "wv_9af5c367e1cdfc3ed9fa",
-          "id": "wv_595cbad1c71b95950e88",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_1c064af5916ad4df6d55"
-        },
-        {
-          "condition": true,
-          "from": "wv_232e2954643fa4bdb860",
-          "id": "wv_65d9ce9c00720fa0ab11",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_d22662ab24ac9c021a35"
-        },
-        {
-          "condition": true,
-          "from": "wv_3464621d5ac5ecda3899",
-          "id": "wv_7d3d622d25a2519bfe2f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5d9d2dd1dea62ae0c297"
-        },
-        {
-          "condition": true,
-          "from": "wv_5d9d2dd1dea62ae0c297",
-          "id": "wv_a2f38d3608f2b371c810",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9af5c367e1cdfc3ed9fa"
-        },
-        {
-          "condition": true,
-          "from": "wv_1c064af5916ad4df6d55",
-          "id": "wv_b00d005c1098ffdaa39a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_232e2954643fa4bdb860"
-        }
-      ],
-      "entrypoints": [
-        "wv_3464621d5ac5ecda3899"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_05809deedcb7d57bdeca",
-          "kind": "job",
-          "name": "update_webinstaller",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 75,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "2"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1c064af5916ad4df6d55",
-          "kind": "stage",
-          "name": "build",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 75,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "3"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_232e2954643fa4bdb860",
-          "kind": "stage",
-          "name": "deploy",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 75,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3464621d5ac5ecda3899",
-          "kind": "workflow",
-          "name": "GitLab pipeline",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 75,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "0"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5d9d2dd1dea62ae0c297",
-          "kind": "stage",
-          "name": ".post",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 75,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_75684a471d15082c7f94",
-          "kind": "call",
-          "name": "child:CalyxOS/calyxos-webinstall",
-          "phase": "compile",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 32,
-              "column": 12,
-              "line": 2
-            },
-            "stop": {
-              "byte": 58,
-              "column": 38,
-              "line": 2
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "1"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9af5c367e1cdfc3ed9fa",
-          "kind": "stage",
-          "name": ".pre",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 75,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "order": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "4"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d22662ab24ac9c021a35",
-          "kind": "stage",
-          "name": "test",
-          "phase": "plan",
-          "provider": "gitlab",
-          "span": {
-            "file": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 75,
-              "column": 9,
-              "line": 4
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "gitlab",
-      "source": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:e50843199c3db141adffb059891b69ae4eac49551c230edec45783fdd6f95a52",
-      "path": "gitlab/calyxos/fastboot.js/.gitlab-ci.yml"
-    }
-  ],
+  "digest": "sha256:9926e34faee5376401c789e51c3911726a6e666d736bc4df0a01851e32679140",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:febd92671caea12c1c68705e3ea9d1a98b21d17f8269f31200714f6b9f117b75",
+    "sources": [
+      {
+        "digest": "sha256:e50843199c3db141adffb059891b69ae4eac49551c230edec45783fdd6f95a52",
+        "id": 0,
+        "path": ".gitlab-ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
@@ -425,26 +91,32 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "gitlab-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 0,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 8,
+    "nodes": 8,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 0
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

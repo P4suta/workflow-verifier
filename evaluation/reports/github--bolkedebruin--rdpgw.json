@@ -1,7 +1,19 @@
 {
+  "analysis_digest": "sha256:f846e5930d5ffc66cb9da9c5f4d0da3f75de98f06e574aacd2af753eb9f959c2",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v7",
+      "Incomplete.Unresolved_dependency: actions/setup-go@v7",
+      "Incomplete.Unresolved_dependency: github/codeql-action/analyze@v4",
+      "Incomplete.Unresolved_dependency: github/codeql-action/autobuild@v4",
+      "Incomplete.Unresolved_dependency: github/codeql-action/init@v4"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v7"
@@ -9,9 +21,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+          "source": 0,
           "start": {
             "byte": 1206,
             "column": 13,
@@ -24,12 +35,12 @@
           }
         }
       },
-      "id": "diag_b93ea44fcb7f82f51b90",
+      "id": "diag_bc4495556ae9b848c790923947a908f4dd62acc93b94ac3513b183d9fec75568",
       "message": "dependency is not pinned to immutable content: actions/checkout@v7",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+        "source": 0,
         "start": {
           "byte": 1206,
           "column": 13,
@@ -44,9 +55,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_383be2541d38e577765a",
+          "node": 9,
           "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+            "source": 0,
             "start": {
               "byte": 1206,
               "column": 13,
@@ -62,7 +73,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-go@v7"
@@ -70,9 +80,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+          "source": 0,
           "start": {
             "byte": 1262,
             "column": 13,
@@ -85,12 +94,12 @@
           }
         }
       },
-      "id": "diag_244b3541b23e364e5b96",
+      "id": "diag_0faa0a577039f798b39d066658b3124b2c4d7f15d71055041a56a2f672b9609e",
       "message": "dependency is not pinned to immutable content: actions/setup-go@v7",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+        "source": 0,
         "start": {
           "byte": 1262,
           "column": 13,
@@ -105,9 +114,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_4d15510ca3509f9b592e",
+          "node": 11,
           "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+            "source": 0,
             "start": {
               "byte": 1262,
               "column": 13,
@@ -123,7 +132,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = github/codeql-action/init@v4"
@@ -131,9 +139,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+          "source": 0,
           "start": {
             "byte": 1418,
             "column": 13,
@@ -146,12 +153,12 @@
           }
         }
       },
-      "id": "diag_17e3e4caf2b4f8897805",
+      "id": "diag_80af11022494f13f310352016920a22f2c3b640723f9036d8a86456faa2bacfb",
       "message": "dependency is not pinned to immutable content: github/codeql-action/init@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+        "source": 0,
         "start": {
           "byte": 1418,
           "column": 13,
@@ -166,9 +173,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_2b41c62fd0e20d1f2158",
+          "node": 13,
           "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+            "source": 0,
             "start": {
               "byte": 1418,
               "column": 13,
@@ -184,7 +191,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = github/codeql-action/autobuild@v4"
@@ -192,9 +198,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+          "source": 0,
           "start": {
             "byte": 2275,
             "column": 13,
@@ -207,12 +212,12 @@
           }
         }
       },
-      "id": "diag_f937315094aedc001e40",
+      "id": "diag_d2bc4c3f96bcdb950bdf3f07816cd98837bb9432b3f76295ae967d5f5a70c2df",
       "message": "dependency is not pinned to immutable content: github/codeql-action/autobuild@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+        "source": 0,
         "start": {
           "byte": 2275,
           "column": 13,
@@ -227,9 +232,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_494e4993697683805801",
+          "node": 16,
           "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+            "source": 0,
             "start": {
               "byte": 2275,
               "column": 13,
@@ -245,7 +250,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = github/codeql-action/analyze@v4"
@@ -253,9 +257,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+          "source": 0,
           "start": {
             "byte": 2873,
             "column": 13,
@@ -268,12 +271,12 @@
           }
         }
       },
-      "id": "diag_57e38ed1b9d09cf0c6c6",
+      "id": "diag_d41fc35cded16b710df02d2b46e2eb212ee7359e34635aee1f31dd0d049e0a19",
       "message": "dependency is not pinned to immutable content: github/codeql-action/analyze@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+        "source": 0,
         "start": {
           "byte": 2873,
           "column": 13,
@@ -288,9 +291,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_c18a138d80ade830d19e",
+          "node": 18,
           "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
+            "source": 0,
             "start": {
               "byte": 2873,
               "column": 13,
@@ -306,890 +309,60 @@
       ]
     }
   ],
-  "digest": "sha256:050205e978b304d2d543c109938e1a07a5e5afd5d6db100a4e8ff8f94f7d2349",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_f3f6db2934fef9ae43a9",
-          "id": "wv_0504572b6a1653b51157",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c12241104503838e3ded"
-        },
-        {
-          "condition": true,
-          "from": "wv_f22727409ba9da2d6859",
-          "id": "wv_055dcf6378239fc05493",
-          "kind": "call",
-          "label": null,
-          "to": "wv_2b41c62fd0e20d1f2158"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e7f30c451f49dd676c8",
-          "id": "wv_0740468e669ef00f14b6",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5676f1c9ac19d408b93a"
-        },
-        {
-          "condition": true,
-          "from": "wv_5676f1c9ac19d408b93a",
-          "id": "wv_1f0fe0b6a1bb442a1ffd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4d15510ca3509f9b592e"
-        },
-        {
-          "condition": true,
-          "from": "wv_05aef641ea487a7acb8d",
-          "id": "wv_21d855905b3ecded7fac",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_32f99525275734da5b6f"
-        },
-        {
-          "condition": true,
-          "from": "wv_32f99525275734da5b6f",
-          "id": "wv_2ef23528a0db85b359bd",
-          "kind": "call",
-          "label": null,
-          "to": "wv_c18a138d80ade830d19e"
-        },
-        {
-          "condition": true,
-          "from": "wv_30fc3be9d9de51e90745",
-          "id": "wv_3078421ee44e325eb559",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_5676f1c9ac19d408b93a"
-        },
-        {
-          "condition": true,
-          "from": "wv_16247b2900493d1cf895",
-          "id": "wv_3ecc3a3c224efcdef169",
-          "kind": "data",
-          "label": "language",
-          "to": "wv_2e7f30c451f49dd676c8"
-        },
-        {
-          "condition": true,
-          "from": "wv_267cf138c3aa2fda822c",
-          "id": "wv_4b92496fcd9c6ed7df40",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_30fc3be9d9de51e90745"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e7f30c451f49dd676c8",
-          "id": "wv_4c7de0fb83ee3c234d66",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f22727409ba9da2d6859"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e7f30c451f49dd676c8",
-          "id": "wv_4cead283aaaf97261d59",
-          "kind": "control",
-          "label": null,
-          "to": "wv_267cf138c3aa2fda822c"
-        },
-        {
-          "condition": true,
-          "from": "wv_c12241104503838e3ded",
-          "id": "wv_53ad3e2d7d9afc8af463",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2e7f30c451f49dd676c8"
-        },
-        {
-          "condition": true,
-          "from": "wv_30fc3be9d9de51e90745",
-          "id": "wv_558eea01fc3fc251886b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_383be2541d38e577765a"
-        },
-        {
-          "condition": true,
-          "from": "wv_f22727409ba9da2d6859",
-          "id": "wv_60e581e86690ee699e5f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2b41c62fd0e20d1f2158"
-        },
-        {
-          "condition": true,
-          "from": "wv_267cf138c3aa2fda822c",
-          "id": "wv_6a129005eaaf20087c31",
-          "kind": "control",
-          "label": null,
-          "to": "wv_2f46caf359d30b59f8d7"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e7f30c451f49dd676c8",
-          "id": "wv_6d6078f5e27a1160b480",
-          "kind": "control",
-          "label": null,
-          "to": "wv_30fc3be9d9de51e90745"
-        },
-        {
-          "condition": true,
-          "from": "wv_5676f1c9ac19d408b93a",
-          "id": "wv_70a17bd1b7b311d02ae3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_f22727409ba9da2d6859"
-        },
-        {
-          "condition": true,
-          "from": "wv_05aef641ea487a7acb8d",
-          "id": "wv_89ee56759e6a3db92292",
-          "kind": "control",
-          "label": null,
-          "to": "wv_494e4993697683805801"
-        },
-        {
-          "condition": true,
-          "from": "wv_5676f1c9ac19d408b93a",
-          "id": "wv_8f7036a9e7d26b7b7ce6",
-          "kind": "call",
-          "label": null,
-          "to": "wv_4d15510ca3509f9b592e"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e7f30c451f49dd676c8",
-          "id": "wv_9017e5ceb9332c46f83a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_05aef641ea487a7acb8d"
-        },
-        {
-          "condition": true,
-          "from": "wv_05aef641ea487a7acb8d",
-          "id": "wv_9dc17a9fa0536a3a5b7e",
-          "kind": "call",
-          "label": null,
-          "to": "wv_494e4993697683805801"
-        },
-        {
-          "condition": true,
-          "from": "wv_3852972f86cb5ea90725",
-          "id": "wv_b3bf5478a925584fa761",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c12241104503838e3ded"
-        },
-        {
-          "condition": true,
-          "from": "wv_f22727409ba9da2d6859",
-          "id": "wv_b7bc3ee8f225adcb5120",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_05aef641ea487a7acb8d"
-        },
-        {
-          "condition": true,
-          "from": "wv_2e7f30c451f49dd676c8",
-          "id": "wv_bb42353e5f674bff90ef",
-          "kind": "control",
-          "label": null,
-          "to": "wv_32f99525275734da5b6f"
-        },
-        {
-          "condition": true,
-          "from": "wv_bbf942c8365fd349e22b",
-          "id": "wv_bfc0796b15ac8ae560c4",
-          "kind": "data",
-          "label": "matrix.language",
-          "to": "wv_2b41c62fd0e20d1f2158"
-        },
-        {
-          "condition": true,
-          "from": "wv_2bdb7d562444afd3401a",
-          "id": "wv_c87ae1317234486aafdf",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c12241104503838e3ded"
-        },
-        {
-          "condition": true,
-          "from": "wv_32f99525275734da5b6f",
-          "id": "wv_d6ebda065865e4168167",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c18a138d80ade830d19e"
-        },
-        {
-          "condition": true,
-          "from": "wv_30fc3be9d9de51e90745",
-          "id": "wv_e4b8f0a78e69d6b5d530",
-          "kind": "call",
-          "label": null,
-          "to": "wv_383be2541d38e577765a"
-        }
-      ],
-      "entrypoints": [
-        "wv_c12241104503838e3ded"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_05aef641ea487a7acb8d",
-          "kind": "step",
-          "name": "Autobuild",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 2247,
-              "column": 7,
-              "line": 66
-            },
-            "stop": {
-              "byte": 2308,
-              "column": 46,
-              "line": 67
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "go"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_16247b2900493d1cf895",
-          "kind": "parameter",
-          "name": "matrix.language",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 864,
-              "column": 9,
-              "line": 35
-            },
-            "stop": {
-              "byte": 882,
-              "column": 27,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_267cf138c3aa2fda822c",
-          "kind": "step",
-          "name": "Install pam-devel",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1091,
-              "column": 7,
-              "line": 40
-            },
-            "stop": {
-              "byte": 1160,
-              "column": 46,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2b41c62fd0e20d1f2158",
-          "kind": "call",
-          "name": "github/codeql-action/init@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1418,
-              "column": 13,
-              "line": 53
-            },
-            "stop": {
-              "byte": 1446,
-              "column": 41,
-              "line": 53
-            }
-          },
-          "unknown": {
-            "detail": "github/codeql-action/init@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2bdb7d562444afd3401a",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 511,
-              "column": 3,
-              "line": 17
-            },
-            "stop": {
-              "byte": 615,
-              "column": 27,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "repository_write",
-            "token_read",
-            "token_write"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2e7f30c451f49dd676c8",
-          "kind": "job",
-          "name": "analyze",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 663,
-              "column": 3,
-              "line": 24
-            },
-            "stop": {
-              "byte": 2904,
-              "column": 44,
-              "line": 80
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-                    "start": {
-                      "byte": 1126,
-                      "column": 12,
-                      "line": 41
-                    },
-                    "stop": {
-                      "byte": 1160,
-                      "column": 46,
-                      "line": 41
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "sudo apt-get -y install libpam-dev"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_2f46caf359d30b59f8d7",
-          "kind": "command",
-          "name": "sudo apt-get -y install libpam-dev",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1126,
-              "column": 12,
-              "line": 41
-            },
-            "stop": {
-              "byte": 1160,
-              "column": 46,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_30fc3be9d9de51e90745",
-          "kind": "step",
-          "name": "Checkout repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1168,
-              "column": 7,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1225,
-              "column": 32,
-              "line": 44
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_32f99525275734da5b6f",
-          "kind": "step",
-          "name": "Perform CodeQL Analysis",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 2831,
-              "column": 7,
-              "line": 79
-            },
-            "stop": {
-              "byte": 2904,
-              "column": 44,
-              "line": 80
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_383be2541d38e577765a",
-          "kind": "call",
-          "name": "actions/checkout@v7",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1206,
-              "column": 13,
-              "line": 44
-            },
-            "stop": {
-              "byte": 1225,
-              "column": 32,
-              "line": 44
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v7",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3852972f86cb5ea90725",
-          "kind": "trigger",
-          "name": "schedule",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 618,
-              "column": 3,
-              "line": 20
-            },
-            "stop": {
-              "byte": 653,
-              "column": 26,
-              "line": 21
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_494e4993697683805801",
-          "kind": "call",
-          "name": "github/codeql-action/autobuild@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 2275,
-              "column": 13,
-              "line": 67
-            },
-            "stop": {
-              "byte": 2308,
-              "column": 46,
-              "line": 67
-            }
-          },
-          "unknown": {
-            "detail": "github/codeql-action/autobuild@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4d15510ca3509f9b592e",
-          "kind": "call",
-          "name": "actions/setup-go@v7",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1262,
-              "column": 13,
-              "line": 47
-            },
-            "stop": {
-              "byte": 1281,
-              "column": 32,
-              "line": 47
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-go@v7",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5676f1c9ac19d408b93a",
-          "kind": "step",
-          "name": "Install Go",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1233,
-              "column": 7,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1325,
-              "column": 32,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.language",
-                  "span": {
-                    "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-                    "start": {
-                      "byte": 1482,
-                      "column": 24,
-                      "line": 55
-                    },
-                    "stop": {
-                      "byte": 1497,
-                      "column": 39,
-                      "line": 55
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.language"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_bbf942c8365fd349e22b",
-          "kind": "resource",
-          "name": "matrix.language",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1482,
-              "column": 24,
-              "line": 55
-            },
-            "stop": {
-              "byte": 1497,
-              "column": 39,
-              "line": 55
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c12241104503838e3ded",
-          "kind": "workflow",
-          "name": "CodeQL",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 454,
-              "column": 1,
-              "line": 12
-            },
-            "stop": {
-              "byte": 2904,
-              "column": 44,
-              "line": 80
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c18a138d80ade830d19e",
-          "kind": "call",
-          "name": "github/codeql-action/analyze@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 2873,
-              "column": 13,
-              "line": 80
-            },
-            "stop": {
-              "byte": 2904,
-              "column": 44,
-              "line": 80
-            }
-          },
-          "unknown": {
-            "detail": "github/codeql-action/analyze@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f22727409ba9da2d6859",
-          "kind": "step",
-          "name": "Initialize CodeQL",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 1382,
-              "column": 7,
-              "line": 52
-            },
-            "stop": {
-              "byte": 1500,
-              "column": 42,
-              "line": 55
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f3f6db2934fef9ae43a9",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml",
-            "start": {
-              "byte": 476,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 508,
-              "column": 27,
-              "line": 16
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:d1a780fb720f46fa1b5322c5ac61b8c791c6a1dc0f66a294619078f4be04a1fb",
-      "path": "github/bolkedebruin/rdpgw/.github/workflows/codeql-analysis.yml"
-    }
-  ],
+  "digest": "sha256:14e639d5c7afc2650dbdf20686f6cdac02a4ac3f3e63e2c4b2b85dce26c91780",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:e9e386a99c2f54d61209dbf24da4dfca26ee5cfd32b7caf73e5ad49a94547ad0",
+    "sources": [
+      {
+        "digest": "sha256:d1a780fb720f46fa1b5322c5ac61b8c791c6a1dc0f66a294619078f4be04a1fb",
+        "id": 0,
+        "path": ".github/workflows/codeql-analysis.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
@@ -1216,15 +389,12 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -1247,40 +417,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 5,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "edges": 28,
+    "nodes": 19,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 2,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

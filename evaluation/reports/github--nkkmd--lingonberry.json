@@ -1,7 +1,18 @@
 {
+  "analysis_digest": "sha256:7e8a0de241f4fd0f38b3c819bd391a25e17b5ebe734a283a5c6b9b7b426650a0",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: Swatinem/rust-cache@v2",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/upload-artifact@v4",
+      "Incomplete.Unresolved_dependency: dtolnay/rust-toolchain@stable"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +20,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+          "source": 0,
           "start": {
             "byte": 587,
             "column": 15,
@@ -24,12 +34,12 @@
           }
         }
       },
-      "id": "diag_960527ccf995c0389759",
+      "id": "diag_12f2dacf519631456c74bef199db00697cca3ab43e3bafa41f3c20420c5b5e41",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+        "source": 0,
         "start": {
           "byte": 587,
           "column": 15,
@@ -44,9 +54,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_34fc1c6494dd770b00bf",
+          "node": 5,
           "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+            "source": 0,
             "start": {
               "byte": 587,
               "column": 15,
@@ -62,7 +72,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -70,9 +79,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+          "source": 0,
           "start": {
             "byte": 769,
             "column": 15,
@@ -85,12 +93,12 @@
           }
         }
       },
-      "id": "diag_cfa3c1cf9ac512e37f88",
+      "id": "diag_da57c636ba37f8c3e8528bdb51e45b799305eb8469df9295396e6d6b9646aa62",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+        "source": 0,
         "start": {
           "byte": 769,
           "column": 15,
@@ -105,9 +113,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_573347cfbaafe09556a1",
+          "node": 9,
           "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+            "source": 0,
             "start": {
               "byte": 769,
               "column": 15,
@@ -123,7 +131,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = dtolnay/rust-toolchain@stable"
@@ -131,9 +138,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+          "source": 0,
           "start": {
             "byte": 890,
             "column": 15,
@@ -146,12 +152,12 @@
           }
         }
       },
-      "id": "diag_c2a82dac4cc1266f6e40",
+      "id": "diag_276439cd1544bdec3ee6d29e1d3dcb785318a38f810d8b3bc5c5df5010447678",
       "message": "dependency is not pinned to immutable content: dtolnay/rust-toolchain@stable",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+        "source": 0,
         "start": {
           "byte": 890,
           "column": 15,
@@ -166,9 +172,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_6a5a84f5690c9e4d02e3",
+          "node": 12,
           "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+            "source": 0,
             "start": {
               "byte": 890,
               "column": 15,
@@ -184,7 +190,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = Swatinem/rust-cache@v2"
@@ -192,9 +197,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+          "source": 0,
           "start": {
             "byte": 934,
             "column": 15,
@@ -207,12 +211,12 @@
           }
         }
       },
-      "id": "diag_c2daf98c69ab7fd50ac1",
+      "id": "diag_5d91f0d2ed3d30373288d671d02a1044ca0a64be8b79b021e0b2d2dfce73ce38",
       "message": "dependency is not pinned to immutable content: Swatinem/rust-cache@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+        "source": 0,
         "start": {
           "byte": 934,
           "column": 15,
@@ -227,9 +231,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_f968f969016c60dfc351",
+          "node": 14,
           "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+            "source": 0,
             "start": {
               "byte": 934,
               "column": 15,
@@ -245,7 +249,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v4"
@@ -253,9 +256,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+          "source": 0,
           "start": {
             "byte": 2499,
             "column": 15,
@@ -268,12 +270,12 @@
           }
         }
       },
-      "id": "diag_6208a75dd2af96448cdf",
+      "id": "diag_f17e464f8fdbb9f60ec9189064ddc3aea57be527321b1761d7157304cb2a08ca",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+        "source": 0,
         "start": {
           "byte": 2499,
           "column": 15,
@@ -288,9 +290,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_aec5efc4412c4d0c166e",
+          "node": 42,
           "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
+            "source": 0,
             "start": {
               "byte": 2499,
               "column": 15,
@@ -306,2475 +308,65 @@
       ]
     }
   ],
-  "digest": "sha256:d2f54d043554e42353d339d7c9703bf6cdf6a36cd8618c4e83aa3cfef0016b31",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_261ff1a823ea4723fb5e",
-          "id": "wv_05815eaf095ea16e2548",
-          "kind": "data",
-          "label": "github.workspace",
-          "to": "wv_a9e683cc3a20c0dc94e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_cae16caa195193d801c0",
-          "id": "wv_062357b71e043be73315",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_84099e969b8d03acd8aa"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_07779983df86c1f78535",
-          "kind": "control",
-          "label": null,
-          "to": "wv_e000133ee023b9d3660d"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_08969341b36fcd5ff976",
-          "kind": "control",
-          "label": null,
-          "to": "wv_dfcd83aada79a0a52df9"
-        },
-        {
-          "condition": true,
-          "from": "wv_cae16caa195193d801c0",
-          "id": "wv_10434c3c6c520df9b7ff",
-          "kind": "call",
-          "label": null,
-          "to": "wv_573347cfbaafe09556a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_009f2ad465c11c11a78e",
-          "id": "wv_1308fd3b23af123f19c5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b0b530a60b276bcd3215"
-        },
-        {
-          "condition": true,
-          "from": "wv_e000133ee023b9d3660d",
-          "id": "wv_13f264c36be36678744c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_bd2b4c8cb566b7722bbe"
-        },
-        {
-          "condition": true,
-          "from": "wv_c0e2eb9b4ec39a825007",
-          "id": "wv_19a56dfb052c592d7d4f",
-          "kind": "call",
-          "label": null,
-          "to": "wv_34fc1c6494dd770b00bf"
-        },
-        {
-          "condition": true,
-          "from": "wv_b6b3f4890559a3bff8cb",
-          "id": "wv_1b219f1b0b7ebed16831",
-          "kind": "data",
-          "label": "EVIDENCE_DIR",
-          "to": "wv_bd2b4c8cb566b7722bbe"
-        },
-        {
-          "condition": true,
-          "from": "wv_cae16caa195193d801c0",
-          "id": "wv_2632799e88dbb85effb8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_573347cfbaafe09556a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_b0b530a60b276bcd3215",
-          "id": "wv_2cb8b48c535af2fb00b4",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_e000133ee023b9d3660d"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_2e50b93dec6836ee62ee",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c0e2eb9b4ec39a825007"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_349ca7abdb64b2a43c93",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cae16caa195193d801c0"
-        },
-        {
-          "condition": true,
-          "from": "wv_009f2ad465c11c11a78e",
-          "id": "wv_386881507e54564b1b0f",
-          "kind": "call",
-          "label": null,
-          "to": "wv_f968f969016c60dfc351"
-        },
-        {
-          "condition": true,
-          "from": "wv_0fe7a55240146f5add6b",
-          "id": "wv_3afc4c829f74d8756893",
-          "kind": "data",
-          "label": "EVIDENCE_DIR",
-          "to": "wv_bd2b4c8cb566b7722bbe"
-        },
-        {
-          "condition": true,
-          "from": "wv_b0b530a60b276bcd3215",
-          "id": "wv_433fbe03eb523528782d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_deafd0161de38ba02088"
-        },
-        {
-          "condition": true,
-          "from": "wv_3a650940b28b0d25cc49",
-          "id": "wv_4722e918db482eb1b95b",
-          "kind": "data",
-          "label": "runner.temp",
-          "to": "wv_0ce7f57d6e22612aaa2f"
-        },
-        {
-          "condition": true,
-          "from": "wv_fd3677300c44589562ed",
-          "id": "wv_4aee15aa02db065b2a31",
-          "kind": "data",
-          "label": "github.run_number",
-          "to": "wv_aec5efc4412c4d0c166e"
-        },
-        {
-          "condition": true,
-          "from": "wv_86e3d6c1c717b90feda4",
-          "id": "wv_52027c57c13a46b2a78f",
-          "kind": "data",
-          "label": "runner.temp",
-          "to": "wv_b6b3f4890559a3bff8cb"
-        },
-        {
-          "condition": true,
-          "from": "wv_8c2461c2855fdba97055",
-          "id": "wv_5337ab517d5de5118e8e",
-          "kind": "data",
-          "label": "CRASH_MATRIX_CYCLES",
-          "to": "wv_deafd0161de38ba02088"
-        },
-        {
-          "condition": true,
-          "from": "wv_2386ed984bd89bb9b7d5",
-          "id": "wv_553af5d786c7f908af46",
-          "kind": "data",
-          "label": "github.workspace",
-          "to": "wv_6f39585b1185a7230094"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "always()"
-          },
-          "from": "wv_677e6a7df0a2128de272",
-          "id": "wv_5fb51cfe2d558bfc741b",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_fcbfaddce031a09a176b"
-        },
-        {
-          "condition": true,
-          "from": "wv_da534d73b8956d850cef",
-          "id": "wv_64313b9e7171d62e44cb",
-          "kind": "data",
-          "label": "CANDIDATE_SHA",
-          "to": "wv_deafd0161de38ba02088"
-        },
-        {
-          "condition": true,
-          "from": "wv_0ce7f57d6e22612aaa2f",
-          "id": "wv_6521e5157b1da90babb3",
-          "kind": "data",
-          "label": "CRASH_MATRIX_OUT",
-          "to": "wv_f56de77d03822a0f9020"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_660f175d4126d4f83bbe",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b0b530a60b276bcd3215"
-        },
-        {
-          "condition": true,
-          "from": "wv_009f2ad465c11c11a78e",
-          "id": "wv_681921674840abeeca89",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f968f969016c60dfc351"
-        },
-        {
-          "condition": true,
-          "from": "wv_59d5dff24ad336c1c0e0",
-          "id": "wv_6aaf4f593e2f5c89d6ae",
-          "kind": "data",
-          "label": "env.ACTIVE_CANDIDATE_SHA",
-          "to": "wv_573347cfbaafe09556a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_84099e969b8d03acd8aa",
-          "id": "wv_6b21e28adcddf627cabb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6a5a84f5690c9e4d02e3"
-        },
-        {
-          "condition": true,
-          "from": "wv_a9e683cc3a20c0dc94e6",
-          "id": "wv_6e433da253001625f0ea",
-          "kind": "data",
-          "label": "CRASH_MATRIX_REPO_ROOT",
-          "to": "wv_deafd0161de38ba02088"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_71f6d94694a4ea8e691a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_84099e969b8d03acd8aa"
-        },
-        {
-          "condition": true,
-          "from": "wv_3d7333acb8ba2ca5d476",
-          "id": "wv_724dc94db5e10f8a028a",
-          "kind": "data",
-          "label": "find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l",
-          "to": "wv_bd2b4c8cb566b7722bbe"
-        },
-        {
-          "condition": true,
-          "from": "wv_b377745a60ed79f46430",
-          "id": "wv_790c964bd5188669835d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ff63e39b9bed1fd1d218"
-        },
-        {
-          "condition": true,
-          "from": "wv_f13df4d3c5a5f4549a85",
-          "id": "wv_7efd8f540aadcf70ae8a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b377745a60ed79f46430"
-        },
-        {
-          "condition": true,
-          "from": "wv_b76be38ba18a4013bb8f",
-          "id": "wv_7feb6b3043caaa38ac09",
-          "kind": "data",
-          "label": "ACTIVE_CANDIDATE_SHA",
-          "to": "wv_bd2b4c8cb566b7722bbe"
-        },
-        {
-          "condition": true,
-          "from": "wv_86273528d40a7fb6162c",
-          "id": "wv_863528a205229d808f5d",
-          "kind": "data",
-          "label": "github.sha",
-          "to": "wv_34fc1c6494dd770b00bf"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_92e070154f57c32a5ffe",
-          "kind": "control",
-          "label": null,
-          "to": "wv_677e6a7df0a2128de272"
-        },
-        {
-          "condition": true,
-          "from": "wv_84099e969b8d03acd8aa",
-          "id": "wv_96b314f1e9733f2da755",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_009f2ad465c11c11a78e"
-        },
-        {
-          "condition": true,
-          "from": "wv_c0e2eb9b4ec39a825007",
-          "id": "wv_96e0a92bf0cc3e7ea7a8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_34fc1c6494dd770b00bf"
-        },
-        {
-          "condition": true,
-          "from": "wv_ff63e39b9bed1fd1d218",
-          "id": "wv_982779f4c83363d1222d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_009f2ad465c11c11a78e"
-        },
-        {
-          "condition": true,
-          "from": "wv_ca6b7a823d1c5649fdb5",
-          "id": "wv_988b1b9d76ece3e0c0d2",
-          "kind": "data",
-          "label": "runner.temp",
-          "to": "wv_aec5efc4412c4d0c166e"
-        },
-        {
-          "condition": true,
-          "from": "wv_eff15452f8f7bcfb9f17",
-          "id": "wv_9e96bab55f945c93160e",
-          "kind": "data",
-          "label": "env.ACTIVE_CANDIDATE_SHA",
-          "to": "wv_da534d73b8956d850cef"
-        },
-        {
-          "condition": true,
-          "from": "wv_dfcd83aada79a0a52df9",
-          "id": "wv_ab87027df1d5e163ebc4",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_677e6a7df0a2128de272"
-        },
-        {
-          "condition": true,
-          "from": "wv_fcbfaddce031a09a176b",
-          "id": "wv_b6db817f687429165fc5",
-          "kind": "call",
-          "label": null,
-          "to": "wv_aec5efc4412c4d0c166e"
-        },
-        {
-          "condition": true,
-          "from": "wv_fcbfaddce031a09a176b",
-          "id": "wv_b7a02b198112ca192e9f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_aec5efc4412c4d0c166e"
-        },
-        {
-          "condition": true,
-          "from": "wv_1a387bbf31a40482e755",
-          "id": "wv_bdb3bc15c5d0e19d647d",
-          "kind": "data",
-          "label": "EVIDENCE_DIR",
-          "to": "wv_bd2b4c8cb566b7722bbe"
-        },
-        {
-          "condition": true,
-          "from": "wv_c4390f2785405d0e2b9e",
-          "id": "wv_ca43f2bbd2c69686ebee",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b377745a60ed79f46430"
-        },
-        {
-          "condition": true,
-          "from": "wv_0762766c002293456752",
-          "id": "wv_cb0eec4388b9a0e9f256",
-          "kind": "data",
-          "label": "CRASH_MATRIX_OUT",
-          "to": "wv_deafd0161de38ba02088"
-        },
-        {
-          "condition": true,
-          "from": "wv_e000133ee023b9d3660d",
-          "id": "wv_d623461e938bf588cc3d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_dfcd83aada79a0a52df9"
-        },
-        {
-          "condition": true,
-          "from": "wv_57b580f5b4801fbb6c5a",
-          "id": "wv_d746b0a30c90688d90ea",
-          "kind": "data",
-          "label": "CANDIDATE_SHA",
-          "to": "wv_f56de77d03822a0f9020"
-        },
-        {
-          "condition": true,
-          "from": "wv_dfcd83aada79a0a52df9",
-          "id": "wv_dda6887fc27b65f79411",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f56de77d03822a0f9020"
-        },
-        {
-          "condition": true,
-          "from": "wv_84099e969b8d03acd8aa",
-          "id": "wv_ef6af422a4225f29796d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6a5a84f5690c9e4d02e3"
-        },
-        {
-          "condition": true,
-          "from": "wv_c0e2eb9b4ec39a825007",
-          "id": "wv_ef74c4d589720f8a3b1c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_cae16caa195193d801c0"
-        },
-        {
-          "condition": true,
-          "from": "wv_b2ed3565e8a0f2d2f2a5",
-          "id": "wv_f0b37df09aa35e52f5ee",
-          "kind": "data",
-          "label": "runner.temp",
-          "to": "wv_0762766c002293456752"
-        },
-        {
-          "condition": true,
-          "from": "wv_0d6f7529088bae4e9007",
-          "id": "wv_f34e28c9b4b491d6e241",
-          "kind": "data",
-          "label": "github.event.pull_request.head.sha",
-          "to": "wv_34fc1c6494dd770b00bf"
-        },
-        {
-          "condition": true,
-          "from": "wv_6f39585b1185a7230094",
-          "id": "wv_fbb6d7f12a4304426fda",
-          "kind": "data",
-          "label": "CRASH_MATRIX_REPO_ROOT",
-          "to": "wv_f56de77d03822a0f9020"
-        }
-      ],
-      "entrypoints": [
-        "wv_b377745a60ed79f46430"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_009f2ad465c11c11a78e",
-          "kind": "step",
-          "name": "step 4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 928,
-              "column": 9,
-              "line": 35
-            },
-            "stop": {
-              "byte": 1002,
-              "column": 32,
-              "line": 37
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CRASH_MATRIX_OUT"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0762766c002293456752",
-          "kind": "resource",
-          "name": "env:CRASH_MATRIX_OUT",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1226,
-              "column": 11,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1288,
-              "column": 73,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CRASH_MATRIX_OUT"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0ce7f57d6e22612aaa2f",
-          "kind": "resource",
-          "name": "env:CRASH_MATRIX_OUT",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2180,
-              "column": 11,
-              "line": 58
-            },
-            "stop": {
-              "byte": 2241,
-              "column": 72,
-              "line": 58
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event.pull_request.head.sha",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 640,
-                      "column": 20,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 674,
-                      "column": 54,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event.pull_request.head.sha"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0d6f7529088bae4e9007",
-          "kind": "resource",
-          "name": "github.event.pull_request.head.sha",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 640,
-              "column": 20,
-              "line": 27
-            },
-            "stop": {
-              "byte": 674,
-              "column": 54,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "EVIDENCE_DIR",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1753,
-                      "column": 251,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1765,
-                      "column": 263,
-                      "line": 49
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "EVIDENCE_DIR"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0fe7a55240146f5add6b",
-          "kind": "resource",
-          "name": "EVIDENCE_DIR",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1753,
-              "column": 251,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1765,
-              "column": 263,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "EVIDENCE_DIR",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1859,
-                      "column": 357,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1871,
-                      "column": 369,
-                      "line": 49
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "EVIDENCE_DIR"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1a387bbf31a40482e755",
-          "kind": "resource",
-          "name": "EVIDENCE_DIR",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1859,
-              "column": 357,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1871,
-              "column": 369,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.workspace",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 2140,
-                      "column": 39,
-                      "line": 57
-                    },
-                    "stop": {
-                      "byte": 2156,
-                      "column": 55,
-                      "line": 57
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.workspace"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2386ed984bd89bb9b7d5",
-          "kind": "resource",
-          "name": "github.workspace",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2140,
-              "column": 39,
-              "line": 57
-            },
-            "stop": {
-              "byte": 2156,
-              "column": 55,
-              "line": 57
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.workspace",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1186,
-                      "column": 39,
-                      "line": 42
-                    },
-                    "stop": {
-                      "byte": 1202,
-                      "column": 55,
-                      "line": 42
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.workspace"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_261ff1a823ea4723fb5e",
-          "kind": "resource",
-          "name": "github.workspace",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1186,
-              "column": 39,
-              "line": 42
-            },
-            "stop": {
-              "byte": 1202,
-              "column": 55,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_34fc1c6494dd770b00bf",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 587,
-              "column": 15,
-              "line": 25
-            },
-            "stop": {
-              "byte": 606,
-              "column": 34,
-              "line": 25
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "runner.temp",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 2202,
-                      "column": 33,
-                      "line": 58
-                    },
-                    "stop": {
-                      "byte": 2213,
-                      "column": 44,
-                      "line": 58
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "runner.temp"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3a650940b28b0d25cc49",
-          "kind": "resource",
-          "name": "runner.temp",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2202,
-              "column": 33,
-              "line": 58
-            },
-            "stop": {
-              "byte": 2213,
-              "column": 44,
-              "line": 58
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1788,
-                      "column": 286,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1844,
-                      "column": 342,
-                      "line": 49
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3d7333acb8ba2ca5d476",
-          "kind": "resource",
-          "name": "find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1788,
-              "column": 286,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1844,
-              "column": 342,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_573347cfbaafe09556a1",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 769,
-              "column": 15,
-              "line": 30
-            },
-            "stop": {
-              "byte": 788,
-              "column": 34,
-              "line": 30
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CANDIDATE_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_57b580f5b4801fbb6c5a",
-          "kind": "resource",
-          "name": "env:CANDIDATE_SHA",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2046,
-              "column": 11,
-              "line": 56
-            },
-            "stop": {
-              "byte": 2101,
-              "column": 66,
-              "line": 56
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "env.ACTIVE_CANDIDATE_SHA",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 822,
-                      "column": 20,
-                      "line": 32
-                    },
-                    "stop": {
-                      "byte": 846,
-                      "column": 44,
-                      "line": 32
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value env.ACTIVE_CANDIDATE_SHA",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "env.ACTIVE_CANDIDATE_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_59d5dff24ad336c1c0e0",
-          "kind": "resource",
-          "name": "env.ACTIVE_CANDIDATE_SHA",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 822,
-              "column": 20,
-              "line": 32
-            },
-            "stop": {
-              "byte": 846,
-              "column": 44,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 2476,
-                      "column": 13,
-                      "line": 65
-                    },
-                    "stop": {
-                      "byte": 2484,
-                      "column": 21,
-                      "line": 65
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "always()"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "always()"
-          },
-          "effects": [],
-          "id": "wv_677e6a7df0a2128de272",
-          "kind": "gate",
-          "name": "if:rehearse:Upload rehearsal evidence",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2476,
-              "column": 13,
-              "line": 65
-            },
-            "stop": {
-              "byte": 2484,
-              "column": 21,
-              "line": 65
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6a5a84f5690c9e4d02e3",
-          "kind": "call",
-          "name": "dtolnay/rust-toolchain@stable",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 890,
-              "column": 15,
-              "line": 34
-            },
-            "stop": {
-              "byte": 919,
-              "column": 44,
-              "line": 34
-            }
-          },
-          "unknown": {
-            "detail": "dtolnay/rust-toolchain@stable",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CRASH_MATRIX_REPO_ROOT"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6f39585b1185a7230094",
-          "kind": "resource",
-          "name": "env:CRASH_MATRIX_REPO_ROOT",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2112,
-              "column": 11,
-              "line": 57
-            },
-            "stop": {
-              "byte": 2169,
-              "column": 68,
-              "line": 57
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_84099e969b8d03acd8aa",
-          "kind": "step",
-          "name": "step 3",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 884,
-              "column": 9,
-              "line": 34
-            },
-            "stop": {
-              "byte": 919,
-              "column": 44,
-              "line": 34
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.sha",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 678,
-                      "column": 58,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 688,
-                      "column": 68,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.sha"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_86273528d40a7fb6162c",
-          "kind": "resource",
-          "name": "github.sha",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 678,
-              "column": 58,
-              "line": 27
-            },
-            "stop": {
-              "byte": 688,
-              "column": 68,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "runner.temp",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1462,
-                      "column": 29,
-                      "line": 48
-                    },
-                    "stop": {
-                      "byte": 1473,
-                      "column": 40,
-                      "line": 48
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "runner.temp"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_86e3d6c1c717b90feda4",
-          "kind": "resource",
-          "name": "runner.temp",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1462,
-              "column": 29,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1473,
-              "column": 40,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CRASH_MATRIX_CYCLES"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8c2461c2855fdba97055",
-          "kind": "resource",
-          "name": "env:CRASH_MATRIX_CYCLES",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1299,
-              "column": 11,
-              "line": 44
-            },
-            "stop": {
-              "byte": 1323,
-              "column": 35,
-              "line": 44
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CRASH_MATRIX_REPO_ROOT"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a9e683cc3a20c0dc94e6",
-          "kind": "resource",
-          "name": "env:CRASH_MATRIX_REPO_ROOT",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1158,
-              "column": 11,
-              "line": 42
-            },
-            "stop": {
-              "byte": 1215,
-              "column": 68,
-              "line": 42
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_aec5efc4412c4d0c166e",
-          "kind": "call",
-          "name": "actions/upload-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2499,
-              "column": 15,
-              "line": 66
-            },
-            "stop": {
-              "byte": 2525,
-              "column": 41,
-              "line": 66
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b0b530a60b276bcd3215",
-          "kind": "step",
-          "name": "Run two-cycle rehearsal",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1011,
-              "column": 9,
-              "line": 38
-            },
-            "stop": {
-              "byte": 1390,
-              "column": 67,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "runner.temp",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1248,
-                      "column": 33,
-                      "line": 43
-                    },
-                    "stop": {
-                      "byte": 1259,
-                      "column": 44,
-                      "line": 43
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "runner.temp"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b2ed3565e8a0f2d2f2a5",
-          "kind": "resource",
-          "name": "runner.temp",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1248,
-              "column": 33,
-              "line": 43
-            },
-            "stop": {
-              "byte": 1259,
-              "column": 44,
-              "line": 43
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b377745a60ed79f46430",
-          "kind": "workflow",
-          "name": "v1 crash matrix driver rehearsal",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 2703,
-              "column": 29,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "EVIDENCE_DIR"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b6b3f4890559a3bff8cb",
-          "kind": "resource",
-          "name": "env:EVIDENCE_DIR",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1444,
-              "column": 11,
-              "line": 48
-            },
-            "stop": {
-              "byte": 1502,
-              "column": 69,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "ACTIVE_CANDIDATE_SHA",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1540,
-                      "column": 38,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1560,
-                      "column": 58,
-                      "line": 49
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ACTIVE_CANDIDATE_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b76be38ba18a4013bb8f",
-          "kind": "resource",
-          "name": "ACTIVE_CANDIDATE_SHA",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1540,
-              "column": 38,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1560,
-              "column": 58,
-              "line": 49
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "ACTIVE_CANDIDATE_SHA",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1540,
-                      "column": 38,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1560,
-                      "column": 58,
-                      "line": 49
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "EVIDENCE_DIR",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1753,
-                      "column": 251,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1765,
-                      "column": 263,
-                      "line": 49
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "EVIDENCE_DIR",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1859,
-                      "column": 357,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1871,
-                      "column": 369,
-                      "line": 49
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1788,
-                      "column": 286,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1844,
-                      "column": 342,
-                      "line": 49
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1516,
-                      "column": 14,
-                      "line": 49
-                    },
-                    "stop": {
-                      "byte": 1932,
-                      "column": 58,
-                      "line": 52
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "ACTIVE_CANDIDATE_SHA",
-                  "EVIDENCE_DIR",
-                  "find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l",
-                  "jq -e --arg candidate \"$ACTIVE_CANDIDATE_SHA\" '.status == \"passed\" and .qualification == false and .qualifyingPass == false and .candidateCommit == $candidate and .cyclesRequired == 2 and .cyclesCompleted == 2 and .testsPerCycle == 4' \"$EVIDENCE_DIR/summary.json\"\ntest \"$(find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l)\" -eq 2\n(cd \"$EVIDENCE_DIR\" && sha256sum -c SHA256SUMS)\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_bd2b4c8cb566b7722bbe",
-          "kind": "command",
-          "name": "jq -e --arg candidate \"$ACTIVE_CANDIDATE_SHA\" '.status == \"passed\" and .qualification == false and .qualifyingPass == false and .candidateCommit == $candidate and .cyclesRequired == 2 and .cyclesCompleted == 2 and .testsPerCycle == 4' \"$EVIDENCE_DIR/summary.json\"\ntest \"$(find \"$EVIDENCE_DIR/cycles\" -name 'cycle-*.json' | wc -l)\" -eq 2\n(cd \"$EVIDENCE_DIR\" && sha256sum -c SHA256SUMS)\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1516,
-              "column": 14,
-              "line": 49
-            },
-            "stop": {
-              "byte": 1932,
-              "column": 58,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c0e2eb9b4ec39a825007",
-          "kind": "step",
-          "name": "Checkout harness",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 550,
-              "column": 9,
-              "line": 24
-            },
-            "stop": {
-              "byte": 715,
-              "column": 24,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c4390f2785405d0e2b9e",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 341,
-              "column": 3,
-              "line": 11
-            },
-            "stop": {
-              "byte": 359,
-              "column": 21,
-              "line": 11
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "runner.temp",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 2634,
-                      "column": 21,
-                      "line": 69
-                    },
-                    "stop": {
-                      "byte": 2645,
-                      "column": 32,
-                      "line": 69
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "runner.temp"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ca6b7a823d1c5649fdb5",
-          "kind": "resource",
-          "name": "runner.temp",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2634,
-              "column": 21,
-              "line": 69
-            },
-            "stop": {
-              "byte": 2645,
-              "column": 32,
-              "line": 69
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cae16caa195193d801c0",
-          "kind": "step",
-          "name": "Checkout exact candidate",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 724,
-              "column": 9,
-              "line": 29
-            },
-            "stop": {
-              "byte": 875,
-              "column": 26,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CANDIDATE_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_da534d73b8956d850cef",
-          "kind": "resource",
-          "name": "env:CANDIDATE_SHA",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1101,
-              "column": 11,
-              "line": 41
-            },
-            "stop": {
-              "byte": 1147,
-              "column": 57,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1337,
-                      "column": 14,
-                      "line": 45
-                    },
-                    "stop": {
-                      "byte": 1390,
-                      "column": 67,
-                      "line": 45
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "bash ../harness/scripts/run-v1-crash-matrix-driver.sh"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_deafd0161de38ba02088",
-          "kind": "command",
-          "name": "bash ../harness/scripts/run-v1-crash-matrix-driver.sh",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1337,
-              "column": 14,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1390,
-              "column": 67,
-              "line": 45
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dfcd83aada79a0a52df9",
-          "kind": "step",
-          "name": "Verify candidate mismatch fails closed",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1941,
-              "column": 9,
-              "line": 53
-            },
-            "stop": {
-              "byte": 2423,
-              "column": 13,
-              "line": 63
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_e000133ee023b9d3660d",
-          "kind": "step",
-          "name": "Verify evidence",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1399,
-              "column": 9,
-              "line": 46
-            },
-            "stop": {
-              "byte": 1932,
-              "column": 58,
-              "line": 52
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "env.ACTIVE_CANDIDATE_SHA",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 1120,
-                      "column": 30,
-                      "line": 41
-                    },
-                    "stop": {
-                      "byte": 1144,
-                      "column": 54,
-                      "line": 41
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": {
-                "reasons": [
-                  {
-                    "detail": "unresolved GitHub dataflow value env.ACTIVE_CANDIDATE_SHA",
-                    "kind": "dynamic_string"
-                  }
-                ],
-                "state": "unknown"
-              },
-              "type": "string",
-              "value": {
-                "constants": [
-                  "env.ACTIVE_CANDIDATE_SHA"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_eff15452f8f7bcfb9f17",
-          "kind": "resource",
-          "name": "env.ACTIVE_CANDIDATE_SHA",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 1120,
-              "column": 30,
-              "line": 41
-            },
-            "stop": {
-              "byte": 1144,
-              "column": 54,
-              "line": 41
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_f13df4d3c5a5f4549a85",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 46,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 338,
-              "column": 51,
-              "line": 10
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 2255,
-                      "column": 14,
-                      "line": 59
-                    },
-                    "stop": {
-                      "byte": 2423,
-                      "column": 13,
-                      "line": 63
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "if bash ../harness/scripts/run-v1-crash-matrix-driver.sh; then\n  echo 'candidate mismatch unexpectedly passed' >&2\n  exit 1\nfi\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f56de77d03822a0f9020",
-          "kind": "command",
-          "name": "if bash ../harness/scripts/run-v1-crash-matrix-driver.sh; then\n  echo 'candidate mismatch unexpectedly passed' >&2\n  exit 1\nfi\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2255,
-              "column": 14,
-              "line": 59
-            },
-            "stop": {
-              "byte": 2423,
-              "column": 13,
-              "line": 63
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "cache_read",
-            "cache_write"
-          ],
-          "condition": true,
-          "effects": [
-            "cache_publish"
-          ],
-          "id": "wv_f968f969016c60dfc351",
-          "kind": "call",
-          "name": "Swatinem/rust-cache@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 934,
-              "column": 15,
-              "line": 35
-            },
-            "stop": {
-              "byte": 956,
-              "column": 37,
-              "line": 35
-            }
-          },
-          "unknown": {
-            "detail": "Swatinem/rust-cache@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fcbfaddce031a09a176b",
-          "kind": "step",
-          "name": "Upload rehearsal evidence",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2432,
-              "column": 9,
-              "line": 64
-            },
-            "stop": {
-              "byte": 2703,
-              "column": 29,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.run_number",
-                  "span": {
-                    "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-                    "start": {
-                      "byte": 2593,
-                      "column": 54,
-                      "line": 68
-                    },
-                    "stop": {
-                      "byte": 2610,
-                      "column": 71,
-                      "line": 68
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.run_number"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fd3677300c44589562ed",
-          "kind": "resource",
-          "name": "github.run_number",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 2593,
-              "column": 54,
-              "line": 68
-            },
-            "stop": {
-              "byte": 2610,
-              "column": 71,
-              "line": 68
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "token_read"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ff63e39b9bed1fd1d218",
-          "kind": "job",
-          "name": "rehearse",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml",
-            "start": {
-              "byte": 471,
-              "column": 3,
-              "line": 20
-            },
-            "stop": {
-              "byte": 2703,
-              "column": 29,
-              "line": 70
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:50502bbc9a55fc3092efc2943097692fd608c9daa3f3cc834086b6fc08b355fd",
-      "path": "github/nkkmd/lingonberry/.github/workflows/v1-crash-matrix-driver-rehearsal.yml"
-    }
-  ],
+  "digest": "sha256:b70ac60d0c33b60604fb342f20251f80661f0e15e40057d3c40ddd706b6ff0f4",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:f61f07ccd88b826e3cf051f4c06d329e6c6c8b14ff20ed32e4525222a99e1b25",
+    "sources": [
+      {
+        "digest": "sha256:50502bbc9a55fc3092efc2943097692fd608c9daa3f3cc834086b6fc08b355fd",
+        "id": 0,
+        "path": ".github/workflows/v1-crash-matrix-driver-rehearsal.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
@@ -2785,8 +377,7 @@
           "kind": "dynamic_string"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -2801,40 +392,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 5,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 2
+    "edges": 56,
+    "nodes": 45,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 2,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

@@ -1,7 +1,15 @@
 {
+  "analysis_digest": "sha256:20c16c14ecdc692687545e6a4891a46159a43cb362ded9445cccd183006f1c4b",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -9,9 +17,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
+          "source": 0,
           "start": {
             "byte": 663,
             "column": 15,
@@ -24,12 +31,12 @@
           }
         }
       },
-      "id": "diag_651f3363916a0a0feb07",
+      "id": "diag_b2bc7924766692a63a07130182dbbe0e3701fc5231a0c57e571d82d3cf3e6360",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
+        "source": 0,
         "start": {
           "byte": 663,
           "column": 15,
@@ -44,9 +51,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_d2827ea4fd70803246bd",
+          "node": 6,
           "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
+            "source": 0,
             "start": {
               "byte": 663,
               "column": 15,
@@ -62,807 +69,70 @@
       ]
     }
   ],
-  "digest": "sha256:701f71ec10ea6343df7e192abdd1fbb08de1b55bd4fdc92c7d5cc387dbac2267",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_a3bbbbdd53514be03d21",
-          "id": "wv_00a05e951973020ba7d8",
-          "kind": "call",
-          "label": null,
-          "to": "wv_d2827ea4fd70803246bd"
-        },
-        {
-          "condition": true,
-          "from": "wv_461ff35d3ce80f0b53d0",
-          "id": "wv_2b4e19487a8f3dafd559",
-          "kind": "control",
-          "label": null,
-          "to": "wv_654bf9edf9259676b0f1"
-        },
-        {
-          "condition": true,
-          "from": "wv_07c795fac376e0370d9e",
-          "id": "wv_6b65f30667ca6bdb91ef",
-          "kind": "control",
-          "label": null,
-          "to": "wv_46659216a616a29ba183"
-        },
-        {
-          "condition": true,
-          "from": "wv_061b077fd9924b3e625a",
-          "id": "wv_6c2ea6bb90551fb0d638",
-          "kind": "data",
-          "label": "secrets.TOKEN",
-          "to": "wv_46659216a616a29ba183"
-        },
-        {
-          "condition": true,
-          "from": "wv_b59c8dba70059991956d",
-          "id": "wv_72205d7e0685b2a9b084",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a3ba0c86ef72967849e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_86d3c5c57972e4662f3a",
-          "id": "wv_746233ada17650026af8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a3ba0c86ef72967849e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_26b3e18bae5c8291dd23",
-          "id": "wv_7a72d6553880356825af",
-          "kind": "data",
-          "label": "secrets.SHINY_ACC_NAME",
-          "to": "wv_46659216a616a29ba183"
-        },
-        {
-          "condition": true,
-          "from": "wv_8411aff388006482a5b1",
-          "id": "wv_8a8e57cc4cd62087d2b8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a3ba0c86ef72967849e6"
-        },
-        {
-          "condition": true,
-          "from": "wv_654bf9edf9259676b0f1",
-          "id": "wv_8dadd6fff82b58046616",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ea1fc4475f60c107ef6d"
-        },
-        {
-          "condition": true,
-          "from": "wv_a3bbbbdd53514be03d21",
-          "id": "wv_9a37956e5d8e6603c960",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d2827ea4fd70803246bd"
-        },
-        {
-          "condition": true,
-          "from": "wv_13061ad3652f94848d86",
-          "id": "wv_a73b6f3b084a02f4983e",
-          "kind": "data",
-          "label": "secrets.SECRET",
-          "to": "wv_46659216a616a29ba183"
-        },
-        {
-          "condition": true,
-          "from": "wv_654bf9edf9259676b0f1",
-          "id": "wv_bd20bc246765e5a079d0",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_07c795fac376e0370d9e"
-        },
-        {
-          "condition": true,
-          "from": "wv_a3bbbbdd53514be03d21",
-          "id": "wv_c9d88ba03fe7993bfdb6",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_654bf9edf9259676b0f1"
-        },
-        {
-          "condition": true,
-          "from": "wv_a3ba0c86ef72967849e6",
-          "id": "wv_e9df2c31d794da2a9dec",
-          "kind": "control",
-          "label": null,
-          "to": "wv_461ff35d3ce80f0b53d0"
-        },
-        {
-          "condition": true,
-          "from": "wv_461ff35d3ce80f0b53d0",
-          "id": "wv_f72aaf4279ef9d2d52bd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a3bbbbdd53514be03d21"
-        },
-        {
-          "condition": true,
-          "from": "wv_461ff35d3ce80f0b53d0",
-          "id": "wv_fb15e3b1da73b48e4c4b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_07c795fac376e0370d9e"
-        }
-      ],
-      "entrypoints": [
-        "wv_a3ba0c86ef72967849e6"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.TOKEN",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 993,
-                      "column": 87,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1006,
-                      "column": 100,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_061b077fd9924b3e625a",
-          "kind": "resource",
-          "name": "secrets.TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 993,
-              "column": 87,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1006,
-              "column": 100,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_07c795fac376e0370d9e",
-          "kind": "step",
-          "name": "execute",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 893,
-              "column": 9,
-              "line": 29
-            },
-            "stop": {
-              "byte": 1107,
-              "column": 25,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.SECRET",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 1023,
-                      "column": 117,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1037,
-                      "column": 131,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.SECRET"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_13061ad3652f94848d86",
-          "kind": "resource",
-          "name": "secrets.SECRET",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 1023,
-              "column": 117,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1037,
-              "column": 131,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.SHINY_ACC_NAME",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 954,
-                      "column": 48,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 976,
-                      "column": 70,
-                      "line": 30
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.SHINY_ACC_NAME"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_26b3e18bae5c8291dd23",
-          "kind": "resource",
-          "name": "secrets.SHINY_ACC_NAME",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 954,
-              "column": 48,
-              "line": 30
-            },
-            "stop": {
-              "byte": 976,
-              "column": 70,
-              "line": 30
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_461ff35d3ce80f0b53d0",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 385,
-              "column": 3,
-              "line": 16
-            },
-            "stop": {
-              "byte": 1107,
-              "column": 25,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.SECRET",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 1023,
-                      "column": 117,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1037,
-                      "column": 131,
-                      "line": 30
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.SHINY_ACC_NAME",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 954,
-                      "column": 48,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 976,
-                      "column": 70,
-                      "line": 30
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.TOKEN",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 993,
-                      "column": 87,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1006,
-                      "column": 100,
-                      "line": 30
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 920,
-                      "column": 14,
-                      "line": 30
-                    },
-                    "stop": {
-                      "byte": 1107,
-                      "column": 25,
-                      "line": 35
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "docker run  -e SHINY_ACC_NAME=${{ secrets.SHINY_ACC_NAME }}  -e TOKEN=${{secrets.TOKEN}}  -e SECRET=${{secrets.SECRET}}  main          \n",
-                  "secrets.SECRET",
-                  "secrets.SHINY_ACC_NAME",
-                  "secrets.TOKEN"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_46659216a616a29ba183",
-          "kind": "command",
-          "name": "docker run  -e SHINY_ACC_NAME=${{ secrets.SHINY_ACC_NAME }}  -e TOKEN=${{secrets.TOKEN}}  -e SECRET=${{secrets.SECRET}}  main          \n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 920,
-              "column": 14,
-              "line": 30
-            },
-            "stop": {
-              "byte": 1107,
-              "column": 25,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_654bf9edf9259676b0f1",
-          "kind": "step",
-          "name": "Build image",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 749,
-              "column": 9,
-              "line": 26
-            },
-            "stop": {
-              "byte": 802,
-              "column": 36,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8411aff388006482a5b1",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 173,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 191,
-              "column": 21,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_86d3c5c57972e4662f3a",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 136,
-              "column": 3,
-              "line": 5
-            },
-            "stop": {
-              "byte": 170,
-              "column": 15,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a3ba0c86ef72967849e6",
-          "kind": "workflow",
-          "name": "Update-NFL-Pass-Snaps-Shiny",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1107,
-              "column": 25,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a3bbbbdd53514be03d21",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 657,
-              "column": 9,
-              "line": 23
-            },
-            "stop": {
-              "byte": 682,
-              "column": 34,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b59c8dba70059991956d",
-          "kind": "trigger",
-          "name": "schedule",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 6,
-              "column": 3,
-              "line": 2
-            },
-            "stop": {
-              "byte": 15,
-              "column": 12,
-              "line": 2
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_d2827ea4fd70803246bd",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 663,
-              "column": 15,
-              "line": 23
-            },
-            "stop": {
-              "byte": 682,
-              "column": 34,
-              "line": 23
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-                    "start": {
-                      "byte": 780,
-                      "column": 14,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 802,
-                      "column": 36,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "docker build -t main ."
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_ea1fc4475f60c107ef6d",
-          "kind": "command",
-          "name": "docker build -t main .",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml",
-            "start": {
-              "byte": 780,
-              "column": 14,
-              "line": 27
-            },
-            "stop": {
-              "byte": 802,
-              "column": 36,
-              "line": 27
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:693b79a74cb660daa8d1e716ee7f8acb64cc39242547c1d7388942c7e4cd2f97",
-      "path": "github/albtree/nfl-per-pass-snap/.github/workflows/deploy-nfl-pass-snap-shiny.yml"
-    }
-  ],
+  "digest": "sha256:7c9e9dbb79f3dea33aa0bacf2fbe3fe03364492dc779b755b7386287a26a52b5",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:3310ca44ef75acc4178ebb36da896014dbecdba7493e9d40866129d2d3f86edb",
+    "sources": [
+      {
+        "digest": "sha256:693b79a74cb660daa8d1e716ee7f8acb64cc39242547c1d7388942c7e4cd2f97",
+        "id": 0,
+        "path": ".github/workflows/deploy-nfl-pass-snap-shiny.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -873,40 +143,42 @@
           "kind": "unsupported_syntax"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 1,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 16,
+    "nodes": 14,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

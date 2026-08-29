@@ -1,7 +1,16 @@
 {
+  "analysis_digest": "sha256:56d9a97ebfe53833af85e77dd61a83e3dd6ebe745378ff62bedc7fcba47c2627",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v2",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v2"
@@ -9,9 +18,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
+          "source": 0,
           "start": {
             "byte": 205,
             "column": 13,
@@ -24,12 +32,12 @@
           }
         }
       },
-      "id": "diag_fcfb30fb2f3f1c38047e",
+      "id": "diag_10abfc1fec73fd71700a5b0427f27bbfa4c274108f30253e68a99eef0599030a",
       "message": "dependency is not pinned to immutable content: actions/checkout@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
+        "source": 0,
         "start": {
           "byte": 205,
           "column": 13,
@@ -44,9 +52,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_679f6e0452230b047358",
+          "node": 4,
           "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
+            "source": 0,
             "start": {
               "byte": 205,
               "column": 13,
@@ -62,7 +70,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v2"
@@ -70,9 +77,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
+          "source": 0,
           "start": {
             "byte": 265,
             "column": 13,
@@ -85,12 +91,12 @@
           }
         }
       },
-      "id": "diag_bc9a238d5c3955c32d71",
+      "id": "diag_92a78743cb9a04b9dcfb7760e3c4f50fe291e2bf23e89fdf984c4b00b1918b03",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
+        "source": 0,
         "start": {
           "byte": 265,
           "column": 13,
@@ -105,9 +111,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_5a09b6e9cd6ddc56c221",
+          "node": 6,
           "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
+            "source": 0,
             "start": {
               "byte": 265,
               "column": 13,
@@ -123,693 +129,70 @@
       ]
     }
   ],
-  "digest": "sha256:c63f1a8eefd5c20263b8b38160b7409efbfa4bc5dd08f9f148498645d23518c2",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_08926bb9fe4a530387ff",
-          "id": "wv_048fd2b2178fca7997ae",
-          "kind": "control",
-          "label": null,
-          "to": "wv_679f6e0452230b047358"
-        },
-        {
-          "condition": true,
-          "from": "wv_1b56c25e292a87dabcf9",
-          "id": "wv_069ed77b0393b31a4a9c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a00576c844c3c678099c"
-        },
-        {
-          "condition": true,
-          "from": "wv_c4ac66002eeca427c33f",
-          "id": "wv_0838abc5ede404256c39",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_16eb7baed8aa7f6d2630"
-        },
-        {
-          "condition": true,
-          "from": "wv_16eb7baed8aa7f6d2630",
-          "id": "wv_127ab9609d46078684e7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_d4763e210d01689ca03b"
-        },
-        {
-          "condition": true,
-          "from": "wv_8fadb18cc4daee5c4d41",
-          "id": "wv_1b3bb933c2e3526d2754",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_c4ac66002eeca427c33f"
-        },
-        {
-          "condition": true,
-          "from": "wv_a00576c844c3c678099c",
-          "id": "wv_1fb5fab1c49211478f4e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_16eb7baed8aa7f6d2630"
-        },
-        {
-          "condition": true,
-          "from": "wv_101ca5124790d4e0bdc3",
-          "id": "wv_2b1fb221e363ba2867d1",
-          "kind": "data",
-          "label": "secrets.NPM_TOKEN",
-          "to": "wv_d77318ee308e7f052631"
-        },
-        {
-          "condition": true,
-          "from": "wv_1a6c18c61df54d12d196",
-          "id": "wv_4e0ba5def0d8e93e4499",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1b56c25e292a87dabcf9"
-        },
-        {
-          "condition": true,
-          "from": "wv_a00576c844c3c678099c",
-          "id": "wv_51449dd97137ee1c710f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_08926bb9fe4a530387ff"
-        },
-        {
-          "condition": true,
-          "from": "wv_8fadb18cc4daee5c4d41",
-          "id": "wv_979f7b889bafa7ddd899",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5a09b6e9cd6ddc56c221"
-        },
-        {
-          "condition": true,
-          "from": "wv_08926bb9fe4a530387ff",
-          "id": "wv_984621f5558d7ecc81ae",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_8fadb18cc4daee5c4d41"
-        },
-        {
-          "condition": true,
-          "from": "wv_a00576c844c3c678099c",
-          "id": "wv_ad5cb020b2aa0eeea9dd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c4ac66002eeca427c33f"
-        },
-        {
-          "condition": true,
-          "from": "wv_d77318ee308e7f052631",
-          "id": "wv_b0a8881852d5425ec9fa",
-          "kind": "data",
-          "label": "NODE_AUTH_TOKEN",
-          "to": "wv_d4763e210d01689ca03b"
-        },
-        {
-          "condition": true,
-          "from": "wv_a00576c844c3c678099c",
-          "id": "wv_cb380ee45297d68f2fb7",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8fadb18cc4daee5c4d41"
-        },
-        {
-          "condition": true,
-          "from": "wv_c4ac66002eeca427c33f",
-          "id": "wv_e6f3eea72f94d3823e39",
-          "kind": "control",
-          "label": null,
-          "to": "wv_c5a85f648383ee59284e"
-        },
-        {
-          "condition": true,
-          "from": "wv_08926bb9fe4a530387ff",
-          "id": "wv_f7030f40f5346951758c",
-          "kind": "call",
-          "label": null,
-          "to": "wv_679f6e0452230b047358"
-        },
-        {
-          "condition": true,
-          "from": "wv_8fadb18cc4daee5c4d41",
-          "id": "wv_f9e0e6f279808032f50a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5a09b6e9cd6ddc56c221"
-        }
-      ],
-      "entrypoints": [
-        "wv_1b56c25e292a87dabcf9"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_08926bb9fe4a530387ff",
-          "kind": "step",
-          "name": "Check out repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 166,
-              "column": 7,
-              "line": 14
-            },
-            "stop": {
-              "byte": 224,
-              "column": 32,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.NPM_TOKEN",
-                  "span": {
-                    "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-                    "start": {
-                      "byte": 451,
-                      "column": 29,
-                      "line": 27
-                    },
-                    "stop": {
-                      "byte": 468,
-                      "column": 46,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.NPM_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_101ca5124790d4e0bdc3",
-          "kind": "resource",
-          "name": "secrets.NPM_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 451,
-              "column": 29,
-              "line": 27
-            },
-            "stop": {
-              "byte": 468,
-              "column": 46,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_16eb7baed8aa7f6d2630",
-          "kind": "step",
-          "name": "Publish to npm",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 391,
-              "column": 7,
-              "line": 25
-            },
-            "stop": {
-              "byte": 509,
-              "column": 39,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1a6c18c61df54d12d196",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 28,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 94,
-              "column": 13,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1b56c25e292a87dabcf9",
-          "kind": "workflow",
-          "name": "Publish to npm",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 509,
-              "column": 39,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_5a09b6e9cd6ddc56c221",
-          "kind": "call",
-          "name": "actions/setup-node@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 265,
-              "column": 13,
-              "line": 18
-            },
-            "stop": {
-              "byte": 286,
-              "column": 34,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_679f6e0452230b047358",
-          "kind": "call",
-          "name": "actions/checkout@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 205,
-              "column": 13,
-              "line": 15
-            },
-            "stop": {
-              "byte": 224,
-              "column": 32,
-              "line": 15
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8fadb18cc4daee5c4d41",
-          "kind": "step",
-          "name": "Set up Node.js",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 232,
-              "column": 7,
-              "line": 17
-            },
-            "stop": {
-              "byte": 325,
-              "column": 27,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a00576c844c3c678099c",
-          "kind": "job",
-          "name": "publish",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 112,
-              "column": 3,
-              "line": 10
-            },
-            "stop": {
-              "byte": 509,
-              "column": 39,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c4ac66002eeca427c33f",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 334,
-              "column": 7,
-              "line": 22
-            },
-            "stop": {
-              "byte": 383,
-              "column": 23,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-                    "start": {
-                      "byte": 372,
-                      "column": 12,
-                      "line": 23
-                    },
-                    "stop": {
-                      "byte": 383,
-                      "column": 23,
-                      "line": 23
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm install"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_c5a85f648383ee59284e",
-          "kind": "command",
-          "name": "npm install",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 372,
-              "column": 12,
-              "line": 23
-            },
-            "stop": {
-              "byte": 383,
-              "column": 23,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-                    "start": {
-                      "byte": 482,
-                      "column": 12,
-                      "line": 28
-                    },
-                    "stop": {
-                      "byte": 509,
-                      "column": 39,
-                      "line": 28
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm publish --access public"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_d4763e210d01689ca03b",
-          "kind": "command",
-          "name": "npm publish --access public",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 482,
-              "column": 12,
-              "line": 28
-            },
-            "stop": {
-              "byte": 509,
-              "column": 39,
-              "line": 28
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "environment.name": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "NODE_AUTH_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_d77318ee308e7f052631",
-          "kind": "resource",
-          "name": "env:NODE_AUTH_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml",
-            "start": {
-              "byte": 431,
-              "column": 9,
-              "line": 27
-            },
-            "stop": {
-              "byte": 470,
-              "column": 48,
-              "line": 27
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:c0b7ac74db15c9eece2d0837b5478d662d9748453e4012f1cec2c683d28d5f27",
-      "path": "github/milesonerd/closure-next/.github/workflows/publish-to-npm.yml"
-    }
-  ],
+  "digest": "sha256:1835616ea20bb575ec8a48c601535904c800645be884409877cdc4437d5d63f7",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:d64dd1cd690771644d7633d4e52a4c75916a0df869637f074f99c128c11674af",
+    "sources": [
+      {
+        "digest": "sha256:c0b7ac74db15c9eece2d0837b5478d662d9748453e4012f1cec2c683d28d5f27",
+        "id": 0,
+        "path": ".github/workflows/publish-to-npm.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -824,40 +207,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 2,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 17,
+    "nodes": 13,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

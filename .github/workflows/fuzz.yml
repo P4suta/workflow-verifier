@@ -1,0 +1,51 @@
+name: Scheduled fuzzing
+
+on:
+  schedule:
+    - cron: '23 2 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: fuzz-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  ocaml-yaml-afl:
+    name: Long OCaml YAML AFL campaign
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+      - name: Install AFL and locked dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends afl++
+          opam install . --deps-only --with-test --locked --yes
+      - name: Run the scheduled campaign
+        run: |
+          opam exec -- dune build --profile afl test/yaml_fuzz.exe
+          python -B scripts/run_afl_fuzz.py \
+            --seeds fuzz/corpus/yaml \
+            --output _build/afl-results \
+            --target _build/default/test/yaml_fuzz.exe \
+            --seconds 3600 \
+            --memory-mb 1024
+      - name: Upload AFL findings
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ocaml-yaml-afl
+          path: _build/afl-results
+          if-no-files-found: warn

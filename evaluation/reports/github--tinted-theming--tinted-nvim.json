@@ -1,7 +1,18 @@
 {
+  "analysis_digest": "sha256:2018e35a71f543b5bb09b706c48e0c5ad6deb1bd8032acbac57aa31e848e5781",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: ./.github/workflows/docs.yml",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: cachix/cachix-action@v15",
+      "Incomplete.Unresolved_dependency: cachix/install-nix-action@v27"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +20,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 190,
             "column": 15,
@@ -24,12 +34,12 @@
           }
         }
       },
-      "id": "diag_6010090178ebb099d44b",
+      "id": "diag_d421c566eccef94e2461e4310adf523c46ac963a1eddf89cd7060af40622670f",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 190,
           "column": 15,
@@ -44,9 +54,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_6f8084f138eab4ee767c",
+          "node": 6,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 190,
               "column": 15,
@@ -62,7 +72,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = cachix/install-nix-action@v27"
@@ -70,9 +79,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 251,
             "column": 15,
@@ -85,12 +93,12 @@
           }
         }
       },
-      "id": "diag_8f6b4ba9d01919ba840b",
+      "id": "diag_ba36cbf905d763b10d0b8ee6dd4e096c3abe62f23d6f4d08e7cb28c2a7d62d11",
       "message": "dependency is not pinned to immutable content: cachix/install-nix-action@v27",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 251,
           "column": 15,
@@ -105,9 +113,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_322562d9da8e9bbfd76b",
+          "node": 8,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 251,
               "column": 15,
@@ -123,7 +131,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = cachix/cachix-action@v15"
@@ -131,9 +138,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 388,
             "column": 15,
@@ -146,12 +152,12 @@
           }
         }
       },
-      "id": "diag_7176f7ff1f5a68d98d3f",
+      "id": "diag_e3b8b353ec43bf7c692447e10fea870eb1d4ffc03bf53dbac4d093a9ab33db39",
       "message": "dependency is not pinned to immutable content: cachix/cachix-action@v15",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 388,
           "column": 15,
@@ -166,9 +172,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_563e394198684aac8205",
+          "node": 10,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 388,
               "column": 15,
@@ -184,7 +190,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -192,9 +197,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 820,
             "column": 15,
@@ -207,12 +211,12 @@
           }
         }
       },
-      "id": "diag_e19a06e09e629516f908",
+      "id": "diag_0fc833e81082b00178a7cf1a56ef8c62053fce1788fa9227414f3d8d18f72fe1",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 820,
           "column": 15,
@@ -227,9 +231,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_92fa7e72d0ea5bb06343",
+          "node": 19,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 820,
               "column": 15,
@@ -245,7 +249,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = cachix/install-nix-action@v27"
@@ -253,9 +256,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 920,
             "column": 15,
@@ -268,12 +270,12 @@
           }
         }
       },
-      "id": "diag_bff173b3fd0cbcbd6543",
+      "id": "diag_67624542c9ddd86da5f3b2968a565bb5a13c7761ff502db733bf7af45f156eae",
       "message": "dependency is not pinned to immutable content: cachix/install-nix-action@v27",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 920,
           "column": 15,
@@ -288,9 +290,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_1eb781ca176a88505792",
+          "node": 21,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 920,
               "column": 15,
@@ -306,7 +308,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = cachix/cachix-action@v15"
@@ -314,9 +315,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 1057,
             "column": 15,
@@ -329,12 +329,12 @@
           }
         }
       },
-      "id": "diag_23f6cbfe81650f317091",
+      "id": "diag_79bfb0443dddf52c1851389c3ae774fdfcd582212eb56bdbf70a6deadbf80904",
       "message": "dependency is not pinned to immutable content: cachix/cachix-action@v15",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 1057,
           "column": 15,
@@ -349,9 +349,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_9f7cdaa0d5c3c7cec05a",
+          "node": 23,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1057,
               "column": 15,
@@ -367,7 +367,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -375,9 +374,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 1558,
             "column": 15,
@@ -390,12 +388,12 @@
           }
         }
       },
-      "id": "diag_86aaecdf02e28388a919",
+      "id": "diag_d9a5645eec72e1dec44e67cf2033efb695b6dc87b95d6b05520e0c6a3a723bab",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 1558,
           "column": 15,
@@ -410,9 +408,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_020e41fadb0fd4a3fb2c",
+          "node": 32,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1558,
               "column": 15,
@@ -439,9 +437,8 @@
       "fix": {
         "description": "pass the value through an environment variable and quote it in the target shell",
         "kind": "environment-boundary",
-        "replacement": null,
         "span": {
-          "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+          "source": 0,
           "start": {
             "byte": 1682,
             "column": 14,
@@ -454,12 +451,12 @@
           }
         }
       },
-      "id": "diag_69bfe988480dcc9b6bbf",
+      "id": "diag_c1e4060255e9e44563d69074b285e76e3c0973eb8b42ec554922853e6548ff83",
       "message": "untrusted workflow data reaches a shell command boundary",
       "rule_id": "WV-SEC-001",
       "severity": "error",
       "span": {
-        "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+        "source": 0,
         "start": {
           "byte": 1682,
           "column": 14,
@@ -474,9 +471,9 @@
       "trace": [
         {
           "label": "untrusted source",
-          "node_id": "wv_c80c888119440b246852",
+          "node": 36,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1724,
               "column": 56,
@@ -491,9 +488,9 @@
         },
         {
           "label": "command sink",
-          "node_id": "wv_ee3a1835140c30d6843e",
+          "node": 34,
           "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
+            "source": 0,
             "start": {
               "byte": 1682,
               "column": 14,
@@ -509,2189 +506,70 @@
       ]
     }
   ],
-  "digest": "sha256:1f60a25c48ac63bc5e05515d687cc7067cf19db8011d3000eedabc9b1338ab09",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_8dc8611d1fef3784a3c2",
-          "id": "wv_00dd63d914315d4af6e8",
-          "kind": "call",
-          "label": null,
-          "to": "wv_6f8084f138eab4ee767c"
-        },
-        {
-          "condition": true,
-          "from": "wv_69da727452f4c18f83e1",
-          "id": "wv_03a33379150701e05637",
-          "kind": "call",
-          "label": null,
-          "to": "wv_563e394198684aac8205"
-        },
-        {
-          "condition": true,
-          "from": "wv_071bb1505fdecefa0ba8",
-          "id": "wv_14a66623526b07b7260f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a8dbc2ce95c184d4ff2e"
-        },
-        {
-          "condition": true,
-          "from": "wv_de55f4bead39375e6183",
-          "id": "wv_19629f4e26cf13e24b5a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55fb1652ef56fd13603a"
-        },
-        {
-          "condition": true,
-          "from": "wv_071bb1505fdecefa0ba8",
-          "id": "wv_1bada256e6bb793561f1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_69da727452f4c18f83e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_54a29402bdcd6178f71a",
-          "id": "wv_1bb458b9cb4ac3c8af9a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_fb0914f7d33bb4e1d6ab"
-        },
-        {
-          "condition": true,
-          "from": "wv_071bb1505fdecefa0ba8",
-          "id": "wv_21dd77016a63216a7024",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ec61e1a0cc9443d4065b"
-        },
-        {
-          "condition": true,
-          "from": "wv_ccb0ffcd8466bd1f5e3f",
-          "id": "wv_32a86d11f26b0dad0758",
-          "kind": "call",
-          "label": null,
-          "to": "wv_020e41fadb0fd4a3fb2c"
-        },
-        {
-          "condition": true,
-          "from": "wv_8dc8611d1fef3784a3c2",
-          "id": "wv_36c4fe96d48b5892aa92",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_ec61e1a0cc9443d4065b"
-        },
-        {
-          "condition": true,
-          "from": "wv_a8dbc2ce95c184d4ff2e",
-          "id": "wv_37996b822bb3372dd10c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_cdbafad5a1cb54827026"
-        },
-        {
-          "condition": true,
-          "from": "wv_10458cd559bed09249f0",
-          "id": "wv_3eca9a9174799621b46d",
-          "kind": "data",
-          "label": "git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim'",
-          "to": "wv_ee3a1835140c30d6843e"
-        },
-        {
-          "condition": true,
-          "from": "wv_108d65ab029b7e4491bb",
-          "id": "wv_3ef47b12f8d4f1f4ea2e",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55fb1652ef56fd13603a"
-        },
-        {
-          "condition": true,
-          "from": "wv_fb0914f7d33bb4e1d6ab",
-          "id": "wv_4407a3e2cae173060f74",
-          "kind": "call",
-          "label": null,
-          "to": "wv_92fa7e72d0ea5bb06343"
-        },
-        {
-          "condition": true,
-          "from": "wv_444b736e95ab502efd3b",
-          "id": "wv_47a4afae8f1d7c6b418c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_240a4296997750ffcb1d"
-        },
-        {
-          "condition": true,
-          "from": "wv_aab98322f4ed9b8b87dd",
-          "id": "wv_4b984a721ece3f27523d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_17c9e2940d431096e36e"
-        },
-        {
-          "condition": true,
-          "from": "wv_18b9ffd033e844b3b20e",
-          "id": "wv_4e6b372d32e6f12e7de4",
-          "kind": "data",
-          "label": "CHANGED",
-          "to": "wv_ee3a1835140c30d6843e"
-        },
-        {
-          "condition": true,
-          "from": "wv_240a4296997750ffcb1d",
-          "id": "wv_50c346abe7e9c6bc223c",
-          "kind": "call",
-          "label": null,
-          "to": "wv_9f7cdaa0d5c3c7cec05a"
-        },
-        {
-          "condition": true,
-          "from": "wv_69da727452f4c18f83e1",
-          "id": "wv_52df2a939efbb4543510",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a8dbc2ce95c184d4ff2e"
-        },
-        {
-          "condition": true,
-          "from": "wv_1358c87fb858d38a7920",
-          "id": "wv_56fb473fd8a75eb2bf75",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55fb1652ef56fd13603a"
-        },
-        {
-          "condition": true,
-          "from": "wv_c80c888119440b246852",
-          "id": "wv_583b3ff1bd0896d7ee3b",
-          "kind": "data",
-          "label": "github.base_ref",
-          "to": "wv_ee3a1835140c30d6843e"
-        },
-        {
-          "condition": true,
-          "from": "wv_54a29402bdcd6178f71a",
-          "id": "wv_59de8788cae2a07f2f75",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b00003059bbe10025ff3"
-        },
-        {
-          "condition": true,
-          "from": "wv_54a29402bdcd6178f71a",
-          "id": "wv_5b517ec5305e0c908198",
-          "kind": "control",
-          "label": null,
-          "to": "wv_91fc11fa647b5afe2f4a"
-        },
-        {
-          "condition": true,
-          "from": "wv_240a4296997750ffcb1d",
-          "id": "wv_5d023f8243156dcbb957",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9f7cdaa0d5c3c7cec05a"
-        },
-        {
-          "condition": true,
-          "from": "wv_55fb1652ef56fd13603a",
-          "id": "wv_5eb47d78429be2214889",
-          "kind": "control",
-          "label": null,
-          "to": "wv_071bb1505fdecefa0ba8"
-        },
-        {
-          "condition": true,
-          "from": "wv_cdbafad5a1cb54827026",
-          "id": "wv_645f69d710fa771e8527",
-          "kind": "control",
-          "label": null,
-          "to": "wv_30fa2965c51793d7bfbb"
-        },
-        {
-          "condition": true,
-          "from": "wv_91fc11fa647b5afe2f4a",
-          "id": "wv_6922244439b8866b54dd",
-          "kind": "control",
-          "label": null,
-          "to": "wv_396e13483e6a53259fc3"
-        },
-        {
-          "condition": true,
-          "from": "wv_ec61e1a0cc9443d4065b",
-          "id": "wv_69b398461e0407a77b8e",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_69da727452f4c18f83e1"
-        },
-        {
-          "condition": true,
-          "from": "wv_69da727452f4c18f83e1",
-          "id": "wv_6dd7b535a6330f20664a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_563e394198684aac8205"
-        },
-        {
-          "condition": true,
-          "from": "wv_9b168383421ee87ea8b1",
-          "id": "wv_7c1b54af4de20e1a2910",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ee3a1835140c30d6843e"
-        },
-        {
-          "condition": true,
-          "from": "wv_240a4296997750ffcb1d",
-          "id": "wv_83389fd3855b18f52d62",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b00003059bbe10025ff3"
-        },
-        {
-          "condition": true,
-          "from": "wv_071bb1505fdecefa0ba8",
-          "id": "wv_85184824b19ed581f477",
-          "kind": "control",
-          "label": null,
-          "to": "wv_aab98322f4ed9b8b87dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_246e8811d8751a93ce6d",
-          "id": "wv_8c5938a0a2bae9bf36e1",
-          "kind": "call",
-          "label": null,
-          "to": "wv_8431938228f7e3690e4e"
-        },
-        {
-          "condition": true,
-          "from": "wv_2518f363832d17663999",
-          "id": "wv_8c7345fb41ec42aafbe9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ccb0ffcd8466bd1f5e3f"
-        },
-        {
-          "condition": true,
-          "from": "wv_ec61e1a0cc9443d4065b",
-          "id": "wv_9183e129a01b65ffa8b5",
-          "kind": "call",
-          "label": null,
-          "to": "wv_322562d9da8e9bbfd76b"
-        },
-        {
-          "condition": true,
-          "from": "wv_246e8811d8751a93ce6d",
-          "id": "wv_93480ca2dd0fea7a8426",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8431938228f7e3690e4e"
-        },
-        {
-          "condition": true,
-          "from": "wv_8dc8611d1fef3784a3c2",
-          "id": "wv_98d0518ea0f26980a018",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6f8084f138eab4ee767c"
-        },
-        {
-          "condition": true,
-          "from": "wv_674dac601c1eecce18ed",
-          "id": "wv_9bd36ae003fe289c04b5",
-          "kind": "data",
-          "label": "CHANGED",
-          "to": "wv_ee3a1835140c30d6843e"
-        },
-        {
-          "condition": true,
-          "from": "wv_b00003059bbe10025ff3",
-          "id": "wv_a4147c733979b0e0945d",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_91fc11fa647b5afe2f4a"
-        },
-        {
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.event_name==\"pull_request\")"
-          },
-          "from": "wv_0fe4259fb4416437a7dd",
-          "id": "wv_a50444e1aa1633aff56e",
-          "kind": "control",
-          "label": "gate",
-          "to": "wv_2518f363832d17663999"
-        },
-        {
-          "condition": true,
-          "from": "wv_a8dbc2ce95c184d4ff2e",
-          "id": "wv_bca433e2cef69704c1b9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a860cdd5059eae036b09"
-        },
-        {
-          "condition": true,
-          "from": "wv_fb0914f7d33bb4e1d6ab",
-          "id": "wv_be4e5a14a76eb78e4ca0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_92fa7e72d0ea5bb06343"
-        },
-        {
-          "condition": true,
-          "from": "wv_55fb1652ef56fd13603a",
-          "id": "wv_bf582baca56be2835686",
-          "kind": "control",
-          "label": null,
-          "to": "wv_0fe4259fb4416437a7dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_55fb1652ef56fd13603a",
-          "id": "wv_c515b15a1555b38db315",
-          "kind": "control",
-          "label": null,
-          "to": "wv_246e8811d8751a93ce6d"
-        },
-        {
-          "condition": true,
-          "from": "wv_ec61e1a0cc9443d4065b",
-          "id": "wv_c54d4bd9b2de823bb79a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_322562d9da8e9bbfd76b"
-        },
-        {
-          "condition": true,
-          "from": "wv_9981207ddf323ff117e1",
-          "id": "wv_c64c940defb9eca5ab24",
-          "kind": "data",
-          "label": "github.event_name",
-          "to": "wv_0fe4259fb4416437a7dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_444b736e95ab502efd3b",
-          "id": "wv_c76b647901f3a1c02475",
-          "kind": "control",
-          "label": null,
-          "to": "wv_1eb781ca176a88505792"
-        },
-        {
-          "condition": true,
-          "from": "wv_ccb0ffcd8466bd1f5e3f",
-          "id": "wv_d27e936c92afef1ef166",
-          "kind": "control",
-          "label": null,
-          "to": "wv_020e41fadb0fd4a3fb2c"
-        },
-        {
-          "condition": true,
-          "from": "wv_55fb1652ef56fd13603a",
-          "id": "wv_d76ca5282bf061250ac0",
-          "kind": "control",
-          "label": null,
-          "to": "wv_54a29402bdcd6178f71a"
-        },
-        {
-          "condition": true,
-          "from": "wv_cdbafad5a1cb54827026",
-          "id": "wv_da73937b4969b77a040a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_aab98322f4ed9b8b87dd"
-        },
-        {
-          "condition": true,
-          "from": "wv_54a29402bdcd6178f71a",
-          "id": "wv_e28839d710261395d820",
-          "kind": "control",
-          "label": null,
-          "to": "wv_444b736e95ab502efd3b"
-        },
-        {
-          "condition": true,
-          "from": "wv_071bb1505fdecefa0ba8",
-          "id": "wv_e309780c90f8cfb5dea8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8dc8611d1fef3784a3c2"
-        },
-        {
-          "condition": true,
-          "from": "wv_54a29402bdcd6178f71a",
-          "id": "wv_e39c2aa588dcf46399c2",
-          "kind": "control",
-          "label": null,
-          "to": "wv_240a4296997750ffcb1d"
-        },
-        {
-          "condition": true,
-          "from": "wv_071bb1505fdecefa0ba8",
-          "id": "wv_e701f71778f25dcc4801",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cdbafad5a1cb54827026"
-        },
-        {
-          "condition": true,
-          "from": "wv_ccb0ffcd8466bd1f5e3f",
-          "id": "wv_e7daff1e2e8102d35cec",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9b168383421ee87ea8b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_2518f363832d17663999",
-          "id": "wv_e8b1ccc1d593f0ed405a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9b168383421ee87ea8b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_444b736e95ab502efd3b",
-          "id": "wv_f1e409d02234f3ac5829",
-          "kind": "call",
-          "label": null,
-          "to": "wv_1eb781ca176a88505792"
-        },
-        {
-          "condition": true,
-          "from": "wv_b00003059bbe10025ff3",
-          "id": "wv_f96e779654701e88b82d",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a6649846041c67c426a7"
-        },
-        {
-          "condition": true,
-          "from": "wv_fb0914f7d33bb4e1d6ab",
-          "id": "wv_f9987e7b0e5e5a3780fc",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_444b736e95ab502efd3b"
-        }
-      ],
-      "entrypoints": [
-        "wv_55fb1652ef56fd13603a"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_020e41fadb0fd4a3fb2c",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1558,
-              "column": 15,
-              "line": 68
-            },
-            "stop": {
-              "byte": 1577,
-              "column": 34,
-              "line": 68
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_071bb1505fdecefa0ba8",
-          "kind": "job",
-          "name": "lint",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 106,
-              "column": 3,
-              "line": 11
-            },
-            "stop": {
-              "byte": 742,
-              "column": 51,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "expression": {
-              "provenance": [
-                {
-                  "operation": "gate",
-                  "origin": "workflow condition",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1497,
-                      "column": 9,
-                      "line": 66
-                    },
-                    "stop": {
-                      "byte": 1532,
-                      "column": 44,
-                      "line": 66
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event_name == 'pull_request'"
-                ]
-              }
-            },
-            "reference:github.event_name": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event_name",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1497,
-                      "column": 9,
-                      "line": 66
-                    },
-                    "stop": {
-                      "byte": 1514,
-                      "column": 26,
-                      "line": 66
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": {
-            "high": true,
-            "low": false,
-            "variable": "(github.event_name==\"pull_request\")"
-          },
-          "effects": [],
-          "id": "wv_0fe4259fb4416437a7dd",
-          "kind": "gate",
-          "name": "if:job:check-generated",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1497,
-              "column": 9,
-              "line": 66
-            },
-            "stop": {
-              "byte": 1532,
-              "column": 44,
-              "line": 66
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim'",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1692,
-                      "column": 24,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1800,
-                      "column": 132,
-                      "line": 73
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim'"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_10458cd559bed09249f0",
-          "kind": "resource",
-          "name": "git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim'",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1692,
-              "column": 24,
-              "line": 73
-            },
-            "stop": {
-              "byte": 1800,
-              "column": 132,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_108d65ab029b7e4491bb",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 43,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 75,
-              "column": 19,
-              "line": 7
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1358c87fb858d38a7920",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 16,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 40,
-              "column": 19,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 705,
-                      "column": 14,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 742,
-                      "column": 51,
-                      "line": 35
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "nix develop .#ci --command just check"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_17c9e2940d431096e36e",
-          "kind": "command",
-          "name": "nix develop .#ci --command just check",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 705,
-              "column": 14,
-              "line": 35
-            },
-            "stop": {
-              "byte": 742,
-              "column": 51,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CHANGED",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1903,
-                      "column": 235,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1910,
-                      "column": 242,
-                      "line": 73
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CHANGED"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_18b9ffd033e844b3b20e",
-          "kind": "resource",
-          "name": "CHANGED",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1903,
-              "column": 235,
-              "line": 73
-            },
-            "stop": {
-              "byte": 1910,
-              "column": 242,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1eb781ca176a88505792",
-          "kind": "call",
-          "name": "cachix/install-nix-action@v27",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 920,
-              "column": 15,
-              "line": 46
-            },
-            "stop": {
-              "byte": 949,
-              "column": 44,
-              "line": 46
-            }
-          },
-          "unknown": {
-            "detail": "cachix/install-nix-action@v27",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_240a4296997750ffcb1d",
-          "kind": "step",
-          "name": "Cache Nix store",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1021,
-              "column": 9,
-              "line": 50
-            },
-            "stop": {
-              "byte": 1150,
-              "column": 25,
-              "line": 54
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_246e8811d8751a93ce6d",
-          "kind": "job",
-          "name": "docs",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2176,
-              "column": 3,
-              "line": 85
-            },
-            "stop": {
-              "byte": 2266,
-              "column": 36,
-              "line": 88
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_2518f363832d17663999",
-          "kind": "job",
-          "name": "check-generated",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1413,
-              "column": 3,
-              "line": 63
-            },
-            "stop": {
-              "byte": 2173,
-              "column": 1,
-              "line": 84
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 605,
-                      "column": 14,
-                      "line": 32
-                    },
-                    "stop": {
-                      "byte": 646,
-                      "column": 55,
-                      "line": 32
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "nix develop .#ci --command just fmt-check"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_30fa2965c51793d7bfbb",
-          "kind": "command",
-          "name": "nix develop .#ci --command just fmt-check",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 605,
-              "column": 14,
-              "line": 32
-            },
-            "stop": {
-              "byte": 646,
-              "column": 55,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_322562d9da8e9bbfd76b",
-          "kind": "call",
-          "name": "cachix/install-nix-action@v27",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 251,
-              "column": 15,
-              "line": 18
-            },
-            "stop": {
-              "byte": 280,
-              "column": 44,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "cachix/install-nix-action@v27",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1271,
-                      "column": 14,
-                      "line": 60
-                    },
-                    "stop": {
-                      "byte": 1316,
-                      "column": 59,
-                      "line": 60
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "nix develop .#ci --command just verify-parity"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_396e13483e6a53259fc3",
-          "kind": "command",
-          "name": "nix develop .#ci --command just verify-parity",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1271,
-              "column": 14,
-              "line": 60
-            },
-            "stop": {
-              "byte": 1316,
-              "column": 59,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_444b736e95ab502efd3b",
-          "kind": "step",
-          "name": "Install Nix",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 888,
-              "column": 9,
-              "line": 45
-            },
-            "stop": {
-              "byte": 1011,
-              "column": 48,
-              "line": 48
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_54a29402bdcd6178f71a",
-          "kind": "job",
-          "name": "test",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 746,
-              "column": 3,
-              "line": 37
-            },
-            "stop": {
-              "byte": 1316,
-              "column": 59,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_55fb1652ef56fd13603a",
-          "kind": "workflow",
-          "name": "CI",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 2266,
-              "column": 36,
-              "line": 88
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_563e394198684aac8205",
-          "kind": "call",
-          "name": "cachix/cachix-action@v15",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 388,
-              "column": 15,
-              "line": 23
-            },
-            "stop": {
-              "byte": 412,
-              "column": 39,
-              "line": 23
-            }
-          },
-          "unknown": {
-            "detail": "cachix/cachix-action@v15",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CHANGED",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1812,
-                      "column": 144,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1819,
-                      "column": 151,
-                      "line": 73
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CHANGED"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_674dac601c1eecce18ed",
-          "kind": "resource",
-          "name": "CHANGED",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1812,
-              "column": 144,
-              "line": 73
-            },
-            "stop": {
-              "byte": 1819,
-              "column": 151,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_69da727452f4c18f83e1",
-          "kind": "step",
-          "name": "Cache Nix store",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 352,
-              "column": 9,
-              "line": 22
-            },
-            "stop": {
-              "byte": 481,
-              "column": 25,
-              "line": 26
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_6f8084f138eab4ee767c",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 190,
-              "column": 15,
-              "line": 15
-            },
-            "stop": {
-              "byte": 209,
-              "column": 34,
-              "line": 15
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8431938228f7e3690e4e",
-          "kind": "call",
-          "name": "./.github/workflows/docs.yml",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 2192,
-              "column": 11,
-              "line": 86
-            },
-            "stop": {
-              "byte": 2220,
-              "column": 39,
-              "line": 86
-            }
-          },
-          "unknown": {
-            "detail": "./.github/workflows/docs.yml",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8dc8611d1fef3784a3c2",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 184,
-              "column": 9,
-              "line": 15
-            },
-            "stop": {
-              "byte": 209,
-              "column": 34,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_91fc11fa647b5afe2f4a",
-          "kind": "step",
-          "name": "Run parity check",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1235,
-              "column": 9,
-              "line": 59
-            },
-            "stop": {
-              "byte": 1316,
-              "column": 59,
-              "line": 60
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_92fa7e72d0ea5bb06343",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 820,
-              "column": 15,
-              "line": 41
-            },
-            "stop": {
-              "byte": 839,
-              "column": 34,
-              "line": 41
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.event_name",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1497,
-                      "column": 9,
-                      "line": 66
-                    },
-                    "stop": {
-                      "byte": 1514,
-                      "column": 26,
-                      "line": 66
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.event_name"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9981207ddf323ff117e1",
-          "kind": "resource",
-          "name": "github.event_name",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1497,
-              "column": 9,
-              "line": 66
-            },
-            "stop": {
-              "byte": 1514,
-              "column": 26,
-              "line": 66
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9b168383421ee87ea8b1",
-          "kind": "step",
-          "name": "Check for changes to generated files",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1626,
-              "column": 9,
-              "line": 72
-            },
-            "stop": {
-              "byte": 2173,
-              "column": 1,
-              "line": 84
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9f7cdaa0d5c3c7cec05a",
-          "kind": "call",
-          "name": "cachix/cachix-action@v15",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1057,
-              "column": 15,
-              "line": 51
-            },
-            "stop": {
-              "byte": 1081,
-              "column": 39,
-              "line": 51
-            }
-          },
-          "unknown": {
-            "detail": "cachix/cachix-action@v15",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1189,
-                      "column": 14,
-                      "line": 57
-                    },
-                    "stop": {
-                      "byte": 1225,
-                      "column": 50,
-                      "line": 57
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "nix develop .#ci --command just test"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a6649846041c67c426a7",
-          "kind": "command",
-          "name": "nix develop .#ci --command just test",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1189,
-              "column": 14,
-              "line": 57
-            },
-            "stop": {
-              "byte": 1225,
-              "column": 50,
-              "line": 57
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 523,
-                      "column": 14,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 559,
-                      "column": 50,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "nix develop .#ci --command just lint"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_a860cdd5059eae036b09",
-          "kind": "command",
-          "name": "nix develop .#ci --command just lint",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 523,
-              "column": 14,
-              "line": 29
-            },
-            "stop": {
-              "byte": 559,
-              "column": 50,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a8dbc2ce95c184d4ff2e",
-          "kind": "step",
-          "name": "Run luacheck",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 491,
-              "column": 9,
-              "line": 28
-            },
-            "stop": {
-              "byte": 559,
-              "column": 50,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_aab98322f4ed9b8b87dd",
-          "kind": "step",
-          "name": "Run lua-language-server check",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 656,
-              "column": 9,
-              "line": 34
-            },
-            "stop": {
-              "byte": 742,
-              "column": 51,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b00003059bbe10025ff3",
-          "kind": "step",
-          "name": "Run tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1160,
-              "column": 9,
-              "line": 56
-            },
-            "stop": {
-              "byte": 1225,
-              "column": 50,
-              "line": 57
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.base_ref",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1724,
-                      "column": 56,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1739,
-                      "column": 71,
-                      "line": 73
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.base_ref"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_c80c888119440b246852",
-          "kind": "resource",
-          "name": "github.base_ref",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1724,
-              "column": 56,
-              "line": 73
-            },
-            "stop": {
-              "byte": 1739,
-              "column": 71,
-              "line": 73
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ccb0ffcd8466bd1f5e3f",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1552,
-              "column": 9,
-              "line": 68
-            },
-            "stop": {
-              "byte": 1616,
-              "column": 25,
-              "line": 70
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cdbafad5a1cb54827026",
-          "kind": "step",
-          "name": "Check formatting",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 569,
-              "column": 9,
-              "line": 31
-            },
-            "stop": {
-              "byte": 646,
-              "column": 55,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_de55f4bead39375e6183",
-          "kind": "trigger",
-          "name": "workflow_dispatch",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 78,
-              "column": 3,
-              "line": 8
-            },
-            "stop": {
-              "byte": 96,
-              "column": 21,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ec61e1a0cc9443d4065b",
-          "kind": "step",
-          "name": "Install Nix",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 219,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 342,
-              "column": 48,
-              "line": 20
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "CHANGED",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1812,
-                      "column": 144,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1819,
-                      "column": 151,
-                      "line": 73
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "CHANGED",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1903,
-                      "column": 235,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1910,
-                      "column": 242,
-                      "line": 73
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim'",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1692,
-                      "column": 24,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1800,
-                      "column": 132,
-                      "line": 73
-                    }
-                  }
-                },
-                {
-                  "operation": "expression reference",
-                  "origin": "github.base_ref",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1724,
-                      "column": 56,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 1739,
-                      "column": 71,
-                      "line": 73
-                    }
-                  }
-                },
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-                    "start": {
-                      "byte": 1682,
-                      "column": 14,
-                      "line": 73
-                    },
-                    "stop": {
-                      "byte": 2173,
-                      "column": 1,
-                      "line": 84
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "untrusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "CHANGED",
-                  "CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim')\nif [ -n \"$CHANGED\" ]; then\n  echo \"::error::Generated files should not be modified in PRs:\"\n  echo \"$CHANGED\"\n  echo \"\"\n  echo \"These files are auto-generated. Please revert changes to:\"\n  echo \"  - lua/tinted-nvim/palettes/*.lua\"\n  echo \"  - colors/*.vim\"\n  exit 1\nfi\n",
-                  "git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim'",
-                  "github.base_ref"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_ee3a1835140c30d6843e",
-          "kind": "command",
-          "name": "CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'lua/tinted-nvim/palettes/*.lua' 'colors/*.vim')\nif [ -n \"$CHANGED\" ]; then\n  echo \"::error::Generated files should not be modified in PRs:\"\n  echo \"$CHANGED\"\n  echo \"\"\n  echo \"These files are auto-generated. Please revert changes to:\"\n  echo \"  - lua/tinted-nvim/palettes/*.lua\"\n  echo \"  - colors/*.vim\"\n  exit 1\nfi\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 1682,
-              "column": 14,
-              "line": 73
-            },
-            "stop": {
-              "byte": 2173,
-              "column": 1,
-              "line": 84
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_fb0914f7d33bb4e1d6ab",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml",
-            "start": {
-              "byte": 814,
-              "column": 9,
-              "line": 41
-            },
-            "stop": {
-              "byte": 878,
-              "column": 25,
-              "line": 43
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:665a033c73c526de8ae50ff76980ade78b52b5e45cfb834b8555f988edb86fa8",
-      "path": "github/tinted-theming/tinted-nvim/.github/workflows/ci.yml"
-    }
-  ],
+  "digest": "sha256:f5417fa3e6843e56ceaa82fdd4172501d0392b2f83d80de1372075e05adc331f",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:3ad8bbb8646fb962e251288d0385365eb017eda0f376c560f6c554465961992e",
+    "sources": [
+      {
+        "digest": "sha256:665a033c73c526de8ae50ff76980ade78b52b5e45cfb834b8555f988edb86fa8",
+        "id": 0,
+        "path": ".github/workflows/ci.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -2706,40 +584,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 8,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 58,
+    "nodes": 41,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 2
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

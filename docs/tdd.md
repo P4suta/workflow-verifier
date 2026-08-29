@@ -31,7 +31,7 @@ naming refactor while the same test remains green.
 | Total library core | An invariant-only branch, partial lookup, or invalid fetched lock entry can terminate analysis | Architecture gate rejects partial APIs; invalid boundaries return `Error`; all semantic contracts remain byte-stable | Closed states become variants, graph queues encode nonempty paths, JSON fields stay primary, and lock updates are transactional |
 | Native temporary resources | Parallel AppContainer tests collide on a clock-derived path | Atomic reservations and parallel probes pass | Allocation lives in helper runtime, containment stays backend-owned |
 | Block scalar isolation | Markdown link text in a folded action description is misread as a flow collection | The production-shaped metadata has only its genuine binary-implementation `Unknown` | One block-header classifier owns both validation and payload boundaries |
-| Lock protocol fixtures | A `lock-v1` determinism fixture cannot reproduce the current producer's `lock-v2` bytes | Two independent v2 probes match while v1 still round-trips canonically | Current-producer determinism and backward-read compatibility use separate contracts |
+| Analysis manifest loading | An unrelated multi-gigabyte repository file is read during static analysis | A counted filesystem proves only config, lock, entrypoints, and referenced local units are read | Static analysis manifests and complete sandbox snapshots remain separate types |
 
 Commits should use `test:`, `feat:`, and `refactor:` prefixes when preserving the
 red/green/refactor trail. CI includes an ordering-permutation contract that

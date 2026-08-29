@@ -20,7 +20,6 @@ except ModuleNotFoundError:  # Direct script execution from the repository root.
     import measure_performance as _measurement  # type: ignore[no-redef]
 
 measure = _measurement.measure
-uses_config_v2 = _measurement.uses_config_v2
 
 
 REVISION = re.compile(r"^[0-9a-f]{40}$")
@@ -39,61 +38,23 @@ PERIOD_BALANCED_CYCLE = PERIOD_BALANCED_BLOCK + tuple(
     "current" if name == "baseline" else "baseline" for name in PERIOD_BALANCED_BLOCK
 )
 Measurer = Callable[..., dict[str, Any]]
-CONFIG_V2_MIGRATION_REVIEW = "https://github.com/P4suta/workflow-verifier/pull/6"
-CONFIG_V2_MIGRATION_REASON = (
-    "The v0.1 security rebuild performs immutable source-manifest hashing, strict "
-    "config/report provenance, and a fresh gate analysis that cannot trust a cached pass."
-)
-
-
-def _reviewed_contract_migration(
-    baseline_workspace: Path,
-    current_workspace: Path,
-    baseline: dict[str, Any],
-    current: dict[str, Any],
-) -> None:
-    if uses_config_v2(baseline_workspace) or not uses_config_v2(current_workspace):
-        return
-    baseline_scenarios = {scenario["id"]: scenario for scenario in baseline["scenarios"]}
-    explanations = []
-    for scenario in current["scenarios"]:
-        identifier = scenario["id"]
-        for mode in ("cold", "incremental", "warm"):
-            before = sorted(baseline_scenarios[identifier]["modes"][mode]["samples_ns"])
-            after = sorted(scenario["modes"][mode]["samples_ns"])
-            middle = len(before) // 2
-            before_twice = (
-                before[middle] * 2 if len(before) % 2 else before[middle - 1] + before[middle]
-            )
-            after_twice = after[middle] * 2 if len(after) % 2 else after[middle - 1] + after[middle]
-            if after_twice * 100 > before_twice * 110:
-                explanations.append(
-                    {
-                        "mode": mode,
-                        "reason": CONFIG_V2_MIGRATION_REASON,
-                        "review": CONFIG_V2_MIGRATION_REVIEW,
-                        "scenario": identifier,
-                    }
-                )
-    current["regression_explanations"] = explanations
 
 
 def _merge(reports: list[dict[str, Any]], revision: str, expected_samples: int) -> dict[str, Any]:
     if not reports:
         raise ValueError("period-balanced measurement produced no reports")
     result = copy.deepcopy(reports[0])
-    if result.get("schema") != "performance-v1" or result.get("revision") != revision:
+    if result.get("schema") != "performance-v2" or result.get("revision") != revision:
         raise ValueError("period-balanced measurement returned the wrong identity")
     environment = result.get("environment")
     if not isinstance(environment, dict) or "pair_design" in environment:
         raise ValueError("performance environment must reserve pair_design for the orchestrator")
     for scenario in result["scenarios"]:
-        for mode in scenario["modes"].values():
-            mode["samples_ns"] = []
+        scenario["samples_ns"] = []
 
     for observation_index, report in enumerate(reports):
         if (
-            report.get("schema") != "performance-v1"
+            report.get("schema") != "performance-v2"
             or report.get("revision") != revision
             or report.get("environment") != environment
             or report.get("regression_explanations") != result.get("regression_explanations")
@@ -106,27 +67,23 @@ def _merge(reports: list[dict[str, Any]], revision: str, expected_samples: int) 
             raise ValueError(f"period-balanced observation {observation_index} changed scenarios")
         for scenario_index, scenario in enumerate(scenarios):
             target = result["scenarios"][scenario_index]
-            if scenario.get("id") != target.get("id") or set(scenario.get("modes", {})) != set(
-                target["modes"]
-            ):
+            if scenario.get("id") != target.get("id"):
                 raise ValueError(
                     f"period-balanced observation {observation_index} changed scenario shape"
                 )
-            for mode_name, mode in scenario["modes"].items():
-                samples = mode.get("samples_ns")
-                if not isinstance(samples, list) or any(
-                    type(value) is not int or value <= 0 for value in samples
-                ):
-                    raise ValueError(
-                        f"period-balanced observation {observation_index} has invalid samples"
-                    )
-                target["modes"][mode_name]["samples_ns"].extend(samples)
-    for scenario in result["scenarios"]:
-        for mode_name, mode in scenario["modes"].items():
-            if len(mode["samples_ns"]) != expected_samples:
+            samples = scenario.get("samples_ns")
+            if not isinstance(samples, list) or any(
+                type(value) is not int or value <= 0 for value in samples
+            ):
                 raise ValueError(
-                    f"period-balanced result has the wrong sample count for {scenario['id']}/{mode_name}"
+                    f"period-balanced observation {observation_index} has invalid samples"
                 )
+            target["samples_ns"].extend(samples)
+    for scenario in result["scenarios"]:
+        if len(scenario["samples_ns"]) != expected_samples:
+            raise ValueError(
+                f"period-balanced result has the wrong sample count for {scenario['id']}"
+            )
     result["environment"] = {**environment, "pair_design": PAIR_DESIGN}
     return result
 
@@ -158,7 +115,6 @@ def measure_pair(
         reports[name].append(measurer(suite, workspace, revision=revision, samples=1))
     baseline = _merge(reports["baseline"], baseline_revision, samples)
     current = _merge(reports["current"], current_revision, samples)
-    _reviewed_contract_migration(baseline_workspace, current_workspace, baseline, current)
     return baseline, current
 
 

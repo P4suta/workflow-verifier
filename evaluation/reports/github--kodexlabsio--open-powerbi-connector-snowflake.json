@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:e2f1aed9a5c769e5f5cbb7e80bb6f5350a24ff5ff3cbc53660f07c07b2b6520e",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/upload-artifact@v4",
+      "Incomplete.Unresolved_dependency: nuget/setup-nuget@v2"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 193,
             "column": 15,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_f4d4da3484d5eef3acc0",
+      "id": "diag_ebde2bff392e8fcea4a37d47fd9ffc1c6b3427961753b94c968e9107f90e8062",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 193,
           "column": 15,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_b8af3ed8401d607f5a07",
+          "node": 5,
           "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 193,
               "column": 15,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = nuget/setup-nuget@v2"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 255,
             "column": 15,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_3d8245e51d0811f56a03",
+      "id": "diag_0ad3699256d460fc337ead00cd9ee44297d75e99d9c42cdaaea1ade4898e7b9a",
       "message": "dependency is not pinned to immutable content: nuget/setup-nuget@v2",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 255,
           "column": 15,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_97ec1f11c1ce2620536b",
+          "node": 7,
           "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 255,
               "column": 15,
@@ -123,7 +130,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/upload-artifact@v4"
@@ -131,9 +137,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+          "source": 0,
           "start": {
             "byte": 629,
             "column": 15,
@@ -146,12 +151,12 @@
           }
         }
       },
-      "id": "diag_95f4baad36644549aa04",
+      "id": "diag_26c486bee2cd73561a56f2416ba7fca550ffebd52c30699e0bac0a4900eb6081",
       "message": "dependency is not pinned to immutable content: actions/upload-artifact@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+        "source": 0,
         "start": {
           "byte": 629,
           "column": 15,
@@ -166,9 +171,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_26f395e8c8a665b8a392",
+          "node": 13,
           "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
+            "source": 0,
             "start": {
               "byte": 629,
               "column": 15,
@@ -184,773 +189,70 @@
       ]
     }
   ],
-  "digest": "sha256:c098e48cf4b2332454b8190ee2dc77e438fddcf12e87ed29df7a099a88201e96",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_30a3abe53b5366585427",
-          "id": "wv_0a2aa5016e913c457742",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b666ad6e86daeac57eba"
-        },
-        {
-          "condition": true,
-          "from": "wv_30a3abe53b5366585427",
-          "id": "wv_1927ec58a1d715512f2b",
-          "kind": "control",
-          "label": null,
-          "to": "wv_be19a480ea4f108ed895"
-        },
-        {
-          "condition": true,
-          "from": "wv_7a93cb0023b862ee122f",
-          "id": "wv_2286834333931c7bbc0b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b666ad6e86daeac57eba"
-        },
-        {
-          "condition": true,
-          "from": "wv_30a3abe53b5366585427",
-          "id": "wv_240a82e9f9b8831f3604",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a70afb6ef1d555abc606"
-        },
-        {
-          "condition": true,
-          "from": "wv_0970ca2a5704c6777453",
-          "id": "wv_27eb3b39ecb17dec6fad",
-          "kind": "data",
-          "label": "github.sha",
-          "to": "wv_26f395e8c8a665b8a392"
-        },
-        {
-          "condition": true,
-          "from": "wv_8e6830b4e864cf760d87",
-          "id": "wv_43f8be227ba645bbcb69",
-          "kind": "control",
-          "label": null,
-          "to": "wv_30a3abe53b5366585427"
-        },
-        {
-          "condition": true,
-          "from": "wv_6225247e8d1776c97fc5",
-          "id": "wv_49954dd267f0b710847c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_ee397b99ddb47af29868"
-        },
-        {
-          "condition": true,
-          "from": "wv_b666ad6e86daeac57eba",
-          "id": "wv_538ae49d7418a2b429fd",
-          "kind": "call",
-          "label": null,
-          "to": "wv_97ec1f11c1ce2620536b"
-        },
-        {
-          "condition": true,
-          "from": "wv_be19a480ea4f108ed895",
-          "id": "wv_554992f3b270215f30cf",
-          "kind": "call",
-          "label": null,
-          "to": "wv_26f395e8c8a665b8a392"
-        },
-        {
-          "condition": true,
-          "from": "wv_a70afb6ef1d555abc606",
-          "id": "wv_6595ec74d26173ff5045",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6225247e8d1776c97fc5"
-        },
-        {
-          "condition": true,
-          "from": "wv_b666ad6e86daeac57eba",
-          "id": "wv_77470f642c03d262cbcc",
-          "kind": "control",
-          "label": null,
-          "to": "wv_97ec1f11c1ce2620536b"
-        },
-        {
-          "condition": true,
-          "from": "wv_dbe05ec2b72926e96153",
-          "id": "wv_7e93470f61f8eb2a872f",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8e6830b4e864cf760d87"
-        },
-        {
-          "condition": true,
-          "from": "wv_6225247e8d1776c97fc5",
-          "id": "wv_806b552a56acf0fc080b",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_be19a480ea4f108ed895"
-        },
-        {
-          "condition": true,
-          "from": "wv_83f0806a061090e52905",
-          "id": "wv_98a93208a5e6d5791580",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8e6830b4e864cf760d87"
-        },
-        {
-          "condition": true,
-          "from": "wv_a70afb6ef1d555abc606",
-          "id": "wv_9c7275956e6b90c90ebb",
-          "kind": "control",
-          "label": null,
-          "to": "wv_f4ba7f82941a7bb531f6"
-        },
-        {
-          "condition": true,
-          "from": "wv_30a3abe53b5366585427",
-          "id": "wv_aa6d7778ef38aa63a0e5",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6225247e8d1776c97fc5"
-        },
-        {
-          "condition": true,
-          "from": "wv_30a3abe53b5366585427",
-          "id": "wv_c779ca85faa9ba60d096",
-          "kind": "control",
-          "label": null,
-          "to": "wv_7a93cb0023b862ee122f"
-        },
-        {
-          "condition": true,
-          "from": "wv_7a93cb0023b862ee122f",
-          "id": "wv_d97388b4610f459deb0c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b8af3ed8401d607f5a07"
-        },
-        {
-          "condition": true,
-          "from": "wv_7a93cb0023b862ee122f",
-          "id": "wv_e177c8940fb9afdb44df",
-          "kind": "call",
-          "label": null,
-          "to": "wv_b8af3ed8401d607f5a07"
-        },
-        {
-          "condition": true,
-          "from": "wv_be19a480ea4f108ed895",
-          "id": "wv_e4179e4c4b54cea7f2e9",
-          "kind": "control",
-          "label": null,
-          "to": "wv_26f395e8c8a665b8a392"
-        },
-        {
-          "condition": true,
-          "from": "wv_b666ad6e86daeac57eba",
-          "id": "wv_ef53cd467bcb8ec4d5b3",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_a70afb6ef1d555abc606"
-        }
-      ],
-      "entrypoints": [
-        "wv_8e6830b4e864cf760d87"
-      ],
-      "nodes": [
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "github.sha",
-                  "span": {
-                    "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 723,
-                      "column": 54,
-                      "line": 31
-                    },
-                    "stop": {
-                      "byte": 733,
-                      "column": 64,
-                      "line": 31
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "github.sha"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_0970ca2a5704c6777453",
-          "kind": "resource",
-          "name": "github.sha",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 723,
-              "column": 54,
-              "line": 31
-            },
-            "stop": {
-              "byte": 733,
-              "column": 64,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network",
-            "filesystem_read",
-            "artifact_write"
-          ],
-          "condition": true,
-          "effects": [
-            "network_request",
-            "artifact_publish"
-          ],
-          "id": "wv_26f395e8c8a665b8a392",
-          "kind": "call",
-          "name": "actions/upload-artifact@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 629,
-              "column": 15,
-              "line": 29
-            },
-            "stop": {
-              "byte": 655,
-              "column": 41,
-              "line": 29
-            }
-          },
-          "unknown": {
-            "detail": "actions/upload-artifact@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_30a3abe53b5366585427",
-          "kind": "job",
-          "name": "build",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 99,
-              "column": 3,
-              "line": 11
-            },
-            "stop": {
-              "byte": 812,
-              "column": 72,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6225247e8d1776c97fc5",
-          "kind": "step",
-          "name": "Compile Connector",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 444,
-              "column": 9,
-              "line": 24
-            },
-            "stop": {
-              "byte": 574,
-              "column": 1,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_7a93cb0023b862ee122f",
-          "kind": "step",
-          "name": "Checkout repository",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 153,
-              "column": 9,
-              "line": 14
-            },
-            "stop": {
-              "byte": 212,
-              "column": 34,
-              "line": 15
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_83f0806a061090e52905",
-          "kind": "trigger",
-          "name": "schedule",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 54,
-              "column": 3,
-              "line": 7
-            },
-            "stop": {
-              "byte": 89,
-              "column": 26,
-              "line": 8
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8e6830b4e864cf760d87",
-          "kind": "workflow",
-          "name": "Build",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 812,
-              "column": 72,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_97ec1f11c1ce2620536b",
-          "kind": "call",
-          "name": "nuget/setup-nuget@v2",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 255,
-              "column": 15,
-              "line": 18
-            },
-            "stop": {
-              "byte": 275,
-              "column": 35,
-              "line": 18
-            }
-          },
-          "unknown": {
-            "detail": "nuget/setup-nuget@v2",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a70afb6ef1d555abc606",
-          "kind": "step",
-          "name": "Install Power Query SDK",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 285,
-              "column": 9,
-              "line": 20
-            },
-            "stop": {
-              "byte": 435,
-              "column": 1,
-              "line": 23
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b666ad6e86daeac57eba",
-          "kind": "step",
-          "name": "Set up NuGet",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 222,
-              "column": 9,
-              "line": 17
-            },
-            "stop": {
-              "byte": 275,
-              "column": 35,
-              "line": 18
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_b8af3ed8401d607f5a07",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 193,
-              "column": 15,
-              "line": 15
-            },
-            "stop": {
-              "byte": 212,
-              "column": 34,
-              "line": 15
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_be19a480ea4f108ed895",
-          "kind": "step",
-          "name": "Upload compiled extension",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 583,
-              "column": 9,
-              "line": 28
-            },
-            "stop": {
-              "byte": 812,
-              "column": 72,
-              "line": 32
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_dbe05ec2b72926e96153",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 19,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 51,
-              "column": 13,
-              "line": 6
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 481,
-                      "column": 14,
-                      "line": 25
-                    },
-                    "stop": {
-                      "byte": 574,
-                      "column": 1,
-                      "line": 27
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "./nuget_packages/Microsoft.PowerQuery.SdkTools.2.127.3/tools/MakePQX.exe compile\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_ee397b99ddb47af29868",
-          "kind": "command",
-          "name": "./nuget_packages/Microsoft.PowerQuery.SdkTools.2.127.3/tools/MakePQX.exe compile\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 481,
-              "column": 14,
-              "line": 25
-            },
-            "stop": {
-              "byte": 574,
-              "column": 1,
-              "line": 27
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-                    "start": {
-                      "byte": 328,
-                      "column": 14,
-                      "line": 21
-                    },
-                    "stop": {
-                      "byte": 435,
-                      "column": 1,
-                      "line": 23
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "nuget install Microsoft.PowerQuery.SdkTools -Version 2.127.3 -OutputDirectory ./nuget_packages\n"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_f4ba7f82941a7bb531f6",
-          "kind": "command",
-          "name": "nuget install Microsoft.PowerQuery.SdkTools -Version 2.127.3 -OutputDirectory ./nuget_packages\n",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml",
-            "start": {
-              "byte": 328,
-              "column": 14,
-              "line": 21
-            },
-            "stop": {
-              "byte": 435,
-              "column": 1,
-              "line": 23
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:79e1b70cc6e15a794facfb057855dfd513fcef1d79b4fd1d37d22a2acbcdf36b",
-      "path": "github/kodexlabsio/open-powerbi-connector-snowflake/.github/workflows/build.yml"
-    }
-  ],
+  "digest": "sha256:527ba6b0db6d72505692f80ef23f3f5effa23abc8109d71b8aae0a1362aaf0a1",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:c3d78727f4833bae14865957358a4d40ee7525e823c73e0496aeb064e22c90cd",
+    "sources": [
+      {
+        "digest": "sha256:79e1b70cc6e15a794facfb057855dfd513fcef1d79b4fd1d37d22a2acbcdf36b",
+        "id": 0,
+        "path": ".github/workflows/build.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
@@ -965,40 +267,42 @@
           "kind": "unresolved_dependency"
         }
       ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Unknown"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
     "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "edges": 21,
+    "nodes": 15,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 1,
+    "violated_properties": 1
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }

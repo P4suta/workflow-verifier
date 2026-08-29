@@ -1,7 +1,17 @@
 {
+  "analysis_digest": "sha256:7351801aecca334c9d4da4476a0ad88b5616fa552df44be0f4cb19ee9b58ea68",
+  "completeness": {
+    "reasons": [
+      "Incomplete.Static_analysis",
+      "Incomplete.Unbound_build_source_commit",
+      "Incomplete.Unresolved_dependency: actions/checkout@v4",
+      "Incomplete.Unresolved_dependency: actions/setup-node@v7",
+      "Incomplete.Unresolved_dependency: codecov/codecov-action@v7"
+    ],
+    "state": "incomplete"
+  },
   "diagnostics": [
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/checkout@v4"
@@ -9,9 +19,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+          "source": 0,
           "start": {
             "byte": 380,
             "column": 15,
@@ -24,12 +33,12 @@
           }
         }
       },
-      "id": "diag_1f1649e327aaa9cd304f",
+      "id": "diag_32b359bfc60ec9b64a648c5761a6e936a417f386b1bdfd174b89fe02a4044b81",
       "message": "dependency is not pinned to immutable content: actions/checkout@v4",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+        "source": 0,
         "start": {
           "byte": 380,
           "column": 15,
@@ -44,9 +53,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_5a61161fb3c340356c64",
+          "node": 6,
           "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+            "source": 0,
             "start": {
               "byte": 380,
               "column": 15,
@@ -62,7 +71,6 @@
       ]
     },
     {
-      "capabilities": [],
       "confidence": "high",
       "evidence": [
         "reference = actions/setup-node@v7"
@@ -70,9 +78,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+          "source": 0,
           "start": {
             "byte": 619,
             "column": 15,
@@ -85,12 +92,12 @@
           }
         }
       },
-      "id": "diag_17190c5f7983a2e7088d",
+      "id": "diag_bc4063a3321f5297b6f62c9f969c65ebfcf7d7023fbc508c4c9467db4e602fb3",
       "message": "dependency is not pinned to immutable content: actions/setup-node@v7",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+        "source": 0,
         "start": {
           "byte": 619,
           "column": 15,
@@ -105,9 +112,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_aab92a371ae556c911bb",
+          "node": 8,
           "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+            "source": 0,
             "start": {
               "byte": 619,
               "column": 15,
@@ -123,7 +130,53 @@
       ]
     },
     {
-      "capabilities": [],
+      "capabilities": [
+        "secret_access",
+        "network"
+      ],
+      "confidence": "high",
+      "evidence": [
+        "abstract secrecy = secret",
+        "script effect = network_request"
+      ],
+      "id": "diag_512da2848abafc035d715fd6d6f86ab83d03648ba57e3927334240f0fc9f1be3",
+      "message": "a secret reaches a network-capable command",
+      "rule_id": "WV-SEC-002",
+      "severity": "critical",
+      "span": {
+        "source": 0,
+        "start": {
+          "byte": 951,
+          "column": 15,
+          "line": 37
+        },
+        "stop": {
+          "byte": 976,
+          "column": 40,
+          "line": 37
+        }
+      },
+      "trace": [
+        {
+          "label": "command sink contains untrusted data",
+          "node": 17,
+          "span": {
+            "source": 0,
+            "start": {
+              "byte": 951,
+              "column": 15,
+              "line": 37
+            },
+            "stop": {
+              "byte": 976,
+              "column": 40,
+              "line": 37
+            }
+          }
+        }
+      ]
+    },
+    {
       "confidence": "high",
       "evidence": [
         "reference = codecov/codecov-action@v7"
@@ -131,9 +184,8 @@
       "fix": {
         "description": "resolve and replace the reference with an immutable revision",
         "kind": "pin-dependency",
-        "replacement": null,
         "span": {
-          "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+          "source": 0,
           "start": {
             "byte": 951,
             "column": 15,
@@ -146,12 +198,12 @@
           }
         }
       },
-      "id": "diag_c3cb16e3aa9db42d6eaf",
+      "id": "diag_76f5ecfc7224efb2fc280cddc6e558a429d3a341cab6beaff7be1df4ed308c77",
       "message": "dependency is not pinned to immutable content: codecov/codecov-action@v7",
       "rule_id": "WV-SUPPLY-001",
       "severity": "warning",
       "span": {
-        "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+        "source": 0,
         "start": {
           "byte": 951,
           "column": 15,
@@ -166,9 +218,9 @@
       "trace": [
         {
           "label": "mutable dependency",
-          "node_id": "wv_a807a051b8bca9d9de92",
+          "node": 17,
           "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
+            "source": 0,
             "start": {
               "byte": 951,
               "column": 15,
@@ -184,1047 +236,110 @@
       ]
     }
   ],
-  "digest": "sha256:bd3159a9bf3b207af12a74e49e470a3d976732653a6c6c56b9f74ab2ce6755da",
-  "graphs": [
-    {
-      "edges": [
-        {
-          "condition": true,
-          "from": "wv_ae6b42daeed30a39c764",
-          "id": "wv_0452a5dc94326d4e9945",
-          "kind": "data",
-          "label": "matrix.node-version",
-          "to": "wv_aab92a371ae556c911bb"
-        },
-        {
-          "condition": true,
-          "from": "wv_9b348eed8eaf56bdf8c5",
-          "id": "wv_09e4a7b40950e1aaece8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_aab92a371ae556c911bb"
-        },
-        {
-          "condition": true,
-          "from": "wv_3cd47473f31f94181a46",
-          "id": "wv_0a6bcf17aee66d8214a1",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b8ecad1228187bd3b15f"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6025d54fc69a59c527",
-          "id": "wv_16869f065185a464d529",
-          "kind": "control",
-          "label": null,
-          "to": "wv_cd8de3ff6f12933ac0b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_3cd47473f31f94181a46",
-          "id": "wv_27b76941764eee285af5",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_cd8de3ff6f12933ac0b1"
-        },
-        {
-          "condition": true,
-          "from": "wv_9880df5e84bf744259a1",
-          "id": "wv_2a62e3347ffc0bee8ca2",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_9b348eed8eaf56bdf8c5"
-        },
-        {
-          "condition": true,
-          "from": "wv_9880df5e84bf744259a1",
-          "id": "wv_2edb9b6d3910724b7d6c",
-          "kind": "control",
-          "label": null,
-          "to": "wv_5a61161fb3c340356c64"
-        },
-        {
-          "condition": true,
-          "from": "wv_9880df5e84bf744259a1",
-          "id": "wv_304e1baed2d2859fc87a",
-          "kind": "call",
-          "label": null,
-          "to": "wv_5a61161fb3c340356c64"
-        },
-        {
-          "condition": true,
-          "from": "wv_196c60544fb5a12f129a",
-          "id": "wv_3140c4c7996d8babfc14",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4f9156fbd139647f2841"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6025d54fc69a59c527",
-          "id": "wv_32905c35ab6c89641625",
-          "kind": "control",
-          "label": null,
-          "to": "wv_3cd47473f31f94181a46"
-        },
-        {
-          "condition": true,
-          "from": "wv_b9ee1a296d4f326f88a8",
-          "id": "wv_36988d42711f595e9c73",
-          "kind": "call",
-          "label": null,
-          "to": "wv_a807a051b8bca9d9de92"
-        },
-        {
-          "condition": true,
-          "from": "wv_a64c4605be82e7988875",
-          "id": "wv_40856b9f73b8a2d71242",
-          "kind": "control",
-          "label": null,
-          "to": "wv_4f9156fbd139647f2841"
-        },
-        {
-          "condition": true,
-          "from": "wv_cd8de3ff6f12933ac0b1",
-          "id": "wv_409504c25f2c9e2689b0",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_6401e33cc35f062f75e3"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6025d54fc69a59c527",
-          "id": "wv_47c282984345d2c494ae",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9880df5e84bf744259a1"
-        },
-        {
-          "condition": true,
-          "from": "wv_cd8de3ff6f12933ac0b1",
-          "id": "wv_4f08a42ccb3e821116da",
-          "kind": "control",
-          "label": null,
-          "to": "wv_55fb92f747e96f35324c"
-        },
-        {
-          "condition": true,
-          "from": "wv_1cd43ab7717542651bef",
-          "id": "wv_573ffb645865de2e3959",
-          "kind": "data",
-          "label": "secrets.CODECOV_TOKEN",
-          "to": "wv_a807a051b8bca9d9de92"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6025d54fc69a59c527",
-          "id": "wv_6aad7e2bc85768f44c75",
-          "kind": "control",
-          "label": null,
-          "to": "wv_6401e33cc35f062f75e3"
-        },
-        {
-          "condition": true,
-          "from": "wv_9dc98d657a162badff69",
-          "id": "wv_6c0b07f1ebe4d994e0d9",
-          "kind": "data",
-          "label": "node-version",
-          "to": "wv_8b6025d54fc69a59c527"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6025d54fc69a59c527",
-          "id": "wv_709b15e24937abda4155",
-          "kind": "control",
-          "label": null,
-          "to": "wv_9b348eed8eaf56bdf8c5"
-        },
-        {
-          "condition": true,
-          "from": "wv_4f9156fbd139647f2841",
-          "id": "wv_75abc23314600580a57a",
-          "kind": "control",
-          "label": null,
-          "to": "wv_8b6025d54fc69a59c527"
-        },
-        {
-          "condition": true,
-          "from": "wv_6401e33cc35f062f75e3",
-          "id": "wv_9f56d5b11f02c30664ad",
-          "kind": "control",
-          "label": null,
-          "to": "wv_49c9e34a65523393457e"
-        },
-        {
-          "condition": true,
-          "from": "wv_9b348eed8eaf56bdf8c5",
-          "id": "wv_bf28497118f65a9ca26c",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_3cd47473f31f94181a46"
-        },
-        {
-          "condition": true,
-          "from": "wv_8b6025d54fc69a59c527",
-          "id": "wv_d46949f5cbd94cf62db8",
-          "kind": "control",
-          "label": null,
-          "to": "wv_b9ee1a296d4f326f88a8"
-        },
-        {
-          "condition": true,
-          "from": "wv_b9ee1a296d4f326f88a8",
-          "id": "wv_da07c20ef5e5cc5a6b91",
-          "kind": "control",
-          "label": null,
-          "to": "wv_a807a051b8bca9d9de92"
-        },
-        {
-          "condition": true,
-          "from": "wv_9b348eed8eaf56bdf8c5",
-          "id": "wv_dbf7e45e2959a8fd7d8d",
-          "kind": "call",
-          "label": null,
-          "to": "wv_aab92a371ae556c911bb"
-        },
-        {
-          "condition": true,
-          "from": "wv_6401e33cc35f062f75e3",
-          "id": "wv_f6102ee40f618e31668a",
-          "kind": "control",
-          "label": "sequence",
-          "to": "wv_b9ee1a296d4f326f88a8"
-        }
-      ],
-      "entrypoints": [
-        "wv_4f9156fbd139647f2841"
-      ],
-      "nodes": [
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_196c60544fb5a12f129a",
-          "kind": "trigger",
-          "name": "pull_request",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 57,
-              "column": 3,
-              "line": 6
-            },
-            "stop": {
-              "byte": 206,
-              "column": 23,
-              "line": 12
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "secrets.CODECOV_TOKEN",
-                  "span": {
-                    "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-                    "start": {
-                      "byte": 1012,
-                      "column": 22,
-                      "line": 39
-                    },
-                    "stop": {
-                      "byte": 1033,
-                      "column": 43,
-                      "line": 39
-                    }
-                  }
-                }
-              ],
-              "secrecy": "secret",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "secrets.CODECOV_TOKEN"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_1cd43ab7717542651bef",
-          "kind": "resource",
-          "name": "secrets.CODECOV_TOKEN",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 1012,
-              "column": 22,
-              "line": 39
-            },
-            "stop": {
-              "byte": 1033,
-              "column": 43,
-              "line": 39
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_3cd47473f31f94181a46",
-          "kind": "step",
-          "name": "Enable Corepack",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 714,
-              "column": 9,
-              "line": 30
-            },
-            "stop": {
-              "byte": 764,
-              "column": 29,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-                    "start": {
-                      "byte": 875,
-                      "column": 14,
-                      "line": 35
-                    },
-                    "stop": {
-                      "byte": 887,
-                      "column": 26,
-                      "line": 35
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "npm run test"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_49c9e34a65523393457e",
-          "kind": "command",
-          "name": "npm run test",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 875,
-              "column": 14,
-              "line": 35
-            },
-            "stop": {
-              "byte": 887,
-              "column": 26,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_4f9156fbd139647f2841",
-          "kind": "workflow",
-          "name": "Run tests",
-          "phase": "compile",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 0,
-              "column": 1,
-              "line": 1
-            },
-            "stop": {
-              "byte": 1072,
-              "column": 36,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-                    "start": {
-                      "byte": 813,
-                      "column": 14,
-                      "line": 33
-                    },
-                    "stop": {
-                      "byte": 837,
-                      "column": 38,
-                      "line": 33
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "yarn install --immutable"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_55fb92f747e96f35324c",
-          "kind": "command",
-          "name": "yarn install --immutable",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 813,
-              "column": 14,
-              "line": 33
-            },
-            "stop": {
-              "byte": 837,
-              "column": 38,
-              "line": 33
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "repository_read",
-            "filesystem_write"
-          ],
-          "condition": true,
-          "effects": [
-            "file_write"
-          ],
-          "id": "wv_5a61161fb3c340356c64",
-          "kind": "call",
-          "name": "actions/checkout@v4",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 380,
-              "column": 15,
-              "line": 22
-            },
-            "stop": {
-              "byte": 399,
-              "column": 34,
-              "line": 22
-            }
-          },
-          "unknown": {
-            "detail": "actions/checkout@v4",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_6401e33cc35f062f75e3",
-          "kind": "step",
-          "name": "Run tests",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 846,
-              "column": 9,
-              "line": 34
-            },
-            "stop": {
-              "byte": 887,
-              "column": 26,
-              "line": 35
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_8b6025d54fc69a59c527",
-          "kind": "job",
-          "name": "test",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 250,
-              "column": 3,
-              "line": 15
-            },
-            "stop": {
-              "byte": 1072,
-              "column": 36,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9880df5e84bf744259a1",
-          "kind": "step",
-          "name": "step 1",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 374,
-              "column": 9,
-              "line": 22
-            },
-            "stop": {
-              "byte": 551,
-              "column": 37,
-              "line": 25
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9b348eed8eaf56bdf8c5",
-          "kind": "step",
-          "name": "Use Node.js ${{ matrix.node-version }}",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 560,
-              "column": 9,
-              "line": 26
-            },
-            "stop": {
-              "byte": 705,
-              "column": 51,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "22.x",
-                  "24.x",
-                  "26.x"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_9dc98d657a162badff69",
-          "kind": "parameter",
-          "name": "matrix.node-version",
-          "phase": "plan",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 319,
-              "column": 9,
-              "line": 19
-            },
-            "stop": {
-              "byte": 353,
-              "column": 43,
-              "line": 19
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a64c4605be82e7988875",
-          "kind": "trigger",
-          "name": "push",
-          "phase": "source",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 23,
-              "column": 3,
-              "line": 4
-            },
-            "stop": {
-              "byte": 54,
-              "column": 26,
-              "line": 5
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_a807a051b8bca9d9de92",
-          "kind": "call",
-          "name": "codecov/codecov-action@v7",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 951,
-              "column": 15,
-              "line": 37
-            },
-            "stop": {
-              "byte": 976,
-              "column": 40,
-              "line": 37
-            }
-          },
-          "unknown": {
-            "detail": "codecov/codecov-action@v7",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {},
-          "capabilities": [
-            "network"
-          ],
-          "condition": true,
-          "effects": [],
-          "id": "wv_aab92a371ae556c911bb",
-          "kind": "call",
-          "name": "actions/setup-node@v7",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 619,
-              "column": 15,
-              "line": 27
-            },
-            "stop": {
-              "byte": 640,
-              "column": 36,
-              "line": 27
-            }
-          },
-          "unknown": {
-            "detail": "actions/setup-node@v7",
-            "kind": "unresolved_dependency"
-          }
-        },
-        {
-          "attributes": {
-            "value": {
-              "provenance": [
-                {
-                  "operation": "expression reference",
-                  "origin": "matrix.node-version",
-                  "span": {
-                    "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-                    "start": {
-                      "byte": 683,
-                      "column": 29,
-                      "line": 29
-                    },
-                    "stop": {
-                      "byte": 702,
-                      "column": 48,
-                      "line": 29
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "matrix.node-version"
-                ]
-              }
-            }
-          },
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_ae6b42daeed30a39c764",
-          "kind": "resource",
-          "name": "matrix.node-version",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 683,
-              "column": 29,
-              "line": 29
-            },
-            "stop": {
-              "byte": 702,
-              "column": 48,
-              "line": 29
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {
-            "command": {
-              "provenance": [
-                {
-                  "operation": "command",
-                  "origin": "workflow source",
-                  "span": {
-                    "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-                    "start": {
-                      "byte": 749,
-                      "column": 14,
-                      "line": 31
-                    },
-                    "stop": {
-                      "byte": 764,
-                      "column": 29,
-                      "line": 31
-                    }
-                  }
-                }
-              ],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "corepack enable"
-                ]
-              }
-            },
-            "shell": {
-              "provenance": [],
-              "secrecy": "public",
-              "trust": "trusted",
-              "type": "string",
-              "value": {
-                "constants": [
-                  "default"
-                ]
-              }
-            }
-          },
-          "capabilities": [
-            "filesystem_read",
-            "filesystem_write",
-            "shell"
-          ],
-          "condition": true,
-          "effects": [
-            "command_execution"
-          ],
-          "id": "wv_b8ecad1228187bd3b15f",
-          "kind": "command",
-          "name": "corepack enable",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 749,
-              "column": 14,
-              "line": 31
-            },
-            "stop": {
-              "byte": 764,
-              "column": 29,
-              "line": 31
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_b9ee1a296d4f326f88a8",
-          "kind": "step",
-          "name": "Upload coverage reports to Codecov",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 896,
-              "column": 9,
-              "line": 36
-            },
-            "stop": {
-              "byte": 1072,
-              "column": 36,
-              "line": 40
-            }
-          },
-          "unknown": null
-        },
-        {
-          "attributes": {},
-          "capabilities": [],
-          "condition": true,
-          "effects": [],
-          "id": "wv_cd8de3ff6f12933ac0b1",
-          "kind": "step",
-          "name": "Install dependencies",
-          "phase": "run",
-          "provider": "github",
-          "span": {
-            "file": "github/jensastrup/shortcut/.github/workflows/tests.yml",
-            "start": {
-              "byte": 773,
-              "column": 9,
-              "line": 32
-            },
-            "stop": {
-              "byte": 837,
-              "column": 38,
-              "line": 33
-            }
-          },
-          "unknown": null
-        }
-      ],
-      "provider": "github",
-      "source": "github/jensastrup/shortcut/.github/workflows/tests.yml"
-    }
-  ],
-  "inputs": [
-    {
-      "digest": "sha256:eeec81901fbca99d2121249efde7c0184bed260e0001d217f2c1ca2e8dd3b810",
-      "path": "github/jensastrup/shortcut/.github/workflows/tests.yml"
-    }
-  ],
+  "digest": "sha256:579a08ad4320deb52c216bd4416cfd1af90224e9b9c5bbc381f471988de15218",
+  "gate": {
+    "exit_code": 0,
+    "result": "pass"
+  },
+  "inputs": {
+    "config": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "origin": "built-in",
+      "trust": "built-in"
+    },
+    "lock": {
+      "digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_digest": "sha256:e187d9a4b45734cbe898bf297613f77be8661e46c5f1d69eae93ef055b8b1c75",
+    "sources": [
+      {
+        "digest": "sha256:eeec81901fbca99d2121249efde7c0184bed260e0001d217f2c1ca2e8dd3b810",
+        "id": 0,
+        "path": ".github/workflows/tests.yml"
+      }
+    ]
+  },
   "persona": "audit",
   "properties": [
     {
       "explanation": "AI agent input is trusted or isolated from tools and network",
       "id": "WV-AI-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "artifact integrity is preserved across producers and consumers",
       "id": "WV-ARTIFACT-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "every privileged effect is dominated by an authorization gate",
       "id": "WV-AUTH-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "cache integrity is preserved across producers and consumers",
       "id": "WV-CACHE-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "the lowered graph is well-formed, phase-valid, and acyclic",
       "id": "WV-CORRECT-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "credentials do not persist into reusable runner state",
       "id": "WV-CRED-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "granted capabilities are required by a reachable effect",
       "id": "WV-PERM-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "untrusted values do not cross an unquoted command boundary",
       "id": "WV-SEC-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     },
     {
       "explanation": "secret values do not reach network, output, or logging effects",
       "id": "WV-SEC-002",
-      "reasons": [
-        {
-          "detail": "actions/setup-node@v7",
-          "kind": "unresolved_dependency"
-        },
-        {
-          "detail": "codecov/codecov-action@v7",
-          "kind": "unresolved_dependency"
-        }
-      ],
-      "state": "Unknown",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "workflow execution cannot rewrite trusted CI definitions",
       "id": "WV-SELF-001",
-      "reasons": [],
-      "state": "NotApplicable",
-      "subject": null
+      "state": "NotApplicable"
     },
     {
       "explanation": "remote executable dependencies are content-addressed",
       "id": "WV-SUPPLY-001",
-      "reasons": [],
-      "state": "Violated",
-      "subject": null
+      "state": "Violated"
     },
     {
       "explanation": "untrusted checkout selection cannot race a privileged consumer",
       "id": "WV-TOCTOU-001",
-      "reasons": [],
-      "state": "Proved",
-      "subject": null
+      "state": "Proved"
     }
   ],
-  "schema": "report-v1",
+  "providers": [
+    "github-semantic-v1"
+  ],
+  "schema": "workflow-verifier-report/1",
   "summary": {
-    "diagnostics": 3,
-    "graphs": 1,
-    "inputs": 1,
-    "unknown_properties": 1
+    "diagnostics": 4,
+    "edges": 26,
+    "nodes": 19,
+    "properties": 12,
+    "sources": 1,
+    "unknown_properties": 0,
+    "violated_properties": 2
   },
   "tool": {
+    "commit": null,
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
     "name": "workflow-verifier",
+    "target": "x86_64-unknown-linux-gnu",
     "version": "0.1.0"
   }
 }
