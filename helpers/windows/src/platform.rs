@@ -38,8 +38,8 @@ use windows_sys::Win32::System::Com::CoTaskMemFree;
 use windows_sys::Win32::System::JobObjects::{
     AssignProcessToJobObject, CreateJobObjectW, JOB_OBJECT_LIMIT_ACTIVE_PROCESS,
     JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, JOB_OBJECT_LIMIT_PROCESS_MEMORY,
-    JOB_OBJECT_LIMIT_PROCESS_TIME, JOBOBJECT_EXTENDED_LIMIT_INFORMATION,
-    JobObjectExtendedLimitInformation, SetInformationJobObject, TerminateJobObject,
+    JOBOBJECT_EXTENDED_LIMIT_INFORMATION, JobObjectExtendedLimitInformation,
+    SetInformationJobObject, TerminateJobObject,
 };
 use windows_sys::Win32::System::Threading::{
     CREATE_SUSPENDED, CREATE_UNICODE_ENVIRONMENT, CreateProcessAsUserW,
@@ -521,12 +521,11 @@ fn create_job(plan: &ValidatedPlan) -> Result<OwnedHandle, String> {
     let mut limits = JOBOBJECT_EXTENDED_LIMIT_INFORMATION::default();
     limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
         | JOB_OBJECT_LIMIT_ACTIVE_PROCESS
-        | JOB_OBJECT_LIMIT_PROCESS_MEMORY
-        | JOB_OBJECT_LIMIT_PROCESS_TIME;
+        | JOB_OBJECT_LIMIT_PROCESS_MEMORY;
     limits.BasicLimitInformation.ActiveProcessLimit =
         u32::try_from(plan.limits.processes).unwrap_or(u32::MAX);
-    limits.BasicLimitInformation.PerProcessUserTimeLimit =
-        i64::try_from(plan.limits.cpu_seconds.saturating_mul(10_000_000)).unwrap_or(i64::MAX);
+    // The portable limit is wall time, enforced by supervise_process.
+    // A per-process CPU limit can kill a multithreaded process before that deadline.
     limits.ProcessMemoryLimit =
         usize::try_from(plan.limits.memory_mb.saturating_mul(1024 * 1024)).unwrap_or(usize::MAX);
     // SAFETY: limits has the exact ABI required by JobObjectExtendedLimitInformation.
