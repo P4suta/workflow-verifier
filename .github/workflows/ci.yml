@@ -588,3 +588,21 @@ jobs:
           case ",$RESULTS," in
             *,failure,*|*,cancelled,*|*,skipped,*) exit 1 ;;
           esac
+
+  # The one status check branch protection requires,
+  # named the same in every P4suta repository.
+  # It passes only when every job it needs succeeded or was skipped.
+  required-check:
+    name: required
+    if: always()
+    needs: [pr-title, task-surface, static-quality, rust-security, rust-product, ocaml-reference, linux-native-containment, live-dogfood, official-compat, rust-performance-regression, yaml-fuzz-corpus, determinism-probe, determinism-compare, required]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Fail unless every needed job succeeded or was skipped
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: |
+          echo "${RESULTS}"
+          jq -e 'all(.[]; IN("success", "skipped"))' <<< "${RESULTS}"

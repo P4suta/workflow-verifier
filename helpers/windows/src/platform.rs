@@ -946,7 +946,11 @@ fn supervise_process(
     loop {
         // SAFETY: process remains valid for the entire wait loop.
         match unsafe { WaitForSingleObject(process.raw(), 10) } {
-            WAIT_OBJECT_0 => break,
+            WAIT_OBJECT_0 => {
+                outcome.output_exceeded = output.length()? > output_bytes;
+                outcome.timed_out = Instant::now() >= deadline;
+                break;
+            }
             WAIT_TIMEOUT => {}
             other => {
                 // SAFETY: fail-closed termination of our private job.

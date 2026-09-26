@@ -197,7 +197,11 @@ fn job_terminates_a_step_at_the_wall_timeout() {
         1,
         4096,
     );
-    assert!(matches!(result.outcome, Outcome::TimedOut { .. }));
+    assert!(
+        matches!(result.outcome, Outcome::TimedOut { .. }),
+        "{}",
+        result.canonical_json()
+    );
     std::fs::remove_dir_all(root).expect("remove fixture");
 }
 
