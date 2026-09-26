@@ -4,15 +4,14 @@ from scripts.verify_pr_title import validate_title
 
 
 class VerifyPullRequestTitleTests(unittest.TestCase):
-    def test_valid_titles_cover_scopes_breaking_releases_and_dependabot(self) -> None:
+    def test_valid_titles_cover_scopes_breaking_releases_and_automation(self) -> None:
         titles = [
             "feat: add policy explanation",
             "fix(parser): retain folded scalar span",
             "refactor(core)!: remove the legacy graph field",
             "docs!: replace a published compatibility promise",
             "chore: release v0.1.0",
-            "deps(actions): bump the actions group",
-            "deps(rust): bump the rust group",
+            "build(deps): update the dependency group",
             "style: apply canonical formatting",
         ]
         for title in titles:
