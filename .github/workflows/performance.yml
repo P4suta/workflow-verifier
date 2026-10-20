@@ -37,9 +37,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.0'
           check-latest: false
       - name: Check out the comparison baseline
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -88,7 +88,7 @@ jobs:
             --output "_performance-evidence/rust/${PERFORMANCE_PLATFORM}/comparison.json"
       - name: Upload exact Rust performance evidence
         if: ${{ always() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: performance-rust-${{ matrix.platform }}
           path: _performance-evidence/rust/${{ matrix.platform }}/*
