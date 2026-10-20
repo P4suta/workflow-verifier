@@ -57,6 +57,12 @@ jobs:
   quality:
     needs: release_evidence
     uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  performance:
+    needs: release_evidence
+    uses: ./.github/workflows/performance.yml
     with:
       performance_baseline: ${{ needs.release_evidence.outputs.subject_commit }}
     permissions:
@@ -70,7 +76,7 @@ jobs:
 
   assemble:
     name: Promote exact verified assets without rebuilding
-    needs: [release_evidence, mutation, quality]
+    needs: [release_evidence, performance, mutation, quality]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:

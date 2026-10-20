@@ -61,9 +61,11 @@ machine-readable evidence.
   GitHub, GitLab, Azure, and CircleCI entrypoints, exercises every public CLI
   surface, recomputes the OCI evidence hash chain, and binds the verified audit
   tail and static/runtime reconciliation to the execution plan.
-- Pull requests replay every fixed malformed-input corpus entry. A scheduled
-  AFL campaign must execute a nonempty corpus and finish with no crash or hang
-  artifact.
+- Pull requests replay every fixed malformed-input corpus entry.
+  Use the local AFL command for a targeted investigation with a nonempty corpus and no crash or hang artifacts.
+
+The protected release workflow requires the five-platform performance comparison and the complete mutation campaign before assembly.
+These campaigns have no standalone schedule or manual trigger.
 
 The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,
@@ -92,6 +94,9 @@ After analyzer changes, `scripts/prepare_corpus.py refresh` first verifies all
 recorded source digests and then reanalyzes those exact snapshots into a new
 transaction without network access. The source evaluation is immutable; the
 new reports receive a fresh exhaustive review before promotion.
+
+Local dependency automation excludes `evaluation/corpus/` and `test/fixtures/`, whose contents are versioned verification inputs.
+Use the explicit acquisition and review commands to change corpus snapshots.
 
 Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
 `just corpus-review`, `just corpus`,
