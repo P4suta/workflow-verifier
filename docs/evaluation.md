@@ -95,6 +95,9 @@ recorded source digests and then reanalyzes those exact snapshots into a new
 transaction without network access. The source evaluation is immutable; the
 new reports receive a fresh exhaustive review before promotion.
 
+Local dependency automation excludes `evaluation/corpus/` and `test/fixtures/`, whose contents are versioned verification inputs.
+Use the explicit acquisition and review commands to change corpus snapshots.
+
 Local entry points are exposed by `just corpus-acquire`, `just corpus-refresh`,
 `just corpus-review`, `just corpus`,
 `just performance-measure`, `just performance-pair`,
