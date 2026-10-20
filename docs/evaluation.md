@@ -61,9 +61,11 @@ machine-readable evidence.
   GitHub, GitLab, Azure, and CircleCI entrypoints, exercises every public CLI
   surface, recomputes the OCI evidence hash chain, and binds the verified audit
   tail and static/runtime reconciliation to the execution plan.
-- Pull requests replay every fixed malformed-input corpus entry. A scheduled
-  AFL campaign must execute a nonempty corpus and finish with no crash or hang
-  artifact.
+- Pull requests replay every fixed malformed-input corpus entry.
+  Use the local AFL command for a targeted investigation with a nonempty corpus and no crash or hang artifacts.
+
+The protected release workflow requires the five-platform performance comparison and the complete mutation campaign before assembly.
+These campaigns have no standalone schedule or manual trigger.
 
 The corresponding schemas live in `schema/`. Evidence generators reject
 duplicate JSON keys, symlinks, path traversal, missing samples, empty campaigns,

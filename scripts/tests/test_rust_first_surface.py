@@ -94,7 +94,7 @@ class RustFirstSurfaceTests(unittest.TestCase):
     def test_live_and_official_product_gates_execute_the_rust_cli(self) -> None:
         ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
         dogfood = section(ci, "  live-dogfood:\n", "  official-compat:\n")
-        official = section(ci, "  official-compat:\n", "  rust-performance-regression:\n")
+        official = section(ci, "  official-compat:\n", "  yaml-fuzz-corpus:\n")
         for gate in (dogfood, official):
             self.assertIn("cargo build --locked -p workflow-verifier", gate)
             self.assertIn("target/debug/workflow-verifier", gate)
@@ -103,11 +103,24 @@ class RustFirstSurfaceTests(unittest.TestCase):
         self.assertIn("just differential", reference)
         self.assertNotIn("workflow-verifier-reference check", reference)
 
-    def test_rust_performance_baseline_selects_the_stable_binary_name(self) -> None:
+    def test_release_performance_keeps_the_baseline_and_blocks_assembly(self) -> None:
         ci = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
-        performance = section(ci, "  rust-performance-regression:\n", "  yaml-fuzz-corpus:\n")
+        self.assertNotIn("rust-performance-regression", ci)
+        performance = (ROOT / ".github" / "workflows" / "performance.yml").read_text(
+            encoding="utf-8"
+        )
         self.assertIn("--manifest-path _performance-base/Cargo.toml", performance)
         self.assertIn("--bin workflow-verifier", performance)
+        self.assertIn("ref: ${{ inputs.performance_baseline }}", performance)
+        release = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+        call = section(release, "  performance:\n", "  mutation:\n")
+        self.assertIn("uses: ./.github/workflows/performance.yml", call)
+        self.assertIn(
+            "performance_baseline: ${{ needs.release_evidence.outputs.subject_commit }}",
+            call,
+        )
+        assembly = section(release, "  assemble:\n", "    runs-on:")
+        self.assertIn("needs: [release_evidence, performance, mutation, quality]", assembly)
 
         justfile = (ROOT / "justfile").read_text(encoding="utf-8")
         mise = (ROOT / "mise.toml").read_text(encoding="utf-8")
@@ -130,6 +143,8 @@ class RustFirstSurfaceTests(unittest.TestCase):
     def test_user_documentation_is_english_rust_first_and_uses_current_contracts(self) -> None:
         self.assertEqual(list((ROOT / "docs").glob("*.ja.md")), [])
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("docs/usage.md", readme)
+        readme += (ROOT / "docs" / "usage.md").read_text(encoding="utf-8")
         self.assertIn("Rust product", readme)
         self.assertIn("workflow-verifier-reference", readme)
         self.assertIn("report.json", readme)
