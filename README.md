@@ -1,5 +1,7 @@
 # workflow-verifier
 
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE-MIT)
+
 A Rust CLI for offline analysis of GitHub Actions, GitLab CI, Azure Pipelines, and CircleCI workflows.
 It checks workflow semantics and trust boundaries and can plan execution through optional isolation helpers.
 
