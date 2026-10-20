@@ -27,7 +27,8 @@ const HTTP_LINE_TERMINATOR: &[u8] = b"\r\n";
 const HTTP_STATUS_DIGITS: usize = 3;
 const HTTP_INFORMATIONAL_STATUS_MIN: u16 = 100;
 const HTTP_SERVER_ERROR_STATUS_MAX: u16 = 599;
-const HTTP_SUCCESS_STATUS_MIN: u16 = 200;
+const HTTP_OK_STATUS: u16 = 200;
+const HTTP_SUCCESS_STATUS_MIN: u16 = HTTP_OK_STATUS;
 const HTTP_SUCCESS_STATUS_MAX: u16 = 299;
 const HTTP_REDIRECT_STATUSES: [u16; 5] = [301, 302, 303, 307, 308];
 const HTTPS_DEFAULT_PORT: u16 = 443;
@@ -520,7 +521,7 @@ fn establish_proxy_tunnel(
     {
         return Err("HTTPS proxy CONNECT response has an unexpected body".to_owned());
     }
-    if status != 200 {
+    if status != HTTP_OK_STATUS {
         return Err(format!("HTTPS proxy CONNECT returned status {status}"));
     }
     Ok(())
