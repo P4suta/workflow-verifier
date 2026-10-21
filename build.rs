@@ -2,8 +2,10 @@ use std::fs;
 use std::path::Path;
 use std::process::Command;
 
+const SOURCE_COMMIT_HEX_LENGTH: usize = 40;
+
 fn valid_commit(value: &str) -> bool {
-    value.len() == 40
+    value.len() == SOURCE_COMMIT_HEX_LENGTH
         && value
             .bytes()
             .all(|byte| byte.is_ascii_digit() || matches!(byte, b'a'..=b'f'))
