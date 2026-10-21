@@ -16,7 +16,7 @@ jobs:
   release-pr:
     permissions:
       contents: read
-      id-token: write
+      id-token: write # Exchange this job's workload identity for its Doppler config.
     name: Create or update the draft Release PR
     runs-on: ubuntu-24.04
     timeout-minutes: 30
