@@ -184,15 +184,19 @@ fn job_terminates_a_step_at_the_output_limit() {
 #[test]
 fn job_terminates_a_step_at_the_wall_timeout() {
     let root = source();
+    std::fs::write(
+        root.join("wait.cmd"),
+        b"@echo off\r\n:wait\r\ngoto wait\r\n",
+    )
+    .expect("write sustained workload");
     let result = execute(
         &root,
         vec![
-            "powershell.exe".to_owned(),
-            "-NoLogo".to_owned(),
-            "-NoProfile".to_owned(),
-            "-NonInteractive".to_owned(),
-            "-Command".to_owned(),
-            "Start-Sleep -Seconds 10".to_owned(),
+            "cmd.exe".to_owned(),
+            "/D".to_owned(),
+            "/S".to_owned(),
+            "/C".to_owned(),
+            r#""%WORKFLOW_VERIFIER_SOURCE%\wait.cmd""#.to_owned(),
         ],
         1,
         4096,

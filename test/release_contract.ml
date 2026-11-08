@@ -47,6 +47,7 @@ let required =
     "../.github/workflows/ci.yml";
     "../.github/workflows/mutation.yml";
     "../.github/workflows/release.yml";
+    "../.github/workflows/performance.yml";
     "../.github/workflows/release-pr.yml";
     "../.github/workflows/candidate.yml";
     "../.github/workflows/sign-windows.yml";
@@ -126,6 +127,23 @@ let read_required relative =
   | Ok source -> source
   | Error message -> fail "%s" message
 
+let missing_surface (source : string) (surfaces : string list) : string option =
+  List.find_opt (fun needle -> not (Util.contains ~needle source)) surfaces
+
+let require_surfaces name source surfaces =
+  match missing_surface source surfaces with
+  | None -> ()
+  | Some needle -> fail "%s omits required surface: %s" name needle
+
+let reject_missing_surfaces name source surfaces selected =
+  List.iter
+    (fun needle ->
+      let invalid = Util.replace_all ~needle ~replacement:"" source in
+      match missing_surface invalid surfaces with
+      | Some missing when String.equal missing needle -> ()
+      | _ -> fail "%s accepts a missing required surface: %s" name needle)
+    selected
+
 let () =
   List.iter
     (fun relative ->
@@ -204,12 +222,6 @@ let () =
       "sandbox audit --trust-repository-config";
       "WORKFLOW_VERIFIER_OCI_HELPER";
       "rust:1.85-bookworm@sha256:e51d0265072d2d9d5d320f6a44dde6b9ef13653b035098febd68cce8fa7c0bc4";
-      "Rust performance ${{ matrix.platform }}";
-      "measure_performance_pair.py";
-      "Period-balance identical Rust workloads";
-      "--samples 24";
-      "performance_gate.py";
-      "- rust-performance-regression";
     ];
   if not (Util.contains ~needle:"run: sh helpers/macos/build-shim.sh" github)
   then fail "macOS shim build must use an explicit POSIX shell";
@@ -276,6 +288,33 @@ let () =
   if not (Util.contains ~needle:"workflow_call:" ci) then
     fail "CI workflow must be reusable by the release workflow";
   let release = read_required ".github/workflows/release.yml" in
+  let performance = read_required ".github/workflows/performance.yml" in
+  let performance_surfaces =
+    [
+      "workflow_call:";
+      "performance_baseline:";
+      "rust-performance-regression:";
+      "Rust performance ${{ matrix.platform }}";
+      "measure_performance_pair.py";
+      "Period-balance identical Rust workloads";
+      "--samples 24";
+      "performance_gate.py";
+    ]
+  in
+  require_surfaces "Performance workflow" performance performance_surfaces;
+  reject_missing_surfaces "Performance workflow" performance
+    performance_surfaces
+    [ "rust-performance-regression:"; "--samples 24"; "performance_gate.py" ];
+  let release_performance_surfaces =
+    [
+      "uses: ./.github/workflows/performance.yml";
+      "needs: [release_evidence, performance, mutation, quality]";
+    ]
+  in
+  require_surfaces "Release performance prerequisites" release
+    release_performance_surfaces;
+  reject_missing_surfaces "Release performance prerequisites" release
+    release_performance_surfaces release_performance_surfaces;
   let release_pr = read_required ".github/workflows/release-pr.yml" in
   let release_plz = read_required "release-plz.toml" in
   let action = read_required "action.yml" in
@@ -286,10 +325,7 @@ let () =
   let mutation_config = read_required ".ocaml-mutants.toml" in
   let mutation_guard = read_required "scripts/mutation_resource_guard.py" in
   let test_build = read_required "test/dune" in
-  List.iter
-    (fun required_surface ->
-      if not (Util.contains ~needle:required_surface release_pr) then
-        fail "Release PR workflow omits required surface: %s" required_surface)
+  let release_pr_surfaces =
     [
       "push:";
       "branches: [main]";
@@ -298,14 +334,23 @@ let () =
       "environment: release-pr";
       "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1";
       "release-plz/action@2eb1d8bcb770b4c48ccfaad919734b38b51958c9";
-      "RELEASE_PLZ_APP_CLIENT_ID";
-      "RELEASE_PLZ_APP_PRIVATE_KEY";
+      "RELEASE_APP_CLIENT_ID";
+      "RELEASE_APP_PRIVATE_KEY";
+      "client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}";
+      "private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}";
       "permission-contents: write";
       "permission-pull-requests: write";
       "fetch-depth: 0";
       "persist-credentials: false";
       "command: release-pr";
       "GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}";
+    ]
+  in
+  require_surfaces "Release PR workflow" release_pr release_pr_surfaces;
+  reject_missing_surfaces "Release PR workflow" release_pr release_pr_surfaces
+    [
+      "client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}";
+      "private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}";
     ];
   List.iter
     (fun forbidden_surface ->
@@ -508,7 +553,6 @@ let () =
       "performance_baseline: ${{ needs.release_evidence.outputs.subject_commit \
        }}";
       "name: Promote exact verified assets without rebuilding";
-      "needs: [release_evidence, mutation, quality]";
       "environment: crate-publication";
       "ref: ${{ needs.release_evidence.outputs.subject_commit }}";
       "needs.release_evidence.outputs.crate_digest";
