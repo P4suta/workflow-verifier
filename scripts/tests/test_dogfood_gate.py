@@ -1,5 +1,7 @@
 import hashlib
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -12,7 +14,7 @@ def canonical(value: object) -> str:
     return json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True) + "\n"
 
 
-def evidence(plan_digest: str) -> dict[str, object]:
+def evidence(plan_digest: str) -> tuple[dict[str, object], str]:
     bodies = [
         {"kind": "backend_attested"},
         {"kind": "process_started"},
@@ -25,13 +27,46 @@ def evidence(plan_digest: str) -> dict[str, object]:
         digest = "sha256:" + hashlib.sha256(canonical(unsigned)[:-1].encode("utf-8")).hexdigest()
         events.append({**unsigned, "digest": digest})
         previous = digest
-    return {"events": events, "plan_digest": plan_digest, "schema": "evidence-v2"}
+    return {"events": events, "plan_digest": plan_digest, "schema": "evidence-v2"}, previous
 
 
 class DogfoodGateTests(unittest.TestCase):
+    def test_static_report_gate_requires_no_runtime_artifacts_and_rejects_diagnostics(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            report_path = Path(directory) / "report.json"
+            report = report_document(
+                paths=[
+                    ".github/workflows/ci.yml",
+                    ".gitlab-ci.yml",
+                    "azure-pipelines.yml",
+                    ".circleci/config.yml",
+                ],
+                properties=[{"id": "WV-CORRECT-001", "state": "Proved"}],
+            )
+            for diagnostics, expected_status in [([], 0), ([{"rule_id": "WV-TEST"}], 1)]:
+                with self.subTest(diagnostics=diagnostics):
+                    report["diagnostics"] = diagnostics
+                    report_path.write_text(canonical(report), encoding="utf-8", newline="\n")
+                    completed = subprocess.run(
+                        [
+                            sys.executable,
+                            "-B",
+                            str(Path(__file__).resolve().parents[1] / "dogfood_gate.py"),
+                            "verify-report",
+                            "--report",
+                            str(report_path),
+                        ],
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                    )
+                    self.assertEqual(completed.returncode, expected_status, completed.stderr)
+                    if expected_status:
+                        self.assertIn("zero diagnostics", completed.stderr)
+
     def fixture(self, root: Path) -> None:
         plan_digest = "sha256:" + "3" * 64
-        runtime_evidence = evidence(plan_digest)
+        runtime_evidence, evidence_tail = evidence(plan_digest)
         documents = {
             "report.json": report_document(
                 paths=[
@@ -102,7 +137,7 @@ class DogfoodGateTests(unittest.TestCase):
             "replay.json": runtime_evidence,
             "audit.json": {
                 "event_count": 3,
-                "evidence_tail": runtime_evidence["events"][-1]["digest"],
+                "evidence_tail": evidence_tail,
                 "plan_digest": plan_digest,
                 "reconciliation": {"state": "Proved"},
                 "schema": "sandbox-audit-v1",

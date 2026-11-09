@@ -2,7 +2,19 @@ version = 2
 persona = "audit"
 frontends = ["github", "gitlab", "azure", "circleci"]
 offline = true
-source_exclusions = ["_build", "_candidate", "_dogfood", "_dogfood-v0.1.0", "_opam", "_performance-base", "evaluation", "fuzz", "helpers/target", "target", "test"]
+source_exclusions = [
+  "_build",
+  "_candidate",
+  "_dogfood",
+  "_dogfood-v0.1.0",
+  "_opam",
+  "_performance-base",
+  "evaluation",
+  "fuzz",
+  "helpers/target",
+  "target",
+  "test",
+]
 
 [[suppressions]]
 rule = "WV-SEC-001"
@@ -24,3 +36,10 @@ path = ".github/workflows/release-pr.yml"
 reason = "The pinned token action mints one short-lived repository-scoped App token for the pinned release-plz action to update only the Draft Release PR."
 owner = "release-security"
 expiry = "2027-08-29"
+
+[[suppressions]]
+rule = "WV-SEC-002"
+path = ".github/workflows/verify-release-app.yml"
+reason = "The pinned token action authenticates with protected App credentials, mints a read-only repository token, and revokes it at job completion."
+owner = "release-security"
+expiry = "2027-02-07"

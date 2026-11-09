@@ -12,6 +12,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PINNED_JUST = "1.57.0"
 REVISION_FIXTURE = "0123456789abcdef0123456789abcdef01234567"
+DETERMINISM_INPUTS: tuple[str, ...] = (
+    "linux-x86_64",
+    "linux-arm64",
+    "windows-x86_64",
+    "macos-arm64",
+    "macos-x86_64",
+)
 
 
 def _run(argv: list[str], root: Path) -> subprocess.CompletedProcess[str]:
@@ -74,6 +81,18 @@ def verify(root: Path = ROOT, *, just: str = "just") -> list[str]:
         )
     if REVISION_FIXTURE not in dry_run.stdout + dry_run.stderr:
         raise ValueError("performance-measure dry-run did not bind the revision argument")
+    comparison = _run([just, "--dry-run", "determinism-compare", *DETERMINISM_INPUTS], root)
+    expected = (
+        "python -B scripts/compare_determinism.py --output _build/determinism/comparison.json "
+        + " ".join(DETERMINISM_INPUTS)
+    )
+    if comparison.returncode != 0:
+        raise ValueError(
+            "determinism-compare dry-run failed: "
+            + (comparison.stderr.strip() or comparison.stdout.strip())
+        )
+    if (comparison.stdout + comparison.stderr).strip() != expected:
+        raise ValueError("determinism-compare dry-run did not bind all five platform inputs")
     return sorted(just_tasks)
 
 

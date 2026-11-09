@@ -204,11 +204,28 @@ run = "python -B scripts/verify_linux_compat.py ${WV_LINUX_BINARY}"
 
 [tasks.check]
 description = "Run the local release-readiness sequence"
-depends = ["task-surface", "conformance-manifest", "build", "test", "yaml-conformance", "tooling", "architecture", "lint-policy", "rust", "lsp-performance", "differential", "purity", "licenses", "install-check"]
+depends = [
+  "task-surface",
+  "conformance-manifest",
+  "links",
+  "build",
+  "test",
+  "yaml-conformance",
+  "tooling",
+  "architecture",
+  "lint-policy",
+  "rust",
+  "lsp-performance",
+  "differential",
+  "purity",
+  "licenses",
+  "install-check",
+  "dogfood",
+]
 
 [tasks.dogfood]
 description = "Analyze workflow-verifier with its own audit persona"
-run = "cargo build --locked -p workflow-verifier && target/debug/workflow-verifier check --config examples/dogfood-policy-v2.toml --trust-repository-config ."
+run = "cargo build --locked -p workflow-verifier && target/debug/workflow-verifier check --config examples/dogfood-policy-v2.toml --trust-repository-config --format json --output target/dogfood-report.json . && python -B scripts/dogfood_gate.py verify-report --report target/dogfood-report.json"
 
 [tasks.dogfood-gate]
 description = "Verify complete static CLI and live OCI dogfood evidence"

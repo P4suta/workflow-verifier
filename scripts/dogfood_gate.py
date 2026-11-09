@@ -159,12 +159,8 @@ def prepare_image(config_path: pathlib.Path, image: str) -> None:
     config_path.write_text(updated, encoding="utf-8", newline="\n")
 
 
-def verify(root: pathlib.Path) -> dict[str, Any]:
-    if root.is_symlink() or not root.is_dir():
-        raise ValueError("dogfood evidence root must be a regular directory")
-    raw = {name: _bytes(root / name) for name in ARTIFACTS}
-
-    report = _json(root / "report.json")
+def verify_report(path: pathlib.Path) -> None:
+    report: dict[str, object] = _json(path)
     _schema(report, "workflow-verifier-report/1", "report.json")
     if not isinstance(report.get("properties"), list) or not report["properties"]:
         raise ValueError("report.json contains no proved properties")
@@ -172,6 +168,13 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
         raise ValueError("report.json dogfood must contain zero diagnostics")
     if _report_frontends(report) != EXPECTED_FRONTENDS:
         raise ValueError("report.json must analyze all four provider entrypoints")
+
+
+def verify(root: pathlib.Path) -> dict[str, Any]:
+    if root.is_symlink() or not root.is_dir():
+        raise ValueError("dogfood evidence root must be a regular directory")
+    raw = {name: _bytes(root / name) for name in ARTIFACTS}
+    verify_report(root / "report.json")
 
     sarif = _json(root / "report.sarif.json")
     if sarif.get("version") != "2.1.0" or not isinstance(sarif.get("runs"), list):
@@ -245,8 +248,10 @@ def verify(root: pathlib.Path) -> dict[str, Any]:
         raise ValueError("run.json lacks evidence-v2")
     if evidence.get("plan_digest") != plan.get("digest"):
         raise ValueError("run.json evidence does not bind plan.json")
-    evidence_tail = _verify_evidence_chain(evidence, "run.json evidence")
     events = evidence.get("events")
+    if not isinstance(events, list):
+        raise ValueError("run.json evidence has no runtime events")
+    evidence_tail = _verify_evidence_chain(evidence, "run.json evidence")
     kinds = {
         body.get("kind")
         for event in events
@@ -293,6 +298,8 @@ def main(argv: list[str] | None = None) -> int:
     prepare = subparsers.add_parser("prepare-image")
     prepare.add_argument("--config", required=True, type=pathlib.Path)
     prepare.add_argument("--image", required=True)
+    report = subparsers.add_parser("verify-report")
+    report.add_argument("--report", required=True, type=pathlib.Path)
     gate = subparsers.add_parser("verify")
     gate.add_argument("--root", required=True, type=pathlib.Path)
     gate.add_argument("--output", required=True, type=pathlib.Path)
@@ -302,6 +309,9 @@ def main(argv: list[str] | None = None) -> int:
             extract_evidence(arguments.run, arguments.output)
         elif arguments.command == "prepare-image":
             prepare_image(arguments.config, arguments.image)
+        elif arguments.command == "verify-report":
+            verify_report(arguments.report)
+            print("dogfood report: four providers passed with zero diagnostics")
         else:
             result = verify(arguments.root)
             arguments.output.parent.mkdir(parents=True, exist_ok=True)

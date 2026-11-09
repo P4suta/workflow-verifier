@@ -20,7 +20,6 @@ class DeterminismProbeTests(unittest.TestCase):
         self.assertIn("cargo build --locked -p workflow-verifier", determinism_job)
         self.assertIn("_determinism/determinism-linux-arm64", ci)
         self.assertIn("cargo build --locked -p workflow-verifier", justfile)
-        self.assertIn("{{linux_arm64}}", justfile)
         self.assertIn("_build/determinism/linux-arm64", mise)
 
     def test_commands_use_the_same_relative_fixture_and_never_enable_network(self) -> None:
