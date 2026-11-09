@@ -25,6 +25,9 @@ jobs:
       github.ref == 'refs/heads/main'
     permissions: {}
     uses: ./.github/workflows/verify-release-app.yml
+    secrets:
+      RELEASE_APP_CLIENT_ID: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+      RELEASE_APP_PRIVATE_KEY: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
   sign_windows_0:
     name: Verify sign_windows access

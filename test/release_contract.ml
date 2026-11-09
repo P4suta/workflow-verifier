@@ -182,6 +182,37 @@ let yaml_mapping ?(named = false)
            entries
   | _ -> false
 
+let app_verification_guard =
+  "github.repository_id == '1343470774' && github.event_name == \
+   'workflow_dispatch' && github.ref == 'refs/heads/main'"
+
+let app_verification_call_is_scoped (source : string) : bool =
+  let parsed = Yaml_cst.parse source in
+  parsed.problems = []
+  && List.length parsed.documents = 1
+  &&
+  match Yaml_cst.root parsed with
+  | Some root -> (
+      match Yaml_cst.get_path root [ "jobs"; "automation_0" ] with
+      | Some job ->
+          yaml_mapping ~named:true
+            [
+              ("if", yaml_scalar app_verification_guard);
+              ("permissions", yaml_mapping []);
+              ("uses", yaml_scalar "./.github/workflows/verify-release-app.yml");
+              ( "secrets",
+                yaml_mapping
+                  [
+                    ( "RELEASE_APP_CLIENT_ID",
+                      yaml_scalar "${{ secrets.RELEASE_APP_CLIENT_ID }}" );
+                    ( "RELEASE_APP_PRIVATE_KEY",
+                      yaml_scalar "${{ secrets.RELEASE_APP_PRIVATE_KEY }}" );
+                  ] );
+            ]
+            job
+      | None -> false)
+  | None -> false
+
 let app_verification_is_read_only (source : string) : bool =
   let validation =
     yaml_mapping ~named:true
@@ -220,10 +251,7 @@ let app_verification_is_read_only (source : string) : bool =
   let job =
     yaml_mapping ~named:true
       [
-        ( "if",
-          yaml_scalar
-            "github.repository_id == '1343470774' && github.event_name == \
-             'workflow_dispatch' && github.ref == 'refs/heads/main'" );
+        ("if", yaml_scalar app_verification_guard);
         ("runs-on", yaml_scalar "ubuntu-24.04");
         ("timeout-minutes", yaml_scalar "5");
         ("environment", yaml_scalar "release-pr");
@@ -257,7 +285,24 @@ let app_verification_is_read_only (source : string) : bool =
   | Some root ->
       yaml_mapping ~named:true
         [
-          ("on", yaml_mapping [ ("workflow_call", yaml_mapping []) ]);
+          ( "on",
+            yaml_mapping
+              [
+                ( "workflow_call",
+                  yaml_mapping
+                    [
+                      ( "secrets",
+                        yaml_mapping
+                          [
+                            ( "RELEASE_APP_CLIENT_ID",
+                              yaml_mapping [ ("required", yaml_scalar "true") ]
+                            );
+                            ( "RELEASE_APP_PRIVATE_KEY",
+                              yaml_mapping [ ("required", yaml_scalar "true") ]
+                            );
+                          ] );
+                    ] );
+              ] );
           ("permissions", yaml_mapping []);
           ("jobs", jobs);
         ]
@@ -265,6 +310,9 @@ let app_verification_is_read_only (source : string) : bool =
   | None -> false
 
 let verify_app_authentication_contract () =
+  let wrapper = read_required ".github/workflows/verify-doppler.yml" in
+  if not (app_verification_call_is_scoped wrapper) then
+    fail "Manual App verification must pass only the two named App secrets";
   let source = read_required ".github/workflows/verify-release-app.yml" in
   if not (app_verification_is_read_only source) then
     fail
@@ -299,7 +347,9 @@ let verify_app_authentication_contract () =
       ("environment: release-pr", "environment: unprotected");
       ("refs/heads/main", "refs/heads/unreviewed");
       ("workflow_dispatch", "pull_request");
-      ("workflow_call: {}", "workflow_dispatch: {}");
+      ("workflow_call:", "workflow_dispatch:");
+      ("required: true", "required: false");
+      ("      RELEASE_APP_PRIVATE_KEY:\n        required: true\n", "");
       ("permissions: {}", "permissions: {id-token: write}");
       ("64ab729a6294000f5aa4a4bc0b73d1f32bc45510", "v3");
       ("RELEASE_APP_PRIVATE_KEY", "UNRELATED_PRIVATE_KEY");
@@ -312,7 +362,25 @@ let verify_app_authentication_contract () =
         \    steps:\n\
         \      - run: echo unexpected\n" );
     ];
-  let wrapper = read_required ".github/workflows/verify-doppler.yml" in
+  let bindings =
+    "    secrets:\n\
+    \      RELEASE_APP_CLIENT_ID: ${{ secrets.RELEASE_APP_CLIENT_ID }}\n\
+    \      RELEASE_APP_PRIVATE_KEY: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}\n"
+  in
+  List.iter
+    (fun (needle, replacement) ->
+      let invalid = Util.replace_all ~needle ~replacement wrapper in
+      if String.equal invalid wrapper || (Yaml_cst.parse invalid).problems <> []
+      then fail "Invalid App caller rejecting fixture: %s" needle;
+      if app_verification_call_is_scoped invalid then
+        fail "App caller accepts missing or broader secret bindings: %s"
+          replacement)
+    [
+      (bindings, "");
+      (bindings, "    secrets: inherit\n");
+      ("RELEASE_APP_PRIVATE_KEY", "UNRELATED_PRIVATE_KEY");
+      ("secrets.RELEASE_APP_CLIENT_ID", "secrets.UNRELATED_CLIENT_ID");
+    ];
   require_surfaces "Manual credential verification" wrapper
     [
       "uses: ./.github/workflows/verify-release-app.yml";
