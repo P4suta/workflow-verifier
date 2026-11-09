@@ -13,12 +13,12 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
 
       - name: Run Jules Review Action
-        uses: google-labs-code/jules-action@main
+        uses: google-labs-code/jules-action@bff7875eaa123cac6742b7cfc51005b95ba4d566 # main
         with:
           # Required input: Your GitHub token to post comments on the PR
           github_token: ${{ secrets.GITHUB_TOKEN }}

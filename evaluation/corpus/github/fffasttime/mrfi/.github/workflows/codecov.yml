@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Test mrfi code coverage
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
+    - uses: actions/setup-python@e9aba2c848f5ebd159c070c61ea2c4e2b122355e # v2
       name: Setup Python
       with:
         python-version: '3.9'
@@ -24,6 +24,6 @@ jobs:
     - name: Run tests and collect coverage
       run: pytest --cov=mrfi --cov-report=xml
     - name: Upload coverage reports to Codecov with GitHub Action
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5
       with:
         fail_ci_if_error: true

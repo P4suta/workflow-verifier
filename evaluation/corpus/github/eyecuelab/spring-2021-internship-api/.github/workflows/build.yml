@@ -14,16 +14,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@7c12f8017d5436eb855f1ed4399f037a36fbd9e8 # v2
         with:
           node-version: '14'
           check-latest: true
 
       - name: Setup PostgreSQL
-        uses: harmon758/postgresql-action@v1.0.0
+        uses: harmon758/postgresql-action@0be19fa37850b22cb4c9bbf28a03abbf44abd863 # v1.0.0
         with:
           postgresql version: 12
           postgresql db: curo_test

@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'repo-creation')
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
 
       ## validate the deetz
-      - uses: stefanbuck/github-issue-parser@v3
+      - uses: stefanbuck/github-issue-parser@cb6e97157cbf851e3a393ff8d57c93a484cc323f # v3
         id: issue-parser
         with:
           template-path: .github/ISSUE_TEMPLATE/repo_creation.yaml

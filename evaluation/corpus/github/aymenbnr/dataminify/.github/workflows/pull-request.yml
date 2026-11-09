@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate branch name
-        uses: actions/github-script@v3
+        uses: actions/github-script@ffc2c79a5b2490bd33e0a41c1de74b877714d736 # v3
         id: set-branch-name
         with:
           script: |
@@ -34,7 +34,7 @@ jobs:
       - name: Set branch name
         run: echo "PULL_REQUEST_TITLE=${{steps.set-branch-name.outputs.result}}" >> $GITHUB_ENV
       - name: Generate PR body
-        uses: actions/github-script@v3
+        uses: actions/github-script@ffc2c79a5b2490bd33e0a41c1de74b877714d736 # v3
         id: set-pr-body
         with:
           script: |
@@ -47,7 +47,7 @@ jobs:
       - name: Set PR body
         run: echo "PULL_REQUEST_BODY=${{steps.set-pr-body.outputs.result}}" >> $GITHUB_ENV
       - name: Generate PR draft
-        uses: actions/github-script@v3
+        uses: actions/github-script@ffc2c79a5b2490bd33e0a41c1de74b877714d736 # v3
         id: set-pr-draft
         with:
           script: |
@@ -55,7 +55,7 @@ jobs:
       - name: Set PR draft
         run: echo "PULL_REQUEST_DRAFT=${{steps.set-pr-draft.outputs.result}}" >> $GITHUB_ENV
       - name: Determine whether to merge
-        uses: actions/github-script@v3
+        uses: actions/github-script@ffc2c79a5b2490bd33e0a41c1de74b877714d736 # v3
         id: should-pr
         with:
           github-token: ${{ secrets.GH_PAT }}
@@ -65,7 +65,7 @@ jobs:
               context.payload.ref.startsWith("refs/heads/hotfix") ||
               context.payload.ref.startsWith("refs/heads/bug");
       - name: pull-request-action
-        uses: vsoch/pull-request-action@1.0.12
+        uses: vsoch/pull-request-action@c761be135fb815cbfaf2151170f41995e7a3b294 # 1.0.12
         if: always() && steps.should-pr.outputs.result
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
