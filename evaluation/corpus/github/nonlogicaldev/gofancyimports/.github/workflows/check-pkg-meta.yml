@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: ${{ github.event.pull_request.head.ref || github.ref }}
           fetch-depth: 0
@@ -69,11 +69,11 @@ jobs:
 
       - name: Install Nix
         if: steps.check-go-files.outputs.go_files_changed == 'true'
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@9383ce2bf08796b65508822f5982f49151badc4e # main
 
       - name: Setup Nix with flakes
         if: steps.check-go-files.outputs.go_files_changed == 'true'
-        uses: DeterminateSystems/magic-nix-cache-action@main
+        uses: DeterminateSystems/magic-nix-cache-action@f69a2d3e148e90223fe63ab6e3f6331f2e7e33dc # main
 
       - name: Run update_pkg_meta
         if: steps.check-go-files.outputs.go_files_changed == 'true'

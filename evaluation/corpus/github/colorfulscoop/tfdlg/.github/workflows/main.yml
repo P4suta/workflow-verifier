@@ -7,7 +7,7 @@ jobs:
       image: python:3.8.7-slim-buster
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
       - name: Install dependencies
         run: pip install .[test]
       - name: Run small size tests
