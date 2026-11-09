@@ -1,7 +1,12 @@
 name: Verify release App access
 
 'on':
-  workflow_call: {}
+  workflow_call:
+    secrets:
+      RELEASE_APP_CLIENT_ID:
+        required: true
+      RELEASE_APP_PRIVATE_KEY:
+        required: true
 
 permissions: {}
 

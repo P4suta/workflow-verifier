@@ -19,6 +19,8 @@ GitHub stores copies, and protected main and environment policies replace Dopple
 The manual **Verify credential access** workflow creates a read-only App token and revokes it during cleanup.
 Run the workflow from reviewed main after merging.
 The default invocation verifies only App access.
+The caller passes only the two named App secrets, and the reusable workflow requires both declarations.
+GitHub requires [explicit forwarding](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows#using-inputs-and-secrets-in-a-reusable-workflow) even when the called job selects an environment containing the secrets.
 Selecting the verify_signing input also runs the existing signing credential check.
 The verification performs no signing or publication.
 
