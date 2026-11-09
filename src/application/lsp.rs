@@ -1628,7 +1628,7 @@ mod performance_tests {
     // Nearest-rank p95 for exactly twenty sorted observations (zero-based).
     const PERFORMANCE_P95_INDEX: usize = 18;
     const DIAGNOSTICS_P95_MILLISECONDS: u64 = 150;
-    const CANCELLATION_INJECTION_MILLISECONDS: u64 = 10;
+    const SYNCHRONIZATION_TIMEOUT: Duration = Duration::from_secs(5);
     const CANCELLATION_P95_MILLISECONDS: u64 = 50;
     const TRANSITIVE_INVALIDATION_P95_MILLISECONDS: u64 = 500;
 
@@ -1734,24 +1734,35 @@ mod performance_tests {
             document.text = large_workflow(marker);
             let document = server.documents.get(uri).expect("fixture document");
             let cancellation = CancellationToken::new();
+            let (parse_started, wait_for_parse) = std::sync::mpsc::channel();
+            let (resume_parse, wait_to_resume) = std::sync::mpsc::channel();
+            server.session.borrow_mut().pause_next_parse(
+                parse_started,
+                wait_to_resume,
+                SYNCHRONIZATION_TIMEOUT,
+            );
             let result = std::thread::scope(|scope| {
                 let worker_token = cancellation.clone();
                 let (sender, receiver) = std::sync::mpsc::channel();
                 scope.spawn(move || {
-                    std::thread::sleep(Duration::from_millis(CANCELLATION_INJECTION_MILLISECONDS));
+                    wait_for_parse
+                        .recv_timeout(SYNCHRONIZATION_TIMEOUT)
+                        .expect("analysis reaches an uncached parse");
                     let cancelled_at = Instant::now();
                     worker_token.cancel();
                     sender
                         .send(cancelled_at)
                         .expect("test receiver remains live");
+                    resume_parse.send(()).expect("analysis resumes parsing");
                 });
                 let result = server.analysis(document, &cancellation);
+                let completed_at = Instant::now();
                 let cancelled_at = receiver.recv().expect("cancellation timestamp");
-                (result, cancelled_at.elapsed())
+                (result, completed_at.duration_since(cancelled_at))
             });
-            assert!(
-                result.0.is_err(),
-                "analysis completed before the cancellation was observed"
+            assert_eq!(
+                result.0.err().as_deref(),
+                Some("Cancelled: analysis request was cancelled")
             );
             samples.push(result.1);
         }
