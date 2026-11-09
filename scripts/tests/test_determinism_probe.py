@@ -1,3 +1,4 @@
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -20,7 +21,20 @@ class DeterminismProbeTests(unittest.TestCase):
         self.assertIn("cargo build --locked -p workflow-verifier", determinism_job)
         self.assertIn("_determinism/determinism-linux-arm64", ci)
         self.assertIn("cargo build --locked -p workflow-verifier", justfile)
-        self.assertIn("{{linux_arm64}}", justfile)
+        platforms = ["linux-x86_64", "linux-arm64", "windows", "macos-arm64", "macos-x86_64"]
+        comparison = subprocess.run(
+            ["just", "--dry-run", "determinism-compare", *platforms],
+            cwd=repository,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(comparison.returncode, 0, comparison.stderr)
+        self.assertIn(
+            "scripts/compare_determinism.py --output _build/determinism/comparison.json "
+            + " ".join(platforms),
+            comparison.stdout + comparison.stderr,
+        )
         self.assertIn("_build/determinism/linux-arm64", mise)
 
     def test_commands_use_the_same_relative_fixture_and_never_enable_network(self) -> None:

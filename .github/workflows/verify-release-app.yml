@@ -1,0 +1,38 @@
+name: Verify release App access
+
+'on':
+  workflow_call: {}
+
+permissions: {}
+
+jobs:
+  verify_release_app:
+    name: Verify release App access
+    if: >-
+      github.repository_id == '1343470774' &&
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: release-pr
+    permissions: {}
+    env:
+      APP_INPUTS_VALID: >-
+        ${{ secrets.RELEASE_APP_CLIENT_ID != '' &&
+        !startsWith(secrets.RELEASE_APP_CLIENT_ID, '${') &&
+        secrets.RELEASE_APP_PRIVATE_KEY != '' &&
+        !startsWith(secrets.RELEASE_APP_PRIVATE_KEY, '${') }}
+    steps:
+      - name: Reject missing or unresolved automation credentials
+        if: env.APP_INPUTS_VALID != 'true'
+        shell: bash
+        run: exit 1
+
+      - name: Verify a read-only repository token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: workflow-verifier
+          permission-contents: read

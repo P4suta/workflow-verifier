@@ -49,6 +49,8 @@ let required =
     "../.github/workflows/release.yml";
     "../.github/workflows/performance.yml";
     "../.github/workflows/release-pr.yml";
+    "../.github/workflows/verify-doppler.yml";
+    "../.github/workflows/verify-release-app.yml";
     "../.github/workflows/candidate.yml";
     "../.github/workflows/sign-windows.yml";
     "../.github/workflows/official-compat.yml";
@@ -144,7 +146,182 @@ let reject_missing_surfaces name source surfaces selected =
       | _ -> fail "%s accepts a missing required surface: %s" name needle)
     selected
 
+let yaml_scalar (expected : string) (node : Yaml_cst.node) : bool =
+  match node with
+  | Scalar { value; anchor = None; tag = None; _ } ->
+      String.equal (String.trim value) expected
+  | _ -> false
+
+let yaml_mapping ?(named = false)
+    (fields : (string * (Yaml_cst.node -> bool)) list) (node : Yaml_cst.node) :
+    bool =
+  match node with
+  | Mapping (entries, _) | Flow_mapping (entries, _) ->
+      let required =
+        List.filter
+          (fun (entry : Yaml_cst.mapping_entry) ->
+            not (named && String.equal entry.key.value "name"))
+          entries
+      in
+      List.length required = List.length fields
+      && List.for_all
+           (fun (entry : Yaml_cst.mapping_entry) ->
+             (not entry.merge) && (not entry.duplicate)
+             && yaml_scalar entry.key.value entry.key_node
+             &&
+             if named && String.equal entry.key.value "name" then
+               match entry.value with
+               | Scalar { value; anchor = None; tag = None; _ } ->
+                   String.trim value <> ""
+                   && not (Util.contains ~needle:"${{" value)
+               | _ -> false
+             else
+               match List.assoc_opt entry.key.value fields with
+               | Some check -> check entry.value
+               | None -> false)
+           entries
+  | _ -> false
+
+let app_verification_is_read_only (source : string) : bool =
+  let validation =
+    yaml_mapping ~named:true
+      [
+        ("if", yaml_scalar "env.APP_INPUTS_VALID != 'true'");
+        ("shell", yaml_scalar "bash");
+        ("run", yaml_scalar "exit 1");
+      ]
+  in
+  let token =
+    yaml_mapping ~named:true
+      [
+        ( "uses",
+          yaml_scalar
+            "actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510"
+        );
+        ( "with",
+          yaml_mapping
+            [
+              ("client-id", yaml_scalar "${{ secrets.RELEASE_APP_CLIENT_ID }}");
+              ( "private-key",
+                yaml_scalar "${{ secrets.RELEASE_APP_PRIVATE_KEY }}" );
+              ("owner", yaml_scalar "${{ github.repository_owner }}");
+              ("repositories", yaml_scalar "workflow-verifier");
+              ("permission-contents", yaml_scalar "read");
+            ] );
+      ]
+  in
+  let steps (node : Yaml_cst.node) : bool =
+    match node with
+    | Sequence ([ first; second ], _) ->
+        validation first.value && token second.value
+    | Flow_sequence ([ first; second ], _) -> validation first && token second
+    | _ -> false
+  in
+  let job =
+    yaml_mapping ~named:true
+      [
+        ( "if",
+          yaml_scalar
+            "github.repository_id == '1343470774' && github.event_name == \
+             'workflow_dispatch' && github.ref == 'refs/heads/main'" );
+        ("runs-on", yaml_scalar "ubuntu-24.04");
+        ("timeout-minutes", yaml_scalar "5");
+        ("environment", yaml_scalar "release-pr");
+        ("permissions", yaml_mapping []);
+        ( "env",
+          yaml_mapping
+            [
+              ( "APP_INPUTS_VALID",
+                yaml_scalar
+                  "${{ secrets.RELEASE_APP_CLIENT_ID != '' && \
+                   !startsWith(secrets.RELEASE_APP_CLIENT_ID, '${') && \
+                   secrets.RELEASE_APP_PRIVATE_KEY != '' && \
+                   !startsWith(secrets.RELEASE_APP_PRIVATE_KEY, '${') }}" );
+            ] );
+        ("steps", steps);
+      ]
+  in
+  let jobs (node : Yaml_cst.node) : bool =
+    match node with
+    | Mapping ([ entry ], _) | Flow_mapping ([ entry ], _) ->
+        (not entry.merge) && (not entry.duplicate)
+        && yaml_scalar entry.key.value entry.key_node
+        && job entry.value
+    | _ -> false
+  in
+  let parsed = Yaml_cst.parse source in
+  parsed.problems = []
+  && List.length parsed.documents = 1
+  &&
+  match Yaml_cst.root parsed with
+  | Some root ->
+      yaml_mapping ~named:true
+        [
+          ("on", yaml_mapping [ ("workflow_call", yaml_mapping []) ]);
+          ("permissions", yaml_mapping []);
+          ("jobs", jobs);
+        ]
+        root
+  | None -> false
+
+let verify_app_authentication_contract () =
+  let source = read_required ".github/workflows/verify-release-app.yml" in
+  if not (app_verification_is_read_only source) then
+    fail
+      "App verification must only mint and revoke a read-only repository token";
+  let renamed =
+    Util.replace_all ~needle:"Verify release App access"
+      ~replacement:"Check release App access" source
+  in
+  if not (app_verification_is_read_only renamed) then
+    fail "App verification contract binds a presentation-only name";
+  List.iter
+    (fun (needle, replacement) ->
+      let invalid = Util.replace_all ~needle ~replacement source in
+      if String.equal invalid source then
+        fail "App verification rejecting case did not change %s" needle;
+      let parsed = Yaml_cst.parse invalid in
+      if parsed.problems <> [] then
+        fail "App verification rejecting case is malformed YAML: %s" needle;
+      if app_verification_is_read_only invalid then
+        fail "App verification accepts a broader consumer: %s" replacement)
+    [
+      ("permission-contents: read", "permission-contents: write");
+      ( "permission-contents: read",
+        "permission-contents: read\n          permission-pull-requests: write"
+      );
+      ( "permission-contents: read",
+        "permission-contents: read\n          skip-token-revoke: true" );
+      ( "permission-contents: read",
+        "permission-contents: read\n      - run: curl https://example.invalid"
+      );
+      ("repositories: workflow-verifier", "repositories: unrelated-repository");
+      ("environment: release-pr", "environment: unprotected");
+      ("refs/heads/main", "refs/heads/unreviewed");
+      ("workflow_dispatch", "pull_request");
+      ("workflow_call: {}", "workflow_dispatch: {}");
+      ("permissions: {}", "permissions: {id-token: write}");
+      ("64ab729a6294000f5aa4a4bc0b73d1f32bc45510", "v3");
+      ("RELEASE_APP_PRIVATE_KEY", "UNRELATED_PRIVATE_KEY");
+      ("run: exit 1", "run: exit 0");
+      ("env.APP_INPUTS_VALID != 'true'", "env.APP_INPUTS_VALID == 'true'");
+      ( "jobs:\n",
+        "jobs:\n\
+        \  unrelated:\n\
+        \    runs-on: ubuntu-24.04\n\
+        \    steps:\n\
+        \      - run: echo unexpected\n" );
+    ];
+  let wrapper = read_required ".github/workflows/verify-doppler.yml" in
+  require_surfaces "Manual credential verification" wrapper
+    [
+      "uses: ./.github/workflows/verify-release-app.yml";
+      "default: false";
+      "github.ref == 'refs/heads/main' && inputs.verify_signing";
+    ]
+
 let () =
+  verify_app_authentication_contract ();
   List.iter
     (fun relative ->
       let path =
