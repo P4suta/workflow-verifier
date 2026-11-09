@@ -153,7 +153,8 @@ pub struct Symbol {
     pub span: crate::foundation::Span,
 }
 
-/// The one owned semantic result. Output formats are borrowed projections.
+/// The one owned semantic result.
+/// Output formats are borrowed projections.
 #[derive(Clone, Debug)]
 pub struct AnalysisOutcome {
     program: Program,
@@ -324,6 +325,16 @@ pub struct AnalysisSession {
     reverse_dependencies: BTreeMap<String, BTreeSet<String>>,
     statistics: SessionStatistics,
     build: BuildInfo,
+    #[cfg(all(test, not(debug_assertions)))]
+    parse_checkpoint: Option<ParseCheckpoint>,
+}
+
+#[cfg(all(test, not(debug_assertions)))]
+#[derive(Debug)]
+struct ParseCheckpoint {
+    started: std::sync::mpsc::Sender<()>,
+    resume: std::sync::mpsc::Receiver<()>,
+    timeout: std::time::Duration,
 }
 
 impl AnalysisSession {
@@ -333,6 +344,21 @@ impl AnalysisSession {
             build,
             ..Self::default()
         }
+    }
+
+    #[cfg(all(test, not(debug_assertions)))]
+    pub(crate) fn pause_next_parse(
+        &mut self,
+        started: std::sync::mpsc::Sender<()>,
+        resume: std::sync::mpsc::Receiver<()>,
+        timeout: std::time::Duration,
+    ) {
+        assert!(self.parse_checkpoint.is_none());
+        self.parse_checkpoint = Some(ParseCheckpoint {
+            started,
+            resume,
+            timeout,
+        });
     }
 
     /// Analyze while reusing this session's parse/lower caches.
@@ -449,6 +475,14 @@ impl Backend for AnalysisSession {
             return Ok(Arc::clone(document));
         }
         self.statistics.parse_misses = self.statistics.parse_misses.saturating_add(1);
+        #[cfg(all(test, not(debug_assertions)))]
+        if let Some(checkpoint) = self.parse_checkpoint.take() {
+            checkpoint.started.send(()).expect("parse observer is live");
+            checkpoint
+                .resume
+                .recv_timeout(checkpoint.timeout)
+                .expect("parse observer resumes the operation");
+        }
         let document = Arc::new(YamlDocument::parse(path, source, budget));
         self.parse_cache.insert(key, Arc::clone(&document));
         Ok(document)
@@ -1113,8 +1147,8 @@ impl<F> WorkspaceLoader<F> {
 }
 
 impl<F: WorkspaceFileSystem> WorkspaceLoader<F> {
-    /// Load only files that can influence static analysis. Directory discovery
-    /// inspects names and file types; unrelated file contents are never read.
+    /// Load only files that can influence static analysis.
+    /// Directory discovery inspects names and file types; unrelated file contents are never read.
     ///
     /// # Errors
     /// Returns a bounded path, I/O, UTF-8, or input-validation error.
