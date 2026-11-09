@@ -29,23 +29,23 @@ jobs:
 
     steps:
       - name: Check Out Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3
 
       - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@215b7e5f829ab9cac114c149667e57dc1b70b4bc # v2
         with:
           java-version: ${{ matrix.java-version }}
           distribution: "adopt"
           cache: gradle
           
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@d9c87d481d55275bb5441eef3fe0e46805f9ef70 # v3
 
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Archive test report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: Test report

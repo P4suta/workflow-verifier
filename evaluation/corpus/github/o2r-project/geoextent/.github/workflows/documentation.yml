@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-20.04
         
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@0f07f7f756721ebd886c2462646a35f78a8bc4de # v1
       with:
         python-version: 3.7
         
@@ -71,7 +71,7 @@ jobs:
         ls
         
     - name: Deploy to Github pages
-      uses: JamesIves/github-pages-deploy-action@4.1.3
+      uses: JamesIves/github-pages-deploy-action@93065a8b71cd5d57c379528f7a43a2e38d908af0 # 4.1.3
       with:
         branch: gh-pages # The branch the action should deploy to.
         folder: docs/build/html # The folder the action should deploy.
