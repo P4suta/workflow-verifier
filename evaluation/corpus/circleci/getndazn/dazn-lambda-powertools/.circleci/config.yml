@@ -11,20 +11,20 @@ references:
 jobs:
   build:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:12.22.7
     steps:
       - checkout
       - run: npm ci
       - *PERSIST_TO_WORKSPACE
   test-node12:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:12.22.7
     steps:
       - *ATTACH_WORKSPACE
       - run: npm test
   new-version:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:12.22.7
     steps:
       - *ATTACH_WORKSPACE
       - add_ssh_keys
@@ -37,7 +37,7 @@ jobs:
       - *PERSIST_TO_WORKSPACE
   publish:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:12.22.7
     steps:
       - *ATTACH_WORKSPACE
       - run:
