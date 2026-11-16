@@ -89,14 +89,14 @@ jobs:
 
   publish-dry-run:
     docker:
-      - image: circleci/node:12.22.7
+      - image: circleci/node:12
     steps:
       - setup
       - publish-dry-run
 
   publish:
     docker:
-      - image: circleci/node:12.22.7
+      - image: circleci/node:12
     steps:
       - setup
       - publish

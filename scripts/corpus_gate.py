@@ -322,7 +322,7 @@ def _repository(
     if not isinstance(source_digest, str) or not DIGEST.fullmatch(source_digest):
         raise ValueError(f"{label}.source_digest is invalid")
     if source_digest != actual_source_digest:
-        raise ValueError(f"{label} source digest does not match checkout")
+        raise ValueError(f"{label} source digest does not match checkout {identifier}")
 
     license_expression = value["license"]
     if (
@@ -476,6 +476,11 @@ def evaluate(
     }
 
 
+def verify_integrity(manifest_path: Path, corpus_root: Path, reports_root: Path) -> dict[str, int]:
+    """Authenticate every recorded source, license, and report digest without scoring findings."""
+    return evaluate(manifest_path, corpus_root, reports_root)["providers"]
+
+
 def _atomic_json(path: Path, value: Any) -> None:
     if path.is_symlink():
         raise ValueError(f"refusing to replace symlink output: {path}")
@@ -493,14 +498,29 @@ def _atomic_json(path: Path, value: Any) -> None:
         raise
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--corpus-root", required=True, type=Path)
     parser.add_argument("--reports-root", required=True, type=Path)
-    parser.add_argument("--output", required=True, type=Path)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--output", type=Path)
+    mode.add_argument("--integrity", action="store_true")
     parser.add_argument("--release", action="store_true")
-    arguments = parser.parse_args()
+    arguments = parser.parse_args(argv)
+    if arguments.integrity:
+        if arguments.release:
+            parser.error("--integrity checks digests only and cannot apply release gates")
+        try:
+            providers = verify_integrity(
+                arguments.manifest, arguments.corpus_root, arguments.reports_root
+            )
+        except ValueError as error:
+            print(f"corpus integrity: {error}", file=sys.stderr)
+            return 2
+        counts = " ".join(f"{provider}={count}" for provider, count in providers.items())
+        print(f"corpus integrity: authenticated {counts}")
+        return 0
     try:
         result = evaluate(
             arguments.manifest,

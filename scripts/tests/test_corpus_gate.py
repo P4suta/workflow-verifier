@@ -1,10 +1,12 @@
+import contextlib
 import hashlib
+import io
 import json
 import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.corpus_gate import evaluate, tree_digest
+from scripts.corpus_gate import evaluate, main, tree_digest, verify_integrity
 from scripts.tests.report_fixture import report_document
 
 SHA = "a" * 40
@@ -182,6 +184,57 @@ class CorpusGateTests(unittest.TestCase):
             report_path.write_text(json.dumps(document), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "report digest"):
                 evaluate(manifest, root / "corpus", root / "reports")
+
+    def test_integrity_ignores_unreviewed_diagnostics_but_rejects_changed_bytes(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            unreviewed = diagnostic("diag_" + "7" * 64, "WV-SUPPLY-001")
+            repository = self.repository(root, "github/acme/frozen", "github", [], [], [unreviewed])
+            manifest = root / "corpus.json"
+            manifest.write_text(
+                json.dumps({"schema": "corpus-v1", "repositories": [repository]}),
+                encoding="utf-8",
+            )
+            self.assertFalse(evaluate(manifest, root / "corpus", root / "reports")["passed"])
+            self.assertEqual(
+                verify_integrity(manifest, root / "corpus", root / "reports"),
+                {"azure": 0, "circleci": 0, "github": 1, "gitlab": 0},
+            )
+
+            workflow = root / "corpus" / "github/acme/frozen/.github/workflows/ci.yml"
+            workflow.write_bytes(b"name: fixturf\n")
+            with self.assertRaisesRegex(ValueError, "source digest"):
+                verify_integrity(manifest, root / "corpus", root / "reports")
+
+    def test_integrity_command_needs_no_output_and_reports_tampering(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            repository = self.repository(root, "gitlab/acme/command", "gitlab", [], [], [])
+            manifest = root / "corpus.json"
+            manifest.write_text(
+                json.dumps({"schema": "corpus-v1", "repositories": [repository]}),
+                encoding="utf-8",
+            )
+            arguments = [
+                "--manifest",
+                str(manifest),
+                "--corpus-root",
+                str(root / "corpus"),
+                "--reports-root",
+                str(root / "reports"),
+                "--integrity",
+            ]
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                self.assertEqual(main(arguments), 0)
+            self.assertIn("gitlab=1", output.getvalue())
+            (root / "corpus" / "gitlab/acme/command/LICENSE").write_bytes(b"MIT!\n")
+            errors = io.StringIO()
+            with contextlib.redirect_stderr(errors):
+                self.assertEqual(main(arguments), 2)
+            self.assertIn(
+                "source digest does not match checkout gitlab/acme/command", errors.getvalue()
+            )
 
     def test_release_gate_requires_one_hundred_unique_repositories_per_provider(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

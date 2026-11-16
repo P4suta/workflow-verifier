@@ -73,6 +73,9 @@ mutation-rust layer output="_build/rust-mutants":
 mutation-rust-high-value output="_build/rust-mutants-high-value":
     cargo mutants --config .cargo/mutants.toml --package workflow-verifier --output {{ output }}
 
+corpus-integrity manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" reports_root="evaluation/reports":
+    python -B scripts/corpus_gate.py --manifest {{ manifest }} --corpus-root {{ corpus_root }} --reports-root {{ reports_root }} --integrity
+
 corpus manifest="evaluation/corpus-v1.json" corpus_root="evaluation/corpus" reports_root="evaluation/reports" output="_build/corpus-report-v1.json":
     python -B scripts/corpus_gate.py --manifest {{ manifest }} --corpus-root {{ corpus_root }} --reports-root {{ reports_root }} --output {{ output }} --release
 
@@ -166,7 +169,7 @@ sbom version *artifacts:
 linux-compat binary:
     python -B scripts/verify_linux_compat.py {{ binary }}
 
-check: task-surface conformance-manifest links build test yaml-conformance tooling architecture lint-policy rust lsp-performance differential purity licenses install-check dogfood
+check: task-surface conformance-manifest links corpus-integrity build test yaml-conformance tooling architecture lint-policy rust lsp-performance differential purity licenses install-check dogfood
 
 dogfood:
     cargo build --locked -p workflow-verifier
