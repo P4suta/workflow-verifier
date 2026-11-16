@@ -117,10 +117,15 @@ jobs:
         with:
           ref: ${{ needs.identity.outputs.candidate }}
           persist-credentials: false
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          python-version: '3.15.2'
-          check-latest: false
+          version: 0.13.8
+          enable-cache: false
+      - name: Install the pinned Python inside the glibc 2.28 root
+        shell: bash
+        run: |
+          uv python install 3.15.2
+          dirname "$(uv python find 3.15.2)" >> "$GITHUB_PATH"
       - uses: ./.github/actions/setup-repository-rust
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
@@ -210,6 +215,14 @@ jobs:
           name: candidate-build-${{ matrix.platform }}-${{ needs.identity.outputs.candidate }}
           path: _candidate/dist/*
           if-no-files-found: error
+          retention-days: 7
+      - name: Upload both builds after a reproducibility mismatch
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mismatch-${{ matrix.platform }}
+          path: ${{ runner.temp }}/workflow-verifier-candidate.*/*-output/*
+          if-no-files-found: ignore
           retention-days: 7
 
   reproducibility:
