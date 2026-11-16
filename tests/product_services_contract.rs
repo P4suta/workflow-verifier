@@ -174,6 +174,34 @@ allowed_origins = [{ origin = "https://git.example.test:443", path_prefixes = ["
     );
 }
 
+fn toml_blocks(markdown: &str) -> Vec<String> {
+    let mut blocks = Vec::new();
+    let mut current: Option<String> = None;
+    for line in markdown.lines() {
+        match (current.as_mut(), line.trim()) {
+            (None, "```toml") => current = Some(String::new()),
+            (Some(_), "```") => blocks.extend(current.take()),
+            (Some(block), _) => {
+                block.push_str(line);
+                block.push('\n');
+            }
+            (None, _) => {}
+        }
+    }
+    blocks
+}
+
+#[test]
+fn documented_policy_examples_load() {
+    let examples = toml_blocks(include_str!("../docs/policy.md"));
+    assert!(!examples.is_empty(), "docs/policy.md has no TOML example");
+    for source in examples {
+        if let Err(errors) = Config::parse(&source, ConfigParseOptions::default()) {
+            panic!("documented policy example must load: {errors:?}\n{source}");
+        }
+    }
+}
+
 #[test]
 fn config_trust_persona_and_suppression_matching_are_exact() {
     assert_eq!(
