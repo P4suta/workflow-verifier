@@ -138,6 +138,10 @@ jobs:
           ocaml-compiler: 5.5.0
           opam-disable-sandboxing: true
           dune-cache: false
+      # The container runs as root over a checkout owned by the runner user, and opam's local pin runs Git there.
+      - name: Trust the runner-owned checkout for container Git
+        shell: bash
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Install the locked OCaml dependency graph
         run: opam install . --deps-only --locked --yes
       - name: Verify exact toolchain and architecture

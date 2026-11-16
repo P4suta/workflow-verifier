@@ -50,7 +50,7 @@ class CandidateArtifactsTests(unittest.TestCase):
         )
 
         self.assertIn("linux-x86_64 | linux-arm64)", builder)
-        self.assertIn("[[ $CANDIDATE_PLATFORM == linux-* ]]", builder)
+        self.assertIn("[[ ${CANDIDATE_PLATFORM} == linux-* ]]", builder)
         self.assertIn("runner: ubuntu-24.04-arm", workflow)
         self.assertIn("platform: linux-arm64", workflow)
         self.assertIn("architecture: aarch64", workflow)

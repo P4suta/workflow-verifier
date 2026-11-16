@@ -38,11 +38,13 @@ jobs:
         env:
           MUTATION_OUTPUT: _build/rust-mutants-${{ matrix.layer }}
           MUTATION_LAYER: ${{ matrix.layer }}
-        run: >-
-          cargo mutants --config .cargo/mutants.toml
-          --package workflow-verifier
-          --file "src/$MUTATION_LAYER/**/*.rs"
-          --output "$MUTATION_OUTPUT"
+        # cargo-mutants creates only the final output directory, and a fresh checkout has no `_build`.
+        run: |
+          mkdir -p "$(dirname "$MUTATION_OUTPUT")"
+          cargo mutants --config .cargo/mutants.toml \
+            --package workflow-verifier \
+            --file "src/$MUTATION_LAYER/**/*.rs" \
+            --output "$MUTATION_OUTPUT"
       - name: Upload Rust mutation evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
