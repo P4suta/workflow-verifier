@@ -54,9 +54,8 @@ The workflow creates source and schema archives twice from Git objects and build
 It combines all five platform fragments and the source fragment into one `reproducible-build` gate using `release-gate-v1`.
 It runs `cargo package` twice and requires byte-identical `.crate` files.
 It audits the strict package inventory and packaged Cargo version control commit, then records the SHA-256 digest in `crate-package-v1`.
-The Linux x86_64 build uses a digest-pinned Rocky Linux 8 root.
-Every Executable and Linkable Format binary must meet the glibc 2.28 and `DT_NEEDED` policy.
-Linux arm64 must pass the same compatibility floor with its native loader.
+Both Linux builds run in the digest-pinned multi-platform Rocky Linux 8 index, so each runner architecture builds in its own Rocky 8 root.
+Every Executable and Linkable Format binary must meet the glibc 2.28 and `DT_NEEDED` policy on both architectures.
 The fixed GitHub runner labels are `ubuntu-24.04-arm`, `windows-2025`, `macos-15` for arm64, and `macos-15-intel` for x86_64.
 The macOS build applies timestamp-free ad-hoc signatures with fixed identifiers before comparing the two archives byte for byte.
 

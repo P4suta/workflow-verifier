@@ -855,7 +855,8 @@ let () =
       "runner: ubuntu-24.04-arm";
       "runner: macos-15";
       "runner: macos-15-intel";
-      "rockylinux/rockylinux@sha256:f5529992e67440c1a4ae7788244d4381c6909159a88eacd95b7523ae47ced82e";
+      "image: rockylinux/rockylinux:8@sha256:";
+      "test \"$(getconf GNU_LIBC_VERSION)\" = 'glibc 2.28'";
       "uses: ./.github/actions/setup-repository-rust";
       "rustc 1.98.0 (88d9e12ae 2026-08-18)";
       "opam install . --deps-only --locked --yes";

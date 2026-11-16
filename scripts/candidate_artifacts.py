@@ -17,6 +17,7 @@ import re
 import shutil
 import stat
 import subprocess
+import tarfile
 import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
@@ -299,6 +300,52 @@ def package_install(
         build_package(platform, version, staged_helpers, helpers_output)
 
 
+def _archive_members(path: Path) -> dict[str, tuple[str, str]]:
+    """Map each archive member to its metadata and content digest."""
+    members: dict[str, tuple[str, str]] = {}
+    if path.name.endswith(".zip"):
+        with zipfile.ZipFile(path) as archive:
+            for info in archive.infolist():
+                metadata = f"mode={info.external_attr >> 16:o} time={info.date_time}"
+                members[info.filename] = (metadata, _sha256_bytes(archive.read(info)))
+        return members
+    with tarfile.open(path, "r:*") as archive:
+        for member in archive.getmembers():
+            stream = archive.extractfile(member) if member.isfile() else None
+            content = stream.read() if stream is not None else member.linkname.encode()
+            metadata = (
+                f"type={member.type!r} mode={member.mode:o} mtime={member.mtime} "
+                f"owner={member.uid}:{member.gid}"
+            )
+            members[member.name] = (metadata, _sha256_bytes(content))
+    return members
+
+
+def _archive_differences(first: Path, second: Path, limit: int = 20) -> list[str]:
+    """Describe the archive members that make two builds differ."""
+    try:
+        first_members = _archive_members(first)
+        second_members = _archive_members(second)
+    except (OSError, tarfile.TarError, zipfile.BadZipFile) as error:
+        return [f"archives are unreadable for member comparison: {error}"]
+    differences: list[str] = []
+    for name in sorted(first_members.keys() | second_members.keys()):
+        left, right = first_members.get(name), second_members.get(name)
+        if left == right:
+            continue
+        if left is None or right is None:
+            differences.append(f"{name}: only in the {'second' if left is None else 'first'} build")
+        elif left[1] != right[1]:
+            differences.append(f"{name}: contents differ")
+        else:
+            differences.append(f"{name}: metadata {left[0]} != {right[0]}")
+    if not differences:
+        differences.append("members match, so the archive container bytes differ")
+    if len(differences) > limit:
+        differences = [*differences[:limit], f"{len(differences) - limit} more"]
+    return differences
+
+
 def _artifact_record(role: str, first: Path, second: Path) -> dict[str, str]:
     if not ROLE.fullmatch(role):
         raise ValueError(f"invalid reproducibility artifact role: {role}")
@@ -307,7 +354,8 @@ def _artifact_record(role: str, first: Path, second: Path) -> dict[str, str]:
     first_bytes = first.read_bytes()
     second_bytes = second.read_bytes()
     if first_bytes != second_bytes:
-        raise ValueError(f"two clean builds differ for {role}: {first.name} != {second.name}")
+        differences = "; ".join(_archive_differences(first, second))
+        raise ValueError(f"two clean builds differ for {role} {first.name}: {differences}")
     if first.name != second.name:
         raise ValueError(f"two clean builds use different artifact names for {role}")
     return {"digest": _sha256_bytes(first_bytes), "name": first.name, "role": role}

@@ -134,6 +134,41 @@ class CandidateArtifactsTests(unittest.TestCase):
                     helpers_output=root / "bad-helpers.zip",
                 )
 
+    def test_reproducibility_mismatch_names_the_differing_archive_members(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for build, analyzer in (("first", b"build one\n"), ("second", b"build two\n")):
+                staging = root / build / "staging"
+                write(staging / "bin" / "workflow-verifier", analyzer)
+                write(staging / "share" / "notice.txt", b"same\n")
+                files = [
+                    ("bin/workflow-verifier", staging / "bin" / "workflow-verifier"),
+                    ("share/notice.txt", staging / "share" / "notice.txt"),
+                ]
+                build_package(
+                    "macos-arm64",
+                    "0.1.0",
+                    files,
+                    root / build / "workflow-verifier-0.1.0-macos-arm64.tar.gz",
+                )
+            with self.assertRaises(ValueError) as raised:
+                write_fragment(
+                    platform="macos-arm64",
+                    subject_commit=SUBJECT,
+                    source_date_epoch=1,
+                    artifacts=[
+                        (
+                            "product",
+                            root / "first" / "workflow-verifier-0.1.0-macos-arm64.tar.gz",
+                            root / "second" / "workflow-verifier-0.1.0-macos-arm64.tar.gz",
+                        )
+                    ],
+                    output=root / "fragment.json",
+                )
+            message = str(raised.exception)
+            self.assertIn("bin/workflow-verifier", message)
+            self.assertNotIn("notice.txt", message)
+
     def test_reproducibility_fragments_aggregate_only_with_exact_coverage(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
