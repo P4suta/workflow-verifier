@@ -2399,26 +2399,44 @@ fn command_completion(arguments: &[String]) -> Result<CommandOutput, CliError> {
             "completion requires bash, zsh, fish, or powershell",
         ));
     }
-    let script = match arguments[0].as_str() {
-        "bash" => {
-            "complete -W 'check resolve explain graph diff fix policy sandbox doctor completion version lsp auth' workflow-verifier\n"
-        }
-        "zsh" => {
-            "#compdef workflow-verifier\n_arguments '1:command:(check resolve explain graph diff fix policy sandbox doctor completion version lsp auth)'\n"
-        }
-        "fish" => {
-            "complete -c workflow-verifier -f -a 'check resolve explain graph diff fix policy sandbox doctor completion version lsp auth'\n"
-        }
+    completion_script(&arguments[0])
+        .map(CommandOutput::success)
+        .ok_or_else(|| CliError::invalid("completion requires bash, zsh, fish, or powershell"))
+}
+
+/// Top-level commands in `HELP` order, shared by every generated completion script.
+const COMPLETION_COMMANDS: [&str; 13] = [
+    "check",
+    "resolve",
+    "explain",
+    "graph",
+    "diff",
+    "fix",
+    "policy",
+    "sandbox",
+    "doctor",
+    "completion",
+    "version",
+    "lsp",
+    "auth",
+];
+
+fn completion_script(shell: &str) -> Option<String> {
+    let words = COMPLETION_COMMANDS.join(" ");
+    Some(match shell {
+        "bash" => format!("complete -W '{words}' workflow-verifier\n"),
+        "zsh" => format!("#compdef workflow-verifier\n_arguments '1:command:({words})'\n"),
+        "fish" => format!("complete -c workflow-verifier -f -a '{words}'\n"),
         "powershell" => {
-            "Register-ArgumentCompleter -Native -CommandName workflow-verifier -ScriptBlock { param($wordToComplete) 'check','resolve','explain','graph','diff','fix','policy','sandbox','doctor','completion','version','lsp','auth' | Where-Object { $_ -like \"$wordToComplete*\" } }\n"
+            let quoted = COMPLETION_COMMANDS
+                .map(|command| format!("'{command}'"))
+                .join(",");
+            format!(
+                "Register-ArgumentCompleter -Native -CommandName workflow-verifier -ScriptBlock {{\n  param($wordToComplete)\n  {quoted} |\n    Where-Object {{ $_ -like \"$wordToComplete*\" }} |\n    ForEach-Object {{ [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_) }}\n}}\n"
+            )
         }
-        _ => {
-            return Err(CliError::invalid(
-                "completion requires bash, zsh, fish, or powershell",
-            ));
-        }
-    };
-    Ok(CommandOutput::success(script))
+        _ => return None,
+    })
 }
 
 fn parse_options<'a>(
@@ -3269,6 +3287,91 @@ mod tests {
             let mut command = Command::new("sh");
             command.args(["-c", script]);
             command
+        }
+    }
+
+    #[test]
+    fn usage_documentation_names_every_command_and_subcommand() {
+        const USAGE: &str = include_str!("../../docs/usage.md");
+        const SUBCOMMANDS: [&str; 9] = [
+            "policy test",
+            "sandbox plan",
+            "sandbox run",
+            "sandbox replay",
+            "sandbox verify",
+            "sandbox audit",
+            "auth login",
+            "auth status",
+            "auth logout",
+        ];
+        let commands = super::HELP
+            .lines()
+            .skip_while(|line| *line != "Commands:")
+            .skip(1)
+            .filter_map(|line| line.split_whitespace().next());
+        for invocation in commands.chain(SUBCOMMANDS) {
+            assert!(
+                USAGE.contains(&format!("workflow-verifier {invocation}")),
+                "docs/usage.md omits `workflow-verifier {invocation}`"
+            );
+        }
+    }
+
+    fn help_commands() -> Vec<&'static str> {
+        super::HELP
+            .lines()
+            .skip_while(|line| *line != "Commands:")
+            .skip(1)
+            .filter_map(|line| line.split_whitespace().next())
+            .collect()
+    }
+
+    #[test]
+    fn installed_completions_and_manual_match_the_command_surface() {
+        const MANUAL: &str = include_str!("../../man/workflow-verifier.1");
+        assert_eq!(help_commands(), super::COMPLETION_COMMANDS);
+        for (shell, installed) in [
+            (
+                "bash",
+                include_str!("../../completions/workflow-verifier.bash"),
+            ),
+            ("zsh", include_str!("../../completions/_workflow-verifier")),
+            (
+                "fish",
+                include_str!("../../completions/workflow-verifier.fish"),
+            ),
+            (
+                "powershell",
+                include_str!("../../completions/workflow-verifier.ps1"),
+            ),
+        ] {
+            // `.gitattributes` checks PowerShell scripts out with CRLF line endings.
+            assert_eq!(
+                super::completion_script(shell),
+                Some(installed.replace("\r\n", "\n")),
+                "completions for {shell} differ from `workflow-verifier completion {shell}`"
+            );
+        }
+        let subcommands = [
+            "policy test",
+            "sandbox plan",
+            "sandbox run",
+            "sandbox replay",
+            "sandbox verify",
+            "sandbox audit",
+            "auth login",
+            "auth status",
+            "auth logout",
+        ];
+        for entry in help_commands()
+            .into_iter()
+            .filter(|command| !["policy", "sandbox", "auth"].contains(command))
+            .chain(subcommands)
+        {
+            assert!(
+                MANUAL.contains(&format!("\n.B {entry}\n")),
+                "the manual page omits `{entry}`"
+            );
         }
     }
 

@@ -120,6 +120,7 @@ The protected registry token is a first-publication bootstrap credential.
 crates.io can't configure trusted publishing before the crate exists.
 The workflow refuses a different later version once the registry contains the crate name.
 After the initial publication, revoke that token and configure an OIDC trusted publisher before adding any future-version publication workflow.
-GitHub Release, Action, tag, and opam publication remain separate approval boundaries.
+GitHub Release, Action, and tag publication remain separate approval boundaries.
+The OCaml reference is a development oracle, so no release publishes it to opam.
 Never replace a published asset or crates.io version.
 Issue a fixed release.
