@@ -62,9 +62,9 @@ if [[ ${CANDIDATE_PLATFORM} == windows-x86_64 ]]; then
 fi
 
 task_temp=${RUNNER_TEMP}
-# Git Bash ships its own cygpath; the Cygwin one that setup-ocaml adds to PATH yields /cygdrive paths Git can't open.
-if [[ -x /usr/bin/cygpath ]]; then
-	task_temp=$(/usr/bin/cygpath -u "${RUNNER_TEMP}")
+# After setup-ocaml, Windows `bash` is Cygwin's; mixed `D:/...` paths work there and in native Git, Python, and Cargo.
+if command -v cygpath >/dev/null 2>&1; then
+	task_temp=$(cygpath -m "${RUNNER_TEMP}")
 fi
 # setup-ocaml creates a workspace-local switch that the clean build roots below can't discover.
 OPAMSWITCH=${OPAMSWITCH:-$(opam switch show)}
@@ -86,8 +86,9 @@ fi
 	--format=tar \
 	--output="${candidate_root}/source.tar" \
 	"${CANDIDATE_COMMIT}"
-tar -xf "${candidate_root}/source.tar" -C "${first_root}"
-tar -xf "${candidate_root}/source.tar" -C "${second_root}"
+# Standard input keeps GNU tar from reading the `D:` of a Windows archive path as a remote host.
+tar -xf - -C "${first_root}" <"${candidate_root}/source.tar"
+tar -xf - -C "${second_root}" <"${candidate_root}/source.tar"
 
 product_name="workflow-verifier-${CANDIDATE_VERSION}-${CANDIDATE_PLATFORM}${archive_suffix}"
 helpers_name="workflow-verifier-helpers-${CANDIDATE_VERSION}-${CANDIDATE_PLATFORM}${archive_suffix}"
