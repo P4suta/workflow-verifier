@@ -18,7 +18,7 @@ Native helper dependencies:
 - windows-sys 0.61.2 and windows-link 0.2.1 — MIT OR Apache-2.0
 
 Pinned build toolchains are OCaml 5.5.0, Dune 3.24.2, Rust 1.98.0, Python
-3.13.7, Just 1.57.0 (CC0-1.0), and opam 2.5.2. They are represented as build
+3.15.2, Just 1.57.0 (CC0-1.0), and opam 2.5.2. They are represented as build
 dependencies rather than runtime dependencies in the per-payload SPDX graph.
 
 The runtime capsule and macOS boot bundle SBOM inputs must be generated from

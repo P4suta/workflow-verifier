@@ -68,7 +68,7 @@ jobs:
           fetch-depth: 1
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ./.github/actions/setup-repository-rust
       - name: Bind every version surface and build source assets twice
@@ -147,8 +147,8 @@ jobs:
       - name: Install the pinned Python inside the glibc 2.28 root
         shell: bash
         run: |
-          uv python install 3.13.7
-          dirname "$(uv python find 3.13.7)" >> "$GITHUB_PATH"
+          uv python install 3.15.2
+          dirname "$(uv python find 3.15.2)" >> "$GITHUB_PATH"
       - uses: ./.github/actions/setup-repository-rust
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
@@ -166,7 +166,7 @@ jobs:
         env:
           EXPECTED_ARCHITECTURE: ${{ matrix.architecture }}
         run: |
-          test "$(python --version)" = 'Python 3.13.7'
+          test "$(python --version)" = 'Python 3.15.2'
           test "$(rustc --version)" = 'rustc 1.98.0 (88d9e12ae 2026-08-18)'
           test "$(opam --version)" = '2.5.2'
           test "$(opam exec -- ocamlc -version)" = '5.5.0'
@@ -220,7 +220,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ./.github/actions/setup-repository-rust
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
@@ -234,7 +234,7 @@ jobs:
         env:
           EXPECTED_ARCHITECTURE: ${{ matrix.architecture }}
         run: |
-          test "$(python --version)" = 'Python 3.13.7'
+          test "$(python --version)" = 'Python 3.15.2'
           test "$(rustc --version)" = 'rustc 1.98.0 (88d9e12ae 2026-08-18)'
           test "$(opam --version)" = '2.5.2'
           test "$(opam exec -- ocamlc -version)" = '5.5.0'
@@ -269,7 +269,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - name: Download every platform fragment without merging
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1

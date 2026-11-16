@@ -50,7 +50,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - name: Reject ambiguous signing identity
         shell: pwsh
@@ -69,7 +69,7 @@ jobs:
           if ($env:WORKFLOW_REF -ne 'refs/heads/main' -or $env:WORKFLOW_COMMIT -ne $env:CANDIDATE) {
             throw 'Windows signing must run from main at the exact product commit C'
           }
-          if ((python --version) -ne 'Python 3.13.7') { throw 'Python 3.13.7 is required' }
+          if ((python --version) -ne 'Python 3.15.2') { throw 'Python 3.15.2 is required' }
           $actual = (git rev-parse HEAD).Trim()
           if ($actual -ne $env:CANDIDATE) { throw "checkout $actual does not equal candidate $env:CANDIDATE" }
           $validatedVersion = (python -B scripts/verify_release_version.py --tag "v$env:RELEASE_VERSION").Trim()
