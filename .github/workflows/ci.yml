@@ -28,7 +28,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - name: Validate the future squash commit subject
         env:
@@ -45,7 +45,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - name: Install Just 1.57.0 from its locked crate graph
         run: cargo install just --version 1.57.0 --locked
@@ -62,7 +62,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
@@ -209,7 +209,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
@@ -258,7 +258,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ./.github/actions/setup-repository-rust
       - name: Install hash-locked SARIF validator
@@ -351,7 +351,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ./.github/actions/setup-repository-rust
       - name: Build the analyzer
@@ -386,7 +386,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
@@ -426,7 +426,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - uses: ./.github/actions/setup-repository-rust
       - name: Build the Rust analyzer with candidate provenance
@@ -464,7 +464,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: '3.13.7'
+          python-version: '3.15.2'
           check-latest: false
       - name: Download platform artifacts without merging
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1

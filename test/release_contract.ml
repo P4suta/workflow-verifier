@@ -435,7 +435,7 @@ let () =
       "unittest discover";
       "verify_pr_title.py";
       "sync_release_version.py --check";
-      "python-version: '3.13.7'";
+      "python-version: '3.15.2'";
       "ruff check .";
       "ruff format --check .";
       "mypy";
