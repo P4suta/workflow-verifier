@@ -89,19 +89,29 @@ jobs:
           retention-days: 7
 
   build-linux:
-    name: Linux x86_64 candidate at glibc 2.28 floor
+    name: ${{ matrix.platform }} candidate at glibc 2.28 floor
     needs: [identity, source]
-    runs-on: ubuntu-24.04
     timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            platform: linux-x86_64
+            architecture: x86_64
+          - runner: ubuntu-24.04-arm
+            platform: linux-arm64
+            architecture: aarch64
+    runs-on: ${{ matrix.runner }}
     container:
-      image: rockylinux/rockylinux@sha256:f5529992e67440c1a4ae7788244d4381c6909159a88eacd95b7523ae47ced82e
+      image: rockylinux/rockylinux:8@sha256:e8a49c5403b687db05d4d67333fa45808fbe74f36e683cec7abb1f7d0f2338c6
       options: --user root
     steps:
       - name: Install builder prerequisites in the digest-pinned Rocky 8 root
         shell: bash
         run: >-
           dnf install --assumeyes
-          bash binutils bubblewrap ca-certificates curl diffutils findutils
+          bash binutils bubblewrap bzip2 ca-certificates curl diffutils findutils
           gcc gcc-c++ git gzip libicu make openssl-libs patch tar unzip which xz zlib
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -130,21 +140,23 @@ jobs:
           test "$(opam --version)" = '2.5.2'
           test "$(opam exec -- ocamlc -version)" = '5.5.0'
           test "$(opam exec -- dune --version)" = '3.24.2'
-          test "$(uname -m)" = 'x86_64'
+          test "$(uname -m)" = "$EXPECTED_ARCHITECTURE"
           test "$(getconf GNU_LIBC_VERSION)" = 'glibc 2.28'
+        env:
+          EXPECTED_ARCHITECTURE: ${{ matrix.architecture }}
       - name: Build twice in clean roots and enforce ELF compatibility
         shell: bash
         env:
           CANDIDATE_COMMIT: ${{ needs.identity.outputs.candidate }}
           CANDIDATE_OUTPUT: _candidate/dist
-          CANDIDATE_PLATFORM: linux-x86_64
+          CANDIDATE_PLATFORM: ${{ matrix.platform }}
           CANDIDATE_VERSION: ${{ needs.identity.outputs.version }}
           SOURCE_DATE_EPOCH: ${{ needs.source.outputs.source_date_epoch }}
         run: bash scripts/build_candidate_platform.sh
       - name: Upload Linux candidate
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: candidate-build-linux-x86_64-${{ needs.identity.outputs.candidate }}
+          name: candidate-build-${{ matrix.platform }}-${{ needs.identity.outputs.candidate }}
           path: _candidate/dist/*
           if-no-files-found: error
           retention-days: 7
@@ -157,9 +169,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: ubuntu-24.04-arm
-            platform: linux-arm64
-            architecture: aarch64
           - runner: windows-2025
             platform: windows-x86_64
             architecture: AMD64
