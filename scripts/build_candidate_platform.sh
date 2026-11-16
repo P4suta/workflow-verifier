@@ -108,9 +108,15 @@ build_one() {
 	if [[ ${CANDIDATE_PLATFORM} == windows-x86_64 ]]; then
 		rust_flags+=$'\x1f-Clink-arg=/Brepro'
 	fi
+	if [[ ${CANDIDATE_PLATFORM} == macos-* ]]; then
+		# ld64 hashes the debug map into LC_UUID before rustc strips it, so its object paths must not name the root.
+		rust_flags+=$'\x1f-Clink-arg=-Wl,-oso_prefix,'"${native_root}/"
+	fi
 
 	(
 		cd "${source_root}"
+		# ld64 also records object modification times in that debug map unless this is set.
+		export ZERO_AR_DATE=1
 		export BUILD_PATH_PREFIX_MAP=${prefix_map}
 		export CARGO_ENCODED_RUSTFLAGS=${rust_flags}
 		export DUNE_CACHE=disabled
