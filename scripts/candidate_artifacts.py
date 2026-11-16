@@ -86,6 +86,8 @@ REQUIRED_FRAGMENT_ROLES = {
 }
 REVISION = re.compile(r"^[0-9a-f]{40}$")
 VERSION = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$")
+# Build rules that live beside the schemas but never enter the schema bundle.
+SCHEMA_BUILD_FILES = frozenset({"schema/dune"})
 ROLE = re.compile(r"^[a-z][a-z0-9-]*$")
 MAX_ARCHIVE_ENTRIES = 100_000
 MAX_ARCHIVE_BYTES = 4 * 1024 * 1024 * 1024
@@ -492,7 +494,8 @@ def build_source_assets(
     schema_names_text = _run(root, ["ls-tree", "-r", "--name-only", subject_commit, "schema"])
     if not isinstance(schema_names_text, str):
         raise AssertionError("git text result was not text")
-    schema_names = schema_names_text.splitlines()
+    schema_tree = schema_names_text.splitlines()
+    schema_names = [name for name in schema_tree if name not in SCHEMA_BUILD_FILES]
     if not schema_names or any(
         not name.startswith("schema/") or not name.endswith(".schema.json") for name in schema_names
     ):

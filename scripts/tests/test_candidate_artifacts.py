@@ -263,44 +263,72 @@ class CandidateArtifactsTests(unittest.TestCase):
                     helpers_output=root / "unchanged-helpers.zip",
                 )
 
+    def committed_repository(self, temporary: str, files: dict[str, bytes]) -> tuple[Path, str]:
+        root = Path(temporary) / "repository"
+        root.mkdir()
+        subprocess.run(["git", "init", "--quiet"], cwd=root, check=True)
+        for relative, contents in files.items():
+            write(root / relative, contents)
+        subprocess.run(["git", "add", "."], cwd=root, check=True)
+        system_git = shutil.which("git")
+        self.assertIsNotNone(system_git)
+        assert system_git is not None
+        empty_hooks = Path(temporary) / "empty-hooks"
+        empty_hooks.mkdir()
+        subprocess.run(
+            [
+                system_git,
+                "-c",
+                "user.name=Release Test",
+                "-c",
+                "user.email=release@example.invalid",
+                "-c",
+                "commit.gpgSign=false",
+                "-c",
+                f"core.hooksPath={empty_hooks.as_posix()}",
+                "commit",
+                "--quiet",
+                "-m",
+                "fixture",
+            ],
+            cwd=root,
+            check=True,
+        )
+        revision = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        return root, revision
+
+    def test_schema_inventory_rejects_unexpected_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root, revision = self.committed_repository(
+                temporary,
+                {"schema/one.schema.json": b"{}\n", "schema/notes.txt": b"draft\n"},
+            )
+            with self.assertRaisesRegex(ValueError, "invalid schema inventory"):
+                build_source_assets(
+                    repository=root,
+                    subject_commit=revision,
+                    version="0.1.0",
+                    output_dir=Path(temporary) / "output",
+                    fragment=Path(temporary) / "source-fragment.json",
+                )
+
     def test_source_assets_are_commit_bound_static_and_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary) / "repository"
-            root.mkdir()
-            subprocess.run(["git", "init", "--quiet"], cwd=root, check=True)
-            write(root / "README.md", b"source\n")
-            write(root / "schema" / "one.schema.json", b"{}\n")
-            subprocess.run(["git", "add", "."], cwd=root, check=True)
-            system_git = shutil.which("git")
-            self.assertIsNotNone(system_git)
-            empty_hooks = Path(temporary) / "empty-hooks"
-            empty_hooks.mkdir()
-            subprocess.run(
-                [
-                    system_git,
-                    "-c",
-                    "user.name=Release Test",
-                    "-c",
-                    "user.email=release@example.invalid",
-                    "-c",
-                    "commit.gpgSign=false",
-                    "-c",
-                    f"core.hooksPath={empty_hooks.as_posix()}",
-                    "commit",
-                    "--quiet",
-                    "-m",
-                    "fixture",
-                ],
-                cwd=root,
-                check=True,
+            # The real schema directory also holds the Dune rule that installs the schemas.
+            root, revision = self.committed_repository(
+                temporary,
+                {
+                    "README.md": b"source\n",
+                    "schema/one.schema.json": b"{}\n",
+                    "schema/dune": b"(install)\n",
+                },
             )
-            revision = subprocess.run(
-                ["git", "rev-parse", "HEAD"],
-                cwd=root,
-                check=True,
-                capture_output=True,
-                text=True,
-            ).stdout.strip()
             output = Path(temporary) / "output"
             fragment = Path(temporary) / "source-fragment.json"
 
@@ -319,9 +347,9 @@ class CandidateArtifactsTests(unittest.TestCase):
             with tarfile.open(source, "r:gz") as archive:
                 self.assertIn("workflow-verifier-0.1.0/README.md", archive.getnames())
             with tarfile.open(schemas, "r:gz") as archive:
-                self.assertTrue(
-                    any(name.endswith("/schema/one.schema.json") for name in archive.getnames())
-                )
+                names = archive.getnames()
+                self.assertTrue(any(name.endswith("/schema/one.schema.json") for name in names))
+                self.assertFalse(any(name.endswith("/schema/dune") for name in names))
             record = json.loads(fragment.read_text(encoding="utf-8"))
             self.assertEqual(record["subject_commit"], revision)
             self.assertEqual(
