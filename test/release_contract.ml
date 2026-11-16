@@ -443,6 +443,8 @@ let () =
       "actionlint -no-color";
       "zizmor --persona pedantic --no-progress";
       "verify_markdown_links.py";
+      "corpus_gate.py";
+      "--integrity";
       "cargo audit --file Cargo.lock --deny warnings";
       "cargo deny check";
       "rustc 1.98.0";

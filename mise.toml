@@ -90,6 +90,10 @@ run = 'cargo mutants --config .cargo/mutants.toml --package workflow-verifier --
 description = "Run every configured high-value Rust product mutant"
 run = "cargo mutants --config .cargo/mutants.toml --package workflow-verifier --output ${WV_MUTATION_OUTPUT:-_build/rust-mutants-high-value}"
 
+[tasks.corpus-integrity]
+description = "Authenticate every frozen corpus source, license, and report digest"
+run = "python -B scripts/corpus_gate.py --manifest evaluation/corpus-v1.json --corpus-root evaluation/corpus --reports-root evaluation/reports --integrity"
+
 [tasks.corpus]
 description = "Enforce the 400-repository release precision and recall gate"
 run = "python -B scripts/corpus_gate.py --manifest evaluation/corpus-v1.json --corpus-root evaluation/corpus --reports-root evaluation/reports --output _build/corpus-report-v1.json --release"
@@ -208,6 +212,7 @@ depends = [
   "task-surface",
   "conformance-manifest",
   "links",
+  "corpus-integrity",
   "build",
   "test",
   "yaml-conformance",

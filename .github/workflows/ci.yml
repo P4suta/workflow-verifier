@@ -129,6 +129,13 @@ jobs:
           zizmor --persona pedantic --no-progress .github/workflows
       - name: Verify Markdown links offline
         run: python -B scripts/verify_markdown_links.py --root .
+      - name: Authenticate the frozen evaluation corpus
+        run: >-
+          python -B scripts/corpus_gate.py
+          --manifest evaluation/corpus-v1.json
+          --corpus-root evaluation/corpus
+          --reports-root evaluation/reports
+          --integrity
       - name: Verify Rust module boundaries and lint suppression policy
         run: |
           python -B scripts/verify_architecture.py
