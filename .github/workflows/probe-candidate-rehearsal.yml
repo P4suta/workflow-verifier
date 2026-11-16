@@ -1,0 +1,235 @@
+name: Probe unsigned candidate rehearsal
+
+# A copy of candidate.yml without the main-only identity check and the signing job.
+
+on:
+  push:
+    branches: [probe/candidate-rehearsal]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: probe-candidate-rehearsal
+  cancel-in-progress: true
+
+jobs:
+  identity:
+    name: Validate rehearsal identity before checkout
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      candidate: ${{ steps.identity.outputs.candidate }}
+      version: ${{ steps.identity.outputs.version }}
+    steps:
+      - name: Bind the rehearsal to the pushed commit
+        id: identity
+        shell: bash
+        env:
+          CANDIDATE: ${{ github.sha }}
+          VERSION: 0.1.0
+        run: |
+          echo "candidate=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+  source:
+    name: Static source and schema assets
+    needs: identity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    outputs:
+      source_date_epoch: ${{ steps.source.outputs.source_date_epoch }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - uses: ./.github/actions/setup-repository-rust
+      - name: Bind every version surface and build source assets twice
+        id: source
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.identity.outputs.candidate }}
+          VERSION: ${{ needs.identity.outputs.version }}
+        run: |
+          test "$GITHUB_SHA" = "$CANDIDATE"
+          test "$(python -B scripts/verify_release_version.py --tag "v$VERSION")" = "$VERSION"
+          epoch=$(git show -s --format=%ct "$CANDIDATE")
+          python -B scripts/candidate_artifacts.py source-assets \
+            --repository . \
+            --subject-commit "$CANDIDATE" \
+            --version "$VERSION" \
+            --output-dir _candidate/source \
+            --fragment _candidate/source/reproducibility-source.json
+          cp THIRD_PARTY_NOTICES.md _candidate/source/THIRD_PARTY_NOTICES.md
+          echo "source_date_epoch=$epoch" >> "$GITHUB_OUTPUT"
+      - name: Build the public crate twice and bind it to candidate C
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.identity.outputs.candidate }}
+          VERSION: ${{ needs.identity.outputs.version }}
+        run: |
+          python -B scripts/package_crate.py \
+            --repository . \
+            --subject-commit "$CANDIDATE" \
+            --version "$VERSION" \
+            --output "_candidate/source/workflow-verifier-$VERSION.crate" \
+            --evidence _candidate/source/crate-package-v1.json
+      - name: Upload immutable source candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-source-${{ needs.identity.outputs.candidate }}
+          path: _candidate/source/*
+          if-no-files-found: error
+          retention-days: 7
+
+  build-linux:
+    name: Linux x86_64 candidate at glibc 2.28 floor
+    needs: [identity, source]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    container:
+      image: rockylinux/rockylinux@sha256:f5529992e67440c1a4ae7788244d4381c6909159a88eacd95b7523ae47ced82e
+      options: --user root
+    steps:
+      - name: Install builder prerequisites in the digest-pinned Rocky 8 root
+        shell: bash
+        run: >-
+          dnf install --assumeyes
+          bash binutils bubblewrap ca-certificates curl diffutils findutils
+          gcc gcc-c++ git gzip libicu make openssl-libs patch tar unzip which xz zlib
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - uses: ./.github/actions/setup-repository-rust
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+          opam-disable-sandboxing: true
+          dune-cache: false
+      - name: Install the locked OCaml dependency graph
+        run: opam install . --deps-only --locked --yes
+      - name: Verify exact toolchain and architecture
+        shell: bash
+        run: |
+          test "$(python --version)" = 'Python 3.13.7'
+          test "$(rustc --version)" = 'rustc 1.98.0 (88d9e12ae 2026-08-18)'
+          test "$(opam --version)" = '2.5.2'
+          test "$(opam exec -- ocamlc -version)" = '5.5.0'
+          test "$(opam exec -- dune --version)" = '3.24.2'
+          test "$(uname -m)" = 'x86_64'
+          test "$(getconf GNU_LIBC_VERSION)" = 'glibc 2.28'
+      - name: Build twice in clean roots and enforce ELF compatibility
+        shell: bash
+        env:
+          CANDIDATE_COMMIT: ${{ needs.identity.outputs.candidate }}
+          CANDIDATE_OUTPUT: _candidate/dist
+          CANDIDATE_PLATFORM: linux-x86_64
+          CANDIDATE_VERSION: ${{ needs.identity.outputs.version }}
+          SOURCE_DATE_EPOCH: ${{ needs.source.outputs.source_date_epoch }}
+        run: bash scripts/build_candidate_platform.sh
+      - name: Upload Linux candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-build-linux-x86_64-${{ needs.identity.outputs.candidate }}
+          path: _candidate/dist/*
+          if-no-files-found: error
+          retention-days: 7
+
+  build-portable:
+    name: ${{ matrix.platform }} candidate
+    needs: [identity, source]
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04-arm
+            platform: linux-arm64
+            architecture: aarch64
+          - runner: windows-2025
+            platform: windows-x86_64
+            architecture: AMD64
+          - runner: macos-15
+            platform: macos-arm64
+            architecture: arm64
+          - runner: macos-15-intel
+            platform: macos-x86_64
+            architecture: x86_64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - uses: ./.github/actions/setup-repository-rust
+      - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
+        with:
+          ocaml-compiler: 5.5.0
+          dune-cache: false
+      - name: Install the locked OCaml dependency graph
+        run: opam install . --deps-only --locked --yes
+      - name: Build twice in clean roots with path remapping
+        shell: bash
+        env:
+          CANDIDATE_COMMIT: ${{ needs.identity.outputs.candidate }}
+          CANDIDATE_OUTPUT: _candidate/dist
+          CANDIDATE_PLATFORM: ${{ matrix.platform }}
+          CANDIDATE_VERSION: ${{ needs.identity.outputs.version }}
+          SOURCE_DATE_EPOCH: ${{ needs.source.outputs.source_date_epoch }}
+        run: bash scripts/build_candidate_platform.sh
+      - name: Upload unsigned/ad-hoc-signed candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-build-${{ matrix.platform }}-${{ needs.identity.outputs.candidate }}
+          path: _candidate/dist/*
+          if-no-files-found: error
+          retention-days: 7
+
+  reproducibility:
+    name: Aggregate two-clean-root reproducibility gate
+    needs: [identity, source, build-linux, build-portable]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.identity.outputs.candidate }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.13.7'
+          check-latest: false
+      - name: Download every platform fragment without merging
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: candidate-*-${{ needs.identity.outputs.candidate }}
+          path: _candidate/download
+      - name: Require exact five-platform/source coverage
+        shell: bash
+        env:
+          CANDIDATE: ${{ needs.identity.outputs.candidate }}
+        run: |
+          mapfile -d '' fragments < <(find _candidate/download -type f -name 'reproducibility-*.json' -print0 | sort -z)
+          test "${#fragments[@]}" -eq 6
+          arguments=()
+          for fragment in "${fragments[@]}"; do arguments+=(--fragment "$fragment"); done
+          python -B scripts/candidate_artifacts.py aggregate \
+            --subject-commit "$CANDIDATE" \
+            "${arguments[@]}" \
+            --output _candidate/reproducible-build.json
+          find _candidate/download -type f -printf '%s %p\n' | sort -n
