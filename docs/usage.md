@@ -26,12 +26,28 @@ workflow-verifier graph --kind dataflow --format dot .
 workflow-verifier diff ./base ./head
 workflow-verifier fix .
 workflow-verifier fix --apply .
+workflow-verifier policy test --config policy.toml fixtures/
 workflow-verifier sandbox plan --job build .
 workflow-verifier sandbox run --job build --backend oci:docker .
+workflow-verifier sandbox replay evidence.json
+workflow-verifier sandbox verify plan.json evidence.json
+workflow-verifier sandbox audit plan.json evidence.json .
 workflow-verifier doctor
+workflow-verifier auth login github
 workflow-verifier auth status
+workflow-verifier auth logout github
+workflow-verifier completion zsh
+workflow-verifier version
 workflow-verifier lsp
 ```
+
+`policy test` evaluates every `*.expect.json` fixture sidecar under the target against the loaded policy.
+`sandbox replay` prints the canonical form of recorded evidence.
+`sandbox verify` checks that evidence belongs to its execution plan.
+`sandbox audit` also reconciles the evidence with the plan, and with a fresh analysis when you name the source target, and exits with code 3 when it can't verify the run.
+`auth login` stores a credential in the OS credential store from an interactive terminal, and `auth logout` removes it.
+`completion` prints a `bash`, `zsh`, `fish`, or `powershell` completion script.
+`lsp` serves the Language Server Protocol over standard input and output, and also accepts the conventional `--stdio` flag.
 
 `check`, `explain`, `graph`, `diff`, and dry-run `fix` are read-only and network-free.
 Resolution, dependency refresh, source edits, secret use, workflow network access, and execution require their own opt-in.

@@ -41,7 +41,7 @@ use std::fs::{self, OpenOptions};
 use std::io::{self, IsTerminal, Read, Write};
 use std::path::{Component, Path, PathBuf};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
-use std::sync::{Arc, OnceLock};
+use std::sync::{Arc, OnceLock, mpsc};
 use std::time::{Duration, Instant};
 
 const HELP: &str = concat!(
@@ -70,15 +70,15 @@ Commands:
 
 static TEMP_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
-// Process-adapter bounds are fixed product contracts: runner output follows
-// runner-v2's 16 MiB cap, diagnostics get a separate one MiB channel, and
-// doctor probes are short, bounded control requests.
+// Process-adapter bounds are fixed product contracts: runner output follows runner-v2's 16 MiB cap, diagnostics get a separate one MiB channel, and doctor probes are short, bounded control requests.
 const BYTES_PER_MEBIBYTE: u64 = 1_048_576;
 const SANDBOX_HELPER_STDOUT_MEBIBYTES: u64 = 16;
 const SANDBOX_HELPER_STDERR_MEBIBYTES: u64 = 1;
 const DOCTOR_TIMEOUT_SECONDS: u64 = 5;
 const DOCTOR_STREAM_MEBIBYTES: u64 = 1;
 const SUPERVISOR_POLL_MILLISECONDS: u64 = 10;
+// How long capture pipes may stay open after the child exits, and again after the tree is killed.
+const CAPTURE_DRAIN_GRACE: Duration = Duration::from_secs(2);
 const SECONDS_PER_DAY: u64 = 86_400;
 // IANA's registered default port for HTTPS URL authorities.
 const HTTPS_DEFAULT_PORT: u16 = 443;
@@ -216,12 +216,14 @@ impl AnalysisContext {
     }
 }
 
-/// Execute the command from the process environment and write its two output
-/// streams exactly once. This is the only public process boundary.
+/// Execute the command from the process environment and write its two output streams exactly once.
+/// This is the only public process boundary.
 #[must_use]
 pub fn run_env() -> i32 {
     let arguments: Vec<OsString> = std::env::args_os().skip(1).collect();
-    if arguments.len() == 1 && arguments[0] == "lsp" {
+    if arguments.first().is_some_and(|command| command == "lsp")
+        && utf8_arguments(&arguments[1..]).is_ok_and(|rest| lsp_transport(&rest).is_ok())
+    {
         return lsp::run_stdio();
     }
     let cwd = match std::env::current_dir() {
@@ -296,10 +298,28 @@ fn dispatch(
         "completion" => command_completion(rest),
         "auth" => command_auth(rest),
         "__semantic-conformance" => command_semantic_conformance(cwd, rest, context),
-        "lsp" => Err(CliError::invalid(format!(
-            "{command} is not available in this internal candidate yet"
-        ))),
+        // `run_env` starts the stdio server before dispatch, so only rejected transports arrive here.
+        "lsp" => Err(lsp_transport(rest)
+            .err()
+            .unwrap_or_else(|| CliError::invalid("lsp runs only as the process stdio server"))),
         value => Err(CliError::invalid(format!("unknown command {value}"))),
+    }
+}
+
+/// Accept the LSP 3.17 command-line transport selection, of which this server implements stdio.
+fn lsp_transport(arguments: &[String]) -> Result<(), CliError> {
+    const OTHER_TRANSPORTS: [&str; 4] = ["--pipe", "--socket", "--port", "--node-ipc"];
+    match arguments {
+        [] => Ok(()),
+        [flag] if flag == "--stdio" => Ok(()),
+        [flag, ..]
+            if OTHER_TRANSPORTS.iter().any(|transport| {
+                flag == transport || flag.starts_with(&format!("{transport}="))
+            }) =>
+        {
+            Err(CliError::invalid("lsp supports only the stdio transport"))
+        }
+        _ => Err(CliError::invalid("lsp accepts only --stdio")),
     }
 }
 
@@ -671,6 +691,87 @@ fn read_bounded(
     Ok(output)
 }
 
+/// One child output stream read on its own thread, so a descendant that keeps the pipe open can't block the supervisor.
+struct Capture {
+    stream: &'static str,
+    receiver: mpsc::Receiver<Result<Vec<u8>, String>>,
+    result: Option<Result<Vec<u8>, String>>,
+}
+
+impl Capture {
+    fn spawn(
+        stream: &'static str,
+        reader: impl Read + Send + 'static,
+        limit: u64,
+        exceeded: Arc<AtomicBool>,
+    ) -> Self {
+        let (sender, receiver) = mpsc::sync_channel(1);
+        std::thread::spawn(move || {
+            // The supervisor may have stopped waiting, so a closed receiver is expected.
+            let _ = sender.send(read_bounded(reader, limit, exceeded.as_ref()));
+        });
+        Self {
+            stream,
+            receiver,
+            result: None,
+        }
+    }
+
+    /// Wait until `deadline` for the stream to close, and report whether it did.
+    fn closed_by(&mut self, deadline: Instant) -> bool {
+        if self.result.is_none() {
+            let wait = deadline.saturating_duration_since(Instant::now());
+            self.result = match self.receiver.recv_timeout(wait) {
+                Ok(result) => Some(result),
+                Err(mpsc::RecvTimeoutError::Timeout) => None,
+                Err(mpsc::RecvTimeoutError::Disconnected) => {
+                    Some(Err(format!("{} capture thread panicked", self.stream)))
+                }
+            };
+        }
+        self.result.is_some()
+    }
+
+    fn into_output(self) -> Result<Vec<u8>, String> {
+        self.result
+            .unwrap_or_else(|| Err(format!("{} capture is still open", self.stream)))
+    }
+}
+
+/// Collect both streams within the drain grace, killing the remaining process tree once if a pipe stays open.
+fn collect_captures(
+    child: &mut std::process::Child,
+    stdout: &mut Capture,
+    stderr: &mut Capture,
+) -> Result<(), String> {
+    let deadline = Instant::now() + CAPTURE_DRAIN_GRACE;
+    if stdout.closed_by(deadline) & stderr.closed_by(deadline) {
+        return Ok(());
+    }
+    terminate_process_tree(child);
+    let deadline = Instant::now() + CAPTURE_DRAIN_GRACE;
+    if stdout.closed_by(deadline) & stderr.closed_by(deadline) {
+        Ok(())
+    } else {
+        Err("process descendants kept capture pipes open after termination".to_owned())
+    }
+}
+
+/// Stop the child after a supervision failure and keep the primary error.
+fn abandon_child(
+    child: &mut std::process::Child,
+    mut stdout: Capture,
+    mut stderr: Capture,
+    error: String,
+) -> String {
+    terminate_process_tree(child);
+    let _ = child.wait();
+    match collect_captures(child, &mut stdout, &mut stderr) {
+        Ok(()) => error,
+        Err(cleanup) => format!("{error}; {cleanup}"),
+    }
+}
+
 fn supervise_process(
     command: &mut std::process::Command,
     input: Option<&[u8]>,
@@ -697,25 +798,18 @@ fn supervise_process(
         .take()
         .ok_or_else(|| "missing child stderr".to_owned())?;
     let exceeded = Arc::new(AtomicBool::new(false));
-    let stdout_exceeded = Arc::clone(&exceeded);
-    let stdout_reader =
-        std::thread::spawn(move || read_bounded(stdout, stdout_limit, stdout_exceeded.as_ref()));
-    let stderr_exceeded = Arc::clone(&exceeded);
-    let stderr_reader =
-        std::thread::spawn(move || read_bounded(stderr, stderr_limit, stderr_exceeded.as_ref()));
+    let mut stdout = Capture::spawn("stdout", stdout, stdout_limit, Arc::clone(&exceeded));
+    let mut stderr = Capture::spawn("stderr", stderr, stderr_limit, Arc::clone(&exceeded));
 
     if let Some(input) = input {
-        let write_result = child
-            .stdin
-            .take()
-            .ok_or_else(|| "missing child stdin".to_owned())?
-            .write_all(input);
+        let write_result = match child.stdin.take() {
+            Some(mut stdin) => stdin
+                .write_all(input)
+                .map_err(|error| format!("cannot write child stdin: {error}")),
+            None => Err("missing child stdin".to_owned()),
+        };
         if let Err(error) = write_result {
-            terminate_process_tree(&mut child);
-            let _ = child.wait();
-            let _ = stdout_reader.join();
-            let _ = stderr_reader.join();
-            return Err(format!("cannot write child stdin: {error}"));
+            return Err(abandon_child(&mut child, stdout, stderr, error));
         }
     }
 
@@ -730,27 +824,23 @@ fn supervise_process(
             Ok(None) => {
                 timed_out = started.elapsed() >= timeout;
                 terminate_process_tree(&mut child);
-                break child.wait().map_err(|error| error.to_string())?;
+                match child.wait() {
+                    Ok(status) => break status,
+                    Err(error) => {
+                        return Err(abandon_child(&mut child, stdout, stderr, error.to_string()));
+                    }
+                }
             }
             Err(error) => {
-                terminate_process_tree(&mut child);
-                let _ = child.wait();
-                let _ = stdout_reader.join();
-                let _ = stderr_reader.join();
-                return Err(error.to_string());
+                return Err(abandon_child(&mut child, stdout, stderr, error.to_string()));
             }
         }
     };
-    let stdout = stdout_reader
-        .join()
-        .map_err(|_| "stdout capture thread panicked".to_owned())??;
-    let stderr = stderr_reader
-        .join()
-        .map_err(|_| "stderr capture thread panicked".to_owned())??;
+    collect_captures(&mut child, &mut stdout, &mut stderr)?;
     Ok(SupervisedOutput {
         status,
-        stdout,
-        stderr,
+        stdout: stdout.into_output()?,
+        stderr: stderr.into_output()?,
         timed_out,
         output_exceeded: exceeded.load(Ordering::Acquire),
     })
@@ -799,8 +889,8 @@ fn windows_tree_termination_command(process_id: u32) -> std::process::Command {
         .stdin(std::process::Stdio::null())
         .stdout(std::process::Stdio::null())
         .stderr(std::process::Stdio::null());
-    // Windows system tools require the OS loader root even at this otherwise
-    // empty process boundary. No ambient user or credential variables cross it.
+    // Windows system tools require the OS loader root even at this otherwise empty process boundary.
+    // No ambient user or credential variables cross it.
     if let Some(root) = system_root {
         command.env(SYSTEM_ROOT, root);
     }
@@ -1286,8 +1376,8 @@ fn current_utc_date() -> Result<String, CliError> {
 }
 
 fn utc_date_from_days(days_since_epoch: i64) -> String {
-    // Integer civil-date conversion by Howard Hinnant. Its era constants are
-    // derived from the proleptic Gregorian 400-year cycle, not tuning knobs.
+    // Integer civil-date conversion by Howard Hinnant.
+    // Its era constants are derived from the proleptic Gregorian 400-year cycle, not tuning knobs.
     let days = days_since_epoch + 719_468;
     let era = if days >= 0 { days } else { days - 146_096 } / 146_097;
     let day_of_era = days - era * 146_097;
@@ -2309,26 +2399,44 @@ fn command_completion(arguments: &[String]) -> Result<CommandOutput, CliError> {
             "completion requires bash, zsh, fish, or powershell",
         ));
     }
-    let script = match arguments[0].as_str() {
-        "bash" => {
-            "complete -W 'check resolve explain graph diff fix policy sandbox doctor completion version lsp auth' workflow-verifier\n"
-        }
-        "zsh" => {
-            "#compdef workflow-verifier\n_arguments '1:command:(check resolve explain graph diff fix policy sandbox doctor completion version lsp auth)'\n"
-        }
-        "fish" => {
-            "complete -c workflow-verifier -f -a 'check resolve explain graph diff fix policy sandbox doctor completion version lsp auth'\n"
-        }
+    completion_script(&arguments[0])
+        .map(CommandOutput::success)
+        .ok_or_else(|| CliError::invalid("completion requires bash, zsh, fish, or powershell"))
+}
+
+/// Top-level commands in `HELP` order, shared by every generated completion script.
+const COMPLETION_COMMANDS: [&str; 13] = [
+    "check",
+    "resolve",
+    "explain",
+    "graph",
+    "diff",
+    "fix",
+    "policy",
+    "sandbox",
+    "doctor",
+    "completion",
+    "version",
+    "lsp",
+    "auth",
+];
+
+fn completion_script(shell: &str) -> Option<String> {
+    let words = COMPLETION_COMMANDS.join(" ");
+    Some(match shell {
+        "bash" => format!("complete -W '{words}' workflow-verifier\n"),
+        "zsh" => format!("#compdef workflow-verifier\n_arguments '1:command:({words})'\n"),
+        "fish" => format!("complete -c workflow-verifier -f -a '{words}'\n"),
         "powershell" => {
-            "Register-ArgumentCompleter -Native -CommandName workflow-verifier -ScriptBlock { param($wordToComplete) 'check','resolve','explain','graph','diff','fix','policy','sandbox','doctor','completion','version','lsp','auth' | Where-Object { $_ -like \"$wordToComplete*\" } }\n"
+            let quoted = COMPLETION_COMMANDS
+                .map(|command| format!("'{command}'"))
+                .join(",");
+            format!(
+                "Register-ArgumentCompleter -Native -CommandName workflow-verifier -ScriptBlock {{\n  param($wordToComplete)\n  {quoted} |\n    Where-Object {{ $_ -like \"$wordToComplete*\" }} |\n    ForEach-Object {{ [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_) }}\n}}\n"
+            )
         }
-        _ => {
-            return Err(CliError::invalid(
-                "completion requires bash, zsh, fish, or powershell",
-            ));
-        }
-    };
-    Ok(CommandOutput::success(script))
+        _ => return None,
+    })
 }
 
 fn parse_options<'a>(
@@ -3159,9 +3267,10 @@ mod tests {
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::time::Duration;
 
-    // Test shell startup is a control-process launch, so it shares the product's
-    // bounded doctor-probe contract without weakening production supervision.
+    // Test shell startup is a control-process launch, so it shares the product's bounded doctor-probe contract without weakening production supervision.
     const CONTROL_PROCESS_TEST_TIMEOUT: Duration = Duration::from_secs(DOCTOR_TIMEOUT_SECONDS);
+    // A hang diagnostic, not a latency budget: escaped test descendants live for 40 seconds.
+    const SUPERVISOR_HANG_GUARD: Duration = Duration::from_secs(25);
 
     fn shell_command(script: &str) -> Command {
         #[cfg(windows)]
@@ -3178,6 +3287,91 @@ mod tests {
             let mut command = Command::new("sh");
             command.args(["-c", script]);
             command
+        }
+    }
+
+    #[test]
+    fn usage_documentation_names_every_command_and_subcommand() {
+        const USAGE: &str = include_str!("../../docs/usage.md");
+        const SUBCOMMANDS: [&str; 9] = [
+            "policy test",
+            "sandbox plan",
+            "sandbox run",
+            "sandbox replay",
+            "sandbox verify",
+            "sandbox audit",
+            "auth login",
+            "auth status",
+            "auth logout",
+        ];
+        let commands = super::HELP
+            .lines()
+            .skip_while(|line| *line != "Commands:")
+            .skip(1)
+            .filter_map(|line| line.split_whitespace().next());
+        for invocation in commands.chain(SUBCOMMANDS) {
+            assert!(
+                USAGE.contains(&format!("workflow-verifier {invocation}")),
+                "docs/usage.md omits `workflow-verifier {invocation}`"
+            );
+        }
+    }
+
+    fn help_commands() -> Vec<&'static str> {
+        super::HELP
+            .lines()
+            .skip_while(|line| *line != "Commands:")
+            .skip(1)
+            .filter_map(|line| line.split_whitespace().next())
+            .collect()
+    }
+
+    #[test]
+    fn installed_completions_and_manual_match_the_command_surface() {
+        const MANUAL: &str = include_str!("../../man/workflow-verifier.1");
+        assert_eq!(help_commands(), super::COMPLETION_COMMANDS);
+        for (shell, installed) in [
+            (
+                "bash",
+                include_str!("../../completions/workflow-verifier.bash"),
+            ),
+            ("zsh", include_str!("../../completions/_workflow-verifier")),
+            (
+                "fish",
+                include_str!("../../completions/workflow-verifier.fish"),
+            ),
+            (
+                "powershell",
+                include_str!("../../completions/workflow-verifier.ps1"),
+            ),
+        ] {
+            // `.gitattributes` checks PowerShell scripts out with CRLF line endings.
+            assert_eq!(
+                super::completion_script(shell),
+                Some(installed.replace("\r\n", "\n")),
+                "completions for {shell} differ from `workflow-verifier completion {shell}`"
+            );
+        }
+        let subcommands = [
+            "policy test",
+            "sandbox plan",
+            "sandbox run",
+            "sandbox replay",
+            "sandbox verify",
+            "sandbox audit",
+            "auth login",
+            "auth status",
+            "auth logout",
+        ];
+        for entry in help_commands()
+            .into_iter()
+            .filter(|command| !["policy", "sandbox", "auth"].contains(command))
+            .chain(subcommands)
+        {
+            assert!(
+                MANUAL.contains(&format!("\n.B {entry}\n")),
+                "the manual page omits `{entry}`"
+            );
         }
     }
 
@@ -3305,10 +3499,39 @@ mod tests {
         .expect("supervise child");
 
         assert!(observed.timed_out);
+        assert!(!observed.status.success());
         assert!(!observed.output_exceeded);
         assert!(
-            started.elapsed() < Duration::from_secs(1),
-            "process descendants kept capture pipes open for {:?}",
+            started.elapsed() < SUPERVISOR_HANG_GUARD,
+            "supervisor did not return within the hang guard: {:?}",
+            started.elapsed()
+        );
+    }
+
+    #[test]
+    fn child_supervisor_bounds_capture_when_a_descendant_escapes_termination() {
+        // The escaped descendant outlives the hang guard, so only a bounded drain returns in time.
+        #[cfg(windows)]
+        let script = "start /b cmd /d /q /c start /b ping -n 40 127.0.0.1 & ping -t 127.0.0.1 >nul";
+        #[cfg(not(windows))]
+        let script = "perl -MPOSIX -e 'POSIX::setsid(); exec qw(sleep 40)' & sleep 40";
+        let started = std::time::Instant::now();
+        let error = supervise_process(
+            &mut shell_command(script),
+            None,
+            Duration::from_secs(3),
+            64 * 1024,
+            64 * 1024,
+        )
+        .expect_err("an escaped descendant keeps the capture pipes open");
+
+        assert!(
+            error.contains("kept capture pipes open"),
+            "unexpected supervisor error: {error}"
+        );
+        assert!(
+            started.elapsed() < SUPERVISOR_HANG_GUARD,
+            "supervisor did not return within the hang guard: {:?}",
             started.elapsed()
         );
     }

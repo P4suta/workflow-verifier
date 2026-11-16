@@ -49,7 +49,8 @@ They write outputs atomically.
 
 Publication inputs are composed by `release-evidence-v4`.
 Candidate commit `C` contains the release code and version; its single evidence-only child `E` contains measurements of `C` and is the future tag target.
-The manifest binds `C` and the planned tag to the corpus report, fixed official compatibility report, five platform performance comparisons, and signed sole-maintainer security attestation.
+The manifest binds `C` and the planned tag to every required release gate, including the corpus and five-platform performance gates, to each artifact and its signature, to both disclosures, and to the signed sole-maintainer self-audit.
+The fixed official compatibility report gates pull requests through CI and isn't a manifest input.
 `scripts/verify_release_evidence.py` validates the `E` to `C` parent relation and changed paths, nested proof states, every digest, the pinned maintainer SSH identity and namespace, and all fail-closed risk rules.
 
 ## Reviewed acquisition inputs

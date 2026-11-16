@@ -378,9 +378,40 @@ let safe_fix_test () =
     = "steps:\n  - uses: actions/checkout@" ^ revision
       ^ " # preserve this comment\n")
 
+let toml_blocks markdown =
+  let rec collect blocks current = function
+    | [] -> List.rev blocks
+    | line :: rest -> (
+        match (current, String.trim line) with
+        | None, "```toml" -> collect blocks (Some []) rest
+        | None, _ -> collect blocks None rest
+        | Some block, "```" ->
+            collect
+              (String.concat "\n" (List.rev ("" :: block)) :: blocks)
+              None rest
+        | Some block, _ -> collect blocks (Some (line :: block)) rest)
+  in
+  collect [] None (String.split_on_char '\n' markdown)
+
+let documented_policy_examples_test () =
+  let markdown =
+    In_channel.with_open_bin "../docs/policy.md" In_channel.input_all
+  in
+  let examples = toml_blocks markdown in
+  expect "docs/policy.md must contain a TOML example" (examples <> []);
+  List.iter
+    (fun source ->
+      match Config.parse source with
+      | Ok _ -> ()
+      | Error errors ->
+          fail "documented policy example must load: %s"
+            (String.concat "; " errors))
+    examples
+
 let tests : test list =
   [
     ("typed config drives declarative policy", config_and_policy_test);
+    ("documented policy examples load", documented_policy_examples_test);
     ( "policy uses canonical dependency identities",
       policy_dependency_identity_test );
     ("policy provider selectors are exact", policy_provider_test);

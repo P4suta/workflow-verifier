@@ -12,8 +12,12 @@ fn frame(value: &Value) -> Vec<u8> {
 }
 
 fn transcript(messages: Vec<Value>) -> Vec<Value> {
+    transcript_with(&["lsp"], messages)
+}
+
+fn transcript_with(arguments: &[&str], messages: Vec<Value>) -> Vec<Value> {
     let mut child = Command::new(env!("CARGO_BIN_EXE_workflow-verifier"))
-        .arg("lsp")
+        .args(arguments)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -127,6 +131,49 @@ fn stdio_lsp_handles_unsaved_partial_utf16_diagnostics_tokens_and_safe_rename() 
     );
     assert_eq!(response(&messages, 7)["error"]["code"], -32602);
     assert_eq!(response(&messages, 8)["result"], Value::Null);
+}
+
+#[test]
+fn conventional_stdio_transport_flag_starts_the_same_server() {
+    // LSP 3.17 recommends `--stdio` as the command-line flag that selects the stdio channel.
+    let messages = transcript_with(
+        &["lsp", "--stdio"],
+        vec![
+            json!({"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{}}}),
+            json!({"jsonrpc":"2.0","method":"initialized","params":{}}),
+            json!({"jsonrpc":"2.0","id":2,"method":"shutdown","params":null}),
+            json!({"jsonrpc":"2.0","method":"exit","params":null}),
+        ],
+    );
+
+    assert_eq!(
+        response(&messages, 1)["result"]["capabilities"]["positionEncoding"],
+        "utf-16"
+    );
+    assert_eq!(response(&messages, 2)["result"], Value::Null);
+}
+
+#[test]
+fn unsupported_transports_and_arguments_fail_as_invalid_input() {
+    for (argument, expected) in [
+        ("--socket=9000", "only the stdio transport"),
+        (
+            "--pipe=/tmp/workflow-verifier.sock",
+            "only the stdio transport",
+        ),
+        ("--node-ipc", "only the stdio transport"),
+        ("--verbose", "lsp accepts only --stdio"),
+    ] {
+        let output = Command::new(env!("CARGO_BIN_EXE_workflow-verifier"))
+            .args(["lsp", argument])
+            .stdin(Stdio::null())
+            .output()
+            .unwrap();
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        assert_eq!(output.status.code(), Some(2), "{argument}: {stderr}");
+        assert!(output.stdout.is_empty(), "{argument}");
+        assert!(stderr.contains(expected), "{argument}: {stderr}");
+    }
 }
 
 #[test]

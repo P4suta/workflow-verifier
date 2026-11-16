@@ -16,13 +16,25 @@ results and are never guessed.
 .B check
 Analyze and gate a workflow tree; JSON output is workflow-verifier-report/1.
 .TP
+.B resolve
+Create or verify a lock-v2 dependency lock. Network access requires
+--allow-network and a trusted origin policy.
+.TP
+.B explain
+Print the trace and capabilities behind one rule finding.
+.TP
 .B graph
 Emit workflow-verifier-graph/1 JSON or DOT. Graph data is not embedded in a
 check report.
 .TP
-.B resolve
-Create or verify a lock-v2 dependency lock. Network access requires
---allow-network and a trusted origin policy.
+.B diff
+Compare two workflow snapshots and report newly reachable effects.
+.TP
+.B fix
+Propose verified fixes, or apply them with --apply.
+.TP
+.B policy test
+Evaluate every *.expect.json fixture sidecar against the loaded policy.
 .TP
 .B sandbox plan
 Lower an explicit scenario-v1, or --job shorthand, to runner-v2.
@@ -33,8 +45,34 @@ Execute only a complete runner-v2 plan in the selected fail-closed backend.
 .B sandbox replay
 Verify an evidence-v2 hash chain offline.
 .TP
+.B sandbox verify
+Check that evidence-v2 belongs to its runner-v2 plan.
+.TP
+.B sandbox audit
+Reconcile evidence with its plan and, when given a target, with a fresh
+analysis.
+.TP
 .B doctor
 Report backend availability and reasons in text or doctor-v2 JSON.
+.TP
+.B completion
+Print a bash, zsh, fish, or powershell completion script.
+.TP
+.B version
+Print the version.
+.TP
+.B lsp
+Serve the Language Server Protocol over standard input and output; the
+conventional --stdio flag selects the same transport.
+.TP
+.B auth login
+Store a credential in the OS credential store from an interactive terminal.
+.TP
+.B auth status
+Report which provider credentials the OS credential store holds.
+.TP
+.B auth logout
+Remove a stored provider credential.
 .SH EXIT STATUS
 0 pass; 1 finding or policy failure; 2 input or configuration error; 3 strict
 incomplete result; 4 internal failure; 5 sandbox infrastructure failure.
