@@ -7,18 +7,28 @@ runs:
     - name: Install the repository-pinned Rust toolchain
       shell: bash
       env:
-        # Pinned to the digest published beside this official rustup archive.
-        # https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init.sha256
         RUSTUP_BOOTSTRAP_VERSION: '1.29.0'
-        RUSTUP_BOOTSTRAP_TARGET: x86_64-unknown-linux-gnu
-        RUSTUP_BOOTSTRAP_SHA256: 4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10
+        # Published at https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init.sha256
+        RUSTUP_BOOTSTRAP_SHA256_X86_64: 4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10
+        # Published at https://static.rust-lang.org/rustup/archive/1.29.0/aarch64-unknown-linux-gnu/rustup-init.sha256
+        RUSTUP_BOOTSTRAP_SHA256_AARCH64: 9732d6c5e2a098d3521fca8145d826ae0aaa067ef2385ead08e6feac88fa5792
       run: |
         set -euo pipefail
         if ! command -v rustup >/dev/null 2>&1; then
-          if [[ "$(uname -s):$(uname -m)" != 'Linux:x86_64' ]]; then
-            echo 'rustup is absent and no checksum-pinned bootstrap is defined for this runner' >&2
-            exit 1
-          fi
+          case "$(uname -s):$(uname -m)" in
+            Linux:x86_64)
+              RUSTUP_BOOTSTRAP_TARGET=x86_64-unknown-linux-gnu
+              RUSTUP_BOOTSTRAP_SHA256=$RUSTUP_BOOTSTRAP_SHA256_X86_64
+              ;;
+            Linux:aarch64)
+              RUSTUP_BOOTSTRAP_TARGET=aarch64-unknown-linux-gnu
+              RUSTUP_BOOTSTRAP_SHA256=$RUSTUP_BOOTSTRAP_SHA256_AARCH64
+              ;;
+            *)
+              echo 'rustup is absent and no checksum-pinned bootstrap is defined for this runner' >&2
+              exit 1
+              ;;
+          esac
           rustup_init="$RUNNER_TEMP/rustup-init"
           curl --fail --show-error --silent --proto '=https' --tlsv1.2 \
             --output "$rustup_init" \
