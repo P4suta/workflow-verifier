@@ -117,15 +117,28 @@ jobs:
         with:
           ref: ${{ needs.identity.outputs.candidate }}
           persist-credentials: false
-      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
-        with:
-          version: 0.13.8
-          enable-cache: false
       - name: Install the pinned Python inside the glibc 2.28 root
         shell: bash
+        env:
+          UV_VERSION: '0.13.8'
+          UV_SHA256_X86_64: 61fb26dabc4f0cf1d050fc6c67d40e43e4fae2994af21ebc1e050b233bf2b5ed
+          UV_SHA256_AARCH64: 0c6f8593fcf1eadfc60e663b685c408267559d7c5d61c689bbb9f3a7e369ba32
         run: |
-          uv python install 3.15.2
-          dirname "$(uv python find 3.15.2)" >> "$GITHUB_PATH"
+          set -euo pipefail
+          case "$(uname -m)" in
+            x86_64) target=x86_64-unknown-linux-musl; digest=$UV_SHA256_X86_64 ;;
+            aarch64) target=aarch64-unknown-linux-musl; digest=$UV_SHA256_AARCH64 ;;
+            *) echo "no pinned uv build for $(uname -m)" >&2; exit 1 ;;
+          esac
+          archive="$RUNNER_TEMP/uv-$target.tar.gz"
+          curl --fail --show-error --silent --location --proto '=https' --tlsv1.2 \
+            --output "$archive" \
+            "https://github.com/astral-sh/uv/releases/download/$UV_VERSION/uv-$target.tar.gz"
+          printf '%s  %s\n' "$digest" "$archive" | sha256sum --check
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          uv="$RUNNER_TEMP/uv-$target/uv"
+          "$uv" python install 3.15.2
+          dirname "$("$uv" python find 3.15.2)" >> "$GITHUB_PATH"
       - uses: ./.github/actions/setup-repository-rust
       - uses: ocaml/setup-ocaml@f92e0606b7ae4873dd1238465ea4bf6f8e40d85c # v3
         with:
