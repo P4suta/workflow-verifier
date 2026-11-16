@@ -1,0 +1,18 @@
+name: Probe mutation campaign
+
+on:
+  push:
+    branches: [probe/mutation-campaign]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: probe-mutation-campaign
+  cancel-in-progress: true
+
+jobs:
+  mutation:
+    uses: ./.github/workflows/mutation.yml
+    permissions:
+      contents: read
